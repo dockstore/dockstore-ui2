@@ -1,0 +1,22 @@
+img {
+  /* auto set height */
+  height: 65px;
+  /* align with text */
+  vertical-align: middle;
+}
+
+ul {
+  text-align: center;
+}
+
+li {
+  /* horizontal list */
+  display: inline;
+  /* set space between list elements */
+  margin: 20px;
+}
+
+a {
+  /* removes underline for links */
+  text-decoration: none;
+}
