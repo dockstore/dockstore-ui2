@@ -84,7 +84,7 @@ doc: |
 
 These items are recommended and the doc (description) is actually parsed and displayed in the Dockstore page. Here's an example:
 
-![Entry](docs/entry.png)
+![Entry](../assets/images/docs/entry.png)
 
 In the code above you can see how to have an extended doc (description) which is quite useful.
 
@@ -260,7 +260,7 @@ The output looks fine, just what we'd expect.
 
 So what's going on here?  What's the Dockstore CLI doing?  It can best be summed up with this image:
 
-![Lifecycle](docs/dockstore_lifecycle.png)
+![Lifecycle](../assets/images/docs/dockstore_lifecycle.png)
 
 The command line first provisions file.  In our case, the files were local so no provisioning was needed.  But as the Tip above mentioned, these can be various URLs.  After provisioning the docker image is pulled and ran via the `cwltool` command line. This uses the `Dockerfile.cwl` and parameterization JSON file (`sample_configs.local.json`) to construct the underlying `docker run` command.  Finally, the Dockstore CLI provisions files back.  In this case it's just a file copy to `/tmp/bamstats_report.zip` but it could copy the result to a destination in S3 for example.
 
@@ -283,7 +283,7 @@ At this point we've successfully created our tool in Docker, tested it, written 
 
 Releasing will tag your GitHub repository with a version tag so you always can get back to this particular release.  I'm going to use the tag `1.25-3` which you can see referenced in my Docker image tag and also my CWL file.  GitHub makes it very easy to release:
 
-![Release](docs/release.png)
+![Release](../assets/images/docs/release.png)
 
 I click on "releases" in my GitHub project [page](https://github.com/CancerCollaboratory/dockstore-tool-bamstats) and then follow the directions to create a new release. Simple as that!
 
@@ -297,25 +297,25 @@ You can manually `docker push` the image you have already built but the most rel
 
 Log onto Quay now and setup a new repository (click the "+" icon).
 
-![New Quay Repo](docs/quay_new_repo.png)
+![New Quay Repo](../assets/images/docs/quay_new_repo.png)
 
 You must match the name to what I was using previously, so in this case it's `CancerCollaboratory/dockstore-tool-bamstats`.  Also, Dockstore will only work with `Public` repositories currently. Notice I'm selecting "Link to a GitHub Repository Push", this is because we want Quay to automatically build our Docker image every time we update the repository on GitHub.  Very slick!
 
-![Build Trigger](docs/build_all.png)
+![Build Trigger](../assets/images/docs/build_all.png)
 
 It will automatically prompt you to setup a "build trigger" after GitHub authenticates you.  Here I select the GitHub repo for `CancerCollaboratory/dockstore-tool-bamstats`.
 
-![Build Trigger](docs/build_trigger.png)
+![Build Trigger](../assets/images/docs/build_trigger.png)
 
 It will then ask if there are particular branches you want to build, I typically just let it build everything:
 
 So every time you do a commit to your GitHub repo Quay automatially builds and tags a Docker image.  If this is overkill for you, consider setting up particular build trigger regular expressions at this step.
 
-![Build Trigger](docs/run_trigger.png)
+![Build Trigger](../assets/images/docs/run_trigger.png)
 
 It will then ask you where your Dockerfile is located.  Since the Dockerfile is in the root directory of this GitHub repo you can just click next:
 
-![Build Trigger](docs/dockerfile.png)
+![Build Trigger](../assets/images/docs/dockerfile.png)
 
 At this point you can confirm your settings and "Create Trigger" followed by "Run Trigger Now" to actually perform the build of the Docker images.
 
@@ -323,7 +323,7 @@ Build it for `1.25-3` and any or all other branches.  Typically, I build for eac
 
 In my example I should see a `1.25-3` listed in the "tags" for this Quay Docker repository:
 
-![Build Tags](docs/build_tags.png)
+![Build Tags](../assets/images/docs/build_tags.png)
 
 And I do, so this Docker image has been built successfully by Quay and is ready for sharing with the community.
 

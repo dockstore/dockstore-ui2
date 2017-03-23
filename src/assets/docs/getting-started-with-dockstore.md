@@ -8,19 +8,19 @@ https://www.dockstore.org/login
 
 Your link to GitHub is established on login and you will then be prompted to link your other accounts.
 
-![Link accounts](docs/linking1.png)
+![Link accounts](../assets/images/docs/linking1.png)
 
 Linking a supported image repository service (e.g. Quay.io) will automatically trigger a synchronization order to retrieve information about the account's tools
 
-![Refresh tools](docs/linking2.png)
+![Refresh tools](../assets/images/docs/linking2.png)
 
 Below, GitHub, BitBucket, GitLab and Quay.io accounts have been linked, it is necessary for at least the GitHub account be linked in order to perform regular account activities.
 
-![Link accounts completed](docs/linking3.png)
+![Link accounts completed](../assets/images/docs/linking3.png)
 
 Next, the wizard will instruct you to setup the `dockstore` command line tool after linking your accounts, and upon completion you will be ready to use Dockstore.
 
-![Link accounts](docs/linking4.png)
+![Link accounts](../assets/images/docs/linking4.png)
 
 ## [Register Your Tool in Dockstore](#register-your-tool-in-dockstore)
 
@@ -30,7 +30,7 @@ Now that you have your `Dockerfile` and `Dockstore.cwl` in GitHub, have setup Qu
 
 In the authenticated Web UI, navigate to 'My Tools' to begin managing Docker images imported through your linked account(s). These pages will allow you to quickly register tools that follow a particularly simple format (look below to manual registration for more complex formats). For quick registration, we look through your quay.io images and see if any are setup as [automated builds](https://docs.quay.io/guides/building.html). Using those to track back to your github, bitbucket, or gitlab accounts, we list all pairs of Docker images with git repositories that contain a `Dockstore.cwl` and a `Dockerfile`. When we discover both of these, we create an unregistered entry in the interface below.
 
-![My Tools](docs/register_ui.png)
+![My Tools](../assets/images/docs/register_ui.png)
 
 The left side menu is a list of all image repositories associated with the user, grouped lexicographically by namespace. Each tool is named after the docker location of the associated Docker image, in this example, `quay.io/cancercollaboratory/dockstore-tool-bedgraph-bigwig`. Detailed information and links for each tool are located on the 'Info' tab. The 'Labels' tab allows editing of keywords to be associated with a tool for efficient searching and grouping. Settings such as the path to the Dockerfile and CWL Descriptor can be modified on a per-tag basis in the 'Versions' tab. The Dockerfile, CWL/WDL Descriptor and test parameter files may be viewed in the 'Files' tab, by the Version tag (corresponding to a Git tag/branch).
 
@@ -38,15 +38,15 @@ A tool is not visible on the public 'Tools' listing unless it is published. To p
 
 For the tutorial, generally, you should hit the "Refresh All Tools" button to make sure Dockstore has examined your latest repositories on Quay.  Do this especially if you created a new repository like we did here.
 
- ![Refresh](docs/dockstore_refresh.png)
+ ![Refresh](../assets/images/docs/dockstore_refresh.png)
 
 Now select the `collaboratory/dockstore-tool-bamstats` repository and click "Publish".  The tool is now listed on Dockstore!
 
-![Publish](docs/publish.png)
+![Publish](../assets/images/docs/publish.png)
 
 You can also click on the "Versions" tab and should notice `1.25-6` is present and valid.  If any versions are invalid it is likely due to a path issue to the `Dockstore.cwl`, `Dockerfile`, or `Dockstore.wdl` (if used) files.  In BAMStats I used the default value of `Dockstore.cwl` and `Dockerfile` in the root repo directory so this was not an issue.
 
-![Publish](docs/versions_toggle.png)
+![Publish](../assets/images/docs/versions_toggle.png)
 
 Next, pick a version of your tool that you wish to present to the world by clicking on the radio selector in the Git Reference column. This will determine which version of your CWL/WDL file will be used to find the author, email, and description in the case that it changes between versions. This also allows you to pre-select a version of your tool to present to users in the "Launch With" section, and the Dockerfile and Descriptor tabs.
 
@@ -57,7 +57,7 @@ Outside of this tutorial, in certain cases, it is not possible for Dockstore to 
 
 Tools can be registered manually from the 'My Tools' page by pressing the 'Add Tool' button at the bottom of the right side bar, or any of the '+' buttons in each accordion namespace group. A modal dialog will appear as below:
 
-![Register Tool Manual](docs/register_container_manual.png)
+![Register Tool Manual](../assets/images/docs/register_container_manual.png)
 
 The Source Code Repository and Image Registry fields must be filled out, they are in the format `namespace/name` (the two paths may differ). The Dockerfile Path,  CWL/WDL Descriptor Paths, and CWL/WDL Test Parameter Paths are relative to the root of the Source Code Repository (and must begin with '/'), these will be the default locations to find their corresponding files, unless specified otherwise in the tags. The toolname is an optional 'suffix' appended to the Dockstore path, it allows for two repositories to share the same Git and Image Registry paths; the combination of Docker image registry path and toolname uniquely distinguishes tools in Dockstore.
 
@@ -67,11 +67,11 @@ Upon successful submission and registration of the tool, a resynchronization cal
 
 The user will then be taken to the 'Versions' tab of the new tool, where tags (corresponding to GitHub/Bitbucket/GitLab tag names) may be added.
 
-![Versions Grid](docs/version_tags.png)
+![Versions Grid](../assets/images/docs/version_tags.png)
 
 Press the 'Add Tag' button to begin creating tags for the different versions of the image. The tag creation modal will appear:
 
-![Edit Version Tag Dialogue](docs/tageditor_modal.png)
+![Edit Version Tag Dialogue](../assets/images/docs/tageditor_modal.png)
 
 The fields in the form should correspond to the actual values on GitHub/Bitbucket/GitLab and Quay.io/Docker Hub in order for the information to be useful to other users. Selecting `Hidden` will prevent the tag from appearing in the public listing of tags for the image.
 
