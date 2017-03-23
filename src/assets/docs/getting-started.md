@@ -18,16 +18,18 @@ For those of you that use [Docker Hub](https://hub.docker.com/), an extremely po
 
 When going through the onboarding wizard, our various dependencies were introduced. If you have not completed the onboarding wizard, please browse to [onboarding](/onboarding) and then return here.  Verify that the dependencies are properly installed by opening a terminal and executing the following. You should see very similar output. If there are errors make sure you follow the setup instructions carefully:
 
-    $> java -version
-    java version "1.8.0_101"
-    Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
-    Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
+```
+$> java -version
+java version "1.8.0_101"
+Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
 
-    $> docker --version
-    Docker version 1.12.0, build 8eab29e
+$> docker --version
+Docker version 1.12.0, build 8eab29e
 
-    $> cwltool --version
-    /usr/local/bin/cwltool 1.0.20161114152756
+$> cwltool --version
+/usr/local/bin/cwltool 1.0.20161114152756
+```
 
 You can also call `dockstore --version` which should report the same version as the DockstoreApi shown below in the footer.
 

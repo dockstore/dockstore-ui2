@@ -4,6 +4,7 @@
 
 Now that you have a git repository that includes a `Dockerfile`, you have tested it, and are satisfied that your tool works in Docker, the next step is to create a [CWL tool definition file](http://www.commonwl.org/). This YAML (Or JSON) file describes the inputs, outputs, and Docker image dependencies for your tool.
 
+```
 It is recommended that you have the following minimum fields:
 
     doc: <description>
@@ -14,59 +15,62 @@ It is recommended that you have the following minimum fields:
 
     dct:creator:
       foaf:name: <name>
+```
 
 Again, we provide an example from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats) repository:
 
-    #!/usr/bin/env cwl-runner
+```
+#!/usr/bin/env cwl-runner
 
-    class: CommandLineTool
-    id: "BAMStats"
-    label: "BAMStats tool"
-    cwlVersion: v1.0
-    doc: |
-        ![build_status](https://quay.io/repository/collaboratory/dockstore-tool-bamstats/status)
-        A Docker container for the BAMStats command. See the [BAMStats](http://bamstats.sourceforge.net/) website for more information.
+class: CommandLineTool
+id: "BAMStats"
+label: "BAMStats tool"
+cwlVersion: v1.0
+doc: |
+    ![build_status](https://quay.io/repository/collaboratory/dockstore-tool-bamstats/status)
+    A Docker container for the BAMStats command. See the [BAMStats](http://bamstats.sourceforge.net/) website for more information.
 
-    dct:creator:
-      "@id": "http://orcid.org/0000-0002-7681-6415"
-      foaf:name: Brian O'Connor
-      foaf:mbox: "mailto:briandoconnor@gmail.com"
+dct:creator:
+  "@id": "http://orcid.org/0000-0002-7681-6415"
+  foaf:name: Brian O'Connor
+  foaf:mbox: "mailto:briandoconnor@gmail.com"
 
-    requirements:
-      - class: DockerRequirement
-        dockerPull: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6"
+requirements:
+  - class: DockerRequirement
+    dockerPull: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6"
 
-    hints:
-      - class: ResourceRequirement
-        coresMin: 1
-        ramMin: 4092 #"the process requires at least 4G of RAM
-        outdirMin: 512000
+hints:
+  - class: ResourceRequirement
+    coresMin: 1
+    ramMin: 4092 #"the process requires at least 4G of RAM
+    outdirMin: 512000
 
-    inputs:
-      mem_gb:
-        type: int
-        default: 4
-        doc: "The memory, in GB, for the reporting tool"
-        inputBinding:
-          position: 1
+inputs:
+  mem_gb:
+    type: int
+    default: 4
+    doc: "The memory, in GB, for the reporting tool"
+    inputBinding:
+      position: 1
 
-      bam_input:
-        type: File
-        doc: "The BAM file used as input, it must be sorted."
-        format: "http://edamontology.org/format_2572"
-        inputBinding:
-          position: 2
+  bam_input:
+    type: File
+    doc: "The BAM file used as input, it must be sorted."
+    format: "http://edamontology.org/format_2572"
+    inputBinding:
+      position: 2
 
-    outputs:
-      bamstats_report:
-        type: File
-        format: "http://edamontology.org/format_3615"
-        outputBinding:
-          glob: bamstats_report.zip
-        doc: "A zip file that contains the HTML report and various graphics."
+outputs:
+  bamstats_report:
+    type: File
+    format: "http://edamontology.org/format_3615"
+    outputBinding:
+      glob: bamstats_report.zip
+    doc: "A zip file that contains the HTML report and various graphics."
+```
 
 
-    baseCommand: ["bash", "/usr/local/bin/bamstats"]
+baseCommand: ["bash", "/usr/local/bin/bamstats"]
 
 You can see this tool takes two inputs, a parameter to control memory usage and a BAM file (binary sequence alignment file).  It produces one output, a zip file, that contains various HTML reports that BamStats creates.
 
@@ -336,20 +340,22 @@ In WDL, a tool can also be described as a one task WDL workflow.
 
 We provide a hello world example as follows:
 
-    task hello {
-      String name
+```
+task hello {
+  String name
 
-      command {
-        echo 'hello ${name}!'
-      }
-      output {
-        File response = stdout()
-      }
-    }
+  command {
+    echo 'hello ${name}!'
+  }
+  output {
+    File response = stdout()
+  }
+}
 
-    workflow test {
-      call hello
-    }
+workflow test {
+  call hello
+}
+```
 
 We are currently monitoring WDL to see how metadata like that provided for CWL will be integrated into WDL.
 

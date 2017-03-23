@@ -79,98 +79,102 @@ The fields in the form should correspond to the actual values on GitHub/Bitbucke
 
 The `dockstore` command line can be used as an alternative to the GUI and has a couple modes.
 
-    $ dockstore
+```
+$ dockstore
 
-    HELP FOR DOCKSTORE
-    ------------------
-    See https://www.dockstore.org for more information
+HELP FOR DOCKSTORE
+------------------
+See https://www.dockstore.org for more information
 
-    Usage: dockstore [mode] [flags] [command] [command parameters]
+Usage: dockstore [mode] [flags] [command] [command parameters]
 
-    Modes:
-       tool                Puts dockstore into tool mode.
-       workflow            Puts dockstore into workflow mode.
+Modes:
+   tool                Puts dockstore into tool mode.
+   workflow            Puts dockstore into workflow mode.
 
-    ------------------
+------------------
 
-    Flags:
-      --help               Print help information
-                           Default: false
-      --debug              Print debugging information
-                           Default: false
-      --version            Print dockstore's version
-                           Default: false
-      --server-metadata    Print metdata describing the dockstore webservice
-                           Default: false
-      --upgrade            Upgrades to the latest stable release of Dockstore
-                           Default: false
-      --config <file>      Override config file
-                           Default: ~/.dockstore/config
-      --script             Will not check Github for newer versions of Dockstore
-                           Default: false
+Flags:
+  --help               Print help information
+                       Default: false
+  --debug              Print debugging information
+                       Default: false
+  --version            Print dockstore's version
+                       Default: false
+  --server-metadata    Print metdata describing the dockstore webservice
+                       Default: false
+  --upgrade            Upgrades to the latest stable release of Dockstore
+                       Default: false
+  --config <file>      Override config file
+                       Default: ~/.dockstore/config
+  --script             Will not check Github for newer versions of Dockstore
+                       Default: false
 
-    ------------------
+------------------
+```
 
 First, we will work in tool mode (`dockstore tool`). We recommend you first `dockstore tool refresh` to ensure the latest GitHub, Bitbucket, GitLab and Quay.io information is indexed properly.
 
-    $ dockstore tool
+```
+$ dockstore tool
 
-    HELP FOR DOCKSTORE
-    ------------------
-    See https://www.dockstore.org for more information
+HELP FOR DOCKSTORE
+------------------
+See https://www.dockstore.org for more information
 
-    Usage: dockstore tool [flags] [command] [command parameters]
+Usage: dockstore tool [flags] [command] [command parameters]
 
-    Commands:
+Commands:
 
-      list             :  lists all the Tools published by the user
+  list             :  lists all the Tools published by the user
 
-      search           :  allows a user to search for all published Tools that match the criteria
+  search           :  allows a user to search for all published Tools that match the criteria
 
-      publish          :  publish/unpublish a Tool in the dockstore
+  publish          :  publish/unpublish a Tool in the dockstore
 
-      info             :  print detailed information about a particular published Tool
+  info             :  print detailed information about a particular published Tool
 
-      cwl              :  returns the Common Workflow Language Tool definition for this entry
-                          which enables integration with Global Alliance compliant systems
+  cwl              :  returns the Common Workflow Language Tool definition for this entry
+                      which enables integration with Global Alliance compliant systems
 
-      wdl              :  returns the Workflow Descriptor Langauge definition for this Docker image.
+  wdl              :  returns the Workflow Descriptor Langauge definition for this Docker image.
 
-      refresh          :  updates your list of Tools stored on Dockstore or an individual Tool
+  refresh          :  updates your list of Tools stored on Dockstore or an individual Tool
 
-      label            :  updates labels for an individual Tool
+  label            :  updates labels for an individual Tool
 
-      test_parameter   :  updates test parameter files for a version of a Tool
+  test_parameter   :  updates test parameter files for a version of a Tool
 
-      convert          :  utilities that allow you to convert file types
+  convert          :  utilities that allow you to convert file types
 
-      launch           :  launch Tools (locally)
+  launch           :  launch Tools (locally)
 
-      version_tag      :  updates version tags for an individual tool
+  version_tag      :  updates version tags for an individual tool
 
-      update_tool      :  updates certain fields of a tool
+  update_tool      :  updates certain fields of a tool
 
-      manual_publish   :  registers a Docker Hub (or manual Quay) tool in the dockstore and then attempt to publish
+  manual_publish   :  registers a Docker Hub (or manual Quay) tool in the dockstore and then attempt to publish
 
-    ------------------
+------------------
 
-    Flags:
-      --help               Print help information
-                           Default: false
-      --debug              Print debugging information
-                           Default: false
-      --version            Print dockstore's version
-                           Default: false
-      --server-metadata    Print metdata describing the dockstore webservice
-                           Default: false
-      --upgrade            Upgrades to the latest stable release of Dockstore
-                           Default: false
-      --config <file>      Override config file
-                           Default: ~/.dockstore/config
-      --script             Will not check Github for newer versions of Dockstore
-                           Default: false
+Flags:
+  --help               Print help information
+                       Default: false
+  --debug              Print debugging information
+                       Default: false
+  --version            Print dockstore's version
+                       Default: false
+  --server-metadata    Print metdata describing the dockstore webservice
+                       Default: false
+  --upgrade            Upgrades to the latest stable release of Dockstore
+                       Default: false
+  --config <file>      Override config file
+                       Default: ~/.dockstore/config
+  --script             Will not check Github for newer versions of Dockstore
+                       Default: false
 
-    ------------------
+------------------
+```
 
 
 You can then use `dockstore tool publish` to see the list of available Docker images you can register with Dockstore. This is for you to publish tools that are auto-detected from Quay.io. The key is that Docker images you wish to (quick) publish have the following qualities:
@@ -204,33 +208,35 @@ You can see in the above, the tool (identified with `quay.io/cancercollaboratory
 
 The `dockstore tool manual_publish` command can be used to manually register a tool on Docker Hub. Its usage is outlined in the publish_manual help menu. This will allow you to register entries that do not follow the qualities above (non-automated builds and Docker Hub images).
 
-    $ dockstore tool manual_publish
+```
+$ dockstore tool manual_publish
 
-    HELP FOR DOCKSTORE
-    ------------------
-    See https://www.dockstore.org for more information
+HELP FOR DOCKSTORE
+------------------
+See https://www.dockstore.org for more information
 
-    Usage: dockstore tool manual_publish --help
-           dockstore tool manual_publish [parameters]
+Usage: dockstore tool manual_publish --help
+       dockstore tool manual_publish [parameters]
 
-    Description:
-      Manually register an tool in the dockstore. Currently this is used to register entries for images on Docker Hub.
+Description:
+  Manually register an tool in the dockstore. Currently this is used to register entries for images on Docker Hub.
 
-    Required parameters:
-      --name <name>                Name for the docker container
-      --namespace <namespace>      Organization for the docker container
-      --git-url <url>              Reference to the git repo holding descriptor(s) and Dockerfile ex: "git@github.com:user/test1.git"
-      --git-reference <reference>  Reference to git branch or tag where the CWL and Dockerfile is checked-in
+Required parameters:
+  --name <name>                Name for the docker container
+  --namespace <namespace>      Organization for the docker container
+  --git-url <url>              Reference to the git repo holding descriptor(s) and Dockerfile ex: "git@github.com:user/test1.git"
+  --git-reference <reference>  Reference to git branch or tag where the CWL and Dockerfile is checked-in
 
-    Optional parameters:
-      --dockerfile-path <file>     Path for the dockerfile, defaults to /Dockerfile
-      --cwl-path <file>            Path for the CWL document, defaults to /Dockstore.cwl
-      --wdl-path <file>            Path for the WDL document, defaults to /Dockstore.wdl
-      --toolname <toolname>        Name of the tool, can be omitted, defaults to null
-      --registry <registry>        Docker registry, can be omitted, defaults to registry.hub.docker.com
-      --version-name <version>     Version tag name for Dockerhub containers only, defaults to latest
+Optional parameters:
+  --dockerfile-path <file>     Path for the dockerfile, defaults to /Dockerfile
+  --cwl-path <file>            Path for the CWL document, defaults to /Dockstore.cwl
+  --wdl-path <file>            Path for the WDL document, defaults to /Dockstore.wdl
+  --toolname <toolname>        Name of the tool, can be omitted, defaults to null
+  --registry <registry>        Docker registry, can be omitted, defaults to registry.hub.docker.com
+  --version-name <version>     Version tag name for Dockerhub containers only, defaults to latest
 
-    ------------------
+------------------
+```
 
 ## Sharing the Tool
 
