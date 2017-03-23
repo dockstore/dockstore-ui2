@@ -13,7 +13,7 @@ li {
   /* horizontal list */
   display: inline;
   /* set space between list elements */
-  margin: 20px;
+  margin-right: 20px;
 }
 
 a {

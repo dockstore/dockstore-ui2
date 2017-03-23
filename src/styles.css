@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* the bottom margin is the negative value of the footer's height */
+    margin: 0 auto -155px;
+}
+.footer, .push {
+    /* .push must be the same height as .footer */
+    height: 155px;
+}
