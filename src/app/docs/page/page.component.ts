@@ -7,8 +7,7 @@ import { DocsService } from '../docs.service';
 
 @Component({
   selector: 'app-page',
-  templateUrl: './page.component.html',
-  styleUrls: ['./page.component.css']
+  templateUrl: './page.component.html'
 })
 export class PageComponent implements OnInit {
   private subscription: Subscription;

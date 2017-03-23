@@ -5,6 +5,7 @@ import { MarkdownModule } from 'angular2-markdown';
 import { DocsComponent } from './docs.component';
 import { MainComponent } from './main/main.component';
 import { PageComponent } from './page/page.component';
+import { HeaderComponent } from '../header/header.component';
 
 import { docsRouting } from './docs.routing';
 
@@ -15,6 +16,7 @@ import { DocsService } from './docs.service';
     DocsComponent,
     MainComponent,
     PageComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,

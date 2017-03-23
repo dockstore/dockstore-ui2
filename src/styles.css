@@ -15,3 +15,31 @@ html, body {
     /* .push must be the same height as .footer */
     height: 155px;
 }
+
+/* pages generated from markdown needs to have responsive images */
+app-page img {
+  max-width: 100%;
+  height: auto;
+  display:block;
+}
+
+/* header needs proper format */
+app-header img {
+  width: 32px;
+}
+
+app-header h3 {
+  font-size: 20px;
+  color: #21335B;
+  margin: 20px 0px 15px 0px;
+  display: inline;
+  line-height: 55px;
+}
+
+app-header .container-fluid {
+  background-color:#eef0f6;
+  box-shadow: 0px 3px 6px #cfd1d7;
+  position: relative;
+  z-index: 1;
+  padding-top: 5px;
+}
