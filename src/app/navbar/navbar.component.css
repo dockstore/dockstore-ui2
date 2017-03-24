@@ -1,0 +1,16 @@
+.container-fluid, .navbar-nav > li > a {
+  background-color: #21335B;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+img {
+  height: 16px;
+  vertical-align: middle;
+}
+
+img.logo {
+  height: 20px;
+}
+
