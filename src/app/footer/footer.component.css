@@ -1,0 +1,9 @@
+li, div a {
+  /* set space between list elements */
+  margin: 20px;
+}
+
+.container-fluid, a {
+  background-color: #21335B;
+  color: white;
+}

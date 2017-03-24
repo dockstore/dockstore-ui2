@@ -1,13 +1,11 @@
 .container-fluid, .navbar-nav > li > a {
   background-color: #21335B;
-  font-weight: bold;
-  text-decoration: none;
   color: white;
+  font-weight: bold;
 }
 
 img {
   height: 16px;
-  vertical-align: middle;
 }
 
 img.logo {

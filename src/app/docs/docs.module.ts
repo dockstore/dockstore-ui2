@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { MarkdownModule } from 'angular2-markdown';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { docsRouting } from './docs.routing';
 import { DocsService } from './docs.service';
 
