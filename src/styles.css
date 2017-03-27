@@ -46,3 +46,7 @@ app-header .container-fluid {
   z-index: 1;
   padding-top: 5px;
 }
+
+.separation {
+  margin-top: 20px;
+}
