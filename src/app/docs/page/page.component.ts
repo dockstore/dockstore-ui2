@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from 'rxjs/Rx';
 
@@ -9,13 +9,17 @@ import { DocsService } from '../docs.service';
   selector: 'app-page',
   templateUrl: './page.component.html'
 })
-export class PageComponent implements OnInit {
+export class PageComponent implements OnInit, AfterViewInit {
+
   private subscription: Subscription;
   private slug: string;
 
   selectedDoc: Doc;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private docsService: DocsService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private docsService: DocsService) {
+  }
 
   getDoc(slug: string): Doc {
       return this.docsService.getDoc(slug);
@@ -34,7 +38,16 @@ export class PageComponent implements OnInit {
     );
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  ngAfterViewInit() {
+    this.activatedRoute.fragment.subscribe(anchor => {
+      setTimeout(() => {
+      const element = document.querySelector("#" + anchor);
+              if (element) {
+                element.scrollIntoView();
+              }
+
+      }, 20);
+    });
   }
 }
+
