@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchContainersComponent } from './search-containers/search-containers.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
+import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SearchWorkflowsComponent } from './search-workflows/search-workflows.co
     HomeComponent,
     FooterComponent,
     SearchContainersComponent,
-    SearchWorkflowsComponent
+    SearchWorkflowsComponent,
+    HomeFootNoteComponent
   ],
   imports: [
     BrowserModule,
