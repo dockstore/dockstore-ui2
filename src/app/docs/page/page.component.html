@@ -1,5 +1,16 @@
 <div class="container">
-  <div *ngIf="selectedDoc">
-    <div id="markdown" Markdown [path]="selectedDoc?.getPath()"></div>
+  <div class="row">
+    <div *ngIf="selectedDoc">
+    <!-- main content area -->
+    <div class="col-md-9">
+
+        <div id="markdown" Markdown [path]="selectedDoc?.getPath()"></div>
+
+    </div>
+    <!-- sidebar, which will move to the top on a small screen -->
+    <div class="col-md-3">
+      <nav class="affix" id="toc" data-spy="affix" data-toggle="toc" (click)="scrollToAnchor($event)"></nav>
+    </div>
+    </div>
   </div>
 </div>

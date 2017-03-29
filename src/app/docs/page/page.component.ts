@@ -1,9 +1,11 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from 'rxjs/Rx';
 
 import { Doc } from '../doc.model';
 import { DocsService } from '../docs.service';
+
+declare var Toc: any;
 
 @Component({
   selector: 'app-page',
@@ -11,7 +13,7 @@ import { DocsService } from '../docs.service';
 })
 export class PageComponent implements OnInit, AfterViewInit {
 
-  private subscription: Subscription;
+  private valid: boolean = true;
   private slug: string;
 
   selectedDoc: Doc;
@@ -26,28 +28,80 @@ export class PageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.subscription = this.activatedRoute.params.subscribe(
+     this.activatedRoute.params.subscribe(
       (params: any) => {
         this.slug = params['slug'];
         this.selectedDoc = this.docsService.getDoc(this.slug);
 
         if (!this.selectedDoc) {
+          this.valid = false;
           this.router.navigate(['/docs']);
         }
+      });
+  }
+
+  private tocExists(): boolean {
+    if (document) {
+      const element = document.querySelector("#toc");
+      if (element.querySelector(".nav")) {
+        return true;
+      } else {
+        return false;
       }
-    );
+    } else {
+      return false;
+    }
+  }
+
+  private initToc(): void {
+    var navSelector = '#toc';
+    var $myNav = $(navSelector);
+
+    Toc.init($myNav);
+
+    (<any>$('body')).scrollspy({
+      target: navSelector
+    });
   }
 
   ngAfterViewInit() {
-    this.activatedRoute.fragment.subscribe(anchor => {
-      setTimeout(() => {
-      const element = document.querySelector("#" + anchor);
-              if (element) {
-                element.scrollIntoView();
-              }
+    if (this.valid) {
+      this.activatedRoute.fragment.subscribe(anchor => {
+        setTimeout(() => {
+          const element = document.querySelector("#" + anchor);
+          if (element) {
+            element.scrollIntoView();
+          }
+          if (!this.tocExists()) {
+            this.initToc();
+          }
+        }, 100);
+      });
+    }
+  }
 
-      }, 20);
-    });
+  private getAnchor(event): string {
+    let anchorElement;
+
+    if (event.srcElement) {
+      anchorElement = event.srcElement;
+    } else {
+      // Firefox
+      anchorElement = event.target;
+    }
+
+    let anchorLink = anchorElement.getAttribute('href');
+    return anchorLink;
+  }
+
+  scrollToAnchor(event) {
+    // do not navigate away
+    event.preventDefault();
+
+    // get anchor link
+    const anchorLink = this.getAnchor(event);
+
+    // remove # from anchor link to get fragment
+    this.router.navigate([], { fragment: anchorLink.substring(1) });
   }
 }
-

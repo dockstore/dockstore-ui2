@@ -1,0 +1,20 @@
+{
+  "name": "dockstore-ui2",
+  "description": "",
+  "main": "",
+  "authors": [
+    "k-cao <hanyuancaowaterloo@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-toc": "^0.4.1"
+  }
+}
