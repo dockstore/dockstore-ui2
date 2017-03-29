@@ -22,14 +22,16 @@
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
-        "../bower_components/bootstrap-toc/bootstrap-toc.css"
+        "../bower_components/bootstrap-toc/bootstrap-toc.css",
+        "../node_modules/jquery-colorbox/example1/colorbox.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
-        "../bower_components/bootstrap-toc/bootstrap-toc.js"
+        "../bower_components/bootstrap-toc/bootstrap-toc.js",
+        "../node_modules/jquery-colorbox/jquery.colorbox.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
