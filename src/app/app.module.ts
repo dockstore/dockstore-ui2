@@ -7,6 +7,8 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { SharedModule } from './shared/shared.module';
 import { routing } from './app.routing';
 import { DockstoreService } from './shared/dockstore.service'
+import { ContainersService } from './containers/containers.service';
+import { WorkflowsService } from './workflows/workflows.service';
 
 import { AppComponent } from './app.component';
 import { SponsorsComponent } from './sponsors/sponsors.component';
@@ -16,6 +18,10 @@ import { FooterComponent } from './footer/footer.component';
 import { SearchContainersComponent } from './search-containers/search-containers.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
+import { TabComponent } from './tab/tab.component';
+import { TabsComponent } from './tabs/tabs.component';
+import { ContainersComponent } from './containers/containers.component';
+import { WorkflowsComponent } from './workflows/workflows.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +32,11 @@ import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component
     FooterComponent,
     SearchContainersComponent,
     SearchWorkflowsComponent,
-    HomeFootNoteComponent
+    HomeFootNoteComponent,
+    TabComponent,
+    TabsComponent,
+    ContainersComponent,
+    WorkflowsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +47,11 @@ import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component
     SharedModule,
     routing
   ],
-  providers: [DockstoreService],
+  providers: [
+    DockstoreService,
+    ContainersService,
+    WorkflowsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

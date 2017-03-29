@@ -1,0 +1,44 @@
+.container-fluid {
+  background-color: #21335B;
+}
+
+.center {
+  text-align: center;
+}
+
+button {
+  background-color: #487980;
+  border-radius: 8px;
+}
+
+button a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 56px;
+  color: white;
+  font-weight: normal;
+  padding-top: 50px;
+  line-height: 56px;
+}
+
+h4 {
+  font-size: 20px;
+  color: #dad4d4;
+  font-weight: normal;
+  padding-bottom: 20px;
+}
+
+#rectangle {
+  height: 60px;
+  position: absolute;
+  right: 0px;
+}
+
+#ship, #truck {
+  position: absolute;
+  bottom: -140px;
+}

@@ -3,38 +3,4 @@
   Available Tools
 </app-header>
 
-<div class="container separation">
-  <div class="row">
-    <div *ngIf="displayTable">
-      <table datatable [dtOptions]="dtOptions" class="table row-border hover">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Author</th>
-          <th>Project Links</th>
-          <th>Docker Pull</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let tool of publishedTools">
-          <td>{{ tool?.name }}</td>
-          <td>{{ tool?.author || 'n/a' }}</td>
-          <td>
-            <a [href]="tool.providerUrl">
-              {{ tool?.provider }}
-            </a>
-          </td>
-          <td>
-            <div class="input-group">
-              <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.path) }}" aria-describedby="clipboard" #inputTarget>
-              <span class="input-group-btn" id="clipboard">
-                <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget"><span class="glyphicon glyphicon-copy"></span></button>
-              </span>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<app-containers></app-containers>
