@@ -1,22 +1,30 @@
-.container-fluid {
-  background-color: #21335B;
+/* Video Button */
+.youtube, .youtube:active, .youtube:focus {
+  float: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background: none;
+  text-transform: uppercase;
+  padding: 8px 22px;
+
+  border: 2px solid #a0adcc;
+  color: #a0adcc;
 }
 
-.center {
-  text-align: center;
-}
-
-button {
-  background-color: #487980;
-  border-radius: 8px;
-}
-
-button a {
+.youtube:hover {
+  border: 2px solid white;
   color: white;
-  text-decoration: none;
-  font-weight: bold;
 }
 
+span {
+  vertical-align: middle;
+}
+
+.glyphicon {
+  font-size:25px;
+}
+
+/* Text */
 h1 {
   font-size: 56px;
   color: white;
@@ -27,36 +35,86 @@ h1 {
 
 h4 {
   font-size: 20px;
-  color: #dad4d4;
+  color: #a0adcc;
+  font-style: italic;
   font-weight: normal;
-  padding-bottom: 20px;
+  margin: 0;
 }
 
+/* Green Buttons */
+.button {
+  margin-top: 5px;
+  background-color: #487980;
+  border-radius: 8px;
+  width: 250px;
+  display: inline-block;
+}
+
+.button p {
+  margin: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  line-height: 2.5em;
+}
+
+.button a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Images */
 #rectangle {
-  height: 60px;
   position: absolute;
   right: 0px;
 }
 
 #ship, #truck {
   position: absolute;
-  bottom: -140px;
+  bottom: -300px;
 }
 
-/* Video Button */
-.youtube, .youtube:active, .youtube:focus {
-  text-transform: uppercase;
-  padding: 8px 22px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-
-  background: none;
-  border: 2px solid #a0adcc;
-  color: #a0adcc;
+#truck {
+  padding-left: 45px;
 }
 
-.youtube:hover {
-  background: none;
-  border: 2px solid white;
-  color: white;
+@media (max-width: 992px) {
+  #ship, #truck {
+    bottom: 0;
+    right: 22%;
+  }
+
+  #truck {
+    padding-left: 0;
+        right: 2%;
+  }
+}
+
+/* General */
+.center {
+  text-align: center;
+}
+
+.container-fluid {
+  background-color: #21335B;
+}
+
+.upper {
+  background-color: #21335B;
+  position: relative;
+}
+
+.lower {
+  min-height: 144px;
+  background-color: #2a3e6b;
+  height: 100%;
+}
+
+.row.lower {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.info {
+  height: 300px;
 }
