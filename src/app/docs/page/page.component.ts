@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from 'rxjs/Rx';
 
 import { Doc } from '../doc.model';
 import { DocsService } from '../docs.service';

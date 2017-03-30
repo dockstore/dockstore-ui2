@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from '../shared/dockstore.model';
-import { DockstoreService } from '../shared/dockstore.service';
+import { Dockstore } from '../../shared/dockstore.model';
+import { DockstoreService } from '../../shared/dockstore.service';
 
 @Injectable()
 export class ContainersService {

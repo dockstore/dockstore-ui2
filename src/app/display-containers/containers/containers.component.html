@@ -12,7 +12,9 @@
         </thead>
         <tbody>
         <tr *ngFor="let tool of publishedTools">
-          <td>{{ tool?.name }}</td>
+          <td>
+            <a [routerLink]="['containers', tool?.tool_path ]">{{ tool?.name }}</a>
+          </td>
           <td>{{ tool?.author || 'n/a' }}</td>
           <td>
             <a [href]="tool.providerUrl">
