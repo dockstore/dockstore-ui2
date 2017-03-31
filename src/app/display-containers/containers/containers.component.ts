@@ -25,7 +25,7 @@ export class ContainersComponent implements OnInit {
       .subscribe(
         (publishedTools) => {
           publishedTools.map( tool => {
-            var gitUrl = tool.gitUrl;
+            let gitUrl = tool.gitUrl;
 
             tool.provider = this.containersService.getProvider(gitUrl);
             tool.providerUrl = this.containersService.getProviderUrl(gitUrl, tool.provider);

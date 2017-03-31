@@ -1,0 +1,12 @@
+.table > tbody > tr > th, .table > tbody > tr > td  {
+  border-top: none;
+}
+
+.pull-right > select:first-child {
+  margin-right: 5px;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: normal;
+}

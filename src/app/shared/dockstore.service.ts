@@ -17,7 +17,7 @@ export class DockstoreService {
 
   getProvider(gitUrl: string): string {
     if (gitUrl.includes('github.com')) {
-      return 'Github';
+      return 'GitHub';
     }
 
     if (gitUrl.includes('bitbucket.org')) {
@@ -25,7 +25,7 @@ export class DockstoreService {
     }
 
     if (gitUrl.includes('gitlab.com')) {
-      return 'Gitlab';
+      return 'GitLab';
     }
 
     return null;
@@ -42,13 +42,13 @@ export class DockstoreService {
       let providerUrl = '';
 
       switch (provider) {
-        case 'Github':
+        case 'GitHub':
           providerUrl = 'https://github.com/';
           break;
         case 'Bitbucket':
           providerUrl = 'https://bitbucket.org/';
           break;
-        case 'Gitlab':
+        case 'GitLab':
           providerUrl = 'https://gitlab.com/';
           break;
         default:
@@ -58,4 +58,52 @@ export class DockstoreService {
       providerUrl += matchRes[1] + '/' + matchRes[2];
       return providerUrl;
   }
+
+  private getTime(timestamp: number, convert: number) {
+    let timeDiff = (new Date()).getTime() - timestamp;
+    return Math.floor(timeDiff / convert);
+  }
+
+  getTimeMessage(timestamp: number) {
+    let msToMins = 1000 * 60;
+    let msToHours = msToMins * 60;
+    let msToDays = msToHours * 24;
+
+    let time = this.getTime(timestamp, msToDays);
+
+    if (time < 1) {
+
+      time = this.getTime(timestamp, msToHours);
+
+      if (time < 1) {
+
+        time = this.getTime(timestamp, msToMins);
+
+        if (time < 1) {
+          return '< 1 minute ago';
+        } else {
+          return time + ((time === 1) ? ' minute ago' : ' minutes ago' );
+        }
+
+      } else {
+
+        return time + ((time === 1) ? ' hour ago' : ' hours ago');
+
+      }
+
+    } else {
+
+      return time + ((time === 1) ? ' day ago' : ' days ago');
+
+    }
+  }
+
+  stripMailTo(email: string) {
+    if (email) {
+      return email.replace(/^mailto:/, '');
+    }
+
+    return null;
+  }
+
 }

@@ -1,8 +1,13 @@
 <ul class="nav nav-tabs">
   <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
-    <a href="#">
-      <img [src]="tab.img">
-      {{tab.title}}
+    <a routerLink="">
+      <div *ngIf="tab.img">
+        <img [src]="tab.img">
+        {{tab.title}}
+      </div>
+      <div *ngIf="!tab.img">
+        {{tab.title}}
+      </div>
     </a>
   </li>
 </ul>

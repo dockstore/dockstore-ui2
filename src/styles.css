@@ -50,3 +50,8 @@ app-header .container-fluid {
 .separation {
   margin-top: 20px;
 }
+
+/* Code */
+div > pre, markdown pre code {
+  color: #487980;
+}
