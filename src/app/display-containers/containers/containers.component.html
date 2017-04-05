@@ -13,7 +13,7 @@
         <tbody>
         <tr *ngFor="let tool of publishedTools">
           <td>
-            <a [routerLink]="['containers', tool?.tool_path ]">{{ tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
+            <a [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
           </td>
           <td>{{ tool?.author || 'n/a' }}</td>
           <td>
