@@ -1,0 +1,93 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#view">
+  View
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">View Version Tag</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table id="format" class="table">
+          <tbody>
+            <tr>
+              <th>Version Tag</th>
+              <td>
+                {{ tag.name }}
+              </td>
+            </tr>
+            <tr>
+              <th>Git Reference</th>
+              <td>
+                {{ tag.reference }}
+              </td>
+            </tr>
+            <tr>
+              <th>Image ID</th>
+              <td>
+                {{ tag.image_id }}
+              </td>
+            </tr>
+            <tr>
+              <th>Dockerfile</th>
+              <td>
+                {{ tag.dockerfile_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>CWL Descriptor</th>
+              <td>
+                {{ tag.cwl_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>WDL Descriptor</th>
+              <td>
+                {{ tag.wdl_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>CWL Test Parameter File(s)</th>
+              <td>
+                {{ tag.wdl_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>Automated</th>
+              <td>
+                {{ tag.automated ? 'Yes' : 'No' }}
+              </td>
+            </tr>
+            <tr>
+              <th>Image Size</th>
+              <td>
+                {{ getSizeString(tag.size) }}
+              </td>
+            </tr>
+            <tr>
+              <th>Last Modified</th>
+              <td>
+                {{ getDateTimeString(tag.last_modified) }}
+              </td>
+            </tr>
+            <tr>
+              <th>Valid</th>
+              <td>
+                {{ tag.valid ? 'Yes' : 'No' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

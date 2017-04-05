@@ -10,7 +10,7 @@
     <app-tabs>
       <app-tab tabTitle="Info">
         <div class="container separation">
-          <table class="table">
+          <table id="format" class="table">
             <tbody>
             <tr>
               <th>Author</th>
@@ -104,14 +104,9 @@
           </div>
         </div>
       </app-tab>
-      <app-tab tabTitle="Labels">
-        <div class="container separation">
-          Labels
-        </div>
-      </app-tab>
       <app-tab tabTitle="Versions">
         <div class="container separation">
-          Versions
+          <app-versions *ngIf="tool?.tags" [tags]="tool?.tags"></app-versions>
         </div>
       </app-tab>
       <app-tab tabTitle="Files">

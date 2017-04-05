@@ -6,7 +6,10 @@ import { DockstoreService } from '../../shared/dockstore.service';
 @Injectable()
 export class ContainerService {
 
-  private static readonly descriptorWdl:string = ' --descriptor wdl';
+  private static readonly descriptorWdl: string = ' --descriptor wdl';
+  private static readonly months = ['Jan.', 'Feb.', 'Mar.', 'Apr.',
+                                    'May', 'Jun.', 'Jul.', 'Aug.',
+                                    'Sept.', 'Oct.', 'Nov.', 'Dec.'];
 
   constructor(private dockstoreService: DockstoreService) { }
 
@@ -103,13 +106,30 @@ export class ContainerService {
   }
 
   getDateTimeString(timestamp) {
-    let months = ['Jan.', 'Feb.', 'Mar.', 'Apr.',
-              'May', 'Jun.', 'Jul.', 'Aug.',
-              'Sept.', 'Oct.', 'Nov.', 'Dec.'];
 
     let date = new Date(timestamp);
 
-    return months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() + ' at ' + date.toLocaleTimeString();
+    return ContainerService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() + ' at ' + date.toLocaleTimeString();
   }
 
+  getDate(timestamp) {
+    let date = new Date(timestamp);
+
+    return ContainerService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
+  }
+
+  getSizeString(size: number) {
+    let sizeStr = '';
+    let exp = Math.log(size) / Math.log(2);
+    if (exp < 10) {
+      sizeStr = size.toFixed(2) + ' bytes';
+    } else if (exp < 20) {
+      sizeStr = (size / Math.pow(2, 10)).toFixed(2) + ' kB';
+    } else if (exp < 30) {
+      sizeStr = (size / Math.pow(2, 20)).toFixed(2) + ' MB';
+    } else if (exp < 40) {
+      sizeStr = (size / Math.pow(2, 30)).toFixed(2) + ' GB';
+    }
+    return sizeStr;
+  }
 }
