@@ -111,7 +111,7 @@
       </app-tab>
       <app-tab title="Versions">
         <div class="container separation">
-          <app-versions *ngIf="tool?.tags" [tags]="tool?.tags"></app-versions>
+          <app-versions-container *ngIf="tool?.tags" [tags]="tool?.tags"></app-versions-container>
         </div>
       </app-tab>
       <app-tab title="Files">

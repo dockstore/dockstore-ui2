@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import { DockstoreService } from '../../shared/dockstore.service';
-import { ContainersService } from '../containers/containers.service';
+import { ListContainersService } from '../list/list.service';
 import { ContainerService } from './container.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private dockstoreService: DockstoreService,
-                private containersService: ContainersService,
+                private listContainersService: ListContainersService,
                 private containerService: ContainerService) { }
 
     private setUpLaunch(): void {
@@ -71,8 +71,8 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
       tool.timeMessage = this.dockstoreService.getTimeMessage(tool.lastBuild);
       tool.email = this.dockstoreService.stripMailTo(tool.email);
-      tool.provider = this.containersService.getProvider(gitUrl);
-      tool.providerUrl = this.containersService.getProviderUrl(gitUrl, tool.provider);
+      tool.provider = this.listContainersService.getProvider(gitUrl);
+      tool.providerUrl = this.listContainersService.getProviderUrl(gitUrl, tool.provider);
       tool.buildMode = this.containerService.getBuildMode(tool.mode);
       tool.lastBuildDate = this.containerService.getDateTimeString(tool.lastBuild);
       tool.lastUpdatedDate = this.containerService.getDateTimeString(tool.lastUpdated);

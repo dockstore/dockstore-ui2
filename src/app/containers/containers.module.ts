@@ -3,25 +3,25 @@ import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
 import { HeaderModule } from '../shared/header.module';
-import { ContainersModule } from '../shared/containers.module';
+import { ListContainersModule } from '../shared/list-containers.module';
 import { TabsModule } from '../shared/tabs.module';
 
 import { ContainerService } from './container/container.service';
 
-import { containersRouting } from './display-containers.routing';
+import { containersRouting } from './containers.routing';
 
-import { DisplayContainersComponent } from './display-containers.component';
-import { SearchContainersComponent } from './search-containers/search-containers.component';
-import { VersionsComponent } from './versions/versions.component';
-import { ViewVersionComponent } from './view-version/view-version.component';
+import { ContainersComponent } from './containers.component';
+import { SearchContainersComponent } from './search/search.component';
+import { VersionsContainerComponent } from './versions/versions.component';
+import { ViewContainerComponent } from './view/view.component';
 import { ContainerComponent } from './container/container.component';
 
 @NgModule({
   declarations: [
-    DisplayContainersComponent,
+    ContainersComponent,
     SearchContainersComponent,
-    VersionsComponent,
-    ViewVersionComponent,
+    VersionsContainerComponent,
+    ViewContainerComponent,
     ContainerComponent
   ],
   imports: [
@@ -29,7 +29,7 @@ import { ContainerComponent } from './container/container.component';
     MarkdownModule.forRoot(),
     DataTablesModule,
     HeaderModule,
-    ContainersModule,
+    ListContainersModule,
     TabsModule,
     containersRouting
   ],
@@ -37,4 +37,4 @@ import { ContainerComponent } from './container/container.component';
     ContainerService
   ]
 })
-export class DisplayContainersModule { }
+export class ContainersModule { }

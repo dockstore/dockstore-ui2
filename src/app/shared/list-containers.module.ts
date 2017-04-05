@@ -5,13 +5,13 @@ import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
 import { HeaderModule } from '../shared/header.module';
 
-import { ContainersService } from '../display-containers/containers/containers.service';
+import { ListContainersService } from '../containers/list/list.service';
 
-import { ContainersComponent } from '../display-containers/containers/containers.component';
+import { ListContainersComponent } from '../containers/list/list.component';
 
 @NgModule({
   declarations: [
-    ContainersComponent
+    ListContainersComponent
   ],
   imports: [
     CommonModule,
@@ -21,10 +21,10 @@ import { ContainersComponent } from '../display-containers/containers/containers
     HeaderModule
   ],
   providers: [
-    ContainersService
+    ListContainersService
   ],
   exports: [
-    ContainersComponent
+    ListContainersComponent
   ]
 })
-export class ContainersModule { }
+export class ListContainersModule { }

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { DataTablesModule } from 'angular-datatables';
 import { HeaderModule } from './shared/header.module';
-import { ContainersModule } from './shared/containers.module';
+import { ListContainersModule } from './shared/list-containers.module';
 import { TabsModule } from './shared/tabs.module';
 import { routing } from './app.routing';
 import { DockstoreService } from './shared/dockstore.service';
@@ -38,7 +38,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     HttpModule,
     DataTablesModule,
     HeaderModule,
-    ContainersModule,
+    ListContainersModule,
     TabsModule,
     routing
   ],

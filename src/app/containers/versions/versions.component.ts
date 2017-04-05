@@ -3,11 +3,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ContainerService } from '../container/container.service';
 
 @Component({
-  selector: 'app-versions',
+  selector: 'app-versions-container',
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.css']
 })
-export class VersionsComponent implements OnInit {
+export class VersionsContainerComponent implements OnInit {
   @Input() tags: any;
   dtOptions = {
     bFilter: false,

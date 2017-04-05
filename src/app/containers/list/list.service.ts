@@ -4,7 +4,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
 
 @Injectable()
-export class ContainersService {
+export class ListContainersService {
 
   readonly publishedToolsUrl = Dockstore.API_URI + '/containers/published';
 
