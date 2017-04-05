@@ -11,7 +11,13 @@ export class VersionsComponent implements OnInit {
   @Input() tags: any;
   dtOptions = {
     bFilter: false,
-    bPaginate: false
+    bPaginate: false,
+    columnDefs: [
+      {
+        orderable: false,
+        targets: [5, 6]
+      }
+    ]
   };
 
   constructor(private containerService: ContainerService) { }

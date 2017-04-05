@@ -10,6 +10,14 @@ import { ContainersService } from './containers.service';
 export class ContainersComponent implements OnInit {
 
   displayTable = false;
+  dtOptions = {
+    columnDefs: [
+      {
+        orderable: false,
+        targets: [2, 3]
+      }
+    ]
+  };
 
   publishedTools = [];
 
