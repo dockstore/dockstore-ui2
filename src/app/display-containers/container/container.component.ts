@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavigationEnd } from '@angular/router';
 import { Router } from "@angular/router";
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
@@ -54,8 +55,12 @@ export class ContainerComponent implements OnInit, OnDestroy {
       this.defaultTag = defaultTag;
       this.descriptorTypes = descriptorTypes;
 
-      if (descriptorTypes.length) {
+      if (descriptorTypes && descriptorTypes.length) {
         this.currentDescriptor = descriptorTypes[0];
+      }
+
+      if (!defaultTag && this.tool.tags.length) {
+        this.defaultTag = this.tool.tags[0];
       }
 
       this.onVersionChange(this.defaultTag.name);
@@ -103,26 +108,29 @@ export class ContainerComponent implements OnInit, OnDestroy {
       let toolPath: string = '';
       this.routeSub = this.router.events.subscribe(
         (event) => {
-          let url: string = event.url.replace('/containers/', '');
 
-          if (!this.isEncoded(url)) {
-            toolPath = encodeURIComponent(url);
-            this.title = url;
-          } else {
-            toolPath = url;
-            this.title = decodeURIComponent(url);
+          if (event instanceof NavigationEnd) {
+            let url: string = event.url.replace('/containers/', '');
+
+            if (!this.isEncoded(url)) {
+              toolPath = encodeURIComponent(url);
+              this.title = url;
+            } else {
+              toolPath = url;
+              this.title = decodeURIComponent(url);
+            }
+
+            this.containerService.getPublishedToolByPath(toolPath)
+              .subscribe(
+                (tool) => {
+                  this.tool = this.setNewToolTypes(tool);
+                  this.setUpLaunch();
+                },
+                (err) => {
+                  this.toolExists = false;
+                }
+              );
           }
-
-          this.containerService.getPublishedToolByPath(toolPath)
-            .subscribe(
-              (tool) => {
-                this.tool = this.setNewToolTypes(tool);
-                this.setUpLaunch();
-              },
-              (err) => {
-                this.toolExists = false;
-              }
-            );
         }
       );
     }
