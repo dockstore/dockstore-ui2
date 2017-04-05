@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    (<any>$(".youtube")).colorbox({iframe:true, innerWidth:640, innerHeight:390});
+    (<any>$('.youtube')).colorbox({iframe: true, innerWidth: 640, innerHeight: 390});
   }
 
 }

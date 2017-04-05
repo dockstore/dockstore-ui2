@@ -7,7 +7,7 @@ import { HeaderModule } from './shared/header.module';
 import { ContainersModule } from './shared/containers.module';
 import { TabsModule } from './shared/tabs.module';
 import { routing } from './app.routing';
-import { DockstoreService } from './shared/dockstore.service'
+import { DockstoreService } from './shared/dockstore.service';
 import { WorkflowsService } from './workflows/workflows.service';
 
 import { AppComponent } from './app.component';

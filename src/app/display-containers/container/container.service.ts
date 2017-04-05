@@ -6,7 +6,7 @@ import { DockstoreService } from '../../shared/dockstore.service';
 @Injectable()
 export class ContainerService {
 
-  private static readonly descriptorWdl: string = ' --descriptor wdl';
+  private static readonly descriptorWdl = ' --descriptor wdl';
   private static readonly months = ['Jan.', 'Feb.', 'Mar.', 'Apr.',
                                     'May', 'Jun.', 'Jul.', 'Aug.',
                                     'Sept.', 'Oct.', 'Nov.', 'Dec.'];
@@ -14,9 +14,9 @@ export class ContainerService {
   constructor(private dockstoreService: DockstoreService) { }
 
   getValidTags(tool) {
-    let validTags = [];
+    const validTags = [];
 
-    for (let tag of tool.tags) {
+    for (const tag of tool.tags) {
       if (tag.valid) {
         validTags.push(tag);
       }
@@ -27,8 +27,8 @@ export class ContainerService {
 
   getDefaultTag(validTags, defaultVersion) {
     if (validTags.length) {
-      for (let tag of validTags) {
-        if (tag.name == defaultVersion) {
+      for (const tag of validTags) {
+        if (tag.name === defaultVersion) {
           return tag;
         }
       }
@@ -38,11 +38,11 @@ export class ContainerService {
   }
 
   getDescriptorTypes(validTags, defaultTag, defaultVersion) {
-    if (validTags.length && defaultVersion) {
-      let typesAvailable = new Array();
+    if (validTags.length && defaultTag && defaultVersion) {
+      const typesAvailable = new Array();
 
-      for (let file of defaultTag.sourceFiles) {
-        let type = file.type;
+      for (const file of defaultTag.sourceFiles) {
+        const type = file.type;
 
         if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
           typesAvailable.push('cwl');
@@ -58,7 +58,7 @@ export class ContainerService {
   }
 
   getParamsString(toolPath: string, tagName: string, currentDescriptor: string) {
-    let descriptor: string = '';
+    let descriptor = '';
 
     if (currentDescriptor === 'wdl') {
       descriptor = ContainerService.descriptorWdl;
@@ -69,7 +69,7 @@ export class ContainerService {
   }
 
   getCliString(toolPath: string, tagName: string, currentDescriptor: string) {
-    let descriptor: string = '';
+    let descriptor = '';
 
     if (currentDescriptor === 'wdl') {
       descriptor = ContainerService.descriptorWdl;
@@ -84,11 +84,12 @@ export class ContainerService {
   }
 
   getConsonanceString(toolPath: string, tagName: string) {
-    return '$ consonance run --tool-dockstore-id ' + toolPath + ':' + tagName + ' --run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
+    return '$ consonance run --tool-dockstore-id ' + toolPath + ':' + tagName +
+           ' --run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
   }
 
   getPublishedToolByPath(path: string) {
-    let publishedToolUrl = Dockstore.API_URI + '/containers/path/tool/' + path + "/published";
+    const publishedToolUrl = Dockstore.API_URI + '/containers/path/tool/' + path + '/published';
     return this.dockstoreService.getResponse(publishedToolUrl);
   }
 
@@ -105,24 +106,26 @@ export class ContainerService {
     }
   }
 
-  getDateTimeString(timestamp) {
+  getDateTimeString(timestamp: number, dateOnly = false): string {
+    const date = new Date(timestamp);
+    let dateString = ContainerService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
 
-    let date = new Date(timestamp);
+    if (!dateOnly) {
+      dateString += ' at ' + date.toLocaleTimeString();
+    }
 
-    return ContainerService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() + ' at ' + date.toLocaleTimeString();
+    return dateString;
   }
 
   getDate(timestamp) {
-    let date = new Date(timestamp);
-
-    return ContainerService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
+    return this.getDateTimeString(timestamp);
   }
 
   getSizeString(size: number) {
     let sizeStr = '';
 
     if (size) {
-      let exp = Math.log(size) / Math.log(2);
+      const exp = Math.log(size) / Math.log(2);
       if (exp < 10) {
         sizeStr = size.toFixed(2) + ' bytes';
       } else if (exp < 20) {

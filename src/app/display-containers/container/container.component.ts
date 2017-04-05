@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavigationEnd } from '@angular/router';
-import { Router } from "@angular/router";
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -16,7 +16,7 @@ import { ContainerService } from './container.service';
 export class ContainerComponent implements OnInit, OnDestroy {
 
     private routeSub: Subscription;
-    toolExists: boolean = true;
+    toolExists = true;
 
     tool;
     title: string;
@@ -38,36 +38,36 @@ export class ContainerComponent implements OnInit, OnDestroy {
                 private containerService: ContainerService) { }
 
     private setUpLaunch(): void {
-      let validTags = this.containerService.getValidTags(this.tool);
+      const validTags = this.containerService.getValidTags(this.tool);
       let defaultVersion = this.tool.defaultVersion;
       let defaultTag = this.containerService.getDefaultTag(validTags, defaultVersion);
 
-      if (!defaultVersion && validTags.length) {
-        let last: number = validTags.length - 1;
+      if (!defaultVersion) {
+        if (validTags.length) {
+          const last: number = validTags.length - 1;
 
-        defaultVersion = validTags[last].name;
-        defaultTag = validTags[last];
+          defaultVersion = validTags[last].name;
+          defaultTag = validTags[last];
+        }
       }
 
-      let descriptorTypes = this.containerService.getDescriptorTypes(validTags, defaultTag, defaultVersion);
+      const descriptorTypes = this.containerService.getDescriptorTypes(validTags, defaultTag, defaultVersion);
 
       this.validTags = validTags;
       this.defaultTag = defaultTag;
       this.descriptorTypes = descriptorTypes;
 
-      if (descriptorTypes && descriptorTypes.length) {
-        this.currentDescriptor = descriptorTypes[0];
-      }
+      if (descriptorTypes) {
+        if (descriptorTypes.length) {
+          this.currentDescriptor = descriptorTypes[0];
+        }
 
-      if (!defaultTag && this.tool.tags.length) {
-        this.defaultTag = this.tool.tags[0];
+        this.onVersionChange(this.defaultTag.name);
       }
-
-      this.onVersionChange(this.defaultTag.name);
     }
 
     private setNewToolTypes(tool): any {
-      let gitUrl = tool.gitUrl;
+      const gitUrl = tool.gitUrl;
 
       tool.timeMessage = this.dockstoreService.getTimeMessage(tool.lastBuild);
       tool.email = this.dockstoreService.stripMailTo(tool.email);
@@ -87,7 +87,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
     }
 
     onVersionChange(tagName): void {
-      let toolPath: string = this.tool.tool_path;
+      const toolPath: string = this.tool.tool_path;
       this.currentTagName = tagName;
 
       this.launchParams = this.containerService.getParamsString(toolPath, tagName, this.currentDescriptor);
@@ -105,12 +105,12 @@ export class ContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-      let toolPath: string = '';
+      let toolPath = '';
       this.routeSub = this.router.events.subscribe(
         (event) => {
 
           if (event instanceof NavigationEnd) {
-            let url: string = event.url.replace('/containers/', '');
+            const url: string = event.url.replace('/containers/', '');
 
             if (!this.isEncoded(url)) {
               toolPath = encodeURIComponent(url);

@@ -9,8 +9,7 @@ import { WorkflowsService } from './workflows.service';
 })
 export class WorkflowsComponent implements OnInit {
 
-  dOptions = {};
-  displayTable: boolean = false;
+  displayTable = false;
 
   publishedWorkflows = [];
 
@@ -21,7 +20,7 @@ export class WorkflowsComponent implements OnInit {
       .subscribe(
         (publishedWorkflows) => {
           publishedWorkflows.map( workflow => {
-          var gitUrl = workflow.gitUrl;
+          const gitUrl = workflow.gitUrl;
 
           workflow.provider = this.workflowsService.getProvider(gitUrl);
           workflow.providerUrl = this.workflowsService.getProviderUrl(gitUrl, workflow.provider);
@@ -31,7 +30,6 @@ export class WorkflowsComponent implements OnInit {
 
         this.publishedWorkflows = publishedWorkflows;
 
-        this.dOptions = this.publishedWorkflows;
         this.displayTable = true;
       }
     );

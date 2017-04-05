@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./tab.component.css']
 })
 export class TabComponent {
-  @Input('tabTitle') title: string;
-  @Input('imgSrc') img: string = '';
+  @Input() title: string;
+  @Input() img = '';
   @Input() active = false;
 }

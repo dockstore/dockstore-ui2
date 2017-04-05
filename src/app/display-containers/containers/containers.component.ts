@@ -9,8 +9,7 @@ import { ContainersService } from './containers.service';
 })
 export class ContainersComponent implements OnInit {
 
-  dOptions = {};
-  displayTable: boolean = false;
+  displayTable = false;
 
   publishedTools = [];
 
@@ -25,7 +24,7 @@ export class ContainersComponent implements OnInit {
       .subscribe(
         (publishedTools) => {
           publishedTools.map( tool => {
-            let gitUrl = tool.gitUrl;
+            const gitUrl = tool.gitUrl;
 
             tool.provider = this.containersService.getProvider(gitUrl);
             tool.providerUrl = this.containersService.getProviderUrl(gitUrl, tool.provider);
@@ -34,7 +33,6 @@ export class ContainersComponent implements OnInit {
           });
           this.publishedTools = publishedTools;
 
-          this.dOptions = this.publishedTools;
           this.displayTable = true;
         }
       );

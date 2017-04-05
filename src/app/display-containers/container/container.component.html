@@ -8,7 +8,7 @@
 
   <div class="container">
     <app-tabs>
-      <app-tab tabTitle="Info">
+      <app-tab title="Info">
         <div class="container separation">
           <table id="format" class="table">
             <tbody>
@@ -19,9 +19,14 @@
             <tr>
               <th>E-mail</th>
               <td>
-                <a href="mailto:{{tool?.email}}">
-                  {{ tool?.email || 'n/a' }}
-                </a>
+                <div *ngIf="tool?.email">
+                  <a href="mailto:{{tool?.email}}">
+                    {{ tool?.email }}
+                  </a>
+                </div>
+                <div *ngIf="!tool?.email">
+                  n/a
+                </div>
               </td>
             </tr>
             <tr>
@@ -104,12 +109,12 @@
           </div>
         </div>
       </app-tab>
-      <app-tab tabTitle="Versions">
+      <app-tab title="Versions">
         <div class="container separation">
           <app-versions *ngIf="tool?.tags" [tags]="tool?.tags"></app-versions>
         </div>
       </app-tab>
-      <app-tab tabTitle="Files">
+      <app-tab title="Files">
         <div class="container separation">
           Files
         </div>

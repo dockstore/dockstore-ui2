@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Doc } from '../doc.model';
 import { DocsService } from '../docs.service';
@@ -12,7 +12,7 @@ declare var Toc: any;
 })
 export class PageComponent implements OnInit, AfterViewInit {
 
-  private valid: boolean = true;
+  private valid = true;
   private slug: string;
 
   selectedDoc: Doc;
@@ -41,8 +41,8 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   private tocExists(): boolean {
     if (document) {
-      const element = document.querySelector("#toc");
-      if (element.querySelector(".nav")) {
+      const element = document.querySelector('#toc');
+      if (element.querySelector('.nav')) {
         return true;
       } else {
         return false;
@@ -53,8 +53,8 @@ export class PageComponent implements OnInit, AfterViewInit {
   }
 
   private initToc(): void {
-    var navSelector = '#toc';
-    var $myNav = $(navSelector);
+    const navSelector = '#toc';
+    const $myNav = $(navSelector);
 
     Toc.init($myNav);
 
@@ -67,14 +67,14 @@ export class PageComponent implements OnInit, AfterViewInit {
     if (this.valid) {
       this.activatedRoute.fragment.subscribe(anchor => {
         setTimeout(() => {
-          const element = document.querySelector("#" + anchor);
+          const element = document.querySelector('#' + anchor);
           if (element) {
             element.scrollIntoView();
           }
           if (!this.tocExists()) {
             this.initToc();
           }
-        }, 100);
+        }, 200);
       });
     }
   }
@@ -89,7 +89,7 @@ export class PageComponent implements OnInit, AfterViewInit {
       anchorElement = event.target;
     }
 
-    let anchorLink = anchorElement.getAttribute('href');
+    const anchorLink = anchorElement.getAttribute('href');
     return anchorLink;
   }
 

@@ -1,7 +1,7 @@
 export class Sponsor {
 
-  private static bwPath: string = '../assets/images/sponsors/bw/';
-  private static colouredPath: string = '../assets/images/sponsors/coloured/';
+  private static bwPath = '../assets/images/sponsors/bw/';
+  private static colouredPath = '../assets/images/sponsors/coloured/';
 
   private current: string;
   private bw: string;

@@ -1,6 +1,6 @@
 export class Doc {
 
-  private static basePath: string = '../assets/docs/';
+  private static basePath = '../assets/docs/';
 
   private slug: string;
   private description: string;

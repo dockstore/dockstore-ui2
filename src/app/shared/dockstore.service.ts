@@ -11,8 +11,8 @@ export class DockstoreService {
 
   getResponse(url: string) {
     return this.http.get(url)
-      .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   getProvider(gitUrl: string): string {
@@ -32,12 +32,16 @@ export class DockstoreService {
   }
 
   getProviderUrl(gitUrl: string, provider: string): string {
-      if (!gitUrl) return null;
+      if (!gitUrl) {
+        return null;
+      }
 
-      let gitUrlRegExp = /^.*:(.*)\/(.*).git$/i;
-      let matchRes = gitUrlRegExp.exec(gitUrl);
+      const gitUrlRegExp = /^.*:(.*)\/(.*).git$/i;
+      const matchRes = gitUrlRegExp.exec(gitUrl);
 
-      if (!matchRes) return null;
+      if (!matchRes) {
+        return null;
+      }
 
       let providerUrl = '';
 
@@ -60,14 +64,14 @@ export class DockstoreService {
   }
 
   private getTime(timestamp: number, convert: number) {
-    let timeDiff = (new Date()).getTime() - timestamp;
+    const timeDiff = (new Date()).getTime() - timestamp;
     return Math.floor(timeDiff / convert);
   }
 
   getTimeMessage(timestamp: number) {
-    let msToMins = 1000 * 60;
-    let msToHours = msToMins * 60;
-    let msToDays = msToHours * 24;
+    const msToMins = 1000 * 60;
+    const msToHours = msToMins * 60;
+    const msToDays = msToHours * 24;
 
     let time = this.getTime(timestamp, msToDays);
 

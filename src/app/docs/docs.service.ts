@@ -15,7 +15,8 @@ export class DocsService {
                        'This tutorial walks through how to register at Dockstore and then share simple tools',
                        'Getting Started with Dockstore'),
     new Doc('docker_registries',
-                      'This page talks about the various Docker registries supported by Dockstore, and the best practices for using these registries.',
+                      `This page talks about the various Docker registries supported by Dockstore,
+                      and the best practices for using these registries.`,
                       'Docker Registries') ,
     new Doc('public_private_tools',
                       'This page talks about the difference between public and private Dockstore tools.',
@@ -33,7 +34,8 @@ export class DocsService {
                       'Dockstore news and events',
                       'News and Events'),
     new Doc('advanced-features',
-                      'This page introduces advanced features of Dockstore that may make using or developing Dockstore tools more convenient',
+                      `This page introduces advanced features of Dockstore that may make using
+                      or developing Dockstore tools more convenient`,
                       'Advanced Features'),
     new Doc('faq',
                       'This page gathers tools and tips on using Dockstore along with tips on creating tools with Docker and CWL 1.0',
@@ -45,7 +47,7 @@ export class DocsService {
   }
 
   getDoc(slug: string): Doc {
-    for (let doc of this.docs) {
+    for (const doc of this.docs) {
       if (doc.getSlug() === slug) {
         return doc;
       }
