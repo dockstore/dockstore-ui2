@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
 import { HeaderModule } from '../shared/header.module';
+import { SelectModule } from '../shared/select.module';
 import { ListContainersModule } from '../shared/list-containers.module';
 import { TabsModule } from '../shared/tabs.module';
 
@@ -29,6 +30,7 @@ import { ContainerComponent } from './container/container.component';
     MarkdownModule.forRoot(),
     DataTablesModule,
     HeaderModule,
+    SelectModule,
     ListContainersModule,
     TabsModule,
     containersRouting

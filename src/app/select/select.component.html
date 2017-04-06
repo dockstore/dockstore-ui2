@@ -1,0 +1,3 @@
+<select (change)="changedSelect($event.target.value)">
+  <option *ngFor="let item of items" [selected]="item == default">{{ item }}</option>
+</select>

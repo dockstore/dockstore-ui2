@@ -78,12 +78,8 @@
           <span>
             Launch With
             <div class="pull-right">
-              <select (change)="onVersionChange($event.target.value)">
-                <option *ngFor="let tag of validTags" [selected]="tag.name == defaultTag.name">{{ tag.name }}</option>
-              </select>
-              <select (change)="onDescriptorChange($event.target.value)">
-                <option *ngFor="let type of descriptorTypes">{{ type }}</option>
-              </select>
+              <app-select [items]="validTagsNames" [default]="defaultTag.name" (select)="onVersionChange($event)"></app-select>
+              <app-select [items]="descriptorTypes" (select)="onDescriptorChange($event)"></app-select>
             </div>
             <div class="well">
               <div class="well well-sm">

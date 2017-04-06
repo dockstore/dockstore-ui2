@@ -20,9 +20,10 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
     tool;
     title: string;
-    validTags;
     defaultTag;
     descriptorTypes;
+
+    validTagsNames;
 
     /* Launch With Strings */
     launchParams: string;
@@ -53,7 +54,12 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
       const descriptorTypes = this.containerService.getDescriptorTypes(validTags, defaultTag, defaultVersion);
 
-      this.validTags = validTags;
+      this.validTagsNames = validTags.map(
+        (validTag) => {
+          return validTag.name;
+        }
+      );
+
       this.defaultTag = defaultTag;
       this.descriptorTypes = descriptorTypes;
 
