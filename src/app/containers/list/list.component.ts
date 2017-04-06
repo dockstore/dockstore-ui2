@@ -31,14 +31,7 @@ export class ListContainersComponent implements OnInit {
     this.listContainersService.getPublishedTools()
       .subscribe(
         (publishedTools) => {
-          publishedTools.map( tool => {
-            const gitUrl = tool.gitUrl;
-
-            tool.provider = this.listContainersService.getProvider(gitUrl);
-            tool.providerUrl = this.listContainersService.getProviderUrl(gitUrl, tool.provider);
-
-            return tool;
-          });
+          publishedTools.map(tool => this.listContainersService.setProviders(tool));
           this.publishedTools = publishedTools;
 
           this.displayTable = true;

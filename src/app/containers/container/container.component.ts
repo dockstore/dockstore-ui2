@@ -72,13 +72,11 @@ export class ContainerComponent implements OnInit, OnDestroy {
       }
     }
 
-    private setNewToolTypes(tool): any {
-      const gitUrl = tool.gitUrl;
+    private setNewProperties(tool): any {
+      tool = this.listContainersService.setProviders(tool);
 
       tool.timeMessage = this.dockstoreService.getTimeMessage(tool.lastBuild);
       tool.email = this.dockstoreService.stripMailTo(tool.email);
-      tool.provider = this.listContainersService.getProvider(gitUrl);
-      tool.providerUrl = this.listContainersService.getProviderUrl(gitUrl, tool.provider);
       tool.buildMode = this.containerService.getBuildMode(tool.mode);
       tool.lastBuildDate = this.containerService.getDateTimeString(tool.lastBuild);
       tool.lastUpdatedDate = this.containerService.getDateTimeString(tool.lastUpdated);
@@ -129,7 +127,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
             this.containerService.getPublishedToolByPath(toolPath)
               .subscribe(
                 (tool) => {
-                  this.tool = this.setNewToolTypes(tool);
+                  this.tool = this.setNewProperties(tool);
                   this.setUpLaunch();
                 },
                 (err) => {

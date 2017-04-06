@@ -39,7 +39,11 @@
             </tr>
             <tr>
               <th>Quay.io</th>
-              <td>Fill Later</td>
+              <td>
+                <a [href]="tool?.imgProviderUrl">
+                  {{ tool?.imgProviderUrl }}
+                </a>
+              </td>
             </tr>
             <tr>
               <th>Dockerfile Path</th>
