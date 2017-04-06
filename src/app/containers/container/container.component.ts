@@ -107,33 +107,37 @@ export class ContainerComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    ngOnInit() {
+    private urlChanged(event) {
       let toolPath = '';
+
+      if (event instanceof NavigationEnd) {
+        const url: string = event.url.replace('/containers/', '');
+
+        if (!this.isEncoded(url)) {
+          toolPath = encodeURIComponent(url);
+          this.title = url;
+        } else {
+          toolPath = url;
+          this.title = decodeURIComponent(url);
+        }
+
+        this.containerService.getPublishedToolByPath(toolPath)
+          .subscribe(
+            (tool) => {
+              this.tool = this.setNewProperties(tool);
+              this.setUpLaunch();
+            },
+            (err) => {
+              this.router.navigate(['../']);
+            }
+          );
+      }
+    }
+
+    ngOnInit() {
       this.routeSub = this.router.events.subscribe(
         (event) => {
-
-          if (event instanceof NavigationEnd) {
-            const url: string = event.url.replace('/containers/', '');
-
-            if (!this.isEncoded(url)) {
-              toolPath = encodeURIComponent(url);
-              this.title = url;
-            } else {
-              toolPath = url;
-              this.title = decodeURIComponent(url);
-            }
-
-            this.containerService.getPublishedToolByPath(toolPath)
-              .subscribe(
-                (tool) => {
-                  this.tool = this.setNewProperties(tool);
-                  this.setUpLaunch();
-                },
-                (err) => {
-                  this.router.navigate(['../']);
-                }
-              );
-          }
+          this.urlChanged(event);
         }
       );
     }

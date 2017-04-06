@@ -115,7 +115,7 @@
     </app-tab>
     <app-tab title="Files">
       <div class="container separation">
-        Files
+        <app-files-container *ngIf="tool?.id" [toolId]="tool?.id" [validTags]="validTagsNames" [defaultTag]="defaultTag.name"></app-files-container>
       </div>
     </app-tab>
   </app-tabs>

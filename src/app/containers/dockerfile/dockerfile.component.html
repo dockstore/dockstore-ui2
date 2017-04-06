@@ -1,0 +1,5 @@
+<div class="container separation">
+  <strong>Container Version</strong>
+  <app-select [items]="validTags" [default]="defaultTag" (select)="onVersionChange($event)"></app-select>
+  <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+</div>

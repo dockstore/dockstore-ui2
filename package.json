@@ -22,6 +22,7 @@
     "@angular/router": "^3.4.0",
     "@types/clipboard": "^1.5.32",
     "angular-datatables": "^2.2.0",
+    "angular2-highlight-js": "^5.0.0",
     "angular2-markdown": "^1.5.1",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
