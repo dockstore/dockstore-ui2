@@ -16,7 +16,6 @@ import { ContainerService } from './container.service';
 export class ContainerComponent implements OnInit, OnDestroy {
 
     private routeSub: Subscription;
-    toolExists = true;
 
     tool;
     title: string;
@@ -131,7 +130,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
                   this.setUpLaunch();
                 },
                 (err) => {
-                  this.toolExists = false;
+                  this.router.navigate(['../']);
                 }
               );
           }
