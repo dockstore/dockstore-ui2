@@ -18,12 +18,8 @@ export class DockerfileComponent implements OnInit {
 
   constructor(private dockerfileService: DockerfileService, private highlightJsService: HighlightJsService) { }
 
-  highlightByService(target: ElementRef) {
-      this.highlightJsService.highlight(target);
-  }
-
   onVersionChange(tag): void {
-    this.dockerfileService.getDescriptorFile(this.toolId, tag)
+    this.dockerfileService.getDockerfile(this.toolId, tag)
       .subscribe(
         (object) => {
           this.content = '<pre><code class="YAML highlight">' + object.content + '</code></pre>';

@@ -37,11 +37,19 @@ export class ContainerService {
     return null;
   }
 
-  getDescriptorTypes(validTags, defaultTag, defaultVersion) {
-    if (validTags.length && defaultTag && defaultVersion) {
+  getTag(validTags, tagName: string) {
+    for (const tag of validTags) {
+      if (tag.name === tagName) {
+        return tag;
+      }
+    }
+  }
+
+  getDescriptorTypes(validTags, tag) {
+    if (validTags.length && tag) {
       const typesAvailable = new Array();
 
-      for (const file of defaultTag.sourceFiles) {
+      for (const file of tag.sourceFiles) {
         const type = file.type;
 
         if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {

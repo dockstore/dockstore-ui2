@@ -77,12 +77,12 @@
         <div class="well well-sm">
           <pre><markdown>{{ tool?.description || 'No description associated with this container.' }}</markdown></pre>
         </div>
-        <div *ngIf="descriptorTypes">
+        <div *ngIf="validTagsNames">
         <span>
           Launch With
           <div class="pull-right">
             <app-select [items]="validTagsNames" [default]="defaultTag.name" (select)="onVersionChange($event)"></app-select>
-            <app-select [items]="descriptorTypes" (select)="onDescriptorChange($event)"></app-select>
+            <app-select [items]="descriptorTypes" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
           </div>
           <div class="well">
             <div class="well well-sm">
@@ -108,17 +108,17 @@
         </div>
       </div>
     </app-tab>
-    <app-tab title="Versions">
-      <div class="container separation">
-        <app-versions-container *ngIf="tool?.tags" [tags]="tool?.tags"></app-versions-container>
-      </div>
-    </app-tab>
-    <app-tab title="Files">
-      <div class="container separation">
-        <app-files-container *ngIf="tool?.id" [toolId]="tool?.id" [validTags]="validTagsNames" [defaultTag]="defaultTag.name"></app-files-container>
-      </div>
-    </app-tab>
+    <div *ngIf="validTagsNames">
+      <app-tab title="Versions">
+        <div class="container separation">
+          <app-versions-container *ngIf="tool?.tags" [tags]="tool?.tags"></app-versions-container>
+        </div>
+      </app-tab>
+      <app-tab title="Files">
+        <div class="container separation">
+          <app-files-container *ngIf="tool?.id" [toolId]="tool?.id" [validTags]="validTags" [validTagsNames]="validTagsNames" [defaultTag]="defaultTag.name"></app-files-container>
+        </div>
+      </app-tab>
+    </div>
   </app-tabs>
 </div>
-
-

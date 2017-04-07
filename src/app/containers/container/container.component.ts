@@ -16,12 +16,12 @@ import { ContainerService } from './container.service';
 export class ContainerComponent implements OnInit, OnDestroy {
 
     private routeSub: Subscription;
+    private validTags;
 
     tool;
     title: string;
     defaultTag;
     descriptorTypes;
-
     validTagsNames;
 
     /* Launch With Strings */
@@ -37,76 +37,41 @@ export class ContainerComponent implements OnInit, OnDestroy {
                 private listContainersService: ListContainersService,
                 private containerService: ContainerService) { }
 
-    private setUpLaunch(): void {
-      const validTags = this.containerService.getValidTags(this.tool);
-      let defaultVersion = this.tool.defaultVersion;
-      let defaultTag = this.containerService.getDefaultTag(validTags, defaultVersion);
-
-      if (!defaultVersion) {
-        if (validTags.length) {
-          const last: number = validTags.length - 1;
-
-          defaultVersion = validTags[last].name;
-          defaultTag = validTags[last];
-        }
-      }
-
-      const descriptorTypes = this.containerService.getDescriptorTypes(validTags, defaultTag, defaultVersion);
-
-      this.validTagsNames = validTags.map(
-        (validTag) => {
-          return validTag.name;
-        }
-      );
-
-      this.defaultTag = defaultTag;
-      this.descriptorTypes = descriptorTypes;
-
-      if (descriptorTypes) {
-        if (descriptorTypes.length) {
-          this.currentDescriptor = descriptorTypes[0];
-        }
-
-        this.onVersionChange(this.defaultTag.name);
-      }
-    }
-
-    private setNewProperties(tool): any {
-      tool = this.listContainersService.setProviders(tool);
-
-      tool.timeMessage = this.dockstoreService.getTimeMessage(tool.lastBuild);
-      tool.email = this.dockstoreService.stripMailTo(tool.email);
-      tool.buildMode = this.containerService.getBuildMode(tool.mode);
-      tool.lastBuildDate = this.containerService.getDateTimeString(tool.lastBuild);
-      tool.lastUpdatedDate = this.containerService.getDateTimeString(tool.lastUpdated);
-
-      return tool;
-    }
-
-    onDescriptorChange(descriptorName): void {
-      this.currentDescriptor = descriptorName;
-
-      this.onVersionChange(this.currentTagName);
-    }
-
-    onVersionChange(tagName): void {
-      const toolPath: string = this.tool.tool_path;
+    // one version can have cwl and wdl, another can have only cwl
+    // descriptors depend on version
+    onVersionChange(tagName: string): void {
       this.currentTagName = tagName;
 
+      let tag = this.containerService.getTag(this.validTags, tagName);
+
+      this.descriptorTypes = this.containerService.getDescriptorTypes(this.validTags, tag);
+
+      if (this.descriptorTypes && this.descriptorTypes.length) {
+          this.onDescriptorChange(this.descriptorTypes[0]);
+      }
+    }
+
+    onDescriptorChange(descriptorName: string): void {
+      this.currentDescriptor = descriptorName;
+      this.changeStrings(this.tool.tool_path, this.currentTagName);
+    }
+
+    changeStrings(toolPath: string, tagName: string): void {
       this.launchParams = this.containerService.getParamsString(toolPath, tagName, this.currentDescriptor);
       this.launchCli = this.containerService.getCliString(toolPath, tagName, this.currentDescriptor);
       this.launchCwl = this.containerService.getCwlString(toolPath, tagName);
       this.launchConsonance = this.containerService.getConsonanceString(toolPath, tagName);
     }
 
-    private isEncoded(uri: string): boolean {
-      if (uri) {
-        return uri !== decodeURIComponent(uri);
-      }
-
-      return null;
+    ngOnInit() {
+      this.routeSub = this.router.events.subscribe(
+        (event) => {
+          this.urlChanged(event);
+        }
+      );
     }
 
+    // navigate back if the given tool path does not exist
     private urlChanged(event) {
       let toolPath = '';
 
@@ -125,7 +90,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
           .subscribe(
             (tool) => {
               this.tool = this.setNewProperties(tool);
-              this.setUpLaunch();
+              this.setUpPage(this.tool);
             },
             (err) => {
               this.router.navigate(['../']);
@@ -134,12 +99,63 @@ export class ContainerComponent implements OnInit, OnDestroy {
       }
     }
 
-    ngOnInit() {
-      this.routeSub = this.router.events.subscribe(
-        (event) => {
-          this.urlChanged(event);
+    private setUpPage(tool): void {
+      this.validTags = this.containerService.getValidTags(tool);
+
+      if (this.validTags.length) {
+        this.setUpLaunch();
+      }
+    }
+
+    private setUpLaunch(): void {
+      this.setTagNames();
+
+      let defaultVersion = this.tool.defaultVersion;
+
+      let defaultTag;
+      // if user did not specify a default version, use the latest tag
+      if (!defaultVersion) {
+        if (this.validTags.length) {
+          const last: number = this.validTags.length - 1;
+
+          defaultVersion = this.validTags[last].name;
+          defaultTag = this.validTags[last];
+        }
+      } else {
+        defaultTag = this.containerService.getDefaultTag(this.validTags, defaultVersion);
+      }
+
+      this.defaultTag = defaultTag;
+
+      this.onVersionChange(defaultTag.name);
+    }
+
+    private setTagNames() {
+      this.validTagsNames = this.validTags.map(
+        (validTag) => {
+          return validTag.name;
         }
       );
+    }
+
+    private isEncoded(uri: string): boolean {
+      if (uri) {
+        return uri !== decodeURIComponent(uri);
+      }
+
+      return null;
+    }
+
+    private setNewProperties(tool): any {
+      tool = this.listContainersService.setProviders(tool);
+
+      tool.timeMessage = this.dockstoreService.getTimeMessage(tool.lastBuild);
+      tool.email = this.dockstoreService.stripMailTo(tool.email);
+      tool.buildMode = this.containerService.getBuildMode(tool.mode);
+      tool.lastBuildDate = this.containerService.getDateTimeString(tool.lastBuild);
+      tool.lastUpdatedDate = this.containerService.getDateTimeString(tool.lastUpdated);
+
+      return tool;
     }
 
     ngOnDestroy() {

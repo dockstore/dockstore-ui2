@@ -1,7 +1,20 @@
-<app-tabs>
-  <app-tab title="Dockerfile">
-    <app-dockerfile [toolId]="toolId" [validTags]="validTags" [defaultTag]="defaultTag"></app-dockerfile>
-  </app-tab>
-  <app-tab title="Descriptor Files"></app-tab>
-  <app-tab title="Test Parameter Files"></app-tab>
-</app-tabs>
+<div *ngIf="validTags">
+  <app-tabs>
+    <app-tab title="Dockerfile">
+      <app-dockerfile [toolId]="toolId" [validTags]="validTagsNames" [defaultTag]="defaultTag"></app-dockerfile>
+    </app-tab>
+    <app-tab title="Descriptor Files">
+      <app-descriptors [toolId]="toolId"
+                       [validTags]="validTags"
+                       [validTagsNames]="validTagsNames"
+                       [defaultTag]="defaultTag"></app-descriptors>
+    </app-tab>
+    <app-tab title="Test Parameter Files"></app-tab>
+  </app-tabs>
+</div>
+<div *ngIf="!validTags">
+  <div class="alert alert-info">
+    <strong>No Valid Tags</strong> No files will be shown for invalid versions.
+  </div>
+</div>
+

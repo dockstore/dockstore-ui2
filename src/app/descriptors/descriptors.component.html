@@ -1,0 +1,9 @@
+<div class="container separation">
+  <strong>Container Version:</strong>
+  <app-select [items]="validTagsNames" [default]="defaultTag" (select)="onVersionChange($event)"></app-select>
+  <strong>Descriptor:</strong>
+  <app-select [items]="descriptorTypes" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+  <strong>File:</strong>
+  <app-select [items]="filePaths" (select)="onPathChange($event)"></app-select>
+  <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+</div>

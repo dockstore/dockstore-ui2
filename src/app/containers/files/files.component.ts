@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class FilesContainerComponent implements OnInit {
   @Input() toolId: number;
   @Input() validTags;
+  @Input() validTagsNames;
   @Input() defaultTag;
 
   constructor() { }

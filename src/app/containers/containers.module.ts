@@ -7,6 +7,7 @@ import { HeaderModule } from '../shared/header.module';
 import { SelectModule } from '../shared/select.module';
 import { ListContainersModule } from '../shared/list-containers.module';
 import { TabsModule } from '../shared/tabs.module';
+import { DescriptorsModule } from '../shared/descriptors.module';
 
 import { ContainerService } from './container/container.service';
 
@@ -39,6 +40,7 @@ import { DockerfileComponent } from './dockerfile/dockerfile.component';
     SelectModule,
     ListContainersModule,
     TabsModule,
+    DescriptorsModule,
     containersRouting
   ],
   providers: [

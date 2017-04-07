@@ -8,7 +8,7 @@ export class DockerfileService {
 
   constructor(private dockstoreService: DockstoreService) { }
 
-  getDescriptorFile(toolId: number, tag: string) {
+  getDockerfile(toolId: number, tag: string) {
     let dockerFileUrl = Dockstore.API_URI + '/containers/' + toolId + '/dockerfile';
 
     if (tag) {

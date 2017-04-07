@@ -84,7 +84,6 @@ export class ListContainersService {
           tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
         }
       );
-
     return tool;
   }
 
