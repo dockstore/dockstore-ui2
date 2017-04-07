@@ -13,6 +13,49 @@ export class ContainerService {
 
   constructor(private dockstoreService: DockstoreService) { }
 
+  // set up tagsMap to relate tag names of the versions with test parameter files to their descriptors and file paths
+  getTagsWithParams(validTags) {
+    const tagsMap = new Map();
+
+    for (const tag of validTags) {
+
+      const descriptorToPath = new Map();
+      const cwlPaths = [];
+      const wdlPaths = [];
+
+      for (const file of tag.sourceFiles) {
+        if (file.type === 'CWL_TEST_JSON') {
+          cwlPaths.push(file);
+        } else if (file.type === 'WDL_TEST_JSON') {
+          wdlPaths.push(file);
+        }
+      }
+
+      if (cwlPaths.length) {
+        descriptorToPath.set('cwl', cwlPaths);
+      }
+
+      if (wdlPaths.length) {
+         descriptorToPath.set('wdl', wdlPaths);
+      }
+
+      if (cwlPaths.length || wdlPaths.length) {
+        tagsMap.set(tag.name, descriptorToPath);
+      }
+
+    }
+
+    return tagsMap;
+  }
+
+  getFilePath(file): string {
+    return file.path;
+  }
+
+  highlightCode(code): string {
+    return '<pre><code class="YAML highlight">' + code + '</pre></code>';
+  }
+
   getValidTags(tool) {
     const validTags = [];
 
@@ -41,6 +84,14 @@ export class ContainerService {
     for (const tag of validTags) {
       if (tag.name === tagName) {
         return tag;
+      }
+    }
+  }
+
+  getFile(path: string, files) {
+    for (const file of files) {
+      if (file.path === path) {
+        return file;
       }
     }
   }

@@ -1,7 +1,9 @@
 <div *ngIf="validTags">
   <app-tabs>
     <app-tab title="Dockerfile">
-      <app-dockerfile [toolId]="toolId" [validTags]="validTagsNames" [defaultTag]="defaultTag"></app-dockerfile>
+      <app-dockerfile [toolId]="toolId"
+                      [validTags]="validTagsNames"
+                      [defaultTag]="defaultTag"></app-dockerfile>
     </app-tab>
     <app-tab title="Descriptor Files">
       <app-descriptors [toolId]="toolId"
@@ -9,7 +11,10 @@
                        [validTagsNames]="validTagsNames"
                        [defaultTag]="defaultTag"></app-descriptors>
     </app-tab>
-    <app-tab title="Test Parameter Files"></app-tab>
+    <app-tab title="Test Parameter Files">
+      <app-paramfiles [toolId]="toolId"
+                      [validTags]="validTags"></app-paramfiles>
+    </app-tab>
   </app-tabs>
 </div>
 <div *ngIf="!validTags">

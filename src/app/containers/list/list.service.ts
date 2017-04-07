@@ -55,7 +55,7 @@ export class ListContainersService {
       if (match) {
         let url = registry.url;
         let suffix = '';
-        let containerRegistry = registry.enum;
+        const containerRegistry = registry.enum;
 
         if (containerRegistry === 'DOCKER_HUB') {
           url += ((match[2] !== '_') ? 'r/' : '');

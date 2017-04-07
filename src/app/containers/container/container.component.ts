@@ -16,7 +16,7 @@ import { ContainerService } from './container.service';
 export class ContainerComponent implements OnInit, OnDestroy {
 
     private routeSub: Subscription;
-    private validTags;
+    validTags;
 
     tool;
     title: string;
@@ -42,7 +42,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
     onVersionChange(tagName: string): void {
       this.currentTagName = tagName;
 
-      let tag = this.containerService.getTag(this.validTags, tagName);
+      const tag = this.containerService.getTag(this.validTags, tagName);
 
       this.descriptorTypes = this.containerService.getDescriptorTypes(this.validTags, tag);
 

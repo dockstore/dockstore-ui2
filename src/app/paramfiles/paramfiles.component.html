@@ -1,0 +1,16 @@
+<div class="container separation">
+  <div *ngIf="tagsMap.size">
+    <strong>Container Version:</strong>
+    <app-select [items]="tagNames" (select)="onVersionChange($event)"></app-select>
+    <strong>Descriptor:</strong>
+    <app-select [items]="descriptorTypes" (select)="onDescriptorChange($event)"></app-select>
+    <strong>File:</strong>
+    <app-select [items]="filePaths" (select)="onPathChange($event)"></app-select>
+    <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  </div>
+  <div *ngIf="!tagsMap.size">
+    <div class="alert alert-info" role="alert">
+      There are no test parameters files associated with this container.
+    </div>
+  </div>
+</div>

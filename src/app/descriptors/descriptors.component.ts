@@ -35,7 +35,7 @@ export class DescriptorsComponent implements OnInit {
               private descriptorsService: DescriptorsService) { }
 
   onVersionChange(tagName: string): void {
-    let tag = this.containerService.getTag(this.validTags, tagName);
+    const tag = this.containerService.getTag(this.validTags, tagName);
     this.currentTagName = tagName;
 
     this.descriptorTypes = this.containerService.getDescriptorTypes(this.validTags, tag);
@@ -46,7 +46,9 @@ export class DescriptorsComponent implements OnInit {
   }
 
   getCwlFiles(tagName: string) {
-    Observable.forkJoin([this.descriptorsService.getCwl(this.toolId, tagName), this.descriptorsService.getSecondaryCwl(this.toolId, tagName)]).subscribe(
+    Observable.forkJoin([this.descriptorsService.getCwl(this.toolId, tagName),
+                         this.descriptorsService.getSecondaryCwl(this.toolId, tagName)])
+    .subscribe(
       (cwlFiles) => {
         this.files = [];
 
@@ -71,7 +73,9 @@ export class DescriptorsComponent implements OnInit {
   }
 
   getWdlFiles(tagName: string) {
-    Observable.forkJoin([this.descriptorsService.getWdl(this.toolId, tagName), this.descriptorsService.getSecondaryWdl(this.toolId, tagName)]).subscribe(
+    Observable.forkJoin([this.descriptorsService.getWdl(this.toolId, tagName),
+                         this.descriptorsService.getSecondaryWdl(this.toolId, tagName)])
+    .subscribe(
       (wdlFiles) => {
         this.files = [];
 
@@ -95,14 +99,6 @@ export class DescriptorsComponent implements OnInit {
     );
   }
 
-  getFile(path: string) {
-    for (const file of this.files) {
-      if (file.path === path) {
-        return file;
-      }
-    }
-  }
-
   onDescriptorChange(descriptorName: string) {
     this.currentDescriptor = descriptorName;
     if (descriptorName === 'cwl') {
@@ -113,7 +109,7 @@ export class DescriptorsComponent implements OnInit {
   }
 
   onPathChange(path: string) {
-    this.content = '<pre><code class="YAML highlight">' + this.getFile(path).content + '</pre></code>';
+    this.content = '<pre><code class="YAML highlight">' + this.containerService.getFile(path, this.files).content + '</pre></code>';
 
     this.currentPath = path;
   }
