@@ -9,6 +9,49 @@ export class DockstoreService {
 
   constructor(private http: Http) { }
 
+  /* Tool and Workflow Details Page */
+  private isEncoded(uri: string): boolean {
+    if (uri) {
+      return uri !== decodeURIComponent(uri);
+    }
+
+    return null;
+  }
+
+  setPath(url: string): string {
+    let path = '';
+
+    if (!this.isEncoded(url)) {
+      path = encodeURIComponent(url);
+    } else {
+      path = url;
+    }
+
+    return path;
+  }
+
+  setTitle(url: string) {
+    let title = '';
+
+    if (!this.isEncoded(url)) {
+      title = url;
+    } else {
+      title = decodeURIComponent(url);
+    }
+
+    return title;
+  }
+
+  /* Tools List and Details, Workflow Details */
+  setGit(tool) {
+    const gitUrl = tool.gitUrl;
+
+    tool.provider = this.getProvider(gitUrl);
+    tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
+
+    return tool;
+  }
+
   getResponse(url: string) {
     return this.http.get(url)
       .map((res: Response) => res.json())

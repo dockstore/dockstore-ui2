@@ -9,7 +9,7 @@ const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'docs', loadChildren: 'app/docs/docs.module#DocsModule' },
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
-  { path: 'workflows', component: SearchWorkflowsComponent },
+  { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule'},
   { path: '**', redirectTo: '' }
 ];
 

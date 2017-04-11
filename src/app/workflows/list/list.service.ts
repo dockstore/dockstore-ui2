@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from '../shared/dockstore.model';
-import { DockstoreService } from '../shared/dockstore.service';
+import { Dockstore } from '../../shared/dockstore.model';
+import { DockstoreService } from '../../shared/dockstore.service';
 
 @Injectable()
-export class WorkflowsService {
+export class ListWorkflowsService {
 
   readonly publishedWorkflowsUrl = Dockstore.API_URI + '/workflows/published';
 

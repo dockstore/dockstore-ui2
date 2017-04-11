@@ -1,37 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
-import { WorkflowsService } from './workflows.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-workflows',
-  templateUrl: './workflows.component.html',
-  styleUrls: ['./workflows.component.css']
+  templateUrl: './workflows.component.html'
 })
-export class WorkflowsComponent implements OnInit {
-
-  displayTable = false;
-
-  publishedWorkflows = [];
-
-  constructor(private workflowsService: WorkflowsService) { }
-
-  ngOnInit() {
-    this.workflowsService.getPublishedWorkflows()
-      .subscribe(
-        (publishedWorkflows) => {
-          publishedWorkflows.map( workflow => {
-          const gitUrl = workflow.gitUrl;
-
-          workflow.provider = this.workflowsService.getProvider(gitUrl);
-          workflow.providerUrl = this.workflowsService.getProviderUrl(gitUrl, workflow.provider);
-
-          return workflow;
-        });
-
-        this.publishedWorkflows = publishedWorkflows;
-
-        this.displayTable = true;
-      }
-    );
-  }
-}
+export class WorkflowsComponent { }

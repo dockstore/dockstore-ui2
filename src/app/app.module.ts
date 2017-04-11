@@ -5,10 +5,10 @@ import { HttpModule } from '@angular/http';
 import { DataTablesModule } from 'angular-datatables';
 import { HeaderModule } from './shared/header.module';
 import { ListContainersModule } from './shared/list-containers.module';
+import { ListWorkflowsModule } from './shared/list-workflows.module';
 import { TabsModule } from './shared/tabs.module';
 import { routing } from './app.routing';
 import { DockstoreService } from './shared/dockstore.service';
-import { WorkflowsService } from './workflows/workflows.service';
 
 import { AppComponent } from './app.component';
 import { SponsorsComponent } from './sponsors/sponsors.component';
@@ -17,7 +17,6 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
-import { WorkflowsComponent } from './workflows/workflows.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     FooterComponent,
     SearchWorkflowsComponent,
     HomeFootNoteComponent,
-    WorkflowsComponent,
     ToolDetailsComponent
   ],
   imports: [
@@ -39,12 +37,12 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     DataTablesModule,
     HeaderModule,
     ListContainersModule,
+    ListWorkflowsModule,
     TabsModule,
     routing
   ],
   providers: [
-    DockstoreService,
-    WorkflowsService
+    DockstoreService
   ],
   bootstrap: [AppComponent]
 })
