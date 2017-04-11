@@ -7,9 +7,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
-  private static readonly months = ['Jan.', 'Feb.', 'Mar.', 'Apr.',
-                                    'May', 'Jun.', 'Jul.', 'Aug.',
-                                    'Sept.', 'Oct.', 'Nov.', 'Dec.'];
 
   constructor(private dockstoreService: DockstoreService) { }
 
@@ -163,21 +160,6 @@ export class ContainerService {
       default:
         return 'Unknown';
     }
-  }
-
-  getDateTimeString(timestamp: number, dateOnly = false): string {
-    const date = new Date(timestamp);
-    let dateString = ContainerService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
-
-    if (!dateOnly) {
-      dateString += ' at ' + date.toLocaleTimeString();
-    }
-
-    return dateString;
-  }
-
-  getDate(timestamp) {
-    return this.getDateTimeString(timestamp);
   }
 
   getSizeString(size: number) {

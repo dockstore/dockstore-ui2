@@ -7,6 +7,10 @@ import { Dockstore } from '../shared/dockstore.model';
 @Injectable()
 export class DockstoreService {
 
+  private static readonly months = ['Jan.', 'Feb.', 'Mar.', 'Apr.',
+                                    'May', 'Jun.', 'Jul.', 'Aug.',
+                                    'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+
   constructor(private http: Http) { }
 
   /* Tool and Workflow Details Page */
@@ -50,6 +54,21 @@ export class DockstoreService {
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
 
     return tool;
+  }
+
+  getDateTimeString(timestamp: number, dateOnly = false): string {
+    const date = new Date(timestamp);
+    let dateString = DockstoreService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
+
+    if (!dateOnly) {
+      dateString += ' at ' + date.toLocaleTimeString();
+    }
+
+    return dateString;
+  }
+
+  getDate(timestamp) {
+    return this.getDateTimeString(timestamp);
   }
 
   getResponse(url: string) {

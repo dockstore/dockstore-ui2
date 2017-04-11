@@ -3,11 +3,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DockstoreService } from '../../shared/dockstore.service';
 
 @Component({
-  selector: 'app-versions-container',
+  selector: 'app-versions-workflows',
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.css']
 })
-export class VersionsContainerComponent implements OnInit {
+export class VersionsWorkflowComponent implements OnInit {
   @Input() tags: any;
   dtOptions = {
     bFilter: false,
@@ -15,7 +15,7 @@ export class VersionsContainerComponent implements OnInit {
     columnDefs: [
       {
         orderable: false,
-        targets: [5, 6]
+        targets: [4, 5]
       }
     ]
   };

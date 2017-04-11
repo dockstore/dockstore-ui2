@@ -73,7 +73,9 @@
         </span>
       </div>
     </app-tab>
-    <app-tab title="Versions"></app-tab>
+    <app-tab title="Versions">
+      <app-versions-workflows *ngIf="workflow?.workflowVersions" [tags]="workflow?.workflowVersions"></app-versions-workflows>
+    </app-tab>
     <app-tab title="Files"></app-tab>
     <app-tab title="Tools"></app-tab>
     <app-tab title="DAG"></app-tab>

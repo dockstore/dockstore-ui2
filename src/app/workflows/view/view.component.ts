@@ -1,25 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { DockstoreService } from '../../shared/dockstore.service';
-import { ContainerService } from '../container/container.service';
 
 @Component({
-  selector: 'app-view-container',
+  selector: 'app-view-workflow',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css']
 })
-export class ViewContainerComponent implements OnInit {
+export class ViewWorkflowComponent implements OnInit {
   @Input() tag;
 
-  constructor(private dockstoreService: DockstoreService,
-              private containerService: ContainerService) { }
+  constructor(private dockstoreService: DockstoreService) { }
 
   getDateTimeString(timestamp) {
     return this.dockstoreService.getDateTimeString(timestamp);
-  }
-
-  getSizeString(size) {
-    return this.containerService.getSizeString(size);
   }
 
   ngOnInit() {

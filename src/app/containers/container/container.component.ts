@@ -152,8 +152,8 @@ export class ContainerComponent implements OnInit, OnDestroy {
       tool.timeMessage = this.dockstoreService.getTimeMessage(tool.lastBuild);
       tool.email = this.dockstoreService.stripMailTo(tool.email);
       tool.buildMode = this.containerService.getBuildMode(tool.mode);
-      tool.lastBuildDate = this.containerService.getDateTimeString(tool.lastBuild);
-      tool.lastUpdatedDate = this.containerService.getDateTimeString(tool.lastUpdated);
+      tool.lastBuildDate = this.dockstoreService.getDateTimeString(tool.lastBuild);
+      tool.lastUpdatedDate = this.dockstoreService.getDateTimeString(tool.lastUpdated);
 
       return tool;
     }

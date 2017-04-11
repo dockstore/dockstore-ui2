@@ -17,12 +17,16 @@ import { workflowsRouting } from './workflows.routing';
 import { WorkflowsComponent } from './workflows.component';
 import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowComponent } from './workflow/workflow.component';
+import { VersionsWorkflowComponent } from './versions/versions.component';
+import { ViewWorkflowComponent } from './view/view.component';
 
 @NgModule({
   declarations: [
     WorkflowsComponent,
     SearchWorkflowsComponent,
-    WorkflowComponent
+    WorkflowComponent,
+    VersionsWorkflowComponent,
+    ViewWorkflowComponent
   ],
   imports: [
     CommonModule,
