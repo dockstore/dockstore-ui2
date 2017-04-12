@@ -17,8 +17,13 @@ import { workflowsRouting } from './workflows.routing';
 import { WorkflowsComponent } from './workflows.component';
 import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowComponent } from './workflow/workflow.component';
+
 import { VersionsWorkflowComponent } from './versions/versions.component';
 import { ViewWorkflowComponent } from './view/view.component';
+import { FilesWorkflowComponent } from './files/files.component';
+
+import { DescriptorsWorkflowComponent } from './descriptors/descriptors.component';
+import { ParamfilesWorkflowComponent } from './paramfiles/paramfiles.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,10 @@ import { ViewWorkflowComponent } from './view/view.component';
     SearchWorkflowsComponent,
     WorkflowComponent,
     VersionsWorkflowComponent,
-    ViewWorkflowComponent
+    ViewWorkflowComponent,
+    FilesWorkflowComponent,
+    DescriptorsWorkflowComponent,
+    ParamfilesWorkflowComponent
   ],
   imports: [
     CommonModule,

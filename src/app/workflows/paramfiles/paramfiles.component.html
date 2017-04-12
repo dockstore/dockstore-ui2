@@ -1,0 +1,14 @@
+<div class="container separation">
+  <div *ngIf="versionMap.size">
+    <strong>Workflow Version:</strong>
+    <app-select [items]="versionWithParamNames" (select)="onVersionChange($event)"></app-select>
+    <strong>File:</strong>
+    <app-select [items]="filePaths" (select)="onFilePathChange($event)"></app-select>
+    <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  </div>
+  <div *ngIf="!versionMap.size">
+    <div class="alert alert-info" role="alert">
+      There are no test parameters files associated with this workflow.
+    </div>
+  </div>
+</div>

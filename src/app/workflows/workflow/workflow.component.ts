@@ -24,7 +24,10 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   launchCli;
 
   /* options */
-  workflowVersions;
+  validVersionNames;
+
+  /* underlying objects for options */
+  validVersions;
 
   /* default */
   defaultVersion;
@@ -62,7 +65,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
             workflow.timeMessage = this.dockstoreService.getTimeMessage(workflow.lastUpdated);
             this.workflow = workflow;
 
-            this.setWorkflowVersions();
+            this.setUpVersions();
             this.setUpLaunch();
           },
           (err) => {
@@ -72,22 +75,24 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setWorkflowVersions() {
-    this.workflowVersions = this.workflow.workflowVersions.map(
+  private setUpVersions() {
+    this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
+    console.log(this.validVersions);
+
+    this.validVersionNames = this.validVersions.map(
       (version) => { return version.reference; }
     );
 
-    let defaultVersion = this.workflow.defaultVersion;
-
-    if (defaultVersion) {
-      this.currentVersion = defaultVersion;
+    if (this.workflow.defaultVersion) {
+      this.defaultVersion = this.workflow.defaultVersion;
     } else {
-      this.currentVersion = this.workflowVersions[0];
+      this.defaultVersion = this.validVersionNames[0];
     }
+    this.currentVersion = this.defaultVersion;
   }
 
   private setUpLaunch() {
-    let path = this.workflow.path;
+    const path = this.workflow.path;
 
     this.launchParams = this.workflowService.getParamsString(path, this.currentVersion);
     this.launchCli = this.workflowService.getCliString(path, this.currentVersion);

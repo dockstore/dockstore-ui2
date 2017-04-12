@@ -26,7 +26,7 @@
             <th>E-mail</th>
             <td>
               <div *ngIf="workflow?.email">
-                <a href="mailto:{{worflow?.email}}">
+                <a href="mailto:{{workflow?.email}}">
                   {{ workflow?.email }}
                 </a>
               </div>
@@ -54,7 +54,9 @@
         <span>
           Launch With
           <div class="pull-right">
-            <app-select [items]="workflowVersions" [default]="currentVersion" (select)="onVersionChange($event)"></app-select>
+            <app-select [items]="validVersionNames"
+                        [default]="currentVersion"
+                        (select)="onVersionChange($event)"></app-select>
           </div>
           <div class="well">
             <div class="well well-sm">
@@ -74,9 +76,19 @@
       </div>
     </app-tab>
     <app-tab title="Versions">
-      <app-versions-workflows *ngIf="workflow?.workflowVersions" [tags]="workflow?.workflowVersions"></app-versions-workflows>
+      <div class="container separation">
+        <app-versions-workflows *ngIf="workflow?.workflowVersions" [tags]="workflow?.workflowVersions"></app-versions-workflows>
+      </div>
     </app-tab>
-    <app-tab title="Files"></app-tab>
+    <app-tab title="Files">
+      <div class="container separation">
+        <app-files-workflow  *ngIf="defaultVersion"
+                             [tool]="workflow"
+                             [validVersions]="validVersions"
+                             [validVersionNames]="validVersionNames"
+                             [defaultVersion]="defaultVersion"></app-files-workflow>
+      </div>
+    </app-tab>
     <app-tab title="Tools"></app-tab>
     <app-tab title="DAG"></app-tab>
   </app-tabs>

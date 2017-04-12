@@ -1,0 +1,22 @@
+<div *ngIf="validVersions">
+  <app-tabs>
+    <app-tab title="Descriptor Files">
+      <app-descriptors-workflow
+                      [tool]="tool"
+                      [versions]="validVersions"
+                      [versionNames]="validVersionNames"
+                      [defaultVersion]="defaultVersion"></app-descriptors-workflow>
+    </app-tab>
+    <app-tab title="Test Parameter Files">
+      <app-paramfiles-workflow
+                      [tool]="tool"
+                      [versions]="validVersions"></app-paramfiles-workflow>
+    </app-tab>
+  </app-tabs>
+</div>
+<div *ngIf="!validVersions">
+  <div class="alert alert-info">
+    <strong>No Valid Versions</strong> No files will be shown for invalid versions.
+  </div>
+</div>
+
