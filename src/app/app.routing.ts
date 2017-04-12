@@ -4,12 +4,14 @@ import { HomeComponent } from './home/home.component';
 import { SearchContainersComponent } from './containers/search/search.component';
 import { ContainerComponent } from './containers/container/container.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
+import { LoginComponent } from './login/login.component';
 
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'docs', loadChildren: 'app/docs/docs.module#DocsModule' },
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
-  { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule'},
+  { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
+  { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '' }
 ];
 

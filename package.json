@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^2.4.0",
     "@angular/router": "^3.4.0",
     "@types/clipboard": "^1.5.32",
+    "angular-2-local-storage": "^1.0.1",
     "angular-datatables": "^2.2.0",
     "angular2-highlight-js": "^5.0.0",
     "angular2-markdown": "^1.5.1",
@@ -30,6 +31,7 @@
     "datatables.net-bs": "^1.10.13",
     "jquery": "^3.2.1",
     "jquery-colorbox": "^1.6.4",
+    "ng2-ui-auth": "^6.1.4",
     "ngx-clipboard": "4.0.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.7.6"
