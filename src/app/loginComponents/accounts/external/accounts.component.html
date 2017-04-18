@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div *ngFor="let row of accountsInfo">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="btn-group pull-right">
+            <button class="btn btn-primary btn-xs" (click)="link(row.name)">
+              <span class="glyphicon glyphicon-link">Link</span>
+            </button>
+          </div>
+          <h4>{{ row.name }}</h4>
+        </div>
+        <div class="panel-body">
+          <strong>{{ row.bold }} </strong> {{ row.message }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

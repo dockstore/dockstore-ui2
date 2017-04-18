@@ -41,28 +41,6 @@ h4 {
   margin: 0;
 }
 
-/* Green Buttons */
-.button {
-  margin-top: 5px;
-  background-color: #487980;
-  border-radius: 8px;
-  width: 250px;
-  display: inline-block;
-}
-
-.button p {
-  margin: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 2.5em;
-}
-
-.button a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 /* Images */
 #rectangle {
   position: absolute;
@@ -88,6 +66,11 @@ h4 {
     padding-left: 0;
         right: 2%;
   }
+}
+
+/* Green Buttons */
+.green {
+  width: 250px;
 }
 
 /* General */

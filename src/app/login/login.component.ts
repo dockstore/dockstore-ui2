@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { AuthService } from 'ng2-ui-auth';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LoginService } from './login.service';
+import { TrackLoginService } from '../shared/track-login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,20 +11,28 @@ import { LocalStorageService } from 'angular-2-local-storage';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private auth: AuthService,
-              private localStorageService: LocalStorageService) { }
+  constructor(private trackLoginService: TrackLoginService,
+              private authService: LoginService,
+              private router: Router) { }
 
-  loginWithGoogle() {
-    this.auth.authenticate('github')
-      .subscribe(
-        (response) => {
-          const tokenObj = response.json();
-          this.localStorageService.set('dockstoreToken', tokenObj);
-        },
-        (err) => {
-          console.log('Authentication error: ' + err);
-        }
-      );
+  private login(observable) {
+    observable.subscribe(
+      (response) => {
+        this.trackLoginService.switchState(true);
+        this.router.navigate(['/onboarding']);
+      },
+      (error) => {
+        console.log('Authentication error: ' + error);
+      }
+    );
+  }
+
+  loginWithGitHub() {
+    this.login(this.authService.authenticate('github'));
+  }
+
+  logout() {
+    this.router.navigate(['/logout']);
   }
 
   ngOnInit() {

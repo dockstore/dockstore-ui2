@@ -14,11 +14,18 @@ import { ListWorkflowsModule } from './shared/list-workflows.module';
 import { TabsModule } from './shared/tabs.module';
 
 import { AuthService } from 'ng2-ui-auth';
-import { LocalStorageService } from 'angular-2-local-storage';
+
+import { LoginApi } from './login/login.api';
+import { LoginService } from './login/login.service';
+import { LogoutService } from './shared/logout.service';
 
 import { DockstoreService } from './shared/dockstore.service';
+import { TrackLoginService } from './shared/track-login.service';
 
-import { routing } from './app.routing';
+import { TokenService } from './loginComponents/token.service';
+import { UserService } from './loginComponents/user.service';
+
+import { routing, CLIENT_ROUTER_PROVIDERS } from './app.routing';
 
 import { AuthConfig } from './shared/auth.model';
 
@@ -30,7 +37,11 @@ import { FooterComponent } from './footer/footer.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+
 import { LoginComponent } from './login/login.component';
+
+import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
+import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +53,9 @@ import { LoginComponent } from './login/login.component';
     SearchWorkflowsComponent,
     HomeFootNoteComponent,
     ToolDetailsComponent,
-    LoginComponent
+    LoginComponent,
+    OnboardingComponent,
+    AccountsExternalComponent
   ],
   imports: [
     BrowserModule,
@@ -62,8 +75,14 @@ import { LoginComponent } from './login/login.component';
   ],
   providers: [
     AuthService,
-    LocalStorageService,
-    DockstoreService
+    LoginApi,
+    LoginService,
+    LogoutService,
+    DockstoreService,
+    TrackLoginService,
+    TokenService,
+    UserService,
+    CLIENT_ROUTER_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

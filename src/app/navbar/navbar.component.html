@@ -26,7 +26,25 @@
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <li>
-      <a routerLink="login">Login</a>
+      <div *ngIf="isLoggedIn">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Action <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#">Accounts</a></li>
+            <li><a href="#">Tokens</a></li>
+            <li><a href="#">Setup</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a (click)="logout()">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="!isLoggedIn">
+        <div class="green">
+          <p><a routerLink="login">Login</a></p>
+        </div>
+      </div>
     </li>
   </ul>
 </div>
