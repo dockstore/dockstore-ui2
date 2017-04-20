@@ -31,10 +31,6 @@ export class LoginComponent implements OnInit {
     this.login(this.authService.authenticate('github'));
   }
 
-  logout() {
-    this.router.navigate(['/logout']);
-  }
-
   ngOnInit() {
 
   }

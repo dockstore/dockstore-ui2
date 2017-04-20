@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
 
-import { LocalStorageService } from 'angular-2-local-storage';
+import { Dockstore } from '../shared/dockstore.model';
+import { HttpService } from '../shared/http.service';
 
 @Injectable()
 export class UserService {
 
-  constructor(private localStorageService: LocalStorageService) { }
+  constructor(private httpService: HttpService) { }
 
-  getUserObj() {
-    return this.localStorageService.get('user');
+  getUser() {
+    const getUserUrl = `${ Dockstore.API_URI }/users/user`;
+    return this.httpService.getAuthResponse(getUserUrl);
   }
+
+  getTokens(userId: number) {
+    const getUserTokensUrl = `${ Dockstore.API_URI }/users/${ userId }/tokens`;
+    return this.httpService.getAuthResponse(getUserTokensUrl);
+  }
+
 }

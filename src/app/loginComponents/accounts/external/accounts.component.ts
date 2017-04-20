@@ -1,43 +1,157 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
+import { ISubscription } from "rxjs/Subscription";
 
+import { Links } from './links.model';
+
+import { UserService } from '../../user.service';
 import { TokenService } from '../../token.service';
+import { TrackLoginService } from '../../../shared/track-login.service';
 
 @Component({
   selector: 'app-accounts-external',
-  templateUrl: './accounts.component.html',
-  providers: [ TokenService ]
+  templateUrl: './accounts.component.html'
 })
-export class AccountsExternalComponent implements OnInit {
+export class AccountsExternalComponent implements OnInit, OnDestroy {
 
-  readonly accountsInfo = [
+  accountsInfo: Array<any> = [
     {
       name: 'GitHub',
+      source: 'github.com',
       bold: 'Required',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.'
     },
     {
+      name: 'Quay.io',
+      source: 'quay.io',
+      bold: 'Optional',
+      message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.'
+    },
+    {
       name: 'Bitbucket',
+      source: 'bitbucket.org',
       bold: 'Optional',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.'
     },
     {
       name: 'GitLab',
+      source: 'gitlab.com',
       bold: 'Optional',
       message: 'GitLab credentials are used for pulling source code from GitLab.'
-    },
-    {
-      name: 'Quay.io',
-      bold: 'Optional',
-      message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.'
     }
   ];
 
-  constructor(private tokenService: TokenService) { }
+  private tokens;
+  private userId;
+  private tokensSubscription: ISubscription;
+  private deleteSubscription: ISubscription;
+  private routeSubscription: ISubscription;
 
-  link(accountName) {
-    console.log(accountName);
+  constructor(private trackLoginService: TrackLoginService,
+              private tokenService: TokenService,
+              private userService: UserService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
+    this.routeSubscription = this.trackLoginService.isLoggedIn$.subscribe(
+      state => {
+        if (!state) {
+          console.log(state);
+          this.router.navigate(['']);
+        }
+      }
+    );
+  }
+
+  private stripSpace(url: string): string {
+    return url.replace(/\s/g, '');
+  }
+
+  private openWindow(url: string): void {
+    window.location.href = this.stripSpace(url);
+  }
+
+  // Open a window for the user to login to the appropriate service
+  link(source: string) {
+    switch (source) {
+      case 'bitbucket.org':
+        this.openWindow(Links.BITBUCKET);
+        break;
+      case 'gitlab.com':
+        this.openWindow(Links.GITLAB);
+        break;
+      case 'quay.io':
+        this.openWindow(Links.QUAY);
+        break;
+    }
+  }
+
+  // Delete token by id
+  private deleteToken(source: string) {
+    for (const token of this.tokens) {
+      if (token.tokenSource === source) {
+        return this.tokenService.deleteToken(token.id);
+      }
+    }
+  }
+
+  // Unlink account in accountsInfo
+  private unlinkToken(source) {
+    for (const account of this.accountsInfo) {
+      if (account.source === source) {
+        account.isLinked = false;
+      }
+    }
+  }
+
+  // Delete a token and unlink service in the UI
+  unlink(source: string) {
+    this.deleteSubscription = this.deleteToken(source)
+      .subscribe(() => this.unlinkToken(source));
+  }
+
+  // Get user ID
+  private getUserId() {
+    return this.userService.getUser()
+      .map(user => {
+        this.userId = user.id;
+        return user.id;
+      });
+  }
+
+  // Show linked services in the UI
+  private setAvailableTokens(tokens) {
+    for (const token of tokens) {
+      for (const account of this.accountsInfo) {
+        if (token.tokenSource === account.source) {
+          account.isLinked = true;
+        }
+      }
+    }
+  }
+
+  // Set tokens and linked services
+  private setTokens(tokens): void {
+    this.tokens = tokens;
+    this.setAvailableTokens(tokens);
   }
 
   ngOnInit() {
+    this.tokensSubscription = this.getUserId()
+      .flatMap(id => this.userService.getTokens(id))
+      .subscribe(tokens => this.setTokens(tokens));
   }
+
+  ngOnDestroy() {
+    if (this.tokensSubscription) {
+      this.tokensSubscription.unsubscribe();
+    }
+
+    if (this.deleteSubscription) {
+      this.deleteSubscription.unsubscribe();
+    }
+
+    this.routeSubscription.unsubscribe();
+  }
+
 }

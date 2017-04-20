@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
 
 import { Dockstore } from '../shared/dockstore.model';
-import { DockstoreService } from '../shared/dockstore.service';
+import { HttpService } from '../shared/http.service';
 
 @Injectable()
 export class TokenService {
 
-  constructor(private dockstoreService: DockstoreService) { }
+  constructor(private httpService: HttpService) { }
 
-  private getUserTokens(id: number) {
-    const userTokensUrl = Dockstore.API_URI + '/users/' + id + '/tokens';
-    return this.dockstoreService.getResponse(userTokensUrl);
+  registerToken(token: string, provider: string) {
+    let registerTokenUrl = `${ Dockstore.API_URI }/auth/tokens/${ provider }`;
+
+    if (provider === 'quay.io') {
+      registerTokenUrl += `?access_token=${ token }`;
+    } else {
+      registerTokenUrl += `?code=${ token }`;
+    }
+
+    return this.httpService.getAuthResponse(registerTokenUrl);
   }
 
-  getUserSetTokens(id: number) {
+  deleteToken(tokenId: number) {
+    let deleteTokenUrl = `${ Dockstore.API_URI }/auth/tokens/${ tokenId }`;
 
+    return this.httpService.deleteAuth(deleteTokenUrl);
   }
+
 }

@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "^2.4.0",
     "@angular/router": "^3.4.0",
     "@types/clipboard": "^1.5.32",
-    "angular-2-local-storage": "^1.0.1",
     "angular-datatables": "^2.2.0",
     "angular2-highlight-js": "^5.0.0",
     "angular2-markdown": "^1.5.1",

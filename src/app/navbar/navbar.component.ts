@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -16,11 +17,11 @@ export class NavbarComponent implements OnDestroy {
   isLoggedIn: boolean;
 
   constructor(private trackLoginService: TrackLoginService,
-              private logoutService: LogoutService) {
+              private logoutService: LogoutService,
+              private router: Router) {
     this.subscription = this.trackLoginService.isLoggedIn$.subscribe(
       state => {
         this.isLoggedIn = state;
-        console.log(this.isLoggedIn);
       }
     );
   }

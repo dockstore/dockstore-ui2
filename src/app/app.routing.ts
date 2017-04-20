@@ -8,6 +8,7 @@ import { ContainerComponent } from './containers/container/container.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { LoginComponent } from './login/login.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
+import { AuthComponent } from './loginComponents/auth/auth.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
@@ -18,6 +19,7 @@ const APP_ROUTES: Routes = [
   { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
   { path: 'login', component: LoginComponent },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
+  { path: 'auth/:provider', component: AuthComponent },
   { path: '**', redirectTo: '' }
 ];
 
