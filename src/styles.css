@@ -80,3 +80,14 @@ div > pre, markdown pre code {
   text-decoration: none;
   font-weight: bold;
 }
+
+/* Center */
+.absCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+}
+

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from "rxjs/Subscription";
@@ -9,9 +9,9 @@ import { TokenService } from '../token.service';
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnInit {
 
-  private subscription: ISubscription;
+  tokenSubscription: ISubscription;
 
   constructor(private tokenService: TokenService,
               private activatedRoute: ActivatedRoute,
@@ -69,11 +69,15 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.addToken().subscribe(res => console.log('Token Linked'));
+    const prevPage = localStorage.getItem('page');
+
+    this.tokenSubscription = this.addToken().subscribe(token =>
+      this.router.navigate([`${ prevPage }`])
+    );
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.tokenSubscription.unsubscribe();
   }
 
 }

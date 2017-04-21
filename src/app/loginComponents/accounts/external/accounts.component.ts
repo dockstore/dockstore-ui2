@@ -114,6 +114,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   private getUserId() {
     return this.userService.getUser()
       .map(user => {
+        this.userService.setUser(user);
         this.userId = user.id;
         return user.id;
       });

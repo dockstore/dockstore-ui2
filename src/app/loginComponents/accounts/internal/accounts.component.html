@@ -1,1 +1,34 @@
-<p>Fill later</p>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="col-lg-2 col-md-3 col-sm-4 hidden-xs thumbnail">
+        <img [src]="user?.avatarUrl" height="175">
+      </div>
+      <div class="col-lg-8 col-md-7 col-sm-6">
+        <table class="format">
+          <tbody>
+          <tr>
+            <th>Username</th>
+            <td>
+              {{ user?.username }}
+            </td>
+          </tr>
+          <tr>
+            <th>Administrator&ensp;&ensp;</th>
+            <td>
+              {{ user?.isAdmin ? 'Yes' : 'No' }}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-1">
+        <button class="btn btn-primary" (click)="syncGitHub()">
+          <span class="glyphicon glyphicon-refresh"></span>
+          Sync with GitHub
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

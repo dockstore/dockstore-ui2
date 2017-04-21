@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-onboarding',
@@ -6,9 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OnboardingComponent implements OnInit {
 
-  constructor() { }
-
   ngOnInit() {
+    localStorage.setItem('page', '/onboarding');
   }
 
 }

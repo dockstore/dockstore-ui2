@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { HttpService } from '../shared/http.service';
@@ -6,7 +7,20 @@ import { HttpService } from '../shared/http.service';
 @Injectable()
 export class UserService {
 
+  private userSource = new Subject<any>();
+
+  user$ = this.userSource.asObservable();
+
   constructor(private httpService: HttpService) { }
+
+  setUser(user) {
+    this.userSource.next(user);
+  }
+
+  updateUser() {
+    const updateUserUrl = `${ Dockstore.API_URI }/users/user/updateUserMetadata`;
+    return this.httpService.getAuthResponse(updateUserUrl);
+  }
 
   getUser() {
     const getUserUrl = `${ Dockstore.API_URI }/users/user`;

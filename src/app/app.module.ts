@@ -44,6 +44,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { LoginComponent } from './login/login.component';
 
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
+import { AccountsComponent } from './loginComponents/accounts/accounts.component';
+import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 
@@ -60,6 +62,8 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
     ToolDetailsComponent,
     LoginComponent,
     OnboardingComponent,
+    AccountsComponent,
+    AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent
   ],
