@@ -1,3 +1,20 @@
+Table of Contents
+=================
+
+   * [DockstoreUi2](#dockstoreui2)
+      * [Set Up Angular CLI](#set-up-angular-cli)
+         * [Prerequisites](#prerequisites)
+            * [Bower](#bower)
+            * [NPM](#npm)
+      * [Project Set Up](#project-set-up)
+      * [Development server](#development-server)
+      * [Code scaffolding](#code-scaffolding)
+      * [Build](#build)
+      * [Running unit tests](#running-unit-tests)
+      * [Running end-to-end tests](#running-end-to-end-tests)
+      * [Further help](#further-help)
+
+
 # DockstoreUi2
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.4.

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ISubscription } from "rxjs/Subscription";
@@ -9,7 +9,7 @@ import { TokenService } from '../token.service';
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
 
   tokenSubscription: ISubscription;
 
