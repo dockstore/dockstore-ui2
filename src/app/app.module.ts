@@ -48,6 +48,7 @@ import { AccountsComponent } from './loginComponents/accounts/accounts.component
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
+import { TokensComponent } from './loginComponents/tokens/tokens.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
     AccountsComponent,
     AccountsInternalComponent,
     AccountsExternalComponent,
-    AuthComponent
+    AuthComponent,
+    TokensComponent
   ],
   imports: [
     BrowserModule,

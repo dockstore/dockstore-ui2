@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dockstore/dockstore-ui2.svg?branch=develop)](https://travis-ci.org/dockstore/dockstore-ui2)
+
 Table of Contents
 =================
 
@@ -41,9 +43,9 @@ Until bootstrap-toc moves to npm or a better table of contents(toc) library come
 sudo npm install -g bower
 bower -v
 1.8.0
+sudo npm install -g @angular/cli@latest
+bower update
 ```
-
-Finally, `sudo npm install -g @angular/cli@latest`.
 
 #### NPM
 
@@ -59,8 +61,15 @@ sudo npm install
 
 Check to make sure Angular CLI has been properly set up
 ```
-ng --v
-node: 7.4.0
+$ ng -v
+    _                      _                 ____ _     ___
+   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+ / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+               |___/
+@angular/cli: 1.0.0
+node: 7.9.0
 os: linux x64
 @angular/common: 2.4.10
 @angular/compiler: 2.4.10

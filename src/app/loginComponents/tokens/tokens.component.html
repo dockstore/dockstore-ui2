@@ -1,0 +1,18 @@
+<div class="container separation">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Token Source</th>
+        <th>Token Value</th>
+        <th>Operations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let token of tokens">
+        <td>{{ token?.tokenSource }}</td>
+        <td>{{ token?.token }}</td>
+        <td><a (click)="deleteToken(token?.id)">Delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
