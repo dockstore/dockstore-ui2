@@ -2,6 +2,11 @@ import { Dockstore } from '../../../shared/dockstore.model';
 
 export class Links {
 
+  static readonly GITHUB = `${ Dockstore.GITHUB_AUTH_URL }
+                            ?client_id=${ Dockstore.GITHUB_CLIENT_ID }
+                            &redirect_uri=${ Dockstore.GITHUB_REDIRECT_URI }
+                            &scope=${ Dockstore.GITHUB_SCOPE }`;
+
   static readonly QUAY = `${ Dockstore.QUAYIO_AUTH_URL }
                           ?client_id=${ Dockstore.QUAYIO_CLIENT_ID }
                           &redirect_uri=${ Dockstore.QUAYIO_REDIRECT_URI }

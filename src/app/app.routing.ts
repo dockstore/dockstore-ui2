@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
+import { TokensComponent } from './loginComponents/tokens/tokens.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
@@ -22,6 +23,7 @@ const APP_ROUTES: Routes = [
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
   { path: 'auth/:provider', component: AuthComponent },
+  { path: 'tokens', component: TokensComponent },
   { path: '**', redirectTo: '' }
 ];
 

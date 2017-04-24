@@ -26,26 +26,15 @@ export class AuthComponent implements OnInit, OnDestroy {
     return fragment.substring(startIndex, endIndex);
   }
 
-  private getCode() {
-    return '';
-  }
-
-  private getToken(provider: string) {
-    switch (provider) {
-      case 'bitbucket':
-        this.getQuayToken('');
-        break;
-      default:
-        this.getCode();
-    }
-  }
-
   private addToken() {
 
     const addQuayToken = this.activatedRoute.fragment.flatMap(fragment =>
       this.tokenService.registerToken(this.getQuayToken(fragment), 'quay.io'));
 
     const queryObservable = this.activatedRoute.queryParams;
+
+    const addGitHubToken = queryObservable
+          .flatMap(query => this.tokenService.registerToken(query['code'], 'github.com'));
 
     const addGitLabToken = queryObservable
       .flatMap(query => this.tokenService.registerToken(query['code'], 'gitlab.com'));
@@ -58,6 +47,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         const provider = params['provider'];
 
         switch (provider) {
+          case 'github':
+            return addGitHubToken;
           case 'quay.io':
             return addQuayToken;
           case 'bitbucket':

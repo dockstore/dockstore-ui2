@@ -74,6 +74,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Open a window for the user to login to the appropriate service
   link(source: string) {
     switch (source) {
+      case 'github.com':
+            this.openWindow(Links.GITHUB);
+            break;
       case 'bitbucket.org':
         this.openWindow(Links.BITBUCKET);
         break;
