@@ -59,8 +59,15 @@ sudo npm install
 
 Check to make sure Angular CLI has been properly set up
 ```
-ng --v
-node: 7.4.0
+$ ng -v
+    _                      _                 ____ _     ___
+   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+ / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+               |___/
+@angular/cli: 1.0.0
+node: 7.9.0
 os: linux x64
 @angular/common: 2.4.10
 @angular/compiler: 2.4.10
