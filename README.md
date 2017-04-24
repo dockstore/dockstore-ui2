@@ -41,9 +41,9 @@ Until bootstrap-toc moves to npm or a better table of contents(toc) library come
 sudo npm install -g bower
 bower -v
 1.8.0
+sudo npm install -g @angular/cli@latest
+bower update
 ```
-
-Finally, `sudo npm install -g @angular/cli@latest`.
 
 #### NPM
 
