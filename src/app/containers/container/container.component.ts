@@ -85,6 +85,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
           toolPath = url;
           this.title = decodeURIComponent(url);
         }
+        window.document.title = 'Dockstore - ' + this.title;
 
         this.containerService.getPublishedToolByPath(toolPath)
           .subscribe(
@@ -160,5 +161,6 @@ export class ContainerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
       this.routeSub.unsubscribe();
+      window.document.title = 'Dockstore';
     }
 }
