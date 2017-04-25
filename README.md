@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dockstore/dockstore-ui2.svg?branch=develop)](https://travis-ci.org/dockstore/dockstore-ui2)
+
 Table of Contents
 =================
 
