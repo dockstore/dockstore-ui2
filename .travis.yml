@@ -23,7 +23,7 @@ install:
   - 'bower update'
   - 'ng version'
 
-before_script:
+script:
   - ng build # this does syntax checking, unit testing, and jshint
 
 notifications:
