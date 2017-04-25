@@ -19,7 +19,6 @@ addons:
 
 install:
   - 'npm install -g bower'
-  - 'npm install -g @angular/cli@latest'
   - 'npm install'
   - 'bower update'
   - 'ng version'
