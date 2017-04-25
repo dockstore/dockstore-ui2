@@ -20,7 +20,9 @@ addons:
 install:
   - 'npm install -g bower'
   - 'npm install -g @angular/cli@latest'
+  - 'npm install'
   - 'bower update'
+  - 'ng version'
 
 before_script:
   - ng build # this does syntax checking, unit testing, and jshint
