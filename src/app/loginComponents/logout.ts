@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +12,7 @@ export class Logout implements OnDestroy {
   loginStateSubscription: Subscription;
   protected isLoggedIn: boolean;
 
-  constructor(private trackLoginService: TrackLoginService,
+  constructor(@Inject (TrackLoginService) private trackLoginService: TrackLoginService,
               private logoutService: LogoutService,
               private router: Router) {
     this.loginStateSubscription = this.trackLoginService.isLoggedIn$.subscribe(
