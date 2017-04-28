@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { HighlightJsService } from 'angular2-highlight-js';
 
-import { ContainerService } from '../containers/container/container.service';
+import { ContainerService } from '../container/container.service';
 import { ParamFilesService } from './paramfiles.service';
 
 @Component({

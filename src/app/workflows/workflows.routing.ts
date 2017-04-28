@@ -2,7 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { WorkflowsComponent } from './workflows.component';
 import { SearchWorkflowsComponent } from './search/search.component';
-import { WorkflowComponent } from './workflow/workflow.component';
+import { WorkflowComponent } from '../workflow/workflow.component';
 
 const WORKFLOWS_ROUTES: Routes = [
   {

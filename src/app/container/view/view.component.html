@@ -1,0 +1,93 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#' + version.id">
+  View
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="{{version.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">View version version</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table id="format" class="table">
+          <tbody>
+            <tr>
+              <th>version version</th>
+              <td>
+                {{ version.name }}
+              </td>
+            </tr>
+            <tr>
+              <th>Git Reference</th>
+              <td>
+                {{ version.reference }}
+              </td>
+            </tr>
+            <tr>
+              <th>Image ID</th>
+              <td>
+                {{ version.image_id }}
+              </td>
+            </tr>
+            <tr>
+              <th>Dockerfile</th>
+              <td>
+                {{ version.dockerfile_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>CWL Descriptor</th>
+              <td>
+                {{ version.cwl_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>WDL Descriptor</th>
+              <td>
+                {{ version.wdl_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>CWL Test Parameter File(s)</th>
+              <td>
+                {{ version.wdl_path }}
+              </td>
+            </tr>
+            <tr>
+              <th>Automated</th>
+              <td>
+                {{ version.automated ? 'Yes' : 'No' }}
+              </td>
+            </tr>
+            <tr>
+              <th>Image Size</th>
+              <td>
+                {{ getSizeString(version.size) }}
+              </td>
+            </tr>
+            <tr>
+              <th>Last Modified</th>
+              <td>
+                {{ getDateTimeMessage(version.last_modified) }}
+              </td>
+            </tr>
+            <tr>
+              <th>Valid</th>
+              <td>
+                {{ version.valid ? 'Yes' : 'No' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

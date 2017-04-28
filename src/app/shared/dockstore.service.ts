@@ -13,6 +13,11 @@ export class DockstoreService {
 
   constructor(private http: Http) { }
 
+  /* Highlight Code */
+  highlightCode(code): string {
+    return '<pre><code class="YAML highlight">' + code + '</pre></code>';
+  }
+
   getResponse(url: string) {
     return this.http.get(url)
       .map((res: Response) => res.json())
@@ -125,10 +130,7 @@ export class DockstoreService {
 
   // ----------------------------------------
 
-  /* Highlight Code */
-  highlightCode(code): string {
-    return '<pre><code class="YAML highlight">' + code + '</pre></code>';
-  }
+
 
   /* Set Up Git URL */
   getProvider(gitUrl: string): string {
@@ -186,61 +188,6 @@ export class DockstoreService {
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
 
     return tool;
-  }
-
-  /* Messages About Date and Time */
-  getDateTimeString(timestamp: number, dateOnly = false): string {
-    const date = new Date(timestamp);
-    let dateString = DockstoreService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
-
-    if (!dateOnly) {
-      dateString += ' at ' + date.toLocaleTimeString();
-    }
-
-    return dateString;
-  }
-
-  getDate(timestamp) {
-    return this.getDateTimeString(timestamp);
-  }
-
-  private getTime(timestamp: number, convert: number) {
-    const timeDiff = (new Date()).getTime() - timestamp;
-    return Math.floor(timeDiff / convert);
-  }
-
-  getTimeMessage(timestamp: number) {
-    const msToMins = 1000 * 60;
-    const msToHours = msToMins * 60;
-    const msToDays = msToHours * 24;
-
-    let time = this.getTime(timestamp, msToDays);
-
-    if (time < 1) {
-
-      time = this.getTime(timestamp, msToHours);
-
-      if (time < 1) {
-
-        time = this.getTime(timestamp, msToMins);
-
-        if (time < 1) {
-          return '< 1 minute ago';
-        } else {
-          return time + ((time === 1) ? ' minute ago' : ' minutes ago' );
-        }
-
-      } else {
-
-        return time + ((time === 1) ? ' hour ago' : ' hours ago');
-
-      }
-
-    } else {
-
-      return time + ((time === 1) ? ' day ago' : ' days ago');
-
-    }
   }
 
   // ----------------------------------------

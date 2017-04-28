@@ -1,0 +1,26 @@
+<span>
+ Launch With
+ <div class="pull-right"><app-select class="text-right" [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
+ <app-select class="text-right" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select></div>
+</span>
+
+<div class="well">
+  <div class="well well-sm">
+    Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+    <pre>{{ params }}</pre>
+  </div>
+  <div class="well well-sm">
+    Run locally with the Dockstore CLI
+    <pre>{{ cli }}</pre>
+  </div>
+  <div *ngIf="currentDescriptor === 'cwl'">
+    <div class="well well-sm">
+      <a href="https://github.com/common-workflow-language/cwltool">Run locally with cwltool</a>
+      <pre>{{ cwl }}</pre>
+    </div>
+    <div class="well well-sm">
+      <a href="https://github.com/Consonance/consonance/wiki">Run on AWS VMs with Consonance</a>
+      <pre>{{ consonance }}</pre>
+    </div>
+  </div>
+</div>

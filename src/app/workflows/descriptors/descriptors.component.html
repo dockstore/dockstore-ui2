@@ -1,9 +1,0 @@
-<div class="container separation">
-  <strong>Workflow Version:</strong>
-  <app-select [items]="versionNames"
-              [default]="currentVersion"
-              (select)="onVersionChange($event)"></app-select>
-  <strong>Descriptor:</strong>
-  <app-select [items]="filePaths" (select)="onFilePathChange($event)"></app-select>
-  <section [innerHTML]="content" highlight-js-content=".highlight"></section>
-</div>
