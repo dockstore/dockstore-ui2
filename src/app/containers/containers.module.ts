@@ -8,7 +8,6 @@ import { HeaderModule } from '../shared/modules/header.module';
 import { SelectModule } from '../shared/modules/select.module';
 import { ListContainersModule } from '../shared/modules/list-containers.module';
 import { TabsModule } from '../shared/modules/tabs.module';
-import { ParamfilesModule } from '../shared/modules/paramfiles.module';
 
 import { ContainerService } from '../container/container.service';
 

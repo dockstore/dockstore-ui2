@@ -9,7 +9,6 @@ import { ProviderService } from '../shared/provider.service';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { DateService } from '../shared/date.service';
-import { ListContainersService } from '../containers/list/list.service';
 import { ContainerService } from './container.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 
@@ -21,7 +20,6 @@ export class ContainerComponent extends Tool {
 
     constructor(private dockstoreService: DockstoreService,
                 private dateService: DateService,
-                private listContainersService: ListContainersService,
                 private containerService: ContainerService,
                 private imageProviderService: ImageProviderService,
                 toolService: ToolService,
@@ -46,7 +44,7 @@ export class ContainerComponent extends Tool {
     }
 
     getValidVersions() {
-      this.validVersions = this.containerService.getValidVersions(this.tool);
+      this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
     }
 
 }
