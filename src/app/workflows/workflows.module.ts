@@ -39,7 +39,7 @@ import { ParamfilesWorkflowComponent } from './paramfiles/paramfiles.component';
   imports: [
     CommonModule,
     MarkdownModule.forRoot(),
-    DataTablesModule,
+    DataTablesModule.forRoot(),
     HighlightJsModule,
     HeaderModule,
     SelectModule,
