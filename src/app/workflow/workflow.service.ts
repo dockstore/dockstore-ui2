@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 
 import { Dockstore } from '../shared/dockstore.model';
-import { DockstoreService } from '../shared/dockstore.service';
+import { HttpService } from '../shared/http.service';
 
 @Injectable()
 export class WorkflowService {
-  constructor(private dockstoreService: DockstoreService) {}
+  constructor(private httpService: HttpService) {}
 
   getPublishedWorkflowByPath(path: string) {
     const publishedWorkflowUrl = Dockstore.API_URI + '/workflows/path/workflow/' + path + '/published';
-    return this.dockstoreService.getResponse(publishedWorkflowUrl);
+    return this.httpService.getResponse(publishedWorkflowUrl);
   }
 
   getParamsString(path: string, tagName: string) {
