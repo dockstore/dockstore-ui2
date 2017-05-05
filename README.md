@@ -92,9 +92,12 @@ The Dockstore class in `dockstore-ui2/src/app/shared/dockstore.model.ts` is for 
 ```
 export class Dockstore {
 
-  static readonly API_URI = 'http://localhost:8080';
+  static readonly API_URI = 'https://staging.dockstore.org:8443';
 
+  static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
   static readonly GITHUB_CLIENT_ID = '';
+  static readonly GITHUB_REDIRECT_URI = 'http://localhost:4200/auth/github';
+  static readonly GITHUB_SCOPE = 'read:org';
 
   static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
   static readonly QUAYIO_REDIRECT_URI = 'http://localhost:4200/auth/quay.io';
@@ -110,6 +113,8 @@ export class Dockstore {
 
 }
 ```
+
+In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
 ## Development server
 

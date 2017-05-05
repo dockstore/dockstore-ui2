@@ -73,7 +73,7 @@ import { TokensComponent } from './loginComponents/tokens/tokens.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    DataTablesModule,
+    DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
     ListContainersModule,

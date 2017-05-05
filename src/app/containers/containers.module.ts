@@ -35,7 +35,7 @@ import { DockerfileComponent } from './dockerfile/dockerfile.component';
   imports: [
     CommonModule,
     MarkdownModule.forRoot(),
-    DataTablesModule,
+    DataTablesModule.forRoot(),
     HighlightJsModule,
     HeaderModule,
     SelectModule,
