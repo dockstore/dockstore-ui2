@@ -16,8 +16,8 @@ import { ListContainersComponent } from '../containers/list/list.component';
   imports: [
     CommonModule,
     RouterModule,
-    DataTablesModule,
-    ClipboardModule,
+    DataTablesModule.forRoot(),
+    ClipboardModule.forRoot(),
     HeaderModule
   ],
   providers: [

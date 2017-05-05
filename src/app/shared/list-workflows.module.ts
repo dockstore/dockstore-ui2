@@ -15,7 +15,7 @@ import { ListWorkflowsComponent } from '../workflows/list/list.component';
   imports: [
     CommonModule,
     RouterModule,
-    DataTablesModule,
+    DataTablesModule.forRoot(),
     HeaderModule
   ],
   providers: [
