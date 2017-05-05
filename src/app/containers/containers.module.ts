@@ -24,6 +24,9 @@ import { ContainerModule } from '../shared/modules/container.module';
   ],
   imports: [
     CommonModule,
+    MarkdownModule.forRoot(),
+    DataTablesModule.forRoot(),
+    HighlightJsModule,
     HeaderModule,
     SelectModule,
     ListContainersModule,
