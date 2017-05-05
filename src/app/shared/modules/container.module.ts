@@ -42,7 +42,7 @@ import { ParamfilesComponent } from '../../container/paramfiles/paramfiles.compo
   imports: [
     CommonModule,
     MarkdownModule.forRoot(),
-    DataTablesModule,
+    DataTablesModule.forRoot(),
     HighlightJsModule,
     HeaderModule,
     SelectModule,
