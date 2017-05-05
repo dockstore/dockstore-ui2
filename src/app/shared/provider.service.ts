@@ -10,6 +10,7 @@ export class ProviderService {
     return tool;
   }
 
+// TODO: Without an anchor, this looks fragile (for example if you had a github repo that included the string " bitbucket.org" in its name.
   private getProvider(gitUrl: string): string {
     if (gitUrl.includes('github.com')) {
       return 'GitHub';
