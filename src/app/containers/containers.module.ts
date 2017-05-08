@@ -3,34 +3,24 @@ import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
 import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
-import { HeaderModule } from '../shared/header.module';
-import { SelectModule } from '../shared/select.module';
-import { ListContainersModule } from '../shared/list-containers.module';
-import { TabsModule } from '../shared/tabs.module';
-import { DescriptorsModule } from '../shared/descriptors.module';
-import { ParamfilesModule } from '../shared/paramfiles.module';
 
-import { ContainerService } from './container/container.service';
+import { HeaderModule } from '../shared/modules/header.module';
+import { SelectModule } from '../shared/modules/select.module';
+import { ListContainersModule } from '../shared/modules/list-containers.module';
+import { TabsModule } from '../shared/modules/tabs.module';
+
+import { ContainerService } from '../container/container.service';
 
 import { containersRouting } from './containers.routing';
 
 import { ContainersComponent } from './containers.component';
 import { SearchContainersComponent } from './search/search.component';
-import { VersionsContainerComponent } from './versions/versions.component';
-import { ViewContainerComponent } from './view/view.component';
-import { ContainerComponent } from './container/container.component';
-import { FilesContainerComponent } from './files/files.component';
-import { DockerfileComponent } from './dockerfile/dockerfile.component';
+import { ContainerModule } from '../shared/modules/container.module';
 
 @NgModule({
   declarations: [
     ContainersComponent,
-    SearchContainersComponent,
-    VersionsContainerComponent,
-    ViewContainerComponent,
-    ContainerComponent,
-    FilesContainerComponent,
-    DockerfileComponent
+    SearchContainersComponent
   ],
   imports: [
     CommonModule,
@@ -40,14 +30,11 @@ import { DockerfileComponent } from './dockerfile/dockerfile.component';
     HeaderModule,
     SelectModule,
     ListContainersModule,
-    TabsModule,
-    DescriptorsModule,
-    ParamfilesModule,
+    ContainerModule,
     containersRouting
   ],
   providers: [
-    HighlightJsService,
-    ContainerService
+    HighlightJsService
   ]
 })
 export class ContainersModule { }

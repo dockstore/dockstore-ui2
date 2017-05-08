@@ -1,15 +1,25 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter,OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html'
 })
-export class SelectComponent {
-  @Input() items;
-  @Input() default?;
+export class SelectComponent implements OnChanges {
+
+  @Input() items: Array<any>;
+  @Input() field?;
+  @Input() default?: any;
+
   @Output() select: EventEmitter<any> = new EventEmitter();
 
-  changedSelect(selectedVal) {
-    this.select.emit(selectedVal);
+  obj: any;
+
+  ngOnChanges() {
+    this.obj = this.default;
   }
+
+  changedSelect(obj) {
+    this.select.emit(obj);
+  }
+
 }

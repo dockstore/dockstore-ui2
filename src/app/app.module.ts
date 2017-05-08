@@ -12,15 +12,20 @@ import { Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AuthService } from 'ng2-ui-auth';
 
 /* Internal Modules */
-import { HeaderModule } from './shared/header.module';
-import { ListContainersModule } from './shared/list-containers.module';
-import { ListWorkflowsModule } from './shared/list-workflows.module';
-import { TabsModule } from './shared/tabs.module';
+import { HeaderModule } from './shared/modules/header.module';
+import { ListContainersModule } from './shared/modules/list-containers.module';
+import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
+import { TabsModule } from './shared/modules/tabs.module';
 
 /* Internal Services */
 import { DockstoreService } from './shared/dockstore.service';
 import { HttpService } from './shared/http.service';
 import { TrackLoginService } from './shared/track-login.service';
+import { ProviderService } from './shared/provider.service';
+import { ImageProviderService } from './shared/image-provider.service';
+import { ListService } from './shared/list.service';
+import { CommunicatorService } from './shared/communicator.service';
+import { ToolService } from './shared/tool.service';
 import { TokenService } from './loginComponents/token.service';
 import { UserService } from './loginComponents/user.service';
 import { LoginApi } from './login/login.api';
@@ -91,6 +96,11 @@ import { TokensComponent } from './loginComponents/tokens/tokens.component';
     TrackLoginService,
     TokenService,
     UserService,
+    ListService,
+    CommunicatorService,
+    ToolService,
+    ProviderService,
+    ImageProviderService,
     CLIENT_ROUTER_PROVIDERS
   ],
   bootstrap: [AppComponent]

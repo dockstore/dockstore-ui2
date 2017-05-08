@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { HighlightJsService } from 'angular2-highlight-js';
 
-import { ContainerService } from '../containers/container/container.service';
+import { ContainerService } from '../container/container.service';
 import { ParamFilesService } from './paramfiles.service';
-
+import { FileService } from '../shared/file.service'
 @Component({
   selector: 'app-paramfiles',
   templateUrl: './paramfiles.component.html',
@@ -40,7 +40,8 @@ export class ParamfilesComponent implements OnInit {
 
   constructor(private highlightJsService: HighlightJsService,
                 private containerService: ContainerService,
-                private paramFilesService: ParamFilesService) { }
+                private paramFilesService: ParamFilesService,
+                private fileService: FileService) { }
 
   onVersionChange(tagName: string): void {
     this.descriptorTypes = Array.from(this.tagsMap.get(tagName).keys());
@@ -48,19 +49,29 @@ export class ParamfilesComponent implements OnInit {
   }
 
   onDescriptorChange(descriptorName: string, currentTag: string) {
+    // List of files (path, content,etc)
     this.files = this.tagsMap.get(currentTag).get(descriptorName);
+    // List of filePath
     this.filePaths = this.files.map(
-      file => this.containerService.getFilePath(file)
+      file => file.path
     );
     this.onPathChange(this.filePaths[0]);
   }
 
   onPathChange(path: string) {
-    this.content = this.containerService.highlightCode(this.containerService.getFile(path, this.files).content);
+    this.content = this.fileService.highlightCode(this.getFile(this.files, path).content);
   }
 
+  getFile(files, path: string) {
+      for (const file of files) {
+        if (file.path === path) {
+          return file;
+        }
+      }
+    }
+
   ngOnInit() {
-    this.tagsMap = this.containerService.getTagsWithParams(this.validTags);
+    this.tagsMap = this.paramFilesService.getTagsWithParam(this.toolId, this.validTags);
 
     if (this.tagsMap.size > 0) {
       this.tagNames = Array.from(this.tagsMap.keys());

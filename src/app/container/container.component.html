@@ -1,0 +1,94 @@
+<div class="container">
+  <h3>{{ title }}</h3>
+  <p>
+    Last build: {{ tool?.agoMessage || 'n/a' }}
+  </p>
+</div>
+
+<div class="container">
+  <app-tabs>
+    <app-tab title="Info">
+      <div class="container separation">
+        <table id="format" class="table">
+          <tbody>
+            <tr>
+              <th>Author</th>
+              <td>{{ tool?.author || 'n/a' }}</td>
+            </tr>
+            <tr>
+              <th>E-mail</th>
+              <td>
+                <div *ngIf="tool?.email">
+                  <a href="mailto:{{tool?.email}}">
+                  {{ tool?.email }}
+                </a>
+                </div>
+                <div *ngIf="!tool?.email">
+                  n/a
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>GitHub</th>
+              <td>
+                <a [href]="tool?.providerUrl">
+                {{ tool?.providerUrl }}
+              </a>
+              </td>
+            </tr>
+            <tr>
+              <th>Quay.io</th>
+              <td>
+                <a [href]="tool?.imgProviderUrl">
+                {{ tool?.imgProviderUrl }}
+              </a>
+              </td>
+            </tr>
+            <tr>
+              <th>Dockerfile Path</th>
+              <td>{{ tool?.default_dockerfile_path }}</td>
+            </tr>
+            <tr>
+              <th>CWL Path</th>
+              <td>{{ tool?.default_cwl_path || 'n/a' }}</td>
+            </tr>
+            <tr>
+              <th>WDL Path</th>
+              <td>{{ tool?.default_wdl_path || 'n/a' }}</td>
+            </tr>
+            <tr>
+              <th>Build Mode</th>
+              <td>{{ tool?.buildMode }}</td>
+            </tr>
+            <tr>
+              <th>Last Build</th>
+              <td>{{ tool?.lastBuildDate }}</td>
+            </tr>
+            <tr>
+              <th>Last Updated</th>
+              <td>{{ tool?.lastUpdatedDate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="tool">
+        Description
+        <div class="well well-sm">
+          <pre><markdown>{{ tool?.description || 'No description associated with this container.' }}</markdown></pre>
+        </div>
+        <div *ngIf="validVersions">
+          <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
+        </div>
+      </div>
+    </app-tab>
+    <div *ngIf="validVersions">
+      <app-tab title="Versions">
+        <app-versions-container [versions]="tool?.tags"></app-versions-container>
+      </app-tab>
+      <app-tab title="Files">
+        <app-files-container [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion"></app-files-container>
+      </app-tab>
+    </div>
+  </app-tabs>
+</div>

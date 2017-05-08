@@ -3,26 +3,26 @@
     <div *ngIf="displayTable">
       <table datatable class="table row-border hover">
         <thead>
-        <tr>
-          <th>Name</th>
-          <th>Author</th>
-          <th>Format</th>
-          <th>Project Links</th>
-        </tr>
+          <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Format</th>
+            <th>Project Links</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let workflow of publishedWorkflows">
-          <td>
-            <a [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
-          </td>
-          <td>{{ workflow?.author || 'n/a' }}</td>
-          <td>{{ workflow?.descriptorType | uppercase }}</td>
-          <td>
-            <a [href]="workflow.providerUrl">
+          <tr *ngFor="let workflow of publishedTools">
+            <td>
+              <a [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
+            </td>
+            <td>{{ workflow?.author || 'n/a' }}</td>
+            <td>{{ workflow?.descriptorType | uppercase }}</td>
+            <td>
+              <a [href]="workflow.providerUrl">
               {{ workflow?.provider }}
             </a>
-          </td>
-        </tr>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

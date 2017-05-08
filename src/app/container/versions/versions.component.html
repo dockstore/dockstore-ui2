@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div>
+      <table datatable [dtOptions]="dtOptions" class="table row-border hover">
+        <thead>
+          <tr>
+            <th>version</th>
+            <th>Git Reference</th>
+            <th>Tool Path</th>
+            <th>Date Built</th>
+            <th>Valid</th>
+            <th>Verified</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let version of versions">
+            <td>{{ version.name }}</td>
+            <td>{{ version.reference || 'n/a' }}</td>
+            <td>
+              <div>
+                {{ version.cwl_path }}
+                <hr>
+                {{ version.wdl_path }}
+                <hr>
+                {{ version.dockerfile_path }}
+                <hr>
+              </div>
+            </td>
+            <td>{{ getDateTimeString(version.last_modified) }}</td>
+            <td>
+              <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
+              <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
+            </td>
+            <td>
+              <span class="glyphicon glyphicon-ok" *ngIf="version.verified"></span>
+              <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
+            </td>
+            <td>
+              <app-view-container [version]="version"></app-view-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -56,7 +56,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.trackLoginService.isLoggedIn$.subscribe(
       state => {
         if (!state) {
-          console.log(state);
           this.router.navigate(['']);
         }
       }

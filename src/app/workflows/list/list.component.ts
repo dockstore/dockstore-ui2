@@ -1,36 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { ListWorkflowsService } from './list.service';
+import { ToolLister } from '../../shared/tool-lister';
+
+import { ListService } from '../../shared/list.service';
+import { ProviderService } from '../../shared/provider.service';
 
 @Component({
   selector: 'app-list-workflows',
   templateUrl: './list.component.html'
 })
-export class ListWorkflowsComponent implements OnInit {
+export class ListWorkflowsComponent extends ToolLister {
 
-  displayTable = false;
+  // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
+  // gitUrl
 
-  publishedWorkflows = [];
-
-  constructor(private listWorkflowsService: ListWorkflowsService) { }
-
-  ngOnInit() {
-    this.listWorkflowsService.getPublishedWorkflows()
-      .subscribe(
-        (publishedWorkflows) => {
-          publishedWorkflows.map( workflow => {
-          const gitUrl = workflow.gitUrl;
-
-          workflow.provider = this.listWorkflowsService.getProvider(gitUrl);
-          workflow.providerUrl = this.listWorkflowsService.getProviderUrl(gitUrl, workflow.provider);
-
-          return workflow;
-        });
-
-        this.publishedWorkflows = publishedWorkflows;
-
-        this.displayTable = true;
-      }
-    );
+  constructor(listService: ListService, providerService: ProviderService) {
+    super(listService, providerService, 'workflows');
   }
+
+  initToolLister(): void { }
+
 }
