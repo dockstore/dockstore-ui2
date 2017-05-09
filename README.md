@@ -116,6 +116,10 @@ export class Dockstore {
 
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
+## Pre-build/serve
+
+Run `npm run-script prebuild` before running or building the project. This command will automatically generate a file which contains the UI tag version.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Run `ng serve --host 0.0.0.0` in order to serve your site to other computers on the same network. 
