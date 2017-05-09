@@ -5,6 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prebuild": "ts-node git.version.ts",
+    "build.prod": "ng build -prod",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
