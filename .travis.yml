@@ -23,6 +23,8 @@ install:
   - 'bower update'
   - 'ng version'
 
+before_script:
+  - npm run-script prebuild
 script:
   - ng build # this does syntax checking, unit testing, and jshint
 
