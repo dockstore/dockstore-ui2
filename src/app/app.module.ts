@@ -15,7 +15,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { TabsModule } from './shared/modules/tabs.module';
+import { TabModule } from './shared/modules/tabs.module';
 
 /* Internal Services */
 import { DockstoreService } from './shared/dockstore.service';
@@ -83,7 +83,7 @@ import { TokensComponent } from './loginComponents/tokens/tokens.component';
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    TabsModule,
+    TabModule,
     routing
   ],
   providers: [

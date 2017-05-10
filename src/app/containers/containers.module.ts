@@ -7,7 +7,7 @@ import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 import { HeaderModule } from '../shared/modules/header.module';
 import { SelectModule } from '../shared/modules/select.module';
 import { ListContainersModule } from '../shared/modules/list-containers.module';
-import { TabsModule } from '../shared/modules/tabs.module';
+import { TabModule } from '../shared/modules/tabs.module';
 
 import { ContainerService } from '../container/container.service';
 

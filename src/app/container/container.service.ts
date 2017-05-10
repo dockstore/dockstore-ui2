@@ -43,4 +43,17 @@ export class ContainerService {
     }
   }
 
+  getBuildModeTooltip(mode: string) {
+    switch (mode) {
+      case 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS':
+        return 'Fully-Automated: All versions are automated builds';
+      case 'AUTO_DETECT_QUAY_TAGS_WITH_MIXED':
+        return 'Partially-Automated: At least one version is an automated build';
+      case 'MANUAL_IMAGE_PATH':
+        return 'Manual: No versions are automated builds';
+      default:
+        return 'Unknown: Build information not known';
+    }
+  }
+
 }

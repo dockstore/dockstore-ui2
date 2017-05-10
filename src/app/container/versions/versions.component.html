@@ -4,13 +4,44 @@
       <table datatable [dtOptions]="dtOptions" class="table row-border hover">
         <thead>
           <tr>
-            <th>version</th>
-            <th>Git Reference</th>
-            <th>Tool Path</th>
-            <th>Date Built</th>
-            <th>Valid</th>
-            <th>Verified</th>
-            <th>Actions</th>
+            <th>
+              <label tooltip="Tags from Docker repository">
+                Version
+              </label>
+            </th>
+
+            <th>
+              <label tooltip="Git branches/tags: The selected reference and tag will be used
+                         to populate the info tab including 'launch with'">
+                Git Reference
+              </label>
+            </th>
+
+            <th>
+              <label tooltip="Tool paths for given version">Tool Path</label>
+            </th>
+
+            <th>
+              <label tooltip="Date of last build of the Docker image">Date Built</label>
+            </th>
+
+            <th>
+              <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
+                Valid
+              </label>
+            </th>
+
+            <th>
+              <label tooltip="A version is verified if it has been verified to work by a person/group">
+                Verified
+              </label>
+            </th>
+
+            <th>
+              <label tooltip="View more information about the given version">
+                Actions
+              </label>
+            </th>
           </tr>
         </thead>
         <tbody>

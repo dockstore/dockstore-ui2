@@ -8,7 +8,7 @@ import { HeaderModule } from './header.module';
 
 import { SelectModule } from './select.module';
 import { ListContainersModule } from './list-containers.module';
-import { TabsModule } from './tabs.module';
+import { TabModule } from './tabs.module';
 import { ParamfilesModule } from './paramfiles.module';
 
 import { DateService } from '../date.service';
@@ -27,6 +27,10 @@ import { FilesContainerComponent } from '../../container/files/files.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { ParamfilesComponent } from '../../container/paramfiles/paramfiles.component';
+
+/* Bootstrap */
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
@@ -47,8 +51,10 @@ import { ParamfilesComponent } from '../../container/paramfiles/paramfiles.compo
     HeaderModule,
     SelectModule,
     ListContainersModule,
-    TabsModule,
-    ParamfilesModule
+    TabModule,
+    ParamfilesModule,
+    TooltipModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     HighlightJsService,

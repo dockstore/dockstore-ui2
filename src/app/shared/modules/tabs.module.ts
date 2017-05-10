@@ -19,4 +19,4 @@ import { TabsComponent } from '../../tabs/tabs.component';
     TabsComponent
   ]
 })
-export class TabsModule { }
+export class TabModule { }

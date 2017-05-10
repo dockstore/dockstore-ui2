@@ -6,7 +6,7 @@ import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 import { HeaderModule } from '../shared/modules/header.module';
 import { SelectModule } from '../shared/modules/select.module';
 import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
-import { TabsModule } from '../shared/modules/tabs.module';
+import { TabModule } from '../shared/modules/tabs.module';
 import { ParamfilesModule } from '../shared/modules/paramfiles.module';
 
 import { workflowsRouting } from './workflows.routing';
@@ -37,7 +37,7 @@ import { ParamfilesWorkflowComponent } from './paramfiles/paramfiles.component';
     HeaderModule,
     SelectModule,
     ListWorkflowsModule,
-    TabsModule,
+    TabModule,
     ParamfilesModule,
     workflowsRouting
   ],
