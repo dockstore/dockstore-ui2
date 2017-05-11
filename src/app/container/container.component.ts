@@ -1,16 +1,17 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {Tool} from '../shared/tool';
+import { CommunicatorService } from '../shared/communicator.service';
+import { DateService } from '../shared/date.service';
 
-import {ToolService} from '../shared/tool.service';
-import {CommunicatorService} from '../shared/communicator.service';
-import {ProviderService} from '../shared/provider.service';
+import { DockstoreService } from '../shared/dockstore.service';
+import { ImageProviderService } from '../shared/image-provider.service';
+import { ProviderService } from '../shared/provider.service';
 
-import {DockstoreService} from '../shared/dockstore.service';
-import {DateService} from '../shared/date.service';
-import {ContainerService} from './container.service';
-import {ImageProviderService} from '../shared/image-provider.service';
+import { Tool } from '../shared/tool';
+
+import { ToolService } from '../shared/tool.service';
+import { ContainerService } from './container.service';
 
 @Component({
   selector: 'app-container',
@@ -40,6 +41,7 @@ export class ContainerComponent extends Tool {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
   }
+
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
