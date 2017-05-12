@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Files } from '../../shared/files';
 
@@ -8,7 +8,7 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
   selector: 'app-files-container',
   templateUrl: './files.component.html'
 })
-export class FilesContainerComponent extends Files {
+export class FilesContainerComponent extends Files implements OnInit {
 
   versionsWithParamfiles: Array<any>;
 

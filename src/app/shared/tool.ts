@@ -23,7 +23,7 @@ export abstract class Tool implements OnInit, OnDestroy {
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
               private router: Router,
-              toolType: string){
+              toolType: string) {
     this._toolType = toolType;
   }
 

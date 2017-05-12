@@ -4,7 +4,7 @@ import { HighlightJsService } from 'angular2-highlight-js';
 
 import { ContainerService } from '../container/container.service';
 import { ParamFilesService } from './paramfiles.service';
-import { FileService } from '../shared/file.service'
+import { FileService } from '../shared/file.service';
 @Component({
   selector: 'app-paramfiles',
   templateUrl: './paramfiles.component.html',

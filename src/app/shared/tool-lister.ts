@@ -26,7 +26,7 @@ export abstract class ToolLister implements OnInit {
         this.initToolLister();
 
         this.displayTable = true;
-      })
+      });
   }
 
 }
