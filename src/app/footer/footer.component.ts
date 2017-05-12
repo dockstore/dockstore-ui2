@@ -12,7 +12,7 @@ import { versions } from './versions';
 })
 export class FooterComponent implements OnInit {
   version: string;
-  tag: string
+  tag: string;
 
   constructor(private versionsService: VersionsService) { }
 

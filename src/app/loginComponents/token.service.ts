@@ -21,7 +21,7 @@ export class TokenService {
   }
 
   deleteToken(tokenId: number) {
-    let deleteTokenUrl = `${ Dockstore.API_URI }/auth/tokens/${ tokenId }`;
+    const deleteTokenUrl = `${ Dockstore.API_URI }/auth/tokens/${ tokenId }`;
 
     return this.httpService.deleteAuth(deleteTokenUrl);
   }

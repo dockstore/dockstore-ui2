@@ -25,6 +25,7 @@ install:
 
 before_script:
   - npm run-script prebuild
+  - ng lint
 script:
   - ng build # this does syntax checking, unit testing, and jshint
 
