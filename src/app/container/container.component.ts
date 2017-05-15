@@ -37,6 +37,9 @@ export class ContainerComponent extends Tool {
     toolRef.lastBuildDate = this.dateService.getDateTimeMessage(toolRef.lastBuild);
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(toolRef.lastUpdated);
     toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
+    toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
+    toolRef.VerifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
+
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
