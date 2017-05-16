@@ -5,8 +5,8 @@ import { Http } from '@angular/http';
 export class DockstoreService {
 
   private static readonly months = [ 'Jan.', 'Feb.', 'Mar.', 'Apr.',
-    'May', 'Jun.', 'Jul.', 'Aug.',
-    'Sept.', 'Oct.', 'Nov.', 'Dec.' ];
+                                     'May', 'Jun.', 'Jul.', 'Aug.',
+                                     'Sept.', 'Oct.', 'Nov.', 'Dec.' ];
 
   constructor(private http: Http) {
   }

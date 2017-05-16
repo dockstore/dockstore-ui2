@@ -11,7 +11,7 @@
     <p>
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
-    <div class="col-sm-9" style="background-color:white">
+    <div class="sideblock col-sm-12 col-md-9 col-lg-9">
       <tabset>
         <tab heading="Info">
           <div class="container separation">
@@ -145,7 +145,7 @@
       </tabset>
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-12 col-md-3 col-lg-3">
       <div class="panel panel-default" *ngIf="tool?.versionVerified">
         <div class="panel-heading">
           <strong>Verified</strong>

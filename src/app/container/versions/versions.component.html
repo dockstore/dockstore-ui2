@@ -3,76 +3,75 @@
     <div>
       <table datatable [dtOptions]="dtOptions" class="table row-border hover">
         <thead>
-        <tr>
-          <th>
-            <label tooltip="Tags from Docker repository">
-              Version
-            </label>
-          </th>
+          <tr>
+            <th>
+              <label tooltip="Tags from Docker repository">
+                Version
+              </label>
+            </th>
+            <th>
+              <label tooltip="Git branches/tags: The selected reference and tag will be used
+                           to populate the info tab including 'launch with'">
+                Git Reference
+              </label>
+            </th>
 
-          <th>
-            <label tooltip="Git branches/tags: The selected reference and tag will be used
-                         to populate the info tab including 'launch with'">
-              Git Reference
-            </label>
-          </th>
+            <th>
+              <label tooltip="Tool paths for given version">Tool Path</label>
+            </th>
 
-          <th>
-            <label tooltip="Tool paths for given version">Tool Path</label>
-          </th>
+            <th>
+              <label tooltip="Date of last build of the Docker image">Date Built</label>
+            </th>
 
-          <th>
-            <label tooltip="Date of last build of the Docker image">Date Built</label>
-          </th>
+            <th>
+              <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
+                Valid
+              </label>
+            </th>
 
-          <th>
-            <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
-              Valid
-            </label>
-          </th>
+            <th>
+              <label tooltip="A version is verified if it has been verified to work by a person/group">
+                Verified
+              </label>
+            </th>
 
-          <th>
-            <label tooltip="A version is verified if it has been verified to work by a person/group">
-              Verified
-            </label>
-          </th>
-
-          <th>
-            <label tooltip="View more information about the given version">
-              Actions
-            </label>
-          </th>
-        </tr>
+            <th>
+              <label tooltip="View more information about the given version">
+                Actions
+              </label>
+            </th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let version of versions">
-          <td>{{ version.name }}</td>
-          <td>{{ version.reference || 'n/a' }}</td>
-          <td>
-            <div>
-              {{ version.cwl_path }}
-              <hr>
-              {{ version.wdl_path }}
-              <hr>
-              {{ version.dockerfile_path }}
-              <hr>
-            </div>
-          </td>
-          <td>{{ getDateTimeString(version.last_modified) }}</td>
-          <td>
-            <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
-            <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
-          </td>
-          <td>
-            <a href="https://support.twitter.com/articles/119135#">
-              <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{verifiedSource}}"></span>
-            </a>
-            <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
-          </td>
-          <td>
-            <app-view-container [version]="version"></app-view-container>
-          </td>
-        </tr>
+          <tr *ngFor="let version of versions">
+            <td>{{ version.name }}</td>
+            <td>{{ version.reference || 'n/a' }}</td>
+            <td>
+              <div>
+                {{ version.cwl_path }}
+                <hr>
+                {{ version.wdl_path }}
+                <hr>
+                {{ version.dockerfile_path }}
+                <hr>
+              </div>
+            </td>
+            <td>{{ getDateTimeString(version.last_modified) }}</td>
+            <td>
+              <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
+              <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
+            </td>
+            <td>
+              <a href="https://support.twitter.com/articles/119135#">
+                <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{verifiedSource}}"></span>
+              </a>
+              <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
+            </td>
+            <td>
+              <app-view-container [version]="version"></app-view-container>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

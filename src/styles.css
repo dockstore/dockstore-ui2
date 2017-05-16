@@ -83,6 +83,10 @@ div > pre, markdown pre code {
   font-weight: bold;
 }
 
+.sideblock {
+  background-color: white;
+}
+
 /* Center */
 .absCenter {
   display: flex;
