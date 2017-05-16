@@ -1,13 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { HeaderModule } from './header.module';
-
-import { ListContainersService } from '../../containers/list/list.service';
 
 import { ListContainersComponent } from '../../containers/list/list.component';
+
+import { ListContainersService } from '../../containers/list/list.service';
+import { HeaderModule } from './header.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ListContainersComponent } from '../../containers/list/list.component';
     RouterModule,
     DataTablesModule.forRoot(),
     ClipboardModule,
-    HeaderModule
+    HeaderModule,
+    TooltipModule.forRoot(),
   ],
   providers: [
     ListContainersService
@@ -27,4 +29,5 @@ import { ListContainersComponent } from '../../containers/list/list.component';
     ListContainersComponent
   ]
 })
-export class ListContainersModule { }
+export class ListContainersModule {
+}

@@ -37,7 +37,7 @@ import { SelectModule } from './select.module';
     FilesContainerComponent,
     DockerfileComponent,
     DescriptorsComponent,
-    ParamfilesComponent
+    ParamfilesComponent,
   ],
   imports: [
     CommonModule,

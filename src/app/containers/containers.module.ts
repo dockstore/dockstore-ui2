@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 import { MarkdownModule } from 'angular2-markdown';

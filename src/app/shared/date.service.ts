@@ -1,8 +1,4 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-
-import { Dockstore } from '../shared/dockstore.model';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class DateService {
@@ -26,6 +22,11 @@ export class DateService {
   private getTime(timestamp: number, convert: number) {
     const timeDiff = (new Date()).getTime() - timestamp;
     return Math.floor(timeDiff / convert);
+  }
+
+  /*Note: change this link if necessary */
+  getVerifiedLink() {
+    return 'https://support.twitter.com/articles/119135#';
   }
 
   getAgoMessage(timestamp: number) {
