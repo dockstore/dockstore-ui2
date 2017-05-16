@@ -2,7 +2,7 @@
   <div class="row">
     <h3>
       <span id="verifiedIcon" *ngIf="tool?.versionVerified">
-        <a href="https://support.twitter.com/articles/119135#">
+        <a href={{tool?.verifiedLinks}}>
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
@@ -136,11 +136,15 @@
         </tab>
         <tab heading="Versions" *ngIf="validVersions">
           <app-versions-container [versions]="tool?.tags"
-                                  [verifiedSource]="tool?.VerifiedSources"></app-versions-container>
+                                  [verifiedSource]="tool?.verifiedSources">
+
+          </app-versions-container>
         </tab>
         <tab heading="Files" *ngIf="validVersions">
           <app-files-container [id]="tool?.id" [versions]="validVersions"
-                               [default]="defaultVersion"></app-files-container>
+                               [default]="defaultVersion">
+
+          </app-files-container>
         </tab>
       </tabset>
     </div>
@@ -152,7 +156,7 @@
         </div>
         <div class="panel-body">
           <tbody>
-          <tr *ngFor="let source of tool?.VerifiedSources">
+          <tr *ngFor="let source of tool?.verifiedSources">
             <td>{{source}}</td>
           </tr>
           </tbody>

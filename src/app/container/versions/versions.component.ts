@@ -10,7 +10,7 @@ import { Versions } from '../../shared/versions';
   styleUrls: [ './versions.component.css' ]
 })
 export class VersionsContainerComponent extends Versions {
-
+  verifiedLink: string;
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<string>;
 
@@ -20,6 +20,7 @@ export class VersionsContainerComponent extends Versions {
 
   constructor(dateService: DateService) {
     super(dateService);
+    this.verifiedLink = dateService.getVerifiedLink();
   }
 
 }

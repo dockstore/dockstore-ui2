@@ -3,7 +3,6 @@ import { Http } from '@angular/http';
 
 @Injectable()
 export class DockstoreService {
-
   private static readonly months = [ 'Jan.', 'Feb.', 'Mar.', 'Apr.',
                                      'May', 'Jun.', 'Jul.', 'Aug.',
                                      'Sept.', 'Oct.', 'Nov.', 'Dec.' ];

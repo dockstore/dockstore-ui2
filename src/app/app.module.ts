@@ -31,6 +31,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
+import { DateService } from './shared/date.service';
+
 /* Internal Services */
 import { DockstoreService } from './shared/dockstore.service';
 import { HttpService } from './shared/http.service';
@@ -65,7 +67,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
-    TokensComponent
+    TokensComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +87,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     LoginService,
     LogoutService,
     DockstoreService,
+    DateService,
     HttpService,
     TrackLoginService,
     TokenService,
