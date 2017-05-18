@@ -26,7 +26,7 @@ export class DateService {
 
   /*Note: change this link if necessary */
   getVerifiedLink() {
-    return 'https://support.twitter.com/articles/119135#';
+    return '/docs/faq#what-is-a-verified-tool-or-workflow-';
   }
 
   getAgoMessage(timestamp: number) {
