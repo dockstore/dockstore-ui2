@@ -73,7 +73,8 @@ Currently, the majority of tool validation has been done by the [docktesters](ht
 We also strive to use this to highlight tools that share a common set of recommended characteristics:
  
 * tools should include a description and an author 
-* tools should include at least one test parameter indicating how to run the tool on some sample data
+* tools should include a README.md or similar in their source repo describing any other relevant information about the tool
+* tools should include at least one test parameter file indicating how to run the tool on some sample data
 * the Dockerfile should be helpful in reconstructing how a tool was built from source
 * tools and/or their reference data should be publically available
 
