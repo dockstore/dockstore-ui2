@@ -61,6 +61,24 @@ Docker behaves a bit differently on a [mac](https://docs.docker.com/docker-for-m
 export TMPDIR=/tmp/docker_tmp
 ```
 
+## What is a verified tool or workflow?
+
+For certain tools or workflows on Dockstore, you will see a verified checkmark like <a href="/docs/faq#what-is-a-verified-tool-or-workflow-"><span class="glyphicon glyphicon-ok"></span></a>. This checkmark is used to indicate tools that were either:
+ 
+* created by our users and verified by our team to run successfully.
+* created by our team and verified by an outside party to run successfully
+
+Currently, the majority of tool validation has been done by the [docktesters](https://lists.icgc.org/mailman/listinfo/docktesters) team currently headed by Miguel Vazquez and formerly headed by Francis Ouellette.
+
+We also strive to use this to highlight tools that share a common set of recommended characteristics:
+ 
+* tools should include a description and an author 
+* tools should include at least one test parameter indicating how to run the tool on some sample data
+* the Dockerfile should be helpful in reconstructing how a tool was built from source
+* tools and/or their reference data should be publically available
+
+This is going to be a moving quality target as tools improve, but you have a tool that you wish to be verified, please send us a heads-up via our GitHub issues or Gitter!
+
 ## Any last tips on using Dockstore?
 
 * the Dockstore CLI uses `./datastore` for temp files so if you're processing large files make sure this partition hosting the current directory is large.
