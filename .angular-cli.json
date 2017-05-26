@@ -19,6 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "styles.css",
         "styles.scss",
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
