@@ -25,7 +25,7 @@ span {
 }
 
 /* Text */
-h1 {
+/*h1 {
   font-size: 56px;
   color: white;
   font-weight: normal;
@@ -39,10 +39,10 @@ h4 {
   font-style: italic;
   font-weight: normal;
   margin: 0;
-}
+}*/
 
 /* Images */
-#rectangle {
+/*#rectangle {
   position: absolute;
   right: 0px;
 }
@@ -50,13 +50,13 @@ h4 {
 #ship, #truck {
   position: absolute;
   bottom: -300px;
-}
+}*/
 
-#truck {
+/*#truck {
   padding-left: 45px;
-}
+}*/
 
-@media (max-width: 992px) {
+/*@media (max-width: 992px) {
   #ship, #truck {
     bottom: 0;
     right: 22%;
@@ -66,15 +66,15 @@ h4 {
     padding-left: 0;
         right: 2%;
   }
-}
+}*/
 
 /* Green Buttons */
-.green {
+/*.green {
   width: 250px;
-}
+}*/
 
 /* General */
-.center {
+/*.center {
   text-align: center;
 }
 
@@ -100,4 +100,4 @@ h4 {
 
 .info {
   height: 300px;
-}
+}*/
