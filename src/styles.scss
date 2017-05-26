@@ -1,98 +1,24 @@
-// * {
-//   margin: 0;
-// }
+/*!
+ *    Copyright 2016 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 
-.wrapper {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  /* the bottom margin is the negative value of the footer's height */
-  margin: 0 auto -155px;
-  background-color: #f4f4f4;
-}
-
-.footer, .push {
-  /* .push must be the same height as .footer */
-  height: 155px;
-}
-
-/* pages generated from markdown needs to have responsive images */
-app-page img {
-  max-width: 100%;
-  height: auto;
-  display:block;
-}
-
-/* header needs proper format */
-app-header img {
-  width: 32px;
-}
-
-app-header h3 {
-  font-size: 20px;
-  color: #21335B;
-  margin: 20px 0px 15px 0px;
-  display: inline;
-  line-height: 55px;
-}
-
-app-header .container-fluid {
-  background-color:#eef0f6;
-  box-shadow: 0px 3px 6px #cfd1d7;
-  position: relative;
-  z-index: 1;
-  padding-top: 5px;
-}
-
-.separation {
-  margin-top: 20px;
-}
-
-#format > tbody > tr > th, #format > tbody > tr > td  {
-  border-top: none;
-}
-
-/* Code */
-div > pre, markdown pre code {
-  color: #487980;
-}
-
-/* Green Login Button */
-.green {
-  margin-top: 5px;
-  background-color: #487980;
-  border-radius: 8px;
-  display: inline-block;
-}
-
-.green p {
-  margin: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 2.5em;
-}
-
-.green a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.sideblock {
-  background-color: white;
-}
-
-/* Center */
-.absCenter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
-}
-
-// Here begins the original main.scss from AngularJS...minus the imports and icon-font-path
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+// Also removing this due to issues
+//@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
 @import "ds-style-fix.scss";
 
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
@@ -512,6 +438,10 @@ td.browse-all {
   /*margin:0;*/
 }
 
+.pagination {
+  /*line-height: 2em;*/
+  /*display: inline-block;*/
+}
 ul.pagination li{
   padding-top: 5px;
   display: inline;
@@ -717,7 +647,6 @@ div.tabs > div > div {
   bottom: 0; right: 0;
   overflow: auto;
 }
-
 div.tabs > div:not(:target) > div {
   position: absolute }
 div.tabs > div:target > div, :target #info > div, #info > div {
@@ -844,7 +773,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
   top: 100%;
 }
 
-// Currently breaking the new ngx-tabset
+// This currently breaks the new ngx-tabset
 // .nav-item {
 //   height:50px;
 // }
@@ -1100,3 +1029,5 @@ div.tabs > div:target > div, :target #info > div, #info > div {
 html, body {
   height:100%;
 }
+
+/* End Temporary Styles - Need to Refactor Later */
