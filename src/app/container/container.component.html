@@ -8,14 +8,15 @@
       </span>
       {{ title }}
     </h3>
-    <p>
+    <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
-    <div class="sideblock col-sm-12 col-md-10 col-lg-10 container">
-      <tabset>
-        <tab heading="Info">
-          <div class="container separation">
-            <table id="format" class="table">
+    <div class="row">
+    <div class="ds-tabs col-sm-12 col-md-10 col-lg-10">
+      <tabset id="tool_tabs" justified="true">
+        <tab id="infoTab" heading="Info" id="infoTab">
+          <div>
+            <table class="table container">
               <tbody>
               <tr>
                 <th>
@@ -135,7 +136,7 @@
           </div>
         </tab>
         <tab heading="Versions" *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags"
+          <app-versions-container [versions]="tool?.tags" id ="versionsTab" 
                                   [verifiedSource]="tool?.verifiedSources">
 
           </app-versions-container>
@@ -147,6 +148,7 @@
           </app-files-container>
         </tab>
       </tabset>
+    </div>
     </div>
 
     <div class="col-sm-12 col-md-2 col-lg-2">

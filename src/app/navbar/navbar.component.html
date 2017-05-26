@@ -1,50 +1,56 @@
-<div class="container-fluid">
-  <ul class="nav navbar-nav">
+<div class="main-menu">
+  <div class="container">
+    <div class="row" id="navigation">
+      <ul class="nav">
+        <span class="pull-left nav-item">
     <li>
       <a routerLink="">
         <img class="logo" src="../assets/images/dockstore/logo.png">
       </a>
     </li>
+    </span>
+        <span class="pull-left nav-item nav-item-text">
     <li>
       <a routerLink="/containers">
-        <img src="../assets/images/dockstore/dockstore-tools-purple.png">
+        <img class="site-icons-small" src="../assets/images/dockstore/dockstore-tools-purple.png">
         Tools
       </a>
     </li>
     <li>
       <a routerLink="/workflows">
-        <img src="../assets/images/dockstore/dockstore-workflows-purple.png">
+        <img class="site-icons-small" src="../assets/images/dockstore/dockstore-workflows-purple.png">
         Workflows
       </a>
     </li>
     <li>
       <a routerLink="/docs">
-        <img src="../assets/images/dockstore/dockstore-documentation.png">
+        <img class="site-icons-small" src="../assets/images/dockstore/dockstore-documentation.png">
         Documentation
       </a>
     </li>
-  </ul>
-  <ul class="nav navbar-nav navbar-right">
+    </span>
+        <span class="pull-right nav-item nav-item-button">
     <li>
       <div *ngIf="isLoggedIn">
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Action <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a routerLink="/accounts">Accounts</a></li>
-            <li><a href="/tokens">Tokens</a></li>
-            <li><a routerLink="/onboarding">Setup</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a (click)="logout()">Logout</a></li>
-          </ul>
-        </div>
-      </div>
-      <div *ngIf="!isLoggedIn">
-        <div class="green">
-          <p><a routerLink="login">Login</a></p>
-        </div>
-      </div>
-    </li>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a routerLink="/accounts">Accounts</a></li>
+          <li><a href="/tokens">Tokens</a></li>
+          <li><a routerLink="/onboarding">Setup</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a (click)="logout()">Logout</a></li>
+        </ul>
+    </div>
+  </div>
+  <div *ngIf="!isLoggedIn">
+    <div class="green">
+      <p><a routerLink="login">Login</a></p>
+    </div>
+  </div>
+  </li>
+  </span>
   </ul>
 </div>
