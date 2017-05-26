@@ -32,4 +32,9 @@ export class UserService {
     return this.httpService.getAuthResponse(getUserTokensUrl);
   }
 
+  getUserTools(userId: number) {
+    const getUserToolsUrl = `${ Dockstore.API_URI }/users/${ userId }/containers`;
+    return this.httpService.getAuthResponse(getUserToolsUrl);
+  }
+
 }

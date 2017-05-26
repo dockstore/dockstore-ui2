@@ -12,6 +12,8 @@ import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from './container.service';
+import { UserService } from '../loginComponents/user.service';
+
 
 @Component({
   selector: 'app-container',
@@ -26,8 +28,9 @@ export class ContainerComponent extends Tool {
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
+              userService: UserService,
               router: Router) {
-    super(toolService, communicatorService, providerService, router, 'containers');
+    super(toolService, communicatorService, providerService, userService, router, 'containers');
   }
 
   setProperties() {

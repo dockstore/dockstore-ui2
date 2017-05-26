@@ -1,0 +1,38 @@
+<app-header>
+  <img src="../assets/images/dockstore/dockstore-tools-blue.png">
+  My Tools
+  <div class="pull-right refresh-all-holder">
+    <button type="button" class="refresh-all-button btn btn-primary">
+      Refresh All Tools
+      {{ user?.id}}
+    </button>
+  </div>
+</app-header>
+
+<div class="container">
+  <!--Msg/Warning Page, this should be a Component-->
+  <div class="row"></div>
+  <!--Tool Content Page, this should be a Component-->
+  <div class="row">
+    <div class="col-md-3 containers-rsb">
+      <accordion>
+        <accordion-group *ngFor="let tool of userTools" [heading]="tool?.namespace">
+          <div>
+            {{tool?.toolname}}
+          </div>
+          <span class="label"
+                [ngClass]="tool?.is_published ? 'label-primary' : 'label-warning'">
+              {{ tool?.is_published ? 'PUB' : 'UNPUB'}}
+          </span>
+        </accordion-group>
+      </accordion>
+      <button id="register_tool_button" type="button"
+              class="btn btn-primary btn-sm  pull-right">
+        <span>Add Tool</span>
+      </button>
+    </div>
+    <div class="col-md-8 containers-rsb">
+        <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

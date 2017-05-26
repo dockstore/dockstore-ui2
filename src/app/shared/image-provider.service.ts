@@ -29,6 +29,7 @@ export class ImageProviderService {
 
   setUpImageProvider(tool) {
     const registry = this.getImageProvider(tool.registry);
+    console.log(tool.registry);
     tool.imgProvider = registry.friendlyName;
     tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
     return tool;

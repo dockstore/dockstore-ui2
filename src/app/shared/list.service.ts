@@ -13,4 +13,7 @@ export class ListService {
     return this.httpService.getResponse(`${ Dockstore.API_URI }/${ toolType }/published`);
   }
 
+  getUserTools(userId: number) {
+    return this.httpService.getResponse(`${ Dockstore.API_URI }/users/${ userId }/containers`);
+  }
 }

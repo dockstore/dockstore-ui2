@@ -4,6 +4,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 import { MarkdownModule } from 'angular2-markdown';
 /* Bootstrap */
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -49,7 +50,8 @@ import { SelectModule } from './select.module';
     ListContainersModule,
     ParamfilesModule,
     TooltipModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    AccordionModule.forRoot()
   ],
   providers: [
     HighlightJsService,

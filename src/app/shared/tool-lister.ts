@@ -13,6 +13,7 @@ export abstract class ToolLister implements OnInit {
   constructor(private listService: ListService,
               private providerService: ProviderService,
               private toolType: string) {
+
     this._toolType = toolType;
   }
 
@@ -22,6 +23,7 @@ export abstract class ToolLister implements OnInit {
     this.listService.getPublishedTools(this._toolType)
       .subscribe(tools => {
         this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool));
+        console.log(this.publishedTools);
 
         this.initToolLister();
 

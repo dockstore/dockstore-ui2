@@ -137,13 +137,11 @@
         <tab heading="Versions" *ngIf="validVersions">
           <app-versions-container [versions]="tool?.tags"
                                   [verifiedSource]="tool?.verifiedSources">
-
           </app-versions-container>
         </tab>
         <tab heading="Files" *ngIf="validVersions">
           <app-files-container [id]="tool?.id" [versions]="validVersions"
                                [default]="defaultVersion">
-
           </app-files-container>
         </tab>
       </tabset>

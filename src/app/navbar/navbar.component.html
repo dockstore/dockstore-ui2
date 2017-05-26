@@ -25,6 +25,20 @@
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
+    <li id="myToolsNav" *ngIf="isLoggedIn">
+      <a routerLink="/mytools">
+        <img src="../assets/images/dockstore/dockstore-tools-purple.png">
+        My Tools
+      </a>
+    </li>
+
+    <li id="myWorkflowsNav" *ngIf="isLoggedIn">
+      <a routerLink="">
+        <img src="../assets/images/dockstore/dockstore-workflows-purple.png">
+        My Workflows
+      </a>
+    </li>
+
     <li>
       <div *ngIf="isLoggedIn">
         <div class="btn-group">

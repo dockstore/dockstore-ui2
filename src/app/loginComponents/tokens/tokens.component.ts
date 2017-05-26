@@ -41,7 +41,7 @@ export class TokensComponent extends Logout implements OnInit {
 
   ngOnInit() {
     this.userService.getUser()
-      .map(user => user.id)
+      .map(user => user.id, user => alert(user.id))
       .flatMap(id => this.userService.getTokens(id))
       .subscribe(tokens => this.tokens = tokens);
   }
