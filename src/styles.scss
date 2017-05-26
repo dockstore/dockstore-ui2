@@ -34,19 +34,19 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 /* Special Fonts */
 @font-face {
   font-family: Gotham;
-  src: url("fonts/Gotham-Book.otf") format("opentype");
+  src: url("assets/fonts/Gotham-Book.otf") format("opentype");
 }
 
 @font-face {
   font-family: Gotham;
   font-weight: bold;
-  src: url("fonts/Gotham-Bold.otf") format("opentype");
+  src: url("assets/fonts/Gotham-Bold.otf") format("opentype");
 }
 
 @font-face {
   font-family: Gotham;
   font-style: italic;
-  src: url("fonts/Gotham-BookItalic.otf") format("opentype");
+  src: url("assets/fonts/Gotham-BookItalic.otf") format("opentype");
 }
 
 /* Main Styles */
@@ -675,7 +675,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
   display         : block;
   float           : right;
   position        : relative;
-  background      : url('svg/star-off.svg');
+  background      : url('assets/svg/star-off.svg');
   background-size : contain;
 }
 
@@ -684,7 +684,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
   display         : block;
   width           : 1.5em;
   height          : 1.5em;
-  background      : url('svg/star-on.svg');
+  background      : url('assets/svg/star-on.svg');
   background-size : contain;
   opacity         : 0;
   transition      : opacity 0.2s linear;
