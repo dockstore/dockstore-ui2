@@ -5,9 +5,10 @@ export class MytoolsService {
   constructor() {
   }
 
-  getNSIndex(tools: any[], namespace: string): number {
-    for (let i = 0; i < tools.length; i++) {
-      if (tools[i].namespace === namespace) {
+  getNSIndex(nsContainers: any[], namespace: string): number {
+    for (let i = 0; i < nsContainers.length; i++) {
+      console.log('###' + nsContainers[i].namespace + ', ' + namespace);
+      if (nsContainers[i].namespace === namespace) {
         console.log('~~!!!! i: ' + i);
         return i;
       }
@@ -59,6 +60,7 @@ export class MytoolsService {
     if (orIndex >= 0) {
       sortedNSContainers.push(orNSObj);
     }
+    sortedNSContainers[0].isFirstOpen = true;
     return sortedNSContainers;
   }
 
@@ -66,15 +68,15 @@ export class MytoolsService {
     const nsContainers = [];
     for (let i = 0; i < tools.length; i++) {
       const prefix = tools[i].tool_path.split('/', 2).join('/');
-      let pos = this.getNSIndex(tools, prefix);
+      let pos = this.getNSIndex(nsContainers, prefix);
       if (pos < 0) {
         nsContainers.push({
           namespace: prefix,
-          containers: []
+          containers: [],
+          isFirstOpen: false,
         });
         pos = nsContainers.length - 1;
       }
-      console.log('@@@@ pos: ' + pos);
       nsContainers[pos].containers.push(tools[i]);
     }
     /* Sort Containers/Tools in Each Namespace */

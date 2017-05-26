@@ -3,7 +3,7 @@ export class CommunicatorService {
   private _tool;
 
   setObj(tool): void {
-    console.log('CommunicatorService setObj');
+    console.log('$$$$$$$$ CommunicatorService setObj');
     this._tool = tool;
   }
 

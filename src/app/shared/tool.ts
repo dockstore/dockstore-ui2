@@ -32,7 +32,7 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('tool.ts OnInit');
+    console.log('$$$$$$$$$$$$ tool.ts OnInit');
     this.routeSub = this.router.events.subscribe(event =>
         this.urlChanged(event)
     );
@@ -44,6 +44,22 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   abstract setProperties(): void;
   abstract getValidVersions(): void;
+
+  protected foo(){
+    alert('hiiiii');
+  }
+
+  protected setToolObj(tool: any) {
+    this.communicatorService.setObj(tool);
+    this.updateTool();
+  }
+
+  protected updateTool() {
+    const tool = this.communicatorService.getObj();
+    this.tool = Object.assign(tool, this.tool);
+    this.title = this.tool.tool_path;
+    this.initTool();
+  }
 
   private urlChanged(event) {
     // reuse provider and image provider
@@ -77,6 +93,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
   }
 
+
   private setUpTool(toolArray: Array<any>) {
     if (toolArray.length) {
       const tool = toolArray[0];
@@ -100,6 +117,7 @@ export abstract class Tool implements OnInit, OnDestroy {
 
     // if user did not specify a default version, use the latest version
     if (!defaultVersionName) {
+      console.log(this.validVersions);
       if (this.validVersions.length) {
         const last: number = this.validVersions.length - 1;
 

@@ -4,10 +4,12 @@
   <div class="pull-right refresh-all-holder">
     <button type="button" class="refresh-all-button btn btn-primary">
       Refresh All Tools
-      {{ user?.id}}
     </button>
   </div>
 </app-header>
+<a href (click)="MYfoo()">
+  hiiiii
+</a>
 
 <div class="container">
   <!--Msg/Warning Page, this should be a Component-->
@@ -16,14 +18,18 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion>
-        <accordion-group *ngFor="let tool of userTools" [heading]="tool?.namespace">
-          <div>
-            {{tool?.toolname}}
+        <accordion-group *ngFor="let nsObj of nsContainers" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
+          <div *ngFor="let containerObj of nsObj?.containers">
+            <div class="pull left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
+              <a href (click)="selectContainer(containerObj)">
+                {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
+              </a>
+              <span class="label"
+                    [ngClass]="containerObj?.is_published ? 'label-primary' : 'label-warning'">
+                    {{ containerObj?.is_published ? 'PUB' : 'UNPUB'}}
+              </span>
+            </div>
           </div>
-          <span class="label"
-                [ngClass]="tool?.is_published ? 'label-primary' : 'label-warning'">
-              {{ tool?.is_published ? 'PUB' : 'UNPUB'}}
-          </span>
         </accordion-group>
       </accordion>
       <button id="register_tool_button" type="button"
