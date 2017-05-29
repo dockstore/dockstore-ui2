@@ -442,11 +442,13 @@ td.browse-all {
   /*line-height: 2em;*/
   /*display: inline-block;*/
 }
-ul.pagination li{
-  padding-top: 5px;
-  display: inline;
-  margin: 3px;
-}
+
+// Commenting this out because pagination formatting is done by Angular-Datatables
+// ul.pagination li{
+//   padding-top: 5px;
+//   display: inline;
+//   margin: 3px;
+// }
 
 
 #homeFooter {

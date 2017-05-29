@@ -13,8 +13,9 @@ html, body {
   height: 100%;
   /* the bottom margin is the negative value of the footer's height */
   margin: 0 auto -155px;
-  background-color: #f4f4f4;
-}
+  /* Removing this, it's supposed to be white*/
+  /*background-color: #f4f4f4;*/
+} 
 
 .footer, .push {
   /* .push must be the same height as .footer */
