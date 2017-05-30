@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from '../loginComponents/user.service';
-import { MytoolsService } from './mytools.service';
-import { ProviderService } from '../shared/provider.service';
-import { CommunicatorService } from '../shared/communicator.service';
-import { DockstoreService } from '../shared/dockstore.service';
+import {Component, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { Tool } from '../shared/tool';
-import { ToolService } from '../shared/tool.service';
+import {ContainerComponent} from '../container/container.component';
+import {CommunicatorService} from '../shared/communicator.service';
+import {DockstoreService} from '../shared/dockstore.service';
+import {MytoolsService} from './mytools.service';
+import {ProviderService} from '../shared/provider.service';
+import {Tool} from '../shared/tool';
+import {ToolService} from '../shared/tool.service';
+import {UserService} from '../loginComponents/user.service';
+
 
 @Component({
   selector: 'app-mytools',
@@ -19,8 +21,9 @@ export class MyToolsComponent extends Tool {
   user;
   userTools = [];
   nsContainers = [];
-  constructor(private mytoolsService: MytoolsService,
-              private dockstoreService: DockstoreService,
+  @ViewChild(ContainerComponent) myContainer: ContainerComponent;
+  constructor(private dockstoreService: DockstoreService,
+              private mytoolsService: MytoolsService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
@@ -30,25 +33,22 @@ export class MyToolsComponent extends Tool {
     super(toolService, communicatorService, providerService, userService, router, 'mytools');
       userService.getUser().subscribe(user => {
         this.user = user;
-        console.log(user);
         userService.getUserTools(user.id).subscribe(tools => {
-        this.userTools = tools;
-        this.selectContainer(this.userTools[0]);
-        this.nsContainers = this.mytoolsService.sortNSContainers(tools, user.username);
-        console.log(this.nsContainers);
+          this.userTools = tools;
+          this.nsContainers = this.mytoolsService.sortNSContainers(tools, user.username);
+          this.selectContainer(this.nsContainers[0].containers[0]);
       });
     });
   }
   selectContainer(tool) {
+    this.tool = tool;
     this.setToolObj(tool);
-    // this.updateTool();
+    this.myContainer.updateData(tool, this.defaultVersion);
   }
   setProperties() {
   }
+
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
-  }
-  MYfoo() {
-    this.foo();
   }
 }

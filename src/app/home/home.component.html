@@ -1,8 +1,14 @@
-<div class="upper">
+<div class="header">
   <div class="container">
-    <div class="row containImages">
-      <div class="col-md-6 info">
-        <h1>Create, Share, Use</h1>
+    <div class="row header1">
+      <div class="col-md-6 splash">
+        <h1 class="title">Create, Share, Use</h1>
+        <h2 class="title caption">Search Docker Tools and Workflows for the Sciences:</h2>
+        <div class="btn-group">
+          <input type="text"
+                 placeholder="Enter Keyword..."
+                 class="search left fully-rounded search-home form-control">
+        </div>
       </div>
       <div class="col-md-3">
         <img id="ship" src="../assets/images/dockstore/ship.png">
@@ -14,33 +20,37 @@
   </div>
 </div>
 
-<div class="lower">
+<div class="header-lower">
   <div class="container">
-    <img id="rectangle" src="../assets/images/dockstore/rectangle.png">
-    <div class="row lower">
+    <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
+    <div class="row header-lower">
       <div class="col-md-6">
-        <h4>
+        <h4 class="title caption">
           Dockstore, developed by the <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer
           Genome Collaboratory</a>, is an open platform for sharing Docker-based tools described with the <a
           class="white-link" href="http://www.commonwl.org/" target="_blank">Common Workflow Language</a> used by the <a
           class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a>.
         </h4>
       </div>
-      <div class="col-md-3 center">
+      <div class="col-md-3 row-center">
         <a class='btn youtube' href="https://www.youtube.com/embed/RYHUX9jGx24" role="button">
+        <div>
           <span class="glyphicon glyphicon-play-circle"></span>
           <span>&nbsp;Video Overview</span>
+          </div>
         </a>
       </div>
-      <div class="col-md-3 center">
-        <div class="green">
+      <div class="col-md-3 row-center">
+        <div class="button">
           <p><a routerLink="login">Sign up to Contribute &raquo;</a></p>
         </div>
-        <div class="green">
+        <div class="button">
           <p><a routerLink="docs/blog">News and Events &raquo;</a></p>
         </div>
-        <div class="green">
+        <div style="margin-bottom: 20px">
+        <div class="button">
           <p><a routerLink="docs/getting-started">Get Started &raquo;</a></p>
+        </div>
         </div>
       </div>
     </div>

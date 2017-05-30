@@ -7,13 +7,28 @@
     </button>
   </div>
 </app-header>
-<a href (click)="MYfoo()">
-  hiiiii
-</a>
-
 <div class="container">
   <!--Msg/Warning Page, this should be a Component-->
-  <div class="row"></div>
+  <div class="row" *ngIf="nsContainers.length == 0">
+    <div class="col-md-12">
+      <div class="alert alert-info"
+           role="alert"
+           *ngIf="nsContainers.length == 0">
+        <p>
+          <span class="glyphicon glyphicon-info-sign"></span>
+          There are currently no tools registered under this account, to add your first tool, do one of the following:
+        </p>
+        <ul>
+          <li>
+            Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized in the linking process.
+          </li>
+          <li>
+            Press the 'Add Tool' button to manually add a tool.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <!--Tool Content Page, this should be a Component-->
   <div class="row">
     <div class="col-md-3 containers-rsb">
@@ -21,7 +36,7 @@
         <accordion-group *ngFor="let nsObj of nsContainers" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
           <div *ngFor="let containerObj of nsObj?.containers">
             <div class="pull left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
-              <a href (click)="selectContainer(containerObj)">
+              <a style="cursor: pointer;" (click)="selectContainer(containerObj)">
                 {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
               </a>
               <span class="label"
@@ -38,7 +53,7 @@
       </button>
     </div>
     <div class="col-md-8 containers-rsb">
-        <router-outlet></router-outlet>
+      <app-container [curTool]="this.tool"></app-container>
     </div>
   </div>
 </div>

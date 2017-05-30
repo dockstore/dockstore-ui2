@@ -7,13 +7,10 @@ export class MytoolsService {
 
   getNSIndex(nsContainers: any[], namespace: string): number {
     for (let i = 0; i < nsContainers.length; i++) {
-      console.log('###' + nsContainers[i].namespace + ', ' + namespace);
       if (nsContainers[i].namespace === namespace) {
-        console.log('~~!!!! i: ' + i);
         return i;
       }
     }
-    console.log('~~!!!! i: ' + '-1');
     return -1;
   }
 

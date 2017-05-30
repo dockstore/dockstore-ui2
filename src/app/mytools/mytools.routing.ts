@@ -6,7 +6,6 @@ import { ContainerComponent } from '../container/container.component';
 const MYTOOLS_ROUTES: Routes = [
   {
     path: '', component: MyToolsComponent, children: [
-    { path: '**', component: ContainerComponent }
   ]
   }
 ];

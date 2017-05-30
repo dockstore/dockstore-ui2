@@ -32,7 +32,6 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('$$$$$$$$$$$$ tool.ts OnInit');
     this.routeSub = this.router.events.subscribe(event =>
         this.urlChanged(event)
     );
@@ -45,19 +44,12 @@ export abstract class Tool implements OnInit, OnDestroy {
   abstract setProperties(): void;
   abstract getValidVersions(): void;
 
-  protected foo(){
-    alert('hiiiii');
-  }
-
   protected setToolObj(tool: any) {
     this.communicatorService.setObj(tool);
-    this.updateTool();
-  }
-
-  protected updateTool() {
-    const tool = this.communicatorService.getObj();
+    if (!tool.providerUrl) {
+      this.providerService.setUpProvider(tool);
+    }
     this.tool = Object.assign(tool, this.tool);
-    this.title = this.tool.tool_path;
     this.initTool();
   }
 
@@ -74,18 +66,10 @@ export abstract class Tool implements OnInit, OnDestroy {
       this.title = this.tool.path;
     }
     // check if it is a private tool or a public tool.
-    if (event.url === this.userToolURL) {
-      this.userService.getUser().subscribe(user => {
-        this.userService.getUserTools(user.id).subscribe(toolArray => {
-          this.setUpTool(toolArray);
-          this.title = this.tool.tool_path;
-        });
-      });
-    } else {
+    if (event.url !== this.userToolURL) {
       this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
         .subscribe(toolArray => {
           // TODO: endpoint should return a single object instead of an array
-          console.log(toolArray);
           this.setUpTool(toolArray);
         }, error => {
           this.router.navigate(['../']);
@@ -109,7 +93,6 @@ export abstract class Tool implements OnInit, OnDestroy {
     this.setProperties();
     this.getValidVersions();
     this.chooseDefaultVersion();
-    console.log(this.defaultVersion);
   }
 
   private chooseDefaultVersion() {
@@ -117,7 +100,6 @@ export abstract class Tool implements OnInit, OnDestroy {
 
     // if user did not specify a default version, use the latest version
     if (!defaultVersionName) {
-      console.log(this.validVersions);
       if (this.validVersions.length) {
         const last: number = this.validVersions.length - 1;
 
@@ -126,8 +108,8 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
 
     this.defaultVersion = this.getDefaultVersion(this.tool, defaultVersionName);
+    console.log(this.defaultVersion);
   }
-
   private getDefaultVersion(tool, defaultVersionName: string) {
     for (const version of this.validVersions) {
       if (version.name === defaultVersionName) {

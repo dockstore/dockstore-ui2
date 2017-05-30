@@ -4,5 +4,13 @@
     <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)">
     </app-select>
   </div>
-  <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  <div *ngIf="this.nullContent">
+    <alert type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;A Dockerfile associated with this Docker container could not be found.
+    </alert>
+  </div>
+  <div *ngIf="!this.nullContent">
+    <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  </div>
 </div>

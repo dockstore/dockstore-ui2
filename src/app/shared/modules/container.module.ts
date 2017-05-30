@@ -7,6 +7,7 @@ import { MarkdownModule } from 'angular2-markdown';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../../container/container.service';
@@ -51,7 +52,8 @@ import { SelectModule } from './select.module';
     ParamfilesModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
-    AccordionModule.forRoot()
+    AccordionModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [
     HighlightJsService,

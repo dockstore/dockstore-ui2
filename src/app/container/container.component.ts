@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -20,6 +20,7 @@ import { UserService } from '../loginComponents/user.service';
   templateUrl: './container.component.html',
 })
 export class ContainerComponent extends Tool {
+  @Input() curTool: any;
 
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
@@ -31,6 +32,7 @@ export class ContainerComponent extends Tool {
               userService: UserService,
               router: Router) {
     super(toolService, communicatorService, providerService, userService, router, 'containers');
+
   }
 
   setProperties() {
@@ -44,14 +46,20 @@ export class ContainerComponent extends Tool {
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
     toolRef.verifiedLinks = this.dateService.getVerifiedLink();
-
+    console.log(toolRef.description);
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
   }
-
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
+  }
+  updateData(tool: any, defaultVersion: any) {
+    this.tool = tool;
+    this.title = tool.tool_path;
+    this.setProperties();
+    this.getValidVersions();
+    this.defaultVersion = defaultVersion;
   }
 
 }
