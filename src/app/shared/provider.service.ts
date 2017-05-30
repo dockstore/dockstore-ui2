@@ -2,13 +2,10 @@ export class ProviderService {
 
   /* set up project provider */
   setUpProvider(tool) {
-    console.log(tool.gitUrl);
     const gitUrl = tool.gitUrl;
 
     tool.provider = this.getProvider(gitUrl);
-    console.log(tool.provider);
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
-    console.log(tool.providerUrl);
     return tool;
   }
 

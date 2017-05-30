@@ -46,7 +46,6 @@ export class ContainerComponent extends Tool {
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
     toolRef.verifiedLinks = this.dateService.getVerifiedLink();
-    console.log(toolRef.description);
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }

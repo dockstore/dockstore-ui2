@@ -55,9 +55,7 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   private urlChanged(event) {
     // reuse provider and image provider
-    console.log(event);
     this.tool = this.communicatorService.getObj();
-    console.log(this.tool);
     // cannot reuse provider and image provider
     // navigated to tool's page without visiting table
     if (!this.tool) {
@@ -108,7 +106,6 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
 
     this.defaultVersion = this.getDefaultVersion(this.tool, defaultVersionName);
-    console.log(this.defaultVersion);
   }
   private getDefaultVersion(tool, defaultVersionName: string) {
     for (const version of this.validVersions) {
