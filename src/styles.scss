@@ -1041,19 +1041,20 @@ tabset.homeComponent {
     border: 1px solid #CFD1D7;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
-      -webkit-border-top-left-radius: 0px;
-  -moz-border-radius-topleft: 0px;
-  border-top-left-radius: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
     tab {
       margin-top: 30px;
       margin-bottom: 20px;
+      margin-right: 10px;
+      margin-left: 10px;
     }
   }
   ul {
     border-bottom: none;
     li:not(.active):hover {
-        padding-top: 4px;
-        padding-bottom: 1px;
+      padding-top: 4px;
+      padding-bottom: 1px;
     }
     li {
       width: 250px;
@@ -1061,9 +1062,7 @@ tabset.homeComponent {
       font-size: 16px;
       font-weight: bold;
       border: 1px solid #CFD1D7;
-      padding-top: 3px;
-      
-      // Specifying tab classes to override ds-style-fix.scss
+      padding-top: 3px; // Specifying tab classes to override ds-style-fix.scss
       &.browseWorkflowsTab,
       &.browseToolsTab {
         background-color: #F4F4F4;
@@ -1081,9 +1080,7 @@ tabset.homeComponent {
             color: #a0adcc;
           }
         }
-        
-      }
-      // Browse Tools tab specific styles
+      } // Browse Tools tab specific styles
       &.browseToolsTab {
         border-top-left-radius: 8px;
         &.active {
@@ -1092,9 +1089,7 @@ tabset.homeComponent {
         a.nav-link {
           color: #51aad8;
         }
-      }
-
-      // Browse Workflows tab specific styles
+      } // Browse Workflows tab specific styles
       &.browseWorkflowsTab {
         border-top-right-radius: 8px;
         &.active {
