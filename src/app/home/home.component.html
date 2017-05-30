@@ -54,14 +54,21 @@
     </div>
   </div>
 </div>
-
 <div class="container" style="padding-top:30px;">
   <tabset class="homeComponent" type="tabs">
-    <tab id="toolTab" class="browseToolTab" heading="Browse Tools">
+    <tab id="toolTab" [customClass]="browseToolsTab">
+      <template tabHeading>
+        <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+        Browse Tools
+      </template>
       <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
       <app-list-containers></app-list-containers>
     </tab>
-    <tab id="workflowTab" class="browseWorkflowTab" heading="Browse Workflows">
+    <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+      <template tabHeading>
+        <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+        Browse Workflows
+      </template>
       <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
       <app-list-workflows></app-list-workflows>
     </tab>
