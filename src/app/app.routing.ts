@@ -26,7 +26,7 @@ const APP_ROUTES: Routes = [
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
   { path: 'auth/:provider', component: AuthComponent },
   { path: 'tokens', component: TokensComponent },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' }
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);
