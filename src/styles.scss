@@ -1103,5 +1103,12 @@ tabset.homeComponent {
   }
 }
 
+.panel.customClass {
+  background-color: #5bc0de;
+  color: #fff;
+}
+.panel.customClass .panel-body {
+  background-color: #337aa7;
+}
 
 /* End Temporary Styles - Need to Refactor Later */

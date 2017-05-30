@@ -128,7 +128,7 @@
               Description
             </label>
             <div class="well well-sm">
-              <pre><markdown>{{ tool?.description || 'No description associated with this container.' }}</markdown></pre>
+              <pre>{{ tool?.description || 'No description associated with this container.' }}</pre>
             </div>
             <div *ngIf="validVersions">
               <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
@@ -136,15 +136,13 @@
           </div>
         </tab>
         <tab heading="Versions" *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags" id ="versionsTab" 
+          <app-versions-container [versions]="tool?.tags" id ="versionsTab"
                                   [verifiedSource]="tool?.verifiedSources">
-
           </app-versions-container>
         </tab>
         <tab heading="Files" *ngIf="validVersions">
           <app-files-container [id]="tool?.id" [versions]="validVersions"
                                [default]="defaultVersion">
-
           </app-files-container>
         </tab>
       </tabset>

@@ -6,7 +6,6 @@ export class ProviderService {
 
     tool.provider = this.getProvider(gitUrl);
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
-
     return tool;
   }
 

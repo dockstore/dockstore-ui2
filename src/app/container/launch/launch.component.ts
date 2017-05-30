@@ -12,7 +12,7 @@ import { ContainerService } from '../container.service';
 })
 export class LaunchComponent extends DescriptorSelector {
 
-  @Input() path?;
+  @Input() path;
 
   params: string;
   cli: string;

@@ -3,54 +3,72 @@
     <div class="row" id="navigation">
       <ul class="nav">
         <span class="pull-left nav-item">
-    <li>
-      <a routerLink="">
-        <img class="logo" src="../assets/images/dockstore/logo.png">
-      </a>
-    </li>
-    </span>
+          <li>
+            <a routerLink="">
+              <img class="logo" src="../assets/images/dockstore/logo.png">
+            </a>
+          </li>
+        </span>
+
         <span class="pull-left nav-item nav-item-text">
-    <li>
-      <a routerLink="/containers">
-        <img class="site-icons-small" src="../assets/images/dockstore/dockstore-tools-purple.png">
-        Tools
-      </a>
-    </li>
-    <li>
-      <a routerLink="/workflows">
-        <img class="site-icons-small" src="../assets/images/dockstore/dockstore-workflows-purple.png">
-        Workflows
-      </a>
-    </li>
-    <li>
-      <a routerLink="/docs">
-        <img class="site-icons-small" src="../assets/images/dockstore/dockstore-documentation.png">
-        Documentation
-      </a>
-    </li>
-    </span>
-        <span class="pull-right nav-item nav-item-button">
-    <li>
-      <div *ngIf="isLoggedIn">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Action <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a routerLink="/accounts">Accounts</a></li>
-          <li><a href="/tokens">Tokens</a></li>
-          <li><a routerLink="/onboarding">Setup</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a (click)="logout()">Logout</a></li>
-        </ul>
+          <li>
+            <a routerLink="/containers">
+              <img class="site-icons-small" src="../assets/images/dockstore/dockstore-tools-purple.png">
+                Tools
+            </a>
+          </li>
+          <li>
+            <a routerLink="/workflows">
+              <img class="site-icons-small" src="../assets/images/dockstore/dockstore-workflows-purple.png">
+              Workflows
+            </a>
+          </li>
+          <li>
+            <a routerLink="/docs">
+              <img class="site-icons-small" src="../assets/images/dockstore/dockstore-documentation.png">
+              Documentation
+            </a>
+          </li>
+        </span>
+
+        <span class="pull-right nav-item nav-item-text">
+          <li id="myToolsNav" *ngIf="isLoggedIn">
+            <a routerLink="/mytools">
+              <img class="site-icons-small" src="../assets/images/dockstore/dockstore-tools-purple.png">
+              My Tools
+            </a>
+          </li>
+
+          <li id="myWorkflowsNav" *ngIf="isLoggedIn">
+            <a routerLink="">
+              <img class="site-icons-small" src="../assets/images/dockstore/dockstore-workflows-purple.png">
+              My Workflows
+            </a>
+          </li>
+          <li>
+            <!--<div *ngIf="isLoggedIn">-->
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                  Action <span class="caret"></span>
+                </button>
+              <ul class="dropdown-menu">
+                <li><a routerLink="/accounts">Accounts</a></li>
+                <li><a href="/tokens">Tokens</a></li>
+                <li><a routerLink="/onboarding">Setup</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a (click)="logout()">Logout</a></li>
+              </ul>
+            </div>
+          <!--</div>-->
+        <div *ngIf="!isLoggedIn">
+          <div class="green">
+            <p><a routerLink="login">Login</a></p>
+          </div>
+        </div>
+        </li>
+      </span>
+      </ul>
     </div>
   </div>
-  <div *ngIf="!isLoggedIn">
-    <div class="green">
-      <p><a routerLink="login">Login</a></p>
-    </div>
-  </div>
-  </li>
-  </span>
-  </ul>
 </div>

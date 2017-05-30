@@ -31,31 +31,31 @@ export class ParamfilesService {
   // get descriptors which have test parameter files
   getDescriptors(version) {
     const descriptorsWithParamfiles = [];
+    if (version) {
+      for (const file of version.sourceFiles) {
+        const type = file.type;
 
-    for (const file of version.sourceFiles) {
-      const type = file.type;
+        if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl')) {
+          descriptorsWithParamfiles.push('cwl');
 
-      if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl')) {
-        descriptorsWithParamfiles.push('cwl');
-
-      } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl')) {
-        descriptorsWithParamfiles.push('wdl');
+        } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl')) {
+          descriptorsWithParamfiles.push('wdl');
+        }
       }
     }
-
     return descriptorsWithParamfiles;
   }
 
   // get versions which have test parameter files
   getVersions(versions) {
     const versionsWithParamfiles = [];
-
-    for (const version of versions) {
-      if (this.getDescriptors(version).length) {
-        versionsWithParamfiles.push(version);
+    if (versions) {
+      for (const version of versions) {
+        if (this.getDescriptors(version).length) {
+          versionsWithParamfiles.push(version);
+        }
       }
     }
-
     return versionsWithParamfiles;
   }
 

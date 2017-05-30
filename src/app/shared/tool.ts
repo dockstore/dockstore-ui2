@@ -1,10 +1,11 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import {Injectable, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
 
-import { ToolService } from './tool.service';
-import { CommunicatorService } from './communicator.service';
-import { ProviderService } from './provider.service';
+import {ToolService} from './tool.service';
+import {CommunicatorService} from './communicator.service';
+import {ProviderService} from './provider.service';
+import {UserService} from '../loginComponents/user.service';
 
 @Injectable()
 export abstract class Tool implements OnInit, OnDestroy {
@@ -18,13 +19,16 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected tool;
 
   private routeSub: Subscription;
+  private userToolURL: string;
 
   constructor(private toolService: ToolService,
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
+              private userService: UserService,
               private router: Router,
               toolType: string) {
     this._toolType = toolType;
+    this.userToolURL = '/mytools';
   }
 
   ngOnInit() {
@@ -40,10 +44,18 @@ export abstract class Tool implements OnInit, OnDestroy {
   abstract setProperties(): void;
   abstract getValidVersions(): void;
 
+  protected setToolObj(tool: any) {
+    this.communicatorService.setObj(tool);
+    if (!tool.providerUrl) {
+      this.providerService.setUpProvider(tool);
+    }
+    this.tool = Object.assign(tool, this.tool);
+    this.initTool();
+  }
+
   private urlChanged(event) {
     // reuse provider and image provider
     this.tool = this.communicatorService.getObj();
-
     // cannot reuse provider and image provider
     // navigated to tool's page without visiting table
     if (!this.tool) {
@@ -51,24 +63,25 @@ export abstract class Tool implements OnInit, OnDestroy {
     } else {
       this.title = this.tool.path;
     }
-
-    this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
-      .subscribe(toolArray => {
-        // TODO: endpoint should return a single object instead of an array
-        this.setUpTool(toolArray);
-      }, error => {
-        this.router.navigate(['../']);
-      });
+    // check if it is a private tool or a public tool.
+    if (event.url !== this.userToolURL) {
+      this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
+        .subscribe(toolArray => {
+          // TODO: endpoint should return a single object instead of an array
+          this.setUpTool(toolArray);
+        }, error => {
+          this.router.navigate(['../']);
+        });
+    }
   }
+
 
   private setUpTool(toolArray: Array<any>) {
     if (toolArray.length) {
       const tool = toolArray[0];
-
       if (!tool.providerUrl) {
         this.providerService.setUpProvider(tool);
       }
-
       this.tool = Object.assign(tool, this.tool);
       this.initTool();
     }
@@ -94,7 +107,6 @@ export abstract class Tool implements OnInit, OnDestroy {
 
     this.defaultVersion = this.getDefaultVersion(this.tool, defaultVersionName);
   }
-
   private getDefaultVersion(tool, defaultVersionName: string) {
     for (const version of this.validVersions) {
       if (version.name === defaultVersionName) {

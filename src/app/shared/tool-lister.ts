@@ -13,6 +13,7 @@ export abstract class ToolLister implements OnInit {
   constructor(private listService: ListService,
               private providerService: ProviderService,
               private toolType: string) {
+
     this._toolType = toolType;
   }
 
