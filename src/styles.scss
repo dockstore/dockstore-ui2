@@ -885,104 +885,6 @@ div.tabs>div:target>div,
   padding-top: 8px;
 }
 
-
-/* Todo - can simplify these into more general tabs */
-
-.tool-tab .active {
-  padding-right: 40px;
-  margin-left: -15px;
-  border: 1px solid #CFD1D7;
-  border-bottom: 1px solid #FFFFFF;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  background-color: #FFFFFF;
-  -webkit-border-top-left-radius: 8px;
-  -moz-border-radius-topleft: 8px;
-  border-top-left-radius: 8px;
-  border-top: 6px solid #51aad8;
-  margin-bottom: -5px;
-  padding-bottom: 10px;
-  color: #51aad8;
-}
-
-.tool-tab {
-  padding-right: 40px;
-  margin-left: -15px;
-  border: 1px solid #CFD1D7;
-  border-bottom: 3px #FFFFFF;
-  padding-top: 13px;
-  padding-bottom: 7px;
-  background-color: #F4F4F4;
-  -webkit-border-top-left-radius: 8px;
-  -moz-border-radius-topleft: 8px;
-  border-top-left-radius: 8px;
-  margin-top: 5px;
-  padding-bottom: 10px;
-  color: #a0adcc;
-}
-
-.workflow-tab .active {
-  padding-left: 10px;
-  padding-right: 40px;
-  border-bottom: 1px solid #FFFFFF;
-  border: 1px solid #CFD1D7;
-  border-bottom: 1px solid #FFFFFF;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  background-color: #FFFFFF;
-  -webkit-border-top-right-radius: 8px;
-  -moz-border-radius-topright: 8px;
-  border-top-right-radius: 8px;
-  border-top: 6px solid #4ab4a9;
-  margin-left: -5px;
-  margin-bottom: -5px;
-  padding-bottom: 10px;
-  color: #4ab4a9;
-}
-
-.workflow-tab {
-  padding-right: 40px;
-  border: 1px solid #CFD1D7;
-  border-bottom: 3px #FFFFFF;
-  padding-top: 13px;
-  padding-bottom: 7px;
-  background-color: #F4F4F4;
-  -webkit-border-top-right-radius: 8px;
-  -moz-border-radius-topright: 8px;
-  border-top-right-radius: 8px;
-  margin-left: -5px;
-  margin-top: 5px;
-  padding-bottom: 10px;
-  color: #a0adcc;
-}
-
-.tool-tab {
-  width: 250px;
-}
-
-.workflow-tab {
-  width: 250px;
-}
-
-.tab-holder {
-  border: 1px solid #CFD1D7;
-  border-radius: 15px;
-  padding-top: 30px;
-  padding-bottom: 20px;
-  -webkit-border-top-left-radius: 0px;
-  -moz-border-radius-topleft: 0px;
-  border-top-left-radius: 0px;
-}
-
-.tab-info {
-  padding-left: 20px;
-}
-
-.tab-text {
-  font-size: 16px;
-  font-weight: bold;
-}
-
 .radio-button-reference {
   margin-top: -1px;
   vertical-align: middle;
@@ -1139,6 +1041,9 @@ tabset.homeComponent {
     border: 1px solid #CFD1D7;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
+      -webkit-border-top-left-radius: 0px;
+  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
     tab {
       margin-top: 30px;
       margin-bottom: 20px;
