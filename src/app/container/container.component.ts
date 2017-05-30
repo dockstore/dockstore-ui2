@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -12,12 +12,15 @@ import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from './container.service';
+import { UserService } from '../loginComponents/user.service';
+
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
 export class ContainerComponent extends Tool {
+  @Input() curTool: any;
 
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
@@ -26,8 +29,10 @@ export class ContainerComponent extends Tool {
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
+              userService: UserService,
               router: Router) {
-    super(toolService, communicatorService, providerService, router, 'containers');
+    super(toolService, communicatorService, providerService, userService, router, 'containers');
+
   }
 
   setProperties() {
@@ -41,14 +46,19 @@ export class ContainerComponent extends Tool {
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
     toolRef.verifiedLinks = this.dateService.getVerifiedLink();
-
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
   }
-
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
+  }
+  updateData(tool: any, defaultVersion: any) {
+    this.tool = tool;
+    this.title = tool.tool_path;
+    this.setProperties();
+    this.getValidVersions();
+    this.defaultVersion = defaultVersion;
   }
 
 }

@@ -3,6 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 /* Angular Modules */
 import { BrowserModule } from '@angular/platform-browser';
+
+/* Bootstrap */
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
 /* External Modules */
 import { DataTablesModule } from 'angular-datatables';
 /* External Services */
@@ -49,6 +55,7 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+// import { MyToolsComponent } from './mytools/mytools.component';
 
 
 @NgModule({
@@ -67,7 +74,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
-    TokensComponent,
+    TokensComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +86,9 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ListContainersModule,
     ListWorkflowsModule,
     TabModule,
+    AccordionModule.forRoot(),
+    TabsModule.forRoot(),
+    TooltipModule.forRoot(),
     routing
   ],
   providers: [

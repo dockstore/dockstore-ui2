@@ -14,7 +14,6 @@ export abstract class FileSelector extends DescriptorSelector {
     this.getFiles(this.currentDescriptor)
       .subscribe(files => {
         this.files = files;
-
         if (this.files.length) {
           this.onFileChange(this.files[0]);
         }}
@@ -23,7 +22,6 @@ export abstract class FileSelector extends DescriptorSelector {
 
   onFileChange(file) {
     this.currentFile = file;
-
     this.reactToFile();
   }
 

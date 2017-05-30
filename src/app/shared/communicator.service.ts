@@ -9,5 +9,4 @@ export class CommunicatorService {
   getObj() {
     return this._tool;
   }
-
 }

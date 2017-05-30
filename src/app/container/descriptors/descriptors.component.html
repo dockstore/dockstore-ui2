@@ -7,5 +7,13 @@
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
   </span>
-  <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  <div *ngIf="this.nullDescriptors">
+    <alert type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;A Descriptor File associated with this Docker container could not be found.
+    </alert>
+  </div>
+  <div *ngIf="!this.nullDescriptors">
+    <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  </div>
 </div>

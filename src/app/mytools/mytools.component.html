@@ -1,0 +1,59 @@
+<app-header>
+  <img src="../assets/images/dockstore/dockstore-tools-blue.png">
+  My Tools
+  <div class="pull-right refresh-all-holder">
+    <button type="button" class="refresh-all-button btn btn-primary">
+      Refresh All Tools
+    </button>
+  </div>
+</app-header>
+<div class="container">
+  <!--Msg/Warning Page, this should be a Component-->
+  <div class="row" *ngIf="nsContainers.length == 0">
+    <div class="col-md-12">
+      <div class="alert alert-info"
+           role="alert"
+           *ngIf="nsContainers.length == 0">
+        <p>
+          <span class="glyphicon glyphicon-info-sign"></span>
+          There are currently no tools registered under this account, to add your first tool, do one of the following:
+        </p>
+        <ul>
+          <li>
+            Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized in the linking process.
+          </li>
+          <li>
+            Press the 'Add Tool' button to manually add a tool.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--Tool Content Page, this should be a Component-->
+  <div class="row">
+    <div class="col-md-3 containers-rsb">
+      <accordion>
+        <accordion-group *ngFor="let nsObj of nsContainers" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
+          <div *ngFor="let containerObj of nsObj?.containers">
+            <div class="pull left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
+              <a style="cursor: pointer;" (click)="selectContainer(containerObj)">
+                {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
+              </a>
+              <span class="label"
+                    [ngClass]="containerObj?.is_published ? 'label-primary' : 'label-warning'">
+                    {{ containerObj?.is_published ? 'PUB' : 'UNPUB'}}
+              </span>
+            </div>
+          </div>
+        </accordion-group>
+      </accordion>
+      <button id="register_tool_button" type="button"
+              class="btn btn-primary btn-sm  pull-right">
+        <span>Add Tool</span>
+      </button>
+    </div>
+    <div class="col-md-8 containers-rsb">
+      <app-container [curTool]="this.tool"></app-container>
+    </div>
+  </div>
+</div>

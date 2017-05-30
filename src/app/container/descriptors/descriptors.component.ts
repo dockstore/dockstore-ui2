@@ -37,5 +37,4 @@ export class DescriptorsComponent extends FileSelector {
   reactToFile(): void {
     this.content = this.fileService.highlightCode(this.currentFile.content);
   }
-
 }

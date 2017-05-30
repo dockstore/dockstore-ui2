@@ -25,6 +25,7 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
     this.subscription = this.userService.user$.subscribe(user =>
       this.user = user
     );
+
   }
 
   ngOnInit() {
