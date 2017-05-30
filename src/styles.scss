@@ -789,7 +789,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
 }
 
 /* Todo - can simplify these into more general tabs */
-.tool-tab-selected {
+.tool-tab .active {
   padding-right:40px;
   margin-left:-15px;
   border: 1px solid #CFD1D7;
@@ -806,7 +806,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
   color:#51aad8;
 }
 
-.tool-tab-not-selected {
+.tool-tab {
   padding-right:40px;
   margin-left:-15px;
   border: 1px solid #CFD1D7;
@@ -822,7 +822,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
   color: #a0adcc;
 }
 
-.workflow-tab-selected {
+.workflow-tab .active {
   padding-left:10px;
   padding-right:40px;
   border-bottom:1px solid #FFFFFF;
@@ -841,7 +841,7 @@ div.tabs > div:target > div, :target #info > div, #info > div {
   color:#4ab4a9;
 }
 
-.workflow-tab-not-selected {
+.workflow-tab {
   padding-right:40px;
   border: 1px solid #CFD1D7;
   border-bottom: 3px #FFFFFF;
@@ -1030,6 +1030,59 @@ div.tabs > div:target > div, :target #info > div, #info > div {
 
 html, body {
   height:100%;
+}
+
+// Can't seem to modify .tab-content in homeComponent.scss
+// This contains most of .tab-holder style
+tabset.homeComponent .tab-content{
+  border: 1px solid #CFD1D7;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  tab {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+}
+
+tabset.homeComponent ul li.nav-item {
+  width:250px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border-left: 1px solid #CFD1D7;
+  border-right: 1px solid #CFD1D7;
+  border-top: 1px solid #CFD1D7;
+  border-bottom: 1px solid #CFD1D7;
+  padding-top: 3px;
+  background-color: #F4F4F4;
+  
+}
+
+tabset.homeComponent ul li.nav-item:hover {
+    border-left: 1px solid #CFD1D7;
+    border-right: 1px solid #CFD1D7;
+    border-top: 1px solid #CFD1D7;
+    border-bottom: 1px #F4F4F4;
+    background-color: #F4F4F4;
+    padding-top: 4px;    
+}
+
+tabset.homeComponent ul li.nav-item.active {
+  border-bottom: 1px solid #FFF;
+  background-color: #FFF;
+  border-top-left-radius: 8px;
+  border-top: 6px solid #51aad8;
+  color: #51aad8;
+  padding-top: 0px;
+}
+
+tabset.homeComponent ul {
+  border-bottom: none;
+}
+
+tabset.homeComponent ul li.nav-item a.nav-link {
+  background-color: transparent;
+  color: #51aad8;
 }
 
 /* End Temporary Styles - Need to Refactor Later */

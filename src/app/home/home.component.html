@@ -5,9 +5,7 @@
         <h1 class="title">Create, Share, Use</h1>
         <h2 class="title caption">Search Docker Tools and Workflows for the Sciences:</h2>
         <div class="btn-group">
-          <input type="text"
-                 placeholder="Enter Keyword..."
-                 class="search left fully-rounded search-home form-control">
+          <input type="text" placeholder="Enter Keyword..." class="search left fully-rounded search-home form-control">
         </div>
       </div>
       <div class="col-md-3">
@@ -27,16 +25,16 @@
       <div class="col-md-6">
         <h4 class="title caption">
           Dockstore, developed by the <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer
-          Genome Collaboratory</a>, is an open platform for sharing Docker-based tools described with the <a
-          class="white-link" href="http://www.commonwl.org/" target="_blank">Common Workflow Language</a> used by the <a
-          class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a>.
+          Genome Collaboratory</a>, is an open platform for sharing Docker-based tools described with the <a class="white-link"
+            href="http://www.commonwl.org/" target="_blank">Common Workflow Language</a> used by the <a class="white-link"
+            href="https://genomicsandhealth.org/" target="_blank">GA4GH</a>.
         </h4>
       </div>
       <div class="col-md-3 row-center">
         <a class='btn youtube' href="https://www.youtube.com/embed/RYHUX9jGx24" role="button">
-        <div>
-          <span class="glyphicon glyphicon-play-circle"></span>
-          <span>&nbsp;Video Overview</span>
+          <div>
+            <span class="glyphicon glyphicon-play-circle"></span>
+            <span>&nbsp;Video Overview</span>
           </div>
         </a>
       </div>
@@ -48,28 +46,26 @@
           <p><a routerLink="docs/blog">News and Events &raquo;</a></p>
         </div>
         <div style="margin-bottom: 20px">
-        <div class="button">
-          <p><a routerLink="docs/getting-started">Get Started &raquo;</a></p>
-        </div>
+          <div class="button">
+            <p><a routerLink="docs/getting-started">Get Started &raquo;</a></p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<app-tabs>
-  <app-tab title="Browse Tools" img="../assets/images/dockstore/dockstore-tools-blue.png">
-    <div class="container separation">
-      A tool is a docker container with an associated descriptor describing how to run it.
-    </div>
-    <app-list-containers></app-list-containers>
-  </app-tab>
-  <app-tab title="Browse Workflows" img="../assets/images/dockstore/dockstore-workflows-green.png">
-    <div class="container separation">
-      A workflow is a series of tools strung together, with an associated descriptor describing how to run it.
-    </div>
-    <app-list-workflows></app-list-workflows>
-  </app-tab>
-</app-tabs>
+<div class="container" style="padding-top:30px;">
+  <tabset class="homeComponent" type="tabs">
+    <tab id="toolTab" class="browseToolTab" heading="Browse Tools">
+      <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+      <app-list-containers></app-list-containers>
+    </tab>
+    <tab id="workflowTab" class="browseWorkflowTab" heading="Browse Workflows">
+      <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+      <app-list-workflows></app-list-workflows>
+    </tab>
+  </tabset>
+</div>
 
 <app-home-foot-note></app-home-foot-note>

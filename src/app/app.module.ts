@@ -1,3 +1,4 @@
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -79,6 +80,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ListContainersModule,
     ListWorkflowsModule,
     TabModule,
+    TabsModule.forRoot(),
     routing
   ],
   providers: [
