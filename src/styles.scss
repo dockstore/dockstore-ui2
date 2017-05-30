@@ -1052,19 +1052,16 @@ tabset.homeComponent {
   }
   ul {
     border-bottom: none;
-    li:not(.active):hover {
-      padding-top: 4px;
-      padding-bottom: 1px;
-    }
     li {
-      width: 250px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      border: 1px solid #CFD1D7;
-      padding-top: 3px; // Specifying tab classes to override ds-style-fix.scss
+      // Specifying tab classes to override ds-style-fix.scss  
       &.browseWorkflowsTab,
       &.browseToolsTab {
+        width: 250px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        border: 1px solid #CFD1D7;
+        padding-top: 3px;
         background-color: #F4F4F4;
         a.nav-link {
           background-color: inherit;
@@ -1076,6 +1073,10 @@ tabset.homeComponent {
           border-bottom: 1px solid #FFF;
         }
         &:not(.active) {
+          &:hover {
+            padding-top: 4px;
+            padding-bottom: 1px;
+          }
           a.nav-link {
             color: #a0adcc;
           }
