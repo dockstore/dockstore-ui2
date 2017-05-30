@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class MytoolsService {
@@ -18,7 +18,7 @@ export class MytoolsService {
     let sortedNSContainers = [];
     /* User's Containers Appear in First Section */
     let unIndex = -1;
-    let orIndex = -1
+    let orIndex = -1;
     let orNSObj = null;
     for (let i = 0; i < nsContainers.length; i++) {
       if (nsContainers[i].namespace === username) {
@@ -37,7 +37,7 @@ export class MytoolsService {
     }
     if (orIndex >= 0) {
       nsContainers.splice(
-        (unIndex < orIndex) ? orIndex - 1: orIndex,
+        (unIndex < orIndex) ? orIndex - 1 : orIndex,
         1
       );
     }
@@ -48,8 +48,7 @@ export class MytoolsService {
         }
         if (a.namespace > b.namespace) {
           return 1;
-        }
-        else {
+        } else {
           return 0;
         }
       })
@@ -84,8 +83,7 @@ export class MytoolsService {
         }
         if (a.name > b.name) {
           return 1;
-        }
-        else {
+        } else {
           return 0;
         }
       });
