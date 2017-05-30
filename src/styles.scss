@@ -1146,6 +1146,10 @@ tabset.homeComponent {
   }
   ul {
     border-bottom: none;
+    li:not(.active):hover {
+        padding-top: 4px;
+        padding-bottom: 1px;
+    }
     li {
       width: 250px;
       text-align: center;
@@ -1153,57 +1157,46 @@ tabset.homeComponent {
       font-weight: bold;
       border: 1px solid #CFD1D7;
       padding-top: 3px;
+      
+      // Specifying tab classes to override ds-style-fix.scss
+      &.browseWorkflowsTab,
       &.browseToolsTab {
         background-color: #F4F4F4;
-        border-top-left-radius: 8px;
-        color: #a0adcc;
-         :hover {
+        a.nav-link {
           background-color: inherit;
+          outline: 0;
         }
         &.active {
-          border-bottom: 1px solid #FFF;
-          background-color: #FFF;
-          border-top: 6px solid #51aad8;
           padding-top: 0px;
-        }
-        a.nav-link {
-          background-color: transparent;
-          color: #51aad8;
-          outline: 0;
+          background-color: #FFF;
+          border-bottom: 1px solid #FFF;
         }
         &:not(.active) {
           a.nav-link {
             color: #a0adcc;
           }
-          a.nav-link:hover {
-            padding-top: 11px;
-          }
+        }
+        
+      }
+      // Browse Tools tab specific styles
+      &.browseToolsTab {
+        border-top-left-radius: 8px;
+        &.active {
+          border-top: 6px solid #51aad8;
+        }
+        a.nav-link {
+          color: #51aad8;
         }
       }
+
+      // Browse Workflows tab specific styles
       &.browseWorkflowsTab {
         border-top-right-radius: 8px;
-        background-color: #F4F4F4;
-         :hover {
-          background-color: inherit;
-        }
         &.active {
-          border-bottom: 1px solid #FFF;
-          background-color: #FFF;
           border-top: 6px solid #4ab4a9;
-          padding-top: 0px;
         }
         a.nav-link {
-          background-color: transparent;
           color: #4ab4a9;
-          outline: 0;
-        }
-        &:not(.active) {
-          a.nav-link {
-            color: #a0adcc;
-          }
-          a.nav-link:hover {
-            padding-top: 11px;
-          }
         }
       }
     }
