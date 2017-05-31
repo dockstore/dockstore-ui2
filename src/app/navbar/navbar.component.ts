@@ -12,13 +12,12 @@ import { UserService } from './../loginComponents/user.service';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  providers: [UserService]
 })
 export class NavbarComponent extends Logout {
   private user;
   constructor (trackLoginService: TrackLoginService, logoutService: LogoutService, router: Router, userService: UserService) {
     super(trackLoginService, logoutService, router);
-    userService.getUser().subscribe(user => {
+    userService.user$.subscribe(user => {
       this.user = user;
     });
   }
