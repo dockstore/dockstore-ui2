@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -84,6 +85,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ListContainersModule,
     ListWorkflowsModule,
     TabModule,
+    BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
