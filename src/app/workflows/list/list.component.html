@@ -1,28 +1,37 @@
 <div class="separation">
-    <div *ngIf="displayTable">
-      <table datatable class="table row-border hover">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Author</th>
-            <th>Format</th>
-            <th>Project Links</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let workflow of publishedTools">
-            <td>
-              <a [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
-            </td>
-            <td>{{ workflow?.author || 'n/a' }}</td>
-            <td>{{ workflow?.descriptorType | uppercase }}</td>
-            <td>
-              <a [href]="workflow.providerUrl">
+  <div *ngIf="displayTable">
+    <table datatable class="table row-border hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Author</th>
+          <th>Format</th>
+          <th>Project Links</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let workflow of publishedTools">
+          <td>
+            <a [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
+          </td>
+          <td>{{ workflow?.author || 'n/a' }}</td>
+          <td>{{ workflow?.descriptorType | uppercase }}</td>
+          <td>
+            <a [href]="workflow.providerUrl">
               {{ workflow?.provider }}
             </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          </td>
+        </tr>
+
+      </tbody>
+      <!--Moved outside tbody because it interferes with Angular-Datatables library-->
+      <tr *ngIf="previewMode && publishedTools.length > 0">
+        <td colspan="4" class="browse-all">
+          <div class="button">
+            <p><a href="/search-workflows">Browse All Workflows &raquo;</a></p>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
+</div>

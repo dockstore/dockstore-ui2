@@ -62,7 +62,7 @@
         Browse Tools
       </ng-template>
       <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-      <app-list-containers></app-list-containers>
+      <app-list-containers [previewMode]="true"></app-list-containers>
     </tab>
     <tab id="workflowTab" [customClass]="browseWorkflowsTab">
       <ng-template tabHeading>
@@ -70,7 +70,7 @@
         Browse Workflows
       </ng-template>
       <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-      <app-list-workflows></app-list-workflows>
+      <app-list-workflows [previewMode]="true"></app-list-workflows>
     </tab>
   </tabset>
 </div>
