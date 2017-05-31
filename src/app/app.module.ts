@@ -34,7 +34,6 @@ import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
 import { DateService } from './shared/date.service';
@@ -65,7 +64,6 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     NavbarComponent,
     HomeComponent,
     FooterComponent,
-    SearchWorkflowsComponent,
     HomeFootNoteComponent,
     ToolDetailsComponent,
     LoginComponent,
