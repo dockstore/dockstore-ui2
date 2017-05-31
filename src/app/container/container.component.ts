@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CommunicatorService } from '../shared/communicator.service';

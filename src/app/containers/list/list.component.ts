@@ -42,7 +42,7 @@ export class ListContainersComponent extends ToolLister {
   }
 
   sendToolInfo(tool) {
-    this.communicatorService.setObj(tool);
+    this.communicatorService.setTool(tool);
   }
 
   getFilteredDockerPullCmd(path: string): string {

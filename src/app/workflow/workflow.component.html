@@ -1,8 +1,96 @@
-<div>Workflow</div>
 <div class="container">
   <h3>{{ title }}</h3>
   <p>
     Last build: {{ workflow?.timeMessage || 'n/a' }}
   </p>
-</div>
 
+  <div>
+    <tabset id="workflow_tabs" justified="true">
+      <tab id="infoTab" heading="Info" id="infoTab">
+        <table id="format" class="table">
+          <tbody>
+          <tr>
+            <th>Path</th>
+            <td>{{ workflow?.path }}</td>
+          </tr>
+          <tr>
+            <th>GitHub</th>
+            <td>{{ workflow?.providerUrl }}</td>
+          </tr>
+          <tr>
+            <th>Author</th>
+            <td>{{ workflow?.author || 'n/a' }}</td>
+          </tr>
+          <tr>
+            <th>E-mail</th>
+            <td>
+              <div *ngIf="workflow?.email">
+                <a href="mailto:{{workflow?.email}}">
+                  {{ workflow?.email }}
+                </a>
+              </div>
+              <div *ngIf="!workflow?.email">
+                n/a
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Workflow Path</th>
+            <td>{{ workflow?.workflow_path }}</td>
+          </tr>
+          <tr>
+            <th>Descriptor Type</th>
+            <td>{{ workflow?.descriptorType }}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div >
+          Description
+          <div class="well well-sm">
+            <pre><markdown>{{ workflow?.description || 'No description associated with this container.' }}</markdown></pre>
+          </div>
+          <span>
+          Launch With
+          <div class="pull-right">
+            <app-select [items]="validVersionNames"
+                        [default]="currentVersion"
+                        (select)="onVersionChange($event)"></app-select>
+          </div>
+          <div class="well">
+            <div class="well well-sm">
+              Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+              <pre>{{ launchParams }}</pre>
+            </div>
+            <div class="well well-sm">
+              Run it locally with the Dockstore CLI
+              <pre>{{ launchCli }}</pre>
+            </div>
+            <div *ngIf="workflow?.descriptorType === 'cwl'" class="well well-sm">
+              Alternatively, cwltool can run a workflow directly when all inputs and outputs are available on the local filesystem
+              <pre>{{ launchCwl }}</pre>
+            </div>
+          </div>
+        </span>
+        </div>
+      </tab>
+      <tab id="versionsTab" heading="Versions">
+        <div class="container separation">
+          <app-versions-workflow></app-versions-workflow>
+        </div>
+      </tab>
+      <tab id="fileTab" heading="Files">
+        <div class="container separation">
+          <app-files-workflow></app-files-workflow>
+          <!--<app-files-workflow  *ngIf="defaultVersion"-->
+                               <!--[tool]="workflow"-->
+                               <!--[validVersions]="validVersions"-->
+                               <!--[validVersionNames]="validVersionNames"-->
+                               <!--[defaultVersion]="defaultVersion"></app-files-workflow>-->
+        </div>
+      </tab>
+      <tab id="toolsTab" heading="Tools"></tab>
+      <tab id="dagTab" heading="DAG"></tab>
+    </tabset>
+  </div>
+</div>
