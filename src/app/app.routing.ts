@@ -5,7 +5,6 @@ import { AuthGuard } from './shared/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { SearchContainersComponent } from './containers/search/search.component';
 import { ContainerComponent } from './container/container.component';
-import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { LoginComponent } from './login/login.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
