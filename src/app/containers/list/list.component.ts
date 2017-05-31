@@ -16,6 +16,7 @@ import { ListContainersService } from './list.service';
   templateUrl: './list.component.html'
 })
 export class ListContainersComponent extends ToolLister {
+  @Input() previewMode: boolean;
   verifiedLink: string;
 
   // TODO: make an API endpoint to retrieve only the necessary properties for the containers table

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ToolLister } from '../../shared/tool-lister';
 
@@ -10,7 +10,7 @@ import { ProviderService } from '../../shared/provider.service';
   templateUrl: './list.component.html'
 })
 export class ListWorkflowsComponent extends ToolLister {
-
+@Input() previewMode: boolean;
   // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
   // gitUrl
 
