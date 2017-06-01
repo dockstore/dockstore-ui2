@@ -1,14 +1,17 @@
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+
+import { ClipboardModule } from 'ngx-clipboard';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 import { MarkdownModule } from 'angular2-markdown';
+
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AlertModule } from 'ngx-bootstrap/alert';
 
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../../container/container.service';
@@ -44,6 +47,7 @@ import { SelectModule } from './select.module';
   ],
   imports: [
     CommonModule,
+    ClipboardModule,
     MarkdownModule.forRoot(),
     DataTablesModule.forRoot(),
     HighlightJsModule,
