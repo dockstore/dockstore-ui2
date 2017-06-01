@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
-import { View } from '../../shared/view';
-
-import { ViewService } from './view.service';
 import { DateService } from '../../shared/date.service';
+import { ListContainersService } from './../../containers/list/list.service';
+import { View } from '../../shared/view';
+import { ViewService } from './view.service';
 
 @Component({
   selector: 'app-view-container',
@@ -13,7 +13,7 @@ import { DateService } from '../../shared/date.service';
 export class ViewContainerComponent extends View {
   private editMode = true;
   private mode: Mode;
-  constructor(private viewService: ViewService,
+  constructor(private viewService: ViewService, private listContainersService: ListContainersService,
     dateService: DateService) {
     super(dateService);
   }
@@ -40,6 +40,9 @@ export class ViewContainerComponent extends View {
     } else {
       return true;
     }
+  }
+  getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
+    return this.listContainersService.getDockerPullCmd(path, tagName);
   }
 }
 export enum DescriptorType {
