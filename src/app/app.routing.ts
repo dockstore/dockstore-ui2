@@ -17,7 +17,8 @@ export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'docs', loadChildren: 'app/docs/docs.module#DocsModule' },
-  { path: 'search-containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
+  { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
+  { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule' },
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
   { path: 'mytools', loadChildren: 'app/mytools/mytools.module#MyToolsModule' },
   { path: 'login', component: LoginComponent },
