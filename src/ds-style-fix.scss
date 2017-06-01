@@ -419,6 +419,11 @@ div.alert.alert-dismissable {
 }
 
 div.form-group.form-group-sm {
+
+  // Not sure why .form-inline is injected into .form-group, so using this to override it
+  margin-bottom: 15px;
+  display: block;
+
   div.checkbox {
     position: relative;
     bottom: 2.5px;

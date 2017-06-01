@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DataTablesModule } from 'angular-datatables';
@@ -53,7 +54,8 @@ import { SelectModule } from './select.module';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    FormsModule
   ],
   providers: [
     HighlightJsService,
