@@ -1,12 +1,12 @@
 <!-- Button trigger modal -->
-<a href data-toggle="modal" [attr.data-target]="'#' + version.id" *ngIf="editMode" (click)="setMode('View')">
+<a href data-toggle="modal" [attr.data-target]="'#' + unsavedVersion.id" *ngIf="!editMode" (click)="setMode(TagEditorMode.View)">
     View
 </a>
-<a href data-toggle="modal" [attr.data-target]="'#' + version.id" *ngIf="editMode" (click)="setMode('Edit')">
+<a href data-toggle="modal" [attr.data-target]="'#' + unsavedVersion.id" *ngIf="editMode" (click)="setMode(TagEditorMode.Edit)">
     Edit
 </a>
 <!-- Modal -->
-<div class="modal fade" id="{{version.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="{{unsavedVersion.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,7 +19,7 @@
                             Version Tag:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                            <input id="versionTagInput" type="text" class="form-control" name="name" [(ngModel)]="version.name" ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$/i" required title="Docker Image tag name." placeholder="e.g. develop" [disabled]="!(mode=='Add')" />
+                            <input id="versionTagInput" type="text" class="form-control" name="name" [(ngModel)]="unsavedVersion.name" ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$/i" required title="Docker Image tag name." placeholder="e.g. develop" [disabled]="!(mode=='Add')" />
                             <div class="form-error-messages" ng-messages="tagEditorForm.name.$error" ng-if="tagEditorForm.name.$touched">
                                 <div ng-messages-include="templates/validation/tags/name.html">
                                 </div>
@@ -31,7 +31,7 @@
                             Git Reference:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                            <input id="gitReferenceInput" type="text" class="form-control" name="reference" [(ngModel)]="version.reference" ng-minlength="3" ng-maxlength="128" ng-pattern="/^[\w-]+((\/|\.)[\w-]+)*$/i" title="Git branch or tag name." placeholder="e.g. develop" [disabled]="!editMode || (editMode && version.automated)" />
+                            <input id="gitReferenceInput" type="text" class="form-control" name="reference" [(ngModel)]="unsavedVersion.reference" ng-minlength="3" ng-maxlength="128" ng-pattern="/^[\w-]+((\/|\.)[\w-]+)*$/i" title="Git branch or tag name." placeholder="e.g. develop" [disabled]="!editMode || (editMode && unsavedVersion.automated)" />
                             <div class="form-error-messages" ng-messages="tagEditorForm.reference.$error" ng-if="tagEditorForm.reference.$touched">
                                 <div ng-messages-include="templates/validation/tags/reference.html">
                                 </div>
@@ -43,7 +43,7 @@
                             Image ID:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                            <input type="text" class="form-control" name="image_id" [(ngModel)]="version.image_id" ng-minlength="3" ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]*$/i" title="Docker Image ID." placeholder="e.g. 28d30887157514b6047c9" [disabled]="true" />
+                            <input type="text" class="form-control" name="image_id" [(ngModel)]="unsavedVersion.image_id" ng-minlength="3" ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]*$/i" title="Docker Image ID." placeholder="e.g. 28d30887157514b6047c9" [disabled]="true" />
                             <div class="form-error-messages" ng-messages="tagEditorForm.image_id.$error" ng-if="tagEditorForm.image_id.$touched">
                                 <div ng-messages-include="templates/validation/tags/imageid.html">
                                 </div>
@@ -67,7 +67,7 @@
                             CWL Descriptor:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                            <input type="text" class="form-control" name="cwl_path" [(ngModel)]="version.cwl_path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|yaml|yml)/i" ng-required="!(version.cwl_path.length || version.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode" />
+                            <input type="text" class="form-control" name="cwl_path" [(ngModel)]="unsavedVersion.cwl_path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|yaml|yml)/i" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode" />
                             <div class="form-error-messages" ng-messages="tagEditorForm.cwl_path.$error">
                                 <div ng-messages-include="templates/validation/tags/descriptorpath.html">
                                 </div>
@@ -79,7 +79,7 @@
                             WDL Descriptor:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                            <input type="text" class="form-control" name="wdl_path" [(ngModel)]="version.wdl_path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.wdl$/i" ng-required="!(version.cwl_path.length || version.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
+                            <input type="text" class="form-control" name="wdl_path" [(ngModel)]="unsavedVersion.wdl_path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.wdl$/i" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
                             <div class="form-error-messages" ng-messages="tagEditorForm.wdl_path.$error">
                                 <div ng-messages-include="templates/validation/tags/descriptorpath.html">
                                 </div>
@@ -91,10 +91,12 @@
                             CWL Test Parameter File(s):
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" ng-repeat="item in cwlItems track by $index" ng-class="$first ? '' : 'col-sm-offset-3'">
-                            <input type="text" class="form-control" name="cwl_test_parameter_file_{{$index}}" ng-model="cwlItems[$index]" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
-                            <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'CWL')">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="cwl_test_parameter_file_{{$index}}" ng-model="cwlItems[$index]" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'CWL')">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                            </div>
                             <div class="form-error-messages" ng-messages="tagEditorForm['cwl_test_parameter_file_' + $index].$error" ng-if="tagEditorForm['cwl_test_parameter_file_' + $index].$touched">
                                 <div ng-messages-include="templates/validation/containers/testparameterfile.html">
                                 </div>
@@ -111,10 +113,12 @@
                             WDL Test Parameter File(s):
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" ng-repeat="item in wdlItems track by $index" ng-class="$first ? '' : 'col-sm-offset-3'">
-                            <input type="text" class="form-control" name="wdl_test_parameter_file_{{$index}}" ng-model="wdlItems[$index]" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
-                            <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'WDL')">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="wdl_test_parameter_file_{{$index}}" ng-model="wdlItems[$index]" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'WDL')">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                            </div>
                             <div class="form-error-messages" ng-messages="tagEditorForm['wdl_test_parameter_file_' + $index].$error" ng-if="tagEditorForm['wdl_test_parameter_file_' + $index].$touched">
                                 <div ng-messages-include="templates/validation/containers/testparameterfile.html">
                                 </div>
@@ -122,7 +126,7 @@
                         </div>
                     </div>
                     <div>
-                        <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" ng-click="addTestParameterFile('WDL')" ng-hide="!editMode" [disabled]="hasBlankPath('WDL')">
+                        <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode" [disabled]="hasBlankPath('WDL')">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
                     </div>
@@ -133,7 +137,7 @@
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="version.hidden" uib-tooltip title="Hide tag from public view." />
+                                    <input type="checkbox" ng-model="unsavedVersion.hidden" uib-tooltip title="Hide tag from public view."/>
                                 </label>
                             </div>
                         </div>
@@ -144,59 +148,64 @@
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div class="label-value">
-                                {{version.automated ? 'Yes' : 'No'}}
+                                {{unsavedVersion.automated ? 'Yes' : 'No'}}
                             </div>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm" ng-if="!version.create">
+                    <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             Image Size:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div class="label-value">
-                                {{getSizeString(version.size)}}
+                                {{getSizeString(unsavedVersion.size)}}
                             </div>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm" ng-if="!version.create">
+                    <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             Last Modified:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div class="label-value">
-                                {{getDateTimeMessage(version.last_modified)}}
+                                {{getDateTimeMessage(unsavedVersion.last_modified)}}
                             </div>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm" ng-if="!version.create">
+                    <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             Valid:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div class="label-value">
-                                {{version.valid ? 'Yes' : 'No'}}
+                                {{unsavedVersion.valid ? 'Yes' : 'No'}}
                             </div>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm" ng-if="!version.create">
+                    <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             Docker Pull:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                        
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd('placeHolder', version.name) }}" aria-describedby="clipboard" #inputTarget>
-                            <span class="input-group-btn" id="clipboard">
-                                <button class="btn btn-default btn-sm" type="button" [ngxClipboard]="inputTarget">
-                                    <span class="glyphicon glyphicon-copy"></span>
-                                </button>
-                            </span>
-                        </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd('placeHolder', unsavedVersion.name) }}" aria-describedby="clipboard" #inputTarget>
+                                <span class="input-group-btn" id="clipboard">
+                                    <button class="btn btn-default btn-sm" type="button" [ngxClipboard]="inputTarget">
+                                        <span class="glyphicon glyphicon-copy"></span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Edit" ng-disabled="tagEditorForm.$invalid" data-dismiss="modal">
+                        Save Changes
+                    </button>
+                    <button id="addVersionTagButton" type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Add" ng-disabled="tagEditorForm.$invalid" data-dismiss="modal">
+                        Add Tag
+                    </button>
                 </div>
             </form>
         </div>
