@@ -49,7 +49,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         switch (provider) {
           case 'github':
             return addGitHubToken;
-          case 'quay.io':
+          case 'quay':
             return addQuayToken;
           case 'bitbucket':
             return addBitbucketToken;
