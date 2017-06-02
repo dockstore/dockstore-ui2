@@ -17,6 +17,7 @@ export class NavbarComponent extends Logout {
   private user;
   constructor (trackLoginService: TrackLoginService, logoutService: LogoutService, router: Router, userService: UserService) {
     super(trackLoginService, logoutService, router);
+    userService.getUser().subscribe(user => userService.setUser(user));
     userService.user$.subscribe(user => {
       this.user = user;
     });
