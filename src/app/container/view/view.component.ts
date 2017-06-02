@@ -1,3 +1,5 @@
+import { ContainerService } from './../container.service';
+import { CommunicatorService } from './../../shared/communicator.service';
 import { Component, OnInit } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
@@ -15,14 +17,16 @@ import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 export class ViewContainerComponent extends View implements OnInit {
   private editMode = true;
   private mode: TagEditorMode;
+  private tool: any;
   private unsavedVersion;
   public TagEditorMode = TagEditorMode;
   constructor(private viewService: ViewService, private listContainersService: ListContainersService,
-    dateService: DateService) {
+    dateService: DateService, communicatorService: CommunicatorService) {
     super(dateService);
 
     // Initially setting tag editor version equal to the actual version
     this.unsavedVersion = this.version;
+    this.tool = communicatorService.getObj();
   }
 
   getSizeString(size) {
@@ -50,6 +54,7 @@ export class ViewContainerComponent extends View implements OnInit {
 
   editTag() {
     console.log('Editing tag...');
+    console.log(this.tool);
   }
 
   setMode(mode: TagEditorMode) {
