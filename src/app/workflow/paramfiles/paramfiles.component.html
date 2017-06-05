@@ -1,3 +1,15 @@
-<p>
-  paramfiles works!
-</p>
+<div class="container separation">
+  <span>
+    <strong>Container Version:</strong>
+    <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
+    <strong>Descriptor Type:</strong>
+    <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+    <strong>File:</strong>
+    <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+  </span>
+  <section *ngIf="content" [innerHTML]="content" highlight-js-content=".highlight"></section>
+  <alert type="warning" *ngIf="!content">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp; A Test Parameter File associated with this workflow could not be found.
+  </alert>
+</div>

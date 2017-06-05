@@ -18,13 +18,8 @@
     <div *ngIf="currentDescriptor === 'cwl'">
       <div class="well well-sm" tooltip="Commands for launching tools through CWLtool: the CWL reference implementation.
       cwltool can run a tool directly when all inputs and outputs are available on the local filesystem.">
-        <a href="https://github.com/common-workflow-language/cwltool">Run locally with cwltool</a>
+        Alternatively, cwltool can run a workflow directly when all inputs and outputs are available on the local filesystem
         <pre>{{ cwl }}</pre>
-      </div>
-      <div class="well well-sm" tooltip="Commands for launching tool through Consonance: a DIY open-source framework for
-      spinning up VMs and running tools on AWS EC2">
-        <a href="https://github.com/Consonance/consonance/wiki">Run on AWS VMs with Consonance</a>
-        <pre>{{ consonance }}</pre>
       </div>
     </div>
   </div>

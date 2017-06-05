@@ -6,9 +6,11 @@ export abstract class View {
 
   @Input() version;
 
-  constructor(private dateService: DateService) { }
+  constructor(private dateService: DateService) {
+  }
 
   getDateTimeMessage(timestamp) {
+
     return this.dateService.getDateTimeMessage(timestamp);
   }
 

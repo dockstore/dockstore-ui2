@@ -55,11 +55,7 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
-// import { VersionsWorkflowComponent } from './workflow/versions/versions.component';
-// import { FilesWorkflowComponent } from './workflow/files/files.component';
-// import { DescriptorsWorkflowComponent } from './workflow/descriptors/descriptors.component';
-// import { ParamfilesWorkflowComponent } from './workflow/paramfiles/paramfiles.component';
-import { MyToolsComponent } from './mytools/mytools.component';
+import { MyworkflowsComponent } from './myworkflows/myworkflows.component';
 
 
 @NgModule({
@@ -79,10 +75,7 @@ import { MyToolsComponent } from './mytools/mytools.component';
     AccountsExternalComponent,
     AuthComponent,
     TokensComponent,
-    // VersionsWorkflowComponent,
-    // FilesWorkflowComponent,
-    // DescriptorsWorkflowComponent,
-    // ParamfilesWorkflowComponent
+    MyworkflowsComponent
   ],
   imports: [
     BrowserModule,

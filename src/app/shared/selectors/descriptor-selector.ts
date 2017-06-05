@@ -25,5 +25,4 @@ export abstract class DescriptorSelector extends VersionSelector {
     this.currentDescriptor = descriptor;
     this.reactToDescriptor();
   }
-
 }

@@ -64,9 +64,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     // cannot reuse provider and image provider
     // navigated to tool's page without visiting table
     if (!this.tool) {
-      console.log(event.url);
       this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
-      console.log(this.title);
     } else {
       this.title = this.tool.path;
     }
@@ -75,7 +73,6 @@ export abstract class Tool implements OnInit, OnDestroy {
       this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
         .subscribe(toolArray => {
           // TODO: endpoint should return a single object instead of an array
-          console.log(toolArray);
           this.setUpTool(toolArray);
         }, error => {
           this.router.navigate(['../']);
@@ -91,21 +88,23 @@ export abstract class Tool implements OnInit, OnDestroy {
     } else {
       this.title = this.workflow.path;
     }
-    if (this._toolType === 'workflows') {
-      this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title))
-        .subscribe(workflow => {
-          this.setUpWorkflow(workflow);
-        }, error => {
-          this.router.navigate(['../']);
-        }
-      );
-    }
+    this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title))
+      .subscribe(workflow => {
+        this.setUpWorkflow(workflow);
+      }, error => {
+        this.router.navigate(['../']);
+      }
+    );
   }
 
-  private setUpWorkflow(workflow: any){
-    // if(workflow){
-    //   if(!workflow.providerUrl)
-    // }
+  private setUpWorkflow(workflow: any) {
+    if (workflow) {
+      if (!workflow.providerUrl) {
+        this.providerService.setUpProvider(workflow);
+      }
+      this.workflow = Object.assign(workflow, this.workflow);
+      this.initTool();
+    }
   }
 
   private setUpTool(toolArray: Array<any>) {
@@ -126,20 +125,22 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   private chooseDefaultVersion() {
-    let defaultVersionName = this.tool.defaultVersion;
-
+    let defaultVersionName;
+    if (this._toolType === 'workflows') {
+      defaultVersionName = this.workflow.defaultVersion;
+    } else {
+      defaultVersionName = this.tool.defaultVersion;
+    }
     // if user did not specify a default version, use the latest version
     if (!defaultVersionName) {
       if (this.validVersions.length) {
         const last: number = this.validVersions.length - 1;
-
         defaultVersionName = this.validVersions[last].name;
       }
     }
-
-    this.defaultVersion = this.getDefaultVersion(this.tool, defaultVersionName);
+    this.defaultVersion = this.getDefaultVersion(defaultVersionName);
   }
-  private getDefaultVersion(tool, defaultVersionName: string) {
+  private getDefaultVersion(defaultVersionName: string) {
     for (const version of this.validVersions) {
       if (version.name === defaultVersionName) {
         return version;
@@ -156,7 +157,6 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   private decodedString(url: string): string {
-    console.log(url);
     if (this.isEncoded(url)) {
       return decodeURIComponent(url);
     }

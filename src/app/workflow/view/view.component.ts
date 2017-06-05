@@ -11,7 +11,7 @@ import { WorkflowService } from '../workflow.service';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css']
 })
-export class ViewWorkflowComponent extends View implements AfterViewInit{
+export class ViewWorkflowComponent extends View implements AfterViewInit {
   @Input() workflowId: string;
   items: any[];
   constructor(private viewService: ViewService,
@@ -23,7 +23,6 @@ export class ViewWorkflowComponent extends View implements AfterViewInit{
     if (this.version) {
       this.workflowService.getTestJson(this.workflowId, this.version.name)
         .subscribe(items => {
-          console.log(items);
             this.items = items;
           });
     }

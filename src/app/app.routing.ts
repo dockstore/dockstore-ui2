@@ -11,7 +11,6 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
-import { MyToolsComponent } from './mytools/mytools.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 

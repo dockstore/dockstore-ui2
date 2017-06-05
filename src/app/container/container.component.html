@@ -8,6 +8,11 @@
       </span>
       {{ title }}
     </h3>
+    <div *ngIf="tool">
+      <span class="label label-default container-label" *ngFor="let label of labels">
+        {{label}}
+      </span>
+    </div>
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
@@ -16,113 +21,57 @@
       <tabset id="tool_tabs" justified="true">
         <tab id="infoTab" heading="Info" id="infoTab">
           <div>
-            <table class="table container">
-              <tbody>
-              <tr>
-                <th>
-                  <label tooltip="Author listed in descriptor">
-                    Author
-                  </label>
-                </th>
-                <td>{{ tool?.author || 'n/a' }}</td>
-              </tr>
-              <tr>
-                <th>
-                  <label tooltip="E-mail of corresponding author for tool">
-                    E-mail
-                  </label>
-                </th>
-                <td>
-                  <div *ngIf="tool?.email">
-                    <a href="mailto:{{tool?.email}}">
-                      {{ tool?.email }}
-                    </a>
-                  </div>
-                  <div *ngIf="!tool?.email">
-                    n/a
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <label tooltip="Git repository for the associated tool descriptors and Dockerfile">
-                    GitHub
-                  </label>
-                </th>
-                <td>
-                  <a [href]="tool?.providerUrl">
-                    {{ tool?.providerUrl }}
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <label tooltip="Docker registry for the associated Docker images">
-                    Quay.io
-                  </label>
-                </th>
-                <td>
-                  <a [href]="tool?.imgProviderUrl">
-                    {{ tool?.imgProviderUrl }}
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <label tooltip="Path in Git repository to the tool's Dockerfile">
-                    Dockerfile Path
-                  </label>
-                </th>
-                <td>{{ tool?.default_dockerfile_path }}</td>
-              </tr>
-              <tr>
-                <th>
-                  <label tooltip="Path in Git repository to main CWL descriptor file">
-                    CWL Path
-                  </label>
-                </th>
-                <td>{{ tool?.default_cwl_path || 'n/a' }}</td>
-              </tr>
+            <ul class="list-unstyled container-info">
+              <li>
+                <strong tooltip="Author listed in descriptor">Author</strong>:
+                {{ tool?.author || 'n/a' }}
+              </li>
+              <li>
+                <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
+                <span *ngIf="!tool?.email">n/a</span>
+                <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
+                  {{ tool?.email }}
+                </a>
+              </li>
+              <li>
+                <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
+                <a [href]="tool?.providerUrl">
+                  {{ tool?.providerUrl }}
+                </a>
+              </li>
+              <li>
+                <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
+                <a [href]="tool?.imgProviderUrl">
+                  {{ tool?.imgProviderUrl }}
+                </a>
+              </li>
+              <li>
+                <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
+                {{ tool?.default_dockerfile_path }}
+              </li>
+              <li>
+                <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
+                {{ tool?.default_cwl_path || 'n/a' }}
+              </li>
 
-              <tr>
-                <th>
-                  <label tooltip="Path in Git repository to main WDL descriptor file">
-                    WDL Path
-                  </label>
-                </th>
-                <td>{{ tool?.default_wdl_path || 'n/a' }}</td>
-              </tr>
-
-              <tr>
-                <th>
-                  <label tooltip="{{tool?.buildModeTooltip}}">
-                    Build Mode
-                  </label>
-                </th>
-                <td>{{ tool?.buildMode }}</td>
-              </tr>
-
-              <tr>
-                <th>
-                  <label tooltip="Date and time of the last build of the Docker image">
-                    Last Build
-                  </label>
-                </th>
-                <td>{{ tool?.lastBuildDate }}</td>
-              </tr>
-
-              <tr>
-                <th>
-                  <label tooltip="Date and time of the last update to the Tool entry">
-                    Last Updated
-                  </label>
-                </th>
-                <td>{{ tool?.lastUpdatedDate }}</td>
-              </tr>
-              </tbody>
-            </table>
+              <li>
+                <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>:
+                {{ tool?.default_wdl_path || 'n/a' }}
+              </li>
+              <li>
+                <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>:
+                {{ tool?.buildMode }}
+              </li>
+              <li>
+                <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>:
+                {{ tool?.lastBuildDate }}
+              </li>
+              <li>
+                <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>:
+                {{ tool?.lastUpdatedDate }}
+              </li>
+            </ul>
           </div>
-
           <div *ngIf="tool">
             <label tooltip="Description of tool obtained from tool descriptor">
               Description
@@ -135,8 +84,19 @@
             </div>
           </div>
         </tab>
-        <tab heading="Versions" *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags" id ="versionsTab"
+        <tab id="labelsTab" heading="Labels">
+          <ul class="list-unstyled container-info">
+            <li *ngIf="tool">
+              <strong>Labels:</strong>
+              <span *ngIf="tool?.labels.length === 0">n/a</span>
+              <span class="label label-default container-label" *ngFor="let label of labels">
+               {{label}}
+            </span>
+            </li>
+          </ul>
+        </tab>
+        <tab id ="versionsTab" heading="Versions" *ngIf="validVersions">
+          <app-versions-container [versions]="tool?.tags"
                                   [verifiedSource]="tool?.verifiedSources">
           </app-versions-container>
         </tab>
