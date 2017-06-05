@@ -97,12 +97,13 @@ export class ViewContainerComponent extends View implements OnInit {
       case DescriptorType.CWL: {
         const newTestFile = { 'content': '', 'id': '', 'path': this.unsavedTestCWLFile, 'type': 'CWL_TEST_JSON' };
         this.unsavedCWLTestParameterFiles.push(newTestFile);
+        this.unsavedTestCWLFile = '';
         break;
       }
       case DescriptorType.WDL: {
         const newTestFile = { 'content': '', 'id': '', 'path': this.unsavedTestWDLFile, 'type': 'WDL_TEST_JSON' };
         this.unsavedWDLTestParameterFiles.push(newTestFile);
-        console.log(this.unsavedWDLTestParameterFiles);
+        this.unsavedTestWDLFile = '';
         break;
       }
       default : {
@@ -135,6 +136,5 @@ export class ViewContainerComponent extends View implements OnInit {
     this.tool = this.communicatorService.getObj();
     this.unsavedTestCWLFile = '';
     this.unsavedTestWDLFile = '';
-    console.log(this.unsavedTestWDLFile);
   }
 }
