@@ -34,6 +34,18 @@ export class HttpService {
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 
+  postResponse(url: string, body, dockstoreToken?: string) {
+    return this.http.post(url, { body }, this.addOptions(dockstoreToken))
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
+  }
+
+  putResponse(url: string, body, dockstoreToken?: string) {
+    return this.http.put(url, { body }, this.addOptions(dockstoreToken))
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
+  }
+
   deleteAuth(url: string) {
     return this.delete(url, this.getDockstoreToken());
   }
