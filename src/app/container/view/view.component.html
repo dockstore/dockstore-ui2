@@ -90,9 +90,9 @@
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             CWL Test Parameter File(s):
                         </label>
-                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" ng-repeat="item in cwlItems track by $index" ng-class="$first ? '' : 'col-sm-offset-3'">
+                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFiles; let i = index;" ng-class="$first ? '' : 'col-sm-offset-3'">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="cwl_test_parameter_file_{{$index}}" ng-model="cwlItems[$index]" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <input type="text" class="form-control" name="cwl_test_parameter_file_{{$index}}" [(ngModel)]="unsavedCWLTestParameterFiles[i].path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                                 <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'CWL')">
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>
@@ -112,9 +112,9 @@
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             WDL Test Parameter File(s):
                         </label>
-                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" ng-repeat="item in wdlItems track by $index" ng-class="$first ? '' : 'col-sm-offset-3'">
+                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedWDLTestParameterFiles; let i = index;" ng-class="$first ? '' : 'col-sm-offset-3'">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="wdl_test_parameter_file_{{$index}}" ng-model="wdlItems[$index]" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <input type="text" class="form-control" name="wdl_test_parameter_file_{{$index}}" [(ngModel)]="unsavedWDLTestParameterFiles[i].path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                                 <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'WDL')">
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>

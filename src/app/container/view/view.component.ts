@@ -1,3 +1,4 @@
+import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { ContainerService } from './../container.service';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,12 +20,16 @@ export class ViewContainerComponent extends View implements OnInit {
   private mode: TagEditorMode;
   private tool: any;
   private unsavedVersion;
+  private unsavedCWLTestParameterFiles;
+  private unsavedWDLTestParameterFiles;
   public TagEditorMode = TagEditorMode;
-  constructor(private viewService: ViewService, private listContainersService: ListContainersService,
-    dateService: DateService, communicatorService: CommunicatorService) {
+  constructor(
+    private paramfilesService: ParamfilesService,
+    private viewService: ViewService,
+    private listContainersService: ListContainersService,
+    dateService: DateService,
+    communicatorService: CommunicatorService) {
     super(dateService);
-
-    // Initially setting tag editor version equal to the actual version
     this.unsavedVersion = this.version;
     this.tool = communicatorService.getObj();
   }
@@ -54,12 +59,19 @@ export class ViewContainerComponent extends View implements OnInit {
 
   editTag() {
     console.log('Editing tag...');
-    console.log(this.tool);
   }
 
   setMode(mode: TagEditorMode) {
     console.log('Setting mode to: ' + TagEditorMode[mode]);
     this.mode = mode;
+    this.paramfilesService.getFiles(this.tool.id, this.version.name, 'CWL').subscribe(file => {
+      this.unsavedCWLTestParameterFiles = file;
+      console.log(this.unsavedCWLTestParameterFiles);
+    });
+    this.paramfilesService.getFiles(this.tool.id, this.version.name, 'WDL').subscribe(file => {
+      this.unsavedWDLTestParameterFiles = file;
+      console.log(this.unsavedWDLTestParameterFiles);
+    });
   }
 
   getMode() {
