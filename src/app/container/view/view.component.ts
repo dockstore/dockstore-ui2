@@ -16,13 +16,16 @@ import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 })
 // This is actually the tag edtior
 export class ViewContainerComponent extends View implements OnInit {
+  public TagEditorMode = TagEditorMode;
+  public DescriptorType = DescriptorType;
   private editMode = true;
   private mode: TagEditorMode;
   private tool: any;
   private unsavedVersion;
   private unsavedCWLTestParameterFiles;
   private unsavedWDLTestParameterFiles;
-  public TagEditorMode = TagEditorMode;
+  private unsavedTestCWLFile: String;
+  private unsavedTestWDLFile: String;
   constructor(
     private paramfilesService: ParamfilesService,
     private viewService: ViewService,
@@ -47,7 +50,7 @@ export class ViewContainerComponent extends View implements OnInit {
         break;
       }
       default: {
-        console.log('No idea how you submitted in neither editor or add mode');
+        console.log('No idea how you submitted in neither edit or add mode');
       }
     }
   }
@@ -64,11 +67,9 @@ export class ViewContainerComponent extends View implements OnInit {
     this.mode = mode;
     this.paramfilesService.getFiles(this.tool.id, this.version.name, 'CWL').subscribe(file => {
       this.unsavedCWLTestParameterFiles = file;
-      console.log(this.unsavedCWLTestParameterFiles);
     });
     this.paramfilesService.getFiles(this.tool.id, this.version.name, 'WDL').subscribe(file => {
       this.unsavedWDLTestParameterFiles = file;
-      console.log(this.unsavedWDLTestParameterFiles);
     });
   }
 
@@ -76,21 +77,64 @@ export class ViewContainerComponent extends View implements OnInit {
     return this.mode;
   }
   hasBlankPath(descriptorType: DescriptorType) {
-    if (descriptorType === DescriptorType.CWL) {
-      // return ($scope.cwlItems.indexOf("") !== -1);
-      return false;
-    } else if (descriptorType === DescriptorType.WDL) {
-      // return ($scope.wdlItems.indexOf("") !== -1);
-      return false;
-    } else {
-      return true;
+    switch (descriptorType) {
+      case DescriptorType.CWL: {
+        return false;
+      }
+      case DescriptorType.WDL: {
+        return false;
+      }
+      default: {
+        console.log('No idea how you submitted in neither edit or add mode');
+        return false;
+      }
+
     }
   }
+
+  addTestParameterFile(descriptorType: DescriptorType) {
+    switch (descriptorType) {
+      case DescriptorType.CWL: {
+        const newTestFile = { 'content': '', 'id': '', 'path': this.unsavedTestCWLFile, 'type': 'CWL_TEST_JSON' };
+        this.unsavedCWLTestParameterFiles.push(newTestFile);
+        break;
+      }
+      case DescriptorType.WDL: {
+        const newTestFile = { 'content': '', 'id': '', 'path': this.unsavedTestWDLFile, 'type': 'WDL_TEST_JSON' };
+        this.unsavedWDLTestParameterFiles.push(newTestFile);
+        console.log(this.unsavedWDLTestParameterFiles);
+        break;
+      }
+      default : {
+        console.log('No idea how you submitted in neither edit or add mode');
+      }
+    }
+  }
+
+  removeTestParameterFile(index: Number, descriptorType: DescriptorType) {
+    switch (descriptorType) {
+      case DescriptorType.CWL: {
+        this.unsavedCWLTestParameterFiles.splice(index, 1);
+        break;
+      }
+      case DescriptorType.WDL: {
+        this.unsavedWDLTestParameterFiles.splice(index, 1);
+        break;
+      }
+      default: {
+        console.log('No idea how you submitted in neither edit or add mode');
+      }
+    }
+  }
+
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
   ngOnInit() {
     this.unsavedVersion = this.version;
     this.tool = this.communicatorService.getObj();
+    this.unsavedTestCWLFile = '';
+    this.unsavedTestWDLFile = '';
+    console.log(this.unsavedTestWDLFile);
   }
 }

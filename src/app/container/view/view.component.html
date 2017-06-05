@@ -86,14 +86,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group form-group-sm">
+                    <div class="form-group form-group-sm" style="clear:both;">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             CWL Test Parameter File(s):
                         </label>
-                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFiles; let i = index;" ng-class="$first ? '' : 'col-sm-offset-3'">
+                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="cwl_test_parameter_file_{{$index}}" [(ngModel)]="unsavedCWLTestParameterFiles[i].path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
-                                <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'CWL')">
+                                <input type="text" class="form-control" name="unsavedTestCWLFile" [(ngModel)]="unsavedTestCWLFile" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.CWL)" ng-hide="!editMode" [disabled]="hasBlankPath(DescriptorType.CWL)">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </div>
+                            <div class="form-error-messages" ng-messages="tagEditorForm['cwl_test_parameter_file_' + $index].$error" ng-if="tagEditorForm['cwl_test_parameter_file_' + $index].$touched">
+                                <div ng-messages-include="templates/validation/containers/testparameterfile.html">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm" style="clear:both;">
+                        <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFiles; let i = index;">
+                            <div class="input-group">
+                                <input type="text" class="form-control" [value] = "unsavedCWLTestParameterFiles[i].path" (input)="unsavedCWLTestParameterFiles[i].path = $event.target.value" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.CWL)">
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>
                             </div>
@@ -103,19 +117,29 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <button title="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" ng-click="addTestParameterFile('CWL')" ng-hide="!editMode" [disabled]="hasBlankPath('CWL')">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </div>
+
                     <div class="form-group form-group-sm" style="clear:both;">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             WDL Test Parameter File(s):
                         </label>
-                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedWDLTestParameterFiles; let i = index;" ng-class="$first ? '' : 'col-sm-offset-3'">
+                        <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="wdl_test_parameter_file_{{$index}}" [(ngModel)]="unsavedWDLTestParameterFiles[i].path" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
-                                <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" ng-click="removeTestParameterFile($index, 'WDL')">
+                                <input type="text" class="form-control" name="unsavedTestWDLFile" [(ngModel)]="unsavedTestWDLFile" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode" [disabled]="hasBlankPath(DescriptorType.WDL)">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </div>
+                            <div class="form-error-messages" ng-messages="tagEditorForm['wdl_test_parameter_file_' + $index].$error" ng-if="tagEditorForm['wdl_test_parameter_file_' + $index].$touched">
+                                <div ng-messages-include="templates/validation/containers/testparameterfile.html">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm" style="clear:both;">
+                        <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedWDLTestParameterFiles; let i = index;">
+                            <div class="input-group">
+                                <input type="text" class="form-control" [value] = "unsavedWDLTestParameterFiles[i].path" (input)="unsavedWDLTestParameterFiles[i].path = $event.target.value" ng-minlength="3" ng-maxlength="128" ng-pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.WDL)">
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>
                             </div>
@@ -125,11 +149,6 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode" [disabled]="hasBlankPath('WDL')">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </div>
                     <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             Hidden:
@@ -137,7 +156,7 @@
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="unsavedVersion.hidden" uib-tooltip title="Hide tag from public view."/>
+                                    <input type="checkbox" ng-model="unsavedVersion.hidden" uib-tooltip title="Hide tag from public view." />
                                 </label>
                             </div>
                         </div>
