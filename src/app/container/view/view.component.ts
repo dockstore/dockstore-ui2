@@ -28,10 +28,8 @@ export class ViewContainerComponent extends View implements OnInit {
     private viewService: ViewService,
     private listContainersService: ListContainersService,
     dateService: DateService,
-    communicatorService: CommunicatorService) {
+    private communicatorService: CommunicatorService) {
     super(dateService);
-    this.unsavedVersion = this.version;
-    this.tool = communicatorService.getObj();
   }
 
   getSizeString(size) {
@@ -93,5 +91,6 @@ export class ViewContainerComponent extends View implements OnInit {
   }
   ngOnInit() {
     this.unsavedVersion = this.version;
+    this.tool = this.communicatorService.getObj();
   }
 }
