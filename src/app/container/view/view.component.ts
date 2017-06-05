@@ -16,16 +16,24 @@ import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 })
 // This is actually the tag edtior
 export class ViewContainerComponent extends View implements OnInit {
+
+  // Enums
   public TagEditorMode = TagEditorMode;
   public DescriptorType = DescriptorType;
+
   private editMode = true;
   private mode: TagEditorMode;
   private tool: any;
   private unsavedVersion;
-  private unsavedCWLTestParameterFiles;
-  private unsavedWDLTestParameterFiles;
+  private savedCWLTestParameterFiles: Array<any>;
+  private savedWDLTestParameterFiles: Array<any>;
+  private savedCWLTestParameterFilePaths: Array<String>;
+  private savedWDLTestParameterFilePaths: Array<String>;
+  private unsavedCWLTestParameterFilePaths: Array<String>;
+  private unsavedWDLTestParameterFilePaths: Array<String>;
   private unsavedTestCWLFile: String;
   private unsavedTestWDLFile: String;
+
   constructor(
     private paramfilesService: ParamfilesService,
     private viewService: ViewService,
@@ -35,6 +43,7 @@ export class ViewContainerComponent extends View implements OnInit {
     super(dateService);
   }
 
+  // Almost all these functions should be moved to a service
   getSizeString(size) {
     return this.viewService.getSizeString(size);
   }
@@ -60,16 +69,33 @@ export class ViewContainerComponent extends View implements OnInit {
 
   editTag() {
     console.log('Editing tag...');
+    const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => this.savedCWLTestParameterFilePaths.indexOf(x) === -1);
+    const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => this.unsavedCWLTestParameterFilePaths.indexOf(x) === -1);
+    const newWDL = this.unsavedCWLTestParameterFilePaths.filter(x => this.savedCWLTestParameterFilePaths.indexOf(x) === -1);
+    const missingWDL = this.savedCWLTestParameterFilePaths.filter(x => this.unsavedCWLTestParameterFilePaths.indexOf(x) === -1);
   }
 
   setMode(mode: TagEditorMode) {
     console.log('Setting mode to: ' + TagEditorMode[mode]);
     this.mode = mode;
+    this.unsavedCWLTestParameterFilePaths = [];
+    this.unsavedWDLTestParameterFilePaths = [];
     this.paramfilesService.getFiles(this.tool.id, this.version.name, 'CWL').subscribe(file => {
-      this.unsavedCWLTestParameterFiles = file;
+      this.savedCWLTestParameterFiles = file;
+      for (let i = 0; i < this.savedCWLTestParameterFiles.length; i++) {
+        this.savedCWLTestParameterFilePaths.push(this.savedCWLTestParameterFiles[i].path);
+
+      }
+      this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
+
     });
     this.paramfilesService.getFiles(this.tool.id, this.version.name, 'WDL').subscribe(file => {
-      this.unsavedWDLTestParameterFiles = file;
+      this.savedWDLTestParameterFiles = file;
+      for (let i = 0; i < this.savedWDLTestParameterFiles.length; i++) {
+        this.savedWDLTestParameterFilePaths.push(this.savedWDLTestParameterFiles[i].path);
+      }
+
+      this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
     });
   }
 
@@ -95,31 +121,31 @@ export class ViewContainerComponent extends View implements OnInit {
   addTestParameterFile(descriptorType: DescriptorType) {
     switch (descriptorType) {
       case DescriptorType.CWL: {
-        const newTestFile = { 'content': '', 'id': '', 'path': this.unsavedTestCWLFile, 'type': 'CWL_TEST_JSON' };
-        this.unsavedCWLTestParameterFiles.push(newTestFile);
+        const newTestFile = this.unsavedTestCWLFile;
+        this.unsavedCWLTestParameterFilePaths.push(newTestFile);
         this.unsavedTestCWLFile = '';
         break;
       }
       case DescriptorType.WDL: {
-        const newTestFile = { 'content': '', 'id': '', 'path': this.unsavedTestWDLFile, 'type': 'WDL_TEST_JSON' };
-        this.unsavedWDLTestParameterFiles.push(newTestFile);
+        const newTestFile = this.unsavedTestWDLFile;
+        this.unsavedWDLTestParameterFilePaths.push(newTestFile);
         this.unsavedTestWDLFile = '';
         break;
       }
-      default : {
+      default: {
         console.log('No idea how you submitted in neither edit or add mode');
       }
     }
   }
 
-  removeTestParameterFile(index: Number, descriptorType: DescriptorType) {
+  removeTestParameterFile(index: number, descriptorType: DescriptorType) {
     switch (descriptorType) {
       case DescriptorType.CWL: {
-        this.unsavedCWLTestParameterFiles.splice(index, 1);
+        this.unsavedCWLTestParameterFilePaths.splice(index, 1);
         break;
       }
       case DescriptorType.WDL: {
-        this.unsavedWDLTestParameterFiles.splice(index, 1);
+        this.unsavedWDLTestParameterFilePaths.splice(index, 1);
         break;
       }
       default: {
@@ -136,5 +162,7 @@ export class ViewContainerComponent extends View implements OnInit {
     this.tool = this.communicatorService.getObj();
     this.unsavedTestCWLFile = '';
     this.unsavedTestWDLFile = '';
+    this.savedCWLTestParameterFilePaths = [];
+    this.savedWDLTestParameterFilePaths = [];
   }
 }
