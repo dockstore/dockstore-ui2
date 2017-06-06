@@ -7,11 +7,6 @@ import { HttpService } from '../shared/http.service';
 export class WorkflowService {
   constructor(private httpService: HttpService) {}
 
-  getPublishedWorkflowByPath(path: string) {
-    const publishedWorkflowUrl = Dockstore.API_URI + '/workflows/path/workflow/' + path + '/published';
-    return this.httpService.getResponse(publishedWorkflowUrl);
-  }
-
   getParamsString(path: string, tagName: string) {
     return 'dockstore workflow convert entry2json --entry ' + path + ':' + tagName + ` > Dockstore.json
             \nvim Dockstore.json`;
