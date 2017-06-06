@@ -19,7 +19,7 @@ const APP_ROUTES: Routes = [
   { path: 'search-containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
   { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule' },
-  { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
+  { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
   { path: 'mytools', loadChildren: 'app/mytools/mytools.module#MyToolsModule' },
   { path: 'login', component: LoginComponent },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },

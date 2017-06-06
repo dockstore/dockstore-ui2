@@ -22,20 +22,10 @@ import { WorkflowsComponent } from './workflows.component';
 
 import { workflowsRouting } from './workflows.routing';
 
-// import { VersionsWorkflowComponent } from '../workflow/versions/versions.component';
-// import { FilesWorkflowComponent } from '../workflow/files/files.component';
-// import { DescriptorsWorkflowComponent } from '../workflow/descriptors/descriptors.component';
-// import { ParamfilesWorkflowComponent } from '../workflow/paramfiles/paramfiles.component';
-
 @NgModule({
   declarations: [
     WorkflowsComponent,
-    SearchWorkflowsComponent,
-    // WorkflowComponent,
-    // DescriptorsWorkflowComponent,
-    // FilesWorkflowComponent,
-    // ParamfilesWorkflowComponent,
-    // VersionsWorkflowComponent
+    SearchWorkflowsComponent
   ],
   imports: [
     CommonModule,
