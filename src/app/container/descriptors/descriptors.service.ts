@@ -51,42 +51,22 @@ export class DescriptorsService {
   }
 
   private getCwl(id: number, versionName: string) {
-    let cwlURL;
-    if (this.type === 'container') {
-      cwlURL = `${ Dockstore.API_URI }/containers/${ id }/cwl?tag=${ versionName }`;
-    } else if (this.type === 'workflow') {
-      cwlURL = `${ Dockstore.API_URI }/workflows/${ id }/cwl?tag=${ versionName }`;
-    }
+    const cwlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/cwl?tag=${ versionName }`;
     return this.httpService.getResponse(cwlURL);
   }
 
   private getSecondaryCwl(id: number, versionName: string) {
-    let sec_cwlURL;
-    if (this.type === 'container') {
-      sec_cwlURL = `${ Dockstore.API_URI }/containers/${ id }/secondaryCwl?tag=${ versionName }`;
-    } else if (this.type === 'workflow') {
-      sec_cwlURL = `${ Dockstore.API_URI }/workflows/${ id }/secondaryCwl?tag=${ versionName }`;
-    }
+    const sec_cwlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/secondaryCwl?tag=${ versionName }`;
     return this.httpService.getResponse(sec_cwlURL);
   }
 
   private getWdl(id: number, versionName: string) {
-    let wdlURL;
-    if (this.type === 'container') {
-      wdlURL = `${ Dockstore.API_URI }/containers/${ id }/wdl?tag=${ versionName }`;
-    } else if (this.type === 'workflow') {
-      wdlURL = `${ Dockstore.API_URI }/workflows/${ id }/wdl?tag=${ versionName }`;
-    }
+    const wdlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/wdl?tag=${ versionName }`;
     return this.httpService.getResponse(wdlURL);
   }
 
   private getSecondaryWdl(id: number, versionName: string) {
-    let sec_wdlURL;
-    if (this.type === 'container') {
-      sec_wdlURL = `${ Dockstore.API_URI }/containers/${ id }/secondaryWdl?tag=${ versionName }`;
-    } else if (this.type === 'workflow') {
-      sec_wdlURL = `${ Dockstore.API_URI }/workflows/${ id }/secondaryWdl?tag=${ versionName }`;
-    }
+    const sec_wdlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/secondaryWdl?tag=${ versionName }`;
     return this.httpService.getResponse(sec_wdlURL);
   }
 }

@@ -14,9 +14,8 @@ export class ParamfilesService {
   constructor(private httpService: HttpService) { }
 
   getFiles(id: number, type: string, versionName?: string, descriptor?: string) {
-    let testParamFilesUrl;
-    if (type === 'container') {
-      testParamFilesUrl = Dockstore.API_URI + '/containers/' + id + '/testParameterFiles';
+    let testParamFilesUrl = Dockstore.API_URI + '/' + type + '/' + id + '/testParameterFiles';
+    if (type === 'containers') {
       if (versionName && descriptor) {
         testParamFilesUrl += '?tag=' + versionName;
         testParamFilesUrl += '&descriptorType=' + descriptor;
@@ -25,8 +24,7 @@ export class ParamfilesService {
       } else if (testParamFilesUrl) {
         testParamFilesUrl += '?descriptor=' + descriptor;
       }
-    } else if (type === 'workflow') {
-      testParamFilesUrl = Dockstore.API_URI + '/workflows/' + id + '/testParameterFiles';
+    } else if (type === 'workflows') {
       if (versionName) {
         testParamFilesUrl += '?version=' + versionName;
       }

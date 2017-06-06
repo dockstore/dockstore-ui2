@@ -22,5 +22,4 @@ export class VersionsContainerComponent extends Versions {
     super(dateService);
     this.verifiedLink = dateService.getVerifiedLink();
   }
-
 }

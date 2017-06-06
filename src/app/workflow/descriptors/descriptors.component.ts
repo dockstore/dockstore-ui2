@@ -31,7 +31,7 @@ export class DescriptorsWorkflowComponent extends FileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflow');
+    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflows');
   }
 
   reactToFile(): void {

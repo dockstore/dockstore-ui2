@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './myworkflows.component.html',
   styleUrls: ['./myworkflows.component.css']
 })
-export class MyworkflowsComponent implements OnInit {
+export class MyWorkflowsComponent implements OnInit {
 
   constructor() { }
 

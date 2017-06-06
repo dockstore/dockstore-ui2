@@ -31,7 +31,7 @@ export class DescriptorsComponent extends FileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'container');
+    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'containers');
   }
 
   reactToFile(): void {

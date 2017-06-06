@@ -25,7 +25,7 @@ export class ParamfilesWorkflowComponent extends FileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'workflow', this.currentVersion.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'workflows', this.currentVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {

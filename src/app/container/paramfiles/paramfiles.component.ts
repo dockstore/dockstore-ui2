@@ -30,7 +30,7 @@ export class ParamfilesComponent extends FileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'container', this.currentVersion.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'containers', this.currentVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {

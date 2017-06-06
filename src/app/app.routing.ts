@@ -21,6 +21,7 @@ const APP_ROUTES: Routes = [
   { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule' },
   { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
   { path: 'mytools', loadChildren: 'app/mytools/mytools.module#MyToolsModule' },
+  { path: 'myworkflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule' },
   { path: 'login', component: LoginComponent },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
