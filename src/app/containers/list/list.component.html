@@ -1,16 +1,15 @@
-<div class="container separation">
-  <div class="row">
-    <div *ngIf="displayTable">
-      <table datatable [dtOptions]="dtOptions" class="table row-border hover">
-        <thead>
+<div class="separation">
+  <div *ngIf="displayTable">
+    <table datatable [dtOptions]="dtOptions" class="table row-border hover">
+      <thead>
         <tr>
           <th>Name</th>
           <th>Author</th>
           <th>Project Links</th>
           <th>Docker Pull</th>
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
         <tr *ngFor="let tool of publishedTools">
           <td>
             <a (click)="sendToolInfo(tool)" [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name +
@@ -20,7 +19,7 @@
             <span id="verifiedIcon" *ngIf="getVerified(tool)">
               <a href={{verifiedLink}}>
                 <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
-              </a>
+            </a>
             </span>
             {{ tool?.author || 'n/a' }}
           </td>
@@ -34,8 +33,7 @@
           </td>
           <td>
             <div class="input-group">
-              <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.path) }}"
-                     aria-describedby="clipboard" #inputTarget>
+              <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.path) }}" aria-describedby="clipboard" #inputTarget>
               <span class="input-group-btn" id="clipboard">
                 <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget"><span
                   class="glyphicon glyphicon-copy"></span></button>
@@ -43,8 +41,15 @@
             </div>
           </td>
         </tr>
-        </tbody>
-      </table>
-    </div>
+      </tbody>
+      <!--Moved outside tbody because it interferes with Angular-Datatables library-->
+      <tr *ngIf="previewMode && publishedTools.length > 0">
+        <td colspan="4" class="browse-all">
+          <div class="button">
+            <p><a href="/tools">Browse All Tools &raquo;</a></p>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>

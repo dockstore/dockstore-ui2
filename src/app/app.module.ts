@@ -1,11 +1,12 @@
+/* Angular Modules */
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-/* Angular Modules */
 import { BrowserModule } from '@angular/platform-browser';
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -34,7 +35,6 @@ import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SearchWorkflowsComponent } from './search-workflows/search-workflows.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
 import { DateService } from './shared/date.service';
@@ -65,7 +65,6 @@ import { MyworkflowsComponent } from './myworkflows/myworkflows.component';
     NavbarComponent,
     HomeComponent,
     FooterComponent,
-    SearchWorkflowsComponent,
     HomeFootNoteComponent,
     ToolDetailsComponent,
     LoginComponent,
@@ -87,6 +86,7 @@ import { MyworkflowsComponent } from './myworkflows/myworkflows.component';
     ListContainersModule,
     ListWorkflowsModule,
     TabModule,
+    BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),

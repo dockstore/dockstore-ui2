@@ -4,10 +4,14 @@
       <div class="col-md-12">
         <h3 class="available-containers">
           <img class="site-icons-medium" src="../assets/images/dockstore/dockstore-tools-blue.png"> Available Tools
-        </h3>>
+        </h3>
       </div>
     </div>
   </div>
 </div>
 
-<app-list-containers></app-list-containers>
+<div class="container">
+  <div class="row">
+    <app-list-containers [previewMode]="false"></app-list-containers>
+  </div>
+</div>

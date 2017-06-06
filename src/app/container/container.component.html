@@ -17,7 +17,7 @@
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
     <div class="row">
-    <div class="ds-tabs col-sm-12 col-md-10 col-lg-10">
+    <div class="ds-tabs col-sm-12 col-md-10 col-lg-10" >
       <tabset id="tool_tabs" justified="true">
         <tab id="infoTab" heading="Info" id="infoTab">
           <div>
@@ -83,6 +83,10 @@
               <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
             </div>
           </div>
+          </div>
+        </tab>
+        <tab heading="Labels">
+          <strong>Labels:</strong>
         </tab>
         <tab id="labelsTab" heading="Labels">
           <ul class="list-unstyled container-info">
