@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { URLSearchParams, Http, Response, Headers, RequestOptions, RequestMethod, Request } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-
 import { AuthService } from 'ng2-ui-auth';
 
 @Injectable()
@@ -24,6 +23,15 @@ export class HttpService {
     return new RequestOptions({ headers: headers });
   }
 
+  private getHeader(dockstoreToken?: string) {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+
+    if (dockstoreToken) {
+      headers.append('Authorization', `Bearer ${ dockstoreToken }`);
+    }
+    return headers;
+  }
+
   getAuthResponse(url: string) {
     return this.getResponse(url, this.getDockstoreToken());
   }
@@ -41,8 +49,14 @@ export class HttpService {
   }
 
   putResponse(url: string, body, dockstoreToken?: string) {
-    return this.http.put(url, { body }, this.addOptions(dockstoreToken))
+    return this.http.put(url, body, this.addOptions(dockstoreToken))
       .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
+  }
+
+  deleteResponse(url: string, body, dockstoreToken?: string) {
+    return this.http.delete(url, new RequestOptions({headers: this.getHeader(dockstoreToken), body: body}))
+      .map((res: Response) => res.text())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 
@@ -56,4 +70,15 @@ export class HttpService {
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 
+  request(url: string, myParams: URLSearchParams,  method: RequestMethod, dockstoreToken?: string) {
+    const options = new RequestOptions({
+      url: url,
+      headers: this.getHeader(this.authService.getToken()),
+      method: method,
+      params: myParams
+    });
+    return this.http.request(new Request(options))
+      .map((res: Response) => res.text())
+      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
+  }
 }

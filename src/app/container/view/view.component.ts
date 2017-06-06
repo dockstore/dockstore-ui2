@@ -27,12 +27,12 @@ export class ViewContainerComponent extends View implements OnInit {
   private unsavedVersion;
   private savedCWLTestParameterFiles: Array<any>;
   private savedWDLTestParameterFiles: Array<any>;
-  private savedCWLTestParameterFilePaths: Array<String>;
-  private savedWDLTestParameterFilePaths: Array<String>;
-  private unsavedCWLTestParameterFilePaths: Array<String>;
-  private unsavedWDLTestParameterFilePaths: Array<String>;
-  private unsavedTestCWLFile: String;
-  private unsavedTestWDLFile: String;
+  private savedCWLTestParameterFilePaths: Array<string>;
+  private savedWDLTestParameterFilePaths: Array<string>;
+  private unsavedCWLTestParameterFilePaths: Array<string>;
+  private unsavedWDLTestParameterFilePaths: Array<string>;
+  private unsavedTestCWLFile: string;
+  private unsavedTestWDLFile: string;
 
   constructor(
     private paramfilesService: ParamfilesService,
@@ -70,9 +70,21 @@ export class ViewContainerComponent extends View implements OnInit {
   editTag() {
     console.log('Editing tag...');
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => this.savedCWLTestParameterFilePaths.indexOf(x) === -1);
+    if (newCWL && newCWL.length > 0) {
+      this.paramfilesService.putFiles(this.tool.id, newCWL, this.version.name, 'CWL').subscribe();
+    }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => this.unsavedCWLTestParameterFilePaths.indexOf(x) === -1);
-    const newWDL = this.unsavedCWLTestParameterFilePaths.filter(x => this.savedCWLTestParameterFilePaths.indexOf(x) === -1);
-    const missingWDL = this.savedCWLTestParameterFilePaths.filter(x => this.unsavedCWLTestParameterFilePaths.indexOf(x) === -1);
+    if (missingCWL && missingCWL.length > 0) {
+      this.paramfilesService.deleteFiles(this.tool.id, missingCWL, this.version.name, 'CWL').subscribe();
+    }
+    const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => this.savedWDLTestParameterFilePaths.indexOf(x) === -1);
+    if (newWDL && newWDL.length > 0) {
+      this.paramfilesService.putFiles(this.tool.id, newWDL, this.version.name, 'WDL').subscribe();
+    }
+    const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => this.unsavedWDLTestParameterFilePaths.indexOf(x) === -1);
+    if (missingWDL && missingWDL.length > 0) {
+      this.paramfilesService.deleteFiles(this.tool.id, missingWDL, this.version.name, 'WDL').subscribe();
+    }
   }
 
   setMode(mode: TagEditorMode) {
@@ -80,6 +92,8 @@ export class ViewContainerComponent extends View implements OnInit {
     this.mode = mode;
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
+    this.savedCWLTestParameterFilePaths = [];
+    this.savedWDLTestParameterFilePaths = [];
     this.paramfilesService.getFiles(this.tool.id, this.version.name, 'CWL').subscribe(file => {
       this.savedCWLTestParameterFiles = file;
       for (let i = 0; i < this.savedCWLTestParameterFiles.length; i++) {
