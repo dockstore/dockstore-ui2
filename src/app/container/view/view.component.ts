@@ -175,7 +175,7 @@ export class ViewContainerComponent extends View implements OnInit {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
   ngOnInit() {
-    this.unsavedVersion = this.version;
+    this.unsavedVersion = Object.assign({}, this.version);
     this.tool = this.communicatorService.getObj();
     this.unsavedTestCWLFile = '';
     this.unsavedTestWDLFile = '';
