@@ -20,6 +20,7 @@ const APP_ROUTES: Routes = [
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
   { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule' },
   { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
+  { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
   { path: 'mytools', loadChildren: 'app/mytools/mytools.module#MyToolsModule' },
   { path: 'myworkflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule' },
   { path: 'login', component: LoginComponent },
