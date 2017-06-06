@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { CommunicatorService } from '../../shared/communicator.service';
 
 import { ToolLister } from '../../shared/tool-lister';
 
@@ -14,8 +15,13 @@ export class ListWorkflowsComponent extends ToolLister {
   // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
   // gitUrl
 
-  constructor(listService: ListService, providerService: ProviderService) {
+  constructor(private communicatorService: CommunicatorService,
+              listService: ListService, providerService: ProviderService) {
     super(listService, providerService, 'workflows');
+  }
+
+  sendWorkflowInfo(workflow) {
+    this.communicatorService.setWorkflow(workflow);
   }
 
   initToolLister(): void { }

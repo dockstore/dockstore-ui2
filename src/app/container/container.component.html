@@ -84,9 +84,9 @@
             </div>
           </div>
         </tab>
-        <tab heading="Labels">
-          <strong>Labels:</strong>
-        </tab>
+        <!--<tab heading="Labels">-->
+          <!--<strong>Labels:</strong>-->
+        <!--</tab>-->
         <tab id="labelsTab" heading="Labels">
           <ul class="list-unstyled container-info">
             <li *ngIf="tool">
@@ -98,8 +98,8 @@
             </li>
           </ul>
         </tab>
-        <tab id ="versionsTab" heading="Versions" *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags"
+        <tab heading="Versions" *ngIf="validVersions">
+          <app-versions-container [versions]="tool?.tags" id ="versionsTab"
                                   [verifiedSource]="tool?.verifiedSources">
           </app-versions-container>
         </tab>

@@ -10,7 +10,6 @@ export class ToolService {
   constructor(private httpService: HttpService) { }
 
   getPublishedToolByPath(path: string, toolType: string) {
-    console.log(`${ Dockstore.API_URI }/${ toolType }/path/${ path }/published`);
     return this.httpService.getResponse(`${ Dockstore.API_URI }/${ toolType }/path/${ path }/published`);
   }
   getPublishedWorkflowByPath(path: string) {
