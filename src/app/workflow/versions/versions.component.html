@@ -1,0 +1,60 @@
+<div>
+  <table datatable [dtOptions]="dtOptions" class="table row-border hover flex">
+    <thead>
+    <tr>
+      <th>
+        <label tooltip="Git branches/tags: The selected reference and tag will be used
+                       to populate the info tab including 'launch with'">
+          Git Reference
+        </label>
+      </th>
+
+      <th>
+        <label tooltip="Workflow paths for given version">Workflow Path</label>
+      </th>
+
+      <th>
+        <label tooltip="Date of last update to Git reference">Date Modified</label>
+      </th>
+
+      <th>
+        <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
+          Valid
+        </label>
+      </th>
+
+      <th>
+        <label tooltip="A version is verified if it has been verified to work by a person/group">
+          Verified
+        </label>
+      </th>
+
+      <th>
+        <label tooltip="View more information about the given version">
+          Actions
+        </label>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let version of versions">
+      <td>{{ version.reference || 'n/a' }}</td>
+      <td>{{ version.workflow_path }}</td>
+      <td>{{ getDateTimeString(version.last_modified) }}</td>
+      <td>
+        <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
+        <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
+      </td>
+      <td>
+        <a href={{verifiedLink}}>
+          <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{verifiedSource}}"></span>
+        </a>
+        <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
+      </td>
+      <td *ngIf="version">
+        <app-view-workflow [version]="version" [workflowId]="this.workflowId"></app-view-workflow>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

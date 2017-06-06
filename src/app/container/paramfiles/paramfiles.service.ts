@@ -6,25 +6,29 @@ import { HttpService } from '../../shared/http.service';
 
 @Injectable()
 export class ParamfilesService {
-
+  type: string;
   // TODO: have an endpoints to
   // - get versions with test paramfiles
   // - get descriptors with test paramfiles for each version
 
   constructor(private httpService: HttpService) { }
 
-  getFiles(id: number, versionName?: string, descriptor?: string) {
-    let testParamFilesUrl = Dockstore.API_URI + '/containers/' + id + '/testParameterFiles';
-
-    if (versionName && descriptor) {
-      testParamFilesUrl += '?tag=' + versionName;
-      testParamFilesUrl += '&descriptorType=' + descriptor;
-    } else if (versionName) {
-      testParamFilesUrl += '?tag=' + versionName;
-    } else if (testParamFilesUrl) {
-      testParamFilesUrl += '?descriptor=' + descriptor;
+  getFiles(id: number, type: string, versionName?: string, descriptor?: string) {
+    let testParamFilesUrl = Dockstore.API_URI + '/' + type + '/' + id + '/testParameterFiles';
+    if (type === 'containers') {
+      if (versionName && descriptor) {
+        testParamFilesUrl += '?tag=' + versionName;
+        testParamFilesUrl += '&descriptorType=' + descriptor;
+      } else if (versionName) {
+        testParamFilesUrl += '?tag=' + versionName;
+      } else if (testParamFilesUrl) {
+        testParamFilesUrl += '?descriptor=' + descriptor;
+      }
+    } else if (type === 'workflows') {
+      if (versionName) {
+        testParamFilesUrl += '?version=' + versionName;
+      }
     }
-
     return this.httpService.getResponse(testParamFilesUrl);
   }
 
@@ -34,7 +38,6 @@ export class ParamfilesService {
     if (version) {
       for (const file of version.sourceFiles) {
         const type = file.type;
-
         if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl')) {
           descriptorsWithParamfiles.push('cwl');
 

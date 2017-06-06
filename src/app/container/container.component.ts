@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -21,7 +21,7 @@ import { UserService } from '../loginComponents/user.service';
 })
 export class ContainerComponent extends Tool {
   @Input() curTool: any;
-
+  labels: string[];
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private containerService: ContainerService,
@@ -37,6 +37,7 @@ export class ContainerComponent extends Tool {
 
   setProperties() {
     let toolRef = this.tool;
+    this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     toolRef.agoMessage = this.dateService.getAgoMessage(toolRef.lastBuild);
     toolRef.email = this.dockstoreService.stripMailTo(toolRef.email);
     toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);

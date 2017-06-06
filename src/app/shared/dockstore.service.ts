@@ -45,6 +45,22 @@ export class DockstoreService {
     });
   }
 
+  getLabelStrings(labels: any[]): string[] {
+    const sortedLabels = labels.sort(function (a, b) {
+      if (a.value < b.value) {
+        return -1;
+      }
+      if (a.value > b.value) {
+        return 1;
+      }
+    });
+    const labelStrings = [];
+    for (let i = 0; i < sortedLabels.length; i++) {
+      labelStrings.push(sortedLabels[i].value);
+    }
+    return labelStrings;
+  }
+
   private isEncoded(uri: string): boolean {
     if (uri) {
       return uri !== decodeURIComponent(uri);

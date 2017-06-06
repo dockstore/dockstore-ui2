@@ -133,7 +133,7 @@ export class ViewContainerComponent extends View implements OnInit {
   }
   ngOnInit() {
     this.unsavedVersion = this.version;
-    this.tool = this.communicatorService.getObj();
+    this.tool = this.communicatorService.getTool();
     this.unsavedTestCWLFile = '';
     this.unsavedTestWDLFile = '';
   }
