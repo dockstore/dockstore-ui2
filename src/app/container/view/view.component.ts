@@ -1,3 +1,4 @@
+import { ContainerTagsService } from './../../shared/containerTags.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { ContainerService } from './../container.service';
 import { CommunicatorService } from './../../shared/communicator.service';
@@ -39,7 +40,8 @@ export class ViewContainerComponent extends View implements OnInit {
     private viewService: ViewService,
     private listContainersService: ListContainersService,
     dateService: DateService,
-    private communicatorService: CommunicatorService) {
+    private communicatorService: CommunicatorService,
+    private containerTagsService: ContainerTagsService) {
     super(dateService);
   }
 
@@ -85,6 +87,7 @@ export class ViewContainerComponent extends View implements OnInit {
     if (missingWDL && missingWDL.length > 0) {
       this.paramfilesService.deleteFiles(this.tool.id, missingWDL, this.version.name, 'WDL').subscribe();
     }
+    this.containerTagsService.putTags(this.tool.id, this.unsavedVersion).subscribe();
   }
 
   setMode(mode: TagEditorMode) {

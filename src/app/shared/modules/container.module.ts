@@ -1,3 +1,4 @@
+import { ContainerTagsService } from './../containerTags.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -63,13 +64,14 @@ import { SelectModule } from './select.module';
   ],
   providers: [
     HighlightJsService,
+    ContainerTagsService,
     DateService,
     FileService,
     ContainerService,
     LaunchService,
     ViewService,
     DockerfileService,
-    ParamfilesService
+    ParamfilesService,
   ],
   exports: [
     ContainerComponent
