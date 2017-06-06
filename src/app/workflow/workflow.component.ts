@@ -24,8 +24,6 @@ import { UserService } from '../loginComponents/user.service';
 export class WorkflowComponent extends Tool {
   labels: string[];
   constructor(private dockstoreService: DockstoreService,
-              private dateService: DateService,
-              private imageProviderService: ImageProviderService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,

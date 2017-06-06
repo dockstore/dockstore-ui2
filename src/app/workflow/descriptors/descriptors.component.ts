@@ -27,6 +27,7 @@ export class DescriptorsWorkflowComponent extends FileSelector {
   }
   getDescriptors(version): Array<any> {
     return this.workflowService.getDescriptors(this.versions, this.currentVersion);
+    // return this.workflowService.getDescriptors(this.versions, this.currentVersion);
   }
 
   getFiles(descriptor): Observable<any> {
