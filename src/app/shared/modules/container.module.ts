@@ -69,7 +69,6 @@ import { SelectModule } from './select.module';
     FileService,
     ContainerService,
     LaunchService,
-    ViewService,
     DockerfileService,
     ParamfilesService,
   ],

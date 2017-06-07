@@ -16,7 +16,8 @@ import { ViewService } from './view.service';
 @Component({
   selector: 'app-view-container',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+  styleUrls: ['./view.component.css'],
+  providers: [ViewService]
 })
 // This is actually the tag edtior
 export class ViewContainerComponent extends View implements OnInit, AfterViewChecked {
@@ -37,7 +38,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
   private unsavedWDLTestParameterFilePaths: Array<string>;
   private unsavedTestCWLFile: string;
   private unsavedTestWDLFile: string;
-
+  private formErrors = formErrors;
 
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
