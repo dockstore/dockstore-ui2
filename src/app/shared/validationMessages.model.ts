@@ -5,7 +5,8 @@ export const formErrors = {
     'gitPath': '',
     'imagePath': '',
     'label': '',
-    'testParameterFilePath': '',
+    'cwlTestParameterFilePath': '',
+    'wdlTestParameterFilePath': '',
     'toolName': ''
   };
 
@@ -46,7 +47,14 @@ export const validationMessages = {
       'maxlength': 'Labels string is too long. (Max 512 characters.)',
       'pattern': 'Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.'
     },
-    'testParameterFilePath': {
+    'cwlTestParameterFilePath': {
+      'required': 'This field cannot be empty.',
+      'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
+      'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
+      'pattern': 'Invalid Test parameter file format. ' +
+      'Test parameter file path must begin with \'/\' and end with end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+    },
+    'wdlTestParameterFilePath': {
       'required': 'This field cannot be empty.',
       'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
       'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',

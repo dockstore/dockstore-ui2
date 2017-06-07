@@ -77,7 +77,7 @@
                             WDL Descriptor:
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9">
-                            <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)"  title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
+                            <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
                             <div *ngIf="formErrors.wdlPath" class="form-error-messages">
                                 {{formErrors.wdlPath}}
                             </div>
@@ -89,17 +89,20 @@
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
                             <div class="input-group">
-                                <input type="text" #model="ngModel" class="form-control" name="testParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
-                                <button title="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.CWL)" ng-hide="!editMode" [disabled]="model.invalid">
+                                <input type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.CWL)" ng-hide="!editMode" [disabled]="model1.invalid || unsavedTestCWLFile.length < 1">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
+                            </div>
+                            <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
+                                {{formErrors.cwlTestParameterFilePath}}
                             </div>
                         </div>
                     </div>
                     <div class="form-group form-group-sm" style="clear:both;">
                         <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index;">
                             <div class="input-group">
-                                <input type="text" class="form-control" [value]="unsavedCWLTestParameterFilePaths[i]" (input)="unsavedCWLTestParameterFilePaths[i] = $event.target.value" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <input type="text" class="form-control" [value]="unsavedCWLTestParameterFilePaths[i]" [disabled] minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                                 <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.CWL)">
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>
@@ -112,10 +115,13 @@
                         </label>
                         <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="testParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
-                                <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode">
+                                <input type="text" #model2="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                                <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode" [disabled]="model2.invalid || unsavedTestWDLFile.length < 1">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
+                            </div>
+                            <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
+                                {{formErrors.wdlTestParameterFilePath}}
                             </div>
                         </div>
                     </div>
@@ -130,9 +136,6 @@
                         </div>
                     </div>
                     <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
-                        <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages">
-                            {{formErrors.testParameterFilePath}}
-                        </div>
                     </div>
                     <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
