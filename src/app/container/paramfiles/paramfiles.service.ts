@@ -35,25 +35,23 @@ export class ParamfilesService {
   }
 
   putFiles(containerId: number, testParameterFiles: Array<string>, tagName: string, descriptorType: string) {
-    const url = `${ Dockstore.API_URI }/containers/${ containerId }/testParameterFiles`;
-    const myParams = new URLSearchParams();
-    for (let i = 0; i < testParameterFiles.length; i++) {
-      myParams.append('testParameterPaths', testParameterFiles[i]);
-    }
-    myParams.set('tagName', tagName);
-    myParams.set('descriptorType', descriptorType);
-    return this.httpService.request(url, myParams, RequestMethod.Put, this.authService.getToken());
+    return this.requestFiles(containerId, testParameterFiles, tagName, descriptorType, RequestMethod.Put);
   }
 
   deleteFiles(containerId: number, testParameterFiles: Array<string>, tagName: string, descriptorType: string) {
-    const url = `${ Dockstore.API_URI }/containers/${ containerId }/testParameterFiles`;
+    return this.requestFiles(containerId, testParameterFiles, tagName, descriptorType, RequestMethod.Delete);
+  }
+
+  private requestFiles(containerId: number, testParameterFiles: Array<string>,
+    tagName: string, descriptorType: string, method: RequestMethod) {
+    const url = `${Dockstore.API_URI}/containers/${containerId}/testParameterFiles`;
     const myParams = new URLSearchParams();
-    for (let i = 0; i < testParameterFiles.length; i++) {
-      myParams.append('testParameterPaths', testParameterFiles[i]);
-    }
+    testParameterFiles.forEach((file) => {
+      myParams.append('testParameterPaths', file);
+    });
     myParams.set('tagName', tagName);
     myParams.set('descriptorType', descriptorType);
-    return this.httpService.request(url, myParams, RequestMethod.Delete, this.authService.getToken());
+    return this.httpService.request(url, myParams, method, this.authService.getToken());
   }
 
   // get descriptors which have test parameter files

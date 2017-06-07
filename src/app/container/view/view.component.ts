@@ -82,7 +82,6 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
   }
 
   formChanged() {
-    console.log(this.tagEditorForm);
     if (this.currentForm === this.tagEditorForm) { return; }
     this.tagEditorForm = this.currentForm;
     if (this.tagEditorForm) {
@@ -141,19 +140,17 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     this.savedWDLTestParameterFilePaths = [];
     this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, 'CWL').subscribe(file => {
       this.savedCWLTestParameterFiles = file;
-      for (let i = 0; i < this.savedCWLTestParameterFiles.length; i++) {
-        this.savedCWLTestParameterFilePaths.push(this.savedCWLTestParameterFiles[i].path);
-
-      }
+      this.savedCWLTestParameterFiles.forEach((fileObject) => {
+        this.savedCWLTestParameterFilePaths.push(fileObject.path);
+      });
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
 
     });
     this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, 'WDL').subscribe(file => {
       this.savedWDLTestParameterFiles = file;
-      for (let i = 0; i < this.savedWDLTestParameterFiles.length; i++) {
-        this.savedWDLTestParameterFilePaths.push(this.savedWDLTestParameterFiles[i].path);
-      }
-
+      this.savedWDLTestParameterFiles.forEach((fileObject) => {
+        this.savedWDLTestParameterFilePaths.push(fileObject.path);
+      });
       this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
     });
   }
