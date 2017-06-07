@@ -139,7 +139,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
-    this.paramfilesService.getFiles(this.tool.id, this.version.name, 'CWL').subscribe(file => {
+    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, 'CWL').subscribe(file => {
       this.savedCWLTestParameterFiles = file;
       for (let i = 0; i < this.savedCWLTestParameterFiles.length; i++) {
         this.savedCWLTestParameterFilePaths.push(this.savedCWLTestParameterFiles[i].path);
@@ -148,7 +148,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
 
     });
-    this.paramfilesService.getFiles(this.tool.id, this.version.name, 'WDL').subscribe(file => {
+    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, 'WDL').subscribe(file => {
       this.savedWDLTestParameterFiles = file;
       for (let i = 0; i < this.savedWDLTestParameterFiles.length; i++) {
         this.savedWDLTestParameterFilePaths.push(this.savedWDLTestParameterFiles[i].path);
