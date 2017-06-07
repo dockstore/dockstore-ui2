@@ -8,9 +8,8 @@ export class ParamFilesService {
 
   constructor(private httpService: HttpService) { }
 
-  getTestParamFiles(toolId: number, tagName?: string, descriptorType?: string) {
+  getContainerTestParamFiles(toolId: number, tagName?: string, descriptorType?: string) {
     let testParamFilesUrl = Dockstore.API_URI + '/containers/' + toolId + '/testParameterFiles';
-
     if (tagName && descriptorType) {
       testParamFilesUrl += '?tag=' + tagName;
       testParamFilesUrl += '&descriptorType=' + descriptorType;
@@ -19,13 +18,12 @@ export class ParamFilesService {
     } else if (testParamFilesUrl) {
       testParamFilesUrl += '?descriptorType=' + descriptorType;
     }
-
     return this.httpService.getResponse(testParamFilesUrl);
   }
 
   getTagsWithParam(toolId: number, validTags) {
     for (const tag of validTags) {
-       this.getTestParamFiles(toolId, tag.name).subscribe(
+       this.getContainerTestParamFiles(toolId, tag.name).subscribe(
         (result) => {
           console.log(result);
         }

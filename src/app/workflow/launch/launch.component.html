@@ -1,0 +1,26 @@
+<div *ngIf="!nullDescriptors">
+  <span>
+    <label tooltip="Commands to launch workflow from the command line">Launch With</label>
+    <div class="pull-right"><app-select class="text-right" [items]="versions" [default]="default"
+                                        [field]="'name'" (select)="onVersionChange($event)"></app-select>
+    <app-select class="text-right" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select></div>
+  </span>
+
+  <div class="well">
+    <div class="well well-sm" tooltip="Commands for creating a runtime JSON template">
+      Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+      <pre>{{ params }}</pre>
+    </div>
+    <div class="well well-sm" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+      Run locally with the Dockstore CLI
+      <pre>{{ cli }}</pre>
+    </div>
+    <div *ngIf="currentDescriptor === 'cwl'">
+      <div class="well well-sm" tooltip="Commands for launching tools through CWLtool: the CWL reference implementation.
+      cwltool can run a tool directly when all inputs and outputs are available on the local filesystem.">
+        Alternatively, cwltool can run a workflow directly when all inputs and outputs are available on the local filesystem
+        <pre>{{ cwl }}</pre>
+      </div>
+    </div>
+  </div>
+</div>

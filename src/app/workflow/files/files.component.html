@@ -1,0 +1,16 @@
+<tabset>
+  <tab heading="Descriptor Files">
+    <app-descriptors-workflow [id]="id" [versions]="versions" [default]="default">
+    </app-descriptors-workflow>
+  </tab>
+  <tab heading="Test Parameter Files">
+    <app-paramfiles-workflow [id]="id" [versions]="versionsWithParamfiles" [default]="default">
+    </app-paramfiles-workflow>
+  </tab>
+</tabset>
+<div *ngIf="!versions">
+  <div class="alert alert-info">
+    <strong>No Valid Tags</strong> No files will be shown for invalid versions.
+  </div>
+</div>
+

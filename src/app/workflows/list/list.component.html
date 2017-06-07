@@ -12,7 +12,7 @@
       <tbody>
         <tr *ngFor="let workflow of publishedTools">
           <td>
-            <a [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
+            <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
           </td>
           <td>{{ workflow?.author || 'n/a' }}</td>
           <td>{{ workflow?.descriptorType | uppercase }}</td>
@@ -28,7 +28,7 @@
       <tr *ngIf="previewMode && publishedTools.length > 0">
         <td colspan="4" class="browse-all">
           <div class="button">
-            <p><a href="/search-workflows">Browse All Workflows &raquo;</a></p>
+            <p><a href="/workflows">Browse All Workflows &raquo;</a></p>
           </div>
         </td>
       </tr>

@@ -12,5 +12,8 @@ export class ToolService {
   getPublishedToolByPath(path: string, toolType: string) {
     return this.httpService.getResponse(`${ Dockstore.API_URI }/${ toolType }/path/${ path }/published`);
   }
+  getPublishedWorkflowByPath(path: string, toolType: string) {
+    return this.httpService.getResponse(`${ Dockstore.API_URI }/${ toolType }/path/workflow/${ path }/published`);
+  }
 
 }

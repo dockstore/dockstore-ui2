@@ -217,7 +217,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
   }
   ngOnInit() {
     this.unsavedVersion = Object.assign({}, this.version);
-    this.tool = this.communicatorService.getObj();
+    this.tool = this.communicatorService.getTool();
     this.unsavedTestCWLFile = '';
     this.unsavedTestWDLFile = '';
     this.savedCWLTestParameterFilePaths = [];

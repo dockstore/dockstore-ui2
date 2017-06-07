@@ -17,9 +17,9 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected defaultVersion;
 
   protected tool;
+  protected workflow;
 
   private routeSub: Subscription;
-  private userToolURL: string;
 
   constructor(private toolService: ToolService,
               private communicatorService: CommunicatorService,
@@ -28,13 +28,18 @@ export abstract class Tool implements OnInit, OnDestroy {
               private router: Router,
               toolType: string) {
     this._toolType = toolType;
-    this.userToolURL = '/mytools';
   }
 
   ngOnInit() {
-    this.routeSub = this.router.events.subscribe(event =>
-        this.urlChanged(event)
-    );
+    if (this._toolType === 'workflows') {
+      this.routeSub = this.router.events.subscribe(event =>
+        this.urlWorkflowChanged(event)
+      );
+    } else {
+      this.routeSub = this.router.events.subscribe(event =>
+        this.urlToolChanged(event)
+      );
+    }
   }
 
   ngOnDestroy() {
@@ -45,7 +50,7 @@ export abstract class Tool implements OnInit, OnDestroy {
   abstract getValidVersions(): void;
 
   protected setToolObj(tool: any) {
-    this.communicatorService.setObj(tool);
+    this.communicatorService.setTool(tool);
     if (!tool.providerUrl) {
       this.providerService.setUpProvider(tool);
     }
@@ -53,9 +58,9 @@ export abstract class Tool implements OnInit, OnDestroy {
     this.initTool();
   }
 
-  private urlChanged(event) {
+  private urlToolChanged(event) {
     // reuse provider and image provider
-    this.tool = this.communicatorService.getObj();
+    this.tool = this.communicatorService.getTool();
     // cannot reuse provider and image provider
     // navigated to tool's page without visiting table
     if (!this.tool) {
@@ -64,7 +69,7 @@ export abstract class Tool implements OnInit, OnDestroy {
       this.title = this.tool.path;
     }
     // check if it is a private tool or a public tool.
-    if (event.url !== this.userToolURL) {
+    if ( this._toolType === 'containers') {
       this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
         .subscribe(toolArray => {
           // TODO: endpoint should return a single object instead of an array
@@ -75,6 +80,32 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
   }
 
+  private urlWorkflowChanged(event) {
+    // reuse provider and image provider
+    this.workflow = this.communicatorService.getWorkflow();
+    if (!this.workflow) {
+      this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
+    } else {
+      this.title = this.workflow.path;
+    }
+    this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+      .subscribe(workflow => {
+        this.setUpWorkflow(workflow);
+      }, error => {
+        this.router.navigate(['../']);
+      }
+    );
+  }
+
+  private setUpWorkflow(workflow: any) {
+    if (workflow) {
+      if (!workflow.providerUrl) {
+        this.providerService.setUpProvider(workflow);
+      }
+      this.workflow = Object.assign(workflow, this.workflow);
+      this.initTool();
+    }
+  }
 
   private setUpTool(toolArray: Array<any>) {
     if (toolArray.length) {
@@ -94,20 +125,22 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   private chooseDefaultVersion() {
-    let defaultVersionName = this.tool.defaultVersion;
-
+    let defaultVersionName;
+    if (this._toolType === 'workflows') {
+      defaultVersionName = this.workflow.defaultVersion;
+    } else {
+      defaultVersionName = this.tool.defaultVersion;
+    }
     // if user did not specify a default version, use the latest version
     if (!defaultVersionName) {
       if (this.validVersions.length) {
         const last: number = this.validVersions.length - 1;
-
         defaultVersionName = this.validVersions[last].name;
       }
     }
-
-    this.defaultVersion = this.getDefaultVersion(this.tool, defaultVersionName);
+    this.defaultVersion = this.getDefaultVersion(defaultVersionName);
   }
-  private getDefaultVersion(tool, defaultVersionName: string) {
+  private getDefaultVersion(defaultVersionName: string) {
     for (const version of this.validVersions) {
       if (version.name === defaultVersionName) {
         return version;

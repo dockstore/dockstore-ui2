@@ -102,7 +102,7 @@ export class Dockstore {
   static readonly GITHUB_SCOPE = 'read:org';
 
   static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
-  static readonly QUAYIO_REDIRECT_URI = 'http://localhost:4200/auth/quay.io';
+  static readonly QUAYIO_REDIRECT_URI = 'http://localhost:4200/auth/quay';
   static readonly QUAYIO_SCOPE = 'repo:read,user:read';
   static readonly QUAYIO_CLIENT_ID = '';
 

@@ -7,11 +7,6 @@ import { HttpService } from '../shared/http.service';
 export class WorkflowService {
   constructor(private httpService: HttpService) {}
 
-  getPublishedWorkflowByPath(path: string) {
-    const publishedWorkflowUrl = Dockstore.API_URI + '/workflows/path/workflow/' + path + '/published';
-    return this.httpService.getResponse(publishedWorkflowUrl);
-  }
-
   getParamsString(path: string, tagName: string) {
     return 'dockstore workflow convert entry2json --entry ' + path + ':' + tagName + ` > Dockstore.json
             \nvim Dockstore.json`;
@@ -27,5 +22,27 @@ export class WorkflowService {
            + '/versions/'
            + tagName
            + '/plain-CWL/descriptor Dockstore.json';
+  }
+  getTestJson(workflowId: string, versionName: string) {
+    const workflowTestUrl = Dockstore.API_URI + '/workflows/' + workflowId + '/testParameterFiles?version=' + versionName;
+    return this.httpService.getResponse(workflowTestUrl);
+  }
+
+  getDescriptors(versions, version) {
+    if (versions.length && version) {
+
+      const typesAvailable = new Array();
+
+      for (const file of version.sourceFiles) {
+        const type = file.type;
+        if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
+          typesAvailable.push('cwl');
+
+        } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes('wdl')) {
+          typesAvailable.push('wdl');
+        }
+      }
+      return typesAvailable;
+    }
   }
 }
