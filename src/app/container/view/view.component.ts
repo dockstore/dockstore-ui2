@@ -82,6 +82,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
   }
 
   formChanged() {
+    console.log(this.tagEditorForm);
     if (this.currentForm === this.tagEditorForm) { return; }
     this.tagEditorForm = this.currentForm;
     if (this.tagEditorForm) {
@@ -133,7 +134,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
 
   setMode(mode: TagEditorMode) {
     console.log('Setting mode to: ' + TagEditorMode[mode]);
-    this.mode = mode;
+    this.viewService.setCurrentMode(mode);
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
@@ -155,25 +156,6 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
 
       this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
     });
-  }
-
-  getMode() {
-    return this.mode;
-  }
-  hasBlankPath(descriptorType: DescriptorType) {
-    switch (descriptorType) {
-      case DescriptorType.CWL: {
-        return false;
-      }
-      case DescriptorType.WDL: {
-        return false;
-      }
-      default: {
-        console.log('No idea how you submitted in neither edit or add mode');
-        return false;
-      }
-
-    }
   }
 
   addTestParameterFile(descriptorType: DescriptorType) {
@@ -216,10 +198,23 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
   ngOnInit() {
+    this.viewService.mode.subscribe(
+      (mode: TagEditorMode) => {
+        this.mode = mode;
+      }
+    );
     this.unsavedVersion = Object.assign({}, this.version);
     this.tool = this.communicatorService.getTool();
-    this.unsavedTestCWLFile = '';
-    this.unsavedTestWDLFile = '';
+    this.viewService.unsavedTestCWLFile.subscribe(
+      (file: string) => {
+        this.unsavedTestCWLFile = file;
+      }
+    );
+    this.viewService.unsavedTestWDLFile.subscribe(
+      (file: string) => {
+        this.unsavedTestWDLFile = file;
+      }
+    );
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
   }
