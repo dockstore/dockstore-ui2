@@ -69,13 +69,15 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
       'required': 'This field cannot be empty.',
       'minlength': 'Source Code Repository Path is too short. (Min. 3 characters.)',
       'maxlength': 'Source Code Repository Path is too long. (Max 128 characters.)',
-      'pattern': 'The namespace and name of the Git repository, separated by a \'/\'. Currently, only GitHub, Bitbucket and GitLab are supported third-party platforms.'
+      'pattern': 'The namespace and name of the Git repository, separated by a \'/\'. ' +
+      'Currently, only GitHub, Bitbucket and GitLab are supported third-party platforms.'
     },
     'imagePath': {
       'required': 'This field cannot be empty.',
       'minlength': 'Image Path is too short. (Min. 3 characters.)',
       'maxlength': 'Image Path is too long. (Max 128 characters.)',
-      'pattern': 'The namespace and name of the image repository, separated by a \'/\'. Use \'_\' for an empty namespace. Currently, only Quay.io and Docker Hub are supported third-party platforms.'
+      'pattern': 'The namespace and name of the image repository, separated by a \'/\'. ' +
+      'Use \'_\' for an empty namespace. Currently, only Quay.io and Docker Hub are supported third-party platforms.'
     },
     'label': {
       'maxlength': 'Labels string is too long. (Max 512 characters.)',
@@ -85,14 +87,18 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
       'required': 'This field cannot be empty.',
       'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
       'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
-      'pattern': 'Invalid Test parameter file format. Test parameter file path must begin with \'/\' and end with end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+      'pattern': 'Invalid Test parameter file format. ' +
+      'Test parameter file path must begin with \'/\' and end with end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
     },
     'toolName': {
       'maxlength': 'Tool Name is too long. (Max 256 characters.)',
       'pattern': 'A Tool Name may only consist of alphanumeric characters and internal underscores or hyphens.'
     },
   };
-  userForm: any;
+
+  tagEditorForm: NgForm;
+  @ViewChild('tagEditorForm') currentForm: NgForm;
+
   constructor(
     private paramfilesService: ParamfilesService,
     private viewService: ViewService,
@@ -131,8 +137,6 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     this.formChanged();
   }
 
-  tagEditorForm: NgForm;
-  @ViewChild('tagEditorForm') currentForm: NgForm;
 
   formChanged() {
     if (this.currentForm === this.tagEditorForm) { return; }
@@ -148,14 +152,18 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     const form = this.tagEditorForm.form;
 
     for (const field in this.formErrors) {
-      // clear previous error message (if any)
-      this.formErrors[field] = '';
-      const control = form.get(field);
+      if (this.formErrors.hasOwnProperty(field)) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
 
-      if (control && !control.valid) {
-        const messages = this.validationMessages[field];
-        for (const key in control.errors) {
-          this.formErrors[field] += messages[key] + ' ';
+        if (control && !control.valid) {
+          const messages = this.validationMessages[field];
+          for (const key in control.errors) {
+            if (control.errors.hasOwnProperty(key)) {
+              this.formErrors[field] += messages[key] + ' ';
+            }
+          }
         }
       }
     }
