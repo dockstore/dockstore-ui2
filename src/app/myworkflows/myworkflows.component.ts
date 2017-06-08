@@ -36,9 +36,8 @@ export class MyWorkflowsComponent {
       this.user = user;
       userService.getUserWorkflowList(user.id).subscribe(workflows => {
         this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
-        this.workflowobjService.initName(this.orgWorkflows[0].workflows[0].repository);
-        this.workflowobjService.initWorkflow(this.orgWorkflows[0].workflows[0]);
-        this.communicatorService.setWorkflow(this.orgWorkflows[0].workflows[0], false);
+        this.workflowobjService.updateWorkflow(this.orgWorkflows[0].workflows[0]);
+        this.communicatorService.setWorkflow(this.orgWorkflows[0].workflows[0]);
         this.workflowobjService.workflowName$.subscribe(
           name => {
             this.userWorkflows.push(`${name} confirmed the mission`);

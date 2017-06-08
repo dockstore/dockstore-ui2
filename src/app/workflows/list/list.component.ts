@@ -24,11 +24,12 @@ export class ListWorkflowsComponent extends ToolLister {
   }
 
   sendWorkflowInfo(workflow) {
-    this.communicatorService.setWorkflow(workflow, true);
-    // console.log('Change Workflow!!!');
-    // this.workflowObjService.updateWorkflow(workflow);
+    this.communicatorService.setWorkflow(workflow);
+    this.workflowObjService.updateWorkflow(workflow);
   }
 
-  initToolLister(): void { }
+  initToolLister(): void {
+    this.workflowObjService.initWorkflow(this.publishedTools[0]);
+  }
 
 }

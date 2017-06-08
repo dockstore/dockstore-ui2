@@ -7,9 +7,8 @@ export class CommunicatorService {
   setTool(tool): void {
     this._tool = tool;
   }
-  setWorkflow(workflow, isPublic): void {
+  setWorkflow(workflow): void {
     this._workflow = workflow;
-    this._public = isPublic;
   }
   getTool() {
     return this._tool;

@@ -56,7 +56,6 @@ export class MyWorkflowsService {
       sortedorgWorkflows.push(orORGObj);
     }
     sortedorgWorkflows[0].isFirstOpen = true;
-    console.log(sortedorgWorkflows);
     return sortedorgWorkflows;
   }
 

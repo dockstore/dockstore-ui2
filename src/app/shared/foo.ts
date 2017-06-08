@@ -1,4 +1,4 @@
-import {Injectable, OnDestroy, OnInit} from '@angular/core';
+import {Injectable, OnDestroy, OnInit, Input} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -11,7 +11,7 @@ import {UserService} from '../loginComponents/user.service';
 import { WorkflowObjService } from '../shared/workflow.service';
 
 @Injectable()
-export abstract class Tool implements OnInit, OnDestroy {
+export abstract class Foo implements OnInit, OnDestroy {
 
   protected title: string;
   protected _toolType: string;
@@ -24,7 +24,7 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   private routeSub: Subscription;
   private subscription: Subscription;
-
+  @Input() isPublic = true;
   constructor(private toolService: ToolService,
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
@@ -35,27 +35,26 @@ export abstract class Tool implements OnInit, OnDestroy {
     this._toolType = toolType;
     this.subscription = workflowObjService.workflow$.subscribe(
       workflow => {
-        console.log('workflow Changed Notified');
         this.workflow = workflow;
-        this.setUpWorkflow(workflow, false);
+        this.setUpWorkflow(workflow);
       }
     );
   }
 
   ngOnInit() {
-    if (this._toolType === 'workflows') {
+    console.log(this.isPublic);
+    if (this.isPublic) {
       this.routeSub = this.router.events.subscribe(event =>
         this.urlWorkflowChanged(event)
       );
     } else {
-      this.routeSub = this.router.events.subscribe(event =>
-        this.urlToolChanged(event)
-      );
+      this.setUpWorkflow(this.communicatorService.getWorkflow());
     }
   }
 
   ngOnDestroy() {
     this.routeSub.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   abstract setProperties(): void;
@@ -69,6 +68,17 @@ export abstract class Tool implements OnInit, OnDestroy {
     this.tool = Object.assign(tool, this.tool);
     this.initTool();
   }
+  protected setUpWorkflow(workflow: any) {
+    if (workflow) {
+      this.workflow = workflow;
+      if (!workflow.providerUrl) {
+        this.providerService.setUpProvider(workflow);
+      }
+      this.workflow = Object.assign(workflow, this.workflow);
+      this.title = this.workflow.path;
+      this.initTool();
+    }
+  }
 
   private urlToolChanged(event) {
     // reuse provider and image provider
@@ -81,7 +91,7 @@ export abstract class Tool implements OnInit, OnDestroy {
       this.title = this.tool.path;
     }
     // check if it is a private tool or a public tool.
-    if ( this._toolType === 'containers') {
+    if (this._toolType === 'containers') {
       this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
         .subscribe(toolArray => {
           // TODO: endpoint should return a single object instead of an array
@@ -94,35 +104,20 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   private urlWorkflowChanged(event) {
     // reuse provider and image provider
-    this.workflow = this.communicatorService.getWorkflow();
-    if (!this.workflow) {
-      this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
-    } else {
-      this.title = this.workflow.path;
-    }
-      if (this.communicatorService.getisPublic()) {
-        this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
-          .subscribe(workflow => {
-              this.setUpWorkflow(workflow, true);
-            }, error => {
-              this.router.navigate(['../']);
-            }
-          );
+      if (!this.workflow) {
+        this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
+      } else {
+        this.title = this.workflow.path;
       }
-
+      this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+        .subscribe(workflow => {
+            this.setUpWorkflow(workflow);
+          }, error => {
+            this.router.navigate(['../']);
+          }
+        );
   }
 
-  protected setUpWorkflow(workflow: any, isPublic: boolean) {
-    if (workflow) {
-      this.communicatorService.setWorkflow(workflow);
-      if (!workflow.providerUrl) {
-        this.providerService.setUpProvider(workflow);
-      }
-      this.workflow = Object.assign(workflow, this.workflow);
-      this.title = this.workflow.path;
-      this.initTool();
-    }
-  }
 
   private setUpTool(toolArray: Array<any>) {
     if (toolArray.length) {
