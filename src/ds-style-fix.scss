@@ -441,6 +441,9 @@ div.form-group.form-group-sm {
   div.checkbox {
     position: relative;
     bottom: 2.5px;
+    input {
+      width:auto;
+    }
   }
   div.label-value {
     position: relative;
