@@ -1,3 +1,62 @@
-<p>
-  myworkflows works!
-</p>
+<app-header>
+  <img src="../assets/images/dockstore/dockstore-workflows-purple.png">
+  My Workflows
+  <div class="pull-right refresh-all-holder">
+    <button type="button" class="refresh-all-button btn btn-primary">
+      Refresh All Workflows
+    </button>
+  </div>
+</app-header>
+<div class="container">
+  <!--Msg/Warning Page, this should be a Component-->
+  <div class="row">
+    <!--<div class="col-md-12">-->
+      <!--<div class="alert alert-info"-->
+           <!--role="alert"-->
+           <!--*ngIf="nsContainers.length == 0">-->
+        <!--<p>-->
+          <!--<span class="glyphicon glyphicon-info-sign"></span>-->
+          <!--There are currently no tools registered under this account, to add your first tool, do one of the following:-->
+        <!--</p>-->
+        <!--<ul>-->
+          <!--<li>-->
+            <!--Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized in the linking process.-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--Press the 'Add Tool' button to manually add a tool.-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+  <!--Tool Content Page, this should be a Component-->
+  <div class="row">
+    <div class="col-md-3 containers-rsb">
+      <accordion [closeOthers]="oneAtATime">
+        <accordion-group *ngFor="let orgObj of orgWorkflows" [heading]="orgObj?.organization" [isOpen]="orgObj?.isFirstOpen">
+          <div *ngFor="let workflowObj of orgObj?.workflows">
+            <div class="pull left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}">
+              <a style="cursor: pointer;" (click)="updateWorkflow(workflowObj)">
+                {{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}
+              </a>
+              <span class="label"
+                    [ngClass]="workflowObj?.is_published ? 'label-primary' : 'label-warning'">
+                    {{ workflowObj?.is_published ? 'PUB' : 'UNPUB'}}
+              </span>
+            </div>
+          </div>
+        </accordion-group>
+      </accordion>
+      <button id="register_tool_button" type="button"
+              class="btn btn-primary btn-sm  pull-right">
+        <span>Add Tool</span>
+      </button>
+      <div>
+        {{hi}}
+      </div>
+    </div>
+    <div style="background-color: #CAED9E" class="col-md-8 containers-rsb">
+      <app-workflow></app-workflow>
+    </div>
+  </div>
+</div>

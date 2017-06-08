@@ -55,6 +55,7 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import { FooComponent } from './foo/foo.component';
 
 @NgModule({
   declarations: [

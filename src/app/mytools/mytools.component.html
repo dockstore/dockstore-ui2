@@ -32,7 +32,7 @@
   <!--Tool Content Page, this should be a Component-->
   <div class="row">
     <div class="col-md-3 containers-rsb">
-      <accordion>
+      <accordion [closeOthers]="oneAtATime">
         <accordion-group *ngFor="let nsObj of nsContainers" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
           <div *ngFor="let containerObj of nsObj?.containers">
             <div class="pull left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">

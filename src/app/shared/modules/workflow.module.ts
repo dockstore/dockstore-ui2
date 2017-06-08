@@ -33,6 +33,7 @@ import { DateService } from '../date.service';
 import { FileService } from '../file.service';
 import { WorkflowService } from '../../workflow/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
+import { WorkflowObjService } from '../../shared/workflow.service';
 
 
 @NgModule({
@@ -69,7 +70,11 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     DockerfileService,
     ParamfilesService,
     WorkflowService,
-    DescriptorsService
+    DescriptorsService,
+    WorkflowObjService
   ],
+  exports: [
+    WorkflowComponent
+  ]
 })
 export class WorkflowModule { }

@@ -26,6 +26,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
+import {WorkflowObjService} from '../workflow.service';
 
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
@@ -59,7 +60,7 @@ import { SelectModule } from './select.module';
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
-    FormsModule
+    FormsModule,
   ],
   providers: [
     HighlightJsService,
@@ -69,7 +70,8 @@ import { SelectModule } from './select.module';
     LaunchService,
     ViewService,
     DockerfileService,
-    ParamfilesService
+    ParamfilesService,
+    WorkflowObjService
   ],
   exports: [
     ContainerComponent

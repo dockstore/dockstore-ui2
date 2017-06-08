@@ -7,6 +7,9 @@ import {CommunicatorService} from './communicator.service';
 import {ProviderService} from './provider.service';
 import {UserService} from '../loginComponents/user.service';
 
+/* TODO: try this...*/
+import { WorkflowObjService } from '../shared/workflow.service';
+
 @Injectable()
 export abstract class Tool implements OnInit, OnDestroy {
 
@@ -20,14 +23,23 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected workflow;
 
   private routeSub: Subscription;
+  private subscription: Subscription;
 
   constructor(private toolService: ToolService,
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
               private userService: UserService,
               private router: Router,
+              private workflowObjService: WorkflowObjService,
               toolType: string) {
     this._toolType = toolType;
+    this.subscription = workflowObjService.workflow$.subscribe(
+      workflow => {
+        console.log('workflow Changed Notified');
+        this.workflow = workflow;
+        this.setUpWorkflow(workflow, false);
+      }
+    );
   }
 
   ngOnInit() {
@@ -72,6 +84,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     if ( this._toolType === 'containers') {
       this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
         .subscribe(toolArray => {
+          console.log(toolArray);
           // TODO: endpoint should return a single object instead of an array
           this.setUpTool(toolArray);
         }, error => {
@@ -88,21 +101,30 @@ export abstract class Tool implements OnInit, OnDestroy {
     } else {
       this.title = this.workflow.path;
     }
-    this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
-      .subscribe(workflow => {
-        this.setUpWorkflow(workflow);
-      }, error => {
-        this.router.navigate(['../']);
+      console.log('@@@@@@@@@#############!@!~!');
+      console.log(this.workflow);
+      if (this.communicatorService.getisPublic()) {
+        this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+          .subscribe(workflow => {
+              console.log('PublishedWorkflowByPath: ');
+              console.log(workflow);
+              this.setUpWorkflow(workflow, true);
+            }, error => {
+              this.router.navigate(['../']);
+            }
+          );
       }
-    );
+
   }
 
-  private setUpWorkflow(workflow: any) {
+  protected setUpWorkflow(workflow: any, isPublic: boolean) {
     if (workflow) {
+      this.communicatorService.setWorkflow(workflow, isPublic);
       if (!workflow.providerUrl) {
         this.providerService.setUpProvider(workflow);
       }
       this.workflow = Object.assign(workflow, this.workflow);
+      this.title = this.workflow.path;
       this.initTool();
     }
   }

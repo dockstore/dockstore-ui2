@@ -6,6 +6,8 @@ import { ToolLister } from '../../shared/tool-lister';
 import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
 
+import { WorkflowObjService } from '../../shared/workflow.service';
+
 @Component({
   selector: 'app-list-workflows',
   templateUrl: './list.component.html'
@@ -16,12 +18,15 @@ export class ListWorkflowsComponent extends ToolLister {
   // gitUrl
 
   constructor(private communicatorService: CommunicatorService,
+              private workflowObjService: WorkflowObjService,
               listService: ListService, providerService: ProviderService) {
     super(listService, providerService, 'workflows');
   }
 
   sendWorkflowInfo(workflow) {
-    this.communicatorService.setWorkflow(workflow);
+    this.communicatorService.setWorkflow(workflow, true);
+    // console.log('Change Workflow!!!');
+    // this.workflowObjService.updateWorkflow(workflow);
   }
 
   initToolLister(): void { }

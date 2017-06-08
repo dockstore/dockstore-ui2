@@ -9,7 +9,7 @@ import {ProviderService} from '../shared/provider.service';
 import {Tool} from '../shared/tool';
 import {ToolService} from '../shared/tool.service';
 import {UserService} from '../loginComponents/user.service';
-
+import { WorkflowObjService } from '../shared/workflow.service';
 
 @Component({
   selector: 'app-mytools',
@@ -21,6 +21,7 @@ export class MyToolsComponent extends Tool {
   user;
   userTools = [];
   nsContainers = [];
+  oneAtATime = true;
   @ViewChild(ContainerComponent) myContainer: ContainerComponent;
   constructor(private dockstoreService: DockstoreService,
               private mytoolsService: MytoolsService,
@@ -28,9 +29,10 @@ export class MyToolsComponent extends Tool {
               communicatorService: CommunicatorService,
               providerService: ProviderService,
               userService: UserService,
-              router: Router
+              router: Router,
+              workflowObjService: WorkflowObjService
   ) {
-    super(toolService, communicatorService, providerService, userService, router, 'mytools');
+    super(toolService, communicatorService, providerService, userService, router, workflowObjService, 'mytools');
       userService.getUser().subscribe(user => {
         this.user = user;
         userService.getUserTools(user.id).subscribe(tools => {

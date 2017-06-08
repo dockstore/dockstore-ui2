@@ -22,6 +22,8 @@ import { WorkflowsComponent } from './workflows.component';
 
 import { workflowsRouting } from './workflows.routing';
 
+import { WorkflowObjService } from '../shared/workflow.service';
+
 @NgModule({
   declarations: [
     WorkflowsComponent,
@@ -44,7 +46,8 @@ import { workflowsRouting } from './workflows.routing';
     workflowsRouting
   ],
   providers: [
-    HighlightJsService
+    HighlightJsService,
+    WorkflowObjService
   ]
 })
 export class WorkflowsModule {

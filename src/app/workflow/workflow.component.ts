@@ -10,6 +10,7 @@ import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
+import { WorkflowObjService } from '../shared/workflow.service';
 
 import { Tool } from '../shared/tool';
 
@@ -21,15 +22,16 @@ import { UserService } from '../loginComponents/user.service';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Tool {
+export class WorkflowComponent extends Tool implements OnDestroy {
   labels: string[];
   constructor(private dockstoreService: DockstoreService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
               userService: UserService,
-              router: Router) {
-    super(toolService, communicatorService, providerService, userService, router, 'workflows');
+              router: Router,
+              workflowObjService: WorkflowObjService) {
+    super(toolService, communicatorService, providerService, userService, router, workflowObjService, 'workflows');
   }
   setProperties() {
     const workflowRef = this.workflow;
@@ -38,5 +40,16 @@ export class WorkflowComponent extends Tool {
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
+  }
+
+  updateData(tool: any, defaultVersion: any) {
+    this.tool = tool;
+    this.title = tool.tool_path;
+    this.setProperties();
+    this.getValidVersions();
+    this.defaultVersion = defaultVersion;
+  }
+
+  ngOnDestroy(){
   }
 }

@@ -13,7 +13,7 @@ import { Tool } from '../shared/tool';
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from './container.service';
 import { UserService } from '../loginComponents/user.service';
-
+import { WorkflowObjService } from '../shared/workflow.service';
 
 @Component({
   selector: 'app-container',
@@ -30,9 +30,9 @@ export class ContainerComponent extends Tool {
               communicatorService: CommunicatorService,
               providerService: ProviderService,
               userService: UserService,
-              router: Router) {
-    super(toolService, communicatorService, providerService, userService, router, 'containers');
-
+              router: Router,
+              workflowObjService: WorkflowObjService) {
+    super(toolService, communicatorService, providerService, userService, router, workflowObjService, 'containers');
   }
 
   setProperties() {
