@@ -6,7 +6,7 @@ export class WorkflowObjService {
   // Observable sources
   private workflowNameSource = new Subject<string>();
   private hiSource = new Subject<string>();
-  public workflowSource = new Subject<any>();
+  private workflowSource = new Subject<any>();
   // Observable streams
   workflowName$ = this.workflowNameSource.asObservable();
   hi$  = this.hiSource.asObservable();
@@ -20,12 +20,6 @@ export class WorkflowObjService {
   }
   sayhi(input) {
     this.hiSource.next(input);
-  }
-  initName(name: string) {
-    this.workflowNameSource.next(name);
-  }
-  initWorkflow(workflow: any) {
-    this.workflowSource.next(workflow);
   }
   constructor() { }
 }

@@ -1,8 +1,9 @@
-import { Input, OnInit } from '@angular/core';
+import {Input, OnChanges, OnInit} from '@angular/core';
 
 import { DateService } from './date.service';
+import {versions} from "../footer/versions";
 
-export abstract class Versions implements OnInit {
+export abstract class Versions implements OnInit, OnChanges{
 
   @Input() versions: Array<any>;
 
@@ -23,6 +24,9 @@ export abstract class Versions implements OnInit {
         }
       ]
     };
+  }
+  ngOnChanges() {
+    console.log(this.versions);
   }
 
   getDateTimeString(timestamp) {

@@ -1,6 +1,6 @@
 export class Dockstore {
 
-  static readonly API_URI = 'http://localhost:8080';
+  static readonly API_URI = 'http://10.0.28.34:8080';
 
   static readonly GITHUB_CLIENT_ID = 'fill this in';
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';

@@ -26,7 +26,8 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
-import {WorkflowObjService} from '../workflow.service';
+import { WorkflowObjService} from '../workflow.service';
+import { ToolObservableService } from '../tool-observable.service';
 
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
@@ -71,7 +72,8 @@ import { SelectModule } from './select.module';
     ViewService,
     DockerfileService,
     ParamfilesService,
-    WorkflowObjService
+    WorkflowObjService,
+    ToolObservableService
   ],
   exports: [
     ContainerComponent

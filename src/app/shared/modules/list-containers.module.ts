@@ -9,6 +9,7 @@ import { ListContainersComponent } from '../../containers/list/list.component';
 
 import { ListContainersService } from '../../containers/list/list.service';
 import { HeaderModule } from './header.module';
+import { ToolObservableService } from '../tool-observable.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HeaderModule } from './header.module';
     TooltipModule.forRoot(),
   ],
   providers: [
-    ListContainersService
+    ListContainersService,
+    ToolObservableService
   ],
   exports: [
     ListContainersComponent
