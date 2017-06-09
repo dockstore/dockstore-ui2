@@ -11,6 +11,7 @@ import { ContainerModule } from '../shared/modules/container.module';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
 import { HeaderModule } from '../shared/modules/header.module';
+import { ToolObservableService } from '../shared/tool-observable.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { HeaderModule } from '../shared/modules/header.module';
     TooltipModule.forRoot()
   ],
   providers: [
+    ToolObservableService
   ],
 })
 export class MyToolsModule {}

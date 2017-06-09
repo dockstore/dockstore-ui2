@@ -21,31 +21,19 @@ import {WorkflowComponent} from '../workflow/workflow.component';
               DockstoreService, CommunicatorService, WorkflowObjService]
 })
 export class MyWorkflowsComponent {
-  user;
-  userWorkflows = [];
   orgWorkflows = [];
   oneAtATime = true;
   hi: string;
   @ViewChild(WorkflowComponent) myWorkflow: WorkflowComponent;
-  constructor(private dockstoreService: DockstoreService,
-              private myworkflowService: MyWorkflowsService,
+  constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private communicatorService: CommunicatorService,
               private workflowobjService: WorkflowObjService) {
     userService.getUser().subscribe(user => {
-      this.user = user;
       userService.getUserWorkflowList(user.id).subscribe(workflows => {
         this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
-        this.workflowobjService.updateWorkflow(this.orgWorkflows[0].workflows[0]);
+        this.updateWorkflow(this.orgWorkflows[0].workflows[0]);
         this.communicatorService.setWorkflow(this.orgWorkflows[0].workflows[0]);
-        this.workflowobjService.workflowName$.subscribe(
-          name => {
-            this.userWorkflows.push(`${name} confirmed the mission`);
-          });
-        workflowobjService.hi$.subscribe(
-          hi => {
-            this.hi = hi;
-          });
       });
     });
   }

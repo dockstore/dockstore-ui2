@@ -29,7 +29,7 @@ export class ListWorkflowsComponent extends ToolLister {
   }
 
   initToolLister(): void {
-    this.workflowObjService.initWorkflow(this.publishedTools[0]);
+    // this.workflowObjService.updateWorkflow(this.publishedTools[0]);
   }
 
 }

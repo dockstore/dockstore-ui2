@@ -1,4 +1,4 @@
-import {Component, Input } from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -9,18 +9,19 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 
 import { Tool } from '../shared/tool';
+import { Foo } from '../shared/foo';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from './container.service';
 import { UserService } from '../loginComponents/user.service';
 import { WorkflowObjService } from '../shared/workflow.service';
+import { ToolObservableService } from '../shared/tool-observable.service';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Tool {
-  @Input() curTool: any;
+export class ContainerComponent extends Tool implements OnDestroy {
   labels: string[];
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
@@ -31,8 +32,10 @@ export class ContainerComponent extends Tool {
               providerService: ProviderService,
               userService: UserService,
               router: Router,
-              workflowObjService: WorkflowObjService) {
-    super(toolService, communicatorService, providerService, userService, router, workflowObjService, 'containers');
+              workflowObjService: WorkflowObjService,
+              toolObservableService: ToolObservableService) {
+    super(toolService, communicatorService, providerService, userService, router,
+      workflowObjService, toolObservableService, 'containers');
   }
 
   setProperties() {
@@ -53,13 +56,6 @@ export class ContainerComponent extends Tool {
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
-  }
-  updateData(tool: any, defaultVersion: any) {
-    this.tool = tool;
-    this.title = tool.tool_path;
-    this.setProperties();
-    this.getValidVersions();
-    this.defaultVersion = defaultVersion;
   }
 
 }

@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { DateService } from '../../shared/date.service';
 
 import { Versions } from '../../shared/versions';
+import {versions} from "../../footer/versions";
 
 @Component({
   selector: 'app-versions-workflow',

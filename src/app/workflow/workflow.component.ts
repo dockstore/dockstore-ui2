@@ -9,8 +9,10 @@ import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
 import { WorkflowObjService } from '../shared/workflow.service';
+import { ToolObservableService } from '../shared/tool-observable.service';
 
 import { Foo } from '../shared/foo';
+import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
 import { UserService } from '../loginComponents/user.service';
@@ -20,7 +22,7 @@ import { UserService } from '../loginComponents/user.service';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Foo implements OnDestroy {
+export class WorkflowComponent extends Tool implements OnDestroy {
   labels: string[];
 
   constructor(private dockstoreService: DockstoreService,
@@ -30,8 +32,10 @@ export class WorkflowComponent extends Foo implements OnDestroy {
               providerService: ProviderService,
               userService: UserService,
               router: Router,
-              workflowObjService: WorkflowObjService) {
-    super(toolService, communicatorService, providerService, userService, router, workflowObjService, 'workflows');
+              workflowObjService: WorkflowObjService,
+              toolObservableService: ToolObservableService) {
+    super(toolService, communicatorService, providerService, userService, router,
+          workflowObjService, toolObservableService, 'workflows');
   }
   setProperties() {
     const workflowRef = this.workflow;

@@ -11,13 +11,13 @@ import { Versions } from '../../shared/versions';
 })
 export class VersionsContainerComponent extends Versions {
   verifiedLink: string;
+  theVersions: Array<any>;
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<string>;
 
   setNoOrderCols(): Array<number> {
     return [ 5, 6 ];
   }
-
   constructor(dateService: DateService) {
     super(dateService);
     this.verifiedLink = dateService.getVerifiedLink();
