@@ -33,7 +33,7 @@ import { DateService } from '../date.service';
 import { FileService } from '../file.service';
 import { WorkflowService } from '../../workflow/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
-import { WorkflowObjService } from '../../shared/workflow.service';
+import { WorkflowObservableService } from '../workflow-observable.service';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 
 
@@ -73,7 +73,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesService,
     WorkflowService,
     DescriptorsService,
-    WorkflowObjService
+    WorkflowObservableService
   ],
   exports: [
     WorkflowComponent

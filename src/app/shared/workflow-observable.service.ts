@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class WorkflowObjService {
+export class WorkflowObservableService {
   // Observable sources
   private workflowSource = new Subject<any>();
   // Observable streams
@@ -14,4 +14,3 @@ export class WorkflowObjService {
   constructor() { }
 }
 
-// ToolObservableService

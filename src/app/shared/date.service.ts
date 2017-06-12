@@ -9,7 +9,7 @@ export class DateService {
 
   // get a message containing both the day and time of day
   getDateTimeMessage(timestamp: number, dateOnly = false): string {
-    let dateString = 'n/a'
+    let dateString = 'n/a';
     if (timestamp) {
       const date = new Date(timestamp);
       dateString = DateService.months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();

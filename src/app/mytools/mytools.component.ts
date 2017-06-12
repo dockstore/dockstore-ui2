@@ -1,15 +1,9 @@
-import {Component, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
-
-import {ContainerComponent} from '../container/container.component';
+import {Component} from '@angular/core';
 import {CommunicatorService} from '../shared/communicator.service';
 import {DockstoreService} from '../shared/dockstore.service';
 import {MytoolsService} from './mytools.service';
-import {ProviderService} from '../shared/provider.service';
-import {Tool} from '../shared/tool';
-import {ToolService} from '../shared/tool.service';
 import {UserService} from '../loginComponents/user.service';
-import { ToolObservableService } from '../shared/tool-observable.service';
+import {ToolObservableService} from '../shared/tool-observable.service';
 
 @Component({
   selector: 'app-mytools',

@@ -1,19 +1,15 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
-import { WorkflowObjService } from '../shared/workflow.service';
+import { WorkflowObservableService } from '../shared/workflow-observable.service';
 import { ToolObservableService } from '../shared/tool-observable.service';
-
+import { ToolService } from '../shared/tool.service';
 import { Tool } from '../shared/tool';
 
-import { ToolService } from '../shared/tool.service';
 import { UserService } from '../loginComponents/user.service';
 
 @Component({
@@ -31,7 +27,7 @@ export class WorkflowComponent extends Tool implements OnDestroy {
               providerService: ProviderService,
               userService: UserService,
               router: Router,
-              workflowObjService: WorkflowObjService,
+              workflowObjService: WorkflowObservableService,
               toolObservableService: ToolObservableService) {
     super(toolService, communicatorService, providerService, userService, router,
           workflowObjService, toolObservableService, 'workflows');
