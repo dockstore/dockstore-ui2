@@ -21,8 +21,7 @@ import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowsComponent } from './workflows.component';
 
 import { workflowsRouting } from './workflows.routing';
-
-import { WorkflowObservableService } from '../shared/workflow-observable.service';
+import { WorkflowService } from '../shared/workflow.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +46,7 @@ import { WorkflowObservableService } from '../shared/workflow-observable.service
   ],
   providers: [
     HighlightJsService,
-    WorkflowObservableService
+    WorkflowService
   ]
 })
 export class WorkflowsModule {

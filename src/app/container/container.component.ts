@@ -13,7 +13,7 @@ import { Tool } from '../shared/tool';
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
 import { UserService } from '../loginComponents/user.service';
-import { WorkflowObservableService } from '../shared/workflow-observable.service';
+import { WorkflowService } from '../shared/workflow.service';
 
 @Component({
   selector: 'app-container',
@@ -29,10 +29,10 @@ export class ContainerComponent extends Tool implements OnDestroy {
               providerService: ProviderService,
               userService: UserService,
               router: Router,
-              workflowObjService: WorkflowObservableService,
+              workflowService: WorkflowService,
               containerService: ContainerService) {
     super(toolService, communicatorService, providerService, userService, router,
-      workflowObjService, containerService, 'containers');
+      workflowService, containerService, 'containers');
   }
 
   setProperties() {

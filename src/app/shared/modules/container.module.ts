@@ -26,7 +26,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
-import { WorkflowObservableService} from '../workflow-observable.service';
+import { WorkflowService } from '../workflow.service';
 
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
@@ -73,7 +73,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ViewService,
     DockerfileService,
     ParamfilesService,
-    WorkflowObservableService
+    WorkflowService
   ],
   exports: [
     ContainerComponent

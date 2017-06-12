@@ -31,9 +31,8 @@ import { DockerfileService } from '../../container/dockerfile/dockerfile.service
 import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
-import { WorkflowService } from '../../workflow/workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
-import { WorkflowObservableService } from '../workflow-observable.service';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 
 
@@ -72,8 +71,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     DockerfileService,
     ParamfilesService,
     WorkflowService,
-    DescriptorsService,
-    WorkflowObservableService
+    DescriptorsService
   ],
   exports: [
     WorkflowComponent

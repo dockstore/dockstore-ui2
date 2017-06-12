@@ -4,7 +4,6 @@ import { DateService } from '../../shared/date.service';
 
 import { Versions } from '../../shared/versions';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { WorkflowObservableService } from '../../shared/workflow-observable.service';
 
 
 @Component({

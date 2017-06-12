@@ -9,7 +9,7 @@ import {UserService} from '../loginComponents/user.service';
 
 
 /* TODO: try this...*/
-import { WorkflowObservableService } from './workflow-observable.service';
+import { WorkflowService } from './workflow.service';
 import { ContainerService } from '../shared/container.service';
 @Injectable()
 export abstract class Tool implements OnInit, OnDestroy {
@@ -33,11 +33,11 @@ export abstract class Tool implements OnInit, OnDestroy {
               private providerService: ProviderService,
               private userService: UserService,
               private router: Router,
-              private workflowObjService: WorkflowObservableService,
+              private workflowService: WorkflowService,
               private containerService: ContainerService,
               toolType: string) {
     this._toolType = toolType;
-    this.workflowSubscription = workflowObjService.workflow$.subscribe(
+    this.workflowSubscription = workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;
         this.setUpWorkflow(workflow);

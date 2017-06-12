@@ -5,7 +5,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { HeaderModule } from './header.module';
 
 import { ListWorkflowsComponent } from '../../workflows/list/list.component';
-import { WorkflowObservableService } from '../workflow-observable.service';
+import { WorkflowService } from '../workflow.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { WorkflowObservableService } from '../workflow-observable.service';
     ListWorkflowsComponent
   ],
   providers: [
-    WorkflowObservableService
+    WorkflowService
   ]
 })
 export class ListWorkflowsModule { }

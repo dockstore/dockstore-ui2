@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HighlightJsService } from 'angular2-highlight-js';
 
 import { ContainerService } from '../../shared/container.service';
-import { WorkflowService } from '../workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
 
 import { FileSelector } from '../../shared/selectors/file-selector';
