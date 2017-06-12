@@ -1,8 +1,11 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
 import { MarkdownModule } from 'angular2-markdown';
+// import { NgxChartsDagModule } from '@swimlane/ngx-charts-dag';
+// import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -11,6 +14,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AlertModule } from 'ngx-bootstrap/alert';
 
 /* Component */
+import { DagComponent } from './../../workflow/dag/dag.component';
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
@@ -18,6 +22,7 @@ import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfile
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
+
 /* Module */
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -43,13 +48,14 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
-    ViewWorkflowComponent
+    ViewWorkflowComponent,
+    DagComponent
   ],
   imports: [
     CommonModule,
     AlertModule.forRoot(),
     MarkdownModule.forRoot(),
-    DataTablesModule.forRoot(),
+    DataTablesModule,
     HeaderModule,
     HighlightJsModule,
     ListWorkflowsModule,
@@ -57,7 +63,7 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     SelectModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
-    AccordionModule.forRoot(),
+    AccordionModule.forRoot()
   ],
   providers: [
     HighlightJsService,
