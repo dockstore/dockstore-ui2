@@ -6,9 +6,10 @@ import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
 import { WorkflowObservableService } from '../shared/workflow-observable.service';
-import { ToolObservableService } from '../shared/tool-observable.service';
 import { ToolService } from '../shared/tool.service';
 import { Tool } from '../shared/tool';
+
+import { ContainerService } from '../shared/container.service';
 
 import { UserService } from '../loginComponents/user.service';
 
@@ -28,9 +29,9 @@ export class WorkflowComponent extends Tool implements OnDestroy {
               userService: UserService,
               router: Router,
               workflowObjService: WorkflowObservableService,
-              toolObservableService: ToolObservableService) {
+              containerService: ContainerService) {
     super(toolService, communicatorService, providerService, userService, router,
-          workflowObjService, toolObservableService, 'workflows');
+          workflowObjService, containerService, 'workflows');
   }
   setProperties() {
     const workflowRef = this.workflow;

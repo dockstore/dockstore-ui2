@@ -9,7 +9,7 @@ import { ListContainersComponent } from '../../containers/list/list.component';
 
 import { ListContainersService } from '../../containers/list/list.service';
 import { HeaderModule } from './header.module';
-import { ToolObservableService } from '../tool-observable.service';
+import { ContainerService } from '../container.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { ToolObservableService } from '../tool-observable.service';
   ],
   providers: [
     ListContainersService,
-    ToolObservableService
+    ContainerService
   ],
   exports: [
     ListContainersComponent

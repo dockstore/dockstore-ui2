@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from 'angular2-highlight-js';
 
-import { ContainerService } from '../../container/container.service';
+import { ContainerService } from '../../shared/container.service';
 import { WorkflowService } from '../workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
 

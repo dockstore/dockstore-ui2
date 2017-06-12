@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from '../shared/dockstore.model';
-import { DockstoreService } from '../shared/dockstore.service';
+import { Dockstore } from './dockstore.model';
+import { DockstoreService } from './dockstore.service';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
-
+  private toolSource = new Subject<any>();
+  tool$ = this.toolSource.asObservable();
   constructor(private dockstoreService: DockstoreService) { }
-
+  setTool(tool: any) {
+    this.toolSource.next(tool);
+  }
   getDescriptors(versions, version) {
     if (versions.length && version) {
 

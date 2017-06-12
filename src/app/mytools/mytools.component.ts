@@ -3,7 +3,7 @@ import {CommunicatorService} from '../shared/communicator.service';
 import {DockstoreService} from '../shared/dockstore.service';
 import {MytoolsService} from './mytools.service';
 import {UserService} from '../loginComponents/user.service';
-import {ToolObservableService} from '../shared/tool-observable.service';
+import {ContainerService} from '../shared/container.service';
 
 @Component({
   selector: 'app-mytools',
@@ -17,7 +17,7 @@ export class MyToolsComponent {
   constructor(private mytoolsService: MytoolsService,
               private communicatorService: CommunicatorService,
               private userService: UserService,
-              private toolObsService: ToolObservableService) {
+              private containerService: ContainerService) {
     userService.getUser().subscribe(user => {
       userService.getUserTools(user.id).subscribe(tools => {
         this.nsContainers = this.mytoolsService.sortNSContainers(tools, user.username);
@@ -29,6 +29,6 @@ export class MyToolsComponent {
   }
 
   selectContainer(tool) {
-    this.toolObsService.setTool(tool);
+    this.containerService.setTool(tool);
   }
 }

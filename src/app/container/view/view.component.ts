@@ -1,5 +1,5 @@
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { ContainerService } from './../container.service';
+import { ContainerService } from '../../shared/container.service';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { Component, OnInit } from '@angular/core';
 

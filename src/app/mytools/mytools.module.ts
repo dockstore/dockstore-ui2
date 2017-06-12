@@ -12,7 +12,7 @@ import { mytoolsRouting } from './mytools.routing';
 
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
-import { ToolObservableService } from '../shared/tool-observable.service';
+import { ContainerService } from '../shared/container.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { ToolObservableService } from '../shared/tool-observable.service';
     TooltipModule.forRoot()
   ],
   providers: [
-    ToolObservableService
+    ContainerService
   ],
 })
 export class MyToolsModule {}

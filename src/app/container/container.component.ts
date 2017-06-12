@@ -11,10 +11,9 @@ import { ProviderService } from '../shared/provider.service';
 import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
-import { ContainerService } from './container.service';
+import { ContainerService } from '../shared/container.service';
 import { UserService } from '../loginComponents/user.service';
 import { WorkflowObservableService } from '../shared/workflow-observable.service';
-import { ToolObservableService } from '../shared/tool-observable.service';
 
 @Component({
   selector: 'app-container',
@@ -24,7 +23,6 @@ export class ContainerComponent extends Tool implements OnDestroy {
   labels: string[];
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
-              private containerService: ContainerService,
               private imageProviderService: ImageProviderService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
@@ -32,9 +30,9 @@ export class ContainerComponent extends Tool implements OnDestroy {
               userService: UserService,
               router: Router,
               workflowObjService: WorkflowObservableService,
-              toolObservableService: ToolObservableService) {
+              containerService: ContainerService) {
     super(toolService, communicatorService, providerService, userService, router,
-      workflowObjService, toolObservableService, 'containers');
+      workflowObjService, containerService, 'containers');
   }
 
   setProperties() {
@@ -42,10 +40,8 @@ export class ContainerComponent extends Tool implements OnDestroy {
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     toolRef.agoMessage = this.dateService.getAgoMessage(toolRef.lastBuild);
     toolRef.email = this.dockstoreService.stripMailTo(toolRef.email);
-    toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
     toolRef.lastBuildDate = this.dateService.getDateTimeMessage(toolRef.lastBuild);
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(toolRef.lastUpdated);
-    toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
     toolRef.verifiedLinks = this.dateService.getVerifiedLink();

@@ -14,7 +14,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { ContainerComponent } from '../../container/container.component';
-import { ContainerService } from '../../container/container.service';
+import { ContainerService } from '../container.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
@@ -27,7 +27,6 @@ import { VersionsContainerComponent } from '../../container/versions/versions.co
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
 import { WorkflowObservableService} from '../workflow-observable.service';
-import { ToolObservableService } from '../tool-observable.service';
 
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
@@ -74,8 +73,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ViewService,
     DockerfileService,
     ParamfilesService,
-    WorkflowObservableService,
-    ToolObservableService
+    WorkflowObservableService
   ],
   exports: [
     ContainerComponent
