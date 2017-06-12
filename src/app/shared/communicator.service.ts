@@ -16,7 +16,4 @@ export class CommunicatorService {
   getWorkflow() {
     return this._workflow;
   }
-  getisPublic() {
-    return this._public;
-  }
 }

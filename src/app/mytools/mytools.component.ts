@@ -20,7 +20,6 @@ import { ToolObservableService } from '../shared/tool-observable.service';
 export class MyToolsComponent {
   nsContainers = [];
   oneAtATime = true;
-  @ViewChild(ContainerComponent) myContainer: ContainerComponent;
   constructor(private mytoolsService: MytoolsService,
               private communicatorService: CommunicatorService,
               private userService: UserService,

@@ -11,7 +11,6 @@ import { ProviderService } from '../shared/provider.service';
 import { WorkflowObjService } from '../shared/workflow.service';
 import { ToolObservableService } from '../shared/tool-observable.service';
 
-import { Foo } from '../shared/foo';
 import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
@@ -41,7 +40,7 @@ export class WorkflowComponent extends Tool implements OnDestroy {
     const workflowRef = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
-    workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.lastUpdated);
+    workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);

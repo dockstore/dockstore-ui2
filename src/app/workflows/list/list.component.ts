@@ -25,11 +25,10 @@ export class ListWorkflowsComponent extends ToolLister {
 
   sendWorkflowInfo(workflow) {
     this.communicatorService.setWorkflow(workflow);
-    this.workflowObjService.updateWorkflow(workflow);
+    this.workflowObjService.setWorkflow(workflow);
   }
 
   initToolLister(): void {
-    // this.workflowObjService.updateWorkflow(this.publishedTools[0]);
   }
 
 }

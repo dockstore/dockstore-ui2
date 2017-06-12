@@ -9,7 +9,6 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 
 import { Tool } from '../shared/tool';
-import { Foo } from '../shared/foo';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from './container.service';
@@ -55,6 +54,7 @@ export class ContainerComponent extends Tool implements OnDestroy {
     }
   }
   getValidVersions() {
+    console.log('container getValidVersions');
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
 

@@ -35,6 +35,7 @@ import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { ParamfilesModule } from './paramfiles.module';
 import { SelectModule } from './select.module';
+import { OrderByModule } from '../../shared/modules/orderby.module';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import { SelectModule } from './select.module';
     FilesContainerComponent,
     DockerfileComponent,
     DescriptorsComponent,
-    ParamfilesComponent,
+    ParamfilesComponent
   ],
   imports: [
     CommonModule,
@@ -62,6 +63,7 @@ import { SelectModule } from './select.module';
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
+    OrderByModule
   ],
   providers: [
     HighlightJsService,

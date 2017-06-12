@@ -34,6 +34,7 @@ import { FileService } from '../file.service';
 import { WorkflowService } from '../../workflow/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
 import { WorkflowObjService } from '../../shared/workflow.service';
+import { OrderByModule } from '../../shared/modules/orderby.module';
 
 
 @NgModule({
@@ -44,7 +45,7 @@ import { WorkflowObjService } from '../../shared/workflow.service';
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
-    ViewWorkflowComponent
+    ViewWorkflowComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +60,7 @@ import { WorkflowObjService } from '../../shared/workflow.service';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
+    OrderByModule
   ],
   providers: [
     HighlightJsService,

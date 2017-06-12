@@ -1,5 +1,5 @@
 <div>
-  <table datatable [dtOptions]="dtOptions" class="table row-border hover flex">
+  <table class="table workflow-versions-grid table-bordered table-condensed table-striped">
     <thead>
     <tr>
       <th>
@@ -7,17 +7,33 @@
                        to populate the info tab including 'launch with'">
           Git Reference
         </label>
+        <span class="glyphicon pull-right"
+              [ngClass]="getIconClass('reference')"
+              (click)="clickSortColumn('reference')">
+        </span>
       </th>
 
       <th>
+        <span class="glyphicon pull-right"
+              [ngClass]="getIconClass('workflow_path')"
+              (click)="clickSortColumn('workflow_path')">
+        </span>
         <label tooltip="Workflow paths for given version">Workflow Path</label>
       </th>
 
       <th>
+        <span class="glyphicon pull-right"
+              [ngClass]="getIconClass('last_modified')"
+              (click)="clickSortColumn('last_modified')">
+        </span>
         <label tooltip="Date of last update to Git reference">Date Modified</label>
       </th>
 
       <th>
+        <span class="glyphicon pull-right"
+              [ngClass]="getIconClass('valid')"
+              (click)="clickSortColumn('valid')">
+        </span>
         <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
           Valid
         </label>
@@ -37,7 +53,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let version of versions">
+    <tr *ngIf="versions.length === 0">
+      <td colspan="7">
+        <div class="text-center">No Records Found</div>
+      </td>
+    </tr>
+    <tr *ngFor="let version of versions | orderBy : convertSorting()">
       <td>{{ version.reference || 'n/a' }}</td>
       <td>{{ version.workflow_path }}</td>
       <td>{{ getDateTimeString(version.last_modified) }}</td>

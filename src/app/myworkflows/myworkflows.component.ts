@@ -23,8 +23,6 @@ import {WorkflowComponent} from '../workflow/workflow.component';
 export class MyWorkflowsComponent {
   orgWorkflows = [];
   oneAtATime = true;
-  hi: string;
-  @ViewChild(WorkflowComponent) myWorkflow: WorkflowComponent;
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private communicatorService: CommunicatorService,
@@ -32,13 +30,13 @@ export class MyWorkflowsComponent {
     userService.getUser().subscribe(user => {
       userService.getUserWorkflowList(user.id).subscribe(workflows => {
         this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
-        this.updateWorkflow(this.orgWorkflows[0].workflows[0]);
-        this.communicatorService.setWorkflow(this.orgWorkflows[0].workflows[0]);
+        const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
+        this.selectWorkflow(theFirstWorkflow);
+        this.communicatorService.setWorkflow(theFirstWorkflow);
       });
     });
   }
-  updateWorkflow(workflow) {
-    this.workflowobjService.updateName(workflow.repository);
-    this.workflowobjService.updateWorkflow(workflow);
+  selectWorkflow(workflow) {
+    this.workflowobjService.setWorkflow(workflow);
   }
 }

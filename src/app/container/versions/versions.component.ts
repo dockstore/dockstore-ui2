@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 
 import { Versions } from '../../shared/versions';
+import { DockstoreService } from '../../shared/dockstore.service';
+import { ToolObservableService } from '../../shared/tool-observable.service';
+import { WorkflowObjService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-versions-container',
@@ -11,15 +14,15 @@ import { Versions } from '../../shared/versions';
 })
 export class VersionsContainerComponent extends Versions {
   verifiedLink: string;
-  theVersions: Array<any>;
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<string>;
 
   setNoOrderCols(): Array<number> {
     return [ 5, 6 ];
   }
-  constructor(dateService: DateService) {
-    super(dateService);
+  constructor(dockstoreService: DockstoreService,
+              dateService: DateService) {
+    super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
   }
 }

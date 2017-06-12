@@ -52,8 +52,6 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.isWorkflowPublic);
-    console.log(this.isToolPublic);
     if (this._toolType === 'workflows') {
       if (this.isWorkflowPublic) {
         this.routeSub = this.router.events.subscribe(event =>
@@ -64,16 +62,13 @@ export abstract class Tool implements OnInit, OnDestroy {
       }
     } else if (this._toolType === 'containers') {
       if (this.isToolPublic) {
-        console.log('public');
         this.routeSub = this.router.events.subscribe(event =>
           this.urlToolChanged(event)
         );
       } else {
-        console.log('NotPublic');
         this.setUpTool((this.communicatorService.getTool()));
       }
     }
-
   }
 
   ngOnDestroy() {
@@ -86,15 +81,6 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   abstract setProperties(): void;
   abstract getValidVersions(): void;
-
-  protected setToolObj(tool: any) {
-    this.communicatorService.setTool(tool);
-    if (!tool.providerUrl) {
-      this.providerService.setUpProvider(tool);
-    }
-    this.tool = Object.assign(tool, this.tool);
-    this.initTool();
-  }
 
   private setUpWorkflow(workflow: any) {
     if (workflow) {

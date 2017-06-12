@@ -83,4 +83,13 @@ export class DockstoreService {
     return null;
   }
 
+   getIconClass(columnName: string, sortColumn: string, sortReverse: boolean) {
+    if (sortColumn === columnName) {
+      return !sortReverse ? 'glyphicon-sort-by-alphabet' :
+                            'glyphicon-sort-by-alphabet-alt';
+    } else {
+      return 'glyphicon-sort';
+    }
+  }
+
 }
