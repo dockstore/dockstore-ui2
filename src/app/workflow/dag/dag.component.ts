@@ -151,6 +151,8 @@ export class DagComponent implements OnInit, OnChanges {
       const element = document.getElementById('cy');
       const cy = cytoscape({
         container: element,
+        boxSelectionEnabled: false,
+        autounselectify: true,
         layout: {
           name: 'dagre'
         },
