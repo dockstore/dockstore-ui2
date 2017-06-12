@@ -1,3 +1,4 @@
+
 declare var cytoscape: any;
 import { Observable } from 'rxjs/Rx';
 import { CommunicatorService } from './../../shared/communicator.service';
@@ -9,7 +10,7 @@ import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/cor
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, OnChanges, AfterViewInit {
+export class DagComponent implements OnInit, OnChanges {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
@@ -18,7 +19,98 @@ export class DagComponent implements OnInit, OnChanges, AfterViewInit {
   private currentWorkflowId;
   private dagResults: any;
   private dagPromise: any;
-  
+  private style = [
+    {
+      selector: 'node',
+      style: {
+        'content': 'data(name)',
+        'font-size': '16px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-opacity': '10',
+        'background-color': '#7a88a9'
+      }
+    },
+
+    {
+      selector: 'edge',
+      style: {
+        'width': 3,
+        'target-arrow-shape': 'triangle',
+        'line-color': '#9dbaea',
+        'target-arrow-color': '#9dbaea',
+        'curve-style': 'bezier'
+      }
+    },
+
+    {
+      selector: 'node[id = "UniqueBeginKey"]',
+      style: {
+        'content': 'Start',
+        'font-size': '16px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-opacity': '10',
+        'background-color': '#4caf50'
+      }
+    },
+
+    {
+      selector: 'node[id = "UniqueEndKey"]',
+      style: {
+        'content': 'End',
+        'font-size': '16px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-opacity': '10',
+        'background-color': '#f44336'
+      }
+    },
+
+    {
+      selector: 'node[type = "workflow"]',
+      style: {
+        'content': 'data(name)',
+        'font-size': '16px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-opacity': '10',
+        'background-color': '#4ab4a9'
+      }
+    },
+
+    {
+      selector: 'node[type = "tool"]',
+      style: {
+        'content': 'data(name)',
+        'font-size': '16px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-opacity': '10',
+        'background-color': '#51aad8'
+      }
+    },
+
+    {
+      selector: 'node[type = "expressionTool"]',
+      style: {
+        'content': 'data(name)',
+        'font-size': '16px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-opacity': '10',
+        'background-color': '#9966FF'
+      }
+    },
+
+    {
+      selector: 'edge.notselected',
+      style: {
+        'opacity': '0.4'
+      }
+    }
+  ];
+
   constructor(private dagService: DagService) {
   }
   select(data) {
@@ -36,105 +128,7 @@ export class DagComponent implements OnInit, OnChanges, AfterViewInit {
     this.dagService.setCurrentVersion(this.defaultVersion);
     this.dagService.setCurrentWorkflowId(this.id);
   }
-
-  ngAfterViewInit() {
-    const element = document.getElementById('cy');
-
-    console.log('this is fine1');
-    const cy = cytoscape({
-      container: element,
-      layout: {
-        name: 'dagre'
-      },
-      style: [
-            {
-              selector: 'node',
-              style: {
-                'content': 'data(id)',
-                'text-opacity': 0.5,
-                'text-valign': 'center',
-                'text-halign': 'right',
-                'background-color': '#11479e'
-              }
-            },
-            {
-              selector: 'edge',
-              style: {
-                'width': 4,
-                'target-arrow-shape': 'triangle',
-                'line-color': '#9dbaea',
-                'target-arrow-color': '#9dbaea',
-                'curve-style': 'bezier'
-              }
-            }
-          ],
-      elements: {
-      // selectable: false,
-      grabbable: false,
-      nodes: [{
-        data: {
-          id: '0',
-          text: 'abc'
-        }
-      }, {
-        data: {
-          id: '1',
-          text: 'def'
-        }
-      }, {
-        data: {
-          id: '2',
-          text: 'ghi'
-        }
-      }, {
-        data: {
-          id: '3',
-          text: 'jkl'
-        }
-      }], // nodes
-      edges: [{
-          data: {
-            color: '#f00',
-            source: '0',
-            target: '1'
-          }
-        }, {
-          data: {
-            color: '#f00',
-            source: '1',
-            target: '2'
-          }
-        }, {
-          data: {
-            color: '#f00',
-            source: '2',
-            target: '3'
-          }
-        }, {
-          data: {
-            color: '#f00',
-            source: '0',
-            target: '2'
-          }
-        }, {
-          data: {
-            color: '#000',
-            source: '0',
-            target: '3'
-          }
-        }, {
-          data: {
-            color: '#f00',
-            source: '0',
-            target: '3'
-          }
-        }] // edges
-    }
-    });
-
-  }
   ngOnChanges() {
-    console.log('ngOnChanges');
     this.dagService.currentVersion.subscribe((version => {
       this.currentVersion = version;
       if (this.currentVersion != null && this.currentWorkflowId != null) {
@@ -154,7 +148,15 @@ export class DagComponent implements OnInit, OnChanges, AfterViewInit {
     this.dagPromise = this.dagService.currentDagResults.toPromise();
     this.dagService.currentDagResults.subscribe((results => {
       this.dagResults = results;
-      console.log(results);
+      const element = document.getElementById('cy');
+      const cy = cytoscape({
+        container: element,
+        layout: {
+          name: 'dagre'
+        },
+        style: this.style,
+        elements: this.dagResults
+      });
     }));
   }
 }
