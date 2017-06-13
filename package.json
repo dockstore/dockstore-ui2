@@ -35,6 +35,8 @@
     "cytoscape-dagre": "^1.6.0",
     "datatables.net": "^1.10.13",
     "datatables.net-bs": "^1.10.13",
+    "@types/elasticsearch": "^5.0.13",
+    "elasticsearch": "13.0.0",
     "jquery": "^3.2.1",
     "jquery-colorbox": "^1.6.4",
     "ng2-ui-auth": "^6.1.4",
