@@ -24,7 +24,8 @@
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
         "../bower_components/bootstrap-toc/bootstrap-toc.css",
-        "../node_modules/jquery-colorbox/example1/colorbox.css"
+        "../node_modules/jquery-colorbox/example1/colorbox.css",
+        "../src/cdn/monokai_sublime.min.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
@@ -33,7 +34,11 @@
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../bower_components/bootstrap-toc/bootstrap-toc.js",
         "../node_modules/jquery-colorbox/jquery.colorbox.js",
-        "../node_modules/cytoscape-dagre/cytoscape-dagre.js"
+        "../src/cdn/cytoscape.min.js",
+        "../src/cdn/dagre.js",
+        "../node_modules/cytoscape-dagre/cytoscape-dagre.js",
+        "../src/cdn/highlight.min.js",
+        "../src/cdn/typescript.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
