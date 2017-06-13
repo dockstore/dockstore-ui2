@@ -1,4 +1,22 @@
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 export class ViewService {
+  mode: Subject<TagEditorMode> = new BehaviorSubject<TagEditorMode>(null);
+  unsavedTestCWLFile: Subject<string> = new BehaviorSubject<string>('');
+  unsavedTestWDLFile: Subject<string> = new BehaviorSubject<string>('');
+
+  public setCurrentMode(mode: TagEditorMode): void {
+    this.mode.next(mode);
+  }
+
+  public setCurrentUnsavedTestWDLFile(file: string): void {
+    this.unsavedTestWDLFile.next(file);
+  }
+
+  public setCurrentUnsavedTestCWLFile(file: string): void {
+    this.unsavedTestCWLFile.next(file);
+  }
 
   getSizeString(size: number) {
     let sizeStr = '';
