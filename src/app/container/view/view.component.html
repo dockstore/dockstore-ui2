@@ -193,7 +193,7 @@
                         <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                             Docker Pull:
                         </label>
-                        <div class="col-sm-9 col-md-9 col-lg-9">
+                        <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tool">
                             <div class="input-group">
                                 <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.tool_path, unsavedVersion.name) }}" aria-describedby="clipboard" #inputTarget>
                                 <span class="input-group-btn" id="clipboard">

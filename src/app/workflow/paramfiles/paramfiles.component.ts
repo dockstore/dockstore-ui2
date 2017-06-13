@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { WorkflowService } from '../workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 
 import { FileSelector } from '../../shared/selectors/file-selector';

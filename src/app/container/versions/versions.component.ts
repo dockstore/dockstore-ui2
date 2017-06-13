@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 
 import { Versions } from '../../shared/versions';
+import { DockstoreService } from '../../shared/dockstore.service';
 
 @Component({
   selector: 'app-versions-container',
@@ -17,9 +18,9 @@ export class VersionsContainerComponent extends Versions {
   setNoOrderCols(): Array<number> {
     return [ 5, 6 ];
   }
-
-  constructor(dateService: DateService) {
-    super(dateService);
+  constructor(dockstoreService: DockstoreService,
+              dateService: DateService) {
+    super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
   }
 }
