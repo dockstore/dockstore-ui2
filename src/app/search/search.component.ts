@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Client } from 'elasticsearch';
+import SearchResponse = Elasticsearch.SearchResponse;
 
 
 @Component({
@@ -10,6 +11,7 @@ import { Client } from 'elasticsearch';
 export class SearchComponent implements OnInit {
 
   private _client: Client;
+  private hits: Object[];
 
   constructor() {
     this._client = new Client({
@@ -17,7 +19,9 @@ export class SearchComponent implements OnInit {
       apiVersion: '2.4',
       log: 'trace'
     });
+  }
 
+  getContent(): void {
     this._client.search({
       index: 'tools',
       type: 'entry',
@@ -26,14 +30,11 @@ export class SearchComponent implements OnInit {
           match_all : {}
         }
       }
-    }).then(function (resp) {
-      const hits = resp.hits.hits;
-      console.log(hits.length);
-    }, function (err) {
-      console.log(err.message);
-    });
+    }).then(hits => this.hits = hits.hits.hits);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getContent();
+  }
 
 }

@@ -1,3 +1,5 @@
-<p>
-  search works!
-</p>
+<ul class="hits">
+  <li *ngFor="let hit of hits">
+      {{ hit._id }} {{ hit._source.path }}
+  </li>
+</ul>
