@@ -37,21 +37,21 @@ export abstract class Tool implements OnInit, OnDestroy {
               private containerService: ContainerService,
               toolType: string) {
     this._toolType = toolType;
-    this.workflowSubscription = workflowService.workflow$.subscribe(
+  }
+
+  ngOnInit() {
+    this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;
         this.setUpWorkflow(workflow);
       }
     );
-    this.toolSubscription = containerService.tool$.subscribe(
+    this.toolSubscription = this.containerService.tool$.subscribe(
       tool => {
         this.tool = tool;
         this.setUpTool(tool);
       }
     );
-  }
-
-  ngOnInit() {
     if (this._toolType === 'workflows') {
       if (this.isWorkflowPublic) {
         this.routeSub = this.router.events.subscribe(event =>

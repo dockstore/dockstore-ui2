@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {CommunicatorService} from '../shared/communicator.service';
 import {DockstoreService} from '../shared/dockstore.service';
@@ -17,15 +17,18 @@ import {UserService} from '../loginComponents/user.service';
   providers: [MyWorkflowsService, ProviderService,
               DockstoreService, CommunicatorService, WorkflowService]
 })
-export class MyWorkflowsComponent {
+export class MyWorkflowsComponent implements OnInit{
   orgWorkflows = [];
   oneAtATime = true;
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private communicatorService: CommunicatorService,
               private workflowService: WorkflowService) {
-    userService.getUser().subscribe(user => {
-      userService.getUserWorkflowList(user.id).subscribe(workflows => {
+
+  }
+  ngOnInit() {
+    this.userService.getUser().subscribe(user => {
+      this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
         this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
         const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
         this.selectWorkflow(theFirstWorkflow);
