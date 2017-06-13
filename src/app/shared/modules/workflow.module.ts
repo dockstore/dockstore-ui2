@@ -9,7 +9,6 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AlertModule } from 'ngx-bootstrap/alert';
-
 /* Component */
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
@@ -25,14 +24,15 @@ import { ParamfilesModule } from '../modules/paramfiles.module';
 import { SelectModule } from '../modules/select.module';
 /* Service */
 import { LaunchService } from '../../container/launch/launch.service';
-import { ContainerService } from '../../container/container.service';
+import { ContainerService } from '../container.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
-import { WorkflowService } from '../../workflow/workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
+import { OrderByModule } from '../../shared/modules/orderby.module';
 
 
 @NgModule({
@@ -58,6 +58,7 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
+    OrderByModule
   ],
   providers: [
     HighlightJsService,
@@ -71,5 +72,8 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     WorkflowService,
     DescriptorsService
   ],
+  exports: [
+    WorkflowComponent
+  ]
 })
 export class WorkflowModule { }

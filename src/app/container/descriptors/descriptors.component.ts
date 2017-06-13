@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from 'angular2-highlight-js';
 
-import { ContainerService } from '../container.service';
+import { ContainerService } from '../../shared/container.service';
 import { DescriptorsService } from './descriptors.service';
 
 import { FileSelector } from '../../shared/selectors/file-selector';

@@ -7,10 +7,12 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
+/* Module */
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
 import { HeaderModule } from '../shared/modules/header.module';
+
 @NgModule({
   declarations: [
     MyWorkflowsComponent

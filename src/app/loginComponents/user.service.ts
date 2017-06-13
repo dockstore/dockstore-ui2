@@ -37,4 +37,9 @@ export class UserService {
     return this.httpService.getAuthResponse(getUserToolsUrl);
   }
 
+  getUserWorkflowList(userId: number) {
+    const getUserWorkflowUrl = `${ Dockstore.API_URI }/users/${ userId }/workflows`;
+    return this.httpService.getAuthResponse(getUserWorkflowUrl);
+  }
+
 }

@@ -1,3 +1,38 @@
-<p>
-  myworkflows works!
-</p>
+<app-header>
+  <img src="../assets/images/dockstore/dockstore-workflows-purple.png">
+  My Workflows
+  <div class="pull-right refresh-all-holder">
+    <button type="button" class="refresh-all-button btn btn-primary">
+      Refresh All Workflows
+    </button>
+  </div>
+</app-header>
+<div class="container">
+  <!--Tool Content Page-->
+  <div class="row">
+    <div class="col-md-3 containers-rsb">
+      <accordion [closeOthers]="oneAtATime">
+        <accordion-group *ngFor="let orgObj of orgWorkflows" [heading]="orgObj?.organization" [isOpen]="orgObj?.isFirstOpen">
+          <div *ngFor="let workflowObj of orgObj?.workflows">
+            <div class="pull left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}">
+              <a style="cursor: pointer;" (click)="selectWorkflow(workflowObj)">
+                {{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}
+              </a>
+              <span class="label"
+                    [ngClass]="workflowObj?.is_published ? 'label-primary' : 'label-warning'">
+                    {{ workflowObj?.is_published ? 'PUB' : 'UNPUB'}}
+              </span>
+            </div>
+          </div>
+        </accordion-group>
+      </accordion>
+      <button id="register_tool_button" type="button"
+              class="btn btn-primary btn-sm  pull-right">
+        <span>Add Tool</span>
+      </button>
+    </div>
+    <div class="col-md-8 containers-rsb">
+      <app-workflow [isWorkflowPublic]="false"></app-workflow>
+    </div>
+  </div>
+</div>

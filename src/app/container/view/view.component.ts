@@ -3,7 +3,7 @@ import { NgForm, Validators } from '@angular/forms';
 
 import { CommunicatorService } from './../../shared/communicator.service';
 import { ContainerTagsService } from './../../shared/containerTags.service';
-import { ContainerService } from './../container.service';
+import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';

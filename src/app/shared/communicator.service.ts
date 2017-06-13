@@ -2,6 +2,7 @@ export class CommunicatorService {
 
   private _tool;
   private _workflow;
+  private _public = false;
 
   setTool(tool): void {
     this._tool = tool;
