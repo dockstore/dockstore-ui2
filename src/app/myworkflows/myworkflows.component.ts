@@ -17,7 +17,7 @@ import {UserService} from '../loginComponents/user.service';
   providers: [MyWorkflowsService, ProviderService,
               DockstoreService, CommunicatorService, WorkflowService]
 })
-export class MyWorkflowsComponent implements OnInit{
+export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
   oneAtATime = true;
   constructor(private myworkflowService: MyWorkflowsService,

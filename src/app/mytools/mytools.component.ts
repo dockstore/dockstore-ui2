@@ -11,7 +11,7 @@ import {ContainerService} from '../shared/container.service';
   styleUrls: ['./mytools.component.css'],
   providers: [MytoolsService, DockstoreService]
 })
-export class MyToolsComponent implements OnInit{
+export class MyToolsComponent implements OnInit {
   nsContainers = [];
   oneAtATime = true;
   constructor(private mytoolsService: MytoolsService,
