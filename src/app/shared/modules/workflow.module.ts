@@ -1,3 +1,4 @@
+import { DagComponent } from './../../workflow/dag/dag.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
@@ -43,7 +44,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
-    ViewWorkflowComponent
+    ViewWorkflowComponent,
+    DagComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,6 @@
+<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
+
+<div class="row">
+<button type="button" id="dag_reload" ng-show="dagJSON !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button" title="Reset" tooltip-append-to-body="true"><span class="glyphicon glyphicon-screenshot"></span></button>
+</div>
+<div id="cy" class="row mini-dag"></div>

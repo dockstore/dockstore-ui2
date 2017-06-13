@@ -31,6 +31,8 @@
     "angular2-markdown": "1.6.0",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "cytoscape": "^3.1.1",
+    "cytoscape-dagre": "^1.6.0",
     "datatables.net": "^1.10.13",
     "datatables.net-bs": "^1.10.13",
     "jquery": "^3.2.1",
