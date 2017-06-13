@@ -9,7 +9,6 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AlertModule } from 'ngx-bootstrap/alert';
-
 /* Component */
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
@@ -44,7 +43,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
-    ViewWorkflowComponent,
+    ViewWorkflowComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,6 @@
 /*
+ * The Source Code of this part is from Fuel, "Migrating from Angular 1 to 2: Part 2, Components – Sortable Table"
+ * Link: http://www.fueltravel.com/blog/migrating-from-angular-1-to-2-part-2-components-sortable-table/
  * Example use
  *		Basic Array of single type: *ngFor="let todo of todoService.todos | orderBy : '-'"
  *		Multidimensional Array Sort on single column: *ngFor="let todo of todoService.todos | orderBy : ['-status']"
@@ -88,7 +90,6 @@ export class OrderBy implements PipeTransform {
           }
           return comparison;
         }
-
         return 0; // equal each other
       });
     }

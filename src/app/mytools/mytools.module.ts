@@ -7,6 +7,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
+/* Inner Module, Component, Routing, and Service */
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
 

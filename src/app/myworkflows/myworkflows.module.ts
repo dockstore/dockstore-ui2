@@ -25,7 +25,7 @@ import { HeaderModule } from '../shared/modules/header.module';
     myworkflowRouting,
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
-    TooltipModule.forRoot(),
+    TooltipModule.forRoot()
   ]
 })
 export class MyWorkflowsModule { }
