@@ -34,8 +34,8 @@
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../bower_components/bootstrap-toc/bootstrap-toc.js",
         "../node_modules/jquery-colorbox/jquery.colorbox.js",
-        "../src/cdn/cytoscape.min.js",
-        "../src/cdn/dagre.js",
+        "../node_modules/cytoscape/dist/cytoscape.min.js",
+        "../node_modules/dagre/dist/dagre.min.js",
         "../node_modules/cytoscape-dagre/cytoscape-dagre.js",
         "../src/cdn/highlight.min.js",
         "../src/cdn/typescript.min.js"
