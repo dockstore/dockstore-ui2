@@ -11,7 +11,7 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.css']
 })
-export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked{
+export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;

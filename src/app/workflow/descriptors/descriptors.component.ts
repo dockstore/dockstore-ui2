@@ -15,7 +15,7 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends FileSelector  implements AfterViewChecked{
+export class DescriptorsWorkflowComponent extends FileSelector  implements AfterViewChecked {
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;

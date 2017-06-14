@@ -15,7 +15,7 @@ import { FileService } from '../../shared/file.service';
   providers: [DescriptorsService]
 })
 
-export class DescriptorsComponent extends FileSelector implements AfterViewChecked{
+export class DescriptorsComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
   content: string;
