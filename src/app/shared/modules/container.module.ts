@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { ClipboardModule } from 'ngx-clipboard';
 import { DataTablesModule } from 'angular-datatables';
-import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 
 /* Bootstrap */

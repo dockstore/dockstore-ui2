@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
-import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 
 /* Bootstrap */
