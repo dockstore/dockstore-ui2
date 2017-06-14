@@ -1,6 +1,23 @@
-<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
-
-<div class="row">
-<button type="button" id="dag_reload" ng-show="dagJSON !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button" title="Reset" tooltip-append-to-body="true"><span class="glyphicon glyphicon-screenshot"></span></button>
+<div class="row" id="dag-holder">
+    <div class="col-md-12" id="dag-col">
+          <div class="ds-holder">
+      <div class="ds-version-selector" id="dag-version-bar">
+        <strong>Workflow Version</strong>:
+        <select class="ds-version" ng-model="selVersionName">
+          <option
+            ng-repeat="version in workflowVersions | filter: filterVersion "
+            value="{{version}}">
+            {{version}}
+          </option>
+        </select>
+        <a id="exportLink" href="#" ng-show="dagJSON !== null && !notFound && !missingTool"><span class="glyphicon glyphicon-export"></span>Export to PNG</a>
+        <button type="button" id="dag_reload" ng-show="dagJSON !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button" title="Reset" tooltip-append-to-body="true"><span class="glyphicon glyphicon-screenshot"></span></button>
+        <button id="dag_fullscreen" ng-show="dagJSON !== null && !notFound && !missingTool" ng-click="expandDAG()" uib-tooltip="Toggle fullscreen" class="dag-button" tooltip-append-to-body="true">
+          <span class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
+          <span class="glyphicon glyphicon-resize-small no-display" id="resize-small-button"></span>
+        </button>
+      </div>
+    </div>
+<div #cy id="cy" class="row mini-dag"></div>
+    </div>
 </div>
-<div id="cy" class="row mini-dag"></div>

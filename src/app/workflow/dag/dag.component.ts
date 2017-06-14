@@ -1,15 +1,16 @@
 declare var cytoscape: any;
+declare var window: any;
 import { Observable } from 'rxjs/Rx';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { DagService } from './dag.service';
-import { Component, OnInit, Input, OnChanges, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, AfterViewInit, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, OnChanges, AfterContentInit {
+export class DagComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
@@ -19,6 +20,10 @@ export class DagComponent implements OnInit, OnChanges, AfterContentInit {
   private element: any;
   private dagResults;
   private dagPromise: Promise<any>;
+  private cy: any;
+  private query: any;
+  private initialized: Boolean = false;
+  @ViewChild('cy') el: ElementRef;
   private style = [
     {
       selector: 'node',
@@ -106,7 +111,7 @@ export class DagComponent implements OnInit, OnChanges, AfterContentInit {
   ];
   refreshDocument() {
     console.log('refreshing document');
-    const cy = cytoscape({
+    this.cy = cytoscape({
       container: this.element,
       boxSelectionEnabled: false,
       autounselectify: true,
@@ -114,56 +119,7 @@ export class DagComponent implements OnInit, OnChanges, AfterContentInit {
         name: 'dagre'
       },
       style: this.style,
-      elements: {nodes: [
-            { data: { id: 'n0' } },
-            { data: { id: 'n1' } },
-            { data: { id: 'n2' } },
-            { data: { id: 'n3' } },
-            { data: { id: 'n4' } },
-            { data: { id: 'n5' } },
-            { data: { id: 'n6' } },
-            { data: { id: 'n7' } },
-            { data: { id: 'n8' } },
-            { data: { id: 'n9' } },
-            { data: { id: 'n10' } },
-            { data: { id: 'n11' } },
-            { data: { id: 'n12' } },
-            { data: { id: 'n13' } },
-            { data: { id: 'n14' } },
-            { data: { id: 'n15' } },
-            { data: { id: 'n16' } }
-        ],
-        edges: [
-            { data: { source: 'n0', target: 'n1' } },
-            { data: { source: 'n1', target: 'n2' } },
-            { data: { source: 'n1', target: 'n3' } },
-            { data: { source: 'n4', target: 'n5' } },
-            { data: { source: 'n4', target: 'n6' } },
-            { data: { source: 'n6', target: 'n7' } },
-            { data: { source: 'n6', target: 'n8' } },
-            { data: { source: 'n8', target: 'n9' } },
-            { data: { source: 'n8', target: 'n10' } },
-            { data: { source: 'n11', target: 'n12' } },
-            { data: { source: 'n12', target: 'n13' } },
-            { data: { source: 'n13', target: 'n14' } },
-            { data: { source: 'n13', target: 'n15' } },
-        ]}
-    });
-  }
- ngAfterContentInit() {
-   this.refreshDocument();
- }
-  refreshDocument2(results) {
-    console.log(results);
-    const cy = cytoscape({
-      container: this.element,
-      boxSelectionEnabled: false,
-      autounselectify: true,
-      layout: {
-        name: 'dagre'
-      },
-      style: this.style,
-      elements: results
+      elements: this.dagPromise
     });
   }
 
@@ -181,24 +137,30 @@ export class DagComponent implements OnInit, OnChanges, AfterContentInit {
   }
 
   ngOnInit() {
-    this.dagService.setCurrentVersion(this.defaultVersion);
-    this.dagService.setCurrentWorkflowId(this.id);
+    this.dagPromise = this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).toPromise();
   }
-  ngOnChanges() {
-    this.refreshDocument();
+
+  ngAfterViewInit() {
     this.element = document.getElementById('cy');
-    this.dagService.currentWorkflowId.subscribe(workflowId => {
-      console.log('1st');
-      this.currentWorkflowId = workflowId;
-      this.dagService.currentVersion.subscribe(version => {
-        console.log('2nd');
-        this.currentVersion = version;
-        this.dagService.getDagResults(this.currentWorkflowId, this.currentVersion).subscribe(results => {
-          this.dagResults = results;
-          console.log(this.dagResults);
-          this.refreshDocument();
+    this.query = $('#cy');
+  }
+
+  ngAfterViewChecked() {
+    if (this.initialized === false) {
+      const isVisible = this.query.is(':visible');
+      if (isVisible) {
+        this.initialized = true;
+        this.cy = window.cy = cytoscape({
+          container: this.element,
+          boxSelectionEnabled: false,
+          autounselectify: true,
+          layout: {
+            name: 'dagre'
+          },
+          style: this.style,
+          elements: this.dagPromise
         });
-      });
-    });
+      }
+    }
   }
 }
