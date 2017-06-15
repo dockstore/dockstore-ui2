@@ -1,7 +1,7 @@
 declare var cytoscape: any;
-declare var window: any;
 import { Observable } from 'rxjs/Rx';
 import { CommunicatorService } from './../../shared/communicator.service';
+import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
 import { Component, OnInit, Input, OnChanges, AfterViewInit, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 @Component({
@@ -15,102 +15,19 @@ export class DagComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @Input() defaultVersion: any;
   @Input() id: number;
 
-  private currentVersion: any;
   private currentWorkflowId;
   private element: any;
-  private dagResults;
   private dagPromise: Promise<any>;
   private cy: any;
   private query: any;
   private initialized: Boolean = false;
+  private expanded: Boolean = false;
+  private selectVersion;
   @ViewChild('cy') el: ElementRef;
-  private style = [
-    {
-      selector: 'node',
-      style: {
-        'content': 'data(name)',
-        'font-size': '16px',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'background-color': '#7a88a9'
-      }
-    },
+  private style;
+  private workflow;
 
-    {
-      selector: 'edge',
-      style: {
-        'width': 3,
-        'target-arrow-shape': 'triangle',
-        'line-color': '#9dbaea',
-        'target-arrow-color': '#9dbaea',
-        'curve-style': 'bezier'
-      }
-    },
-
-    {
-      selector: 'node[id = "UniqueBeginKey"]',
-      style: {
-        'content': 'Start',
-        'font-size': '16px',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'background-color': '#4caf50'
-      }
-    },
-
-    {
-      selector: 'node[id = "UniqueEndKey"]',
-      style: {
-        'content': 'End',
-        'font-size': '16px',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'background-color': '#f44336'
-      }
-    },
-
-    {
-      selector: 'node[type = "workflow"]',
-      style: {
-        'content': 'data(name)',
-        'font-size': '16px',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'background-color': '#4ab4a9'
-      }
-    },
-
-    {
-      selector: 'node[type = "tool"]',
-      style: {
-        'content': 'data(name)',
-        'font-size': '16px',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'background-color': '#51aad8'
-      }
-    },
-
-    {
-      selector: 'node[type = "expressionTool"]',
-      style: {
-        'content': 'data(name)',
-        'font-size': '16px',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'background-color': '#9966FF'
-      }
-    },
-
-    {
-      selector: 'edge.notselected',
-      style: {
-        'opacity': '0.4'
-      }
-    }
-  ];
   refreshDocument() {
-    console.log('refreshing document');
     this.cy = cytoscape({
       container: this.element,
       boxSelectionEnabled: false,
@@ -123,26 +40,31 @@ export class DagComponent implements OnInit, AfterViewInit, AfterViewChecked {
     });
   }
 
-  constructor(private dagService: DagService) {
-  }
-  select(data) {
-    console.log('Item clicked', data);
-  }
-  onLegendLabelClick(entry) {
-    console.log('Legend clicked', entry);
+  constructor(private dagService: DagService, private workflowService: WorkflowService) {
   }
 
-  toggleExpand(node) {
-    console.log('toggle expand', node);
+  toggleExpand() {
+    this.expanded = !this.expanded;
+    this.initialized = false;  // This will set the DAG after the view has been checked
   }
 
   ngOnInit() {
     this.dagPromise = this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).toPromise();
+    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+    this.selectVersion = this.defaultVersion;
+    this.style = this.dagService.style;
+  }
+
+  download() {
+    const pngDAG = this.cy.png({full: true, scale: 2});
+    const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
+    $('#exportLink').attr('href', pngDAG).attr('download', name);
   }
 
   ngAfterViewInit() {
     this.element = document.getElementById('cy');
     this.query = $('#cy');
+    this.selectVersion = this.defaultVersion;
   }
 
   ngAfterViewChecked() {
@@ -150,7 +72,7 @@ export class DagComponent implements OnInit, AfterViewInit, AfterViewChecked {
       const isVisible = this.query.is(':visible');
       if (isVisible) {
         this.initialized = true;
-        this.cy = window.cy = cytoscape({
+        this.cy = cytoscape({
           container: this.element,
           boxSelectionEnabled: false,
           autounselectify: true,

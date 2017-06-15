@@ -1,3 +1,4 @@
+
 import {Component, Input, ElementRef, OnInit, AfterViewChecked, AfterContentChecked} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,9 +16,7 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-
-export class DescriptorsWorkflowComponent extends FileSelector
-  implements AfterViewChecked, OnInit {
+export class DescriptorsWorkflowComponent extends FileSelector  implements AfterContentChecked, AfterViewChecked, OnInit {
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;
@@ -49,16 +48,11 @@ export class DescriptorsWorkflowComponent extends FileSelector
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-    // console.log('contentHighlighted: ' + this.contentHighlighted);
-    // this.isVisible = this.query.is(':visible');
   }
-  //
-  // ngAfterContentChecked() {
-  //   this.isVisible = this.query.is(':visible');
-  //   console.log(this.isVisible);
-  //   // this.contentHighlighted = false;
-  // }
 
+  ngAfterContentChecked() {
+    this.isVisible = this.query.is(':visible');
+  }
   ngOnInit() {
     this.query = $('#cy');
   }
