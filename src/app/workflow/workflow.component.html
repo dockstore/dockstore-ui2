@@ -84,7 +84,9 @@
           </app-files-workflow>
       </tab>
       <tab id="toolsTab" heading="Tools" *ngIf="validVersions"></tab>
-      <tab id="dagTab" heading="DAG" *ngIf="validVersions"></tab>
+      <tab id="dagTab" heading="DAG" *ngIf="validVersions">
+        <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
+      </tab>
     </tabset>
   </div>
 </div>

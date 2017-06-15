@@ -9,6 +9,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AlertModule } from 'ngx-bootstrap/alert';
+
 /* Component */
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
@@ -22,6 +23,7 @@ import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
 import { ParamfilesModule } from '../modules/paramfiles.module';
 import { SelectModule } from '../modules/select.module';
+import { DagModule } from './../../workflow/dag/dag.module';
 /* Service */
 import { LaunchService } from '../../container/launch/launch.service';
 import { ContainerService } from '../container.service';
@@ -58,7 +60,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
-    OrderByModule
+    OrderByModule,
+    DagModule
   ],
   providers: [
     HighlightJsService,

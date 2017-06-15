@@ -32,7 +32,10 @@
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../bower_components/bootstrap-toc/bootstrap-toc.js",
-        "../node_modules/jquery-colorbox/jquery.colorbox.js"
+        "../node_modules/jquery-colorbox/jquery.colorbox.js",
+        "../node_modules/cytoscape/dist/cytoscape.min.js",
+        "../node_modules/dagre/dist/dagre.min.js",
+        "../node_modules/cytoscape-dagre/cytoscape-dagre.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

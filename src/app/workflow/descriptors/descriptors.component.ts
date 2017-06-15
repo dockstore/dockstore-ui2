@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, AfterContentChecked } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from 'angular2-highlight-js';
@@ -15,10 +15,11 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends FileSelector {
+export class DescriptorsWorkflowComponent extends FileSelector implements AfterContentChecked, OnInit {
   @Input() id: number;
   content: string;
-
+  private query;
+  private isVisible;
   constructor(private containerService: ContainerService,
               private descriptorsService: DescriptorsService,
               private fileService: FileService,
@@ -36,5 +37,13 @@ export class DescriptorsWorkflowComponent extends FileSelector {
 
   reactToFile(): void {
     this.content = this.fileService.highlightCode(this.currentFile.content);
+  }
+
+  ngAfterContentChecked() {
+    this.isVisible = this.query.is(':visible');
+  }
+
+  ngOnInit() {
+    this.query = $('#cy');
   }
 }
