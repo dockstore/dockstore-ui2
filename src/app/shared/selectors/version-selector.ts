@@ -1,6 +1,6 @@
-import { Input, OnInit, OnChanges} from '@angular/core';
+import {Input, OnInit, OnChanges, OnDestroy} from '@angular/core';
 
-export abstract class VersionSelector implements OnInit, OnChanges {
+export abstract class VersionSelector implements OnInit, OnChanges, OnDestroy {
 
   @Input() versions;
   @Input() default;
@@ -15,11 +15,15 @@ export abstract class VersionSelector implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log('VersionSelector ngOnInit');
     this.onVersionChange(this.default);
   }
 
   ngOnChanges(changeRecord) {
+    console.log('VersionSelector ONCHANGEEE');
     this.onVersionChange(this.default);
   }
-
+  ngOnDestroy() {
+    console.log('VersionSelector ONDESTROYYYYY');
+  }
 }

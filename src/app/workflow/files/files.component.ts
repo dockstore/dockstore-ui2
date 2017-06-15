@@ -18,7 +18,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log('hi');
+    console.log('Files Component OnInit');
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {

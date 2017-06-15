@@ -8,6 +8,7 @@ var HighlightJsService = (function () {
         if (useBr) {
             hljs.configure({ useBR: true });
         }
+        console.log('lineNumber~~');
         hljs.lineNumbersBlock(codeBlock);
     };
     return HighlightJsService;

@@ -17,7 +17,7 @@ import { FileService } from '../../shared/file.service';
 })
 
 export class DescriptorsWorkflowComponent extends FileSelector
-  implements AfterContentChecked, AfterViewChecked, OnInit {
+  implements AfterViewChecked, OnInit {
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;
@@ -49,11 +49,15 @@ export class DescriptorsWorkflowComponent extends FileSelector
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
+    // console.log('contentHighlighted: ' + this.contentHighlighted);
+    // this.isVisible = this.query.is(':visible');
   }
-
-  ngAfterContentChecked() {
-    this.isVisible = this.query.is(':visible');
-  }
+  //
+  // ngAfterContentChecked() {
+  //   this.isVisible = this.query.is(':visible');
+  //   console.log(this.isVisible);
+  //   // this.contentHighlighted = false;
+  // }
 
   ngOnInit() {
     this.query = $('#cy');
