@@ -5,22 +5,26 @@
         <img [src]="user?.avatarUrl" height="175">
       </div>
       <div class="col-lg-8 col-md-7 col-sm-6">
-        <table class="format">
-          <tbody>
-          <tr>
-            <th>Username</th>
-            <td>
-              {{ user?.username }}
-            </td>
-          </tr>
-          <tr>
-            <th>Administrator&ensp;&ensp;</th>
-            <td>
-              {{ user?.isAdmin ? 'Yes' : 'No' }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <ul class="list-unstyled">
+          <li>
+            <strong>Username</strong>: <span id="account-username">{{user?.username}}</span>
+          </li>
+          <li>
+            <strong>Administrator</strong>: <span id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</span>
+          </li>
+          <li *ngIf="user?.email">
+            <strong>Email</strong>: {{user?.email}}
+          </li>
+          <li *ngIf="user?.bio">
+            <strong>Bio</strong>: {{user?.bio}}
+          </li>
+          <li *ngIf="user?.company">
+            <strong>Company</strong>: {{user?.company}}
+          </li>
+          <li *ngIf="user?.location">
+            <strong>Location</strong>: {{user?.location}}
+          </li>
+        </ul>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-1">
         <button class="btn btn-primary" (click)="syncGitHub()">

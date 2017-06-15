@@ -22,12 +22,17 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
   }
 
   private getUser() {
-    this.subscription = this.userService.user$.subscribe(user =>
-      this.user = user
+    this.subscription = this.userService.getUser().subscribe(user => {
+        this.user = user;
+        this.setProperty();
+    }
     );
 
   }
-
+  private setProperty() {
+    this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
+    console.log(this.user);
+  }
   ngOnInit() {
     this.getUser();
   }
@@ -35,5 +40,4 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
 }
