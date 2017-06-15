@@ -1054,7 +1054,7 @@ tabset.homeComponent {
   ul {
     border-bottom: none;
     li {
-      // Specifying tab classes to override ds-style-fix.scss  
+      // Specifying tab classes to override ds-style-fix.scss
       &.browseWorkflowsTab,
       &.browseToolsTab {
         width: 250px;
@@ -1111,6 +1111,15 @@ tabset.homeComponent {
 }
 .panel.customClass .panel-body {
   background-color: #337aa7;
+}
+
+.hljs-ln-n {
+  word-break: normal;
+  padding-right: 10px;
+}
+
+.hljs-ln,.hljs-ln td, .hljs-ln th {
+  border: 0;
 }
 
 /* End Temporary Styles - Need to Refactor Later */

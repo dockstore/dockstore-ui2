@@ -2,7 +2,6 @@ export class FileService {
 
     /* Highlight Code */
     highlightCode(code: string): string {
-      return '<pre><code class="YAML highlight">' + code + '</pre></code>';
+      return '<pre><code class="yaml highlight">' + code + '</pre></code>';
     }
-
 }
