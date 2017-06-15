@@ -20,6 +20,7 @@ import { UserService } from '../loginComponents/user.service';
 })
 export class WorkflowComponent extends Tool implements OnDestroy {
   labels: string[];
+  mode: string;
 
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
@@ -41,6 +42,14 @@ export class WorkflowComponent extends Tool implements OnDestroy {
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
+  }
+
+  setTab(tab: string) {
+    this.mode = tab;
+  }
+
+  checkMode(tab: string) {
+    return (tab === this.mode);
   }
 
   ngOnDestroy() {
