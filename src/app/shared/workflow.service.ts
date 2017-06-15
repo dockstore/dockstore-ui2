@@ -1,11 +1,11 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 
 import { Dockstore } from './dockstore.model';
 import { HttpService } from './http.service';
-import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class WorkflowService {
-  private workflowSource = new Subject<any>();
+  private workflowSource = new BehaviorSubject<any>(null);
   // Observable streams
   workflow$ = this.workflowSource.asObservable();
   constructor(private httpService: HttpService) {}
