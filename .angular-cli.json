@@ -34,6 +34,9 @@
         "../bower_components/bootstrap-toc/bootstrap-toc.js",
         "../node_modules/jquery-colorbox/jquery.colorbox.js",
         "../node_modules/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js"
+        "../node_modules/cytoscape/dist/cytoscape.min.js",
+        "../node_modules/dagre/dist/dagre.min.js",
+        "../node_modules/cytoscape-dagre/cytoscape-dagre.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
