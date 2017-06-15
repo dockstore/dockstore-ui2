@@ -16,13 +16,13 @@ import { FileService } from '../../shared/file.service';
   styleUrls: ['./descriptors.component.css']
 })
 
-export class DescriptorsWorkflowComponent extends FileSelector  implements AfterViewChecked, OnInit{
+export class DescriptorsWorkflowComponent extends FileSelector  implements AfterViewChecked, OnInit {
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;
   private query;
   private isVisible;
-   
+
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private descriptorsService: DescriptorsService,
@@ -52,7 +52,7 @@ export class DescriptorsWorkflowComponent extends FileSelector  implements After
     }
     this.isVisible = this.query.is(':visible');
   }
-   
+
   ngOnInit() {
     this.query = $('#cy');
   }
