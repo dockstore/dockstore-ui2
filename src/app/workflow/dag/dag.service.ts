@@ -101,6 +101,46 @@ export class DagService {
     constructor(private httpService: HttpService) {
     }
 
+    getTooltipText(dynamicPopover: any) {
+        return `<div>
+          <div><b>Type:</b>` + dynamicPopover.type + `</div>` +
+          this.getRunText(dynamicPopover.run) +
+          this.getDockerText(dynamicPopover.link, dynamicPopover.docker) +
+           `</div>`
+        ;
+    };
+
+    getRunText(run: string) {
+        const isHttp = this.isHttp(run);
+        if (isHttp) {
+            return `<div><b>Run:</b> <a href='` + run + `'>` + run + `</a></div>`;
+        } else {
+            return `<div><b>Run:</b>` + run + `</div>`;
+        }
+    };
+
+    getDockerText(link: string, docker: string) {
+        const validLink = !this.isNA(docker);
+        console.log(validLink);
+        if (validLink) {
+            return `<div><b>Docker:</b> <a href='` + link + `'>` + docker + `</a></div>`;
+        } else {
+            return `<div><b>Docker:</b>` + docker + `</div>`;
+        }
+    }
+
+    isNA(docker: string) {
+        return(docker === 'n/a');
+    };
+
+    isHttp(run: string) {
+        if (run.match('^http') || run.match('^https')) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     setCurrentWorkflowId(newWorkflowId: number): void {
         this.currentWorkflowId.next(newWorkflowId);
     }
