@@ -7,7 +7,7 @@
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
   </span>
-  <section *ngIf="content" [innerHTML]="content" highlight-js-content=".highlight"></section>
+  <section *ngIf="content" [innerHTML]="content"></section>
   <alert type="warning" *ngIf="!content">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp; A Test Parameter File associated with this workflow could not be found.
