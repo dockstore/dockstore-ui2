@@ -11,7 +11,7 @@
   </p>
   <div>
     <tabset id="workflow_tabs" justified="true">
-      <tab id="infoTab" heading="Info" id="infoTab">
+      <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <ul class="list-unstyled container-info" *ngIf="workflow">
           <li>
             <strong tooltip="Complete path of workflow, used as a unique identifier">
@@ -59,7 +59,7 @@
           </div>
         </div>
       </tab>
-      <tab id="labelsTab" heading="Labels">
+      <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
         <ul class="list-unstyled container-info">
           <li *ngIf="workflow">
             <strong>Labels:</strong>
@@ -70,22 +70,22 @@
           </li>
         </ul>
       </tab>
-      <tab id="versionsTab" heading="Versions" *ngIf="validVersions">
+      <tab id="versionsTab" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
           <app-versions-workflow [versions]="workflow?.workflowVersions"
                                  [verifiedSource]="workflow?.verifiedSources"
                                  [workflowId]="workflow?.id">
           </app-versions-workflow>
       </tab>
-      <tab id="fileTab" heading="Files" *ngIf="validVersions">
-          <app-files-workflow  *ngIf="validVersions"
+      <tab id="fileTab" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
+          <app-files-workflow  *ngIf="validVersions && checkMode('Files')"
                                [id]="workflow?.id"
                                [versions]="validVersions"
                                [default]="defaultVersion">
           </app-files-workflow>
       </tab>
-      <tab id="toolsTab" heading="Tools" *ngIf="validVersions"></tab>
-      <tab id="dagTab" heading="DAG" *ngIf="validVersions">
-        <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
+      <tab id="toolsTab" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')"></tab>
+      <tab id="dagTab" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
+        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
       </tab>
     </tabset>
   </div>

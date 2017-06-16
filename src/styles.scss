@@ -1122,4 +1122,25 @@ tabset.homeComponent {
   border: 0;
 }
 
+td.hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  text-align: center;
+  color: #979797;
+  border-right: 1px solid #9a9a9a;
+  vertical-align: top;
+  padding-right: 5px;
+
+  /* your custom style here */
+}
+
+/* for block of code */
+td.hljs-ln-code {
+  padding-left: 10px;
+}
 /* End Temporary Styles - Need to Refactor Later */

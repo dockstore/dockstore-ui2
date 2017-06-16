@@ -12,12 +12,17 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
 
   private subscription: ISubscription;
   user;
+  syncingWithGithub: boolean;
 
   constructor(private userService: UserService) { }
 
   syncGitHub() {
-    this.userService.updateUser().subscribe(user =>
-      this.user = user
+    this.syncingWithGithub = true;
+    this.userService.updateUser().subscribe(user => {
+        this.user = user;
+        this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
+        this.syncingWithGithub = false;
+      }
     );
   }
 
@@ -25,7 +30,7 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
     this.subscription = this.userService.getUser().subscribe(user => {
         this.user = user;
         this.setProperty();
-    }
+      }
     );
 
   }
