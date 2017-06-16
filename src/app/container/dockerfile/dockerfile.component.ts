@@ -1,4 +1,4 @@
-import {Component, Input, ElementRef, AfterViewChecked} from '@angular/core';
+import {Component, Input, ElementRef, AfterViewChecked, AfterViewInit} from '@angular/core';
 
 import { VersionSelector } from '../../shared/selectors/version-selector';
 
@@ -46,5 +46,4 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
-
 }

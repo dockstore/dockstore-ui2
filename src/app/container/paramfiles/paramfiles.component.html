@@ -7,5 +7,5 @@
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
   </span>
-  <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+  <section [innerHTML]="content"></section>
 </div>

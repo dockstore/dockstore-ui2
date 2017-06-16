@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { HttpService } from '../shared/http.service';
+import { Md5 } from 'ts-md5/dist/md5';
 
 @Injectable()
 export class UserService {
@@ -40,6 +41,18 @@ export class UserService {
   getUserWorkflowList(userId: number) {
     const getUserWorkflowUrl = `${ Dockstore.API_URI }/users/${ userId }/workflows`;
     return this.httpService.getAuthResponse(getUserWorkflowUrl);
+  }
+
+  gravatarUrl(email: string, defaultImg: string) {
+    if (email) {
+      return 'https://www.gravatar.com/avatar/' +  Md5.hashStr(email) + '?d=' + defaultImg + '&s=500';
+    } else {
+      if (defaultImg) {
+        return defaultImg;
+      } else {
+        return 'http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg';
+      }
+    }
   }
 
 }
