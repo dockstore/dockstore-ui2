@@ -22,7 +22,7 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
         this.user = user;
         this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
         this.syncingWithGithub = false;
-      }
+    }
     );
   }
 
