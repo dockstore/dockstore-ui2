@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ElementRef, AfterViewChecked} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { WorkflowService } from '../../shared/workflow.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { FileSelector } from '../../shared/selectors/file-selector';
@@ -16,8 +15,7 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
   content: string;
   contentHighlighted: boolean;
 
-  constructor(private workflowService: WorkflowService,
-              private paramfilesService: ParamfilesService,
+  constructor(private paramfilesService: ParamfilesService,
               private highlightJsService: HighlightJsService,
               private fileService: FileService,
               private elementRef: ElementRef) {
