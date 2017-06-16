@@ -1,3 +1,4 @@
+import { DynamicPopover } from './dynamicPopover.model';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -12,6 +13,13 @@ export class DagService {
     currentWorkflowId: Subject<number> = new Subject<number>();
     currentVersion: Subject<any> = new Subject<any>();
     currentDagResults: Subject<any> = new Subject<any>();
+    dynamicPopover: DynamicPopover = {
+        link: '',
+        title: '',
+        type: '',
+        docker: '',
+        run: ''
+      };
     style = [
         {
             selector: 'node',
@@ -101,14 +109,39 @@ export class DagService {
     constructor(private httpService: HttpService) {
     }
 
-    getTooltipText(dynamicPopover: any) {
+    getTooltipText(name: string, tool: string, type: string, docker: string, run: string) {
+        this.setDynamicPopover(name, tool, type, docker, run);
         return `<div>
-          <div><b>Type:</b>` + dynamicPopover.type + `</div>` +
-          this.getRunText(dynamicPopover.run) +
-          this.getDockerText(dynamicPopover.link, dynamicPopover.docker) +
+          <div><b>Type:</b>` + this.dynamicPopover.type + `</div>` +
+          this.getRunText(this.dynamicPopover.run) +
+          this.getDockerText(this.dynamicPopover.link, this.dynamicPopover.docker) +
            `</div>`
         ;
     };
+
+    updateUndefinedPopoverContent() {
+    if (this.dynamicPopover.title === undefined) {
+      this.dynamicPopover.title = 'n/a';
+    }
+    if (this.dynamicPopover.type === undefined) {
+      this.dynamicPopover.type = 'n/a';
+    }
+    if (this.dynamicPopover.docker === undefined) {
+      this.dynamicPopover.docker = 'n/a';
+    }
+    if (this.dynamicPopover.run === undefined) {
+      this.dynamicPopover.run = 'n/a';
+    }
+  };
+
+    setDynamicPopover(name: string, tool: string, type: string, docker: string, run: string) {
+    this.dynamicPopover.title = name;
+      this.dynamicPopover.link = tool;
+      this.dynamicPopover.type = type;
+      this.dynamicPopover.docker = docker;
+      this.dynamicPopover.run = run;
+      this.updateUndefinedPopoverContent();
+    }
 
     getRunText(run: string) {
         const isHttp = this.isHttp(run);

@@ -21,13 +21,7 @@ export class DagComponent implements OnInit, AfterViewInit {
   private dagPromise: Promise<any>;
   private dagResult: any;
   private cy: any;
-  private dynamicPopover = {
-    link: '',
-    title: '',
-    type: '',
-    docker: '',
-    run: ''
-  };
+
   public expanded: Boolean = false;
   private selectVersion;
   @ViewChild('cy') el: ElementRef;
@@ -35,46 +29,31 @@ export class DagComponent implements OnInit, AfterViewInit {
   private workflow;
   private tooltip: string;
   private missingTool = false;
-  updateUndefinedPopoverContent() {
-    if (this.dynamicPopover.title === undefined) {
-      this.dynamicPopover.title = 'n/a';
-    }
-    if (this.dynamicPopover.type === undefined) {
-      this.dynamicPopover.type = 'n/a';
-    }
-    if (this.dynamicPopover.docker === undefined) {
-      this.dynamicPopover.docker = 'n/a';
-    }
-    if (this.dynamicPopover.run === undefined) {
-      this.dynamicPopover.run = 'n/a';
-    }
-  };
 
   refreshDocument() {
     const self = this;
     if (this.dagResult !== null) {
-    this.element = document.getElementById('cy');
-    this.cy = cytoscape({
-      container: this.element,
-      boxSelectionEnabled: false,
-      autounselectify: true,
-      layout: {
-        name: 'dagre'
-      },
-      style: this.style,
-      elements: this.dagPromise
-    });
+      this.element = document.getElementById('cy');
+      this.cy = cytoscape({
+        container: this.element,
+        boxSelectionEnabled: false,
+        autounselectify: true,
+        layout: {
+          name: 'dagre'
+        },
+        style: this.style,
+        elements: this.dagPromise
+      });
     }
 
     self.cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
       const node = this;
-      self.dynamicPopover.title = this.data('name');
-      self.dynamicPopover.link = this.data('tool');
-      self.dynamicPopover.type = this.data('type');
-      self.dynamicPopover.docker = this.data('docker');
-      self.dynamicPopover.run = this.data('run');
-      self.updateUndefinedPopoverContent();
-      const runText = self.dagService.getTooltipText(self.dynamicPopover);
+      const name = this.data('name');
+      const tool = this.data('tool');
+      const type = this.data('type');
+      const docker = this.data('docker');
+      const run = this.data('run');
+      const runText = self.dagService.getTooltipText(name, tool, type, docker, run);
       const tooltip = node.qtip({
         content: {
           text: runText,
