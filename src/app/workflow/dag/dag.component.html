@@ -18,7 +18,7 @@
     <div class="ds-holder">
       <div class="ds-version-selector" id="dag-version-bar" [ngClass]="{'fullscreen-dropdown': expanded}">
         <strong>Workflow Version</strong>:
-        <select class="ds-version" [(ngModel)]="selectVersion">
+        <select (change)="onChange($event.target.value)" class="ds-version" [(ngModel)]="selectVersion">
           <option *ngFor="let version of validVersions" [value]="version"> {{version.name}} </option>
         </select>
         <a id="exportLink" (click)="download()" ng-show="dagJSON !== null && !notFound && !missingTool">
@@ -44,6 +44,6 @@
     <div class="alert alert-warning" role="alert" ng-show="workflowObj.descriptorType === 'cwl' && missingTool">
       <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools are missing from Github repo.
     </div>
-    <div #cy id="cy" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
+    <div #cy id="cy" *ngIf="dagResult !== null && !missingTool" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
   </div>
 </div>

@@ -28,12 +28,14 @@ export class DagComponent implements OnInit, AfterViewInit {
   private style;
   private workflow;
   private tooltip: string;
-  private missingTool = false;
+  private missingTool;
 
   refreshDocument() {
     const self = this;
     if (this.dagResult !== null) {
       this.element = document.getElementById('cy');
+      console.log(typeof (this.element));
+      console.log(typeof (this.el));
       this.cy = cytoscape({
         container: this.element,
         boxSelectionEnabled: false,
@@ -114,7 +116,6 @@ export class DagComponent implements OnInit, AfterViewInit {
         });
     });
 
-    this.selectVersion = this.defaultVersion;
     $(document).on('keyup', function (e) {
       // Keycode 27 is the ESC key
       if (e.keyCode === 27) {
@@ -145,10 +146,22 @@ export class DagComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dagPromise = this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).toPromise();
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => this.dagResult = result);
+    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
+      this.dagResult = result;
+      this.updateMissingTool();
+    });
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.selectVersion = this.defaultVersion;
     this.style = this.dagService.style;
+    this.missingTool = false;
+  }
+
+  updateMissingTool() {
+    if (this.dagResult.edges.length < 1 && this.dagResult.nodes.length < 1) {
+      this.missingTool = true;
+    } else {
+      this.missingTool = false;
+    }
   }
 
   download() {
@@ -159,5 +172,12 @@ export class DagComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.refreshDocument();
+  }
+
+  onChange(version) {
+    this.dagService.getCurrentDAG(this.id, version.id).subscribe(result => {
+      this.dagResult = result;
+      this.updateMissingTool();
+    });
   }
 }
