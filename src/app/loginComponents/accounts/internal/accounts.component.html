@@ -1,6 +1,6 @@
 <div class="container">
   <div class="panel panel-default">
-    <div class="panel-body">
+    <div class="panel-body" *ngIf="user">
       <div class="col-lg-2 col-md-3 col-sm-4 hidden-xs thumbnail">
         <img [src]="user?.avatarUrl" height="175">
       </div>

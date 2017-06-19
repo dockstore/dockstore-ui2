@@ -12,6 +12,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 /* External Modules */
 import { DataTablesModule } from 'angular-datatables';
+import { ClipboardModule } from 'ngx-clipboard';
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 /* Components */
@@ -55,6 +56,7 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import { OrderByModule } from './shared/modules/orderby.module';
 
 
 @NgModule({
@@ -88,6 +90,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
+    ClipboardModule,
+    OrderByModule,
     routing
   ],
   providers: [
