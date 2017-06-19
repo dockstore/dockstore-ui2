@@ -30,9 +30,12 @@
   </table>
 </div>
 
-<ul class="aggs">
-  <pre>{{ aggs }}</pre>
-</ul>
+<div *ngFor='let key of buckets.keys()'>
+  <h3>{{ key }}</h3>
+  <div *ngFor='let subBucket of buckets.get(key).keys()'>
+    <p (click) = onClick(key,subBucket)>{{ subBucket }} ({{ buckets.get(key).get(subBucket) }})</p>
+  </div>
+</div>
 
 
-
+<p (click) = resetFilters()>Reset Filters</p>
