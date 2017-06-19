@@ -53,15 +53,16 @@ export class TokensComponent extends Logout implements OnInit {
 
   setProperty() {
     const tokensRef = this.tokens;
-    for (let i = 0; i < tokensRef.length; i++) {
-      tokensRef[i].copyClass = false;
+    for (const token of tokensRef) {
+      token.copyClass = false;
     }
   }
 
   tokenCopyClassSwitch(id: number) {
-    for (let i = 0; i < this.tokens.length; i++) {
-      if (this.tokens[i].id !== id) {
-        this.tokens[i].copyClass = false;
+    const tokensRef = this.tokens;
+    for (const token of tokensRef) {
+      if (token.id !== id) {
+        token.copyClass = false;
       }
     }
   }
