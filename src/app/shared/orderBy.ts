@@ -47,6 +47,7 @@ export class OrderBy implements PipeTransform {
   transform(input: any, config: string = '+'): any {
 
     // make a copy of the input's reference
+    if (!input || !input.length) { return; }
     this.value = [...input];
     const value = this.value;
 
