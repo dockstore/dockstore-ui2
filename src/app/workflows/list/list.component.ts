@@ -24,7 +24,6 @@ export class ListWorkflowsComponent extends ToolLister {
   }
 
   sendWorkflowInfo(workflow) {
-    console.log('sendWorkflowInfo');
     this.communicatorService.setWorkflow(workflow);
     this.workflowService.setWorkflow(workflow);
   }
