@@ -12,7 +12,10 @@ export class RegisterToolService {
     private friendlyRegistries = FriendlyRegistry;
     private friendlyRepositories = FriendlyRepositories;
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
-        new Tool('GitHub', '', '', '', '', '', '', 'Quay.io', '', false, '', ''));
+        new Tool('GitHub', '', '/Dockerfile',
+            '/Dockstore.cwl', '/Dockstore.wdl',
+            '/test.cwl.json', '/test.wdl.json',
+            'Quay.io', '', false, '', ''));
     constructor() { }
 
     registerTool() {
@@ -26,24 +29,24 @@ export class RegisterToolService {
     }
 
     repositoryKeys(): Array<string> {
-    const keys = Object.keys(this.repositories);
-    return keys.slice(keys.length / 2);
-  }
+        const keys = Object.keys(this.repositories);
+        return keys.slice(keys.length / 2);
+    }
 
-  registryKeys(): Array<string> {
-    const keys = Object.keys(this.registries);
-    return keys.slice(keys.length / 2);
-  }
+    registryKeys(): Array<string> {
+        const keys = Object.keys(this.registries);
+        return keys.slice(keys.length / 2);
+    }
 
-  friendlyRegistryKeys(): Array<string> {
-    const keys = Object.keys(this.friendlyRegistries);
-    return keys.slice(keys.length / 2);
-  }
+    friendlyRegistryKeys(): Array<string> {
+        const keys = Object.keys(this.friendlyRegistries);
+        return keys.slice(keys.length / 2);
+    }
 
-  friendlyRepositoryKeys(): Array<string> {
-    const keys = Object.keys(this.friendlyRepositories);
-    return keys.slice(keys.length / 2);
-  }
+    friendlyRepositoryKeys(): Array<string> {
+        const keys = Object.keys(this.friendlyRepositories);
+        return keys.slice(keys.length / 2);
+    }
 
     getUnfriendlyRegistryName(registry: string): Registry {
         switch (registry) {

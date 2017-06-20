@@ -55,7 +55,7 @@
                     </li>
                   </ul>
                 </div>
-                <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="gitPath" [(ngModel)]="tool.gitPath" minlength="3" maxlength="128" pattern="/^([a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*)\/([a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*)$/i" required tooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" />
+                <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="gitPath" [(ngModel)]="tool.gitPath" minlength="3" maxlength="128" [pattern]="validationPatterns.gitPath" required tooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" />
               </div>
               <div *ngIf="formErrors.gitPath" class="alert alert-danger"> {{ formErrors.gitPath }} </div>
             </div>
@@ -65,7 +65,7 @@
               Dockerfile Path:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="default_dockerfile_path" [(ngModel)]="tool.default_dockerfile_path" minlength="3" maxlength="256" pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*Dockerfile$/i" required tooltip="Default relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" />
+              <input type="text" class="form-control" name="dockerfilePath" [(ngModel)]="tool.default_dockerfile_path" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" required tooltip="Default relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" />
               <div *ngIf="formErrors.dockerfilePath" class="alert alert-danger"> {{ formErrors.dockerfilePath }} </div>
             </div>
           </div>
@@ -74,8 +74,8 @@
               CWL Descriptor Path:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="default_cwl_path" [(ngModel)]="tool.default_cwl_path" minlength="3" maxlength="256" pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|yaml|yml)$/i" ng-required="!(tool.default_cwl_path.length || tool.default_wdl_path.length)" tooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
-              <div *ngIf="formErrors.default_cwl_path" class="alert alert-danger"> {{ formErrors.default_cwl_path }} </div>
+              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="tool.default_cwl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" [required]="!(tool.default_wdl_path.length)" tooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
+              <div *ngIf="formErrors.cwlPath" class="alert alert-danger"> {{ formErrors.cwlPath }} </div>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -83,8 +83,8 @@
               WDL Descriptor Path:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="default_wdl_path" [(ngModel)]="tool.default_wdl_path" minlength="3" maxlength="256" pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.wdl$/i" ng-required="!(tool.default_cwl_path.length || tool.default_wdl_path.length)" tooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" />
-              <div *ngIf="formErrors.default_wdl_path" class="alert alert-danger"> {{ formErrors.default_wdl_path }} </div>
+              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="tool.default_wdl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" [required]="!(tool.default_cwl_path.length)" tooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" />
+              <div *ngIf="formErrors.wdlPath" class="alert alert-danger"> {{ formErrors.wdlPath }} </div>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -92,8 +92,8 @@
               CWL Test Parameter File:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="default_cwl_test_parameter_file" [(ngModel)]="tool.default_cwl_test_parameter_file" minlength="3" maxlength="128" pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" />
-              <div *ngIf="formErrors.default_cwl_test_parameter_file" class="alert alert-danger"> {{ formErrors.default_cwl_test_parameter_file }} </div>
+              <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="tool.default_cwl_test_parameter_file" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" />
+              <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.cwlTestParameterFilePath }} </div>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -101,17 +101,17 @@
               WDL Test Parameter File:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="default_wdl_test_parameter_file" [(ngModel)]="tool.default_wdl_test_parameter_file" minlength="3" maxlength="128" pattern="/^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(json|yml|yaml)$/i" tooltip="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" />
-              <div *ngIf="formErrors.default_wdl_test_parameter_file" class="alert alert-danger"> {{ formErrors.default_wdl_test_parameter_file }} </div>
+              <input type="text" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="tool.default_wdl_test_parameter_file" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" />
+              <div *ngIf="formErrors.wdlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.wdlTestParameterFilePath }} </div>
             </div>
           </div>
           <div class="form-group form-group-sm">
             <label class="col-sm-3 control-label">
               Image Registry:
             </label>
-              <div class="col-sm-9"> 
-                <div class="input-group">
-                  <div class="input-group-btn">
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-btn">
                   <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
                     {{tool.irProvider}}
                     <span class="caret"></span>
@@ -123,9 +123,9 @@
                       </a>
                     </li>
                   </ul>
-                  </div>
-              <input id="imageRegistryInput" type="text" class="form-control" name="imagePath" [(ngModel)]="tool.imagePath" minlength="3" maxlength="128" pattern="/^(([a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*)|_)\/([a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*)$/i" required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
                 </div>
+                <input id="imageRegistryInput" type="text" class="form-control" name="imagePath" [(ngModel)]="tool.imagePath" minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
+              </div>
               <div *ngIf="formErrors.imagePath" class="alert alert-danger"> {{ formErrors.imagePath}} </div>
             </div>
           </div>
@@ -163,7 +163,7 @@
               Tool Name:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="toolname" [(ngModel)]="tool.toolname" maxlength="256" pattern="/^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$/i" tooltip="Dockstore Image path toolname suffix." placeholder="e.g. liftover-fast (optional)" />
+              <input type="text" class="form-control" name="toolName" [(ngModel)]="tool.toolname" maxlength="256" [pattern]="validationPatterns.toolName" tooltip="Dockstore Image path toolname suffix." placeholder="e.g. liftover-fast (optional)" />
               <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
             </div>
           </div>
