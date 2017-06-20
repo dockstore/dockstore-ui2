@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Client} from 'elasticsearch';
 import {CommunicatorService} from '../shared/communicator.service';
-import SearchResponse = Elasticsearch.SearchResponse;
 
 @Component({
   selector: 'app-search',
@@ -151,7 +150,7 @@ export class SearchComponent implements OnInit {
       queryWrapper['query']['match'] = {};
       queryWrapper['query']['match']['description'] = {};
       queryWrapper['query']['match']['description']['query'] = this.values;
-    } else{
+    } else {
       queryWrapper['query'] = new Query();
     }
 
