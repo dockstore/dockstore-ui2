@@ -12,6 +12,7 @@ import { Tool } from '../shared/tool';
 import { ContainerService } from '../shared/container.service';
 
 import { UserService } from '../loginComponents/user.service';
+import { validationPatterns } from '../shared/validationMessages.model';
 
 @Component({
   selector: 'app-workflow',
@@ -21,9 +22,12 @@ import { UserService } from '../loginComponents/user.service';
 export class WorkflowComponent extends Tool implements OnDestroy {
   labels: string[];
   mode: string;
-
+  labelsEditMode: boolean;
+  workflowEditData: any;
+  labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
+              private updateWorkflow: WorkflowService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
@@ -39,6 +43,7 @@ export class WorkflowComponent extends Tool implements OnDestroy {
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
+    this.resetWorkflowEditData();
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
@@ -52,6 +57,40 @@ export class WorkflowComponent extends Tool implements OnDestroy {
     return (tab === this.mode);
   }
 
+  toggleLabelsEditMode() {
+    this.labelsEditMode = !this.labelsEditMode;
+  }
+  resetWorkflowEditData() {
+    const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
+    let workflowLabels = '';
+    for (let i = 0; i < labelArray.length; i++) {
+      workflowLabels += labelArray[i] + ((i !== labelArray.length - 1) ? ', ' : '');
+    }
+    this.workflowEditData = {
+      labels: workflowLabels,
+      is_published: this.workflow.is_published
+    };
+  }
+  submitWorkflowEdits() {
+    if (!this.labelsEditMode) {
+      this.labelsEditMode = true;
+      return;
+    }
+    // the edit object should be recreated
+    if (this.workflowEditData.labels !== 'undefined') {
+      this.setWorkflowLabels();
+    }
+  }
+  setWorkflowLabels(): any {
+    return this.dockstoreService.setWorkflowLabels(this.workflow.id, this.workflowEditData.labels).
+    subscribe(
+      workflow => {
+        this.workflow.labels = workflow.labels;
+        this.updateWorkflow.setWorkflow(workflow);
+        this.labelsEditMode = false;
+      }
+    );
+  }
   ngOnDestroy() {
   }
 }

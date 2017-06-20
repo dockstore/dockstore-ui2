@@ -122,7 +122,7 @@
                     [(ngModel)]="containerEditData.labels"
                     #name="ngModel"
                     maxlength="512"
-                    pattern="^(|\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)(\s*,\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*\s*)$"
+                    [pattern]="labelPattern"
                     placeholder="e.g. dockstore, oicr-icgc, pancancer" />
                 </div>
                 <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">

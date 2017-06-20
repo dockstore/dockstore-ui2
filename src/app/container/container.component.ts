@@ -14,6 +14,7 @@ import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
 import { UserService } from '../loginComponents/user.service';
 import { WorkflowService } from '../shared/workflow.service';
+import { validationPatterns } from '../shared/validationMessages.model';
 
 @Component({
   selector: 'app-container',
@@ -23,6 +24,7 @@ export class ContainerComponent extends Tool implements OnDestroy {
   labels: string[];
   labelsEditMode: boolean;
   containerEditData: any;
+  labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private imageProviderService: ImageProviderService,
@@ -73,12 +75,13 @@ export class ContainerComponent extends Tool implements OnDestroy {
   }
 
   submitContainerEdits() {
+    console.log('submitContainerEdits');
     if (!this.labelsEditMode) {
       this.labelsEditMode = true;
       return;
     }
     // the edit object should be recreated
-    if (this.containerEditData.labels) {
+    if (this.containerEditData.labels !== 'undefined') {
       this.setContainerLabels();
     }
   }
