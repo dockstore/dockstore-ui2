@@ -107,6 +107,7 @@
                   novalidate>
               <button type="submit"
                       class="btn btn-link pull-right"
+                      [disabled]="!labelForm.form.valid"
                       *ngIf="labelsEditMode">
                 <span class="glyphicon glyphicon-floppy-save"></span>Save
               </button>
@@ -117,18 +118,21 @@
                     id="toolLabels"
                     type="text"
                     class="input-sm form-control"
-                    name="contLabels"
+                    name="toolLabels"
                     [(ngModel)]="containerEditData.labels"
                     #name="ngModel"
-                    pattern="/^(|\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)(\s*,\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*\s*)$/i"
-                    maxLength="512"
+                    maxlength="512"
+                    pattern="^(|\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)(\s*,\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*\s*)$"
                     placeholder="e.g. dockstore, oicr-icgc, pancancer" />
                 </div>
-                <!--<div *ngIf="toolLabels.errors && (toolLabels.dirty || toolLabels.touched)" class="alert alert-danger">-->
-                  <!--<div >-->
-
-                  <!--</div>-->
-                <!--</div>-->
+                <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+                  <div [hidden]="!name.errors.maxlength">
+                    Labels string is too long. (Max 512 characters.)
+                  </div>
+                  <div [hidden]="!name.errors.pattern">
+                    Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
+                  </div>
+                </div>
               </div>
             </form>
           </tab>

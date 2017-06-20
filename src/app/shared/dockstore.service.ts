@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import { Http, RequestMethod, URLSearchParams} from '@angular/http';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../shared/dockstore.model';
 import { HttpService } from './http.service';
+
 
 @Injectable()
 export class DockstoreService {

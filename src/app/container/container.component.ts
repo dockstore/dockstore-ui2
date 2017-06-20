@@ -26,7 +26,7 @@ export class ContainerComponent extends Tool implements OnDestroy {
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private imageProviderService: ImageProviderService,
-              private containerService2: ContainerService,
+              private updateContainer: ContainerService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
@@ -73,7 +73,6 @@ export class ContainerComponent extends Tool implements OnDestroy {
   }
 
   submitContainerEdits() {
-    console.log('hi');
     if (!this.labelsEditMode) {
       this.labelsEditMode = true;
       return;
@@ -88,7 +87,7 @@ export class ContainerComponent extends Tool implements OnDestroy {
     subscribe(
       tool => {
         this.tool.labels = tool.labels;
-        this.containerService2.setTool(tool);
+        this.updateContainer.setTool(tool);
         this.labelsEditMode = false;
       }
     );

@@ -7,8 +7,6 @@ import {CommunicatorService} from './communicator.service';
 import {ProviderService} from './provider.service';
 import {UserService} from '../loginComponents/user.service';
 
-
-/* TODO: try this...*/
 import { WorkflowService } from './workflow.service';
 import { ContainerService } from '../shared/container.service';
 @Injectable()
