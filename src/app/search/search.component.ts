@@ -13,6 +13,7 @@ export class SearchComponent implements OnInit {
   private hits: Object[];
   private aggs: Object;
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+  // tslint:disable-next-line
   private initialQuery = '{"aggs":{"_type":{"terms":{"field":"_type","size":10000}},"registry":{"terms":{"field":"registry","size":10000}},"private_access":{"terms":{"field":"private_access","size":10000}},"tags_verified":{"terms":{"field":"tags.verified","size":10000}},"author":{"terms":{"field":"author","size":10000}},"namespace":{"terms":{"field":"namespace","size":10000}},"labels_value":{"terms":{"field":"labels.value","size":10000}},"tags_verifiedSource":{"terms":{"field":"tags.verifiedSource","size":10000}}},"query":{"match_all":{}}}';
   private filters: Map<String, Set<string>> = new Map<String, Set<string>>();
   private bucketStubs = new Map([
