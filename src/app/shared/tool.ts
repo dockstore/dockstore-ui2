@@ -29,7 +29,6 @@ export abstract class Tool implements OnInit, OnDestroy {
   constructor(private toolService: ToolService,
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
-              private userService: UserService,
               private router: Router,
               private workflowService: WorkflowService,
               private containerService: ContainerService,

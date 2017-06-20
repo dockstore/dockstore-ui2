@@ -12,7 +12,6 @@ import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
-import { UserService } from '../loginComponents/user.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 
@@ -32,12 +31,11 @@ export class ContainerComponent extends Tool implements OnDestroy {
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
-              userService: UserService,
               router: Router,
               workflowService: WorkflowService,
               containerService: ContainerService) {
-    super(toolService, communicatorService, providerService, userService, router,
-      workflowService, containerService, 'containers');
+    super(toolService, communicatorService, providerService, router,
+          workflowService, containerService, 'containers');
   }
 
   setProperties() {
@@ -75,7 +73,6 @@ export class ContainerComponent extends Tool implements OnDestroy {
   }
 
   submitContainerEdits() {
-    console.log('submitContainerEdits');
     if (!this.labelsEditMode) {
       this.labelsEditMode = true;
       return;

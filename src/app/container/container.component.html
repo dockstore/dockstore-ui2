@@ -123,7 +123,7 @@
                     #name="ngModel"
                     maxlength="512"
                     [pattern]="labelPattern"
-                    placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+                    placeholder="e.g. dockstore, oicr-icgc, pancancer"/>
                 </div>
                 <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
                   <div [hidden]="!name.errors.maxlength">

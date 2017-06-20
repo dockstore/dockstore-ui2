@@ -98,7 +98,6 @@ export class DockstoreService {
     }
   }
   setContainerLabels(containerId: number, labels) {
-    console.log('labels: ' + labels);
     const url = `${ Dockstore.API_URI }/containers/${ containerId }/labels`;
     const myParams = new URLSearchParams();
     myParams.set('labels', labels);

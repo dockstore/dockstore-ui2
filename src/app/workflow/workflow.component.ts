@@ -10,8 +10,6 @@ import { ToolService } from '../shared/tool.service';
 import { Tool } from '../shared/tool';
 
 import { ContainerService } from '../shared/container.service';
-
-import { UserService } from '../loginComponents/user.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 
 @Component({
@@ -31,11 +29,10 @@ export class WorkflowComponent extends Tool implements OnDestroy {
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
-              userService: UserService,
               router: Router,
               workflowService: WorkflowService,
               containerService: ContainerService) {
-    super(toolService, communicatorService, providerService, userService, router,
+    super(toolService, communicatorService, providerService, router,
           workflowService, containerService, 'workflows');
   }
   setProperties() {
