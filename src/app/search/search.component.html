@@ -30,6 +30,10 @@
   </table>
 </div>
 
+<div>
+  <input #box (keyup)="onKey(box.value)">
+</div>
+
 <div *ngFor='let key of buckets.keys()'>
   <h3>{{ key }}</h3>
   <div *ngFor='let subBucket of buckets.get(key).keys()'>
