@@ -19,7 +19,7 @@ import { validationPatterns } from '../shared/validationMessages.model';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Tool implements OnDestroy {
+export class ContainerComponent extends Tool {
   labels: string[];
   labelsEditMode: boolean;
   containerEditData: any;
@@ -62,10 +62,7 @@ export class ContainerComponent extends Tool implements OnDestroy {
   }
   resetContainerEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.tool.labels);
-    let toolLabels = '';
-    for (let i = 0; i < labelArray.length; i++) {
-      toolLabels += labelArray[i] + ((i !== labelArray.length - 1) ? ', ' : '');
-    }
+    const toolLabels = labelArray.join(', ');
     this.containerEditData = {
       labels: toolLabels,
       is_published: this.tool.is_published

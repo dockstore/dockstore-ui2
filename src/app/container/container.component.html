@@ -17,7 +17,7 @@
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
     <div class="row">
-      <div class="ds-tabs col-sm-12 col-md-10 col-lg-10" >
+      <div class="ds-tabs col-sm-12 col-md-10 col-lg-10">
         <tabset id="tool_tabs" justified="true">
           <tab id="infoTab" heading="Info" id="infoTab">
             <div>
@@ -91,7 +91,7 @@
                     (click)="toggleLabelsEditMode()">
               <span class="glyphicon glyphicon-edit"></span>Edit
             </button>
-            <ul class="list-unstyled container-info" *ngIf="!labelsEditMode" >
+            <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
               <li *ngIf="tool">
                 <strong>Labels:</strong>
                 <span *ngIf="tool?.labels.length === 0">n/a</span>
@@ -137,7 +137,7 @@
             </form>
           </tab>
           <tab heading="Versions" *ngIf="validVersions">
-            <app-versions-container [versions]="tool?.tags" id ="versionsTab"
+            <app-versions-container [versions]="tool?.tags" id="versionsTab"
                                     [verifiedSource]="tool?.verifiedSources">
             </app-versions-container>
           </tab>

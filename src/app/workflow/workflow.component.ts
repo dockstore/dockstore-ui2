@@ -17,7 +17,7 @@ import { validationPatterns } from '../shared/validationMessages.model';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Tool implements OnDestroy {
+export class WorkflowComponent extends Tool{
   labels: string[];
   mode: string;
   labelsEditMode: boolean;
@@ -59,10 +59,7 @@ export class WorkflowComponent extends Tool implements OnDestroy {
   }
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
-    let workflowLabels = '';
-    for (let i = 0; i < labelArray.length; i++) {
-      workflowLabels += labelArray[i] + ((i !== labelArray.length - 1) ? ', ' : '');
-    }
+    const workflowLabels = labelArray.join(', ');
     this.workflowEditData = {
       labels: workflowLabels,
       is_published: this.workflow.is_published
@@ -87,7 +84,5 @@ export class WorkflowComponent extends Tool implements OnDestroy {
         this.labelsEditMode = false;
       }
     );
-  }
-  ngOnDestroy() {
   }
 }
