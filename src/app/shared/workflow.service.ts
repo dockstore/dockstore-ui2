@@ -1,12 +1,17 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from '../shared/dockstore.model';
-import { HttpService } from '../shared/http.service';
-
+import { Dockstore } from './dockstore.model';
+import { HttpService } from './http.service';
 @Injectable()
 export class WorkflowService {
+  private workflowSource = new BehaviorSubject<any>(null);
+  // Observable streams
+  workflow$ = this.workflowSource.asObservable();
   constructor(private httpService: HttpService) {}
-
+  setWorkflow(workflow: any) {
+    this.workflowSource.next(workflow);
+  }
   getParamsString(path: string, tagName: string) {
     return 'dockstore workflow convert entry2json --entry ' + path + ':' + tagName + ` > Dockstore.json
             \nvim Dockstore.json`;

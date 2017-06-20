@@ -24,7 +24,8 @@
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
         "../bower_components/bootstrap-toc/bootstrap-toc.css",
-        "../node_modules/jquery-colorbox/example1/colorbox.css"
+        "../node_modules/jquery-colorbox/example1/colorbox.css",
+        "../src/jquery.qtip.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
@@ -33,7 +34,12 @@
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../bower_components/bootstrap-toc/bootstrap-toc.js",
         "../node_modules/jquery-colorbox/jquery.colorbox.js",
-        "../node_modules/cytoscape-dagre/cytoscape-dagre.js"
+        "../node_modules/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js",
+        "../node_modules/cytoscape/dist/cytoscape.min.js",
+        "../node_modules/dagre/dist/dagre.min.js",
+        "../node_modules/cytoscape-dagre/cytoscape-dagre.js",
+        "../node_modules/qtip2/dist/jquery.qtip.js",
+        "../node_modules/cytoscape-qtip/cytoscape-qtip.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -4,7 +4,7 @@ import { View } from '../../shared/view';
 
 import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../../shared/date.service';
-import { WorkflowService } from '../workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-view-workflow',

@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { ClipboardModule } from 'ngx-clipboard';
 import { DataTablesModule } from 'angular-datatables';
-import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 
 /* Bootstrap */
@@ -15,7 +15,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { ContainerComponent } from '../../container/container.component';
-import { ContainerService } from '../../container/container.service';
+import { ContainerService } from '../container.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
@@ -27,6 +27,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
+import { WorkflowService } from '../workflow.service';
 
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
@@ -34,6 +35,7 @@ import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { ParamfilesModule } from './paramfiles.module';
 import { SelectModule } from './select.module';
+import { OrderByModule } from '../../shared/modules/orderby.module';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { SelectModule } from './select.module';
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
-    FormsModule
+    FormsModule,
+    OrderByModule
   ],
   providers: [
     HighlightJsService,
@@ -71,6 +74,7 @@ import { SelectModule } from './select.module';
     LaunchService,
     DockerfileService,
     ParamfilesService,
+    WorkflowService
   ],
   exports: [
     ContainerComponent

@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
 
 import { LaunchService } from './launch.service';
-import { ContainerService } from '../container.service';
+import { ContainerService } from '../../shared/container.service';
 
 @Component({
   selector: 'app-launch',

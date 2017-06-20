@@ -1,9 +1,9 @@
-import { Component, Input, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
-import { ContainerService } from '../container.service';
+import { ContainerService } from '../../shared/container.service';
 import { ParamfilesService } from './paramfiles.service';
 
 import { FileSelector } from '../../shared/selectors/file-selector';
@@ -14,14 +14,17 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './paramfiles.component.html'
 })
 
-export class ParamfilesComponent extends FileSelector {
+export class ParamfilesComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
   content: string;
+  contentHighlighted: boolean;
 
   constructor(private containerService: ContainerService,
+              private highlightJsService: HighlightJsService,
               private paramfilesService: ParamfilesService,
-              private fileService: FileService) {
+              private fileService: FileService,
+              private elementRef: ElementRef) {
     super();
   }
 
@@ -35,6 +38,14 @@ export class ParamfilesComponent extends FileSelector {
 
   reactToFile(): void {
     this.content = this.fileService.highlightCode(this.currentFile.content);
+    this.contentHighlighted = true;
+  }
+
+  ngAfterViewChecked() {
+    if (this.contentHighlighted) {
+      this.contentHighlighted = false;
+      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
+    }
   }
 
 }

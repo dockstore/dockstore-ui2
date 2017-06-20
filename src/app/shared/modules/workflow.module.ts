@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
-import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 // import { NgxChartsDagModule } from '@swimlane/ngx-charts-dag';
 // import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -28,16 +28,18 @@ import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
 import { ParamfilesModule } from '../modules/paramfiles.module';
 import { SelectModule } from '../modules/select.module';
+import { DagModule } from './../../workflow/dag/dag.module';
 /* Service */
 import { LaunchService } from '../../container/launch/launch.service';
-import { ContainerService } from '../../container/container.service';
+import { ContainerService } from '../container.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
-import { WorkflowService } from '../../workflow/workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
+import { OrderByModule } from '../../shared/modules/orderby.module';
 
 
 @NgModule({
@@ -64,6 +66,8 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot()
+    OrderByModule,
+    DagModule
   ],
   providers: [
     HighlightJsService,
@@ -77,5 +81,8 @@ import { DescriptorsService } from '../../container/descriptors/descriptors.serv
     WorkflowService,
     DescriptorsService
   ],
+  exports: [
+    WorkflowComponent
+  ]
 })
 export class WorkflowModule { }

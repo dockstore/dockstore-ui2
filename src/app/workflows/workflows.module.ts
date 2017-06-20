@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DataTablesModule } from 'angular-datatables';
-import { HighlightJsModule, HighlightJsService } from 'angular2-highlight-js';
+import { HighlightJsModule, HighlightJsService } from '../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 
 /* Bootstrap */
@@ -21,6 +21,7 @@ import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowsComponent } from './workflows.component';
 
 import { workflowsRouting } from './workflows.routing';
+import { WorkflowService } from '../shared/workflow.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { workflowsRouting } from './workflows.routing';
     workflowsRouting
   ],
   providers: [
-    HighlightJsService
+    HighlightJsService,
+    WorkflowService
   ]
 })
 export class WorkflowsModule {

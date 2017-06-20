@@ -18,5 +18,4 @@ export class Dockstore {
   static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
   static readonly GITLAB_CLIENT_ID = 'fill this in';
   static readonly GITLAB_REDIRECT_URI = 'http://fill this in:4200/auth/gitlab';
-
 }

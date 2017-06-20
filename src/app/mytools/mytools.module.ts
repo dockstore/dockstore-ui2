@@ -7,10 +7,13 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-import { ContainerModule } from '../shared/modules/container.module';
+/* Inner Module, Component, Routing, and Service */
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
+
+import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
+import { ContainerService } from '../shared/container.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { HeaderModule } from '../shared/modules/header.module';
     TooltipModule.forRoot()
   ],
   providers: [
+    ContainerService
   ],
 })
 export class MyToolsModule {}

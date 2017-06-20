@@ -1,16 +1,22 @@
-import { Input, OnInit } from '@angular/core';
+import {Input, OnInit} from '@angular/core';
 
 import { DateService } from './date.service';
-
+import { DockstoreService } from '../shared/dockstore.service';
 export abstract class Versions implements OnInit {
 
   @Input() versions: Array<any>;
+  sortColumn: string;
+  sortReverse: boolean;
 
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
 
-  constructor(private dateService: DateService) { }
+  constructor(private dockstoreService: DockstoreService,
+              private dateService: DateService) {
+    this.sortColumn = 'name';
+    this.sortReverse = false;
+  }
 
   ngOnInit() {
     this.dtOptions = {
@@ -25,8 +31,26 @@ export abstract class Versions implements OnInit {
     };
   }
 
+  clickSortColumn(columnName) {
+    if (this.sortColumn === columnName) {
+      this.sortReverse = !this.sortReverse;
+    } else  {
+      this.sortColumn = columnName;
+      this.sortReverse = false;
+    }
+  }
+  getIconClass(columnName): string {
+    return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
+  }
+  convertSorting(): string {
+    return this.sortReverse ? '-' + this.sortColumn : this.sortColumn;
+  }
   getDateTimeString(timestamp) {
-    return this.dateService.getDateTimeMessage(timestamp);
+    if (timestamp) {
+      return this.dateService.getDateTimeMessage(timestamp);
+    } else {
+      return 'n/a';
+    }
   }
 
 }

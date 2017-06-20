@@ -1,12 +1,10 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommunicatorService } from '../../shared/communicator.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { DateService } from '../../shared/date.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
-
 import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
-
 import { ToolLister } from '../../shared/tool-lister';
 
 import { ListContainersService } from './list.service';
@@ -59,6 +57,4 @@ export class ListContainersComponent extends ToolLister {
   getVerified(tool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
-
-
 }

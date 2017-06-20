@@ -21,7 +21,7 @@
       <tabset id="tool_tabs" justified="true">
         <tab id="infoTab" heading="Info" id="infoTab">
           <div>
-            <ul class="list-unstyled container-info">
+            <ul class="list-unstyled container-info" *ngIf="tool">
               <li>
                 <strong tooltip="Author listed in descriptor">Author</strong>:
                 {{ tool?.author || 'n/a' }}
@@ -84,9 +84,6 @@
             </div>
           </div>
         </tab>
-        <!--<tab heading="Labels">-->
-          <!--<strong>Labels:</strong>-->
-        <!--</tab>-->
         <tab id="labelsTab" heading="Labels">
           <ul class="list-unstyled container-info">
             <li *ngIf="tool">
