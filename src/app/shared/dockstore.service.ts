@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestMethod, URLSearchParams} from '@angular/http';
+import { AuthService } from 'ng2-ui-auth';
+import { Dockstore } from '../shared/dockstore.model';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class DockstoreService {
@@ -7,7 +10,9 @@ export class DockstoreService {
                                      'May', 'Jun.', 'Jul.', 'Aug.',
                                      'Sept.', 'Oct.', 'Nov.', 'Dec.' ];
 
-  constructor(private http: Http) {
+  constructor(private http: Http,
+              private httpService: HttpService,
+              private authService: AuthService) {
   }
 
   getValidVersions(versions) {
@@ -91,5 +96,10 @@ export class DockstoreService {
       return 'glyphicon-sort';
     }
   }
-
+  setContainerLabels(containerId: number, labels) {
+    const url = `${ Dockstore.API_URI }/containers/${ containerId }/labels`;
+    const myParams = new URLSearchParams();
+    myParams.set('labels', labels);
+    return this.httpService.request(url, myParams, RequestMethod.Put, this.authService.getToken());
+  }
 }

@@ -17,96 +17,133 @@
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
     <div class="row">
-    <div class="ds-tabs col-sm-12 col-md-10 col-lg-10" >
-      <tabset id="tool_tabs" justified="true">
-        <tab id="infoTab" heading="Info" id="infoTab">
-          <div>
-            <ul class="list-unstyled container-info" *ngIf="tool">
-              <li>
-                <strong tooltip="Author listed in descriptor">Author</strong>:
-                {{ tool?.author || 'n/a' }}
-              </li>
-              <li>
-                <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
-                <span *ngIf="!tool?.email">n/a</span>
-                <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
-                  {{ tool?.email }}
-                </a>
-              </li>
-              <li>
-                <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
-                <a [href]="tool?.providerUrl">
-                  {{ tool?.providerUrl }}
-                </a>
-              </li>
-              <li>
-                <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
-                <a [href]="tool?.imgProviderUrl">
-                  {{ tool?.imgProviderUrl }}
-                </a>
-              </li>
-              <li>
-                <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
-                {{ tool?.default_dockerfile_path }}
-              </li>
-              <li>
-                <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
-                {{ tool?.default_cwl_path || 'n/a' }}
-              </li>
+      <div class="ds-tabs col-sm-12 col-md-10 col-lg-10" >
+        <tabset id="tool_tabs" justified="true">
+          <tab id="infoTab" heading="Info" id="infoTab">
+            <div>
+              <ul class="list-unstyled container-info" *ngIf="tool">
+                <li>
+                  <strong tooltip="Author listed in descriptor">Author</strong>:
+                  {{ tool?.author || 'n/a' }}
+                </li>
+                <li>
+                  <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
+                  <span *ngIf="!tool?.email">n/a</span>
+                  <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
+                    {{ tool?.email }}
+                  </a>
+                </li>
+                <li>
+                  <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
+                  <a [href]="tool?.providerUrl">
+                    {{ tool?.providerUrl }}
+                  </a>
+                </li>
+                <li>
+                  <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
+                  <a [href]="tool?.imgProviderUrl">
+                    {{ tool?.imgProviderUrl }}
+                  </a>
+                </li>
+                <li>
+                  <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
+                  {{ tool?.default_dockerfile_path }}
+                </li>
+                <li>
+                  <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
+                  {{ tool?.default_cwl_path || 'n/a' }}
+                </li>
 
-              <li>
-                <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>:
-                {{ tool?.default_wdl_path || 'n/a' }}
-              </li>
-              <li>
-                <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>:
-                {{ tool?.buildMode }}
-              </li>
-              <li>
-                <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>:
-                {{ tool?.lastBuildDate }}
-              </li>
-              <li>
-                <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>:
-                {{ tool?.lastUpdatedDate }}
+                <li>
+                  <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>:
+                  {{ tool?.default_wdl_path || 'n/a' }}
+                </li>
+                <li>
+                  <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>:
+                  {{ tool?.buildMode }}
+                </li>
+                <li>
+                  <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>:
+                  {{ tool?.lastBuildDate }}
+                </li>
+                <li>
+                  <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>:
+                  {{ tool?.lastUpdatedDate }}
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="tool">
+              <label tooltip="Description of tool obtained from tool descriptor">
+                Description
+              </label>
+              <div class="well well-sm">
+                <pre>{{ tool?.description || 'No description associated with this container.' }}</pre>
+              </div>
+              <div *ngIf="validVersions">
+                <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
+              </div>
+            </div>
+          </tab>
+          <tab id="labelsTab" heading="Labels" *ngIf="tool">
+            <button type="sbutton"
+                    *ngIf="!labelsEditMode"
+                    class="btn btn-link pull-right"
+                    (click)="toggleLabelsEditMode()">
+              <span class="glyphicon glyphicon-edit"></span>Edit
+            </button>
+            <ul class="list-unstyled container-info" *ngIf="!labelsEditMode" >
+              <li *ngIf="tool">
+                <strong>Labels:</strong>
+                <span *ngIf="tool?.labels.length === 0">n/a</span>
+                <span class="label label-default container-label" *ngFor="let label of labels">
+               {{label}}
+              </span>
               </li>
             </ul>
-          </div>
-          <div *ngIf="tool">
-            <label tooltip="Description of tool obtained from tool descriptor">
-              Description
-            </label>
-            <div class="well well-sm">
-              <pre>{{ tool?.description || 'No description associated with this container.' }}</pre>
-            </div>
-            <div *ngIf="validVersions">
-              <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
-            </div>
-          </div>
-        </tab>
-        <tab id="labelsTab" heading="Labels">
-          <ul class="list-unstyled container-info">
-            <li *ngIf="tool">
-              <strong>Labels:</strong>
-              <span *ngIf="tool?.labels.length === 0">n/a</span>
-              <span class="label label-default container-label" *ngFor="let label of labels">
-               {{label}}
-            </span>
-            </li>
-          </ul>
-        </tab>
-        <tab heading="Versions" *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags" id ="versionsTab"
-                                  [verifiedSource]="tool?.verifiedSources">
-          </app-versions-container>
-        </tab>
-        <tab heading="Files" *ngIf="validVersions">
-          <app-files-container [id]="tool?.id" [versions]="validVersions"
-                               [default]="defaultVersion">
-          </app-files-container>
-        </tab>
-      </tabset>
-    </div>
+            <form name="editContainerForm"
+                  class="edit-container form-inline"
+                  (ngSubmit)="submitContainerEdits()"
+                  #labelForm="ngForm"
+                  novalidate>
+              <button type="submit"
+                      class="btn btn-link pull-right"
+                      *ngIf="labelsEditMode">
+                <span class="glyphicon glyphicon-floppy-save"></span>Save
+              </button>
+              <div *ngIf="labelsEditMode">
+                <div class="form-group">
+                  <label>Tool Labels:</label>
+                  <input
+                    id="toolLabels"
+                    type="text"
+                    class="input-sm form-control"
+                    name="contLabels"
+                    [(ngModel)]="containerEditData.labels"
+                    #name="ngModel"
+                    pattern="/^(|\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)(\s*,\s*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))*\s*)$/i"
+                    maxLength="512"
+                    placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+                </div>
+                <!--<div *ngIf="toolLabels.errors && (toolLabels.dirty || toolLabels.touched)" class="alert alert-danger">-->
+                  <!--<div >-->
+
+                  <!--</div>-->
+                <!--</div>-->
+              </div>
+            </form>
+          </tab>
+          <tab heading="Versions" *ngIf="validVersions">
+            <app-versions-container [versions]="tool?.tags" id ="versionsTab"
+                                    [verifiedSource]="tool?.verifiedSources">
+            </app-versions-container>
+          </tab>
+          <tab heading="Files" *ngIf="validVersions">
+            <app-files-container [id]="tool?.id" [versions]="validVersions"
+                                 [default]="defaultVersion">
+            </app-files-container>
+          </tab>
+        </tabset>
+      </div>
     </div>
 
     <div class="col-sm-12 col-md-2 col-lg-2">
