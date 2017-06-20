@@ -17,7 +17,7 @@ import { validationPatterns } from '../shared/validationMessages.model';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Tool{
+export class WorkflowComponent extends Tool {
   labels: string[];
   mode: string;
   labelsEditMode: boolean;
