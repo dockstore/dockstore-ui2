@@ -65,7 +65,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     SelectModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
-    AccordionModule.forRoot()
+    AccordionModule.forRoot(),
     OrderByModule,
     DagModule
   ],
