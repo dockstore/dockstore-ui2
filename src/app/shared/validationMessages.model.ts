@@ -7,7 +7,8 @@ export const formErrors = {
     'label': '',
     'cwlTestParameterFilePath': '',
     'wdlTestParameterFilePath': '',
-    'toolName': ''
+    'toolName': '',
+    'email': ''
   };
 
 export const validationMessages = {
@@ -65,4 +66,7 @@ export const validationMessages = {
       'maxlength': 'Tool Name is too long. (Max 256 characters.)',
       'pattern': 'A Tool Name may only consist of alphanumeric characters and internal underscores or hyphens.'
     },
+    'email': {
+      'maxlength': 'Email is too long. (Max 256 characters.)'
+    }
   };

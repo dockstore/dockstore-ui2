@@ -1,3 +1,4 @@
+import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,8 @@ import { ContainerService } from '../shared/container.service';
 
 @NgModule({
   declarations: [
-    MyToolsComponent
+    MyToolsComponent,
+    RegisterToolComponent
   ],
   imports: [
     CommonModule,

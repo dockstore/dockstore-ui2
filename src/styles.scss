@@ -471,11 +471,6 @@ td.browse-all {
   /*margin:0;*/
 }
 
-.pagination {
-  /*line-height: 2em;*/
-  /*display: inline-block;*/
-}
-
 // Commenting this out because pagination formatting is done by Angular-Datatables
 // ul.pagination li{
 //   padding-top: 5px;
@@ -1142,5 +1137,10 @@ td.hljs-ln-numbers {
 /* for block of code */
 td.hljs-ln-code {
   padding-left: 10px;
+}
+
+/* This is for dropdown anchor to have a mouse pointer without redirecting to a different page */
+.dropdown-menu li a{
+    cursor: pointer;
 }
 /* End Temporary Styles - Need to Refactor Later */
