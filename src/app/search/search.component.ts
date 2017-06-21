@@ -9,13 +9,29 @@ import {CommunicatorService} from '../shared/communicator.service';
 })
 export class SearchComponent implements OnInit {
 
-  private _client: Client;
+  /** current set of search results
+   * TODO: this stores all results, but the real implementation should limit results
+   * and paginate to be scalable
+   */
   private hits: Object[];
-  private aggs: Object;
+  private _client: Client;
+  /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
+   results exist in that field after narrowing down based on search */
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+  // TODO: this needs to be improved, but this is the default "empty" query
   // tslint:disable-next-line
   private initialQuery = '{"aggs":{"_type":{"terms":{"field":"_type","size":10000}},"registry":{"terms":{"field":"registry","size":10000}},"private_access":{"terms":{"field":"private_access","size":10000}},"tags_verified":{"terms":{"field":"tags.verified","size":10000}},"author":{"terms":{"field":"author","size":10000}},"namespace":{"terms":{"field":"namespace","size":10000}},"labels_value":{"terms":{"field":"labels.value","size":10000}},"tags_verifiedSource":{"terms":{"field":"tags.verifiedSource","size":10000}}},"query":{"match_all":{}}}';
+
+  /**
+   * this stores the set of active (non-text search) filters
+   * Maps from filter -> values that have been chosen to filter by
+   * @type {Map<String, Set<string>>}
+   */
   private filters: Map<String, Set<string>> = new Map<String, Set<string>>();
+  /**
+   * Friendly names for fields -> fields in elastic search
+   * @type {Map<string, V>}
+   */
   private bucketStubs = new Map([
     ['Entry Type', '_type'],
     ['Registry', 'registry'],
@@ -26,9 +42,17 @@ export class SearchComponent implements OnInit {
     ['Labels', 'labels.value'],
     ['Verified Source', 'tags.verifiedSource'],
   ]);
+  /**
+   * The current text search
+   * @type {string}
+   */
   private values = '';
 
 
+  /**
+   * This should be parameterised from src/app/shared/dockstore.model.ts
+   * @param communicatorService
+   */
   constructor(private communicatorService: CommunicatorService) {
     this._client = new Client({
       host: 'http://localhost:8080/api/ga4gh/v1/extended',
@@ -43,6 +67,11 @@ export class SearchComponent implements OnInit {
   }
 
 
+  /**
+   * This ugly function looks at what hits came back from a search and creates
+   * data structures (buckets) needed for displaying the results
+   * @param value
+   */
   onEnter(value: string) {
     this._client.search({
       index: 'tools',
@@ -50,7 +79,6 @@ export class SearchComponent implements OnInit {
       body: value
     }).then(hits => {
       this.hits = hits.hits.hits;
-      this.aggs = JSON.stringify(hits.aggregations, null, 2);
       for (const property in hits.aggregations) {
         if (hits.aggregations.hasOwnProperty(property)) {
           // loop through contents buckets
@@ -86,6 +114,12 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  /**
+   * This handles selection of one filter, either taking it out from the lsit of active filters
+   * or adding it if not present
+   * @param category
+   * @param categoryValue
+   */
   handleFilters(category: string, categoryValue: string) {
     console.log(category + ' ' + categoryValue);
     if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
@@ -102,6 +136,11 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  /**
+   * This handles clicking a facet and doing the search
+   * @param category
+   * @param categoryValue
+   */
   onClick(category: string, categoryValue: string) {
     if (category !== null && categoryValue !== null) {
       this.handleFilters(category, categoryValue);
@@ -117,6 +156,8 @@ export class SearchComponent implements OnInit {
       count += filter.size;
     });
 
+    // this ugly code creates the objects representing an elastic search query
+    // may be able to use the elastic search library or a better JSON library to clean this up
     const boolFilter = new BoolFilter();
     if (count === 1) {
       category = this.filters.keys().next().value.toString();
