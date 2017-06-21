@@ -8,11 +8,12 @@ import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 
-/* Bootstrap */
+/* External Library */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../container.service';
@@ -36,6 +37,7 @@ import { ListContainersModule } from './list-containers.module';
 import { ParamfilesModule } from './paramfiles.module';
 import { SelectModule } from './select.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
+
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
+    ShareButtonsModule.forRoot(),
     OrderByModule
   ],
   providers: [

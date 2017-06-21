@@ -14,6 +14,7 @@ import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
 import { UserService } from '../loginComponents/user.service';
 import { WorkflowService } from '../shared/workflow.service';
+import { ListContainersService } from '../containers/list/list.service';
 
 @Component({
   selector: 'app-container',
@@ -21,9 +22,14 @@ import { WorkflowService } from '../shared/workflow.service';
 })
 export class ContainerComponent extends Tool implements OnDestroy {
   labels: string[];
+  dockerPullCmd: string;
+  privateOnlyRegistry: boolean;
+  totalShare = 0;
+  shareURL: string;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private imageProviderService: ImageProviderService,
+              private listContainersService: ListContainersService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
@@ -36,8 +42,12 @@ export class ContainerComponent extends Tool implements OnDestroy {
   }
 
   setProperties() {
+    // console.log(window.location.href);
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path);
+    this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
+    this.shareURL = window.location.href;
     toolRef.agoMessage = this.dateService.getAgoMessage(toolRef.lastBuild);
     toolRef.email = this.dockstoreService.stripMailTo(toolRef.email);
     toolRef.lastBuildDate = this.dateService.getDateTimeMessage(toolRef.lastBuild);
@@ -49,8 +59,12 @@ export class ContainerComponent extends Tool implements OnDestroy {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
   }
+  sumCounts(count) {
+    console.log(count);
+    this.totalShare += count;
+  }
+
   getValidVersions() {
-    console.log('container getValidVersions');
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
 

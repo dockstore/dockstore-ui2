@@ -114,13 +114,67 @@
           <strong>Docker Pull Command</strong>
         </div>
         <div class="panel-body">
-          <tbody>
-          <tr>
-            <!--<td ng-init="">-->
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
+              <span class="input-group-btn">
+                <button class="btn btn-default" [class.btn-success]="isCopied" type="button" ngxClipboard
+                        [cbContent]="dockerPullCmd"
+                        (cbOnSuccess)="isCopied = true">
+                  <span class="glyphicon glyphicon-copy"></span>
+                </button>
+              </span>
+            </div>
+        </div>
+      </div>
 
-            <!--</td>-->
-          </tr>
-          </tbody>
+      <div class="panel panel-default" *ngIf="tool">
+        <div class="panel-heading">
+          <strong>Source Repositories</strong>
+        </div>
+        <div class="panel-body">
+          <div class="container-source-repos">
+            <p>
+              Git Repository:
+              <span *ngIf="tool.provider">
+                  <a [href]="tool.providerUrl">
+                    {{tool.provider}}
+                    <span class="glyphicon glyphicon-new-window"></span>
+                  </a>
+              </span>
+            </p>
+            <p>
+              Docker Registry:
+              <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
+              <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
+                <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl">
+                  {{tool?.imgProvider}}
+                  <span class="glyphicon glyphicon-new-window"></span>
+                </a>
+                <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
+              </span>
+              <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')"
+                    class="pull-right">
+                <a href="{{tool.imgProviderUrl}}">
+                  <img src="{{tool.imgProviderUrl}}/status">
+                </a>
+              </span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" *ngIf="tool">
+        <div class="panel-heading">
+          <strong>Sharing</strong>
+        </div>
+        <div class="panel-body">
+          <div class="container-sharing">
+            <share-buttons class="withCount" [url]="shareURL"
+                           [whatsApp]="false" [stumbleUpOn]="false"
+                           [pinterest]="false" [tumblr]="false"
+                           [showCount]="true" (count)="sumCounts($event)">
+            </share-buttons>
+          </div>
         </div>
       </div>
       <div class="panel panel-default" *ngIf="tool?.versionVerified">
@@ -128,17 +182,15 @@
           <strong>Verified</strong>
         </div>
         <div class="panel-body">
-          <tbody>
-          <tr>
-            <td>
-              <div class="container-source-repos">
-                <p *ngFor="let source of tool?.verifiedSources" class="ellipsis-lines">
+          <div class="container-source-repos">
+            <ul class="list-unstyled container-info">
+              <li *ngFor="let source of tool?.verifiedSources">
+                <p class="ellipsis-lines">
                   {{source}}
                 </p>
-              </div>
-            </td>
-          </tr>
-          </tbody>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

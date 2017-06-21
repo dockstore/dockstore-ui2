@@ -856,6 +856,17 @@ div.tabs>div:target>div,
   background-color: #303030;
 }
 
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: white !important;
+  opacity: 1;
+}
+
+.btn-success {
+  color: white !important;
+  background-color: #487980 !important;
+  border-color: #487980 !important;
+}
+
 #label-holder {
   padding-right: 0em;
   max-height: 1.5em;
