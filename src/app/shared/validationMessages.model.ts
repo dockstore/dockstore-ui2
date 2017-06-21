@@ -66,3 +66,10 @@ export const validationMessages = {
       'pattern': 'A Tool Name may only consist of alphanumeric characters and internal underscores or hyphens.'
     },
   };
+
+export const validationPatterns = {
+  'cwlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)',
+  'wdlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$',
+  'dockerfilePath': '^/([^\/?:*|<>]+/)*Dockerfile$',
+  'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$'
+};
