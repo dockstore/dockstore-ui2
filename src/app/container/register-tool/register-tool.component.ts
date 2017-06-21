@@ -3,7 +3,6 @@ import { RegisterToolService } from './register-tool.service';
 import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { validationMessages, formErrors, validationPatterns } from '../../shared/validationMessages.model';
 import { Repository } from './../../shared/enum/Repository.enum';
-import { Registry } from './../../shared/enum/Registry.enum';
 
 @Component({
   selector: 'app-register-tool',

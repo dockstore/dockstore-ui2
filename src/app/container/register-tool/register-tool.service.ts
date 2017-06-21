@@ -3,13 +3,11 @@ import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable, ViewChild } from '@angular/core';
 import { Repository, FriendlyRepositories } from './../../shared/enum/Repository.enum';
-import { Registry } from './../../shared/enum/Registry.enum';
 
 @Injectable()
 export class RegisterToolService {
     toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
-    private registries = Registry;
     private repositories = Repository;
     private friendlyRepositories = FriendlyRepositories;
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -150,6 +148,10 @@ export class RegisterToolService {
         return foundEnum;
     };
 
+    registryKeys(): Array<string> {
+        return this.dockerRegistryMap.map(a => a.enum);
+    }
+
     getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string) {
         const normToolObj = {
             mode: 'MANUAL_IMAGE_PATH',
@@ -177,12 +179,6 @@ export class RegisterToolService {
     repositoryKeys(): Array<string> {
         const keys = Object.keys(this.repositories);
         return keys.slice(keys.length / 2);
-    }
-
-    registryKeys(): Array<string> {
-        if (this.dockerRegistryMap) {
-            return this.dockerRegistryMap.map((a) => { return a.enum; });
-        }
     }
 
     friendlyRegistryKeys(): Array<string> {
