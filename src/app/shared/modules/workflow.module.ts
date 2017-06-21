@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
-// import { NgxChartsDagModule } from '@swimlane/ngx-charts-dag';
-// import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -14,7 +12,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AlertModule } from 'ngx-bootstrap/alert';
 
 /* Component */
-import { DagComponent } from './../../workflow/dag/dag.component';
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
@@ -50,8 +47,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
-    ViewWorkflowComponent,
-    DagComponent
+    ViewWorkflowComponent
   ],
   imports: [
     CommonModule,
