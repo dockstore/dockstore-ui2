@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import { Http, RequestMethod, URLSearchParams} from '@angular/http';
+import { RequestMethod, URLSearchParams} from '@angular/http';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../shared/dockstore.model';
 import { HttpService } from './http.service';
@@ -7,12 +7,7 @@ import { HttpService } from './http.service';
 
 @Injectable()
 export class DockstoreService {
-  private static readonly months = [ 'Jan.', 'Feb.', 'Mar.', 'Apr.',
-                                     'May', 'Jun.', 'Jul.', 'Aug.',
-                                     'Sept.', 'Oct.', 'Nov.', 'Dec.' ];
-
-  constructor(private http: Http,
-              private httpService: HttpService,
+  constructor(private httpService: HttpService,
               private authService: AuthService) {
   }
 
