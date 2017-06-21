@@ -1,0 +1,43 @@
+<div class="hits">
+  <table datatable [dtOptions]="dtOptions" class="table row-border hover">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Project Links</th>
+      <th>Docker Pull</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let hit of hits">
+      <td>
+        <a (click)="sendToolInfo(hit._source)" [routerLink]="['/containers', hit?._source.tool_path ]">{{ hit?._source.name +
+          (hit?._source.toolname ? '/' + hit?._source.toolname : '') }}</a>
+      </td>
+      <td>
+        {{ hit?._source.author || 'n/a' }}
+      </td>
+      <td>
+        temp
+      </td>
+      <td>
+        temp
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <input #box (keyup)="onKey(box.value)">
+</div>
+
+<div *ngFor='let key of buckets.keys()'>
+  <h3>{{ key }}</h3>
+  <div *ngFor='let subBucket of buckets.get(key).keys()'>
+    <p (click) = onClick(key,subBucket)>{{ subBucket }} ({{ buckets.get(key).get(subBucket) }})</p>
+  </div>
+</div>
+
+
+<p (click) = resetFilters()>Reset Filters</p>
