@@ -3,7 +3,7 @@ import { RegisterToolService } from './register-tool.service';
 import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { validationMessages, formErrors, validationPatterns } from '../../shared/validationMessages.model';
 import { Repository } from './../../shared/enum/Repository.enum';
-import { Registry, FriendlyRegistry } from './../../shared/enum/Registry.enum';
+import { Registry } from './../../shared/enum/Registry.enum';
 
 @Component({
   selector: 'app-register-tool',
@@ -16,6 +16,8 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   private tool: any;
   private formErrors = formErrors;
   private validationPatterns = validationPatterns;
+  private customDockerRegistryPath: string;
+  private showCustomDockerRegistryPath: boolean;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -47,7 +49,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   registerTool() {
-    this.registerToolService.registerTool();
+    this.registerToolService.registerTool(this.tool);
   }
 
   getUnfriendlyRegistryName(registry: string): Registry {
@@ -58,11 +60,18 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     return this.registerToolService.getFriendlyRepositoryName(repository);
   }
 
+  checkForSpecialDockerRegistry() {
+    return this.registerToolService.checkForSpecialDockerRegistry(this.tool);
+  }
+
   ngOnInit() {
     this.registerToolService.toolRegisterError.subscribe(toolRegisterError => this.toolRegisterError = toolRegisterError);
     this.registerToolService.tool.subscribe(tool => this.tool = tool);
+    this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
+    this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
   }
 
+  // Validation starts here, should move most of these to a service somehow
   ngAfterViewChecked() {
     this.formChanged();
   }
@@ -94,4 +103,5 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
       }
     }
   }
+  // Validation ends here
 }

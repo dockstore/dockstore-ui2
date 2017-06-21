@@ -4,7 +4,3 @@ export enum Registry {
     GITLAB,
     AMAZON_ECR,
 }
-
-export enum FriendlyRegistry {
-    'Quay.io', 'Docker Hub', 'GitLab', 'Amazon ECR'
-}
