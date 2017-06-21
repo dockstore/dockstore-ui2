@@ -35,7 +35,9 @@
                 <span class="input-group-btn">
               <button class="btn btn-default" [class.btn-success]="token.copyClass" type="button" ngxClipboard
                       [cbContent]="token.token"
-                      (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">copy</button>
+                      (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">
+                <span class="glyphicon glyphicon-copy"></span>
+              </button>
             </span>
               </div>
             </td>
