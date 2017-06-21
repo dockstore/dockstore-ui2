@@ -60,11 +60,16 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     return this.registerToolService.checkForSpecialDockerRegistry(this.tool);
   }
 
+  setToolRegisterError() {
+    return this.registerToolService.setToolRegisterError(null);
+  }
+
   ngOnInit() {
     this.registerToolService.toolRegisterError.subscribe(toolRegisterError => this.toolRegisterError = toolRegisterError);
     this.registerToolService.tool.subscribe(tool => this.tool = tool);
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
+    this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
   }
 
   // Validation starts here, should move most of these to a service somehow

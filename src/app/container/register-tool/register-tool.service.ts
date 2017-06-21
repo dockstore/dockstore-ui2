@@ -1,13 +1,13 @@
 import { ContainerWebService } from './../../shared/containerWeb.service';
 import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import { Repository, FriendlyRepositories } from './../../shared/enum/Repository.enum';
 import { Registry } from './../../shared/enum/Registry.enum';
 
 @Injectable()
 export class RegisterToolService {
-    toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<boolean>(null);
+    toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private registries = Registry;
     private repositories = Repository;
@@ -28,13 +28,29 @@ export class RegisterToolService {
         this.tool.next(newTool);
     }
 
+    setToolRegisterError(error: any) {
+        let mapthing = null;
+        if (error) {
+        mapthing = {
+            message: 'The webservice encountered an error trying to create this ' +
+            'container, please ensure that the container attributes are ' +
+            'valid and the same image has not already been registered.',
+            errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+            error._body
+        };
+    }
+    this.toolRegisterError.next(mapthing);
+    }
+
     registerTool(newTool: Tool, customDockerRegistryPath) {
         console.log('Registering tool');
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
-            console.log(response);
-        });
+            // Use types instead
+            (<any>$('#registerContainerModal')).modal('toggle');
+        }, error => this.setToolRegisterError(error)
+        );
     }
 
     setCustomDockerRegistryPath(newCustomDockerRegistryPath: string): void {
@@ -132,7 +148,7 @@ export class RegisterToolService {
             }
         });
         return foundEnum;
-      };
+    };
 
     getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string) {
         const normToolObj = {
@@ -165,13 +181,13 @@ export class RegisterToolService {
 
     registryKeys(): Array<string> {
         if (this.dockerRegistryMap) {
-            return this.dockerRegistryMap.map((a) => {return a.enum; });
+            return this.dockerRegistryMap.map((a) => { return a.enum; });
         }
     }
 
     friendlyRegistryKeys(): Array<string> {
         if (this.dockerRegistryMap) {
-            return this.dockerRegistryMap.map((a) => {return a.friendlyName; });
+            return this.dockerRegistryMap.map((a) => { return a.friendlyName; });
         }
     }
 
