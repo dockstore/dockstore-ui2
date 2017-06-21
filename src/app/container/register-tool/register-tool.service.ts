@@ -114,20 +114,24 @@ export class RegisterToolService {
         }
     };
 
-    getImageRegistryPath(irProvider) {
-        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
-            if (irProvider === this.dockerRegistryMap[i].friendlyName) {
-                return this.dockerRegistryMap[i].dockerPath;
+    getImageRegistryPath(irProvider): string {
+        let foundEnum;
+        this.dockerRegistryMap.forEach(element => {
+            if (irProvider === element.friendlyName) {
+                foundEnum = element.dockerPath;
             }
-        }
+        });
+        return foundEnum;
     };
 
-    getToolRegistry(irProvider) {
-        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
-          if (irProvider === this.dockerRegistryMap[i].friendlyName) {
-            return this.dockerRegistryMap[i].enum;
-          }
-        }
+    getToolRegistry(irProvider): string {
+        let foundEnum;
+        this.dockerRegistryMap.forEach(element => {
+            if (irProvider === element.friendlyName) {
+                foundEnum = element.enum;
+            }
+        });
+        return foundEnum;
       };
 
     getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string) {
