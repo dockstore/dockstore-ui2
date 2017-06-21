@@ -49,11 +49,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   registerTool() {
-    this.registerToolService.registerTool(this.tool);
-  }
-
-  getUnfriendlyRegistryName(registry: string): Registry {
-    return this.registerToolService.getUnfriendlyRegistryName(registry);
+    this.registerToolService.registerTool(this.tool, this.customDockerRegistryPath);
   }
 
   getUnfriendlyRepositoryName(repository: Repository): string {

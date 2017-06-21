@@ -1,3 +1,4 @@
+import { ContainerWebService } from './../shared/containerWeb.service';
 import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -32,7 +33,8 @@ import { ContainerService } from '../shared/container.service';
     TooltipModule.forRoot()
   ],
   providers: [
-    ContainerService
+    ContainerService,
+    ContainerWebService
   ],
 })
 export class MyToolsModule {}

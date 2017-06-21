@@ -9,7 +9,17 @@ export class ContainerWebService {
   constructor(private httpService: HttpService) { }
 
   public getContainer(containerId: number) {
-      const url = `${ Dockstore.API_URI }/containers/${ containerId }`;
+    const url = `${ Dockstore.API_URI }/containers/${ containerId }`;
     return this.httpService.getAuthResponse(url);
+  }
+
+  public getDockerRegistryList() {
+    const url = `${ Dockstore.API_URI }/containers/dockerRegistryList`;
+    return this.httpService.getResponse(url);
+  }
+
+  public postRegisterManual(toolObj) {
+    const url = `${ Dockstore.API_URI }/containers/registerManual`;
+    return this.httpService.postResponse(url, JSON.stringify(toolObj));
   }
 }

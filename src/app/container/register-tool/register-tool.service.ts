@@ -1,3 +1,4 @@
+import { ContainerWebService } from './../../shared/containerWeb.service';
 import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
@@ -7,61 +8,33 @@ import { Registry } from './../../shared/enum/Registry.enum';
 @Injectable()
 export class RegisterToolService {
     toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<boolean>(null);
-    customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private registries = Registry;
     private repositories = Repository;
     private friendlyRepositories = FriendlyRepositories;
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-    private dockerRegistryMap = [
-        {
-            'dockerPath': 'quay.io',
-            'customDockerPath': 'false',
-            'privateOnly': 'false',
-            'enum': 'QUAY_IO',
-            'friendlyName': 'Quay.io',
-            'url': 'https://quay.io/repository/'
-        },
-        {
-            'dockerPath': 'registry.hub.docker.com',
-            'customDockerPath': 'false',
-            'privateOnly': 'false',
-            'enum': 'DOCKER_HUB',
-            'friendlyName': 'Docker Hub',
-            'url': 'https://hub.docker.com/'
-        },
-        {
-            'dockerPath': 'registry.gitlab.com',
-            'customDockerPath': 'false',
-            'privateOnly': 'false',
-            'enum': 'GITLAB',
-            'friendlyName': 'GitLab',
-            'url': 'https://gitlab.com/'
-        },
-        {
-            'dockerPath': null,
-            'customDockerPath': 'true',
-            'privateOnly': 'true',
-            'enum': 'AMAZON_ECR',
-            'friendlyName': 'Amazon ECR',
-            'url': null
-        }
-    ];
-    result = this.dockerRegistryMap.map((a) => {return a.enum; });
+    private dockerRegistryMap;
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor() { }
+    constructor(private containerWebService: ContainerWebService) {
+        this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
+    }
 
     setTool(newTool: Tool): void {
         this.tool.next(newTool);
     }
 
-    registerTool(newTool: Tool) {
+    registerTool(newTool: Tool, customDockerRegistryPath) {
+        console.log('Registering tool');
         this.setTool(newTool);
+        const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
+        this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
+            console.log(response);
+        });
     }
 
     setCustomDockerRegistryPath(newCustomDockerRegistryPath: string): void {
@@ -114,7 +87,7 @@ export class RegisterToolService {
         if (customDockerRegistryPath !== null) {
             path += customDockerRegistryPath;
         } else {
-            path += this.getUnfriendlyRegistryName(toolObj.irProvider);
+            path += this.getImageRegistryPath(toolObj.irProvider);
         }
         path += '/' + this.getImagePath(toolObj.imagePath, 'namespace') + '/' + this.getImagePath(toolObj.imagePath, 'name');
         return path;
@@ -149,13 +122,21 @@ export class RegisterToolService {
         }
     };
 
+    getToolRegistry(irProvider) {
+        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
+          if (irProvider === this.dockerRegistryMap[i].friendlyName) {
+            return this.dockerRegistryMap[i].enum;
+          }
+        }
+      };
+
     getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string) {
         const normToolObj = {
             mode: 'MANUAL_IMAGE_PATH',
             name: this.getImagePath(toolObj.imagePath, 'name'),
             toolname: toolObj.toolname,
             namespace: this.getImagePath(toolObj.imagePath, 'namespace'),
-            registry: this.getUnfriendlyRegistryName(toolObj.irProvider),
+            registry: this.getToolRegistry(toolObj.irProvider),
             gitUrl: this.getGitUrl(toolObj.gitPath, toolObj.scrProvider),
             default_dockerfile_path: toolObj.default_dockerfile_path,
             default_cwl_path: toolObj.default_cwl_path,
@@ -167,7 +148,7 @@ export class RegisterToolService {
             tool_maintainer_email: toolObj.tool_maintainer_email,
             path: this.createPath(toolObj, customDockerRegistryPath)
         };
-        if (normToolObj.toolname === normToolObj.name) {
+        if (normToolObj.toolname === normToolObj.name || normToolObj.toolname === '') {
             delete normToolObj.toolname;
         }
         return normToolObj;
@@ -179,46 +160,20 @@ export class RegisterToolService {
     }
 
     registryKeys(): Array<string> {
-        return this.dockerRegistryMap.map((a) => {return a.enum; });
+        if (this.dockerRegistryMap) {
+            return this.dockerRegistryMap.map((a) => {return a.enum; });
+        }
     }
 
     friendlyRegistryKeys(): Array<string> {
-        return this.dockerRegistryMap.map((a) => {return a.friendlyName; });
+        if (this.dockerRegistryMap) {
+            return this.dockerRegistryMap.map((a) => {return a.friendlyName; });
+        }
     }
 
     friendlyRepositoryKeys(): Array<string> {
         const keys = Object.keys(this.friendlyRepositories);
         return keys.slice(keys.length / 2);
-    }
-
-    getUnfriendlyRegistryName(registry: string): Registry {
-        switch (registry) {
-            case 'Quay.io':
-                return Registry.QUAY_IO;
-            case 'Docker Hub':
-                return Registry.DOCKER_HUB;
-            case 'GitLab':
-                return Registry.GITLAB;
-            case 'Amazon ECR':
-                return Registry.AMAZON_ECR;
-            default:
-                return null;
-        }
-    }
-
-    getFriendlyRegistryName(registry: string): Registry {
-        switch (registry) {
-            case 'Quay.io':
-                return Registry.QUAY_IO;
-            case 'Docker Hub':
-                return Registry.DOCKER_HUB;
-            case 'GitLab':
-                return Registry.GITLAB;
-            case 'Amazon ECR':
-                return Registry.AMAZON_ECR;
-            default:
-                return null;
-        }
     }
 
     getFriendlyRepositoryName(repository: Repository): string {
