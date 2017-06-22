@@ -77,9 +77,9 @@ export class RegisterToolService {
      * @memberof RegisterToolService
      */
     isInvalidCustomRegistry(toolObj: Tool, customDockerRegistryPath: string): boolean {
-        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
-            if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
-                if (this.dockerRegistryMap[i].privateOnly === 'true') {
+        for (const registry of this.dockerRegistryMap) {
+            if (toolObj.irProvider === registry.friendlyName) {
+                if (registry.privateOnly === 'true') {
                     if (!customDockerRegistryPath) {
                         return true;
                     } else {
@@ -134,16 +134,16 @@ export class RegisterToolService {
     };
 
     checkForSpecialDockerRegistry(toolObj: Tool) {
-        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
-            if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
-                if (this.dockerRegistryMap[i].privateOnly === 'true') {
+        for (const registry of this.dockerRegistryMap) {
+            if (toolObj.irProvider === registry.friendlyName) {
+                if (registry.privateOnly === 'true') {
                     toolObj.private_access = true;
                     $('#privateTool').attr('disabled', 'disabled');
                 } else {
                     $('#privateTool').removeAttr('disabled');
                 }
 
-                if (this.dockerRegistryMap[i].customDockerPath === 'true') {
+                if (registry.customDockerPath === 'true') {
                     this.setShowCustomDockerRegistryPath(true);
                     this.setCustomDockerRegistryPath(null);
                 } else {
