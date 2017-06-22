@@ -24,7 +24,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   constructor(private registerToolService: RegisterToolService) { }
 
   isInvalidCustomRegistry() {
-    this.registerToolService.isInvalidCustomRegistry();
+    return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
   }
 
   repositoryKeys(): Array<string> {
@@ -44,7 +44,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   isInvalidPrivateTool() {
-    this.registerToolService.isInvalidPrivateTool();
+    return this.registerToolService.isInvalidPrivateTool(this.tool);
   }
 
   registerTool() {

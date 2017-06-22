@@ -11,7 +11,7 @@ export class RegisterToolService {
     private repositories = Repository;
     private friendlyRepositories = FriendlyRepositories;
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private dockerRegistryMap;
+    private dockerRegistryMap = [];
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
@@ -29,15 +29,15 @@ export class RegisterToolService {
     setToolRegisterError(error: any) {
         let mapthing = null;
         if (error) {
-        mapthing = {
-            message: 'The webservice encountered an error trying to create this ' +
-            'container, please ensure that the container attributes are ' +
-            'valid and the same image has not already been registered.',
-            errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-            error._body
-        };
-    }
-    this.toolRegisterError.next(mapthing);
+            mapthing = {
+                message: 'The webservice encountered an error trying to create this ' +
+                'container, please ensure that the container attributes are ' +
+                'valid and the same image has not already been registered.',
+                errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+                error._body
+            };
+        }
+        this.toolRegisterError.next(mapthing);
     }
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
@@ -59,11 +59,23 @@ export class RegisterToolService {
         this.showCustomDockerRegistryPath.next(newShowCustomDockerRegistoryPath);
     }
 
-    isInvalidPrivateTool() {
-        return false;
+    isInvalidPrivateTool(toolObj: Tool) {
+        return toolObj.private_access === true && !toolObj.tool_maintainer_email;
     }
-    isInvalidCustomRegistry() {
-        return false;
+    isInvalidCustomRegistry(toolObj: Tool, customDockerRegistryPath: string) {
+            for (let i = 0; i < this.dockerRegistryMap.length; i++) {
+                if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
+                    if (this.dockerRegistryMap[i].privateOnly === 'true') {
+                        if (!customDockerRegistryPath) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
     }
 
     getImagePath(imagePath, part) {
