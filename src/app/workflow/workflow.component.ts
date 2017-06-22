@@ -23,6 +23,8 @@ export class WorkflowComponent extends Tool {
   labelsEditMode: boolean;
   workflowEditData: any;
   labelPattern = validationPatterns.label;
+  totalShare = 0;
+  shareURL: string;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private updateWorkflow: WorkflowService,
@@ -37,10 +39,18 @@ export class WorkflowComponent extends Tool {
   }
   setProperties() {
     const workflowRef = this.workflow;
+    console.log(workflowRef);
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
+    this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
+    workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
+    workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
+  }
+  sumCounts(count) {
+    console.log(count);
+    this.totalShare += count;
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);

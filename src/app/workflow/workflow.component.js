@@ -27,14 +27,23 @@ var WorkflowComponent = (function (_super) {
         _this.dateService = dateService;
         _this.updateWorkflow = updateWorkflow;
         _this.labelPattern = validationMessages_model_1.validationPatterns.label;
+        _this.totalShare = 0;
         return _this;
     }
     WorkflowComponent.prototype.setProperties = function () {
         var workflowRef = this.workflow;
+        console.log(workflowRef);
         this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
+        this.shareURL = window.location.href;
         workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
         workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
+        workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
+        workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
         this.resetWorkflowEditData();
+    };
+    WorkflowComponent.prototype.sumCounts = function (count) {
+        console.log(count);
+        this.totalShare += count;
     };
     WorkflowComponent.prototype.getValidVersions = function () {
         this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);

@@ -46,6 +46,23 @@ export class DockstoreService {
     });
   }
 
+  getVerifiedWorkflowSources(workflow) {
+    const sources = [];
+    if (workflow !== null) {
+      for (const version of workflow.workflowVersions) {
+        if (version.verified) {
+          sources.push({
+            version: version.name,
+            verifiedSource: version.verifiedSource
+          });
+        }
+      }
+    }
+    return sources.filter(function (elem, pos) {
+      return sources.indexOf(elem) === pos;
+    });
+  }
+
   getLabelStrings(labels: any[]): string[] {
     const sortedLabels = labels.sort(function (a, b) {
       if (a.value < b.value) {

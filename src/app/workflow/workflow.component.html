@@ -9,7 +9,8 @@
   <p class="update">
     Last Modified: {{ workflow?.agoMessage || 'n/a' }}
   </p>
-  <div>
+  <div class="row">
+  <div class="ds-tabs col-sm-12 col-md-9 col-lg-9">
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <ul class="list-unstyled container-info" *ngIf="workflow">
@@ -130,5 +131,58 @@
       </tab>
     </tabset>
   </div>
+  <div class="col-sm-12 col-md-3 col-lg-3" *ngIf="isWorkflowPublic">
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <strong>Source Repositories</strong>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <p>
+            <span *ngIf="workflow.provider">
+               <a [href]="workflow.providerUrl">
+                    {{workflow.provider}}
+                    <span class="glyphicon glyphicon-new-window"></span>
+                  </a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" *ngIf="workflow?.versionVerified">
+      <div class="panel-heading">
+        <strong>Verified</strong>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <ul class="list-unstyled container-info">
+            <li *ngFor="let source of workflow?.verifiedSources">
+              <strong>{{source.version}} is verified by: </strong>
+              <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
+                {{source.verifiedSource}}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <strong>Sharing</strong>
+      </div>
+      <div class="panel-body">
+        <div class="container-sharing">
+          <share-buttons class="withCount" [url]="shareURL"
+                         [whatsApp]="false" [stumbleUpOn]="false"
+                         [pinterest]="false" [tumblr]="false"
+                         [showCount]="true" (count)="sumCounts($event)">
+          </share-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </div>

@@ -46,6 +46,23 @@ var DockstoreService = (function () {
             return sources.indexOf(elem) === pos;
         });
     };
+    DockstoreService.prototype.getVerifiedWorkflowSources = function (workflow) {
+        var sources = [];
+        if (workflow !== null) {
+            for (var _i = 0, _a = workflow.workflowVersions; _i < _a.length; _i++) {
+                var version = _a[_i];
+                if (version.verified) {
+                    sources.push({
+                        version: version.name,
+                        verifiedSource: version.verifiedSource
+                    });
+                }
+            }
+        }
+        return sources.filter(function (elem, pos) {
+            return sources.indexOf(elem) === pos;
+        });
+    };
     DockstoreService.prototype.getLabelStrings = function (labels) {
         var sortedLabels = labels.sort(function (a, b) {
             if (a.value < b.value) {

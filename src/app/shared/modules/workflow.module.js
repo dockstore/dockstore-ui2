@@ -17,6 +17,7 @@ var accordion_1 = require("ngx-bootstrap/accordion");
 var tabs_1 = require("ngx-bootstrap/tabs");
 var tooltip_1 = require("ngx-bootstrap/tooltip");
 var alert_1 = require("ngx-bootstrap/alert");
+var ngx_sharebuttons_1 = require("ngx-sharebuttons");
 /* Component */
 var versions_component_1 = require("../../workflow/versions/versions.component");
 var files_component_1 = require("../../workflow/files/files.component");
@@ -71,6 +72,7 @@ WorkflowModule = __decorate([
             tooltip_1.TooltipModule.forRoot(),
             tabs_1.TabsModule.forRoot(),
             accordion_1.AccordionModule.forRoot(),
+            ngx_sharebuttons_1.ShareButtonsModule.forRoot(),
             orderby_module_1.OrderByModule,
             forms_1.FormsModule,
             dag_module_1.DagModule
