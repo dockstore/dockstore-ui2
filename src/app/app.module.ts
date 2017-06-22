@@ -56,6 +56,7 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import {SearchComponent} from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
 
 
@@ -65,6 +66,7 @@ import { OrderByModule } from './shared/modules/orderby.module';
     SponsorsComponent,
     NavbarComponent,
     HomeComponent,
+    SearchComponent,
     FooterComponent,
     HomeFootNoteComponent,
     ToolDetailsComponent,

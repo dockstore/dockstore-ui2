@@ -1,4 +1,6 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
@@ -18,6 +20,7 @@ import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfile
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
+
 /* Module */
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -51,7 +54,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     CommonModule,
     AlertModule.forRoot(),
     MarkdownModule.forRoot(),
-    DataTablesModule.forRoot(),
+    DataTablesModule,
     HeaderModule,
     HighlightJsModule,
     ListWorkflowsModule,
@@ -61,6 +64,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     OrderByModule,
+    FormsModule,
     DagModule
   ],
   providers: [

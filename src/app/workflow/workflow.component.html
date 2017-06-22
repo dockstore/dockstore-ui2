@@ -60,7 +60,13 @@
         </div>
       </tab>
       <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
-        <ul class="list-unstyled container-info">
+        <button type="sbutton"
+                *ngIf="!labelsEditMode"
+                class="btn btn-link pull-right"
+                (click)="toggleLabelsEditMode()">
+          <span class="glyphicon glyphicon-edit"></span>Edit
+        </button>
+        <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
           <li *ngIf="workflow">
             <strong>Labels:</strong>
             <span *ngIf="workflow?.labels.length === 0">n/a</span>
@@ -69,6 +75,41 @@
             </span>
           </li>
         </ul>
+        <form name="editWorkflowForm"
+              class="edit-container form-inline"
+              (ngSubmit)="submitWorkflowEdits()"
+              #labelForm="ngForm"
+              novalidate>
+          <button type="submit"
+                  class="btn btn-link pull-right"
+                  [disabled]="!labelForm.form.valid"
+                  *ngIf="labelsEditMode">
+            <span class="glyphicon glyphicon-floppy-save"></span>Save
+          </button>
+          <div *ngIf="labelsEditMode">
+            <div class="form-group">
+              <label>Workflow Labels:</label>
+              <input
+                id="workflowLabels"
+                type="text"
+                class="input-sm form-control"
+                name="workflowLabels"
+                [(ngModel)]="workflowEditData.labels"
+                #name="ngModel"
+                maxlength="512"
+                [pattern]="labelPattern"
+                placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+            </div>
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+              <div [hidden]="!name.errors.maxlength">
+                Labels string is too long. (Max 512 characters.)
+              </div>
+              <div [hidden]="!name.errors.pattern">
+                Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
+              </div>
+            </div>
+          </div>
+        </form>
       </tab>
       <tab id="versionsTab" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
           <app-versions-workflow [versions]="workflow?.workflowVersions"

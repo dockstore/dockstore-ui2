@@ -33,12 +33,12 @@
               <div class="input-group">
                 <input type="text" class="form-control" [(ngModel)]="token.token" value="{{token?.token }}" readonly>
                 <span class="input-group-btn">
-                  <button class="btn btn-default" [class.btn-success]="token.copyClass" type="button" ngxClipboard
-                          [cbContent]="token.token"
-                          (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">
-                    <span class="glyphicon glyphicon-copy"></span>
-                  </button>
-                </span>
+              <button class="btn btn-default" [class.btn-success]="token.copyClass" type="button" ngxClipboard
+                      [cbContent]="token.token"
+                      (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">
+                <span class="glyphicon glyphicon-copy"></span>
+              </button>
+            </span>
               </div>
             </td>
             <td><a (click)="deleteToken(token?.id)">Delete</a></td>

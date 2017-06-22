@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "debug": "registry:npm/debug#2.0.0+20170504163145",
+    "elastic.js": "registry:dt/elastic.js#1.2.0+20170125182311"
+  },
+  "globalDependencies": {
+    "elasticsearch": "registry:dt/elasticsearch#5.0.0+20170222032831"
+  }
+}
