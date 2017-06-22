@@ -43,7 +43,7 @@ export class HttpService {
   }
 
   postResponse(url: string, body, dockstoreToken?: string) {
-    return this.http.post(url, { body }, this.addOptions(dockstoreToken))
+    return this.http.post(url, body, this.addOptions(this.getDockstoreToken()))
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }

@@ -47,10 +47,12 @@
           </div>
         </accordion-group>
       </accordion>
-      <button id="register_tool_button" type="button"
+      <button data-target=".registerContainerModal" data-toggle="modal" id="register_tool_button" type="button"
               class="btn btn-primary btn-sm  pull-right">
-        <span>Add Tool</span>
+              Add Tool
       </button>
+
+      <app-register-tool></app-register-tool>
     </div>
     <div class="col-md-8 containers-rsb">
       <app-container [isToolPublic]="false"></app-container>
