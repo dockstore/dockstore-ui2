@@ -12,6 +12,7 @@ export class RegisterToolService {
     private friendlyRepositories = FriendlyRepositories;
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private dockerRegistryMap = [];
+    refreshingContainer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
@@ -45,8 +46,12 @@ export class RegisterToolService {
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
+            this.refreshingContainer.next(true);
+            this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
+                (<any>$('#registerContainerModal')).modal('toggle');
+                console.log(refreshResponse);
+            });
             // Use types instead
-            (<any>$('#registerContainerModal')).modal('toggle');
         }, error => this.setToolRegisterError(error)
         );
     }
