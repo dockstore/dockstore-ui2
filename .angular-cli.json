@@ -19,14 +19,14 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css",
-        "styles.scss",
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
         "../bower_components/bootstrap-toc/bootstrap-toc.css",
         "../node_modules/jquery-colorbox/example1/colorbox.css",
         "../src/jquery.qtip.css",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "styles.css",
+        "styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",

@@ -862,10 +862,20 @@ div.tabs>div:target>div,
   opacity: 1;
 }
 
-.btn-success {
+.btn-copy {
   color: white !important;
   background-color: #487980 !important;
   border-color: #487980 !important;
+  &:hover{
+    color: white !important;
+    background-color: #487980 !important;
+    border-color: #487980 !important;
+  }
+}
+
+.btn-sad {
+  background-color: white;
+  box-shadow: none;
 }
 
 #label-holder {
