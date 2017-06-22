@@ -10,28 +10,29 @@ import { ToolService } from '../shared/tool.service';
 import { Tool } from '../shared/tool';
 
 import { ContainerService } from '../shared/container.service';
-
-import { UserService } from '../loginComponents/user.service';
+import { validationPatterns } from '../shared/validationMessages.model';
 
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Tool implements OnDestroy {
+export class WorkflowComponent extends Tool {
   labels: string[];
   mode: string;
-
+  labelsEditMode: boolean;
+  workflowEditData: any;
+  labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
+              private updateWorkflow: WorkflowService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
-              userService: UserService,
               router: Router,
               workflowService: WorkflowService,
               containerService: ContainerService) {
-    super(toolService, communicatorService, providerService, userService, router,
+    super(toolService, communicatorService, providerService, router,
           workflowService, containerService, 'workflows');
   }
   setProperties() {
@@ -39,6 +40,7 @@ export class WorkflowComponent extends Tool implements OnDestroy {
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
+    this.resetWorkflowEditData();
   }
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
@@ -52,6 +54,35 @@ export class WorkflowComponent extends Tool implements OnDestroy {
     return (tab === this.mode);
   }
 
-  ngOnDestroy() {
+  toggleLabelsEditMode() {
+    this.labelsEditMode = !this.labelsEditMode;
+  }
+  resetWorkflowEditData() {
+    const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
+    const workflowLabels = labelArray.join(', ');
+    this.workflowEditData = {
+      labels: workflowLabels,
+      is_published: this.workflow.is_published
+    };
+  }
+  submitWorkflowEdits() {
+    if (!this.labelsEditMode) {
+      this.labelsEditMode = true;
+      return;
+    }
+    // the edit object should be recreated
+    if (this.workflowEditData.labels !== 'undefined') {
+      this.setWorkflowLabels();
+    }
+  }
+  setWorkflowLabels(): any {
+    return this.dockstoreService.setWorkflowLabels(this.workflow.id, this.workflowEditData.labels).
+    subscribe(
+      workflow => {
+        this.workflow.labels = workflow.labels;
+        this.updateWorkflow.setWorkflow(workflow);
+        this.labelsEditMode = false;
+      }
+    );
   }
 }

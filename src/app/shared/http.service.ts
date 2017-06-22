@@ -78,7 +78,7 @@ export class HttpService {
       params: myParams
     });
     return this.http.request(new Request(options))
-      .map((res: Response) => res.text())
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 }

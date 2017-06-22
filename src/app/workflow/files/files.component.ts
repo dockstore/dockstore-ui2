@@ -1,6 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { Files } from '../../shared/files';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import {Subscription} from 'rxjs/Subscription';
+import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-files-workflow',
@@ -19,5 +21,4 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   ngOnChanges() {
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
-
 }

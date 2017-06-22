@@ -12,32 +12,36 @@ import { Tool } from '../shared/tool';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
-import { UserService } from '../loginComponents/user.service';
 import { WorkflowService } from '../shared/workflow.service';
+import { validationPatterns } from '../shared/validationMessages.model';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Tool implements OnDestroy {
+export class ContainerComponent extends Tool {
   labels: string[];
+  labelsEditMode: boolean;
+  containerEditData: any;
+  labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private imageProviderService: ImageProviderService,
+              private updateContainer: ContainerService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
-              userService: UserService,
               router: Router,
               workflowService: WorkflowService,
               containerService: ContainerService) {
-    super(toolService, communicatorService, providerService, userService, router,
-      workflowService, containerService, 'containers');
+    super(toolService, communicatorService, providerService, router,
+          workflowService, containerService, 'containers');
   }
 
   setProperties() {
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
+    this.labelsEditMode = false;
     toolRef.agoMessage = this.dateService.getAgoMessage(toolRef.lastBuild);
     toolRef.email = this.dockstoreService.stripMailTo(toolRef.email);
     toolRef.lastBuildDate = this.dateService.getDateTimeMessage(toolRef.lastBuild);
@@ -48,10 +52,41 @@ export class ContainerComponent extends Tool implements OnDestroy {
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
+    this.resetContainerEditData();
   }
   getValidVersions() {
-    console.log('container getValidVersions');
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
+  toggleLabelsEditMode() {
+    this.labelsEditMode = !this.labelsEditMode;
+  }
+  resetContainerEditData() {
+    const labelArray = this.dockstoreService.getLabelStrings(this.tool.labels);
+    const toolLabels = labelArray.join(', ');
+    this.containerEditData = {
+      labels: toolLabels,
+      is_published: this.tool.is_published
+    };
+  }
 
+  submitContainerEdits() {
+    if (!this.labelsEditMode) {
+      this.labelsEditMode = true;
+      return;
+    }
+    // the edit object should be recreated
+    if (this.containerEditData.labels !== 'undefined') {
+      this.setContainerLabels();
+    }
+  }
+  setContainerLabels(): any {
+    return this.dockstoreService.setContainerLabels(this.tool.id, this.containerEditData.labels).
+    subscribe(
+      tool => {
+        this.tool.labels = tool.labels;
+        this.updateContainer.setTool(tool);
+        this.labelsEditMode = false;
+      }
+    );
+  }
 }

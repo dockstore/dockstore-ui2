@@ -36,7 +36,6 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
   }
   private setProperty() {
     this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
-    console.log(this.user);
   }
   ngOnInit() {
     this.getUser();

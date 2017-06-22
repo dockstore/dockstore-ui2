@@ -1,18 +1,51 @@
-<div class="container separation">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Token Source</th>
-        <th>Token Value</th>
-        <th>Operations</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let token of tokens">
-        <td>{{ token?.tokenSource }}</td>
-        <td>{{ token?.token }}</td>
-        <td><a (click)="deleteToken(token?.id)">Delete</a></td>
-      </tr>
-    </tbody>
-  </table>
+<app-header>
+  <span class="glyphicon glyphicon-link"></span>
+  Tokens
+  <span class="public-lists">Current User</span>
+</app-header>
+<div id="container-table">
+  <div class="container ds-page-mh">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table" *ngIf="tokens">
+          <thead>
+          <tr>
+            <th>
+          <span class="glyphicon pull-right"
+                [ngClass]="getIconClass('tokenSource')"
+                (click)="clickSortColumn('tokenSource')">
+          </span>
+              Token Source
+            </th>
+            <th>Token Value</th>
+            <th>Operations</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngIf="tokens.length === 0">
+            <td colspan="4">
+              <div class="text-center">No Records Found</div>
+            </td>
+          </tr>
+          <tr *ngFor="let token of tokens | orderBy : convertSorting()">
+            <td>{{ token?.tokenSource }}</td>
+            <td>
+              <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="token.token" value="{{token?.token }}" readonly>
+                <span class="input-group-btn">
+              <button class="btn btn-default" [class.btn-success]="token.copyClass" type="button" ngxClipboard
+                      [cbContent]="token.token"
+                      (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">
+                <span class="glyphicon glyphicon-copy"></span>
+              </button>
+            </span>
+              </div>
+            </td>
+            <td><a (click)="deleteToken(token?.id)">Delete</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
