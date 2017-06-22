@@ -4,21 +4,20 @@ import { Observable } from 'rxjs/Rx';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
-import { Component, OnInit, Input, OnChanges, AfterViewInit, ViewChild, ElementRef, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, AfterViewInit {
+export class DagComponent implements OnInit {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
 
   private currentWorkflowId;
   private element: any;
-  private dagPromise: Promise<any>;
   private dagResult: any;
   private cy: any;
 
@@ -32,10 +31,8 @@ export class DagComponent implements OnInit, AfterViewInit {
 
   refreshDocument() {
     const self = this;
-    if (this.dagResult !== null) {
+    if (this.dagResult) {
       this.element = document.getElementById('cy');
-      console.log(typeof (this.element));
-      console.log(typeof (this.el));
       this.cy = cytoscape({
         container: this.element,
         boxSelectionEnabled: false,
@@ -44,8 +41,10 @@ export class DagComponent implements OnInit, AfterViewInit {
           name: 'dagre'
         },
         style: this.style,
-        elements: this.dagPromise
+        elements: this.dagResult
       });
+    } else {
+      console.log('DAG is not truthy');
     }
 
     self.cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
@@ -145,9 +144,9 @@ export class DagComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.dagPromise = this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).toPromise();
     this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
       this.dagResult = result;
+      this.refreshDocument();
       this.updateMissingTool();
     });
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
@@ -157,10 +156,14 @@ export class DagComponent implements OnInit, AfterViewInit {
   }
 
   updateMissingTool() {
-    if (this.dagResult.edges.length < 1 && this.dagResult.nodes.length < 1) {
+    if (!this.dagResult) {
       this.missingTool = true;
     } else {
-      this.missingTool = false;
+      if (this.dagResult.edges.length < 1 && this.dagResult.nodes.length < 1) {
+        this.missingTool = true;
+      } else {
+        this.missingTool = false;
+      }
     }
   }
 
@@ -170,14 +173,11 @@ export class DagComponent implements OnInit, AfterViewInit {
     $('#exportLink').attr('href', pngDAG).attr('download', name);
   }
 
-  ngAfterViewInit() {
-    this.refreshDocument();
-  }
-
-  onChange(version) {
-    this.dagService.getCurrentDAG(this.id, version.id).subscribe(result => {
+  onChange() {
+    this.dagService.getCurrentDAG(this.id, this.selectVersion.id).subscribe(result => {
       this.dagResult = result;
       this.updateMissingTool();
+      this.refreshDocument();
     });
   }
 }
