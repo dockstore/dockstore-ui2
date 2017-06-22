@@ -85,7 +85,6 @@ var Tool = (function () {
     };
     Tool.prototype.urlToolChanged = function (event) {
         var _this = this;
-        // console.log(event.url);
         if (!this.tool) {
             this.title = this.decodedString(event.url.replace("/" + this._toolType + "/", ''));
         }

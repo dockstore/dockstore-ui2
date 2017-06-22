@@ -32,7 +32,6 @@ var WorkflowComponent = (function (_super) {
     }
     WorkflowComponent.prototype.setProperties = function () {
         var workflowRef = this.workflow;
-        console.log(workflowRef);
         this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
         this.shareURL = window.location.href;
         workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);

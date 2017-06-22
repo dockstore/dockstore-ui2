@@ -108,7 +108,6 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   private urlToolChanged(event) {
-    // console.log(event.url);
     if (!this.tool) {
       this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
     } else {
