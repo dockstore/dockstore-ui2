@@ -28,9 +28,9 @@ export class RegisterToolService {
     }
 
     setToolRegisterError(error: any) {
-        let mapthing = null;
+        let errorObj = null;
         if (error) {
-            mapthing = {
+            errorObj = {
                 message: 'The webservice encountered an error trying to create this ' +
                 'container, please ensure that the container attributes are ' +
                 'valid and the same image has not already been registered.',
@@ -38,7 +38,7 @@ export class RegisterToolService {
                 error._body
             };
         }
-        this.toolRegisterError.next(mapthing);
+        this.toolRegisterError.next(errorObj);
     }
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
@@ -68,19 +68,19 @@ export class RegisterToolService {
         return toolObj.private_access === true && !toolObj.tool_maintainer_email;
     }
     isInvalidCustomRegistry(toolObj: Tool, customDockerRegistryPath: string) {
-            for (let i = 0; i < this.dockerRegistryMap.length; i++) {
-                if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
-                    if (this.dockerRegistryMap[i].privateOnly === 'true') {
-                        if (!customDockerRegistryPath) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
+            if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
+                if (this.dockerRegistryMap[i].privateOnly === 'true') {
+                    if (!customDockerRegistryPath) {
+                        return true;
                     } else {
                         return false;
                     }
+                } else {
+                    return false;
                 }
             }
+        }
     }
 
     getImagePath(imagePath, part) {
