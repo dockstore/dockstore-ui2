@@ -98,7 +98,7 @@ export abstract class Tool implements OnInit, OnDestroy {
         this.providerService.setUpProvider(tool);
       }
       this.tool = Object.assign(tool, this.tool);
-      this.title = this.tool.path;
+      this.title = this.tool.tool_path;
       const toolRef = this.tool;
       toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
       toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
