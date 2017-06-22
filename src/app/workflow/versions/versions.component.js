@@ -26,7 +26,17 @@ var VersionsWorkflowComponent = (function (_super) {
         return _this;
     }
     VersionsWorkflowComponent.prototype.setNoOrderCols = function () {
+        console.log(this.verifiedSource);
         return [4, 5];
+    };
+    VersionsWorkflowComponent.prototype.getVerifiedSource = function (name) {
+        for (var _i = 0, _a = this.verifiedSource; _i < _a.length; _i++) {
+            var source = _a[_i];
+            if (source.version === name) {
+                return source.verifiedSource;
+            }
+        }
+        return '';
     };
     return VersionsWorkflowComponent;
 }(versions_1.Versions));

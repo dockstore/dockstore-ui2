@@ -22,10 +22,11 @@ var ListWorkflowsComponent = (function (_super) {
     __extends(ListWorkflowsComponent, _super);
     // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
     // gitUrl
-    function ListWorkflowsComponent(communicatorService, workflowService, listService, providerService) {
+    function ListWorkflowsComponent(communicatorService, workflowService, dockstoreService, listService, providerService) {
         var _this = _super.call(this, listService, providerService, 'workflows') || this;
         _this.communicatorService = communicatorService;
         _this.workflowService = workflowService;
+        _this.dockstoreService = dockstoreService;
         return _this;
     }
     ListWorkflowsComponent.prototype.sendWorkflowInfo = function (workflow) {
@@ -33,6 +34,9 @@ var ListWorkflowsComponent = (function (_super) {
         this.workflowService.setWorkflow(workflow);
     };
     ListWorkflowsComponent.prototype.initToolLister = function () {
+    };
+    ListWorkflowsComponent.prototype.getVerified = function (workflow) {
+        return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
     };
     return ListWorkflowsComponent;
 }(tool_lister_1.ToolLister));

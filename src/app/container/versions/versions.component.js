@@ -26,7 +26,17 @@ var VersionsContainerComponent = (function (_super) {
         return _this;
     }
     VersionsContainerComponent.prototype.setNoOrderCols = function () {
+        console.log(this.verifiedSource);
         return [5, 6];
+    };
+    VersionsContainerComponent.prototype.getVerifiedSource = function (name) {
+        for (var _i = 0, _a = this.verifiedSource; _i < _a.length; _i++) {
+            var source = _a[_i];
+            if (source.version === name) {
+                return source.verifiedSource;
+            }
+        }
+        return '';
     };
     return VersionsContainerComponent;
 }(versions_1.Versions));

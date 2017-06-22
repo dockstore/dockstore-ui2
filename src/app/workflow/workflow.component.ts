@@ -46,6 +46,7 @@ export class WorkflowComponent extends Tool {
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
+    workflowRef.verifiedLinks = this.dateService.getVerifiedLink();
     this.resetWorkflowEditData();
   }
   sumCounts(count) {

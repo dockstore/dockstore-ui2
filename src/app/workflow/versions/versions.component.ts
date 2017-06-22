@@ -13,11 +13,12 @@ import { DockstoreService } from '../../shared/dockstore.service';
 })
 export class VersionsWorkflowComponent extends Versions {
   @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<string>;
+  @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
   verifiedLink: string;
 
   setNoOrderCols(): Array<number> {
+    console.log(this.verifiedSource);
     return [ 4, 5 ];
   }
 
@@ -25,5 +26,15 @@ export class VersionsWorkflowComponent extends Versions {
               dateService: DateService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
+  }
+
+  getVerifiedSource(name: string) {
+    for (const source of this.verifiedSource) {
+      if (source.version === name) {
+          return source.verifiedSource;
+      }
+
+    }
+    return '';
   }
 }

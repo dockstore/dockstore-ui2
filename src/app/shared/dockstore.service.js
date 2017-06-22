@@ -36,9 +36,18 @@ var DockstoreService = (function () {
     DockstoreService.prototype.getVerifiedSources = function (toolRef) {
         var sources = [];
         if (toolRef !== null) {
-            for (var i = 0; i < toolRef.tags.length; i++) {
-                if (toolRef.tags[i].verified) {
-                    sources.push(toolRef.tags[i].verifiedSource);
+            // for (let i = 0; i < toolRef.tags.length; i++) {
+            //   if (toolRef.tags[ i ].verified) {
+            //     sources.push(toolRef.tags[ i ].verifiedSource);
+            //   }
+            // }
+            for (var _i = 0, _a = toolRef.tags; _i < _a.length; _i++) {
+                var version = _a[_i];
+                if (version.verified) {
+                    sources.push({
+                        version: version.name,
+                        verifiedSource: version.verifiedSource
+                    });
                 }
             }
         }

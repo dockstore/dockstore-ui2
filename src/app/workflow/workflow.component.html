@@ -1,6 +1,13 @@
 <div class="container">
   <div class="row">
-  <h3>{{ title }}</h3>
+  <h3>
+    <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
+      <a href={{workflow?.verifiedLinks}}>
+        <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+      </a>
+    </span>
+    {{ title }}
+  </h3>
   <div *ngIf="workflow">
     <span class="label label-default container-label" *ngFor="let label of labels">
       {{label}}
@@ -131,10 +138,10 @@
       </tab>
     </tabset>
   </div>
-  <div class="col-sm-12 col-md-3 col-lg-3" *ngIf="isWorkflowPublic">
+  <div class="side-block col-md-3 ng-scope" *ngIf="isWorkflowPublic">
     <div class="panel panel-default" *ngIf="workflow">
       <div class="panel-heading">
-        <strong>Source Repositories</strong>
+        <h3>Source Repositories</h3>
       </div>
       <div class="panel-body">
         <div class="container-source-repos">
@@ -152,7 +159,7 @@
 
     <div class="panel panel-default" *ngIf="workflow?.versionVerified">
       <div class="panel-heading">
-        <strong>Verified</strong>
+        <h3>Verified</h3>
       </div>
       <div class="panel-body">
         <div class="container-source-repos">
@@ -170,7 +177,7 @@
 
     <div class="panel panel-default" *ngIf="workflow">
       <div class="panel-heading">
-        <strong>Sharing</strong>
+        <h3>Sharing</h3>
       </div>
       <div class="panel-body">
         <div class="container-sharing">

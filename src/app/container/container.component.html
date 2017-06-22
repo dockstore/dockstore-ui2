@@ -147,10 +147,10 @@
           </tab>
         </tabset>
       </div>
-    <div class="col-sm-12 col-md-3 col-lg-3" *ngIf="isToolPublic">
+    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
       <div class="panel panel-default" *ngIf="tool">
         <div class="panel-heading">
-          <strong>Source Repositories</strong>
+          <h3>Source Repositories</h3>
         </div>
         <div class="panel-body">
           <div class="container-source-repos">
@@ -183,9 +183,26 @@
           </div>
         </div>
       </div>
+      <div class="panel panel-default" *ngIf="tool?.versionVerified">
+        <div class="panel-heading">
+          <h3>Verified</h3>
+        </div>
+        <div class="panel-body">
+          <div class="container-source-repos">
+            <ul class="list-unstyled container-info">
+              <li *ngFor="let source of tool?.verifiedSources">
+                <strong>{{source.version}} is verified by: </strong>
+                <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
+                  {{source.verifiedSource}}
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <div class="panel panel-default" *ngIf="tool">
         <div class="panel-heading">
-          <strong>Sharing</strong>
+          <h3>Sharing</h3>
         </div>
         <div class="panel-body">
           <div class="container-sharing">
@@ -194,22 +211,6 @@
                            [pinterest]="false" [tumblr]="false"
                            [showCount]="true" (count)="sumCounts($event)">
             </share-buttons>
-          </div>
-        </div>
-      </div>
-      <div class="panel panel-default" *ngIf="tool?.versionVerified">
-        <div class="panel-heading">
-          <strong>Verified</strong>
-        </div>
-        <div class="panel-body">
-          <div class="container-source-repos">
-            <ul class="list-unstyled container-info">
-              <li *ngFor="let source of tool?.verifiedSources">
-                <p class="ellipsis-lines">
-                  {{source}}
-                </p>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

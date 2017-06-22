@@ -13,14 +13,25 @@ import { DockstoreService } from '../../shared/dockstore.service';
 export class VersionsContainerComponent extends Versions {
   verifiedLink: string;
   @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<string>;
+  @Input() verifiedSource: Array<any>;
 
   setNoOrderCols(): Array<number> {
+    console.log(this.verifiedSource);
     return [ 5, 6 ];
   }
   constructor(dockstoreService: DockstoreService,
               dateService: DateService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
+  }
+
+  getVerifiedSource(name: string) {
+    for (const source of this.verifiedSource) {
+      if (source.version === name) {
+        return source.verifiedSource;
+      }
+
+    }
+    return '';
   }
 }

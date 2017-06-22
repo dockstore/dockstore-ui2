@@ -35,9 +35,17 @@ export class DockstoreService {
   getVerifiedSources(toolRef) {
     const sources = [];
     if (toolRef !== null) {
-      for (let i = 0; i < toolRef.tags.length; i++) {
-        if (toolRef.tags[ i ].verified) {
-          sources.push(toolRef.tags[ i ].verifiedSource);
+      // for (let i = 0; i < toolRef.tags.length; i++) {
+      //   if (toolRef.tags[ i ].verified) {
+      //     sources.push(toolRef.tags[ i ].verifiedSource);
+      //   }
+      // }
+      for (const version of toolRef.tags){
+        if (version.verified) {
+          sources.push({
+            version: version.name,
+            verifiedSource: version.verifiedSource
+          });
         }
       }
     }
