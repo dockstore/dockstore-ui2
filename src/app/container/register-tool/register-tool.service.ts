@@ -67,7 +67,16 @@ export class RegisterToolService {
     isInvalidPrivateTool(toolObj: Tool) {
         return toolObj.private_access === true && !toolObj.tool_maintainer_email;
     }
-    isInvalidCustomRegistry(toolObj: Tool, customDockerRegistryPath: string) {
+
+    /**
+     * Returns true (is invalid) if the customDockerRegistryPath is needed but not truthy
+     * Returns false if the customDockerRegistryPath is not needed or is truthy
+     * @param {Tool} toolObj
+     * @param {string} customDockerRegistryPath
+     * @returns {boolean}
+     * @memberof RegisterToolService
+     */
+    isInvalidCustomRegistry(toolObj: Tool, customDockerRegistryPath: string): boolean {
         for (let i = 0; i < this.dockerRegistryMap.length; i++) {
             if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
                 if (this.dockerRegistryMap[i].privateOnly === 'true') {
