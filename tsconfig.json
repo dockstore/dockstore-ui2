@@ -16,8 +16,8 @@
       "es2016",
       "dom"
     ]
-  },
-  "files": [
-    "typings/index.d.ts"
-  ]
+  }
+//  "files": [
+//    "typings/index.d.ts"
+//  ]
 }
