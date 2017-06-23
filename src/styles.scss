@@ -626,6 +626,7 @@ div.side-block td {
 div.side-block h3 {
   font-size: 16px;
   margin: 0px;
+  color: #21335B;
 }
 
 div.side-block a {
@@ -849,6 +850,27 @@ div.tabs>div:target>div,
 .btn-github:focus {
   color: #fff;
   background-color: #303030;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: white !important;
+  opacity: 1;
+}
+
+.btn-copy {
+  color: white !important;
+  background-color: #487980 !important;
+  border-color: #487980 !important;
+  &:hover{
+    color: white !important;
+    background-color: #487980 !important;
+    border-color: #487980 !important;
+  }
+}
+
+.btn-sad {
+  background-color: white;
+  box-shadow: none;
 }
 
 #label-holder {

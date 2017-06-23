@@ -67,4 +67,13 @@ export class ImageProviderService {
     return null;
   }
 
+  checkPrivateOnlyRegistry(tool: any) {
+    for (const dockerReg of this.dockerRegistryList){
+      if (tool.registry === dockerReg.enum) {
+        return dockerReg.privateOnly === 'true';
+      }
+    }
+    return false;
+  }
+
 }

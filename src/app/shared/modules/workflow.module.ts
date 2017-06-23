@@ -11,6 +11,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 /* Component */
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
@@ -63,6 +64,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
+    ShareButtonsModule.forRoot(),
     OrderByModule,
     FormsModule,
     DagModule

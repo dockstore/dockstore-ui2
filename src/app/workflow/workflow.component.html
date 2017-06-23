@@ -1,6 +1,13 @@
 <div class="container">
   <div class="row">
-  <h3>{{ title }}</h3>
+  <h3>
+    <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
+      <a href={{workflow?.verifiedLinks}}>
+        <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+      </a>
+    </span>
+    {{ title }}
+  </h3>
   <div *ngIf="workflow">
     <span class="label label-default container-label" *ngFor="let label of labels">
       {{label}}
@@ -9,7 +16,8 @@
   <p class="update">
     Last Modified: {{ workflow?.agoMessage || 'n/a' }}
   </p>
-  <div>
+  <div class="row">
+  <div class="ds-tabs col-sm-12 col-md-9 col-lg-9">
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <ul class="list-unstyled container-info" *ngIf="workflow">
@@ -52,7 +60,7 @@
             Description
           </label>
           <div class="well well-sm">
-            <pre>{{ workflow?.description || 'No description associated with this container.' }}</pre>
+            <markdown [data]="workflow?.description || 'No description associated with this workflow.'"></markdown>
           </div>
           <div *ngIf="validVersions">
             <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="workflow?.path"></app-launch>
@@ -130,5 +138,58 @@
       </tab>
     </tabset>
   </div>
+  <div class="side-block col-md-3 ng-scope" *ngIf="isWorkflowPublic">
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <h3>Source Repositories</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <p>
+            <span *ngIf="workflow.provider">
+               <a [href]="workflow.providerUrl">
+                    {{workflow.provider}}
+                    <span class="glyphicon glyphicon-new-window"></span>
+                  </a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" *ngIf="workflow?.versionVerified">
+      <div class="panel-heading">
+        <h3>Verified</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <ul class="list-unstyled container-info">
+            <li *ngFor="let source of workflow?.verifiedSources">
+              <strong>{{source.version}} is verified by: </strong>
+              <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
+                {{source.verifiedSource}}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <h3>Sharing</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-sharing">
+          <share-buttons class="withCount" [url]="shareURL"
+                         [whatsApp]="false" [stumbleUpOn]="false"
+                         [pinterest]="false" [tumblr]="false"
+                         [showCount]="true" (count)="sumCounts($event)">
+          </share-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </div>

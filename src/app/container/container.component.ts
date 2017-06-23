@@ -13,6 +13,7 @@ import { Tool } from '../shared/tool';
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
 import { WorkflowService } from '../shared/workflow.service';
+import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 
 @Component({
@@ -21,12 +22,17 @@ import { validationPatterns } from '../shared/validationMessages.model';
 })
 export class ContainerComponent extends Tool {
   labels: string[];
+  dockerPullCmd: string;
+  privateOnlyRegistry: boolean;
+  totalShare = 0;
+  shareURL: string;
   labelsEditMode: boolean;
   containerEditData: any;
   labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private imageProviderService: ImageProviderService,
+              private listContainersService: ListContainersService,
               private updateContainer: ContainerService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
@@ -41,6 +47,9 @@ export class ContainerComponent extends Tool {
   setProperties() {
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path);
+    this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
+    this.shareURL = window.location.href;
     this.labelsEditMode = false;
     toolRef.agoMessage = this.dateService.getAgoMessage(toolRef.lastBuild);
     toolRef.email = this.dockstoreService.stripMailTo(toolRef.email);
@@ -54,6 +63,10 @@ export class ContainerComponent extends Tool {
     }
     this.resetContainerEditData();
   }
+  sumCounts(count) {
+    this.totalShare += count;
+  }
+
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }

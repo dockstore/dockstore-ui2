@@ -1,3 +1,4 @@
+<script src="tokens.component.ts"></script>
 <app-header>
   <span class="glyphicon glyphicon-link"></span>
   Tokens
@@ -33,7 +34,7 @@
               <div class="input-group">
                 <input type="text" class="form-control" [(ngModel)]="token.token" value="{{token?.token }}" readonly>
                 <span class="input-group-btn">
-              <button class="btn btn-default" [class.btn-success]="token.copyClass" type="button" ngxClipboard
+              <button class="btn btn-default" [ngClass]="{'btn-copy':token.copyClass}" type="button" ngxClipboard
                       [cbContent]="token.token"
                       (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">
                 <span class="glyphicon glyphicon-copy"></span>
@@ -41,7 +42,9 @@
             </span>
               </div>
             </td>
-            <td><a (click)="deleteToken(token?.id)">Delete</a></td>
+            <td><a (click)="deleteToken(token?.id)">
+              <span class="glyphicon glyphicon-trash"></span>Delete</a>
+            </td>
           </tr>
           </tbody>
         </table>

@@ -17,43 +17,42 @@
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
     <div class="row">
-      <div class="ds-tabs col-sm-12 col-md-10 col-lg-10">
-        <tabset id="tool_tabs" justified="true">
-          <tab id="infoTab" heading="Info" id="infoTab">
-            <div>
-              <ul class="list-unstyled container-info" *ngIf="tool">
-                <li>
-                  <strong tooltip="Author listed in descriptor">Author</strong>:
-                  {{ tool?.author || 'n/a' }}
-                </li>
-                <li>
-                  <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
-                  <span *ngIf="!tool?.email">n/a</span>
-                  <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
-                    {{ tool?.email }}
-                  </a>
-                </li>
-                <li>
-                  <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
-                  <a [href]="tool?.providerUrl">
-                    {{ tool?.providerUrl }}
-                  </a>
-                </li>
-                <li>
-                  <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
-                  <a [href]="tool?.imgProviderUrl">
-                    {{ tool?.imgProviderUrl }}
-                  </a>
-                </li>
-                <li>
-                  <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
-                  {{ tool?.default_dockerfile_path }}
-                </li>
-                <li>
-                  <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
-                  {{ tool?.default_cwl_path || 'n/a' }}
-                </li>
-
+    <div class="ds-tabs col-sm-12 col-md-9 col-lg-9" >
+      <tabset id="tool_tabs" justified="true">
+        <tab id="infoTab" heading="Info" id="infoTab">
+          <div>
+            <ul class="list-unstyled container-info" *ngIf="tool">
+              <li>
+                <strong tooltip="Author listed in descriptor">Author</strong>:
+                {{ tool?.author || 'n/a' }}
+              </li>
+              <li>
+                <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
+                <span *ngIf="!tool?.email">n/a</span>
+                <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
+                  {{ tool?.email }}
+                </a>
+              </li>
+              <li>
+                <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
+                <a [href]="tool?.providerUrl">
+                  {{ tool?.providerUrl }}
+                </a>
+              </li>
+              <li>
+                <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
+                <a [href]="tool?.imgProviderUrl">
+                  {{ tool?.imgProviderUrl }}
+                </a>
+              </li>
+              <li>
+                <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
+                {{ tool?.default_dockerfile_path }}
+              </li>
+              <li>
+                <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
+                {{ tool?.default_cwl_path || 'n/a' }}
+              </li>
                 <li>
                   <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>:
                   {{ tool?.default_wdl_path || 'n/a' }}
@@ -77,7 +76,7 @@
                 Description
               </label>
               <div class="well well-sm">
-                <pre>{{ tool?.description || 'No description associated with this container.' }}</pre>
+                <markdown [data]="tool?.description || 'No description associated with this container.'"></markdown>
               </div>
               <div *ngIf="validVersions">
                 <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
@@ -148,22 +147,91 @@
           </tab>
         </tabset>
       </div>
-    </div>
-
-    <div class="col-sm-12 col-md-2 col-lg-2">
-      <div class="panel panel-default" *ngIf="tool?.versionVerified">
+    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
+      <div class="panel panel-default" *ngIf="tool">
         <div class="panel-heading">
-          <strong>Verified</strong>
+          <strong>Docker Pull Command</strong>
         </div>
         <div class="panel-body">
-          <tbody>
-          <tr *ngFor="let source of tool?.verifiedSources">
-            <td>{{source}}</td>
-          </tr>
-          </tbody>
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
+            <span class="input-group-btn">
+                <button class="btn btn-default" [ngClass]="{'btn-copy':isCopied}" type="button" ngxClipboard
+                        [cbContent]="dockerPullCmd"
+                        (cbOnSuccess)="isCopied = true">
+                  <span class="glyphicon glyphicon-copy"></span>
+                </button>
+              </span>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" *ngIf="tool">
+        <div class="panel-heading">
+          <h3>Source Repositories</h3>
+        </div>
+        <div class="panel-body">
+          <div class="container-source-repos">
+            <p>
+              Git Repository:
+              <span *ngIf="tool.provider">
+                  <a [href]="tool.providerUrl">
+                    {{tool.provider}}
+                    <span class="glyphicon glyphicon-new-window"></span>
+                  </a>
+              </span>
+            </p>
+            <p>
+              Docker Registry:
+              <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
+              <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
+                <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl">
+                  {{tool?.imgProvider}}
+                  <span class="glyphicon glyphicon-new-window"></span>
+                </a>
+                <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
+              </span>
+              <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')"
+                    class="pull-right">
+                <a href="{{tool.imgProviderUrl}}">
+                  <img src="{{tool.imgProviderUrl}}/status">
+                </a>
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" *ngIf="tool?.versionVerified">
+        <div class="panel-heading">
+          <h3>Verified</h3>
+        </div>
+        <div class="panel-body">
+          <div class="container-source-repos">
+            <ul class="list-unstyled container-info">
+              <li *ngFor="let source of tool?.verifiedSources">
+                <strong>{{source.version}} is verified by: </strong>
+                <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
+                  {{source.verifiedSource}}
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" *ngIf="tool">
+        <div class="panel-heading">
+          <h3>Sharing</h3>
+        </div>
+        <div class="panel-body">
+          <div class="container-sharing">
+            <share-buttons class="withCount" [url]="shareURL"
+                           [whatsApp]="false" [stumbleUpOn]="false"
+                           [pinterest]="false" [tumblr]="false"
+                           [showCount]="true" (count)="sumCounts($event)">
+            </share-buttons>
+          </div>
         </div>
       </div>
     </div>
-
+    </div>
   </div>
 </div>

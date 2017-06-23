@@ -14,7 +14,13 @@
           <td>
             <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
           </td>
-          <td>{{ workflow?.author || 'n/a' }}</td>
+          <td>
+              <span id="verifiedIcon" *ngIf="getVerified(workflow)">
+                <a href={{verifiedLink}}>
+                  <span an class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+                </a>
+              </span>
+            {{ workflow?.author || 'n/a' }}</td>
           <td>{{ workflow?.descriptorType | uppercase }}</td>
           <td>
             <a [href]="workflow.providerUrl">
