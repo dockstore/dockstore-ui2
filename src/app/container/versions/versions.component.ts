@@ -16,7 +16,6 @@ export class VersionsContainerComponent extends Versions {
   @Input() verifiedSource: Array<any>;
 
   setNoOrderCols(): Array<number> {
-    console.log(this.verifiedSource);
     return [ 5, 6 ];
   }
   constructor(dockstoreService: DockstoreService,

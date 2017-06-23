@@ -18,7 +18,6 @@ export class VersionsWorkflowComponent extends Versions {
   verifiedLink: string;
 
   setNoOrderCols(): Array<number> {
-    console.log(this.verifiedSource);
     return [ 4, 5 ];
   }
 

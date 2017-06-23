@@ -64,7 +64,6 @@ export class ContainerComponent extends Tool {
     this.resetContainerEditData();
   }
   sumCounts(count) {
-    console.log(count);
     this.totalShare += count;
   }
 

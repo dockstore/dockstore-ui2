@@ -68,7 +68,6 @@ export class ImageProviderService {
   }
 
   checkPrivateOnlyRegistry(tool: any) {
-    console.log(tool.registry);
     for (const dockerReg of this.dockerRegistryList){
       if (tool.registry === dockerReg.enum) {
         return dockerReg.privateOnly === 'true';

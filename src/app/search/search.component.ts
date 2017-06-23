@@ -121,7 +121,6 @@ export class SearchComponent implements OnInit {
    * @param categoryValue
    */
   handleFilters(category: string, categoryValue: string) {
-    console.log(category + ' ' + categoryValue);
     if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
       this.filters.get(category).delete(categoryValue);
       // wipe out the category if empty

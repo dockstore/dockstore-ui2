@@ -34,7 +34,6 @@ export abstract class Tool implements OnInit, OnDestroy {
               private containerService: ContainerService,
               toolType: string) {
     this._toolType = toolType;
-    // this.isToolPublic = true;
   }
 
   ngOnInit() {

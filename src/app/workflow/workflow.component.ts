@@ -49,7 +49,6 @@ export class WorkflowComponent extends Tool {
     this.resetWorkflowEditData();
   }
   sumCounts(count) {
-    console.log(count);
     this.totalShare += count;
   }
   getValidVersions() {
