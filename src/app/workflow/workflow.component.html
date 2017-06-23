@@ -60,7 +60,7 @@
             Description
           </label>
           <div class="well well-sm">
-            <pre>{{ workflow?.description || 'No description associated with this container.' }}</pre>
+            <markdown [data]="workflow?.description || 'No description associated with this workflow.'"></markdown>
           </div>
           <div *ngIf="validVersions">
             <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="workflow?.path"></app-launch>
