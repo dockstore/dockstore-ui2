@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Rx';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
-import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit {
+export class DagComponent implements OnInit, AfterViewChecked {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
@@ -28,6 +28,7 @@ export class DagComponent implements OnInit {
   private workflow;
   private tooltip: string;
   private missingTool;
+  private refresh = false;
 
   refreshDocument() {
     const self = this;
@@ -140,13 +141,13 @@ export class DagComponent implements OnInit {
 
   toggleExpand() {
     this.expanded = !this.expanded;
-    this.refreshDocument();  // This will set the DAG after the view has been checked
+    this.refresh = true;  // This will set the DAG after the view has been checked
   }
 
   ngOnInit() {
     this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
       this.dagResult = result;
-      this.refreshDocument();
+      this.refresh = true;
       this.updateMissingTool();
     });
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
@@ -172,12 +173,18 @@ export class DagComponent implements OnInit {
     const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
     $('#exportLink').attr('href', pngDAG).attr('download', name);
   }
+  ngAfterViewChecked() {
+    if (this.refresh) {
+      this.refreshDocument();
+      this.refresh = false;
+    }
+  }
 
   onChange() {
     this.dagService.getCurrentDAG(this.id, this.selectVersion.id).subscribe(result => {
       this.dagResult = result;
       this.updateMissingTool();
-      this.refreshDocument();
+      this.refresh = true;
     });
   }
 }
