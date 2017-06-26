@@ -17,6 +17,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   private validationPatterns = validationPatterns;
   private customDockerRegistryPath: string;
   private showCustomDockerRegistryPath: boolean;
+  private refreshingContainer: boolean;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -24,7 +25,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   constructor(private registerToolService: RegisterToolService) { }
 
   isInvalidCustomRegistry() {
-    this.registerToolService.isInvalidCustomRegistry();
+    return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
   }
 
   repositoryKeys(): Array<string> {
@@ -44,7 +45,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   isInvalidPrivateTool() {
-    this.registerToolService.isInvalidPrivateTool();
+    return this.registerToolService.isInvalidPrivateTool(this.tool);
   }
 
   registerTool() {
@@ -69,6 +70,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
+    this.registerToolService.refreshingContainer.subscribe(status => this.refreshingContainer = status);
   }
 
   // Validation starts here, should move most of these to a service somehow
