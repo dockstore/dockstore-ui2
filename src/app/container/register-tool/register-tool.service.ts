@@ -32,7 +32,7 @@ export class RegisterToolService {
         if (error) {
             errorObj = {
                 message: 'The webservice encountered an error trying to create this ' +
-                'container, please ensure that the container attributes are ' +
+                'tool, please ensure that the tool attributes are ' +
                 'valid and the same image has not already been registered.',
                 errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
                 error._body
