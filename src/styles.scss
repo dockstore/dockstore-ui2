@@ -1094,6 +1094,12 @@ tabset.homeComponent {
           &:hover {
             padding-top: 4px;
             padding-bottom: 1px;
+            background-color: #7987aa;
+            a, a:hover, a:focus {
+              color: #ffffff;
+              background-color: #7987aa;
+              border: none;
+            }
           }
           a.nav-link {
             color: #a0adcc;

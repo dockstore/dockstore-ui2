@@ -195,7 +195,7 @@ ul.nav-tabs {
       font-weight: bold;
     }
   }
-  li.active, li:not(active):hover {
+  li.active {
     background-color: #7987aa;
     a, a:hover, a:focus {
       color: #ffffff;
@@ -437,7 +437,7 @@ div.alert.alert-dismissable {
           }
       }
   }
-  
+
   div.checkbox {
     position: relative;
     bottom: 2.5px;
