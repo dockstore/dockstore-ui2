@@ -9,7 +9,7 @@ import { Subject } from 'rxjs/Subject';
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
-  private toolSource = new Subject<any>();
+  private toolSource = new BehaviorSubject<any>(null);
   tool$ = this.toolSource.asObservable(); // This is the selected tool
   tools = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs

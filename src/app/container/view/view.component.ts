@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
-import { CommunicatorService } from './../../shared/communicator.service';
+import { ContainerService } from './../../shared/container.service';
 import { ContainerTagsService } from './../../shared/containerTags.service';
-import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
@@ -48,7 +47,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     private viewService: ViewService,
     private listContainersService: ListContainersService,
     dateService: DateService,
-    private communicatorService: CommunicatorService,
+    private containerService: ContainerService,
     private containerTagsService: ContainerTagsService) {
     super(dateService);
   }
@@ -201,7 +200,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
       }
     );
     this.unsavedVersion = Object.assign({}, this.version);
-    this.tool = this.communicatorService.getTool();
+    this.containerService.tool$.subscribe(tool => this.tool = tool);
     this.viewService.unsavedTestCWLFile.subscribe(
       (file: string) => {
         this.unsavedTestCWLFile = file;
