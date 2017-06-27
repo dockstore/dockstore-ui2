@@ -6,6 +6,7 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ToolLister } from '../../shared/tool-lister';
+import { ContainerService } from '../../shared/container.service';
 
 import { ListContainersService } from './list.service';
 
@@ -33,6 +34,7 @@ export class ListContainersComponent extends ToolLister {
               private dockstoreService: DockstoreService,
               private imageProviderService: ImageProviderService,
               private dateService: DateService,
+              private containerService: ContainerService,
               listService: ListService,
               providerService: ProviderService) {
 
@@ -42,6 +44,7 @@ export class ListContainersComponent extends ToolLister {
 
   sendToolInfo(tool) {
     this.communicatorService.setTool(tool);
+    this.containerService.setTool(tool);
   }
 
   getFilteredDockerPullCmd(path: string): string {

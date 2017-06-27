@@ -186,7 +186,8 @@ div.ds-tabs > div {
 ul.nav-tabs {
   background-color: #ffffff;
   li {
-    border-right: solid 1px #cfd1d7;
+    //border-right: solid 1px #cfd1d7;
+    border: solid 1px #cfd1d7;
     padding: 0 0;
     text-align: center;
     line-height: 1;
@@ -226,7 +227,60 @@ div.view-content.ns-containers {
     margin-bottom: 20px;
   }
 }
+div.panel-container-label {
+  background-color: #ffffff;
+  color: #487980;
+  padding: 0 10px;
+  clear: both;
+  overflow: hidden;
+  .container-name-oflw {
+    width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  a {
+    color: #487980;
+  }
+}
 
+div.panel-container-label:hover,
+div.panel-container-label.selected {
+  background-color: #7987a5;
+  color: #ffffff;
+  a {
+    color: #ffffff;
+  }
+}
+.panel {
+  border-radius: 0;
+  border-color: #ddd;
+}
+.panel.containers-accordion {
+  .panel-body{
+    padding: 0;
+    font-size: 12px;
+  }
+}
+.panel-group{
+  margin-bottom: 14px;
+}
+.panel-heading {
+  border-radius: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #ffffff;
+  color: #487980;
+  clear: both;
+  overflow: hidden;
+  width: 95%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  span {
+    font-size: 14px;
+  }
+}
 .ns-containers-accordion {
   div.panel-group {
     margin-bottom: 14px;
@@ -243,7 +297,7 @@ div.view-content.ns-containers {
     div.container-label {
       background-color: #ffffff;
       color: #487980;
-      padding: 0 10px;
+      //padding: 0 10px;
       clear: both;
       overflow: hidden;
       div.container-name-oflw {
@@ -263,20 +317,6 @@ div.view-content.ns-containers {
         color: #ffffff;
       }
     }
-  }
-  div.panel-heading {
-    border-radius: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: #ffffff;
-    color: #487980;
-    span {
-      font-size: 14px;
-    }
-  }
-  div.panel-body {
-    padding: 15px 0;
-    font-size: 12px;
   }
 }
 

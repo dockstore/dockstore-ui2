@@ -85,7 +85,7 @@
           </tab>
           <tab id="labelsTab" heading="Labels" *ngIf="tool">
             <button type="sbutton"
-                    *ngIf="!labelsEditMode"
+                    *ngIf="!labelsEditMode && !isToolPublic"
                     class="btn btn-link pull-right"
                     (click)="toggleLabelsEditMode()">
               <span class="glyphicon glyphicon-edit"></span>Edit
@@ -107,10 +107,10 @@
               <button type="submit"
                       class="btn btn-link pull-right"
                       [disabled]="!labelForm.form.valid"
-                      *ngIf="labelsEditMode">
+                      *ngIf="labelsEditMode && !isToolPublic">
                 <span class="glyphicon glyphicon-floppy-save"></span>Save
               </button>
-              <div *ngIf="labelsEditMode">
+              <div *ngIf="labelsEditMode && !isToolPublic">
                 <div class="form-group">
                   <label>Tool Labels:</label>
                   <input
