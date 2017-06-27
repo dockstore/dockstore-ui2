@@ -15,17 +15,15 @@ import { ViewService } from './view.service';
 @Component({
   selector: 'app-view-container',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css'],
-  providers: [ViewService]
+  styleUrls: ['./view.component.css']
 })
 // This is actually the tag edtior
 export class ViewContainerComponent extends View implements OnInit, AfterViewChecked {
-
   // Enumss
   public TagEditorMode = TagEditorMode;
   public DescriptorType = DescriptorType;
 
-  private editMode = true;
+  private editMode;
   private mode: TagEditorMode;
   private tool: any;
   private unsavedVersion;
@@ -199,8 +197,20 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
         this.mode = mode;
       }
     );
+
     this.unsavedVersion = Object.assign({}, this.version);
-    this.containerService.tool$.subscribe(tool => this.tool = tool);
+    this.containerService.tool$.subscribe(tool => {
+    this.tool = tool;
+      if (tool) {
+        if (this.tool.isPublic) {
+          this.editMode = false;
+        } else {
+          this.editMode = true;
+        }
+      } else {
+        console.log('Tool is not truthy');
+      }
+    });
     this.viewService.unsavedTestCWLFile.subscribe(
       (file: string) => {
         this.unsavedTestCWLFile = file;

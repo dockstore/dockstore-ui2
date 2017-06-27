@@ -114,7 +114,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
     this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
       .subscribe(tool => {
-        this.setUpTool(tool);
+        this.containerService.setTool(tool);
       }, error => {
         this.router.navigate(['../']);
       });
