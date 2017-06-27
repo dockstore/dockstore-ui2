@@ -144,7 +144,7 @@
                         <div class="col-sm-9 col-md-9 col-lg-9">
                             <div>
                             <div class="checkbox">
-                                <input type="checkbox" name="checkbox" [(ngModel)]="unsavedVersion.hidden" title="Hide tag from public view."/>
+                                <input type="checkbox" name="checkbox" [disabled]="editMode" [(ngModel)]="unsavedVersion.hidden" title="Hide tag from public view."/>
                             </div>
                             </div>
                         </div>
