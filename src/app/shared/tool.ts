@@ -107,17 +107,19 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   private urlToolChanged(event) {
-    if (!this.tool) {
-      this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
-    } else {
-      this.title = this.tool.path;
+    if (event.url) {
+      if (event.url.includes('containers')) {
+        this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
+        // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
+        // as opposed to just /tools or /docs etc.
+        this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
+        .subscribe(tool => {
+          this.containerService.setTool(tool);
+        }, error => {
+          this.router.navigate(['../']);
+        });
+      }
     }
-    this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
-      .subscribe(tool => {
-        this.containerService.setTool(tool);
-      }, error => {
-        this.router.navigate(['../']);
-      });
   }
 
   private urlWorkflowChanged(event) {
