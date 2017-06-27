@@ -90,8 +90,8 @@
               novalidate>
           <button type="submit"
                   class="btn btn-link pull-right"
-                  [disabled]="!labelForm.form.valid && !isWorkflowPublic"
-                  *ngIf="labelsEditMode">
+                  [disabled]="!labelForm.form.valid"
+                  *ngIf="labelsEditMode && !isWorkflowPublic">
             <span class="glyphicon glyphicon-floppy-save"></span>Save
           </button>
           <div *ngIf="labelsEditMode && !isWorkflowPublic">
