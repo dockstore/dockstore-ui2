@@ -7,7 +7,6 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ToolLister } from '../../shared/tool-lister';
-import { ContainerService } from '../../shared/container.service';
 
 import { ListContainersService } from './list.service';
 
