@@ -13,6 +13,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ContainerComponent } from '../../container/container.component';
@@ -51,6 +52,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesComponent
   ],
   imports: [
+    ButtonsModule,
     CommonModule,
     ClipboardModule,
     MarkdownModule.forRoot(),
