@@ -69,7 +69,7 @@
       </tab>
       <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
         <button type="sbutton"
-                *ngIf="!labelsEditMode"
+                *ngIf="!labelsEditMode && !isWorkflowPublic"
                 class="btn btn-link pull-right"
                 (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
@@ -91,10 +91,10 @@
           <button type="submit"
                   class="btn btn-link pull-right"
                   [disabled]="!labelForm.form.valid"
-                  *ngIf="labelsEditMode">
+                  *ngIf="labelsEditMode && !isWorkflowPublic">
             <span class="glyphicon glyphicon-floppy-save"></span>Save
           </button>
-          <div *ngIf="labelsEditMode">
+          <div *ngIf="labelsEditMode && !isWorkflowPublic">
             <div class="form-group">
               <label>Workflow Labels:</label>
               <input

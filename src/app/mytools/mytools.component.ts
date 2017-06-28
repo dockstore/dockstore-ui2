@@ -16,6 +16,7 @@ export class MyToolsComponent implements OnInit {
   oneAtATime = true;
   tools: any;
   user: any;
+  selContainerObj: any;
   constructor(private mytoolsService: MytoolsService,
     private communicatorService: CommunicatorService,
     private userService: UserService,
@@ -48,6 +49,7 @@ export class MyToolsComponent implements OnInit {
     );
   }
   selectContainer(tool) {
+    this.selContainerObj = tool;
     this.containerService.setTool(tool);
     this.communicatorService.setTool(tool);
   }
