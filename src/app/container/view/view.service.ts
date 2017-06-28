@@ -1,6 +1,9 @@
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+
+@Injectable()
 export class ViewService {
   mode: Subject<TagEditorMode> = new BehaviorSubject<TagEditorMode>(null);
   unsavedTestCWLFile: Subject<string> = new BehaviorSubject<string>('');

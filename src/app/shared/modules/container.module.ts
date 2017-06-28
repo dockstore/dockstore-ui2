@@ -77,7 +77,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     LaunchService,
     DockerfileService,
     ParamfilesService,
-    WorkflowService
+    WorkflowService,
+    ViewService
   ],
   exports: [
     ContainerComponent

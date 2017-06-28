@@ -1,3 +1,4 @@
+import { ContainerService } from './../../shared/container.service';
 import { Component, Input } from '@angular/core';
 import { CommunicatorService } from '../../shared/communicator.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -30,6 +31,7 @@ export class ListContainersComponent extends ToolLister {
   };
   constructor(private listContainersService: ListContainersService,
               private communicatorService: CommunicatorService,
+              private ContainerService: ContainerService,
               private dockstoreService: DockstoreService,
               private imageProviderService: ImageProviderService,
               private dateService: DateService,
@@ -42,6 +44,7 @@ export class ListContainersComponent extends ToolLister {
 
   sendToolInfo(tool) {
     this.communicatorService.setTool(tool);
+    this.ContainerService.setTool(tool);
   }
 
   getFilteredDockerPullCmd(path: string): string {

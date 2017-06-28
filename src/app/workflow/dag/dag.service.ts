@@ -154,7 +154,6 @@ export class DagService {
 
     getDockerText(link: string, docker: string) {
         const validLink = !this.isNA(docker);
-        console.log(validLink);
         if (validLink) {
             return `<div><b>Docker:</b> <a href='` + link + `'>` + docker + `</a></div>`;
         } else {

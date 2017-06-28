@@ -1,3 +1,4 @@
+import { ContainerService } from './../../shared/container.service';
 import { ContainerWebService } from './../../shared/containerWeb.service';
 import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -13,14 +14,17 @@ export class RegisterToolService {
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private dockerRegistryMap = [];
     refreshingContainer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private tools;
+
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainerWebService) {
+    constructor(private containerWebService: ContainerWebService, private containerService: ContainerService) {
         this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
+        this.containerService.tools.subscribe(tools => this.tools = tools);
     }
 
     setTool(newTool: Tool): void {
@@ -42,14 +46,14 @@ export class RegisterToolService {
     }
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
-        console.log('Registering tool');
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
             this.refreshingContainer.next(true);
             this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
                 (<any>$('#registerContainerModal')).modal('toggle');
-                console.log(refreshResponse);
+                this.containerService.addToTools(this.tools, refreshResponse);
+                this.containerService.setTool(refreshResponse);
             });
             // Use types instead
         }, error => this.setToolRegisterError(error)
