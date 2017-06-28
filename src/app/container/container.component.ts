@@ -15,6 +15,7 @@ import { ContainerService } from '../shared/container.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
+import { TrackLoginService } from '../shared/track-login.service';
 
 @Component({
   selector: 'app-container',
@@ -34,13 +35,14 @@ export class ContainerComponent extends Tool {
               private imageProviderService: ImageProviderService,
               private listContainersService: ListContainersService,
               private updateContainer: ContainerService,
+              trackLoginService: TrackLoginService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
               router: Router,
               workflowService: WorkflowService,
               containerService: ContainerService) {
-    super(toolService, communicatorService, providerService, router,
+    super(trackLoginService, toolService, communicatorService, providerService, router,
           workflowService, containerService, 'containers');
   }
 

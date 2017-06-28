@@ -11,6 +11,7 @@ import { Tool } from '../shared/tool';
 
 import { ContainerService } from '../shared/container.service';
 import { validationPatterns } from '../shared/validationMessages.model';
+import { TrackLoginService } from '../shared/track-login.service';
 
 @Component({
   selector: 'app-workflow',
@@ -28,13 +29,14 @@ export class WorkflowComponent extends Tool {
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private updateWorkflow: WorkflowService,
+              trackLoginService: TrackLoginService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
               router: Router,
               workflowService: WorkflowService,
               containerService: ContainerService) {
-    super(toolService, communicatorService, providerService, router,
+    super(trackLoginService, toolService, communicatorService, providerService, router,
           workflowService, containerService, 'workflows');
   }
   setProperties() {

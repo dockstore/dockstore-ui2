@@ -7,6 +7,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
+import { StarringModule } from '../../starring/starring.module'
 
 /* External Library */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -66,7 +67,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     AlertModule.forRoot(),
     FormsModule,
     ShareButtonsModule.forRoot(),
-    OrderByModule
+    OrderByModule,
+    StarringModule
   ],
   providers: [
     HighlightJsService,
