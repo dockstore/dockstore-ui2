@@ -1,3 +1,4 @@
+import { ContainerService } from './../../shared/container.service';
 import { ContainerWebService } from './../../shared/containerWeb.service';
 import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -11,15 +12,19 @@ export class RegisterToolService {
     private repositories = Repository;
     private friendlyRepositories = FriendlyRepositories;
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private dockerRegistryMap;
+    private dockerRegistryMap = [];
+    refreshingContainer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private tools;
+
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainerWebService) {
+    constructor(private containerWebService: ContainerWebService, private containerService: ContainerService) {
         this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
+        this.containerService.tools.subscribe(tools => this.tools = tools);
     }
 
     setTool(newTool: Tool): void {
@@ -27,26 +32,30 @@ export class RegisterToolService {
     }
 
     setToolRegisterError(error: any) {
-        let mapthing = null;
+        let errorObj = null;
         if (error) {
-        mapthing = {
-            message: 'The webservice encountered an error trying to create this ' +
-            'container, please ensure that the container attributes are ' +
-            'valid and the same image has not already been registered.',
-            errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-            error._body
-        };
-    }
-    this.toolRegisterError.next(mapthing);
+            errorObj = {
+                message: 'The webservice encountered an error trying to create this ' +
+                'tool, please ensure that the tool attributes are ' +
+                'valid and the same image has not already been registered.',
+                errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+                error._body
+            };
+        }
+        this.toolRegisterError.next(errorObj);
     }
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
-        console.log('Registering tool');
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
+            this.refreshingContainer.next(true);
+            this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
+                (<any>$('#registerContainerModal')).modal('toggle');
+                this.containerService.addToTools(this.tools, refreshResponse);
+                this.containerService.setTool(refreshResponse);
+            });
             // Use types instead
-            (<any>$('#registerContainerModal')).modal('toggle');
         }, error => this.setToolRegisterError(error)
         );
     }
@@ -59,11 +68,32 @@ export class RegisterToolService {
         this.showCustomDockerRegistryPath.next(newShowCustomDockerRegistoryPath);
     }
 
-    isInvalidPrivateTool() {
-        return false;
+    isInvalidPrivateTool(toolObj: Tool) {
+        return toolObj.private_access === true && !toolObj.tool_maintainer_email;
     }
-    isInvalidCustomRegistry() {
-        return false;
+
+    /**
+     * Returns true (is invalid) if the customDockerRegistryPath is needed but not truthy
+     * Returns false if the customDockerRegistryPath is not needed or is truthy
+     * @param {Tool} toolObj
+     * @param {string} customDockerRegistryPath
+     * @returns {boolean}
+     * @memberof RegisterToolService
+     */
+    isInvalidCustomRegistry(toolObj: Tool, customDockerRegistryPath: string): boolean {
+        for (const registry of this.dockerRegistryMap) {
+            if (toolObj.irProvider === registry.friendlyName) {
+                if (registry.privateOnly === 'true') {
+                    if (!customDockerRegistryPath) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
     }
 
     getImagePath(imagePath, part) {
@@ -108,16 +138,16 @@ export class RegisterToolService {
     };
 
     checkForSpecialDockerRegistry(toolObj: Tool) {
-        for (let i = 0; i < this.dockerRegistryMap.length; i++) {
-            if (toolObj.irProvider === this.dockerRegistryMap[i].friendlyName) {
-                if (this.dockerRegistryMap[i].privateOnly === 'true') {
+        for (const registry of this.dockerRegistryMap) {
+            if (toolObj.irProvider === registry.friendlyName) {
+                if (registry.privateOnly === 'true') {
                     toolObj.private_access = true;
                     $('#privateTool').attr('disabled', 'disabled');
                 } else {
                     $('#privateTool').removeAttr('disabled');
                 }
 
-                if (this.dockerRegistryMap[i].customDockerPath === 'true') {
+                if (registry.customDockerPath === 'true') {
                     this.setShowCustomDockerRegistryPath(true);
                     this.setCustomDockerRegistryPath(null);
                 } else {

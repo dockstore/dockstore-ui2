@@ -1,3 +1,4 @@
+import { ContainerService } from './../../shared/container.service';
 import { Component, Input } from '@angular/core';
 import { CommunicatorService } from '../../shared/communicator.service';
 import { DockstoreService } from '../../shared/dockstore.service';

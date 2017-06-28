@@ -22,4 +22,9 @@ export class ContainerWebService {
     const url = `${ Dockstore.API_URI }/containers/registerManual`;
     return this.httpService.postResponse(url, JSON.stringify(toolObj));
   }
+
+  public getContainerRefresh(toolId: number) {
+    const url = `${ Dockstore.API_URI }/containers/${ toolId }/refresh`;
+    return this.httpService.getAuthResponse(url);
+  }
 }

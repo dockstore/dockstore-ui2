@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 
 import { Dockstore } from './dockstore.model';
@@ -8,12 +9,28 @@ import { Subject } from 'rxjs/Subject';
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
-  private toolSource = new Subject<any>();
-  tool$ = this.toolSource.asObservable();
+  private toolSource = new BehaviorSubject<any>(null);
+  tool$ = this.toolSource.asObservable(); // This is the selected tool
+  tools = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
+  nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
   constructor(private dockstoreService: DockstoreService) { }
   setTool(tool: any) {
     this.toolSource.next(tool);
   }
+
+  setTools(tools: any) {
+    this.tools.next(tools);
+  }
+
+  addToTools(tools: any, tool: any) {
+    tools.push(tool);
+    this.tools.next(tools);
+  }
+
+  setNsContainers(tools: any) {
+    this.nsContainers.next(tools);
+  }
+
   getDescriptors(versions, version) {
     if (versions.length && version) {
 
