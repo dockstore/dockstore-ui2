@@ -52,7 +52,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesComponent
   ],
   imports: [
-    ButtonsModule,
+    ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
     MarkdownModule.forRoot(),
