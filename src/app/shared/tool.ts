@@ -20,7 +20,7 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   protected tool;
   protected workflow;
-
+  protected published: boolean;
   private routeSub: Subscription;
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
@@ -46,6 +46,9 @@ export abstract class Tool implements OnInit, OnDestroy {
     this.toolSubscription = this.containerService.tool$.subscribe(
       tool => {
         this.tool = tool;
+        if (tool) {
+          this.published = this.tool.is_published;
+        }
         this.setUpTool(tool);
       }
     );

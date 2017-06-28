@@ -1,3 +1,5 @@
+import { ContainerWebService } from './../shared/containerWeb.service';
+import { PublishRequest } from './../shared/models/PublishRequest';
 import {Component, Input, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -28,12 +30,13 @@ export class ContainerComponent extends Tool {
   shareURL: string;
   labelsEditMode: boolean;
   containerEditData: any;
+  refreshingContainer = true;
   labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private imageProviderService: ImageProviderService,
               private listContainersService: ListContainersService,
-              private updateContainer: ContainerService,
+              private updateContainer: ContainerService, private containerWebService: ContainerWebService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
@@ -66,6 +69,13 @@ export class ContainerComponent extends Tool {
   }
   sumCounts(count) {
     this.totalShare += count;
+  }
+
+  publishTool() {
+    const request: PublishRequest = new PublishRequest;
+    request.publish = this.published;
+    this.containerWebService.publish(this.tool.id, request).subscribe(
+      response => this.tool.is_published = response.is_published, err => this.published = !this.published);
   }
 
   getValidVersions() {
