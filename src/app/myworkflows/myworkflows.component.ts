@@ -20,6 +20,7 @@ import {UserService} from '../loginComponents/user.service';
 export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
   oneAtATime = true;
+  selWorkflowObj: any;
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private communicatorService: CommunicatorService,
@@ -37,6 +38,7 @@ export class MyWorkflowsComponent implements OnInit {
     });
   }
   selectWorkflow(workflow) {
+    this.selWorkflowObj = workflow;
     this.workflowService.setWorkflow(workflow);
   }
 }

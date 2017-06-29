@@ -33,17 +33,22 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let nsObj of nsContainers" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
-          <div *ngFor="let containerObj of nsObj?.containers">
-            <div class="pull left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
-              <a style="cursor: pointer;" (click)="selectContainer(containerObj)">
-                {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
-              </a>
-              <span class="label"
-                    [ngClass]="containerObj?.is_published ? 'label-primary' : 'label-warning'">
-                    {{ containerObj?.is_published ? 'PUB' : 'UNPUB'}}
-              </span>
-            </div>
+        <accordion-group *ngFor="let nsObj of nsContainers" panelClass="containers-accordion" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
+            <div *ngFor="let containerObj of nsObj?.containers">
+              <div class="panel-container-label" [ngClass]="{selected: selContainerObj.id === containerObj.id}">
+                    <div class="container-name-oflw pull-left"
+                         title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
+                      <a style="cursor: pointer;" (click)="selectContainer(containerObj)">
+                        {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
+                      </a>
+                    </div>
+                    <div class="pull-right">
+                      <span class="label"
+                            [ngClass]="containerObj?.is_published ? 'label-primary' : 'label-warning'">
+                        {{ containerObj?.is_published ? 'PUB' : 'UNPUB'}}
+                      </span>
+                    </div>
+              </div>
           </div>
         </accordion-group>
       </accordion>

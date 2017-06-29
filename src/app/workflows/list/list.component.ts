@@ -16,8 +16,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 export class ListWorkflowsComponent extends ToolLister {
   @Input() previewMode: boolean;
   // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
-  // gitUrl
-
   constructor(private communicatorService: CommunicatorService,
               private workflowService: WorkflowService,
               private dockstoreService: DockstoreService,
@@ -35,5 +33,4 @@ export class ListWorkflowsComponent extends ToolLister {
   getVerified(workflow) {
     return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
-
 }
