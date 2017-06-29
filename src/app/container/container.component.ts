@@ -1,3 +1,5 @@
+import { StateService } from './../shared/state.service';
+import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
 import { ContainerWebService } from './../shared/containerWeb.service';
 import { PublishRequest } from './../shared/models/PublishRequest';
@@ -32,22 +34,24 @@ export class ContainerComponent extends Tool {
   shareURL: string;
   labelsEditMode: boolean;
   containerEditData: any;
-  refreshingContainer = false;
   thisisValid = true;
   labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
     private dateService: DateService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
-    private updateContainer: ContainerService, private containerWebService: ContainerWebService,
+    private refreshService: RefreshService,
+    private updateContainer: ContainerService,
+    private containerWebService: ContainerWebService,
     toolService: ToolService,
     communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
     workflowService: WorkflowService,
-    containerService: ContainerService) {
+    containerService: ContainerService,
+    stateService: StateService) {
     super(toolService, communicatorService, providerService, router,
-      workflowService, containerService, 'containers');
+      workflowService, containerService, stateService, 'containers');
   }
 
   setProperties() {
@@ -118,6 +122,10 @@ export class ContainerComponent extends Tool {
     }
     return false;
   };
+
+  refreshContainer() {
+    this.refreshService.refreshContainer();
+  }
 
   resetContainerEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.tool.labels);

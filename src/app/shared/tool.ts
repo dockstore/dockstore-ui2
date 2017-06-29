@@ -1,3 +1,4 @@
+import { StateService } from './state.service';
 import {Injectable, OnDestroy, OnInit, Input} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
@@ -21,6 +22,7 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected tool;
   protected workflow;
   protected published: boolean;
+  protected refreshingContainer: boolean;
   private routeSub: Subscription;
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
@@ -32,11 +34,13 @@ export abstract class Tool implements OnInit, OnDestroy {
               private router: Router,
               private workflowService: WorkflowService,
               private containerService: ContainerService,
+              private stateService: StateService,
               toolType: string) {
     this._toolType = toolType;
   }
 
   ngOnInit() {
+    this.stateService.refreshing.subscribe(refreshing => this.refreshingContainer = refreshing);
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;

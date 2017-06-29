@@ -1,3 +1,4 @@
+import { StateService } from './../../shared/state.service';
 import { ContainerService } from './../../shared/container.service';
 import { ContainerWebService } from './../../shared/containerWeb.service';
 import { Tool } from './tool';
@@ -22,7 +23,9 @@ export class RegisterToolService {
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainerWebService, private containerService: ContainerService) {
+    constructor(private containerWebService: ContainerWebService,
+        private containerService: ContainerService,
+        private stateService: StateService) {
         this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
         this.containerService.tools.subscribe(tools => this.tools = tools);
     }
@@ -49,11 +52,12 @@ export class RegisterToolService {
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
-            this.refreshingContainer.next(true);
+            this.stateService.setRefreshing(true);
             this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
                 (<any>$('#registerContainerModal')).modal('toggle');
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
+                this.stateService.setRefreshing(false);
             });
             // Use types instead
         }, error => this.setToolRegisterError(error)

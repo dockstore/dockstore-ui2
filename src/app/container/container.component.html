@@ -13,7 +13,7 @@
     <div class="alert alert-info" role="alert" *ngIf="refreshingContainer">
       <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
       </span>
-      Please wait, retrieving {{imageReposProviderName}} tool...
+      Please wait, retrieving {{tool?.imgProvider}} tool...
     </div>
     <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
       <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
@@ -55,7 +55,7 @@
             Deregister
           </button>
         </div>
-        <button type="button" class="btn btn-primary" ng-click="refreshContainer(containerObj.id);checkPage()" ng-disabled="refreshingContainer">
+        <button type="button" class="btn btn-primary" (click)="refreshContainer()" [disabled]="refreshingContainer">
           Refresh
         </button>
       </div>
@@ -123,7 +123,7 @@
         </div>
       </tab>
       <tab id="labelsTab" heading="Labels" *ngIf="tool">
-        <button type="sbutton" *ngIf="!labelsEditMode" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
+        <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
         <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
@@ -136,10 +136,10 @@
           </li>
         </ul>
         <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
-          <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode">
+          <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
             <span class="glyphicon glyphicon-floppy-save"></span>Save
           </button>
-          <div *ngIf="labelsEditMode">
+          <div *ngIf="labelsEditMode && !isToolPublic">
             <div class="form-group">
               <label>Tool Labels:</label>
               <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
@@ -152,86 +152,6 @@
                 Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
               </div>
             </div>
-          </tab>
-          <tab id="labelsTab" heading="Labels" *ngIf="tool">
-            <button type="sbutton"
-                    *ngIf="!labelsEditMode && !isToolPublic"
-                    class="btn btn-link pull-right"
-                    (click)="toggleLabelsEditMode()">
-              <span class="glyphicon glyphicon-edit"></span>Edit
-            </button>
-            <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
-              <li *ngIf="tool">
-                <strong>Labels:</strong>
-                <span *ngIf="tool?.labels.length === 0">n/a</span>
-                <span class="label label-default container-label" *ngFor="let label of labels">
-               {{label}}
-              </span>
-              </li>
-            </ul>
-            <form name="editContainerForm"
-                  class="edit-container form-inline"
-                  (ngSubmit)="submitContainerEdits()"
-                  #labelForm="ngForm"
-                  novalidate>
-              <button type="submit"
-                      class="btn btn-link pull-right"
-                      [disabled]="!labelForm.form.valid"
-                      *ngIf="labelsEditMode && !isToolPublic">
-                <span class="glyphicon glyphicon-floppy-save"></span>Save
-              </button>
-              <div *ngIf="labelsEditMode && !isToolPublic">
-                <div class="form-group">
-                  <label>Tool Labels:</label>
-                  <input
-                    id="toolLabels"
-                    type="text"
-                    class="input-sm form-control"
-                    name="toolLabels"
-                    [(ngModel)]="containerEditData.labels"
-                    #name="ngModel"
-                    maxlength="512"
-                    [pattern]="labelPattern"
-                    placeholder="e.g. dockstore, oicr-icgc, pancancer"/>
-                </div>
-                <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-                  <div [hidden]="!name.errors.maxlength">
-                    Labels string is too long. (Max 512 characters.)
-                  </div>
-                  <div [hidden]="!name.errors.pattern">
-                    Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
-                  </div>
-                </div>
-              </div>
-            </form>
-          </tab>
-          <tab heading="Versions" *ngIf="validVersions">
-            <app-versions-container [versions]="tool?.tags" id="versionsTab"
-                                    [verifiedSource]="tool?.verifiedSources">
-            </app-versions-container>
-          </tab>
-          <tab heading="Files" *ngIf="validVersions">
-            <app-files-container [id]="tool?.id" [versions]="validVersions"
-                                 [default]="defaultVersion">
-            </app-files-container>
-          </tab>
-        </tabset>
-      </div>
-    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
-      <div class="panel panel-default" *ngIf="tool">
-        <div class="panel-heading">
-          <strong>Docker Pull Command</strong>
-        </div>
-        <div class="panel-body">
-          <div class="input-group">
-            <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
-            <span class="input-group-btn">
-                <button class="btn btn-default" [ngClass]="{'btn-copy':isCopied}" type="button" ngxClipboard
-                        [cbContent]="dockerPullCmd"
-                        (cbOnSuccess)="isCopied = true">
-                  <span class="glyphicon glyphicon-copy"></span>
-                </button>
-              </span>
           </div>
         </form>
       </tab>
