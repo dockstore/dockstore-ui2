@@ -1,3 +1,5 @@
+import { PublishRequest } from './models/PublishRequest';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -6,25 +8,42 @@ import { HttpService } from './http.service';
 
 @Injectable()
 export class ContainerWebService {
-  constructor(private httpService: HttpService) { }
+  domain: string;
+  constructor(private httpService: HttpService, private http: Http) {
+    this.domain = Dockstore.API_URI;
+  }
 
   public getContainer(containerId: number) {
-    const url = `${ Dockstore.API_URI }/containers/${ containerId }`;
+    const url = `${Dockstore.API_URI}/containers/${containerId}`;
     return this.httpService.getAuthResponse(url);
   }
 
   public getDockerRegistryList() {
-    const url = `${ Dockstore.API_URI }/containers/dockerRegistryList`;
+    const url = `${Dockstore.API_URI}/containers/dockerRegistryList`;
     return this.httpService.getResponse(url);
   }
 
   public postRegisterManual(toolObj) {
-    const url = `${ Dockstore.API_URI }/containers/registerManual`;
+    const url = `${Dockstore.API_URI}/containers/registerManual`;
     return this.httpService.postResponse(url, JSON.stringify(toolObj));
   }
 
   public getContainerRefresh(toolId: number) {
-    const url = `${ Dockstore.API_URI }/containers/${ toolId }/refresh`;
+    const url = `${Dockstore.API_URI}/containers/${toolId}/refresh`;
     return this.httpService.getAuthResponse(url);
+  }
+
+  /**
+   *
+   * @method
+   * @name publish
+   * @param {integer} containerId - Tool id to publish
+   * @param {PublishRequest} body - PublishRequest to refresh the list of repos for a user
+   *
+   */
+  public publish(containerId: number, body: PublishRequest) {
+    const uri = `/containers/${containerId}/publish`;
+    const url = this.domain + uri;
+    return this.httpService.postResponse(url, JSON.stringify(body));
   }
 }

@@ -42,8 +42,6 @@ export class MyToolsComponent implements OnInit {
       if (this.nsContainers) {
         const theFirstTool = this.nsContainers[0].containers[0];
         this.selectContainer(theFirstTool);
-        this.containerService.setTool(theFirstTool);
-        this.communicatorService.setTool(theFirstTool);
       }
     }
     );
