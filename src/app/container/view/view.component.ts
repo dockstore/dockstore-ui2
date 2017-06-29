@@ -1,3 +1,4 @@
+import { StateService } from './../../shared/state.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
@@ -46,7 +47,8 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     private listContainersService: ListContainersService,
     dateService: DateService,
     private containerService: ContainerService,
-    private containerTagsService: ContainerTagsService) {
+    private containerTagsService: ContainerTagsService,
+    private stateService: StateService) {
     super(dateService);
   }
 
@@ -199,17 +201,9 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     );
 
     this.unsavedVersion = Object.assign({}, this.version);
+    this.stateService.publicPage.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
-    this.tool = tool;
-      if (tool) {
-        if (this.tool.isPublic) {
-          this.editMode = false;
-        } else {
-          this.editMode = true;
-        }
-      } else {
-        console.log('Tool is not truthy');
-      }
+      this.tool = tool;
     });
     this.viewService.unsavedTestCWLFile.subscribe(
       (file: string) => {

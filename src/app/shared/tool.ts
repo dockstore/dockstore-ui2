@@ -28,6 +28,7 @@ export abstract class Tool implements OnInit, OnDestroy {
   private toolSubscription: Subscription;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
+  private publicPage: boolean;
   constructor(private toolService: ToolService,
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
@@ -40,6 +41,7 @@ export abstract class Tool implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshing.subscribe(refreshing => this.refreshingContainer = refreshing);
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {
@@ -57,6 +59,7 @@ export abstract class Tool implements OnInit, OnDestroy {
       }
     );
     if (this._toolType === 'workflows') {
+      this.stateService.setPublicPage(this.isWorkflowPublic);
       if (this.isWorkflowPublic) {
         this.routeSub = this.router.events.subscribe(event =>
           this.urlWorkflowChanged(event)
@@ -65,6 +68,7 @@ export abstract class Tool implements OnInit, OnDestroy {
         this.setUpWorkflow(this.communicatorService.getWorkflow());
       }
     } else if (this._toolType === 'containers') {
+      this.stateService.setPublicPage(this.isToolPublic);
       if (this.isToolPublic) {
         this.routeSub = this.router.events.subscribe(event =>
           this.urlToolChanged(event)
