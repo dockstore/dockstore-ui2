@@ -16,6 +16,7 @@ export class RegisterToolService {
     private dockerRegistryMap = [];
     refreshingContainer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
+    private selectedTool;
 
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
@@ -28,8 +29,17 @@ export class RegisterToolService {
         private stateService: StateService) {
         this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
         this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
-
+    deregisterTool() {
+        this.containerWebService.deleteContainer(this.selectedTool.id).subscribe(response => {
+            const index = this.tools.indexOf(this.selectedTool);
+            this.tools.splice(index, 1);
+            this.containerService.setTools(this.tools);
+        }, error => {
+            console.log(error);
+        });
+    }
     setTool(newTool: Tool): void {
         this.tool.next(newTool);
     }
@@ -52,6 +62,7 @@ export class RegisterToolService {
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
+            this.setToolRegisterError(null);
             this.stateService.setRefreshing(true);
             this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
                 (<any>$('#registerContainerModal')).modal('toggle');

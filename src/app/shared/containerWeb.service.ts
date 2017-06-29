@@ -46,4 +46,17 @@ export class ContainerWebService {
     const url = this.domain + uri;
     return this.httpService.postResponse(url, JSON.stringify(body));
   }
+
+  /**
+  *
+	* @method
+	* @name deleteContainer
+	* @param {integer} containerId - Tool id to delete
+	*
+	*/
+  public deleteContainer(containerId: number) {
+    const uri = `/containers/${containerId}`;
+    const url = this.domain + uri;
+    return this.httpService.deleteAuth(url);
+  }
 }

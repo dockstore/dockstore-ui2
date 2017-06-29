@@ -1,3 +1,6 @@
+import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
+import { RegisterToolService } from './../../container/register-tool/register-tool.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { RefreshService } from './../refresh.service';
 import { ContainerTagsService } from './../containerTags.service';
 import { CommonModule } from '@angular/common';
@@ -50,7 +53,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     FilesContainerComponent,
     DockerfileComponent,
     DescriptorsComponent,
-    ParamfilesComponent
+    ParamfilesComponent,
+    ModalComponent
   ],
   imports: [
     ButtonsModule.forRoot(),
@@ -69,7 +73,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     AlertModule.forRoot(),
     FormsModule,
     ShareButtonsModule.forRoot(),
-    OrderByModule
+    OrderByModule,
+    ModalModule
   ],
   providers: [
     HighlightJsService,
@@ -81,8 +86,9 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     DockerfileService,
     ParamfilesService,
     RefreshService,
+    RegisterToolService,
     WorkflowService,
-    ViewService,
+    ViewService
   ],
   exports: [
     ContainerComponent

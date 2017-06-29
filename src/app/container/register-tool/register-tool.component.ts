@@ -61,7 +61,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     return this.registerToolService.checkForSpecialDockerRegistry(this.tool);
   }
 
-  setToolRegisterError() {
+  clearToolRegisterError() {
     return this.registerToolService.setToolRegisterError(null);
   }
 
