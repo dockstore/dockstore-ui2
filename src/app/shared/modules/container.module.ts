@@ -1,4 +1,3 @@
-import { StateService } from './../state.service';
 import { RefreshService } from './../refresh.service';
 import { ContainerTagsService } from './../containerTags.service';
 import { CommonModule } from '@angular/common';
@@ -82,7 +81,6 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     DockerfileService,
     ParamfilesService,
     RefreshService,
-    StateService,
     WorkflowService,
     ViewService,
   ],

@@ -41,7 +41,7 @@ export class MyToolsComponent implements OnInit {
     });
     this.containerService.nsContainers.subscribe(containers => {
       this.nsContainers = containers;
-      if (this.nsContainers) {
+      if (this.nsContainers && this.nsContainers.length > 0) {
         const theFirstTool = this.nsContainers[0].containers[0];
         this.selectContainer(theFirstTool);
       }

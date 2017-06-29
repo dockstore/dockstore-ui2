@@ -1,3 +1,4 @@
+import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -112,7 +113,8 @@ import { OrderByModule } from './shared/modules/orderby.module';
     ToolService,
     ProviderService,
     ImageProviderService,
-    CLIENT_ROUTER_PROVIDERS
+    CLIENT_ROUTER_PROVIDERS,
+    StateService
   ],
   bootstrap: [ AppComponent ]
 })
