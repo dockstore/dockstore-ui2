@@ -1,3 +1,4 @@
+import { RefreshService } from './../shared/refresh.service';
 import { Component, OnInit } from '@angular/core';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -20,7 +21,8 @@ export class MyToolsComponent implements OnInit {
   constructor(private mytoolsService: MytoolsService,
     private communicatorService: CommunicatorService,
     private userService: UserService,
-    private containerService: ContainerService) {
+    private containerService: ContainerService,
+    private RefreshService: RefreshService) {
 
   }
   ngOnInit() {
@@ -50,5 +52,9 @@ export class MyToolsComponent implements OnInit {
     this.selContainerObj = tool;
     this.containerService.setTool(tool);
     this.communicatorService.setTool(tool);
+  }
+
+  refreshAllTools() {
+    this.RefreshService.refreshAllTools(this.user.id);
   }
 }

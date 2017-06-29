@@ -1,3 +1,4 @@
+import { UsersService } from './../shared/webservice/users.service';
 import { ContainerWebService } from './../shared/containerWeb.service';
 import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { NgModule } from '@angular/core';
@@ -34,7 +35,8 @@ import { ContainerService } from '../shared/container.service';
   ],
   providers: [
     ContainerService,
-    ContainerWebService
+    ContainerWebService,
+    UsersService
   ],
 })
 export class MyToolsModule {}
