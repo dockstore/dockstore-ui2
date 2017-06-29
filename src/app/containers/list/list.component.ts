@@ -31,10 +31,10 @@ export class ListContainersComponent extends ToolLister {
   };
   constructor(private listContainersService: ListContainersService,
               private communicatorService: CommunicatorService,
-              private ContainerService: ContainerService,
               private dockstoreService: DockstoreService,
               private imageProviderService: ImageProviderService,
               private dateService: DateService,
+              private containerService: ContainerService,
               listService: ListService,
               providerService: ProviderService) {
 
@@ -44,7 +44,7 @@ export class ListContainersComponent extends ToolLister {
 
   sendToolInfo(tool) {
     this.communicatorService.setTool(tool);
-    this.ContainerService.setTool(tool);
+    this.containerService.setTool(tool);
   }
 
   getFilteredDockerPullCmd(path: string): string {
