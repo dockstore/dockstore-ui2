@@ -31,9 +31,11 @@ export class MyWorkflowsComponent implements OnInit {
     this.userService.getUser().subscribe(user => {
       this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
         this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
-        const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
-        this.selectWorkflow(theFirstWorkflow);
-        this.communicatorService.setWorkflow(theFirstWorkflow);
+        if (this.orgWorkflows && this.orgWorkflows.length > 0) {
+          const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
+          this.selectWorkflow(theFirstWorkflow);
+          this.communicatorService.setWorkflow(theFirstWorkflow);
+        }
       });
     });
   }

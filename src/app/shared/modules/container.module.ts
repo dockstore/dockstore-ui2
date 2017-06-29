@@ -1,3 +1,4 @@
+import { RefreshService } from './../refresh.service';
 import { ContainerTagsService } from './../containerTags.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -79,8 +80,9 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     LaunchService,
     DockerfileService,
     ParamfilesService,
+    RefreshService,
     WorkflowService,
-    ViewService
+    ViewService,
   ],
   exports: [
     ContainerComponent
