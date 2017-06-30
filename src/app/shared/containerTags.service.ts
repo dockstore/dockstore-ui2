@@ -9,7 +9,7 @@ export class ContainerTagsService {
   constructor(private httpService: HttpService) { }
 
   public getTags(containerId: number) {
-    return this.httpService.getResponse(`${ Dockstore.API_URI }/containers/path/${ containerId }/tags`);
+    return this.httpService.getAuthResponse(`${ Dockstore.API_URI }/containers/path/${ containerId }/tags`);
   }
 
   public postTags(containerId: number, tags) {

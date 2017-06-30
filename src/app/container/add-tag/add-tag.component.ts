@@ -45,9 +45,11 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
-      this.unsavedVersion.cwl_path = this.tool.default_cwl_path;
-      this.unsavedVersion.wdl_path = this.tool.default_wdl_path;
-      this.unsavedVersion.dockerfile_path = this.tool.default_dockerfile_path;
+      if (this.tool) {
+        this.unsavedVersion.cwl_path = this.tool.default_cwl_path;
+        this.unsavedVersion.wdl_path = this.tool.default_wdl_path;
+        this.unsavedVersion.dockerfile_path = this.tool.default_dockerfile_path;
+      }
     });
   }
 
@@ -91,8 +93,8 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     this.containerTagsService.postTags(this.tool.id, this.unsavedVersion).subscribe(response => {
       console.log(response);
       this.tool.tags = response;
-      this.paramFilesService.putFiles(this.tool.id, this.unsavedCWLTestParameterFilePaths, this.unsavedVersion.name, 'CWL').subscribe(response1 => console.log(response1));
-      this.paramFilesService.putFiles(this.tool.id, this.unsavedWDLTestParameterFilePaths, this.unsavedVersion.name, 'WDL').subscribe(response2 => console.log(response2));
+      this.paramFilesService.putFiles(this.tool.id, this.unsavedCWLTestParameterFilePaths, this.unsavedVersion.name, 'CWL').subscribe();
+      this.paramFilesService.putFiles(this.tool.id, this.unsavedWDLTestParameterFilePaths, this.unsavedVersion.name, 'WDL').subscribe();
       this.containerService.setTool(this.tool);
     }, error => console.log(error));
   }

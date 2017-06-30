@@ -130,6 +130,15 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     this.containerTagsService.putTags(this.tool.id, this.unsavedVersion).subscribe();
   }
 
+  deleteTag() {
+    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(response => {
+      this.containerTagsService.getTags(this.tool.id).subscribe(response => {
+      this.tool.tags = response;
+      this.containerService.setTool(this.tool);
+    });
+    });
+  }
+
   setMode(mode: TagEditorMode) {
     console.log('Setting mode to: ' + TagEditorMode[mode]);
     this.viewService.setCurrentMode(mode);
