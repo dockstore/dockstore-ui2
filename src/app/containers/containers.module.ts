@@ -1,4 +1,3 @@
-import { ContainerWebService } from './../shared/containerWeb.service';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -31,8 +30,7 @@ import { SelectModule } from '../shared/modules/select.module';
     containersRouting
   ],
   providers: [
-    HighlightJsService,
-    ContainerWebService
+    HighlightJsService
   ]
 })
 export class ContainersModule {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Dockstore } from './dockstore.model';
-import { HttpService } from './http.service';
+import { Dockstore } from './../dockstore.model';
+import { HttpService } from './../http.service';
 
 @Injectable()
 export class ContainerTagsService {

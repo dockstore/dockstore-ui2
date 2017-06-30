@@ -1,13 +1,13 @@
-import { StateService } from './../../shared/state.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsService } from './../../shared/containerTags.service';
+import { ContainerTagsService } from './../../shared/webservice/containerTags.service';
 import { DateService } from '../../shared/date.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
-import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { ListContainersService } from './../../containers/list/list.service';
+import { ParamfilesService } from './../paramfiles/paramfiles.service';
+import { StateService } from './../../shared/state.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { validationMessages, formErrors } from '../../shared/validationMessages.model';
 import { View } from '../../shared/view';
@@ -131,7 +131,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
   }
 
   deleteTag() {
-    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(response => {
+    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(deleteResponse => {
       this.containerTagsService.getTags(this.tool.id).subscribe(response => {
       this.tool.tags = response;
       this.containerService.setTool(this.tool);

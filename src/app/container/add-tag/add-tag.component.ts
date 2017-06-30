@@ -1,9 +1,10 @@
-import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { ContainerTagsService } from './../../shared/containerTags.service';
-import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
-import { NgForm } from '@angular/forms';
-import { ContainerService } from './../../shared/container.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import { ContainerService } from './../../shared/container.service';
+import { ContainerTagsService } from './../../shared/webservice/containerTags.service';
+import { ParamfilesService } from './../paramfiles/paramfiles.service';
+import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 
 @Component({
