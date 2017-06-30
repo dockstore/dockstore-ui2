@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule} from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -78,7 +79,7 @@ import { OrderByModule } from './shared/modules/orderby.module';
     AccountsExternalComponent,
     AuthComponent,
     TokensComponent
-  ],
+],
   imports: [
     BrowserModule,
     FormsModule,
@@ -95,7 +96,8 @@ import { OrderByModule } from './shared/modules/orderby.module';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
-    routing
+    routing,
+    ModalModule
   ],
   providers: [
     AuthService,
