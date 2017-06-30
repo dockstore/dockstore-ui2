@@ -13,7 +13,7 @@ export class ContainerTagsService {
   }
 
   public postTags(containerId: number, tags) {
-    return this.httpService.postResponse(`${ Dockstore.API_URI }/containers/${ containerId }/tags`, tags);
+    return this.httpService.postResponse(`${ Dockstore.API_URI }/containers/${ containerId }/tags`, [tags]);
   }
 
   public putTags(containerId: number, tags) {
