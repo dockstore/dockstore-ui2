@@ -142,11 +142,9 @@
               Private Image:
             </label>
             <div class="col-sm-9">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="tool.private_access" [(ngModel)]="tool.private_access" tooltip="Image registry entry is private." id="privateTool" />
-                </label>
-              </div>
+              <label>
+                <input type="checkbox" name="tool.private_access" [(ngModel)]="tool.private_access" tooltip="Image registry entry is private." id="privateTool" />
+              </label>
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="tool.private_access">

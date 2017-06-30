@@ -13,7 +13,7 @@
               Version Tag:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input id="versionTagInput" type="text" class="form-control" name="versionTag" id="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag" required title="Docker Image tag name." placeholder="e.g. develop"/>
+              <input id="versionTagInput" type="text" class="form-control" name="versionTag" id="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag" required title="Docker Image tag name." placeholder="e.g. develop" />
               <div *ngIf="formErrors.versionTag" class="form-error-messages">
                 {{formErrors.versionTag}}
               </div>
@@ -122,11 +122,9 @@
               Hidden:
             </label>
             <div class="col-sm-9">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="checkbox" [disabled]="!editMode" [(ngModel)]="unsavedVersion.hidden" title="Hide tag from public view." />
-                </label>
-              </div>
+              <label>
+                <input type="checkbox" name="checkbox" [disabled]="!editMode" [(ngModel)]="unsavedVersion.hidden" title="Hide tag from public view." />
+              </label>
             </div>
           </div>
           <div class="form-group form-group-sm">
