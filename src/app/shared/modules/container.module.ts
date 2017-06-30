@@ -1,3 +1,4 @@
+import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { RegisterToolService } from './../../container/register-tool/register-tool.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -54,7 +55,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     DockerfileComponent,
     DescriptorsComponent,
     ParamfilesComponent,
-    ModalComponent
+    ModalComponent,
+    AddTagComponent
   ],
   imports: [
     ButtonsModule.forRoot(),

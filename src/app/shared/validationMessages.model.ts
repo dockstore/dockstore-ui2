@@ -8,7 +8,9 @@ export const formErrors = {
   'cwlTestParameterFilePath': '',
   'wdlTestParameterFilePath': '',
   'toolName': '',
-  'email': ''
+  'email': '',
+  'reference': '',
+  'versionTag': ''
 };
 
 export const validationPatterns = {
@@ -19,7 +21,9 @@ export const validationPatterns = {
   'testFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'imagePath': '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'toolName': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
-  'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$'
+  'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
+  'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
+  'reference': '[\\w-]+((/|.)[\\w-]+)*'
 };
 
 export const validationMessages = {
@@ -64,14 +68,14 @@ export const validationMessages = {
     'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
     'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
     'pattern': 'Invalid Test parameter file format. ' +
-    'Test parameter file path must begin with \'/\' and end with end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
   'wdlTestParameterFilePath': {
     'required': 'This field cannot be empty.',
     'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
     'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
     'pattern': 'Invalid Test parameter file format. ' +
-    'Test parameter file path must begin with \'/\' and end with end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
   'toolName': {
     'maxlength': 'Tool Name is too long. (Max 256 characters.)',
@@ -79,5 +83,17 @@ export const validationMessages = {
   },
   'email': {
     'maxlength': 'Email is too long. (Max 256 characters.)'
+  },
+  'reference': {
+    'required': 'This field cannot be empty.',
+    'minlength': 'Git reference is too short. (Min. 3 characters.)',
+    'maxlength': 'Git reference is too long. (Max 128 characters.)',
+    'pattern': 'Invalid Git Reference format. ' +
+    'An Git Reference path may only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
+  },
+  'versionTag': {
+    'required': 'This field cannot be empty.',
+    'maxlength': 'Tag Name is too long. (Max 128 characters.)',
+    'pattern': 'A Tag Name may only consist of alphanumeric characters and internal hyphens, periods and underscores.'
   }
 };
