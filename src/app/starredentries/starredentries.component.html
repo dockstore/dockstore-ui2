@@ -1,0 +1,87 @@
+<app-header>
+  <span class="glyphicon glyphicon-star"></span>
+  Starred Tools and Workflows
+</app-header>
+<div class="container" *ngIf="starGazersClicked">
+  <app-stargazers></app-stargazers>
+  <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+    <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+  </button>
+</div>
+<div class="container" *ngIf="!starGazersClicked">
+  <div *ngIf="starredTools">
+    <div class="row">
+      <h3>Starred Tools</h3>
+    </div>
+    <div class="alert alert-info" role="alert" *ngIf="starredTools.length == 0">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      You have no starred tools.
+    </div>
+    <div class="columns">
+      <div *ngFor="let tool of starredTools">
+        <div *ngIf="tool?.is_published || isOwner(tool?.users)">
+          <figure>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>
+                  <a href="/containers/{{tool.tool_path}}"
+                     tooltip="{{tool.name + (tool?.toolname ? '/' + tool?.toolname : '')}}">
+                    {{tool.name + (tool?.toolname ? '/' + tool?.toolname : '')}}
+                  </a>
+                </h3>
+              </div>
+              <div class="panel-body">
+               <span class="label"
+                     [ngClass]="tool?.is_published ? 'label-primary' : 'label-warning'"
+                     title="{{ tool?.is_published ? 'Published' : 'Unpublished' }}">
+                    {{ tool?.is_published ? 'PUB' : 'UNPUB' }}
+            </span>
+                <app-starring class="pull-right" [tool]="tool" (change)="starGazersChange($event)"></app-starring>
+                <p class="update">By {{tool?.author || 'n/a'}}</p>
+                <p class="dont-break-out"><a href="{{tool?.providerUrl}}">{{tool?.providerUrl}}</a></p>
+                <p class="dont-break-out"><a href="{{tool?.imgProviderUrl}}">{{tool?.imgProviderUrl}}</a></p>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="starredWorkflows">
+    <div class="row">
+      <h3>Starred Workflows</h3>
+      <div class="alert alert-info" role="alert" *ngIf="starredWorkflows.length==0">
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        You have no starred workflows.
+      </div>
+    </div>
+    <div class="columns">
+      <div *ngFor="let workflow of starredWorkflows">
+        <div *ngIf="workflow?.is_published || isOwner(workflow?.users)">
+          <figure>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>
+                  <a href="/workflows/{{workflow?.path}}"
+                     tooltip="{{workflow?.repository + (workflow?.workflowName ? ' (' + workflow?.workflowName + ')' : '')}}">
+                    {{workflow?.repository + (workflow?.workflowName ? ' (' + workflow?.workflowName + ')' : '')}}
+                  </a>
+                </h3>
+              </div>
+              <div class="panel-body">
+                <span class="label"
+                   [ngClass]="workflow?.is_published ? 'label-primary' : 'label-warning'"
+                   title="{{ workflow?.is_published ? 'Published' : 'Unpublished' }}">
+                  {{ workflow?.is_published ? 'PUB' : 'UNPUB' }}
+                </span>
+                <app-starring class="pull-right" [workflow]="workflow" (change)="starGazersChange($event)"></app-starring>
+                <p class="update">By {{workflow?.author || 'n/a'}}</p>
+                <p class="dont-break-out"><a href="{{workflow?.providerUrl}}">{{workflow?.providerUrl}}</a></p>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

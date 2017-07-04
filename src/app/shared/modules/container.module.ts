@@ -7,7 +7,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
-import { StarringModule } from '../../starring/starring.module'
+import { StarringModule } from '../../starring/starring.module';
 
 /* External Library */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -44,7 +44,9 @@ import { VersionsContainerComponent } from '../../container/versions/versions.co
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
 import { WorkflowService } from '../workflow.service';
+import { StarringService } from '../../starring/starring.service';
 
+import { StargazersModule } from '../../stargazers/stargazers.module';
 @NgModule({
   declarations: [
     ContainerComponent,
@@ -77,7 +79,8 @@ import { WorkflowService } from '../workflow.service';
     ShareButtonsModule.forRoot(),
     OrderByModule,
     StarringModule,
-    ModalModule
+    ModalModule,
+    StargazersModule
   ],
   providers: [
     HighlightJsService,
@@ -92,6 +95,7 @@ import { WorkflowService } from '../workflow.service';
     RefreshService,
     RegisterToolService,
     WorkflowService,
+    StarringService,
     ViewService
   ],
   exports: [

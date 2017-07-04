@@ -27,6 +27,7 @@ export class WorkflowComponent extends Tool {
   labelPattern = validationPatterns.label;
   totalShare = 0;
   shareURL: string;
+  starGazersClicked = false;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private updateWorkflow: WorkflowService,
@@ -40,6 +41,9 @@ export class WorkflowComponent extends Tool {
               stateService: StateService) {
     super(trackLoginService, toolService, communicatorService, providerService, router,
           workflowService, containerService, stateService, 'workflows');
+  }
+  starGazersChange(event) {
+    this.starGazersClicked = !this.starGazersClicked;
   }
   setProperties() {
     const workflowRef = this.workflow;

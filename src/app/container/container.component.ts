@@ -37,6 +37,7 @@ export class ContainerComponent extends Tool {
   containerEditData: any;
   thisisValid = true;
   labelPattern = validationPatterns.label;
+  starGazersClicked = false;
   constructor(private dockstoreService: DockstoreService,
     private dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -55,7 +56,9 @@ export class ContainerComponent extends Tool {
     super(trackLoginService, toolService, communicatorService, providerService, router,
       workflowService, containerService, stateService, 'containers');
   }
-
+  starGazersChange(event) {
+    this.starGazersClicked = !this.starGazersClicked;
+  }
   setProperties() {
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);

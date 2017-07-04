@@ -151,7 +151,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
     this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
       .subscribe(workflow => {
-          this.setUpWorkflow(workflow);
+          this.workflowService.setWorkflow(workflow);
         }, error => {
           this.router.navigate(['../']);
         }
