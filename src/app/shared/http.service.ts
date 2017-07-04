@@ -81,14 +81,4 @@ export class HttpService {
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
-  requestNoParams(url: string, method: RequestMethod, dockstoreToken?: string) {
-    const options = new RequestOptions({
-      url: url,
-      headers: this.getHeader(this.authService.getToken()),
-      method: method
-    });
-    return this.http.request(new Request(options))
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
-  }
 }

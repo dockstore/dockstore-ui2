@@ -9,8 +9,9 @@ export class StarringService {
   constructor(private httpService: HttpService,
               private authService: AuthService) { }
   setUnstar(entryID: number, entryType: string): any {
+    console.log('setUnstar');
     const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/unstar`;
-    return this.httpService.requestNoParams(url, RequestMethod.Delete, this.authService.getToken());
+    return this.httpService.delete(url);
   }
   setStar(entryID: number, entryType: string): any {
     const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/star`;
@@ -22,16 +23,16 @@ export class StarringService {
   }
   getStarring(entryID: number, entryType: string): any {
     const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/starredUsers`;
-    return this.httpService.requestNoParams(url, RequestMethod.Get, this.authService.getToken());
+    return this.httpService.getAuthResponse(url);
   }
 
   getStarredTools(): any {
     const url = `${ Dockstore.API_URI }/users/starredTools/`;
-    return this.httpService.requestNoParams(url, RequestMethod.Get, this.authService.getToken());
+    return this.httpService.getAuthResponse(url);
   }
 
   getStarredWorkflows(): any {
     const url = `${ Dockstore.API_URI }/users/starredWorkflows/`;
-    return this.httpService.requestNoParams(url, RequestMethod.Get, this.authService.getToken());
+    return this.httpService.getAuthResponse(url);
   }
 }

@@ -15,8 +15,7 @@ import { StarentryService } from '../shared/starentry.service';
 export class StarringComponent implements OnInit {
   @Input() tool: any;
   @Input() workflow: any;
-  @Output()
-  change: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
   user: any;
   entry: any;
   entryType: string;
@@ -93,11 +92,12 @@ export class StarringComponent implements OnInit {
       this.starringService.getStarring(this.entry.id, this.entryType).subscribe(
         starring => {
           let match = false;
-          starring.forEach( star => {
+          for (const star of starring) {
             if (star.id === this.user.id) {
               match = true;
+              break;
             }
-          });
+          }
           this.rate = match;
         });
     }
@@ -133,6 +133,6 @@ export class StarringComponent implements OnInit {
       theEntryType: entryType
     };
     this.starentryService.setEntry(selectedEntry);
-    this.change.emit(true);
+    this.change.emit();
   }
 }

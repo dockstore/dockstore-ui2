@@ -42,7 +42,7 @@ export class WorkflowComponent extends Tool {
     super(trackLoginService, toolService, communicatorService, providerService, router,
           workflowService, containerService, stateService, 'workflows');
   }
-  starGazersChange(event) {
+  starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
   }
   setProperties() {

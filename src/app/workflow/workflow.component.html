@@ -7,7 +7,7 @@
       </a>
     </span>
     {{ title }}
-    <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange($event)"></app-starring>
+    <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
   </h3>
   <div *ngIf="workflow">
     <span class="label label-default container-label" *ngFor="let label of labels">

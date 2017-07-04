@@ -36,7 +36,7 @@
                      title="{{ tool?.is_published ? 'Published' : 'Unpublished' }}">
                     {{ tool?.is_published ? 'PUB' : 'UNPUB' }}
             </span>
-                <app-starring class="pull-right" [tool]="tool" (change)="starGazersChange($event)"></app-starring>
+                <app-starring class="pull-right" [tool]="tool" (change)="starGazersChange()"></app-starring>
                 <p class="update">By {{tool?.author || 'n/a'}}</p>
                 <p class="dont-break-out"><a href="{{tool?.providerUrl}}">{{tool?.providerUrl}}</a></p>
                 <p class="dont-break-out"><a href="{{tool?.imgProviderUrl}}">{{tool?.imgProviderUrl}}</a></p>
@@ -74,7 +74,7 @@
                    title="{{ workflow?.is_published ? 'Published' : 'Unpublished' }}">
                   {{ workflow?.is_published ? 'PUB' : 'UNPUB' }}
                 </span>
-                <app-starring class="pull-right" [workflow]="workflow" (change)="starGazersChange($event)"></app-starring>
+                <app-starring class="pull-right" [workflow]="workflow" (change)="starGazersChange()"></app-starring>
                 <p class="update">By {{workflow?.author || 'n/a'}}</p>
                 <p class="dont-break-out"><a href="{{workflow?.providerUrl}}">{{workflow?.providerUrl}}</a></p>
               </div>

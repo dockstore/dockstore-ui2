@@ -56,7 +56,7 @@ export class ContainerComponent extends Tool {
     super(trackLoginService, toolService, communicatorService, providerService, router,
       workflowService, containerService, stateService, 'containers');
   }
-  starGazersChange(event) {
+  starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
   }
   setProperties() {

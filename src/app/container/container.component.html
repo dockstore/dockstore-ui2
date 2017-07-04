@@ -34,7 +34,7 @@
         </a>
       </span>
       {{ title }}
-      <app-starring *ngIf="isToolPublic" (change)="starGazersChange($event)"></app-starring>
+      <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">

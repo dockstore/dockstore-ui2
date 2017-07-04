@@ -69,7 +69,7 @@ export class StarredentriesComponent implements OnInit {
     return isOwner;
   }
 
-  starGazersChange(event) {
+  starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
   }
 }

@@ -12,8 +12,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     StargazersModule,
     TooltipModule.forRoot()
   ],
-  declarations: [
-  ],
   exports: [
     StarredentriesComponent
   ],
