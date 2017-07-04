@@ -37,6 +37,7 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
+import { UsersService } from './shared/webservice/users.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
@@ -116,7 +117,8 @@ import { OrderByModule } from './shared/modules/orderby.module';
     ProviderService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
-    StateService
+    StateService,
+    UsersService
   ],
   bootstrap: [ AppComponent ]
 })

@@ -26,6 +26,7 @@ export class MyToolsComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.containerService.setTool(null);
     this.userService.getUser().subscribe(user => {
       this.user = user;
       this.userService.getUserTools(user.id).subscribe(tools => {

@@ -1,10 +1,11 @@
-import { PublishRequest } from './models/PublishRequest';
+
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Dockstore } from './dockstore.model';
-import { HttpService } from './http.service';
+import { Dockstore } from './../dockstore.model';
+import { HttpService } from './../http.service';
+import { PublishRequest } from './../models/PublishRequest';
 
 @Injectable()
 export class ContainerWebService {
