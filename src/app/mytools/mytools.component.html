@@ -2,7 +2,7 @@
   <img src="../assets/images/dockstore/dockstore-tools-blue.png">
   My Tools
   <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary">
+    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()">
       Refresh All Tools
     </button>
   </div>
@@ -59,7 +59,7 @@
 
       <app-register-tool></app-register-tool>
     </div>
-    <div class="col-md-8 containers-rsb">
+    <div class="col-md-9 containers-rsb">
       <app-container [isToolPublic]="false"></app-container>
     </div>
   </div>

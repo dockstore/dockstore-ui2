@@ -1,8 +1,6 @@
-import { ContainerWebService } from './../shared/containerWeb.service';
-import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -10,12 +8,14 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 /* Inner Module, Component, Routing, and Service */
+import { ContainerModule } from '../shared/modules/container.module';
+import { ContainerService } from '../shared/container.service';
+import { ContainerWebService } from './../shared/webservice/containerWeb.service';
+import { HeaderModule } from '../shared/modules/header.module';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
-
-import { ContainerModule } from '../shared/modules/container.module';
-import { HeaderModule } from '../shared/modules/header.module';
-import { ContainerService } from '../shared/container.service';
+import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
+import { UsersService } from './../shared/webservice/users.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,8 @@ import { ContainerService } from '../shared/container.service';
   ],
   providers: [
     ContainerService,
-    ContainerWebService
+    ContainerWebService,
+    UsersService
   ],
 })
 export class MyToolsModule {}

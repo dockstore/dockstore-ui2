@@ -1,4 +1,4 @@
-import { ContainerTagsService } from './../containerTags.service';
+import { ContainerWebService } from './../webservice/containerWeb.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -12,33 +12,38 @@ import { StarringModule } from '../../starring/starring.module'
 /* External Library */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ShareButtonsModule } from 'ngx-sharebuttons';
 
+import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../container.service';
+import { ContainerTagsService } from './../webservice/containerTags.service';
+import { DateService } from '../date.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { FilesContainerComponent } from '../../container/files/files.component';
+import { FileService } from '../file.service';
+import { HeaderModule } from './header.module';
 import { LaunchComponent } from '../../container/launch/launch.component';
 import { LaunchService } from '../../container/launch/launch.service';
+import { ListContainersModule } from './list-containers.module';
+import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
+import { OrderByModule } from '../../shared/modules/orderby.module';
 import { ParamfilesComponent } from '../../container/paramfiles/paramfiles.component';
+import { ParamfilesModule } from './paramfiles.module';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { RefreshService } from './../refresh.service';
+import { RegisterToolService } from './../../container/register-tool/register-tool.service';
+import { SelectModule } from './select.module';
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { ViewService } from '../../container/view/view.service';
 import { WorkflowService } from '../workflow.service';
-
-import { DateService } from '../date.service';
-import { FileService } from '../file.service';
-import { HeaderModule } from './header.module';
-import { ListContainersModule } from './list-containers.module';
-import { ParamfilesModule } from './paramfiles.module';
-import { SelectModule } from './select.module';
-import { OrderByModule } from '../../shared/modules/orderby.module';
-
 
 @NgModule({
   declarations: [
@@ -49,9 +54,12 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     FilesContainerComponent,
     DockerfileComponent,
     DescriptorsComponent,
-    ParamfilesComponent
+    ParamfilesComponent,
+    ModalComponent,
+    AddTagComponent
   ],
   imports: [
+    ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
     MarkdownModule.forRoot(),
@@ -68,17 +76,21 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     FormsModule,
     ShareButtonsModule.forRoot(),
     OrderByModule,
-    StarringModule
+    StarringModule,
+    ModalModule
   ],
   providers: [
     HighlightJsService,
     ContainerTagsService,
+    ContainerWebService,
     DateService,
     FileService,
     ContainerService,
     LaunchService,
     DockerfileService,
     ParamfilesService,
+    RefreshService,
+    RegisterToolService,
     WorkflowService,
     ViewService
   ],

@@ -31,7 +31,6 @@ export class ListContainersComponent extends ToolLister {
   };
   constructor(private listContainersService: ListContainersService,
               private communicatorService: CommunicatorService,
-              private ContainerService: ContainerService,
               private dockstoreService: DockstoreService,
               private imageProviderService: ImageProviderService,
               private dateService: DateService,

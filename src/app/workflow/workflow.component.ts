@@ -1,3 +1,4 @@
+import { StateService } from './../shared/state.service';
 import {Component, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
@@ -35,9 +36,10 @@ export class WorkflowComponent extends Tool {
               providerService: ProviderService,
               router: Router,
               workflowService: WorkflowService,
-              containerService: ContainerService) {
+              containerService: ContainerService,
+              stateService: StateService) {
     super(trackLoginService, toolService, communicatorService, providerService, router,
-          workflowService, containerService, 'workflows');
+          workflowService, containerService, stateService, 'workflows');
   }
   setProperties() {
     const workflowRef = this.workflow;

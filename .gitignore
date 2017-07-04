@@ -4,6 +4,8 @@
 /dist
 /tmp
 /out-tsc
+/src/app/**/*.js
+!/src/app/shared/angular2-highlight-js/lib/*.js
 
 # dependencies
 /node_modules

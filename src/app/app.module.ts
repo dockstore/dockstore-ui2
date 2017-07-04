@@ -1,3 +1,4 @@
+import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule} from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -35,6 +37,7 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
+import { UsersService } from './shared/webservice/users.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
@@ -77,7 +80,7 @@ import { OrderByModule } from './shared/modules/orderby.module';
     AccountsExternalComponent,
     AuthComponent,
     TokensComponent
-  ],
+],
   imports: [
     BrowserModule,
     FormsModule,
@@ -94,7 +97,8 @@ import { OrderByModule } from './shared/modules/orderby.module';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
-    routing
+    routing,
+    ModalModule
   ],
   providers: [
     AuthService,
@@ -112,7 +116,9 @@ import { OrderByModule } from './shared/modules/orderby.module';
     ToolService,
     ProviderService,
     ImageProviderService,
-    CLIENT_ROUTER_PROVIDERS
+    CLIENT_ROUTER_PROVIDERS,
+    StateService,
+    UsersService
   ],
   bootstrap: [ AppComponent ]
 })

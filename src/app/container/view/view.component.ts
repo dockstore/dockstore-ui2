@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsService } from './../../shared/containerTags.service';
+import { ContainerTagsService } from './../../shared/webservice/containerTags.service';
 import { DateService } from '../../shared/date.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
-import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { ListContainersService } from './../../containers/list/list.service';
+import { ParamfilesService } from './../paramfiles/paramfiles.service';
+import { StateService } from './../../shared/state.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { validationMessages, formErrors } from '../../shared/validationMessages.model';
 import { View } from '../../shared/view';
@@ -46,7 +47,8 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     private listContainersService: ListContainersService,
     dateService: DateService,
     private containerService: ContainerService,
-    private containerTagsService: ContainerTagsService) {
+    private containerTagsService: ContainerTagsService,
+    private stateService: StateService) {
     super(dateService);
   }
 
@@ -128,6 +130,15 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     this.containerTagsService.putTags(this.tool.id, this.unsavedVersion).subscribe();
   }
 
+  deleteTag() {
+    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(deleteResponse => {
+      this.containerTagsService.getTags(this.tool.id).subscribe(response => {
+      this.tool.tags = response;
+      this.containerService.setTool(this.tool);
+    });
+    });
+  }
+
   setMode(mode: TagEditorMode) {
     console.log('Setting mode to: ' + TagEditorMode[mode]);
     this.viewService.setCurrentMode(mode);
@@ -199,17 +210,9 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     );
 
     this.unsavedVersion = Object.assign({}, this.version);
+    this.stateService.publicPage.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
-    this.tool = tool;
-      if (tool) {
-        if (this.tool.isPublic) {
-          this.editMode = false;
-        } else {
-          this.editMode = true;
-        }
-      } else {
-        console.log('Tool is not truthy');
-      }
+      this.tool = tool;
     });
     this.viewService.unsavedTestCWLFile.subscribe(
       (file: string) => {

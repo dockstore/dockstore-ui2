@@ -65,7 +65,7 @@ export class HttpService {
   }
 
   delete(url: string, dockstoreToken?: string) {
-    return this.http.delete(url, this.addOptions(dockstoreToken))
+    return this.http.delete(url, this.addOptions(this.authService.getToken()))
       .map((res: Response) => res.text())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }

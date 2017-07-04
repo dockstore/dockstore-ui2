@@ -1,4 +1,9 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import { ContainerWebService } from './../shared/webservice/containerWeb.service';
+import { StateService } from './../shared/state.service';
+import { RefreshService } from './../shared/refresh.service';
+import { FormsModule } from '@angular/forms';
+import { PublishRequest } from './../shared/models/PublishRequest';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -17,6 +22,7 @@ import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
 
+
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
@@ -29,21 +35,25 @@ export class ContainerComponent extends Tool {
   shareURL: string;
   labelsEditMode: boolean;
   containerEditData: any;
+  thisisValid = true;
   labelPattern = validationPatterns.label;
   constructor(private dockstoreService: DockstoreService,
-              private dateService: DateService,
-              private imageProviderService: ImageProviderService,
-              private listContainersService: ListContainersService,
-              private updateContainer: ContainerService,
-              trackLoginService: TrackLoginService,
-              toolService: ToolService,
-              communicatorService: CommunicatorService,
-              providerService: ProviderService,
-              router: Router,
-              workflowService: WorkflowService,
-              containerService: ContainerService) {
+    private dateService: DateService,
+    private imageProviderService: ImageProviderService,
+    private listContainersService: ListContainersService,
+    private refreshService: RefreshService,
+    private updateContainer: ContainerService,
+    private containerWebService: ContainerWebService,
+    trackLoginService: TrackLoginService,
+    toolService: ToolService,
+    communicatorService: CommunicatorService,
+    providerService: ProviderService,
+    router: Router,
+    workflowService: WorkflowService,
+    containerService: ContainerService,
+    stateService: StateService) {
     super(trackLoginService, toolService, communicatorService, providerService, router,
-          workflowService, containerService, 'containers');
+      workflowService, containerService, stateService, 'containers');
   }
 
   setProperties() {
@@ -60,7 +70,6 @@ export class ContainerComponent extends Tool {
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
     toolRef.verifiedLinks = this.dateService.getVerifiedLink();
-    toolRef.isPublic = this.isToolPublic;
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
@@ -70,12 +79,55 @@ export class ContainerComponent extends Tool {
     this.totalShare += count;
   }
 
+  publishTool() {
+    if (this.publishDisable()) {
+      return;
+    } else {
+      const request: PublishRequest = new PublishRequest;
+      request.publish = this.published;
+      this.containerWebService.publish(this.tool.id, request).subscribe(
+        response => this.tool.is_published = response.is_published, err => this.published = !this.published);
+    }
+  }
+
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
+
   toggleLabelsEditMode() {
     this.labelsEditMode = !this.labelsEditMode;
   }
+
+  publishDisable() {
+    return this.refreshingContainer || !this.isContainerValid();
+  }
+
+  isContainerValid() {
+    if (!this.tool) {
+      return false;
+    }
+    if (this.tool.is_published) {
+      return true;
+    }
+
+    const versionTags = this.tool.tags;
+
+    if (versionTags === null) {
+      return false;
+    }
+
+    for (let i = 0; i < versionTags.length; i++) {
+      if (versionTags[i].valid) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  refreshContainer() {
+    this.refreshService.refreshContainer();
+  }
+
   resetContainerEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.tool.labels);
     const toolLabels = labelArray.join(', ');
@@ -97,12 +149,12 @@ export class ContainerComponent extends Tool {
   }
   setContainerLabels(): any {
     return this.dockstoreService.setContainerLabels(this.tool.id, this.containerEditData.labels).
-    subscribe(
+      subscribe(
       tool => {
         this.tool.labels = tool.labels;
         this.updateContainer.setTool(tool);
         this.labelsEditMode = false;
       }
-    );
+      );
   }
 }

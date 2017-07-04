@@ -1,5 +1,6 @@
+import { ContainerWebService } from './../../shared/webservice/containerWeb.service';
+import { StateService } from './../../shared/state.service';
 import { ContainerService } from './../../shared/container.service';
-import { ContainerWebService } from './../../shared/containerWeb.service';
 import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable, ViewChild } from '@angular/core';
@@ -15,6 +16,7 @@ export class RegisterToolService {
     private dockerRegistryMap = [];
     refreshingContainer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
+    private selectedTool;
 
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
@@ -22,11 +24,22 @@ export class RegisterToolService {
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainerWebService, private containerService: ContainerService) {
+    constructor(private containerWebService: ContainerWebService,
+        private containerService: ContainerService,
+        private stateService: StateService) {
         this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
         this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
-
+    deregisterTool() {
+        this.containerWebService.deleteContainer(this.selectedTool.id).subscribe(response => {
+            const index = this.tools.indexOf(this.selectedTool);
+            this.tools.splice(index, 1);
+            this.containerService.setTools(this.tools);
+        }, error => {
+            console.log(error);
+        });
+    }
     setTool(newTool: Tool): void {
         this.tool.next(newTool);
     }
@@ -49,11 +62,13 @@ export class RegisterToolService {
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
-            this.refreshingContainer.next(true);
+            this.setToolRegisterError(null);
+            this.stateService.setRefreshing(true);
             this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
                 (<any>$('#registerContainerModal')).modal('toggle');
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
+                this.stateService.setRefreshing(false);
             });
             // Use types instead
         }, error => this.setToolRegisterError(error)

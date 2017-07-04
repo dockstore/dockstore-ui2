@@ -56,7 +56,9 @@ export class MytoolsService {
     if (orIndex >= 0) {
       sortedNSContainers.push(orNSObj);
     }
-    sortedNSContainers[0].isFirstOpen = true;
+    if (sortedNSContainers.length > 0) {
+      sortedNSContainers[0].isFirstOpen = true;
+    }
     return sortedNSContainers;
   }
 
@@ -73,7 +75,9 @@ export class MytoolsService {
         });
         pos = nsContainers.length - 1;
       }
-      nsContainers[pos].containers.push(tools[i]);
+      if (nsContainers.length > 0) {
+        nsContainers[pos].containers.push(tools[i]);
+      }
     }
     /* Sort Containers/Tools in Each Namespace */
     for (let j = 0; j < nsContainers.length; j++) {

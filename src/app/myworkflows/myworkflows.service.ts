@@ -55,7 +55,9 @@ export class MyWorkflowsService {
     if (orIndex >= 0) {
       sortedorgWorkflows.push(orORGObj);
     }
-    sortedorgWorkflows[0].isFirstOpen = true;
+    if (sortedorgWorkflows.length > 0) {
+      sortedorgWorkflows[0].isFirstOpen = true;
+    }
     return sortedorgWorkflows;
   }
 
