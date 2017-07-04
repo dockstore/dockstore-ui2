@@ -10,7 +10,8 @@ export const formErrors = {
   'toolName': '',
   'email': '',
   'reference': '',
-  'versionTag': ''
+  'versionTag': '',
+  'workflow_path': ''
 };
 
 export const validationPatterns = {
@@ -23,7 +24,8 @@ export const validationPatterns = {
   'toolName': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
   'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
-  'reference': '[\\w-]+((/|.)[\\w-]+)*'
+  'reference': '[\\w-]+((/|.)[\\w-]+)*',
+  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)'
 };
 
 export const validationMessages = {
@@ -95,5 +97,12 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'maxlength': 'Tag Name is too long. (Max 128 characters.)',
     'pattern': 'A Tag Name may only consist of alphanumeric characters and internal hyphens, periods and underscores.'
+  },
+  'workflow_path': {
+    'required': 'This field cannot be empty.',
+    'minlength': 'Workflow Path is too short. (Min. 3 characters.)',
+    'maxlength': 'Workflow Path is too long. (Max 256 characters.)',
+    'pattern': 'Invalid Workflow Path format. ' +
+    'Workflow Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', or\'*.wdl\'.'
   }
 };

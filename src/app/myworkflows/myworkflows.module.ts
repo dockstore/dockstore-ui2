@@ -1,3 +1,5 @@
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-modal/register-workflow-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +17,8 @@ import { HeaderModule } from '../shared/modules/header.module';
 
 @NgModule({
   declarations: [
-    MyWorkflowsComponent
+    MyWorkflowsComponent,
+    RegisterWorkflowModalComponent
   ],
   imports: [
     CommonModule,
@@ -23,6 +26,7 @@ import { HeaderModule } from '../shared/modules/header.module';
     FormsModule,
     HeaderModule,
     myworkflowRouting,
+    ModalModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot()

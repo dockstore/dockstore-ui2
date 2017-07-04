@@ -97,8 +97,7 @@ import { OrderByModule } from './shared/modules/orderby.module';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
-    routing,
-    ModalModule
+    routing
   ],
   providers: [
     AuthService,

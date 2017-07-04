@@ -1,3 +1,5 @@
+import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -60,6 +62,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     HighlightJsModule,
     ListWorkflowsModule,
     ParamfilesModule,
+    ModalModule.forRoot(),
     SelectModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
@@ -79,7 +82,8 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     DockerfileService,
     ParamfilesService,
     WorkflowService,
-    DescriptorsService
+    DescriptorsService,
+    RegisterWorkflowModalService
   ],
   exports: [
     WorkflowComponent
