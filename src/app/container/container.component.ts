@@ -20,6 +20,7 @@ import { ContainerService } from '../shared/container.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
+import { TrackLoginService } from '../shared/track-login.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class ContainerComponent extends Tool {
   containerEditData: any;
   thisisValid = true;
   labelPattern = validationPatterns.label;
+  starGazersClicked = false;
   constructor(private dockstoreService: DockstoreService,
     private dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -43,6 +45,7 @@ export class ContainerComponent extends Tool {
     private refreshService: RefreshService,
     private updateContainer: ContainerService,
     private containerWebService: ContainerWebService,
+    trackLoginService: TrackLoginService,
     toolService: ToolService,
     communicatorService: CommunicatorService,
     providerService: ProviderService,
@@ -50,10 +53,12 @@ export class ContainerComponent extends Tool {
     workflowService: WorkflowService,
     containerService: ContainerService,
     stateService: StateService) {
-    super(toolService, communicatorService, providerService, router,
+    super(trackLoginService, toolService, communicatorService, providerService, router,
       workflowService, containerService, stateService, 'containers');
   }
-
+  starGazersChange() {
+    this.starGazersClicked = !this.starGazersClicked;
+  }
   setProperties() {
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);

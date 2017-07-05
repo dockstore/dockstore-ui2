@@ -1,0 +1,20 @@
+<div class="container panel panel-default">
+  <h3>Stargazers</h3>
+  <div class="alert alert-info" role="alert" *ngIf="starGazers?.length==0">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    There are no stargazers for this entry.
+  </div>
+  <div class="panel-body" *ngIf="starGazers?.length>0">
+    <div fxLayout="row wrap">
+      <div *ngFor="let stargazer of starGazers">
+        <div fxFlex="90%">
+          <img src="{{stargazer.avatarUrl}}" width="200" height="200" class="img-responsive"
+               alt="http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg"/>
+          <div class="caption">
+            <h5>{{stargazer.username}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

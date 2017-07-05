@@ -15,9 +15,9 @@ import { ContainerService } from '../shared/container.service';
 export class MyToolsComponent implements OnInit {
   nsContainers: any;
   oneAtATime = true;
-  selContainerObj: any;
   tools: any;
   user: any;
+  selContainerObj: any;
   constructor(private mytoolsService: MytoolsService,
     private communicatorService: CommunicatorService,
     private userService: UserService,

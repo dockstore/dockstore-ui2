@@ -1,20 +1,22 @@
+import {Injectable, Input, OnDestroy, OnInit} from '@angular/core';
 import { StateService } from './state.service';
-import {Injectable, OnDestroy, OnInit, Input} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router} from '@angular/router/';
 import {Subscription} from 'rxjs/Subscription';
 
 import {ToolService} from './tool.service';
 import {CommunicatorService} from './communicator.service';
 import {ProviderService} from './provider.service';
-import {UserService} from '../loginComponents/user.service';
 
-import { WorkflowService } from './workflow.service';
-import { ContainerService } from '../shared/container.service';
+import {WorkflowService} from './workflow.service';
+import {ContainerService} from '../shared/container.service';
+import { TrackLoginService } from '../shared/track-login.service';
+
 @Injectable()
 export abstract class Tool implements OnInit, OnDestroy {
 
   protected title: string;
   protected _toolType: string;
+  protected isLoggedIn: boolean;
 
   protected validVersions;
   protected defaultVersion;
@@ -26,10 +28,12 @@ export abstract class Tool implements OnInit, OnDestroy {
   private routeSub: Subscription;
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
+  private loginSubscription: Subscription;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   private publicPage: boolean;
-  constructor(private toolService: ToolService,
+  constructor(private trackLoginService: TrackLoginService,
+              private toolService: ToolService,
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
               private router: Router,
@@ -43,6 +47,11 @@ export abstract class Tool implements OnInit, OnDestroy {
   ngOnInit() {
     this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshing.subscribe(refreshing => this.refreshingContainer = refreshing);
+    this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(
+      state => {
+        this.isLoggedIn = state;
+      }
+    );
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;
@@ -142,7 +151,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
     this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
       .subscribe(workflow => {
-          this.setUpWorkflow(workflow);
+          this.workflowService.setWorkflow(workflow);
         }, error => {
           this.router.navigate(['../']);
         }
