@@ -15,13 +15,14 @@ import {UserService} from '../loginComponents/user.service';
   templateUrl: './myworkflows.component.html',
   styleUrls: ['./myworkflows.component.css'],
   providers: [MyWorkflowsService, ProviderService,
-              DockstoreService, CommunicatorService, WorkflowService]
+              DockstoreService, CommunicatorService]
 })
 export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
   oneAtATime = true;
   selWorkflowObj: any;
   user: any;
+  workflows: any;
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private communicatorService: CommunicatorService,
@@ -33,13 +34,22 @@ export class MyWorkflowsComponent implements OnInit {
     this.userService.getUser().subscribe(user => {
       this.user = user;
       this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
-        this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
-        if (this.orgWorkflows && this.orgWorkflows.length > 0) {
-          const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
-          this.selectWorkflow(theFirstWorkflow);
-          this.communicatorService.setWorkflow(theFirstWorkflow);
-        }
+        this.workflowService.setWorkflows(workflows);
       });
+    });
+    this.workflowService.workflows$.subscribe(workflows => {
+      this.workflows = workflows;
+      if (this.user) {
+        const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
+        this.workflowService.setNsWorkflows(sortedWorkflows);
+      }
+    });
+    this.workflowService.nsWorkflows$.subscribe(nsWorkflows => {
+      this.orgWorkflows = nsWorkflows;
+      if (this.orgWorkflows && this.orgWorkflows.length > 0) {
+        const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
+        this.selectWorkflow(theFirstWorkflow);
+      }
     });
   }
   selectWorkflow(workflow) {
