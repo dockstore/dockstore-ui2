@@ -5,7 +5,7 @@ import { Dockstore } from './../dockstore.model';
 import { HttpService } from './../http.service';
 
 @Injectable()
-export class ContainerTagsService {
+export class ContainerTagsWebService {
   constructor(private httpService: HttpService) { }
 
   public getTags(containerId: number) {

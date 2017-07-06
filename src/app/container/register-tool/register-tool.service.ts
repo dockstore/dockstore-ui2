@@ -1,4 +1,4 @@
-import { ContainerWebService } from './../../shared/webservice/containerWeb.service';
+import { ContainersWebService } from './../../shared/webservice/containers-web.service';
 import { StateService } from './../../shared/state.service';
 import { ContainerService } from './../../shared/container.service';
 import { Tool } from './tool';
@@ -24,7 +24,7 @@ export class RegisterToolService {
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainerWebService,
+    constructor(private containerWebService: ContainersWebService,
         private containerService: ContainerService,
         private stateService: StateService) {
         this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);

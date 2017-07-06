@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
 import { ContainerService } from './container.service';
-import { ContainerWebService } from './webservice/containerWeb.service';
+import { ContainersWebService } from './webservice/containers-web.service';
 import { StateService } from './state.service';
-import { UsersService } from './webservice/users.service';
+import { UsersWebService } from './webservice/users-web.service';
 
 @Injectable()
 export class RefreshService {
     private tool;
     private refreshing: boolean;
-    constructor(private containerWebService: ContainerWebService,
+    constructor(private containerWebService: ContainersWebService,
         private containerService: ContainerService,
         private stateService: StateService,
-        private usersService: UsersService) {
+        private usersService: UsersWebService) {
         this.containerService.tool$.subscribe(
             tool => this.tool = tool
         );

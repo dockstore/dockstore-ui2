@@ -8,7 +8,7 @@ import { HttpService } from './../http.service';
 import { PublishRequest } from './../models/PublishRequest';
 
 @Injectable()
-export class ContainerWebService {
+export class ContainersWebService {
   domain: string;
   constructor(private httpService: HttpService) {
     this.domain = Dockstore.API_URI;

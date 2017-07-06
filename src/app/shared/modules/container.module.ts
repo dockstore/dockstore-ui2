@@ -1,4 +1,3 @@
-import { ContainerWebService } from './../webservice/containerWeb.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -21,7 +20,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../container.service';
-import { ContainerTagsService } from './../webservice/containerTags.service';
+import { ContainersWebService } from './../webservice/containers-web.service';
+import { ContainerTagsWebService } from './../webservice/container-tags-web.service';
 import { DateService } from '../date.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
@@ -84,8 +84,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
   ],
   providers: [
     HighlightJsService,
-    ContainerTagsService,
-    ContainerWebService,
+    ContainerTagsWebService,
+    ContainersWebService,
     DateService,
     FileService,
     ContainerService,

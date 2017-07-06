@@ -3,7 +3,7 @@ import { HttpService } from './../http.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class UsersService {
+export class UsersWebService {
 
     constructor(private httpService: HttpService) { }
 

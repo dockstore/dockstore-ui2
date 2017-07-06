@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsService } from './../../shared/webservice/containerTags.service';
+import { ContainerTagsWebService } from './../../shared/webservice/container-tags-web.service';
 import { DateService } from '../../shared/date.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { ListContainersService } from './../../containers/list/list.service';
@@ -47,7 +47,7 @@ export class ViewContainerComponent extends View implements OnInit, AfterViewChe
     private listContainersService: ListContainersService,
     dateService: DateService,
     private containerService: ContainerService,
-    private containerTagsService: ContainerTagsService,
+    private containerTagsService: ContainerTagsWebService,
     private stateService: StateService) {
     super(dateService);
   }
