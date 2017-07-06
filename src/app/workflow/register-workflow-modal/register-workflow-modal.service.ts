@@ -1,3 +1,4 @@
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
@@ -28,11 +29,15 @@ export class RegisterWorkflowModalService {
         this.workflowRegisterError.next(null);
     }
 
-    setWorkflowRegisterError(error: any) {
-        this.workflowRegisterError = error;
+    setWorkflowRegisterError(message: any, errorDetails) {
+        const error = {
+            message: message,
+            errorDetails: errorDetails
+        };
+        this.workflowRegisterError.next(error);
     }
 
-    registerWorkflow() {
+    registerWorkflow(modal: ModalDirective) {
         this.stateService.setRefreshing(true);
         this.workflowWebService.manualRegister(
             this.actualWorkflow.repository,
@@ -45,6 +50,12 @@ export class RegisterWorkflowModalService {
                 this.workflowService.setWorkflows(this.workflows);
                 this.workflowService.setWorkflow(result);
                 this.stateService.setRefreshing(false);
-            }, error => this.setWorkflowRegisterError(error));
+                modal.hide();
+                this.clearWorkflowRegisterError();
+            }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
+                'workflow, please ensure that the workflow attributes are ' +
+                'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+                error._body)
+            );
     }
 }

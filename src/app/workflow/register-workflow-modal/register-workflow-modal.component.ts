@@ -48,8 +48,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModal.hide();
-    this.registerWorkflowModalService.registerWorkflow();
+    this.registerWorkflowModalService.registerWorkflow(this.registerWorkflowModal);
   }
 
   formChanged() {

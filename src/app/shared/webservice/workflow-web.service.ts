@@ -24,8 +24,6 @@ export class WorkflowWebService {
         defaultWorkflowPath: string,
         workflowName: string,
         descriptorType: string) {
-
-        console.log('stuff happened');
         const myParams = new URLSearchParams();
         if (workflowRegistry !== undefined) {
             myParams.set('workflowRegistry', workflowRegistry);
