@@ -12,6 +12,7 @@ import { Tool } from '../shared/tool';
 
 import { ContainerService } from '../shared/container.service';
 import { validationPatterns } from '../shared/validationMessages.model';
+import { TrackLoginService } from '../shared/track-login.service';
 
 @Component({
   selector: 'app-workflow',
@@ -26,9 +27,11 @@ export class WorkflowComponent extends Tool {
   labelPattern = validationPatterns.label;
   totalShare = 0;
   shareURL: string;
+  starGazersClicked = false;
   constructor(private dockstoreService: DockstoreService,
               private dateService: DateService,
               private updateWorkflow: WorkflowService,
+              trackLoginService: TrackLoginService,
               toolService: ToolService,
               communicatorService: CommunicatorService,
               providerService: ProviderService,
@@ -36,8 +39,11 @@ export class WorkflowComponent extends Tool {
               workflowService: WorkflowService,
               containerService: ContainerService,
               stateService: StateService) {
-    super(toolService, communicatorService, providerService, router,
+    super(trackLoginService, toolService, communicatorService, providerService, router,
           workflowService, containerService, stateService, 'workflows');
+  }
+  starGazersChange() {
+    this.starGazersClicked = !this.starGazersClicked;
   }
   setProperties() {
     const workflowRef = this.workflow;

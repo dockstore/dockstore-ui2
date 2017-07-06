@@ -34,6 +34,7 @@
         </a>
       </span>
       {{ title }}
+      <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">
@@ -43,6 +44,12 @@
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
+    <div *ngIf="starGazersClicked">
+      <app-stargazers></app-stargazers>
+      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+      </button>
+    </div>
   </div>
   <div *ngIf="!publicPage">
     <h3>
@@ -51,7 +58,7 @@
           <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publishTool()" [(ngModel)]="published" [disabled]="!thisisValid" btnCheckbox>
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
-          
+
           <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
         </div>
         <button type="button" class="btn btn-primary" (click)="refreshContainer()" [disabled]="refreshingContainer">
@@ -61,7 +68,7 @@
     </h3>
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
