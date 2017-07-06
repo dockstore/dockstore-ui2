@@ -11,7 +11,8 @@ export const formErrors = {
   'email': '',
   'reference': '',
   'versionTag': '',
-  'workflow_path': ''
+  'workflow_path': '',
+  'workflowName': ''
 };
 
 export const validationPatterns = {
@@ -25,7 +26,8 @@ export const validationPatterns = {
   'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
-  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)'
+  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
+  'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*'
 };
 
 export const validationMessages = {
@@ -104,5 +106,9 @@ export const validationMessages = {
     'maxlength': 'Workflow Path is too long. (Max 256 characters.)',
     'pattern': 'Invalid Workflow Path format. ' +
     'Workflow Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', or\'*.wdl\'.'
+  },
+  'workflowName': {
+    'maxlength': 'Workflow Name is too long. (Max 256 characters.)',
+    'pattern': 'A Workflow Name may only consist of alphanumeric characters and internal underscores or hyphens.'
   }
 };

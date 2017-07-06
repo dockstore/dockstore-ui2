@@ -1,3 +1,4 @@
+import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -83,7 +84,9 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     ParamfilesService,
     WorkflowService,
     DescriptorsService,
-    RegisterWorkflowModalService
+    RegisterWorkflowModalService,
+    WorkflowService,
+    WorkflowWebService
   ],
   exports: [
     WorkflowComponent

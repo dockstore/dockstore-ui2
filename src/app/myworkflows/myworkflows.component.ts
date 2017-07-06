@@ -21,6 +21,7 @@ export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
   oneAtATime = true;
   selWorkflowObj: any;
+  user: any;
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private communicatorService: CommunicatorService,
@@ -28,7 +29,9 @@ export class MyWorkflowsComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.workflowService.setWorkflow(null);
     this.userService.getUser().subscribe(user => {
+      this.user = user;
       this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
         this.orgWorkflows = this.myworkflowService.sortORGWorkflows(workflows, user.username);
         if (this.orgWorkflows && this.orgWorkflows.length > 0) {

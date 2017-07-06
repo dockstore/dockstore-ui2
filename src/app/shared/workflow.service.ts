@@ -7,11 +7,22 @@ import { HttpService } from './http.service';
 export class WorkflowService {
   private workflowSource = new BehaviorSubject<any>(null);
   // Observable streams
-  workflow$ = this.workflowSource.asObservable();
+  workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
+  workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
+  nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   constructor(private httpService: HttpService) {}
   setWorkflow(workflow: any) {
     this.workflowSource.next(workflow);
   }
+
+  setWorkflows(workflows: any) {
+    this.workflows$.next(workflows);
+  }
+
+  setNsWorkflows(nsWorkflows: any) {
+    this.nsWorkflows$.next(nsWorkflows);
+  }
+
   getParamsString(path: string, tagName: string) {
     return 'dockstore workflow convert entry2json --entry ' + path + ':' + tagName + ` > Dockstore.json
             \nvim Dockstore.json`;
