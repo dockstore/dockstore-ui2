@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
+import { StarringModule } from '../../starring/starring.module';
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -42,6 +43,7 @@ import { FileService } from '../file.service';
 import { WorkflowService } from '../../shared/workflow.service';
 import { DescriptorsService } from '../../container/descriptors/descriptors.service';
 import { OrderByModule } from '../../shared/modules/orderby.module';
+import { StargazersModule } from '../../stargazers/stargazers.module';
 
 
 @NgModule({
@@ -69,9 +71,11 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
     ShareButtonsModule.forRoot(),
+    StarringModule,
     OrderByModule,
     FormsModule,
-    DagModule
+    DagModule,
+    StargazersModule
   ],
   providers: [
     HighlightJsService,

@@ -7,6 +7,7 @@
       </a>
     </span>
     {{ title }}
+    <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
   </h3>
   <div *ngIf="workflow">
     <span class="label label-default container-label" *ngFor="let label of labels">
@@ -16,7 +17,13 @@
   <p class="update">
     Last Modified: {{ workflow?.agoMessage || 'n/a' }}
   </p>
-  <div class="row">
+    <div *ngIf="starGazersClicked">
+      <app-stargazers></app-stargazers>
+      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+      </button>
+    </div>
+  <div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12 col-md-9 col-lg-9">
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">

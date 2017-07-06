@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -59,9 +61,11 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
-import {SearchComponent} from './search/search.component';
+import { SearchComponent } from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
-
+import { StarredentriesComponent } from './starredentries/starredentries.component';
+import { StarringModule } from './starring/starring.module';
+import { StargazersModule } from './stargazers/stargazers.module';
 
 @NgModule({
   declarations: [
@@ -79,7 +83,8 @@ import { OrderByModule } from './shared/modules/orderby.module';
     AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
-    TokensComponent
+    TokensComponent,
+    StarredentriesComponent
 ],
   imports: [
     BrowserModule,
@@ -97,7 +102,11 @@ import { OrderByModule } from './shared/modules/orderby.module';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
-    routing
+    FlexLayoutModule,
+    StarringModule,
+    routing,
+    ModalModule,
+    StargazersModule
   ],
   providers: [
     AuthService,

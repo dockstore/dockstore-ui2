@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 
 import { Dockstore } from './dockstore.model';
 import { DockstoreService } from './dockstore.service';
-import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ContainerService {

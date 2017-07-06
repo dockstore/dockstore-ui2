@@ -1,0 +1,13 @@
+<div class="btn-group" role="group">
+  <button id="starringButton" type="button" (click)="setStarring()"
+          [disabled]="!isLoggedIn" class="btn btn-default"
+          [ngClass]="(rate)?'btn btn-default active':'btn btn-default'">
+    <span id="starringButtonIcon"
+          [ngClass]="(rate)?'glyphicon glyphicon-star':'glyphicon glyphicon-star-empty'"
+    ></span>
+  </button>
+  <button id="starCountButton"
+          (click)="getStargazers(entry, entryType)"
+          class="btn btn-default">{{total_stars}}
+  </button>
+</div>
