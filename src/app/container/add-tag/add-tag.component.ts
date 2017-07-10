@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsService } from './../../shared/webservice/containerTags.service';
+import { ContainerTagsWebService } from './../../shared/webservice/container-tags-web.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
@@ -39,7 +39,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService,
-    private containerTagsService: ContainerTagsService,
+    private containerTagsService: ContainerTagsWebService,
     private paramFilesService: ParamfilesService) {
   }
 

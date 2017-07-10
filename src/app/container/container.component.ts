@@ -1,4 +1,4 @@
-import { ContainerWebService } from './../shared/webservice/containerWeb.service';
+import { ContainersWebService } from './../shared/webservice/containers-web.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
@@ -44,7 +44,7 @@ export class ContainerComponent extends Tool {
     private listContainersService: ListContainersService,
     private refreshService: RefreshService,
     private updateContainer: ContainerService,
-    private containerWebService: ContainerWebService,
+    private containerWebService: ContainersWebService,
     trackLoginService: TrackLoginService,
     toolService: ToolService,
     communicatorService: CommunicatorService,

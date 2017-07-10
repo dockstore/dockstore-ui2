@@ -1,3 +1,6 @@
+import { WorkflowWebService } from './../webservice/workflow-web.service';
+import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -62,6 +65,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     HighlightJsModule,
     ListWorkflowsModule,
     ParamfilesModule,
+    ModalModule.forRoot(),
     SelectModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
@@ -83,7 +87,10 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     DockerfileService,
     ParamfilesService,
     WorkflowService,
-    DescriptorsService
+    DescriptorsService,
+    RegisterWorkflowModalService,
+    WorkflowService,
+    WorkflowWebService
   ],
   exports: [
     WorkflowComponent
