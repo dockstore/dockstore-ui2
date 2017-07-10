@@ -1,3 +1,6 @@
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { ContainersWebService } from './../webservice/containers-web.service';
+import { RefreshService } from './../refresh.service';
 import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -58,6 +61,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
   ],
   imports: [
     CommonModule,
+    ButtonsModule.forRoot(),
     AlertModule.forRoot(),
     MarkdownModule.forRoot(),
     DataTablesModule,
@@ -88,6 +92,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ParamfilesService,
     WorkflowService,
     DescriptorsService,
+    ContainersWebService,
+    RefreshService,
     RegisterWorkflowModalService,
     WorkflowService,
     WorkflowWebService

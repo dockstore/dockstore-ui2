@@ -11,7 +11,7 @@ import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef, AfterViewCh
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, AfterViewChecked {
+export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
@@ -145,13 +145,16 @@ export class DagComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    if (this.defaultVersion) {
     this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
       this.dagResult = result;
       this.refresh = true;
       this.updateMissingTool();
     });
+    } else {
+      this.dagResult = null;
+    }
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-    this.selectVersion = this.defaultVersion;
     this.style = this.dagService.style;
     this.missingTool = false;
   }
@@ -180,11 +183,18 @@ export class DagComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  onChange() {
-    this.dagService.getCurrentDAG(this.id, this.selectVersion.id).subscribe(result => {
+  ngOnChanges() {
+    console.log('onChanges');
+    if (this.defaultVersion) {
+      this.selectVersion = this.defaultVersion;
+    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
       this.dagResult = result;
-      this.updateMissingTool();
       this.refresh = true;
+      this.updateMissingTool();
     });
+    } else {
+      this.dagResult = null;
+      this.selectVersion = null;
+    }
   }
 }

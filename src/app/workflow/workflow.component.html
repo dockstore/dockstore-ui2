@@ -1,8 +1,35 @@
-<div class="container">
-  <div class="row">
+<div class="row" *ngIf="error || refreshing || missingWarning">
+  <div class="col-md-12" *ngIf="!isWorkflowPublic">
+    <div class="alert alert-danger alert-dismissable" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="error">
+      <button type="button" class="close" data-dismiss="alert" ng-click="setError(null)">
+        &times;
+      </button>
+      <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        {{error.message}}
+      </p>
+      <p class="error-output">{{error.errorDetails}}</p>
+    </div>
+    <div class="alert alert-info" role="alert" *ngIf="refreshing">
+      <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
+      </span>
+      Please wait, retrieving workflow...
+    </div>
+    <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
+      <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
+        &times;
+      </button>
+      <span class="glyphicon glyphicon-warning-sign">
+      </span>
+      {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: '}} {{missingContent}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-7">
   <h3>
     <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
-      <a href={{workflow?.verifiedLinks}}>
+      <a href= {{workflow?.verifiedLinks}}>
         <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
       </a>
     </span>
@@ -17,22 +44,37 @@
   <p class="update">
     Last Modified: {{ workflow?.agoMessage || 'n/a' }}
   </p>
-    <div *ngIf="starGazersClicked">
-      <app-stargazers></app-stargazers>
-      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
-        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
-      </button>
-    </div>
-  <div class="row" *ngIf="!starGazersClicked">
-  <div class="ds-tabs col-sm-12 col-md-9 col-lg-9">
+  <div *ngIf="starGazersClicked">
+    <app-stargazers></app-stargazers>
+    <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+    </button>
+  </div>
+  </div>
+    <div *ngIf="!publicPage">
+    <h3>
+      <div class="pull-right">
+        <div class="btn-group" role="group">
+          <button id="publishWorkflowButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="!isValid" btnCheckbox>
+            {{workflow?.is_published ? 'Unpublish' : 'Publish'}}
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshing">
+          Refresh
+        </button>
+      </div>
+    </h3>
+  </div>
+</div>
+<div class="row" *ngIf="!starGazersClicked">
+  <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <ul class="list-unstyled container-info" *ngIf="workflow">
           <li>
             <strong tooltip="Complete path of workflow, used as a unique identifier">
               Path
-            </strong>:
-            {{ workflow?.path}}
+            </strong>: {{ workflow?.path}}
           </li>
           <li>
             <strong tooltip="Git repository for the associated descriptors">
@@ -43,8 +85,7 @@
             </a>
           </li>
           <li>
-            <strong tooltip="Author listed in descriptor">Author</strong>:
-            {{ workflow?.author || 'n/a' }}
+            <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author || 'n/a' }}
           </li>
           <li>
             <strong tooltip="E-mail of corresponding author for workflow">E-mail</strong>:
@@ -54,12 +95,10 @@
             </a>
           </li>
           <li>
-            <strong tooltip="Path in Git repository to main descriptor file">Workflow Path</strong>:
-            {{ workflow.workflow_path }}
+            <strong tooltip="Path in Git repository to main descriptor file">Workflow Path</strong>: {{ workflow.workflow_path }}
           </li>
           <li>
-            <strong tooltip="Type of descriptor language used">Descriptor Type</strong>:
-            {{ workflow?.descriptorType }}
+            <strong tooltip="Type of descriptor language used">Descriptor Type</strong>: {{ workflow?.descriptorType }}
           </li>
         </ul>
         <div *ngIf="workflow">
@@ -75,10 +114,7 @@
         </div>
       </tab>
       <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
-        <button type="sbutton"
-                *ngIf="!labelsEditMode && !isWorkflowPublic"
-                class="btn btn-link pull-right"
-                (click)="toggleLabelsEditMode()">
+        <button type="sbutton" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
         <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
@@ -86,34 +122,18 @@
             <strong>Labels:</strong>
             <span *ngIf="workflow?.labels.length === 0">n/a</span>
             <span class="label label-default container-label" *ngFor="let label of labels">
-               {{label}}
+              {{label}}
             </span>
           </li>
         </ul>
-        <form name="editWorkflowForm"
-              class="edit-container form-inline"
-              (ngSubmit)="submitWorkflowEdits()"
-              #labelForm="ngForm"
-              novalidate>
-          <button type="submit"
-                  class="btn btn-link pull-right"
-                  [disabled]="!labelForm.form.valid"
-                  *ngIf="labelsEditMode && !isWorkflowPublic">
+        <form name="editWorkflowForm" class="edit-container form-inline" (ngSubmit)="submitWorkflowEdits()" #labelForm="ngForm" novalidate>
+          <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isWorkflowPublic">
             <span class="glyphicon glyphicon-floppy-save"></span>Save
           </button>
           <div *ngIf="labelsEditMode && !isWorkflowPublic">
             <div class="form-group">
               <label>Workflow Labels:</label>
-              <input
-                id="workflowLabels"
-                type="text"
-                class="input-sm form-control"
-                name="workflowLabels"
-                [(ngModel)]="workflowEditData.labels"
-                #name="ngModel"
-                maxlength="512"
-                [pattern]="labelPattern"
-                placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+              <input id="workflowLabels" type="text" class="input-sm form-control" name="workflowLabels" [(ngModel)]="workflowEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
             </div>
             <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
               <div [hidden]="!name.errors.maxlength">
@@ -127,17 +147,12 @@
         </form>
       </tab>
       <tab id="versionsTab" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
-          <app-versions-workflow [versions]="workflow?.workflowVersions"
-                                 [verifiedSource]="workflow?.verifiedSources"
-                                 [workflowId]="workflow?.id">
-          </app-versions-workflow>
+        <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id">
+        </app-versions-workflow>
       </tab>
       <tab id="fileTab" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
-          <app-files-workflow  *ngIf="validVersions && checkMode('Files')"
-                               [id]="workflow?.id"
-                               [versions]="validVersions"
-                               [default]="defaultVersion">
-          </app-files-workflow>
+        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
+        </app-files-workflow>
       </tab>
       <tab id="toolsTab" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')"></tab>
       <tab id="dagTab" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
@@ -154,16 +169,15 @@
         <div class="container-source-repos">
           <p>
             <span *ngIf="workflow.provider">
-               <a [href]="workflow.providerUrl">
-                    {{workflow.provider}}
-                    <span class="glyphicon glyphicon-new-window"></span>
-                  </a>
+              <a [href]="workflow.providerUrl">
+                {{workflow.provider}}
+                <span class="glyphicon glyphicon-new-window"></span>
+              </a>
             </span>
           </p>
         </div>
       </div>
     </div>
-
     <div class="panel panel-default" *ngIf="workflow?.versionVerified">
       <div class="panel-heading">
         <h3>Verified</h3>
@@ -181,22 +195,16 @@
         </div>
       </div>
     </div>
-
     <div class="panel panel-default" *ngIf="workflow">
       <div class="panel-heading">
         <h3>Sharing</h3>
       </div>
       <div class="panel-body">
         <div class="container-sharing">
-          <share-buttons class="withCount" [url]="shareURL"
-                         [whatsApp]="false" [stumbleUpOn]="false"
-                         [pinterest]="false" [tumblr]="false"
-                         [showCount]="true" (count)="sumCounts($event)">
+          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
           </share-buttons>
         </div>
       </div>
     </div>
   </div>
-</div>
-</div>
 </div>

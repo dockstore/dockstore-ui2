@@ -18,7 +18,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   private validationPatterns = validationPatterns;
   private customDockerRegistryPath: string;
   private showCustomDockerRegistryPath: boolean;
-  private refreshingContainer: boolean;
+  private refreshing: boolean;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -71,7 +71,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
-    this.stateService.refreshing.subscribe(status => this.refreshingContainer = status);
+    this.stateService.refreshing.subscribe(status => this.refreshing = status);
   }
 
   // Validation starts here, should move most of these to a service somehow

@@ -1,3 +1,4 @@
+import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -86,6 +87,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     HighlightJsService,
     ContainerTagsWebService,
     ContainersWebService,
+    WorkflowWebService,
     DateService,
     FileService,
     ContainerService,

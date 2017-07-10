@@ -1,3 +1,4 @@
+import { Workflow } from './models/Workflow';
 import {Injectable, Input, OnDestroy, OnInit} from '@angular/core';
 import { StateService } from './state.service';
 import {Router} from '@angular/router/';
@@ -22,9 +23,10 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected defaultVersion;
 
   protected tool;
-  protected workflow;
+  protected workflow: Workflow;
   protected published: boolean;
-  protected refreshingContainer: boolean;
+  protected refreshing: boolean;
+  labelsEditMode: boolean;
   private routeSub: Subscription;
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
@@ -46,7 +48,7 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
-    this.stateService.refreshing.subscribe(refreshing => this.refreshingContainer = refreshing);
+    this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(
       state => {
         this.isLoggedIn = state;
@@ -55,6 +57,9 @@ export abstract class Tool implements OnInit, OnDestroy {
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;
+        if (workflow) {
+          this.published = this.workflow.is_published;
+        }
         this.setUpWorkflow(workflow);
       }
     );
@@ -98,7 +103,7 @@ export abstract class Tool implements OnInit, OnDestroy {
 
   abstract setProperties(): void;
   abstract getValidVersions(): void;
-
+  abstract publishDisable(): boolean;
   private setUpWorkflow(workflow: any) {
     if (workflow) {
       this.workflow = workflow;
@@ -124,6 +129,12 @@ export abstract class Tool implements OnInit, OnDestroy {
       toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
       this.initTool();
     }
+  }
+
+  abstract refresh(): void;
+
+  toggleLabelsEditMode() {
+    this.labelsEditMode = !this.labelsEditMode;
   }
 
   private urlToolChanged(event) {

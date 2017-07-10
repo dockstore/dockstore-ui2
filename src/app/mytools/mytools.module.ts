@@ -34,7 +34,6 @@ import { UsersWebService } from './../shared/webservice/users-web.service';
   ],
   providers: [
     ContainerService,
-    ContainersWebService,
     UsersWebService
   ],
 })

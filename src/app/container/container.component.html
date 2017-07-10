@@ -1,4 +1,4 @@
-<div class="row" *ngIf="containerDetailsError || refreshingContainer || missingWarning">
+<div class="row" *ngIf="containerDetailsError || refreshing || missingWarning">
   <div class="col-md-12" *ngIf="!isToolPublic">
     <div class="alert alert-danger alert-dismissable" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="containerDetailsError">
       <button type="button" class="close" data-dismiss="alert" ng-click="setContainerDetailsError(null)">
@@ -10,7 +10,7 @@
       </p>
       <p class="error-output">{{containerDetailsError.errorDetails}}</p>
     </div>
-    <div class="alert alert-info" role="alert" *ngIf="refreshingContainer">
+    <div class="alert alert-info" role="alert" *ngIf="refreshing">
       <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
       </span>
       Please wait, retrieving {{tool?.imgProvider}} tool...
@@ -61,7 +61,7 @@
 
           <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
         </div>
-        <button type="button" class="btn btn-primary" (click)="refreshContainer()" [disabled]="refreshingContainer">
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshing">
           Refresh
         </button>
       </div>

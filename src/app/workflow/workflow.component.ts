@@ -1,5 +1,9 @@
+import { Workflow } from './../shared/models/Workflow';
+import { WorkflowWebService } from './../shared/webservice/workflow-web.service';
+import { PublishRequest } from './../shared/models/PublishRequest';
+import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -22,31 +26,33 @@ import { TrackLoginService } from '../shared/track-login.service';
 export class WorkflowComponent extends Tool {
   labels: string[];
   mode: string;
-  labelsEditMode: boolean;
   workflowEditData: any;
   labelPattern = validationPatterns.label;
   totalShare = 0;
   shareURL: string;
   starGazersClicked = false;
+  workflowPublished = false;
   constructor(private dockstoreService: DockstoreService,
-              private dateService: DateService,
-              private updateWorkflow: WorkflowService,
-              trackLoginService: TrackLoginService,
-              toolService: ToolService,
-              communicatorService: CommunicatorService,
-              providerService: ProviderService,
-              router: Router,
-              workflowService: WorkflowService,
-              containerService: ContainerService,
-              stateService: StateService) {
+    private dateService: DateService,
+    private updateWorkflow: WorkflowService,
+    private refreshService: RefreshService,
+    private workflowWebService: WorkflowWebService,
+    trackLoginService: TrackLoginService,
+    toolService: ToolService,
+    communicatorService: CommunicatorService,
+    providerService: ProviderService,
+    router: Router,
+    workflowService: WorkflowService,
+    containerService: ContainerService,
+    stateService: StateService) {
     super(trackLoginService, toolService, communicatorService, providerService, router,
-          workflowService, containerService, stateService, 'workflows');
+      workflowService, containerService, stateService, 'workflows');
   }
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
   }
   setProperties() {
-    const workflowRef = this.workflow;
+    const workflowRef: any = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
@@ -71,9 +77,42 @@ export class WorkflowComponent extends Tool {
     return (tab === this.mode);
   }
 
-  toggleLabelsEditMode() {
-    this.labelsEditMode = !this.labelsEditMode;
+  publishDisable() {
+    return this.refreshing || !this.isValid() || this.workflow.mode === 'STUB';
   }
+
+  publish() {
+    if (this.publishDisable()) {
+      return;
+    } else {
+      const request: PublishRequest = new PublishRequest();
+      request.publish = this.published;
+      this.workflowWebService.publish(this.workflow.id, request).subscribe(
+        response => this.workflow.is_published = response.is_published, err => this.published = !this.published);
+    }
+  }
+
+  isValid() {
+    if (!this.workflow) {
+      return false;
+    }
+    if (this.workflow.is_published) {
+      return true;
+    }
+    const versionTags = this.workflow.workflowVersions;
+
+    if (versionTags === null) {
+      return false;
+    }
+
+    for (const versionTag of versionTags)  {
+      if (versionTag.valid) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
     const workflowLabels = labelArray.join(', ');
@@ -94,12 +133,14 @@ export class WorkflowComponent extends Tool {
   }
   setWorkflowLabels(): any {
     return this.dockstoreService.setWorkflowLabels(this.workflow.id, this.workflowEditData.labels).
-    subscribe(
-      workflow => {
+      subscribe( workflow => {
         this.workflow.labels = workflow.labels;
         this.updateWorkflow.setWorkflow(workflow);
         this.labelsEditMode = false;
-      }
-    );
+      });
+  }
+
+  refresh() {
+    this.refreshService.refreshWorkflow(this.workflow.id);
   }
 }

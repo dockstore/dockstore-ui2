@@ -1,6 +1,6 @@
+import { RefreshService } from './../shared/refresh.service';
 import {Component, OnInit} from '@angular/core';
 
-import {CommunicatorService} from '../shared/communicator.service';
 import {DockstoreService} from '../shared/dockstore.service';
 import {ProviderService} from '../shared/provider.service';
 import {WorkflowService} from '../shared/workflow.service';
@@ -15,7 +15,7 @@ import {UserService} from '../loginComponents/user.service';
   templateUrl: './myworkflows.component.html',
   styleUrls: ['./myworkflows.component.css'],
   providers: [MyWorkflowsService, ProviderService,
-              DockstoreService, CommunicatorService]
+              DockstoreService]
 })
 export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
@@ -25,8 +25,8 @@ export class MyWorkflowsComponent implements OnInit {
   workflows: any;
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
-              private communicatorService: CommunicatorService,
-              private workflowService: WorkflowService) {
+              private workflowService: WorkflowService,
+              private refreshService: RefreshService) {
 
   }
   ngOnInit() {
@@ -55,5 +55,10 @@ export class MyWorkflowsComponent implements OnInit {
   selectWorkflow(workflow) {
     this.selWorkflowObj = workflow;
     this.workflowService.setWorkflow(workflow);
+  }
+
+  refreshAllWorkflows(): any {
+    console.log('this happened');
+    this.refreshService.refreshAllWorkflows(this.user.id);
   }
 }

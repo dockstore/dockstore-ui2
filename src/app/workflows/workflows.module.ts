@@ -1,3 +1,4 @@
+import { RefreshService } from './../shared/refresh.service';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DataTablesModule } from 'angular-datatables';

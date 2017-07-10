@@ -33,7 +33,6 @@ export class ContainerComponent extends Tool {
   privateOnlyRegistry: boolean;
   totalShare = 0;
   shareURL: string;
-  labelsEditMode: boolean;
   containerEditData: any;
   thisisValid = true;
   labelPattern = validationPatterns.label;
@@ -97,12 +96,8 @@ export class ContainerComponent extends Tool {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
 
-  toggleLabelsEditMode() {
-    this.labelsEditMode = !this.labelsEditMode;
-  }
-
   publishDisable() {
-    return this.refreshingContainer || !this.isContainerValid();
+    return this.refreshing || !this.isContainerValid();
   }
 
   isContainerValid() {
@@ -127,7 +122,7 @@ export class ContainerComponent extends Tool {
     return false;
   };
 
-  refreshContainer() {
+  refresh() {
     this.refreshService.refreshContainer();
   }
 
