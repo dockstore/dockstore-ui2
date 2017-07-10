@@ -66,6 +66,7 @@ import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredentriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
+import { ListentryModule } from './listentry/listentry.module';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { StargazersModule } from './stargazers/stargazers.module';
     StarringModule,
     routing,
     ModalModule,
-    StargazersModule
+    StargazersModule,
+    ListentryModule
   ],
   providers: [
     AuthService,
