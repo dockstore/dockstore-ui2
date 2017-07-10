@@ -18,7 +18,7 @@
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
                   <span><input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)"
-                               (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
+                               (change)="onClick(key,subBucket)"/> {{ mapFriendlyValueNames(key,subBucket) }}</span>
 
                 </div>
                 <div class="pull-right">
@@ -56,7 +56,7 @@
           <span *ngFor="let key of filters.keys(); let i = index">
             the <strong>{{friendlyNames.get(key)}}</strong> is
           <span *ngFor='let subBucket of filters.get(key); let j = index'>
-            <strong>{{subBucket}}</strong>
+            <strong>{{mapFriendlyValueNames(key, subBucket)}}</strong>
             <span *ngIf="j < filters.get(key).size - 1">
               OR
             </span>
@@ -73,47 +73,7 @@
                 Browse Tools
               </ng-template>
               <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" #toolTable class="table row-border hover">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Author</th>
-                  <th>Project Links</th>
-                  <th>Docker Pull</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let hit of toolHits">
-                  <td>
-                    <a (click)="sendToolInfo(hit._source)" [routerLink]="['/containers', hit?._source.tool_path ]">{{ hit?._source.name +
-                      (hit?._source.toolname ? '/' + hit?._source.toolname : '') }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ hit?._source.author || 'n/a' }}
-                  </td>
-                  <td>
-                    <a [href]="hit?._source.providerUrl">
-                      {{ hit?._source.provider }}
-                    </a>
-                    <a [href]="hit?._source.imgProviderUrl">
-                      {{ hit?._source.imgProvider }}
-                    </a>
-                  </td>
-                  <td>
-                    <div class="input-group">
-                      <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(hit?._source.path) }}" aria-describedby="clipboard" #inputTarget>
-                      <span class="input-group-btn" id="clipboard">
-                        <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget">
-                          <span class="glyphicon glyphicon-copy"></span>
-                        </button>
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-
+              <app-listentry [entryType]="'tool'"></app-listentry>
             </tab>
             <tab id="workflowTab" [customClass]="browseWorkflowsTab">
               <ng-template tabHeading>
@@ -121,36 +81,7 @@
                 Browse Workflows
               </ng-template>
               <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" #toolTable class="table row-border hover">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Author</th>
-                  <th>Format</th>
-                  <th>Project Links</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let hit of workflowHits">
-                  <td>
-                    <a (click)="sendToolInfo(hit?._source)" [routerLink]="['/workflows', hit?._source.path ]">
-                      {{ hit?._source.repository + (hit?._source.workflowName ? ' (' + hit?._source.workflowName + ')' : '') }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ hit?._source.author || 'n/a' }}
-                  </td>
-                  <td>
-                    {{ hit?._source.descriptorType | uppercase }}
-                  </td>
-                  <td>
-                    <a [href]="hit?._source.providerUrl">
-                      {{ hit?._source.provider }}
-                    </a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+              <app-listentry [entryType]="'workflow'"></app-listentry>
             </tab>
           </tabset>
       </div>
