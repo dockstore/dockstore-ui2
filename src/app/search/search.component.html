@@ -1,43 +1,159 @@
-<div class="hits">
-  <table datatable [dtOptions]="dtOptions" class="table row-border hover">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Author</th>
-      <th>Project Links</th>
-      <th>Docker Pull</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let hit of hits">
-      <td>
-        <a (click)="sendToolInfo(hit._source)" [routerLink]="['/containers', hit?._source.tool_path ]">{{ hit?._source.name +
-          (hit?._source.toolname ? '/' + hit?._source.toolname : '') }}</a>
-      </td>
-      <td>
-        {{ hit?._source.author || 'n/a' }}
-      </td>
-      <td>
-        temp
-      </td>
-      <td>
-        temp
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<app-header>
+  <img src="../assets/images/dockstore/dockstore-tools-blue.png">
+  Search
+</app-header>
+<div class="container" style="padding-top:30px;" >
+  <div class="row">
+    <div class="col-md-3 containers-rsb">
+      <accordion>
+        <accordion-group heading="Search Description"  panelClass="containers-accordion" [isOpen]="true">
+          <div>
+            <input class="center-block" style="width: 90%; margin: 12px" #box (keyup)="onKey(box.value)">
+          </div>
+        </accordion-group>
+        <accordion-group *ngFor="let key of buckets.keys()" panelClass="containers-accordion"
+                         [heading]="friendlyNames.get(key)" [isOpen]="true">
+          <div *ngFor='let subBucket of buckets.get(key).keys(); let i = index'>
+            <div class="panel-container-label">
+              <div *ngIf="i < 5">
+                <div class="container-name-oflw pull-left">
+                  <span><input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)"
+                               (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
 
-<div>
-  <input #box (keyup)="onKey(box.value)">
-</div>
+                </div>
+                <div class="pull-right">
+                  <p>({{ buckets.get(key).get(subBucket) }})</p>
+                </div>
+              </div>
+              <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
+                <div class="container-name-oflw pull-left">
+                  <span><input type="checkbox" (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
+                </div>
+                <div class="pull-right">
+                  <p>({{ buckets.get(key).get(subBucket) }})</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-container-label" *ngIf="buckets.get(key).size > 5">
+            <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
+              <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+              <a>
+              {{ fullyExpandMap.get(key) ? 'Hide' : (buckets.get(key).size-5) + ' more'}}
+              </a>
+            </span>
+          </div>
+        </accordion-group>
+      </accordion>
+      <button style="margin-top: 12px; width: 100%" (click) = resetFilters() type="button" class="btn btn-primary btn-sm center-block">
+        Reset Filters
+      </button>
+    </div>
+    <div class="col-md-9 containers-rsb">
+      <div class="hits">
+        <div *ngIf="filters.size > 0" class="alert alert-info">
+          <strong>Search Filter: </strong>
+          <span *ngFor="let key of filters.keys(); let i = index">
+            the <strong>{{friendlyNames.get(key)}}</strong> is
+          <span *ngFor='let subBucket of filters.get(key); let j = index'>
+            <strong>{{subBucket}}</strong>
+            <span *ngIf="j < filters.get(key).size - 1">
+              OR
+            </span>
+          </span>
+          <span *ngIf="i < filters.size - 1">
+            AND
+          </span>
+        </span>
+        </div>
+          <tabset class="homeComponent" type="tabs">
+            <tab id="toolTab" [customClass]="browseToolsTab">
+              <ng-template tabHeading>
+                <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+                Browse Tools
+              </ng-template>
+              <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" #toolTable class="table row-border hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Author</th>
+                  <th>Project Links</th>
+                  <th>Docker Pull</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let hit of toolHits">
+                  <td>
+                    <a (click)="sendToolInfo(hit._source)" [routerLink]="['/containers', hit?._source.tool_path ]">{{ hit?._source.name +
+                      (hit?._source.toolname ? '/' + hit?._source.toolname : '') }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ hit?._source.author || 'n/a' }}
+                  </td>
+                  <td>
+                    <a [href]="hit?._source.providerUrl">
+                      {{ hit?._source.provider }}
+                    </a>
+                    <a [href]="hit?._source.imgProviderUrl">
+                      {{ hit?._source.imgProvider }}
+                    </a>
+                  </td>
+                  <td>
+                    <div class="input-group">
+                      <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(hit?._source.path) }}" aria-describedby="clipboard" #inputTarget>
+                      <span class="input-group-btn" id="clipboard">
+                        <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget">
+                          <span class="glyphicon glyphicon-copy"></span>
+                        </button>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
 
-<div *ngFor='let key of buckets.keys()'>
-  <h3>{{ key }}</h3>
-  <div *ngFor='let subBucket of buckets.get(key).keys()'>
-    <p (click) = onClick(key,subBucket)>{{ subBucket }} ({{ buckets.get(key).get(subBucket) }})</p>
+            </tab>
+            <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+              <ng-template tabHeading>
+                <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+                Browse Workflows
+              </ng-template>
+              <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+              <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" #toolTable class="table row-border hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Author</th>
+                  <th>Format</th>
+                  <th>Project Links</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let hit of workflowHits">
+                  <td>
+                    <a (click)="sendToolInfo(hit?._source)" [routerLink]="['/workflows', hit?._source.path ]">
+                      {{ hit?._source.repository + (hit?._source.workflowName ? ' (' + hit?._source.workflowName + ')' : '') }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ hit?._source.author || 'n/a' }}
+                  </td>
+                  <td>
+                    {{ hit?._source.descriptorType | uppercase }}
+                  </td>
+                  <td>
+                    <a [href]="hit?._source.providerUrl">
+                      {{ hit?._source.provider }}
+                    </a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </tab>
+          </tabset>
+      </div>
+    </div>
   </div>
 </div>
-
-
-<p (click) = resetFilters()>Reset Filters</p>

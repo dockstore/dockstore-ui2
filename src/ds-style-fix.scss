@@ -256,6 +256,7 @@ div.panel-container-label.selected {
   border-color: #ddd;
 }
 .panel.containers-accordion {
+
   .panel-body{
     padding: 0;
     font-size: 12px;
@@ -268,7 +269,7 @@ div.panel-container-label.selected {
   border-radius: 0;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #ffffff;
+  background-color: #F4F4F4;
   color: #487980;
   clear: both;
   overflow: hidden;
@@ -642,4 +643,8 @@ div.contact-button {
       width: 35%;
     }
   }
+}
+
+.padding-top {
+  padding-top: 12px;
 }
