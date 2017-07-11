@@ -156,52 +156,37 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  setupBuckets(hits: any) {
-    for (const property in hits.aggregations) {
-      if (hits.aggregations.hasOwnProperty(property)) {
-        // loop through contents buckets
-        const category = hits.aggregations[property];
-        // look for top level buckets (no filtering)
-        if (category.buckets != null) {
-          category.buckets.forEach(bucket => {
-            if (this.buckets.get(property) == null) {
-              this.buckets.set(property, new Map<string, string>());
-              if (!this.setFilter) {
-                this.fullyExpandMap.set(property, false);
-                this.checkboxMap.set(property, new Map<string, boolean>());
-              }
-            }
-            this.buckets.get(property).set(bucket.key, bucket.doc_count);
-            if (!this.setFilter) {
-              this.checkboxMap.get(property).set(bucket.key, false);
-            }
-          });
-        }
-        // look for second level buckets (with filtering)
-        for (const nestedProperty in category) {
-          if (category.hasOwnProperty(nestedProperty)) {
-            // this is copied and pasted, make this better
-            const nestedCategory = category[nestedProperty];
-            // look for top level buckets (no filtering)
-            if (nestedCategory != null && nestedCategory.buckets != null) {
-              nestedCategory.buckets.forEach(bucket => {
-                if (this.buckets.get(nestedProperty) == null) {
-                  this.buckets.set(nestedProperty, new Map<string, string>());
-                  if (!this.setFilter) {
-                    this.fullyExpandMap.set(nestedProperty, false);
-                    this.checkboxMap.set(property, new Map<string, boolean>());
-                  }
-                }
-                this.buckets.get(nestedProperty).set(bucket.key, bucket.doc_count);
-                if (!this.setFilter) {
-                  this.checkboxMap.get(property).set(bucket.key, false);
-                }
-              });
-            }
+  setupBuckets2(key, buckets: any) {
+    buckets.forEach(
+      bucket => {
+        if (this.buckets.get(key) == null) {
+          this.buckets.set(key, new Map<string, string>());
+          if (!this.setFilter) {
+            this.fullyExpandMap.set(key, false);
+            this.checkboxMap.set(key, new Map<string, boolean>());
           }
         }
-      }
-    }
+        this.buckets.get(key).set(bucket.key, bucket.doc_count);
+        if (!this.setFilter) {
+          this.checkboxMap.get(key).set(bucket.key, false);
+        }
+      });
+  }
+
+  setupBuckets(hits: any) {
+    const aggregations = hits.aggregations;
+    Object.entries(aggregations).forEach(
+      ([key, value]) => {
+        if (value.buckets != null) {
+          this.setupBuckets2(key, value.buckets);
+        }
+        // look for second level buckets (with filtering)
+        // If there are second level buckets,
+        // the buckets will always be under a property with the same name as the root property
+        if (value[key]) {
+          this.setupBuckets2(key, value[key].buckets);
+        }
+      });
     this.setFilter = true;
   }
   /**
