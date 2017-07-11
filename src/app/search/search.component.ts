@@ -1,6 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, enableProdMode} from '@angular/core';
 import {Client} from 'elasticsearch';
 import {CommunicatorService} from '../shared/communicator.service';
+import { ProviderService } from '../shared/provider.service';
+import { ListContainersService } from '../containers/list/list.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { DataTableDirective } from 'angular-datatables';
+
+/** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
+ *  so you shouldn't just dismiss it, but try to figure out why it's happening...
+ **/
+enableProdMode();
 
 @Component({
   selector: 'app-search',
@@ -13,15 +22,36 @@ export class SearchComponent implements OnInit {
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
+  /* Observable */
+  private toolSource = new BehaviorSubject<any>(null);
+  toolhit$ = this.toolSource.asObservable();
+
+  /* Observable */
+  private workflowSource = new BehaviorSubject<any>(null);
+  workflowhit$ = this.workflowSource.asObservable();
+
+  /*TODO: Bad coding...change this up later (init)..*/
+  private setFilter = false;
+  public browseToolsTab = 'browseToolsTab';
+  public browseWorkflowsTab = 'browseWorkflowsTab';
+  private toolHits: Object[];
+  private workflowHits: Object[];
   private hits: Object[];
   private _client: Client;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
+  /** TODO: Note that the key (the name) might not be unique...*/
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+  private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+  private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
   // TODO: this needs to be improved, but this is the default "empty" query
   // tslint:disable-next-line
-  private initialQuery = '{"aggs":{"_type":{"terms":{"field":"_type","size":10000}},"registry":{"terms":{"field":"registry","size":10000}},"private_access":{"terms":{"field":"private_access","size":10000}},"tags_verified":{"terms":{"field":"tags.verified","size":10000}},"author":{"terms":{"field":"author","size":10000}},"namespace":{"terms":{"field":"namespace","size":10000}},"labels_value":{"terms":{"field":"labels.value","size":10000}},"tags_verifiedSource":{"terms":{"field":"tags.verifiedSource","size":10000}}},"query":{"match_all":{}}}';
 
+  private initialQuery = '{"aggs":{"_type":{"terms":{"field":"_type","size":10000}},"registry":' +
+    '{"terms":{"field":"registry","size":10000}},"private_access":{"terms":{"field":"private_access","size":10000}},' +
+    '"tags_verified":{"terms":{"field":"tags.verified","size":10000}},"author":{"terms":{"field":"author","size":10000}},' +
+    '"namespace":{"terms":{"field":"namespace","size":10000}},"labels_value":{"terms":{"field":"labels.value","size":10000}},' +
+    '"tags_verifiedSource":{"terms":{"field":"tags.verifiedSource","size":10000}}},"query":{"match_all":{}}, "size":500}';
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
@@ -42,6 +72,24 @@ export class SearchComponent implements OnInit {
     ['Labels', 'labels.value'],
     ['Verified Source', 'tags.verifiedSource'],
   ]);
+  private friendlyNames = new Map([
+    ['_type', 'Entry Type'],
+    ['registry', 'Registry'],
+    ['private_access', 'Private Access'],
+    ['tags_verified', 'Verified'],
+    ['author', 'Author'],
+    ['namespace', 'Organization'],
+    ['labels_value', 'Labels'],
+    ['tags_verifiedSource', 'Verified Source'],
+  ]);
+  private friendlyValueNames = new Map([
+    ['tags_verified', new Map([
+      [1, 'verified'], [0, 'non-verified']
+    ])],
+    ['private_access', new Map([
+      [1, 'private'], [0, 'public']
+    ])]
+  ]);
   /**
    * The current text search
    * @type {string}
@@ -53,9 +101,9 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param communicatorService
    */
-  constructor(private communicatorService: CommunicatorService) {
+  constructor(private providerService: ProviderService) {
     this._client = new Client({
-      host: 'http://localhost:8080/api/ga4gh/v1/extended',
+      host: 'http://10.11.9.73:8080/api/ga4gh/v1/extended',
       apiVersion: '2.4',
       log: 'trace'
     });
@@ -65,8 +113,27 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.onEnter(this.initialQuery);
   }
-
-
+  mapFriendlyValueNames(key, subBucket) {
+    if (key === 'tags_verified' || key === 'private_access') {
+      return this.friendlyValueNames.get(key).get(subBucket);
+    } else {
+      return subBucket;
+    }
+  }
+  filterEntry() {
+    this.workflowHits = [];
+    this.toolHits = [];
+    for (const hit of this.hits) {
+      /**TODO: this is not good, make it faster.../
+       */
+      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+      if (hit['_type'] === 'tool') {
+        this.toolHits.push(hit);
+      } else if (hit['_type'] === 'workflow') {
+        this.workflowHits.push(hit);
+      }
+    }
+  }
   /**
    * This ugly function looks at what hits came back from a search and creates
    * data structures (buckets) needed for displaying the results
@@ -79,41 +146,63 @@ export class SearchComponent implements OnInit {
       body: value
     }).then(hits => {
       this.hits = hits.hits.hits;
-      for (const property in hits.aggregations) {
-        if (hits.aggregations.hasOwnProperty(property)) {
-          // loop through contents buckets
-          const category = hits.aggregations[property];
-          // look for top level buckets (no filtering)
-          if (category.buckets != null) {
-            category.buckets.forEach(bucket => {
-              if (this.buckets.get(property) == null) {
-                this.buckets.set(property, new Map<string, string>());
-              }
-              this.buckets.get(property).set(bucket.key, bucket.doc_count);
-            });
-          }
+      this.workflowHits = [];
+      this.toolHits = [];
+      this.filterEntry();
+      this.toolSource.next(this.toolHits);
+      this.workflowSource.next(this.workflowHits);
+      this.setupBuckets(hits);
+    });
+  }
 
-          // look for second level buckets (with filtering)
-          for (const nestedProperty in category) {
-            if (category.hasOwnProperty(nestedProperty)) {
-              // this is copied and pasted, make this better
-              const nestedCategory = category[nestedProperty];
-              // look for top level buckets (no filtering)
-              if (nestedCategory != null && nestedCategory.buckets != null) {
-                nestedCategory.buckets.forEach(bucket => {
-                  if (this.buckets.get(nestedProperty) == null) {
-                    this.buckets.set(nestedProperty, new Map<string, string>());
-                  }
-                  this.buckets.get(nestedProperty).set(bucket.key, bucket.doc_count);
-                });
+  setupBuckets(hits: any) {
+    for (const property in hits.aggregations) {
+      if (hits.aggregations.hasOwnProperty(property)) {
+        // loop through contents buckets
+        const category = hits.aggregations[property];
+        // look for top level buckets (no filtering)
+        if (category.buckets != null) {
+          category.buckets.forEach(bucket => {
+            if (this.buckets.get(property) == null) {
+              this.buckets.set(property, new Map<string, string>());
+              if (!this.setFilter) {
+                this.fullyExpandMap.set(property, false);
+                this.checkboxMap.set(property, new Map<string, boolean>());
               }
+            }
+            this.buckets.get(property).set(bucket.key, bucket.doc_count);
+            if (!this.setFilter) {
+              this.checkboxMap.get(property).set(bucket.key, false);
+            }
+          });
+        }
+        // look for second level buckets (with filtering)
+        for (const nestedProperty in category) {
+          if (category.hasOwnProperty(nestedProperty)) {
+            // this is copied and pasted, make this better
+            const nestedCategory = category[nestedProperty];
+            // look for top level buckets (no filtering)
+            if (nestedCategory != null && nestedCategory.buckets != null) {
+              nestedCategory.buckets.forEach(bucket => {
+                if (this.buckets.get(nestedProperty) == null) {
+                  this.buckets.set(nestedProperty, new Map<string, string>());
+                  if (!this.setFilter) {
+                    this.fullyExpandMap.set(nestedProperty, false);
+                    this.checkboxMap.set(property, new Map<string, boolean>());
+                  }
+                }
+                this.buckets.get(nestedProperty).set(bucket.key, bucket.doc_count);
+                if (!this.setFilter) {
+                  this.checkboxMap.get(property).set(bucket.key, false);
+                }
+              });
             }
           }
         }
       }
-    });
+    }
+    this.setFilter = true;
   }
-
   /**
    * This handles selection of one filter, either taking it out from the lsit of active filters
    * or adding it if not present
@@ -134,6 +223,10 @@ export class SearchComponent implements OnInit {
       this.filters.get(category).add(categoryValue);
     }
   }
+  clickExpand(key: string) {
+    const isExpanded = this.fullyExpandMap.get(key);
+    this.fullyExpandMap.set(key, !isExpanded);
+  }
 
   /**
    * This handles clicking a facet and doing the search
@@ -141,6 +234,9 @@ export class SearchComponent implements OnInit {
    * @param categoryValue
    */
   onClick(category: string, categoryValue: string) {
+    const checked = this.checkboxMap.get(category).get(categoryValue);
+    this.checkboxMap.get(category).set(categoryValue, !checked);
+    // console.log(this.buckets.get(category).get(categoryValue).checked);
     if (category !== null && categoryValue !== null) {
       this.handleFilters(category, categoryValue);
     }
@@ -213,28 +309,23 @@ export class SearchComponent implements OnInit {
         queryWrapper.aggs[modifiedKey].filter = boolFilter;
       }
     });
-
     this.buckets.clear();
     const query = JSON.stringify(queryWrapper, null, 2);
-    console.log(query);
+    // console.log(query);
     this.onEnter(query);
   }
-
   resetFilters() {
     this.filters.clear();
+    this.setFilter = false;
+    this.hits = [];
+    this.workflowHits = [];
+    this.toolHits = [];
     this.onEnter(this.initialQuery);
   }
-
-
-  sendToolInfo(tool) {
-    this.communicatorService.setTool(tool);
-  }
-
   onKey(value: string) {
     this.values = value;
     this.onClick(null, null);
   }
-
 }
 
 
@@ -262,4 +353,9 @@ export class BoolFilter {
 export class QueryWrapper {
   aggs;
   filter;
+}
+
+export class SubBucket {
+  count: string;
+  checked: boolean;
 }
