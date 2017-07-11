@@ -11,7 +11,7 @@ import { CommunicatorService } from '../shared/communicator.service';
   templateUrl: './listentry.component.html',
   styleUrls: ['./listentry.component.css']
 })
-export class ListentryComponent implements OnInit, AfterViewInit{
+export class ListentryComponent implements OnInit, AfterViewInit {
   @Input() entryType: string;
   hits: any;
   dtTrigger: Subject<any> = new Subject();
