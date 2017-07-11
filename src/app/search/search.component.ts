@@ -1,3 +1,4 @@
+import { Dockstore } from './../shared/dockstore.model';
 import {Component, OnInit, ViewChild, enableProdMode} from '@angular/core';
 import {Client} from 'elasticsearch';
 import {CommunicatorService} from '../shared/communicator.service';
@@ -103,7 +104,7 @@ export class SearchComponent implements OnInit {
    */
   constructor(private providerService: ProviderService) {
     this._client = new Client({
-      host: 'http://10.11.9.73:8080/api/ga4gh/v1/extended',
+      host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '2.4',
       log: 'trace'
     });
