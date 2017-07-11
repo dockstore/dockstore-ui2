@@ -22,7 +22,7 @@ export class MyToolsComponent implements OnInit {
     private communicatorService: CommunicatorService,
     private userService: UserService,
     private containerService: ContainerService,
-    private RefreshService: RefreshService) {
+    private refreshService: RefreshService) {
 
   }
   ngOnInit() {
@@ -56,6 +56,6 @@ export class MyToolsComponent implements OnInit {
   }
 
   refreshAllTools() {
-    this.RefreshService.refreshAllTools(this.user.id);
+    this.refreshService.refreshAllTools(this.user.id);
   }
 }

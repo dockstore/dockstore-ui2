@@ -14,7 +14,7 @@ export class RegisterToolService {
     private friendlyRepositories = FriendlyRepositories;
     showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private dockerRegistryMap = [];
-    refreshingContainer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
     private selectedTool;
 
