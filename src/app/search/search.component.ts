@@ -1,7 +1,8 @@
+import * as bodybuilder from 'bodybuilder';
 import { Dockstore } from './../shared/dockstore.model';
-import {Component, OnInit, ViewChild, enableProdMode} from '@angular/core';
-import {Client} from 'elasticsearch';
-import {CommunicatorService} from '../shared/communicator.service';
+import { Component, OnInit, ViewChild, enableProdMode } from '@angular/core';
+import { Client } from 'elasticsearch';
+import { CommunicatorService } from '../shared/communicator.service';
 import { ProviderService } from '../shared/provider.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -45,14 +46,7 @@ export class SearchComponent implements OnInit {
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
-  // TODO: this needs to be improved, but this is the default "empty" query
-  // tslint:disable-next-line
-
-  private initialQuery = '{"aggs":{"_type":{"terms":{"field":"_type","size":10000}},"registry":' +
-    '{"terms":{"field":"registry","size":10000}},"private_access":{"terms":{"field":"private_access","size":10000}},' +
-    '"tags_verified":{"terms":{"field":"tags.verified","size":10000}},"author":{"terms":{"field":"author","size":10000}},' +
-    '"namespace":{"terms":{"field":"namespace","size":10000}},"labels_value":{"terms":{"field":"labels.value","size":10000}},' +
-    '"tags_verifiedSource":{"terms":{"field":"tags.verifiedSource","size":10000}}},"query":{"match_all":{}}, "size":500}';
+  private initialQuery: string;
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
@@ -108,6 +102,20 @@ export class SearchComponent implements OnInit {
       apiVersion: '2.4',
       log: 'trace'
     });
+    const shard_size = 10000;
+    const body = bodybuilder()
+      .aggregation('terms', '_type', { size: shard_size }, '_type')
+      .aggregation('terms', 'registry', { size: shard_size }, 'registry')
+      .aggregation('terms', 'private_access', { size: shard_size }, 'private_access')
+      .aggregation('terms', 'tags.verified', { size: shard_size }, 'tags_verified')
+      .aggregation('terms', 'author', { size: shard_size }, 'author')
+      .aggregation('terms', 'namespace', { size: shard_size }, 'namespace')
+      .aggregation('terms', 'labels.value', { size: shard_size }, 'labels_value')
+      .aggregation('terms', 'tags.verifiedSource', { size: shard_size }, 'tags_verifiedSource')
+      .query('match_all', {})
+      .size(500);
+    // TODO: this needs to be improved, but this is the default "empty" query
+    this.initialQuery = JSON.stringify(body.build());
   }
 
 
@@ -252,7 +260,7 @@ export class SearchComponent implements OnInit {
       queryWrapper.filter.terms = t;
     } else if (count > 1) {
       boolFilter.bool['must'] = [];
-      for (const key of Array.from(this.filters.keys())){
+      for (const key of Array.from(this.filters.keys())) {
         const filter = this.filters.get(key);
         filter.forEach(insideFilter => {
           const modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
