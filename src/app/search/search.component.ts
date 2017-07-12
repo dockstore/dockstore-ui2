@@ -40,6 +40,7 @@ export class SearchComponent implements OnInit {
   private workflowHits: Object[];
   private hits: Object[];
   private _client: Client;
+  private shard_size = 10000;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -95,7 +96,6 @@ export class SearchComponent implements OnInit {
    */
   private values = '';
 
-
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param communicatorService
@@ -106,22 +106,20 @@ export class SearchComponent implements OnInit {
       apiVersion: '2.4',
       log: 'trace'
     });
-    const shard_size = 10000;
     const body = bodybuilder()
-      .aggregation('terms', '_type', { size: shard_size }, '_type')
-      .aggregation('terms', 'registry', { size: shard_size }, 'registry')
-      .aggregation('terms', 'private_access', { size: shard_size }, 'private_access')
-      .aggregation('terms', 'tags.verified', { size: shard_size }, 'tags_verified')
-      .aggregation('terms', 'author', { size: shard_size }, 'author')
-      .aggregation('terms', 'namespace', { size: shard_size }, 'namespace')
-      .aggregation('terms', 'labels.value', { size: shard_size }, 'labels_value')
-      .aggregation('terms', 'tags.verifiedSource', { size: shard_size }, 'tags_verifiedSource')
+      .aggregation('terms', '_type', { size: this.shard_size }, '_type')
+      .aggregation('terms', 'registry', { size: this.shard_size }, 'registry')
+      .aggregation('terms', 'private_access', { size: this.shard_size }, 'private_access')
+      .aggregation('terms', 'tags.verified', { size: this.shard_size }, 'tags_verified')
+      .aggregation('terms', 'author', { size: this.shard_size }, 'author')
+      .aggregation('terms', 'namespace', { size: this.shard_size }, 'namespace')
+      .aggregation('terms', 'labels.value', { size: this.shard_size }, 'labels_value')
+      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size }, 'tags_verifiedSource')
       .query('match_all', {})
       .size(100);
     // TODO: this needs to be improved, but this is the default "empty" query
     this.initialQuery = JSON.stringify(body.build());
   }
-
 
   ngOnInit() {
     this.onEnter(this.initialQuery);
@@ -249,10 +247,6 @@ export class SearchComponent implements OnInit {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.handleFilters(category, categoryValue);
     }
-    // assemble a query and pretend to click
-    const queryWrapper = new QueryWrapper();
-
-    const t = {};
 
     // calculate number of filters
     let count = 0;
@@ -269,63 +263,23 @@ export class SearchComponent implements OnInit {
     } else {
       body = body.query('match_all', {});
     }
-    // this ugly code creates the objects representing an elastic search query
-    // may be able to use the elastic search library or a better JSON library to clean this up
-    const boolFilter = new BoolFilter();
-    if (count === 1) {
-      category = this.filters.keys().next().value.toString();
-      categoryValue = this.filters.get(category).values().next().value.toString();
-      // private_access is the only category we do not want modify
-      if (category !== 'private_access') {
-      category = category.substring(0, 1) + category.substring(1).replace('_', '.');
-      }
-      body = body.filter('term', category, categoryValue);
-      t[category] = [];
-      t[category][0] = [];
-      t[category][0] = categoryValue;
-    } else if (count > 1) {
-      boolFilter.bool['must'] = [];
-      for (const key of Array.from(this.filters.keys())) {
-        const filter = this.filters.get(key);
-        filter.forEach(insideFilter => {
-          let modifiedInnerFilterValue;
-          // private_access is the only category we do not want modify
-          if (key !== 'private_access') {
-            modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
-          } else {
-            modifiedInnerFilterValue = key;
-          }
-          const terms = {};
-          terms[modifiedInnerFilterValue] = [];
-          terms[modifiedInnerFilterValue].push(insideFilter);
-          const termsWrapper = {};
-          termsWrapper['terms'] = terms;
-          boolFilter.bool['must'].push(termsWrapper);
-          body = body.filter('term', modifiedInnerFilterValue, insideFilter);
-        });
-      }
-    }
-    const builtBody = body.build();
-    queryWrapper['query'] = builtBody.query;
-    queryWrapper['size'] = builtBody.size;
+
+    body = this.appendFilter(body);
 
     // go through buckets
-    queryWrapper.aggs = {};
-
     this.bucketStubs.forEach(key => {
       const modifiedKey = key.replace('.', '_');
-      queryWrapper.aggs[modifiedKey] = {};
-      queryWrapper.aggs[modifiedKey].aggs = {};
-      queryWrapper.aggs[modifiedKey].aggs[modifiedKey] = {};
-      queryWrapper.aggs[modifiedKey].aggs[modifiedKey].terms = new AggTerms();
-      queryWrapper.aggs[modifiedKey].aggs[modifiedKey].terms.field = key;
-      queryWrapper.aggs[modifiedKey].filter = {};
-
-      // next, add the filtering clauses, same as the query filter clause
-      queryWrapper.aggs[modifiedKey].filter = builtBody.query.bool.filter;
+      if (count > 0) {
+        body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
+          return this.appendFilter(a).aggregation('terms', key, modifiedKey, { size: this.shard_size });
+        });
+      } else {
+        body = body.agg('terms', modifiedKey, key, { size: this.shard_size });
+      }
     });
     this.buckets.clear();
-    const query = JSON.stringify(queryWrapper, null, 2);
+    const builtBody = body.build();
+    const query = JSON.stringify(builtBody);
     this.onEnter(query);
   }
   resetFilters() {
@@ -340,36 +294,21 @@ export class SearchComponent implements OnInit {
     this.values = value;
     this.onClick(null, null);
   }
-}
 
-
-export class Match {
-}
-
-export class Query {
-  match_all: Match = new Match();
-}
-
-export class AggTerms {
-  field: String;
-  size = 10000;
-}
-
-export class SingleFilter {
-  terms = [];
-}
-
-export class BoolFilter {
-  bool = {};
-}
-
-
-export class QueryWrapper {
-  aggs;
-  filter;
-}
-
-export class SubBucket {
-  count: string;
-  checked: boolean;
+  appendFilter(body: any) {
+    let newBody = body;
+    this.filters.forEach((value: Set<string>, key: string) => {
+      value.forEach(insideFilter => {
+        let modifiedInnerFilterValue;
+        // private_access is the only category we do not want modify
+        if (key !== 'private_access') {
+          modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
+        } else {
+          modifiedInnerFilterValue = key;
+        }
+        newBody = body.filter('term', modifiedInnerFilterValue, insideFilter);
+      });
+    });
+    return newBody;
+  }
 }
