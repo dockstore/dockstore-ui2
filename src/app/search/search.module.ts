@@ -8,12 +8,6 @@ import { ListentryModule } from '../listentry/listentry.module';
     CommonModule,
     ListentryModule,
     AccordionModule.forRoot(),
-  ],
-  // declarations: [
-  //   SearchComponent
-  // ],
-  // exports: [
-  //   SearchComponent
-  // ]
+  ]
 })
 export class SearchModule { }

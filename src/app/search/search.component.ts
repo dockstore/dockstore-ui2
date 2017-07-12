@@ -1,6 +1,8 @@
-import {Component, OnInit, ViewChild, enableProdMode} from '@angular/core';
-import {Client} from 'elasticsearch';
-import {CommunicatorService} from '../shared/communicator.service';
+import bodybuilder from 'bodybuilder';
+import { Dockstore } from './../shared/dockstore.model';
+import { Component, OnInit, ViewChild, enableProdMode } from '@angular/core';
+import { Client } from 'elasticsearch';
+import { CommunicatorService } from '../shared/communicator.service';
 import { ProviderService } from '../shared/provider.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -42,16 +44,13 @@ export class SearchComponent implements OnInit {
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
-  private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
-  private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
-  // TODO: this needs to be improved, but this is the default "empty" query
-  // tslint:disable-next-line
 
-  private initialQuery = '{"aggs":{"_type":{"terms":{"field":"_type","size":10000}},"registry":' +
-    '{"terms":{"field":"registry","size":10000}},"private_access":{"terms":{"field":"private_access","size":10000}},' +
-    '"tags_verified":{"terms":{"field":"tags.verified","size":10000}},"author":{"terms":{"field":"author","size":10000}},' +
-    '"namespace":{"terms":{"field":"namespace","size":10000}},"labels_value":{"terms":{"field":"labels.value","size":10000}},' +
-    '"tags_verifiedSource":{"terms":{"field":"tags.verifiedSource","size":10000}}},"query":{"match_all":{}}, "size":500}';
+  // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
+  private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+
+  // Shows which of the buckets are current selected
+  private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
+  private initialQuery: string;
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
@@ -103,10 +102,24 @@ export class SearchComponent implements OnInit {
    */
   constructor(private providerService: ProviderService) {
     this._client = new Client({
-      host: 'http://10.11.9.73:8080/api/ga4gh/v1/extended',
+      host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '2.4',
       log: 'trace'
     });
+    const shard_size = 10000;
+    const body = bodybuilder()
+      .aggregation('terms', '_type', { size: shard_size }, '_type')
+      .aggregation('terms', 'registry', { size: shard_size }, 'registry')
+      .aggregation('terms', 'private_access', { size: shard_size }, 'private_access')
+      .aggregation('terms', 'tags.verified', { size: shard_size }, 'tags_verified')
+      .aggregation('terms', 'author', { size: shard_size }, 'author')
+      .aggregation('terms', 'namespace', { size: shard_size }, 'namespace')
+      .aggregation('terms', 'labels.value', { size: shard_size }, 'labels_value')
+      .aggregation('terms', 'tags.verifiedSource', { size: shard_size }, 'tags_verifiedSource')
+      .query('match_all', {})
+      .size(100);
+    // TODO: this needs to be improved, but this is the default "empty" query
+    this.initialQuery = JSON.stringify(body.build());
   }
 
 
@@ -151,56 +164,53 @@ export class SearchComponent implements OnInit {
       this.filterEntry();
       this.toolSource.next(this.toolHits);
       this.workflowSource.next(this.workflowHits);
-      this.setupBuckets(hits);
+      this.setupAllBuckets(hits);
     });
   }
 
-  setupBuckets(hits: any) {
-    for (const property in hits.aggregations) {
-      if (hits.aggregations.hasOwnProperty(property)) {
-        // loop through contents buckets
-        const category = hits.aggregations[property];
-        // look for top level buckets (no filtering)
-        if (category.buckets != null) {
-          category.buckets.forEach(bucket => {
-            if (this.buckets.get(property) == null) {
-              this.buckets.set(property, new Map<string, string>());
-              if (!this.setFilter) {
-                this.fullyExpandMap.set(property, false);
-                this.checkboxMap.set(property, new Map<string, boolean>());
-              }
-            }
-            this.buckets.get(property).set(bucket.key, bucket.doc_count);
-            if (!this.setFilter) {
-              this.checkboxMap.get(property).set(bucket.key, false);
-            }
-          });
-        }
-        // look for second level buckets (with filtering)
-        for (const nestedProperty in category) {
-          if (category.hasOwnProperty(nestedProperty)) {
-            // this is copied and pasted, make this better
-            const nestedCategory = category[nestedProperty];
-            // look for top level buckets (no filtering)
-            if (nestedCategory != null && nestedCategory.buckets != null) {
-              nestedCategory.buckets.forEach(bucket => {
-                if (this.buckets.get(nestedProperty) == null) {
-                  this.buckets.set(nestedProperty, new Map<string, string>());
-                  if (!this.setFilter) {
-                    this.fullyExpandMap.set(nestedProperty, false);
-                    this.checkboxMap.set(property, new Map<string, boolean>());
-                  }
-                }
-                this.buckets.get(nestedProperty).set(bucket.key, bucket.doc_count);
-                if (!this.setFilter) {
-                  this.checkboxMap.get(property).set(bucket.key, false);
-                }
-              });
-            }
-          }
+  /**
+   * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
+   * based on one set of the hit's buckets to update the search view
+   * @param {any} key The aggregation
+   * @param {*} buckets The buckets inside the aggregation
+   * @memberof SearchComponent
+   */
+  setupBuckets(key, buckets: any) {
+    buckets.forEach(bucket => {
+      if (this.buckets.get(key) == null) {
+        this.buckets.set(key, new Map<string, string>());
+        if (!this.setFilter) {
+          this.fullyExpandMap.set(key, false);
+          this.checkboxMap.set(key, new Map<string, boolean>());
         }
       }
-    }
+      this.buckets.get(key).set(bucket.key, bucket.doc_count);
+      if (!this.setFilter) {
+        this.checkboxMap.get(key).set(bucket.key, false);
+      }
+    });
+  }
+
+  /**
+   * Fully updates the bucket, fullyExpandMap, and checkboxMap data structures
+   * based on the hits to update the search view
+   * @param {*} hits The response hits from elastic search
+   * @memberof SearchComponent
+   */
+  setupAllBuckets(hits: any) {
+    const aggregations = hits.aggregations;
+    Object.entries(aggregations).forEach(
+      ([key, value]) => {
+        if (value.buckets != null) {
+          this.setupBuckets(key, value.buckets);
+        }
+        // look for second level buckets (with filtering)
+        // If there are second level buckets,
+        // the buckets will always be under a property with the same name as the root property
+        if (value[key]) {
+          this.setupBuckets(key, value[key].buckets);
+        }
+      });
     this.setFilter = true;
   }
   /**
@@ -234,10 +244,9 @@ export class SearchComponent implements OnInit {
    * @param categoryValue
    */
   onClick(category: string, categoryValue: string) {
-    const checked = this.checkboxMap.get(category).get(categoryValue);
-    this.checkboxMap.get(category).set(categoryValue, !checked);
-    // console.log(this.buckets.get(category).get(categoryValue).checked);
     if (category !== null && categoryValue !== null) {
+      const checked = this.checkboxMap.get(category).get(categoryValue);
+      this.checkboxMap.get(category).set(categoryValue, !checked);
       this.handleFilters(category, categoryValue);
     }
     // assemble a query and pretend to click
@@ -251,45 +260,54 @@ export class SearchComponent implements OnInit {
       count += filter.size;
     });
 
+    let body = bodybuilder()
+      .size(100);
+
+    // if there is a description search
+    if (this.values.toString().length > 0) {
+      body = body.query('match', 'description', this.values);
+    } else {
+      body = body.query('match_all', {});
+    }
     // this ugly code creates the objects representing an elastic search query
     // may be able to use the elastic search library or a better JSON library to clean this up
     const boolFilter = new BoolFilter();
     if (count === 1) {
       category = this.filters.keys().next().value.toString();
       categoryValue = this.filters.get(category).values().next().value.toString();
-      const modifiedFilterValue = category.substring(0, 1) + category.substring(1).replace('_', '.');
-      queryWrapper.filter = new SingleFilter();
-      t[modifiedFilterValue] = [];
-      t[modifiedFilterValue][0] = [];
-      t[modifiedFilterValue][0] = categoryValue;
-      queryWrapper.filter = {};
-      queryWrapper.filter.terms = t;
+      // private_access is the only category we do not want modify
+      if (category !== 'private_access') {
+      category = category.substring(0, 1) + category.substring(1).replace('_', '.');
+      }
+      body = body.filter('term', category, categoryValue);
+      t[category] = [];
+      t[category][0] = [];
+      t[category][0] = categoryValue;
     } else if (count > 1) {
       boolFilter.bool['must'] = [];
-      for (const key of Array.from(this.filters.keys())){
+      for (const key of Array.from(this.filters.keys())) {
         const filter = this.filters.get(key);
         filter.forEach(insideFilter => {
-          const modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
+          let modifiedInnerFilterValue;
+          // private_access is the only category we do not want modify
+          if (key !== 'private_access') {
+            modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
+          } else {
+            modifiedInnerFilterValue = key;
+          }
           const terms = {};
           terms[modifiedInnerFilterValue] = [];
           terms[modifiedInnerFilterValue].push(insideFilter);
           const termsWrapper = {};
           termsWrapper['terms'] = terms;
           boolFilter.bool['must'].push(termsWrapper);
+          body = body.filter('term', modifiedInnerFilterValue, insideFilter);
         });
       }
-      queryWrapper.filter = boolFilter;
     }
-
-    // if there is a description search
-    if (this.values.toString().length > 0) {
-      queryWrapper['query'] = {};
-      queryWrapper['query']['match'] = {};
-      queryWrapper['query']['match']['description'] = {};
-      queryWrapper['query']['match']['description']['query'] = this.values;
-    } else {
-      queryWrapper['query'] = new Query();
-    }
+    const builtBody = body.build();
+    queryWrapper['query'] = builtBody.query;
+    queryWrapper['size'] = builtBody.size;
 
     // go through buckets
     queryWrapper.aggs = {};
@@ -302,16 +320,12 @@ export class SearchComponent implements OnInit {
       queryWrapper.aggs[modifiedKey].aggs[modifiedKey].terms = new AggTerms();
       queryWrapper.aggs[modifiedKey].aggs[modifiedKey].terms.field = key;
       queryWrapper.aggs[modifiedKey].filter = {};
-      // next, add the filtering clauses
-      if (count === 1) {
-        queryWrapper.aggs[modifiedKey].filter.terms = t;
-      } else if (count > 1) {
-        queryWrapper.aggs[modifiedKey].filter = boolFilter;
-      }
+
+      // next, add the filtering clauses, same as the query filter clause
+      queryWrapper.aggs[modifiedKey].filter = builtBody.query.bool.filter;
     });
     this.buckets.clear();
     const query = JSON.stringify(queryWrapper, null, 2);
-    // console.log(query);
     this.onEnter(query);
   }
   resetFilters() {
