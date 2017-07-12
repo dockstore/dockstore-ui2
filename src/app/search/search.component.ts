@@ -44,7 +44,11 @@ export class SearchComponent implements OnInit {
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+
+  // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+
+  // Shows which of the buckets are current selected
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
   private initialQuery: string;
   /**
@@ -165,8 +169,8 @@ export class SearchComponent implements OnInit {
   }
 
   /**
-   * Partially constructs the buckets, fullyExpandMap, and checkboxMap data structures
-   *
+   * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
+   * based on one set of the hit's buckets to update the search view
    * @param {any} key The aggregation
    * @param {*} buckets The buckets inside the aggregation
    * @memberof SearchComponent
@@ -188,8 +192,8 @@ export class SearchComponent implements OnInit {
   }
 
   /**
-   * Fully constructs the bucket, fullyExpandMap, and checkboxMap data structures
-   *
+   * Fully updates the bucket, fullyExpandMap, and checkboxMap data structures
+   * based on the hits to update the search view
    * @param {*} hits The response hits from elastic search
    * @memberof SearchComponent
    */
@@ -284,16 +288,22 @@ export class SearchComponent implements OnInit {
       for (const key of Array.from(this.filters.keys())) {
         const filter = this.filters.get(key);
         filter.forEach(insideFilter => {
-          const modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
+          let modifiedInnerFilterValue;
+          // private_access is the only category we do not want modify
+          if (key !== 'private_access') {
+            modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
+          } else {
+            modifiedInnerFilterValue = key;
+          }
           const terms = {};
           terms[modifiedInnerFilterValue] = [];
           terms[modifiedInnerFilterValue].push(insideFilter);
           const termsWrapper = {};
           termsWrapper['terms'] = terms;
           boolFilter.bool['must'].push(termsWrapper);
+          body = body.filter('term', modifiedInnerFilterValue, insideFilter);
         });
       }
-      queryWrapper.filter = boolFilter;
     }
     const builtBody = body.build();
     queryWrapper['query'] = builtBody.query;
@@ -311,12 +321,8 @@ export class SearchComponent implements OnInit {
       queryWrapper.aggs[modifiedKey].aggs[modifiedKey].terms.field = key;
       queryWrapper.aggs[modifiedKey].filter = {};
 
-      // next, add the filtering clauses
-      if (count === 1) {
-        queryWrapper.aggs[modifiedKey].filter.terms = t;
-      } else if (count > 1) {
-        queryWrapper.aggs[modifiedKey].filter = boolFilter;
-      }
+      // next, add the filtering clauses, same as the query filter clause
+      queryWrapper.aggs[modifiedKey].filter = builtBody.query.bool.filter;
     });
     this.buckets.clear();
     const query = JSON.stringify(queryWrapper, null, 2);
