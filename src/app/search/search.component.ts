@@ -212,7 +212,7 @@ export class SearchComponent implements OnInit {
     this.setFilter = true;
   }
   /**
-   * This handles selection of one filter, either taking it out from the lsit of active filters
+   * This handles selection of one filter, either taking it out from the list of active filters
    * or adding it if not present
    * @param category
    * @param categoryValue
@@ -274,7 +274,7 @@ export class SearchComponent implements OnInit {
           return this.appendFilter(a).aggregation('terms', key, modifiedKey, { size: this.shard_size });
         });
       } else {
-        body = body.agg('terms', modifiedKey, key, { size: this.shard_size });
+        body = body.agg('terms', key, modifiedKey, { size: this.shard_size });
       }
     });
     this.buckets.clear();
@@ -295,7 +295,14 @@ export class SearchComponent implements OnInit {
     this.onClick(null, null);
   }
 
-  appendFilter(body: any) {
+  /**
+   * Append filters to the a body builder object in order to add filter functionality to the overall elastic search query
+   * This is used to add to query object as well as each individual aggregation
+   * @param {*} body
+   * @returns the new body builder object with filter applied
+   * @memberof SearchComponent
+   */
+  appendFilter(body: any): any {
     let newBody = body;
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
