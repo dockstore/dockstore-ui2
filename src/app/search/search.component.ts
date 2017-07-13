@@ -257,26 +257,10 @@ export class SearchComponent implements OnInit {
     let body = bodybuilder()
       .size(100);
 
-    // if there is a description search
-    if (this.values.toString().length > 0) {
-      body = body.query('match', 'description', this.values);
-    } else {
-      body = body.query('match_all', {});
-    }
-
+    body = this.appendQuery(body);
     body = this.appendFilter(body);
+    body = this.appendAggregations(count, body);
 
-    // go through buckets
-    this.bucketStubs.forEach(key => {
-      const modifiedKey = key.replace('.', '_');
-      if (count > 0) {
-        body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
-          return this.appendFilter(a).aggregation('terms', key, modifiedKey, { size: this.shard_size });
-        });
-      } else {
-        body = body.agg('terms', key, modifiedKey, { size: this.shard_size });
-      }
-    });
     this.buckets.clear();
     const builtBody = body.build();
     const query = JSON.stringify(builtBody);
@@ -303,19 +287,56 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendFilter(body: any): any {
-    let newBody = body;
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
-        let modifiedInnerFilterValue;
+        let modifiedInnerFilterValue = key;
         // private_access is the only category we do not want modify
         if (key !== 'private_access') {
           modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
-        } else {
-          modifiedInnerFilterValue = key;
         }
-        newBody = body.filter('term', modifiedInnerFilterValue, insideFilter);
+        body = body.filter('term', modifiedInnerFilterValue, insideFilter);
       });
     });
-    return newBody;
+    return body;
+  }
+
+  /**
+   * Append the query to the a body builder object in order to add query functionality to the overall elastic search query
+   *
+   * @param {*} body the body build object
+   * @returns {*} the new body builder object
+   * @memberof SearchComponent
+   */
+  appendQuery(body: any): any {
+    // if there is a description search
+    if (this.values.toString().length > 0) {
+      body = body.query('match', 'description', this.values);
+    } else {
+      body = body.query('match_all', {});
+    }
+    return body;
+  }
+
+  /**
+   * Append aggregations to the a body builder object in order to add aggregation functionality to the overall elastic search query
+   *
+   * @param {number} count number of filters
+   * @param {*} body the body builder object
+   * @returns {*} the new body builder object
+   * @memberof SearchComponent
+   */
+  appendAggregations(count: number, body: any): any {
+    // go through buckets
+    this.bucketStubs.forEach(key => {
+      const modifiedKey = key.replace('.', '_');
+      if (count > 0) {
+        body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
+          return this.appendFilter(a).aggregation('terms', key, modifiedKey, { size: this.shard_size });
+        });
+      } else {
+        body = body.agg('terms', key, modifiedKey, { size: this.shard_size });
+      }
+    });
+    return body;
   }
 }
