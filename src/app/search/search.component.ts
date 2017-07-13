@@ -313,17 +313,12 @@ export class SearchComponent implements OnInit {
     });
     let body = bodybuilder()
       .size(this.query_size);
-    console.log(body.build());
     body = this.appendQuery(body);
-    console.log(body.build());
     body = this.appendFilter(body);
-    console.log(body.build());
     body = this.appendAggregations(count, body);
-    console.log(body.build());
     this.buckets.clear();
     const builtBody = body.build();
     const query = JSON.stringify(builtBody);
-    console.log(query);
     this.onEnter(query);
   }
   resetFilters() {
