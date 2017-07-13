@@ -23,10 +23,6 @@
             <form>
               <input type="text" name="focus"  required class="search-box" #box (keyup)="onKey(box.value)"
                      placeholder="Enter search term">
-              <!--<span style="position: absolute; margin-right: 50px;">-->
-                <!--<i class="fa fa-times" *ngIf="box.value" aria-hidden="true"></i>-->
-              <!--</span>-->
-              <!--<button class="close-icon" (click)="resetSearchTerm()" type="reset"></button>-->
             </form>
           </div>
           <app-advancedsearch></app-advancedsearch>
