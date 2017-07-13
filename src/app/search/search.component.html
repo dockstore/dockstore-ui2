@@ -5,21 +5,49 @@
 <div class="container" style="padding-top:30px;" >
   <div class="row">
     <div class="col-md-3 containers-rsb">
+      <button style="margin-bottom: 10px; width: 100%; background-color: #51aad8;" (click) = switchExpandAll()
+              type="button" class="btn btn-info btn-sm center-block">
+        {{ expandAll? 'Collapse all': 'Expand all' }}
+      </button>
       <accordion>
-        <accordion-group heading="Search Description"  panelClass="containers-accordion" [isOpen]="true">
-          <div>
-            <input class="center-block" style="width: 90%; margin: 12px" #box (keyup)="onKey(box.value)">
+        <accordion-group panelClass="containers-accordion" #group [isOpen]="expandAll">
+          <div accordion-heading>
+            Search Description
+            <span>
+              <i class="pull-right float-xs-right glyphicon"
+                 [ngClass]="group?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
+              </i>
+            </span>
           </div>
+          <div class="search-wrapper center-block">
+            <form>
+              <input type="text" name="focus"  required class="search-box" #box (keyup)="onKey(box.value)"
+                     placeholder="Enter search term">
+              <!--<span style="position: absolute; margin-right: 50px;">-->
+                <!--<i class="fa fa-times" *ngIf="box.value" aria-hidden="true"></i>-->
+              <!--</span>-->
+              <!--<button class="close-icon" (click)="resetSearchTerm()" type="reset"></button>-->
+            </form>
+          </div>
+          <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <accordion-group *ngFor="let key of buckets.keys()" panelClass="containers-accordion"
-                         [heading]="friendlyNames.get(key)" [isOpen]="true">
+        <accordion-group *ngFor="let key of buckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+          <div accordion-heading>
+            {{friendlyNames.get(key)}}
+            <span>
+              <i class="pull-right float-xs-right glyphicon"
+                 [ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
+              </i>
+            </span>
+          </div>
           <div *ngFor='let subBucket of buckets.get(key).keys(); let i = index'>
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
-                  <span><input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)"
-                               (change)="onClick(key,subBucket)"/> {{ mapFriendlyValueNames(key,subBucket) }}</span>
-
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ mapFriendlyValueNames(key,subBucket) }}
+                  </span>
                 </div>
                 <div class="pull-right">
                   <p>({{ buckets.get(key).get(subBucket) }})</p>
@@ -45,12 +73,18 @@
           </div>
         </accordion-group>
       </accordion>
-      <button style="margin-top: 12px; width: 100%" (click) = resetFilters() type="button" class="btn btn-primary btn-sm center-block">
+      <button style="margin-top: 12px; width: 100%" (click) = resetFilters() type="button" class="btn btn-danger btn-sm center-block">
         Reset Filters
       </button>
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
+        <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
+          Sorry, no matches found for <strong>{{box.value}}</strong>. Do you mean: <strong>some_key_word</strong>?
+        </div>
+        <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
+          <strong>Search Description: </strong> contains key term <strong>"{{values}}"</strong>
+        </div>
         <div *ngIf="filters.size > 0" class="alert alert-info">
           <strong>Search Filter: </strong>
           <span *ngFor="let key of filters.keys(); let i = index">
@@ -72,10 +106,34 @@
                 <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
                 Browse Tools
               </ng-template>
+              <button type="button" style="width:100%; color: #2E629D; background-color: #aadeee;"
+                      class="btn btn-info" (click)="clickTagCloudBtn('tool')">
+                {{showToolTagCloud ? 'Hide Tag Cloud' :  'Show Tag Cloud'}}</button>
+              <div class="tagCloud tool" *ngIf="showToolTagCloud">
+                <angular-tag-cloud
+                  [data]="data"
+                  [width]="options.width"
+                  [height]="options.height"
+                  [overflow]="options.overflow"
+                  (clicked)="logClicked($event)">
+                </angular-tag-cloud>
+              </div>
               <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
               <app-listentry [entryType]="'tool'"></app-listentry>
             </tab>
             <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+              <button type="button" style="width:100%; color: #198055; background-color: #aaeed2; border-color: #3fd999"
+                      class="btn btn-info" (click)="clickTagCloudBtn('workflow')">
+                {{showWorkflowTagCloud ? 'Hide Tag Cloud' :  'Show Tag Cloud'}}</button>
+              <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
+                <angular-tag-cloud
+                  [data]="data2"
+                  [width]="options.width"
+                  [height]="options.height"
+                  [overflow]="options.overflow"
+                  (clicked)="logClicked($event)">
+                </angular-tag-cloud>
+              </div>
               <ng-template tabHeading>
                 <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
                 Browse Workflows
