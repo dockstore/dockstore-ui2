@@ -41,6 +41,9 @@ export class SearchComponent implements OnInit {
   private hits: Object[];
   private _client: Client;
   private shard_size = 10000;
+
+  // Possibly 100 workflows and 100 tools
+  private query_size = 200;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -98,7 +101,7 @@ export class SearchComponent implements OnInit {
 
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
-   * @param communicatorService
+   * @param providerService
    */
   constructor(private providerService: ProviderService) {
     this._client = new Client({
@@ -116,7 +119,7 @@ export class SearchComponent implements OnInit {
       .aggregation('terms', 'labels.value', { size: this.shard_size }, 'labels_value')
       .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size }, 'tags_verifiedSource')
       .query('match_all', {})
-      .size(100);
+      .size(this.query_size);
     // TODO: this needs to be improved, but this is the default "empty" query
     this.initialQuery = JSON.stringify(body.build());
   }
@@ -145,6 +148,7 @@ export class SearchComponent implements OnInit {
       }
     }
   }
+
   /**
    * This ugly function looks at what hits came back from a search and creates
    * data structures (buckets) needed for displaying the results
@@ -255,7 +259,7 @@ export class SearchComponent implements OnInit {
     });
 
     let body = bodybuilder()
-      .size(100);
+      .size(this.query_size);
 
     body = this.appendQuery(body);
     body = this.appendFilter(body);
@@ -280,7 +284,7 @@ export class SearchComponent implements OnInit {
   }
 
   /**
-   * Append filters to the a body builder object in order to add filter functionality to the overall elastic search query
+   * Append filters to a body builder object in order to add filter functionality to the overall elastic search query
    * This is used to add to query object as well as each individual aggregation
    * @param {*} body
    * @returns the new body builder object with filter applied
@@ -301,7 +305,7 @@ export class SearchComponent implements OnInit {
   }
 
   /**
-   * Append the query to the a body builder object in order to add query functionality to the overall elastic search query
+   * Append the query to a body builder object in order to add query functionality to the overall elastic search query
    *
    * @param {*} body the body build object
    * @returns {*} the new body builder object
@@ -318,7 +322,7 @@ export class SearchComponent implements OnInit {
   }
 
   /**
-   * Append aggregations to the a body builder object in order to add aggregation functionality to the overall elastic search query
+   * Append aggregations to a body builder object in order to add aggregation functionality to the overall elastic search query
    *
    * @param {number} count number of filters
    * @param {*} body the body builder object
