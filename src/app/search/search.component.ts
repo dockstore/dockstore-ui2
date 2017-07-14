@@ -41,7 +41,6 @@ export class SearchComponent implements OnInit {
   private hits: Object[];
   private _client: Client;
   private shard_size = 10000;
-
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -72,7 +71,7 @@ export class SearchComponent implements OnInit {
     ['Verified', 'tags.verified'],
     ['Author', 'author'],
     ['Organization', 'namespace'],
-    ['Labels', 'labels.value'],
+    ['Labels', 'labels.value.keyword'],
     ['Verified Source', 'tags.verifiedSource'],
   ]);
   private friendlyNames = new Map([
@@ -82,7 +81,7 @@ export class SearchComponent implements OnInit {
     ['tags_verified', 'Verified'],
     ['author', 'Author'],
     ['namespace', 'Organization'],
-    ['labels_value', 'Labels'],
+    ['labels_value_keyword', 'Labels'],
     ['tags_verifiedSource', 'Verified Source'],
   ]);
   private friendlyValueNames = new Map([
@@ -106,7 +105,7 @@ export class SearchComponent implements OnInit {
   constructor(private providerService: ProviderService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
-      apiVersion: '2.4',
+      apiVersion: '5.x',
       log: 'trace'
     });
     const body = bodybuilder()
@@ -116,7 +115,7 @@ export class SearchComponent implements OnInit {
       .aggregation('terms', 'tags.verified', { size: this.shard_size }, 'tags_verified')
       .aggregation('terms', 'author', { size: this.shard_size }, 'author')
       .aggregation('terms', 'namespace', { size: this.shard_size }, 'namespace')
-      .aggregation('terms', 'labels.value', { size: this.shard_size }, 'labels_value')
+      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size }, 'labels_value_keyword')
       .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size }, 'tags_verifiedSource')
       .query('match_all', {})
       .size(this.query_size);
@@ -125,7 +124,8 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onEnter(this.initialQuery);
+    this.updateSideBar(this.initialQuery);
+    this.updateResultsTable(this.initialQuery);
   }
   mapFriendlyValueNames(key, subBucket) {
     if (key === 'tags_verified' || key === 'private_access') {
@@ -151,21 +151,15 @@ export class SearchComponent implements OnInit {
 
   /**
    * This ugly function looks at what hits came back from a search and creates
-   * data structures (buckets) needed for displaying the results
+   * data structures (buckets) needed for displaying the side bar information
    * @param value
    */
-  onEnter(value: string) {
+  updateSideBar(value: string) {
     this._client.search({
       index: 'tools',
       type: 'entry',
       body: value
     }).then(hits => {
-      this.hits = hits.hits.hits;
-      this.workflowHits = [];
-      this.toolHits = [];
-      this.filterEntry();
-      this.toolSource.next(this.toolHits);
-      this.workflowSource.next(this.workflowHits);
       this.setupAllBuckets(hits);
     });
   }
@@ -261,22 +255,53 @@ export class SearchComponent implements OnInit {
     let body = bodybuilder()
       .size(this.query_size);
 
+    // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
+    // The first query handles the aggregation and is used to update the sidebar buckets
+    // The second query updates the result table
     body = this.appendQuery(body);
-    body = this.appendFilter(body);
     body = this.appendAggregations(count, body);
-
+    let body2 = bodybuilder().size(this.query_size);
+    body2 = this.appendQuery(body2);
+    body2 = this.appendFilter(body2, null);
     this.buckets.clear();
     const builtBody = body.build();
+    const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
-    this.onEnter(query);
+    const query2 = JSON.stringify(builtBody2);
+    this.updateSideBar(query);
+    this.updateResultsTable(query2);
   }
+
+
+  /**
+   * Updates the results table by sending an elastic search query
+   *
+   * @param {string} value the elastic search query
+   * @memberof SearchComponent
+   */
+  updateResultsTable(value: string) {
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: value
+    }).then(hits => {
+      this.hits = hits.hits.hits;
+      this.workflowHits = [];
+      this.toolHits = [];
+      this.filterEntry();
+      this.toolSource.next(this.toolHits);
+      this.workflowSource.next(this.workflowHits);
+    });
+  }
+
   resetFilters() {
     this.filters.clear();
     this.setFilter = false;
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
-    this.onEnter(this.initialQuery);
+    this.updateSideBar(this.initialQuery);
+    this.updateResultsTable(this.initialQuery);
   }
   onKey(value: string) {
     this.values = value;
@@ -290,15 +315,26 @@ export class SearchComponent implements OnInit {
    * @returns the new body builder object with filter applied
    * @memberof SearchComponent
    */
-  appendFilter(body: any): any {
+  appendFilter(body: any, aggKey: string): any {
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
         let modifiedInnerFilterValue = key;
         // private_access is the only category we do not want modify
         if (key !== 'private_access') {
           modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
+          modifiedInnerFilterValue = modifiedInnerFilterValue.substring(0, 1) + modifiedInnerFilterValue.substring(1).replace('_', '.');
         }
-        body = body.filter('term', modifiedInnerFilterValue, insideFilter);
+        if (aggKey === key) {
+          // Return some garbage output because we've decided to append a filter, there's no turning back
+          // return body;  // <--- this does not work
+          body = body.notFilter('term', 'modifiedInnerFilterValue', insideFilter);
+        } else {
+          if (value.size > 1) {
+            body = body.orFilter('term', modifiedInnerFilterValue, insideFilter);
+          } else {
+          body = body.filter('term', modifiedInnerFilterValue, insideFilter);
+          }
+        }
       });
     });
     return body;
@@ -332,10 +368,11 @@ export class SearchComponent implements OnInit {
   appendAggregations(count: number, body: any): any {
     // go through buckets
     this.bucketStubs.forEach(key => {
-      const modifiedKey = key.replace('.', '_');
+      let modifiedKey = key.replace('.', '_');
+      modifiedKey = modifiedKey.replace('.', '_');
       if (count > 0) {
         body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
-          return this.appendFilter(a).aggregation('terms', key, modifiedKey, { size: this.shard_size });
+          return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size });
         });
       } else {
         body = body.agg('terms', key, modifiedKey, { size: this.shard_size });
