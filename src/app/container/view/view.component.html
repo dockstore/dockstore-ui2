@@ -22,7 +22,9 @@
               Version Tag:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input id="versionTagInput" type="text" class="form-control" name="name" [(ngModel)]="unsavedVersion.name" ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$/i" required title="Docker Image tag name." placeholder="e.g. develop" [disabled]="!(mode=='Add')" />
+              <input id="versionTagInput" type="text" class="form-control" name="name" [(ngModel)]="unsavedVersion.name"
+                     ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$/i" required title="Docker Image tag name."
+                     placeholder="e.g. develop" [disabled]="!(mode=='Add')" />
               <div class="form-error-messages" ng-messages="tagEditorForm.name.$error" ng-if="tagEditorForm.name.$touched">
                 <div ng-messages-include="templates/validation/tags/name.html">
                 </div>

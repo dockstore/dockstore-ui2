@@ -12,6 +12,7 @@ import { HeaderModule } from '../shared/modules/header.module';
 import { ListContainersModule } from '../shared/modules/list-containers.module';
 import { SearchContainersComponent } from './search/search.component';
 import { SelectModule } from '../shared/modules/select.module';
+import { ModalModule} from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [

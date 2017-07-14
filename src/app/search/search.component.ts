@@ -1,12 +1,11 @@
 import bodybuilder from 'bodybuilder';
-import { Dockstore } from './../shared/dockstore.model';
-import { Component, OnInit, ViewChild, enableProdMode } from '@angular/core';
 import { Client } from 'elasticsearch';
 import { CommunicatorService } from '../shared/communicator.service';
+import {Component, OnInit, ViewChild, enableProdMode, ElementRef} from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
-import { ListContainersService } from '../containers/list/list.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataTableDirective } from 'angular-datatables';
+import { Dockstore } from '../shared/dockstore.model';
+import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
@@ -16,7 +15,7 @@ enableProdMode();
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
 
@@ -24,6 +23,7 @@ export class SearchComponent implements OnInit {
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
+  @ViewChild('box') searchTermBox: ElementRef;
   /* Observable */
   private toolSource = new BehaviorSubject<any>(null);
   toolhit$ = this.toolSource.asObservable();
@@ -43,6 +43,40 @@ export class SearchComponent implements OnInit {
   private shard_size = 10000;
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
+  expandAll = true;
+  showToolTagCloud = true;
+  showWorkflowTagCloud = true;
+  searchTerm = false;
+  options: CloudOptions = {
+    width : 600,
+    height : 200,
+    overflow: false,
+  };
+  data: Array<CloudData> = [
+    {text: 'Docker', weight: 10, color: '#ffaaee'},
+    {text: 'PCAWG', weight: 9},
+    {text: 'Tool', weight: 8},
+    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
+    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
+    {text: 'cancer', weight: 5, },
+    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
+    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
+    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
+    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+  ];
+
+  data2: Array<CloudData> = [
+    {text: 'Weight-10-link', weight: 10, link: 'https://google.com'},
+    {text: 'Weight-9-link', weight: 9, link: 'https://google.com'},
+    {text: 'Weight-8-link', weight: 8, link: 'https://google.com'},
+    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
+    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
+    {text: 'Weight-5-link', weight: 5, link: 'https://google.com'},
+    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
+    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
+    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
+    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+  ];
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -66,7 +100,7 @@ export class SearchComponent implements OnInit {
    */
   private bucketStubs = new Map([
     ['Entry Type', '_type'],
-    ['Registry', 'registry'],
+    ['Registry', 'registry'], /*WRONG*/
     ['Private Access', 'private_access'],
     ['Verified', 'tags.verified'],
     ['Author', 'author'],
@@ -97,7 +131,6 @@ export class SearchComponent implements OnInit {
    * @type {string}
    */
   private values = '';
-
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -122,7 +155,22 @@ export class SearchComponent implements OnInit {
     // TODO: this needs to be improved, but this is the default "empty" query
     this.initialQuery = JSON.stringify(body.build());
   }
-
+  switchExpandAll() {
+    this.expandAll = !this.expandAll;
+  }
+  clickTagCloudBtn(type: string) {
+    if (type === 'tool') {
+      this.showToolTagCloud = !this.showToolTagCloud;
+    } else {
+      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
+    }
+  }
+  logClicked(clicked: CloudData) {
+    this.searchTerm = true;
+    this.values = clicked.text;
+    this.searchTermBox.nativeElement.value = '';
+    this.onClick(null, null);
+  }
   ngOnInit() {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
@@ -131,8 +179,14 @@ export class SearchComponent implements OnInit {
     if (key === 'tags_verified' || key === 'private_access') {
       return this.friendlyValueNames.get(key).get(subBucket);
     } else {
+      subBucket = subBucket.replace('_', '.');
+      subBucket = subBucket.replace('_', '.');
       return subBucket;
     }
+  }
+  resetSearchTerm() {
+    this.searchTerm = false;
+    this.searchTermBox.nativeElement.value = '';
   }
   filterEntry() {
     this.workflowHits = [];
@@ -209,6 +263,7 @@ export class SearchComponent implements OnInit {
       });
     this.setFilter = true;
   }
+
   /**
    * This handles selection of one filter, either taking it out from the list of active filters
    * or adding it if not present
@@ -251,10 +306,8 @@ export class SearchComponent implements OnInit {
     this.filters.forEach(filter => {
       count += filter.size;
     });
-
     let body = bodybuilder()
       .size(this.query_size);
-
     // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -300,11 +353,18 @@ export class SearchComponent implements OnInit {
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
+    this.values = '';
+    this.resetSearchTerm();
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
   }
   onKey(value: string) {
+    /* TODO: might need to check for safety injection */
     this.values = value;
+    this.searchTerm = true;
+    if ((!value || 0 === value.length)) {
+      this.searchTerm = false;
+    }
     this.onClick(null, null);
   }
 
@@ -321,8 +381,7 @@ export class SearchComponent implements OnInit {
         let modifiedInnerFilterValue = key;
         // private_access is the only category we do not want modify
         if (key !== 'private_access') {
-          modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace('_', '.');
-          modifiedInnerFilterValue = modifiedInnerFilterValue.substring(0, 1) + modifiedInnerFilterValue.substring(1).replace('_', '.');
+          modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace(/_/g, '.');
         }
         if (aggKey === key) {
           // Return some garbage output because we've decided to append a filter, there's no turning back
@@ -368,8 +427,7 @@ export class SearchComponent implements OnInit {
   appendAggregations(count: number, body: any): any {
     // go through buckets
     this.bucketStubs.forEach(key => {
-      let modifiedKey = key.replace('.', '_');
-      modifiedKey = modifiedKey.replace('.', '_');
+      const modifiedKey = key.replace(/\./g, '_');
       if (count > 0) {
         body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
           return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size });

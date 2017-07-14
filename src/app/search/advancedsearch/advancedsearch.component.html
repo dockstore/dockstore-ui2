@@ -1,0 +1,55 @@
+<button type="button" style="width: 90%; margin-bottom: 10px; background-color: #aaeed2; color: #198055; border-color: #3fd999"
+        class="btn btn-success btn-sm center-block" (click)="staticModal.show()">Open Advanced Search
+</button>
+<div class="modal fade" bsModal #staticModal="bs-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Advanced Search</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="staticModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body form-horizontal">
+        <p>Find tools and workflows with description that has...</p>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 col-md-4 col-lg-4 control-label">
+            All these words:
+          </label>
+          <div class="col-sm-8 col-md-8 col-lg-8">
+            <input type="text" class="form-control" name="reference" title="Git branch or tag name." placeholder="e.g. develop"/>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 col-md-4 col-lg-4 control-label">
+            The exact word or phrase:
+          </label>
+          <div class="col-sm-8 col-md-8 col-lg-8">
+            <input type="text" class="form-control" name="reference" title="Git branch or tag name." placeholder="e.g. develop"/>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 col-md-4 col-lg-4 control-label">
+            Any of these words:
+          </label>
+          <div class="col-sm-8 col-md-8 col-lg-8">
+            <input type="text" class="form-control" name="reference" title="Git branch or tag name." placeholder="e.g. develop"/>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-4 col-md-4 col-lg-4 control-label">
+            None of these words:
+          </label>
+          <div class="col-sm-8 col-md-8 col-lg-8">
+            <input type="text" class="form-control" name="reference" title="Git branch or tag name." placeholder="e.g. develop"/>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <button class="btn btn-danger btn-sm col-md-3" style="margin-left: 25%">Clear All</button>
+          <span><button class="btn btn-primary btn-sm col-md-3" style="margin-left: 10px">Advanced Search</button>
+                    </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

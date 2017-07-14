@@ -17,6 +17,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 /* External Modules */
 import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
+import { TagCloudModule } from 'angular-tag-cloud-module';
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 /* Components */
@@ -62,11 +63,13 @@ import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { SearchComponent } from './search/search.component';
+import { SearchModule } from './search/search.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredentriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
+import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +88,8 @@ import { ListentryModule } from './listentry/listentry.module';
     AccountsExternalComponent,
     AuthComponent,
     TokensComponent,
-    StarredentriesComponent
+    StarredentriesComponent,
+    AdvancedsearchComponent
 ],
   imports: [
     BrowserModule,
@@ -106,9 +110,10 @@ import { ListentryModule } from './listentry/listentry.module';
     FlexLayoutModule,
     StarringModule,
     routing,
-    ModalModule,
+    ModalModule.forRoot(),
     StargazersModule,
-    ListentryModule
+    ListentryModule,
+    TagCloudModule
   ],
   providers: [
     AuthService,
