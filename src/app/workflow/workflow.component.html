@@ -178,6 +178,20 @@
         </div>
       </div>
     </div>
+    <div class="panel panel-default" *ngIf="workflow && dnastackURL">
+      <div class="panel-heading">
+        <h3>Launch with</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <div class="container-launch-with">
+            <div class="button">
+              <p><a href="{{dnastackURL}}"><img src="../../assets/images/docs/dnastack.png"> DNAstack &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="panel panel-default" *ngIf="workflow?.versionVerified">
       <div class="panel-heading">
         <h3>Verified</h3>

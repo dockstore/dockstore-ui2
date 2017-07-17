@@ -1,6 +1,7 @@
 export class Dockstore {
 
   static readonly API_URI = 'http://localhost:8080';
+  static readonly DNASTACK_IMPORT_URL= 'https://app.dnastack.com/#/app/workflow/import/dockstore';
 
   static readonly GITHUB_CLIENT_ID = 'fill this in';
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
