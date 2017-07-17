@@ -1,4 +1,26 @@
+<app-header>
+  <span class="glyphicon glyphicon-tasks"></span>
+  Onboarding Wizard
+</app-header>
 <div class="container">
-  <h3>Step 1: Link External Accounts</h3>
-  <app-accounts-external></app-accounts-external>
+  <div *ngIf="curStep == 1">
+    <app-accounts-external></app-accounts-external>
+  </div>
+  <div *ngIf="curStep == 2">
+    <app-downloadcliclient></app-downloadcliclient>
+  </div>
+  <div *ngIf="curStep == 3">
+    <app-setupcomplete></app-setupcomplete>
+  </div>
+  <nav class="pull-right">
+    <ul class="pager">
+      <li *ngIf="curStep > 1">
+        <a style="cursor: pointer" (click)="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span>Previous</a>
+      </li>
+      <li *ngIf="!tokenSetComplete">
+        <a style="cursor: pointer" (click)="nextStep()" id="next_step" *ngIf="curStep < 3">Next<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a routerLink="/docs" id="finish_step" *ngIf="curStep >= 3">Finish<span class="glyphicon glyphicon-chevron-right"></span></a>
+      </li>
+    </ul>
+  </nav>
 </div>

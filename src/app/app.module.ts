@@ -18,6 +18,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TagCloudModule } from 'angular-tag-cloud-module';
+import { MarkdownModule } from 'angular2-markdown';
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 /* Components */
@@ -70,6 +71,8 @@ import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
 import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.component';
+import { DownloadcliclientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
+import { SetupcompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +92,9 @@ import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.co
     AuthComponent,
     TokensComponent,
     StarredentriesComponent,
-    AdvancedsearchComponent
+    AdvancedsearchComponent,
+    DownloadcliclientComponent,
+    SetupcompleteComponent
 ],
   imports: [
     BrowserModule,
@@ -113,7 +118,8 @@ import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.co
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    TagCloudModule
+    TagCloudModule,
+    MarkdownModule.forRoot()
   ],
   providers: [
     AuthService,

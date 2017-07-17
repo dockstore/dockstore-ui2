@@ -26,4 +26,49 @@ export class TokenService {
     return this.httpService.deleteAuth(deleteTokenUrl);
   }
 
+  getWebServiceVersion() {
+    const url = `${ Dockstore.API_URI }/api/ga4gh/v1/metadata`;
+    return this.httpService.getResponse(url);
+  }
+
+  getUserTokens(userId) {
+    const url = `${ Dockstore.API_URI }/users/${userId}/tokens`;
+    return this.httpService.getAuthResponse(url);
+  }
+
+  getUserTokenStatusSet(userId) {
+    let tokenSet;
+    this.getUserTokens(userId).subscribe(
+      tokens => {
+        const tokenStatusSet = {
+          dockstore: false,
+          github: false,
+          bitbucket: false,
+          quayio: false,
+          gitlab: false
+        };
+        for (let i = 0; i < tokens.length; i++) {
+          switch (tokens[i].tokenSource) {
+            case 'dockstore':
+              tokenStatusSet.dockstore = true;
+              break;
+            case 'github.com':
+              tokenStatusSet.github = true;
+              break;
+            case 'bitbucket.org':
+              tokenStatusSet.bitbucket = true;
+              break;
+            case 'quay.io':
+              tokenStatusSet.quayio = true;
+              break;
+            case 'gitlab.com':
+              tokenStatusSet.gitlab = true;
+              break;
+          }
+        }
+        tokenSet = tokenStatusSet;
+      });
+      return tokenSet;
+  }
+
 }
