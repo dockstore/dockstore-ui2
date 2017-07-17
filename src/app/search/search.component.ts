@@ -2,7 +2,7 @@ import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
 import { CommunicatorService } from '../shared/communicator.service';
-import {Component, OnInit, ViewChild, enableProdMode, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, enableProdMode, ElementRef } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
@@ -49,34 +49,34 @@ export class SearchComponent implements OnInit {
   showWorkflowTagCloud = true;
   searchTerm = false;
   options: CloudOptions = {
-    width : 600,
-    height : 200,
+    width: 600,
+    height: 200,
     overflow: false,
   };
   data: Array<CloudData> = [
-    {text: 'Docker', weight: 10, color: '#ffaaee'},
-    {text: 'PCAWG', weight: 9},
-    {text: 'Tool', weight: 8},
-    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
-    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
-    {text: 'cancer', weight: 5, },
-    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
-    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
-    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
-    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+    { text: 'Docker', weight: 10, color: '#ffaaee' },
+    { text: 'PCAWG', weight: 9 },
+    { text: 'Tool', weight: 8 },
+    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
+    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
+    { text: 'cancer', weight: 5, },
+    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
+    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
+    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
+    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
   ];
 
   data2: Array<CloudData> = [
-    {text: 'Weight-10-link', weight: 10, link: 'https://google.com'},
-    {text: 'Weight-9-link', weight: 9, link: 'https://google.com'},
-    {text: 'Weight-8-link', weight: 8, link: 'https://google.com'},
-    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
-    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
-    {text: 'Weight-5-link', weight: 5, link: 'https://google.com'},
-    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
-    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
-    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
-    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+    { text: 'Weight-10-link', weight: 10, link: 'https://google.com' },
+    { text: 'Weight-9-link', weight: 9, link: 'https://google.com' },
+    { text: 'Weight-8-link', weight: 8, link: 'https://google.com' },
+    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
+    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
+    { text: 'Weight-5-link', weight: 5, link: 'https://google.com' },
+    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
+    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
+    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
+    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
   ];
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -264,6 +264,25 @@ export class SearchComponent implements OnInit {
         }
       });
     this.setFilter = true;
+    this.retainZeroBuckets();
+  }
+
+
+  /**
+   * For buckets that were checked earlier, retain them even if there is 0 hits.
+   *
+   * @memberof SearchComponent
+   */
+  retainZeroBuckets() {
+    this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
+      value.forEach((innerValue: boolean, innerKey: string) => {
+        if (innerValue) {
+          if (!this.buckets.get(key).get(innerKey)) {
+            this.buckets.get(key).set(innerKey, '0');
+          }
+        }
+      });
+    });
   }
 
   /**
@@ -380,7 +399,7 @@ export class SearchComponent implements OnInit {
   appendFilter(body: any, aggKey: string): any {
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
-        if (aggKey === key  && this.searchService.exclusiveFilters.indexOf(key) === -1) {
+        if (aggKey === key && this.searchService.exclusiveFilters.indexOf(key) === -1) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
@@ -388,7 +407,7 @@ export class SearchComponent implements OnInit {
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-          body = body.filter('term', key, insideFilter);
+            body = body.filter('term', key, insideFilter);
           }
         }
       });
