@@ -12,11 +12,9 @@ import * as models from '../model/models';
 
 @Injectable()
 export class ContainersWebService {
-  domain: string;
   protected basePath = Dockstore.API_URI;
   public defaultHeaders: Headers = new Headers();
   constructor(protected http: Http, private httpService: HttpService) {
-    this.domain = Dockstore.API_URI;
     this.defaultHeaders = this.httpService.getHeader(this.httpService.getDockstoreToken());
   }
 
@@ -115,7 +113,7 @@ export class ContainersWebService {
    */
   public publish(containerId: number, body: PublishRequest) {
     const uri = `/containers/${containerId}/publish`;
-    const url = this.domain + uri;
+    const url = this.basePath + uri;
     return this.httpService.postResponse(url, JSON.stringify(body));
   }
 
@@ -128,7 +126,7 @@ export class ContainersWebService {
 	*/
   public deleteContainer(containerId: number) {
     const uri = `/containers/${containerId}`;
-    const url = this.domain + uri;
+    const url = this.basePath + uri;
     return this.httpService.deleteAuth(url);
   }
 }
