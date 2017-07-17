@@ -23,7 +23,6 @@ export class DownloadcliclientComponent implements OnInit {
     let apiVersion = 'unreachable';
     this.tokenService.getWebServiceVersion().subscribe(
       resultFromApi => {
-        console.log(resultFromApi);
         apiVersion = resultFromApi.version;
         this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;
       }
