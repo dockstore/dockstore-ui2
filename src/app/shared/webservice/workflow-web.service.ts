@@ -1,12 +1,11 @@
-import { PublishRequest } from './../models/PublishRequest';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { RequestMethod, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { Response, ResponseContentType } from '@angular/http';
-
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { PublishRequest } from './../models/PublishRequest';
 import * as models from '../model/models';
 import { Dockstore } from './../dockstore.model';
 import { HttpService } from './../http.service';
@@ -17,7 +16,8 @@ export class WorkflowWebService {
     public defaultHeaders: Headers = new Headers();
     constructor(protected http: Http, private httpService: HttpService) {
         this.defaultHeaders = this.httpService.getHeader(this.httpService.getDockstoreToken());
-     }
+    }
+
     /**
     *
     * @method
@@ -69,11 +69,11 @@ export class WorkflowWebService {
     }
 
     /**
-       * Update the workflow with the given workflow.
-       *
-       * @param workflowId Workflow to modify.
-       * @param body Workflow with updated information
-       */
+     * Update the workflow with the given workflow.
+     *
+     * @param workflowId Workflow to modify.
+     * @param body Workflow with updated information
+     */
     public updateWorkflow(workflowId: number, body: models.Workflow, extraHttpRequestParams?: any): Observable<models.Workflow> {
         return this.updateWorkflowWithHttpInfo(workflowId, body, extraHttpRequestParams)
             .map((response: Response) => {
@@ -86,11 +86,11 @@ export class WorkflowWebService {
     }
 
     /**
-   * Update the workflow with the given workflow.
-   *
-   * @param workflowId Workflow to modify.
-   * @param body Workflow with updated information
-   */
+     * Update the workflow with the given workflow.
+     *
+     * @param workflowId Workflow to modify.
+     * @param body Workflow with updated information
+     */
     public updateWorkflowWithHttpInfo(workflowId: number, body: models.Workflow, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + `/workflows/${workflowId}`;
 

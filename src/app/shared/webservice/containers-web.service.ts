@@ -1,4 +1,3 @@
-
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { RequestMethod, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { Response, ResponseContentType } from '@angular/http';
@@ -118,12 +117,12 @@ export class ContainersWebService {
   }
 
   /**
-  *
-	* @method
-	* @name deleteContainer
-	* @param {integer} containerId - Tool id to delete
-	*
-	*/
+   *
+	 * @method
+	 * @name deleteContainer
+	 * @param {integer} containerId - Tool id to delete
+	 *
+	 */
   public deleteContainer(containerId: number) {
     const uri = `/containers/${containerId}`;
     const url = this.basePath + uri;

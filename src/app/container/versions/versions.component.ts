@@ -1,12 +1,11 @@
-import { ContainersWebService } from './../../shared/webservice/containers-web.service';
-import { ContainerService } from './../../shared/container.service';
-import { StateService } from './../../shared/state.service';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
+import { ContainerService } from './../../shared/container.service';
+import { ContainersWebService } from './../../shared/webservice/containers-web.service';
 import { DateService } from '../../shared/date.service';
-
-import { Versions } from '../../shared/versions';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { StateService } from './../../shared/state.service';
+import { Versions } from '../../shared/versions';
 
 @Component({
   selector: 'app-versions-container',
@@ -14,15 +13,13 @@ import { DockstoreService } from '../../shared/dockstore.service';
   styleUrls: [ './versions.component.css' ]
 })
 export class VersionsContainerComponent extends Versions implements OnInit {
+  @Input() versions: Array<any>;
+  @Input() verifiedSource: Array<any>;
   verifiedLink: string;
   publicPage: boolean;
   defaultVersion: string;
-  @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<any>;
   tool: any;
-  setNoOrderCols(): Array<number> {
-    return [ 5, 6 ];
-  }
+
   constructor(dockstoreService: DockstoreService,
     dateService: DateService,
               private stateService: StateService,
@@ -42,6 +39,10 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     });
   }
 
+  setNoOrderCols(): Array<number> {
+    return [ 5, 6 ];
+  }
+
   updateDefaultVersion(newDefaultVersion: string) {
     this.tool.defaultVersion = newDefaultVersion;
     this.containersWebService.updateContainer(this.tool.id, this.tool).subscribe(response => this.containerService.setTool(response));
@@ -52,7 +53,6 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       if (source.version === name) {
         return source.verifiedSource;
       }
-
     }
     return '';
   }

@@ -1,6 +1,6 @@
 import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 
@@ -21,11 +21,11 @@ export class VersionsWorkflowComponent extends Versions {
   defaultVersion: string;
   workflow: any;
   setNoOrderCols(): Array<number> {
-    return [ 4, 5 ];
+    return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService,
-              dateService: DateService, private workflowService: WorkflowService, private workflowWebService: WorkflowWebService) {
+  constructor(dockstoreService: DockstoreService, dateService: DateService,
+    private workflowService: WorkflowService, private workflowWebService: WorkflowWebService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
     this.workflowService.workflow$.subscribe(workflow => {
@@ -45,7 +45,7 @@ export class VersionsWorkflowComponent extends Versions {
   getVerifiedSource(name: string) {
     for (const source of this.verifiedSource) {
       if (source.version === name) {
-          return source.verifiedSource;
+        return source.verifiedSource;
       }
 
     }
