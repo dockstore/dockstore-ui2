@@ -53,6 +53,7 @@ import { HttpService } from './shared/http.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
+import { VersionsService } from './footer/versions.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
@@ -65,11 +66,11 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { SearchComponent } from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
-import { StarredentriesComponent } from './starredentries/starredentries.component';
+import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
-import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.component';
+import { AdvancedSearchComponent } from './search/advancedsearch/advancedsearch.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 
@@ -90,8 +91,8 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     AccountsExternalComponent,
     AuthComponent,
     TokensComponent,
-    StarredentriesComponent,
-    AdvancedsearchComponent,
+    StarredEntriesComponent,
+    AdvancedSearchComponent,
     DownloadCLIClientComponent,
     SetupCompleteComponent
 ],
@@ -138,7 +139,8 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     StateService,
-    UsersWebService
+    UsersWebService,
+    VersionsService
   ],
   bootstrap: [ AppComponent ]
 })

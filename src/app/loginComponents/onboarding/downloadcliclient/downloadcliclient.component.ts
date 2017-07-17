@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TokenService } from '../../token.service';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
-
+import { VersionsService } from '../../../footer/versions.service';
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
@@ -13,19 +12,18 @@ export class DownloadCLIClientComponent implements OnInit {
   private dsToken: any;
   private dsServerURI: any;
 
-  constructor(private tokenService: TokenService,
-              private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private versionsService: VersionsService) { }
 
   ngOnInit() {
     this.dsToken = this.authService.getToken();
     this.dsServerURI = Dockstore.API_URI;
     let apiVersion = 'unreachable';
-    this.tokenService.getWebServiceVersion().subscribe(
+    this.versionsService.getVersion().subscribe(
       resultFromApi => {
         apiVersion = resultFromApi.version;
         this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;
-      }
-    );
+      });
   }
 
 }

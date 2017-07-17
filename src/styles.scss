@@ -1190,3 +1190,14 @@ td.hljs-ln-code {
     cursor: pointer;
 }
 /* End Temporary Styles - Need to Refactor Later */
+.changePage {
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  color: #487980;
+  &:hover {
+    background-color: #f2f2f2;
+  }
+}

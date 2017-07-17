@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.css']
 })
-export class AdvancedsearchComponent implements OnInit {
+export class AdvancedSearchComponent implements OnInit {
 
   constructor() { }
 

@@ -55,4 +55,39 @@ export class UserService {
     }
   }
 
+  getUserTokenStatusSet(userId) {
+    let tokenSet;
+    this.getTokens(userId).subscribe(
+      tokens => {
+        const tokenStatusSet = {
+          dockstore: false,
+          github: false,
+          bitbucket: false,
+          quayio: false,
+          gitlab: false
+        };
+        for (let i = 0; i < tokens.length; i++) {
+          switch (tokens[i].tokenSource) {
+            case 'dockstore':
+              tokenStatusSet.dockstore = true;
+              break;
+            case 'github.com':
+              tokenStatusSet.github = true;
+              break;
+            case 'bitbucket.org':
+              tokenStatusSet.bitbucket = true;
+              break;
+            case 'quay.io':
+              tokenStatusSet.quayio = true;
+              break;
+            case 'gitlab.com':
+              tokenStatusSet.gitlab = true;
+              break;
+          }
+        }
+        tokenSet = tokenStatusSet;
+      });
+    return tokenSet;
+  }
+
 }

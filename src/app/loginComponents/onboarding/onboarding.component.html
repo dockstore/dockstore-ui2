@@ -15,11 +15,11 @@
   <nav class="pull-right">
     <ul class="pager">
       <li *ngIf="curStep > 1">
-        <a style="cursor: pointer" (click)="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span>Previous</a>
+        <button class="changePage" (click)="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span>Previous</button>
       </li>
       <li *ngIf="!tokenSetComplete">
-        <a style="cursor: pointer" (click)="nextStep()" id="next_step" *ngIf="curStep < 3">Next<span class="glyphicon glyphicon-chevron-right"></span></a>
-        <a routerLink="/docs" id="finish_step" *ngIf="curStep >= 3">Finish<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <button class="changePage" (click)="nextStep()" id="next_step" *ngIf="curStep < 3">Next<span class="glyphicon glyphicon-chevron-right"></span></button>
+        <button class="changePage" routerLink="/docs" id="finish_step" *ngIf="curStep >= 3">Finish<span class="glyphicon glyphicon-chevron-right"></span></button>
       </li>
     </ul>
   </nav>
