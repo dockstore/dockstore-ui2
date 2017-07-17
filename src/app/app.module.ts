@@ -64,15 +64,14 @@ import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { SearchComponent } from './search/search.component';
-import { SearchModule } from './search/search.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredentriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
 import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.component';
-import { DownloadcliclientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
-import { SetupcompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
+import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
+import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 
 @NgModule({
   declarations: [
@@ -93,8 +92,8 @@ import { SetupcompleteComponent } from './loginComponents/onboarding/setupcomple
     TokensComponent,
     StarredentriesComponent,
     AdvancedsearchComponent,
-    DownloadcliclientComponent,
-    SetupcompleteComponent
+    DownloadCLIClientComponent,
+    SetupCompleteComponent
 ],
   imports: [
     BrowserModule,

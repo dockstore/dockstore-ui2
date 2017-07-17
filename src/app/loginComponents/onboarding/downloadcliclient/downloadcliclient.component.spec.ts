@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DownloadcliclientComponent } from './downloadcliclient.component';
+import { DownloadCLIClientComponent } from './downloadcliclient.component';
 
-describe('DownloadcliclientComponent', () => {
-  let component: DownloadcliclientComponent;
-  let fixture: ComponentFixture<DownloadcliclientComponent>;
+describe('DownloadCLIClientComponent', () => {
+  let component: DownloadCLIClientComponent;
+  let fixture: ComponentFixture<DownloadCLIClientComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DownloadcliclientComponent ]
+      declarations: [ DownloadCLIClientComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DownloadcliclientComponent);
+    fixture = TestBed.createComponent(DownloadCLIClientComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

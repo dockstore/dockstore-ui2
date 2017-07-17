@@ -8,9 +8,8 @@ import { Dockstore } from '../../../shared/dockstore.model';
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss']
 })
-export class DownloadcliclientComponent implements OnInit {
+export class DownloadCLIClientComponent implements OnInit {
   private downloadCli: string;
-  private clickBoard = 'token: {{dsToken}} server-url: {{dsServerURI}}';
   private dsToken: any;
   private dsServerURI: any;
 
