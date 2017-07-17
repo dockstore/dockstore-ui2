@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Dockstore } from './../dockstore.model';
 import { HttpService } from './../http.service';
 import { PublishRequest } from './../models/PublishRequest';
-import * as models from '../model/models';
+import * as models from '../swagger/model/models';
 
 @Injectable()
 export class ContainersWebService {

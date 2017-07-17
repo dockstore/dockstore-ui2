@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import { PublishRequest } from './../models/PublishRequest';
-import * as models from '../model/models';
+import * as models from '../swagger/model/models';
 import { Dockstore } from './../dockstore.model';
 import { HttpService } from './../http.service';
 

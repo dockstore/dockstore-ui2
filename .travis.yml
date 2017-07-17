@@ -23,7 +23,7 @@ install:
 before_script:
   - pwd
   - wget http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.2.3/swagger-codegen-cli-2.2.3.jar -O swagger-codegen-cli.jar
-  - java -jar swagger-codegen-cli.jar generate -i https://dockstore.org:8443/swagger.json -l typescript-angular2 -o src/app/shared/
+  - java -jar swagger-codegen-cli.jar generate -i https://dockstore.org:8443/swagger.json -l typescript-angular2 -o src/app/shared/swagger
   - ./script
   - npm run-script prebuild
   - ng lint
