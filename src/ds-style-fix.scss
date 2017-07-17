@@ -379,6 +379,16 @@ div.container-source-repos p {
   margin: 0;
 }
 
+div.container-launch-with {
+  text-align: center;
+
+  .button img {
+    width: auto;
+    margin-right: 0.5em;
+    height: 20px;
+  }
+}
+
 div.container-verified{
   width:240px;
 }
