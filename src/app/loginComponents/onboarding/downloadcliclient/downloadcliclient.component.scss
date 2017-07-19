@@ -1,0 +1,12 @@
+.textarea {
+  width: 90%;
+  display: block;
+  &.clip {
+    height: 80px;
+    background-color: white;
+  }
+  &.btn {
+    width: auto;
+    height: 80px;
+  }
+}

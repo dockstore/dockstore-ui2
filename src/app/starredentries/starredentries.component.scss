@@ -61,3 +61,8 @@
   .columns { column-gap: 0px; }
   .columns figure { width: 100%; }
 }
+
+.entry-heading {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

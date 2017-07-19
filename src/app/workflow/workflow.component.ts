@@ -1,12 +1,14 @@
 import { Workflow } from './../shared/models/Workflow';
+import { Dockstore } from '../shared/dockstore.model';
 import { WorkflowWebService } from './../shared/webservice/workflow-web.service';
 import { PublishRequest } from './../shared/models/PublishRequest';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
+import { URLSearchParams } from '@angular/http';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
@@ -31,7 +33,7 @@ export class WorkflowComponent extends Tool {
   totalShare = 0;
   shareURL: string;
   starGazersClicked = false;
-  workflowPublished = false;
+  dnastackURL: string;
   constructor(private dockstoreService: DockstoreService,
     private dateService: DateService,
     private updateWorkflow: WorkflowService,
@@ -61,6 +63,12 @@ export class WorkflowComponent extends Tool {
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     workflowRef.verifiedLinks = this.dateService.getVerifiedLink();
     this.resetWorkflowEditData();
+    if (workflowRef.path && workflowRef.descriptorType === 'wdl') {
+      const myParams = new URLSearchParams();
+      myParams.set('path', workflowRef.path);
+      myParams.set('descriptorType', workflowRef.descriptorType);
+      this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
+    }
   }
   sumCounts(count) {
     this.totalShare += count;
