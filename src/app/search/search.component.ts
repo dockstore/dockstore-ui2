@@ -1,7 +1,8 @@
+import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
 import { CommunicatorService } from '../shared/communicator.service';
-import {Component, OnInit, ViewChild, enableProdMode, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, enableProdMode, ElementRef } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
@@ -48,34 +49,34 @@ export class SearchComponent implements OnInit {
   showWorkflowTagCloud = true;
   searchTerm = false;
   options: CloudOptions = {
-    width : 600,
-    height : 200,
+    width: 600,
+    height: 200,
     overflow: false,
   };
   data: Array<CloudData> = [
-    {text: 'Docker', weight: 10, color: '#ffaaee'},
-    {text: 'PCAWG', weight: 9},
-    {text: 'Tool', weight: 8},
-    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
-    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
-    {text: 'cancer', weight: 5, },
-    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
-    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
-    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
-    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+    { text: 'Docker', weight: 10, color: '#ffaaee' },
+    { text: 'PCAWG', weight: 9 },
+    { text: 'Tool', weight: 8 },
+    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
+    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
+    { text: 'cancer', weight: 5, },
+    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
+    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
+    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
+    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
   ];
 
   data2: Array<CloudData> = [
-    {text: 'Weight-10-link', weight: 10, link: 'https://google.com'},
-    {text: 'Weight-9-link', weight: 9, link: 'https://google.com'},
-    {text: 'Weight-8-link', weight: 8, link: 'https://google.com'},
-    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
-    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
-    {text: 'Weight-5-link', weight: 5, link: 'https://google.com'},
-    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
-    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
-    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
-    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+    { text: 'Weight-10-link', weight: 10, link: 'https://google.com' },
+    { text: 'Weight-9-link', weight: 9, link: 'https://google.com' },
+    { text: 'Weight-8-link', weight: 8, link: 'https://google.com' },
+    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
+    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
+    { text: 'Weight-5-link', weight: 5, link: 'https://google.com' },
+    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
+    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
+    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
+    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
   ];
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -112,20 +113,24 @@ export class SearchComponent implements OnInit {
     ['_type', 'Entry Type'],
     ['registry', 'Registry'],
     ['private_access', 'Private Access'],
-    ['tags_verified', 'Verified'],
+    ['tags.verified', 'Verified'],
     ['author', 'Author'],
     ['namespace', 'Organization'],
-    ['labels_value_keyword', 'Labels'],
-    ['tags_verifiedSource', 'Verified Source'],
+    ['labels.value.keyword', 'Labels'],
+    ['tags.verifiedSource', 'Verified Source'],
   ]);
   private friendlyValueNames = new Map([
-    ['tags_verified', new Map([
-      [1, 'verified'], [0, 'non-verified']
+    ['tags.verified', new Map([
+      ['1', 'verified'], ['0', 'non-verified']
     ])],
     ['private_access', new Map([
-      [1, 'private'], [0, 'public']
+      ['1', 'private'], ['0', 'public']
+    ])],
+    ['registry', new Map([
+      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub']
     ])]
   ]);
+
   /**
    * The current text search
    * @type {string}
@@ -135,21 +140,21 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService) {
+  constructor(private providerService: ProviderService, private searchService: SearchService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
-      log: 'trace'
+      log: 'debug'
     });
     const body = bodybuilder()
-      .aggregation('terms', '_type', { size: this.shard_size }, '_type')
-      .aggregation('terms', 'registry', { size: this.shard_size }, 'registry')
-      .aggregation('terms', 'private_access', { size: this.shard_size }, 'private_access')
-      .aggregation('terms', 'tags.verified', { size: this.shard_size }, 'tags_verified')
-      .aggregation('terms', 'author', { size: this.shard_size }, 'author')
-      .aggregation('terms', 'namespace', { size: this.shard_size }, 'namespace')
-      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size }, 'labels_value_keyword')
-      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size }, 'tags_verifiedSource')
+      .aggregation('terms', '_type', { size: this.shard_size })
+      .aggregation('terms', 'registry', { size: this.shard_size })
+      .aggregation('terms', 'private_access', { size: this.shard_size })
+      .aggregation('terms', 'tags.verified', { size: this.shard_size })
+      .aggregation('terms', 'author', { size: this.shard_size })
+      .aggregation('terms', 'namespace', { size: this.shard_size })
+      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
+      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
       .query('match_all', {})
       .size(this.query_size);
     // TODO: this needs to be improved, but this is the default "empty" query
@@ -176,13 +181,10 @@ export class SearchComponent implements OnInit {
     this.updateResultsTable(this.initialQuery);
   }
   mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags_verified' || key === 'private_access') {
-      return this.friendlyValueNames.get(key).get(subBucket);
-    } else {
-      subBucket = subBucket.replace('_', '.');
-      subBucket = subBucket.replace('_', '.');
-      return subBucket;
+    if (key === 'tags.verified' || key === 'private_access' || key === 'registry') {
+      return this.friendlyValueNames.get(key).get(subBucket.toString());
     }
+    return subBucket;
   }
   resetSearchTerm() {
     this.searchTerm = false;
@@ -252,7 +254,7 @@ export class SearchComponent implements OnInit {
     Object.entries(aggregations).forEach(
       ([key, value]) => {
         if (value.buckets != null) {
-          this.setupBuckets(key, value.buckets);
+          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value.buckets);
         }
         // look for second level buckets (with filtering)
         // If there are second level buckets,
@@ -262,6 +264,25 @@ export class SearchComponent implements OnInit {
         }
       });
     this.setFilter = true;
+    this.retainZeroBuckets();
+  }
+
+
+  /**
+   * For buckets that were checked earlier, retain them even if there is 0 hits.
+   *
+   * @memberof SearchComponent
+   */
+  retainZeroBuckets() {
+    this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
+      value.forEach((innerValue: boolean, innerKey: string) => {
+        if (innerValue) {
+          if (!this.buckets.get(key).get(innerKey)) {
+            this.buckets.get(key).set(innerKey, '0');
+          }
+        }
+      });
+    });
   }
 
   /**
@@ -284,6 +305,7 @@ export class SearchComponent implements OnInit {
       this.filters.get(category).add(categoryValue);
     }
   }
+
   clickExpand(key: string) {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
@@ -324,7 +346,6 @@ export class SearchComponent implements OnInit {
     this.updateSideBar(query);
     this.updateResultsTable(query2);
   }
-
 
   /**
    * Updates the results table by sending an elastic search query
@@ -378,20 +399,15 @@ export class SearchComponent implements OnInit {
   appendFilter(body: any, aggKey: string): any {
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
-        let modifiedInnerFilterValue = key;
-        // private_access is the only category we do not want modify
-        if (key !== 'private_access') {
-          modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace(/_/g, '.');
-        }
-        if (aggKey === key) {
-          // Return some garbage output because we've decided to append a filter, there's no turning back
+        if (aggKey === key && this.searchService.exclusiveFilters.indexOf(key) === -1) {
+          // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
-          body = body.notFilter('term', 'modifiedInnerFilterValue', insideFilter);
+          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
         } else {
           if (value.size > 1) {
-            body = body.orFilter('term', modifiedInnerFilterValue, insideFilter);
+            body = body.orFilter('term', key, insideFilter);
           } else {
-          body = body.filter('term', modifiedInnerFilterValue, insideFilter);
+            body = body.filter('term', key, insideFilter);
           }
         }
       });
@@ -427,13 +443,12 @@ export class SearchComponent implements OnInit {
   appendAggregations(count: number, body: any): any {
     // go through buckets
     this.bucketStubs.forEach(key => {
-      const modifiedKey = key.replace(/\./g, '_');
       if (count > 0) {
-        body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size });
+        body = body.agg('filter', key, key, (a) => {
+          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size });
         });
       } else {
-        body = body.agg('terms', key, modifiedKey, { size: this.shard_size });
+        body = body.agg('terms', key, key, { size: this.shard_size });
       }
     });
     return body;

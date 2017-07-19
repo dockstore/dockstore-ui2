@@ -1,3 +1,4 @@
+import { SearchService } from './search/search.service';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
@@ -140,6 +141,7 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     CLIENT_ROUTER_PROVIDERS,
     StateService,
     UsersWebService,
+    SearchService,
     VersionsService
   ],
   bootstrap: [ AppComponent ]
