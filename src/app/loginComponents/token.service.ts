@@ -25,5 +25,4 @@ export class TokenService {
 
     return this.httpService.deleteAuth(deleteTokenUrl);
   }
-
 }

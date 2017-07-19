@@ -9,7 +9,7 @@ import { AccountsComponent } from './loginComponents/accounts/accounts.component
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { SearchComponent } from './search/search.component';
-import { StarredentriesComponent } from './starredentries/starredentries.component';
+import { StarredEntriesComponent } from './starredentries/starredentries.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
@@ -29,7 +29,7 @@ const APP_ROUTES: Routes = [
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
   { path: 'auth/:provider', component: AuthComponent },
   { path: 'tokens', component: TokensComponent },
-  { path: 'starred', component: StarredentriesComponent },
+  { path: 'starred', component: StarredEntriesComponent },
   { path: '**', redirectTo: '' }
 ];
 
