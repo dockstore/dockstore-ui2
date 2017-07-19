@@ -1,4 +1,4 @@
-import { Workflow } from './models/Workflow';
+import { Workflow } from './swagger/model/Workflow';
 import {Injectable, Input, OnDestroy, OnInit} from '@angular/core';
 import { StateService } from './state.service';
 import {Router} from '@angular/router/';
@@ -39,7 +39,7 @@ export abstract class Tool implements OnInit, OnDestroy {
               private communicatorService: CommunicatorService,
               private providerService: ProviderService,
               private router: Router,
-              private workflowService: WorkflowService,
+              public workflowService: WorkflowService,
               private containerService: ContainerService,
               private stateService: StateService,
               toolType: string) {
