@@ -1,4 +1,4 @@
-import { Workflow } from './../../shared/models/Workflow';
+import { Workflow } from './../../shared/swagger/model/Workflow';
 import { NgForm } from '@angular/forms';
 import { formErrors, validationPatterns, validationMessages } from './../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
@@ -14,6 +14,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   private formErrors = formErrors;
   private validationPatterns = validationPatterns;
   private workflow: Workflow;
+  private cwlTestParameterFilePath: string;
   private workflowRegisterError;
 
   registerWorkflowForm: NgForm;
@@ -48,7 +49,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow(this.registerWorkflowModal);
+    this.registerWorkflowModalService.registerWorkflow(this.registerWorkflowModal, this.cwlTestParameterFilePath);
   }
 
   formChanged() {
