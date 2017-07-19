@@ -1,8 +1,8 @@
 import { StateService } from './../../shared/state.service';
 import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { SourceFile } from './../../shared/swagger/model/SourceFile';
-import { WorkflowVersion } from './../../shared/swagger/model/WorkflowVersion';
+import { SourceFile } from './../../shared/swagger/model/sourceFile';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';

@@ -2,10 +2,10 @@ import { NgForm } from '@angular/forms';
 import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
 
 import { StateService } from './../../shared/state.service';
-import { SourceFile } from './../../shared/swagger/model/SourceFile';
+import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { DateService } from './../../shared/date.service';
 import { VersionModalService } from './version-modal.service';
-import { WorkflowVersion } from './../../shared/swagger/model/WorkflowVersion';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
 
 @Component({

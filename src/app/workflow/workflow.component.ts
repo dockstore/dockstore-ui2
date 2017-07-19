@@ -1,6 +1,6 @@
 import { Dockstore } from '../shared/dockstore.model';
-import { Workflow } from './../shared/swagger/model/Workflow';
-import * as WorkflowMode from './../shared/swagger/model/Workflow';
+import { Workflow } from './../shared/swagger/model/workflow';
+import * as WorkflowMode from './../shared/swagger/model/workflow';
 import { WorkflowWebService } from './../shared/webservice/workflow-web.service';
 import { PublishRequest } from './../shared/models/PublishRequest';
 import { RefreshService } from './../shared/refresh.service';

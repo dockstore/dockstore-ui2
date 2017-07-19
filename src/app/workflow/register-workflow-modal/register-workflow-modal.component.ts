@@ -1,4 +1,4 @@
-import { Workflow } from './../../shared/swagger/model/Workflow';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { NgForm } from '@angular/forms';
 import { formErrors, validationPatterns, validationMessages } from './../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';

@@ -1,4 +1,4 @@
-import { Workflow } from './swagger/model/Workflow';
+import { Workflow } from './swagger/model/workflow';
 import {Injectable, Input, OnDestroy, OnInit} from '@angular/core';
 import { StateService } from './state.service';
 import {Router} from '@angular/router/';

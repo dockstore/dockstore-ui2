@@ -2,7 +2,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
-import { Workflow } from './../../shared/swagger/model/Workflow';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 
