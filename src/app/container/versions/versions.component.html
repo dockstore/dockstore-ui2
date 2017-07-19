@@ -69,7 +69,11 @@
       </tr>
       <tr *ngFor="let version of versions | orderBy : convertSorting()">
         <td>{{ version.name }}</td>
-        <td>{{ version.reference || 'n/a' }}</td>
+        <td>
+          <input class="radio-button-reference" *ngIf="!publicPage && version.name !== 'latest'" type="radio" name="defaultVersion"
+                     [(ngModel)]="defaultVersion" [value]="version.reference" (click)="updateDefaultVersion(version.reference)"
+                     tooltip="Set as default branch"/>
+                     {{ version.reference || 'n/a' }}</td>
         <td>
           <div>
             {{ version.cwl_path }}

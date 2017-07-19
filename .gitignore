@@ -6,6 +6,8 @@
 /out-tsc
 /src/app/**/*.js
 !/src/app/shared/angular2-highlight-js/lib/*.js
+src/app/shared/swagger/
+swagger-codegen-cli.jar
 
 # dependencies
 /node_modules
@@ -20,6 +22,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+.jsbeautifyrc
 
 # IDE - VSCode
 .vscode/*
