@@ -36,7 +36,6 @@ export class VersionModalService {
     saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles) {
         this.stateService.setRefreshing(true);
         const newCWL = newTestParameterFiles.filter(x => originalTestParameterFilePaths.indexOf(x) === -1);
-        console.log(workflowVersion.name);
         if (newCWL && newCWL.length > 0) {
             this.workflowWebService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).subscribe();
         }

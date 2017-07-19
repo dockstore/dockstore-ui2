@@ -214,9 +214,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.versionModalService.mode.subscribe(
       (mode: TagEditorMode) => {
         this.mode = mode;
-        console.log(mode);
         if (mode !== null) {
-          console.log(mode);
           this.setMode(mode);
         }
       }

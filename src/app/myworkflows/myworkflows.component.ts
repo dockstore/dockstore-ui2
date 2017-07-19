@@ -58,7 +58,6 @@ export class MyWorkflowsComponent implements OnInit {
   }
 
   refreshAllWorkflows(): any {
-    console.log('this happened');
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
 }
