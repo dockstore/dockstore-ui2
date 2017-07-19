@@ -184,7 +184,6 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('onChanges');
     if (this.defaultVersion) {
       this.selectVersion = this.defaultVersion;
     this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
