@@ -18,6 +18,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TagCloudModule } from 'angular-tag-cloud-module';
+
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 /* Components */
@@ -89,7 +90,7 @@ import {AdvancedsearchComponent} from './search/advancedsearch/advancedsearch.co
     AuthComponent,
     TokensComponent,
     StarredentriesComponent,
-    AdvancedsearchComponent
+    AdvancedsearchComponent,
 ],
   imports: [
     BrowserModule,

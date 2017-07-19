@@ -6,6 +6,7 @@ import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import {forEach} from "@angular/router/src/utils/collection";
 
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
@@ -81,9 +82,14 @@ export class SearchComponent implements OnInit {
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+  private orderedBuckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
 
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+
+  // Shows the sorting mode for the categories
+  // true: sort by count (default); false: sort by alphabet
+  private sortModeMap: Map<string, boolean> = new Map<string, boolean>();
 
   // Shows which of the buckets are current selected
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
@@ -118,6 +124,16 @@ export class SearchComponent implements OnInit {
     ['labels_value_keyword', 'Labels'],
     ['tags_verifiedSource', 'Verified Source'],
   ]);
+  private entryOrder = new Map([
+    ['_type', new Map<string, string>()],
+    ['author', new Map<string, string>()],
+    ['registry', new Map<string, string>()],
+    ['namespace', new Map<string, string>()],
+    ['labels_value_keyword', new Map<string, string>()],
+    ['private_access', new Map<string, string>()],
+    ['tags_verified', new Map<string, string>()],
+    ['tags_verifiedSource', new Map<string, string>()]
+  ]);
   private friendlyValueNames = new Map([
     ['tags_verified', new Map([
       [1, 'verified'], [0, 'non-verified']
@@ -139,7 +155,7 @@ export class SearchComponent implements OnInit {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
-      log: 'trace'
+      log: 'debug'
     });
     const body = bodybuilder()
       .aggregation('terms', '_type', { size: this.shard_size }, '_type')
@@ -147,7 +163,7 @@ export class SearchComponent implements OnInit {
       .aggregation('terms', 'private_access', { size: this.shard_size }, 'private_access')
       .aggregation('terms', 'tags.verified', { size: this.shard_size }, 'tags_verified')
       .aggregation('terms', 'author', { size: this.shard_size }, 'author')
-      .aggregation('terms', 'namespace', { size: this.shard_size }, 'namespace')
+      .aggregation('terms', 'namespace', { size: this.shard_size, order: {_term: 'asc'}}, 'namespace')
       .aggregation('terms', 'labels.value.keyword', { size: this.shard_size }, 'labels_value_keyword')
       .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size }, 'tags_verifiedSource')
       .query('match_all', {})
@@ -155,68 +171,14 @@ export class SearchComponent implements OnInit {
     // TODO: this needs to be improved, but this is the default "empty" query
     this.initialQuery = JSON.stringify(body.build());
   }
-  switchExpandAll() {
-    this.expandAll = !this.expandAll;
-  }
-  clickTagCloudBtn(type: string) {
-    if (type === 'tool') {
-      this.showToolTagCloud = !this.showToolTagCloud;
-    } else {
-      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
-    }
-  }
-  logClicked(clicked: CloudData) {
-    this.searchTerm = true;
-    this.values = clicked.text;
-    this.searchTermBox.nativeElement.value = '';
-    this.onClick(null, null);
-  }
   ngOnInit() {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
   }
-  mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags_verified' || key === 'private_access') {
-      return this.friendlyValueNames.get(key).get(subBucket);
-    } else {
-      subBucket = subBucket.replace('_', '.');
-      subBucket = subBucket.replace('_', '.');
-      return subBucket;
-    }
-  }
-  resetSearchTerm() {
-    this.searchTerm = false;
-    this.searchTermBox.nativeElement.value = '';
-  }
-  filterEntry() {
-    this.workflowHits = [];
-    this.toolHits = [];
-    for (const hit of this.hits) {
-      /**TODO: this is not good, make it faster.../
-       */
-      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (hit['_type'] === 'tool') {
-        this.toolHits.push(hit);
-      } else if (hit['_type'] === 'workflow') {
-        this.workflowHits.push(hit);
-      }
-    }
-  }
-
-  /**
-   * This ugly function looks at what hits came back from a search and creates
-   * data structures (buckets) needed for displaying the side bar information
-   * @param value
+  /**===============================================
+   *                SetUp Functions
+   * ==============================================
    */
-  updateSideBar(value: string) {
-    this._client.search({
-      index: 'tools',
-      type: 'entry',
-      body: value
-    }).then(hits => {
-      this.setupAllBuckets(hits);
-    });
-  }
 
   /**
    * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
@@ -232,13 +194,27 @@ export class SearchComponent implements OnInit {
         if (!this.setFilter) {
           this.fullyExpandMap.set(key, false);
           this.checkboxMap.set(key, new Map<string, boolean>());
+          if (buckets.length > 10) {
+            this.sortModeMap.set(key, true);
+          }
         }
       }
+      this.entryOrder.get(key).set(bucket.key, bucket.doc_count);
       this.buckets.get(key).set(bucket.key, bucket.doc_count);
       if (!this.setFilter) {
         this.checkboxMap.get(key).set(bucket.key, false);
       }
     });
+  }
+
+  setupOrderBuckets() {
+    this.entryOrder.forEach(
+      (value, key) => {
+        if (this.entryOrder.get(key).size > 0) {
+          this.orderedBuckets.set(key, value);
+        }
+      }
+    );
   }
 
   /**
@@ -264,67 +240,25 @@ export class SearchComponent implements OnInit {
     this.setFilter = true;
   }
 
-  /**
-   * This handles selection of one filter, either taking it out from the list of active filters
-   * or adding it if not present
-   * @param category
-   * @param categoryValue
+  /**===============================================
+   *                Update Functions
+   * ==============================================
    */
-  handleFilters(category: string, categoryValue: string) {
-    if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
-      this.filters.get(category).delete(categoryValue);
-      // wipe out the category if empty
-      if (this.filters.get(category).size === 0) {
-        this.filters.delete(category);
-      }
-    } else {
-      if (!this.filters.has(category)) {
-        this.filters.set(category, new Set<string>());
-      }
-      this.filters.get(category).add(categoryValue);
-    }
-  }
-  clickExpand(key: string) {
-    const isExpanded = this.fullyExpandMap.get(key);
-    this.fullyExpandMap.set(key, !isExpanded);
-  }
-
   /**
-   * This handles clicking a facet and doing the search
-   * @param category
-   * @param categoryValue
+   * This ugly function looks at what hits came back from a search and creates
+   * data structures (buckets) needed for displaying the side bar information
+   * @param value
    */
-  onClick(category: string, categoryValue: string) {
-    if (category !== null && categoryValue !== null) {
-      const checked = this.checkboxMap.get(category).get(categoryValue);
-      this.checkboxMap.get(category).set(categoryValue, !checked);
-      this.handleFilters(category, categoryValue);
-    }
-
-    // calculate number of filters
-    let count = 0;
-    this.filters.forEach(filter => {
-      count += filter.size;
+  updateSideBar(value: string) {
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: value
+    }).then(hits => {
+      this.setupAllBuckets(hits);
+      this.setupOrderBuckets();
     });
-    let body = bodybuilder()
-      .size(this.query_size);
-    // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
-    // The first query handles the aggregation and is used to update the sidebar buckets
-    // The second query updates the result table
-    body = this.appendQuery(body);
-    body = this.appendAggregations(count, body);
-    let body2 = bodybuilder().size(this.query_size);
-    body2 = this.appendQuery(body2);
-    body2 = this.appendFilter(body2, null);
-    this.buckets.clear();
-    const builtBody = body.build();
-    const builtBody2 = body2.build();
-    const query = JSON.stringify(builtBody);
-    const query2 = JSON.stringify(builtBody2);
-    this.updateSideBar(query);
-    this.updateResultsTable(query2);
   }
-
 
   /**
    * Updates the results table by sending an elastic search query
@@ -347,6 +281,10 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  /**===============================================
+   *                Reset Functions
+   * ==============================================
+   */
   resetFilters() {
     this.filters.clear();
     this.setFilter = false;
@@ -358,16 +296,28 @@ export class SearchComponent implements OnInit {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
   }
-  onKey(value: string) {
-    /* TODO: might need to check for safety injection */
-    this.values = value;
-    this.searchTerm = true;
-    if ((!value || 0 === value.length)) {
-      this.searchTerm = false;
-    }
-    this.onClick(null, null);
+  resetSearchTerm() {
+    this.searchTerm = false;
+    this.searchTermBox.nativeElement.value = '';
   }
-
+  resetEntryOrder() {
+    this.entryOrder.clear();
+    this.entryOrder = new Map([
+      ['_type', new Map<string, string>()],
+      ['author', new Map<string, string>()],
+      ['registry', new Map<string, string>()],
+      ['namespace', new Map<string, string>()],
+      ['labels_value_keyword', new Map<string, string>()],
+      ['private_access', new Map<string, string>()],
+      ['tags_verified', new Map<string, string>()],
+      ['tags_verifiedSource', new Map<string, string>()]
+    ]);
+    this.orderedBuckets.clear();
+  }
+  /**===============================================
+   *                Append Functions
+   * ==============================================
+   */
   /**
    * Append filters to a body builder object in order to add filter functionality to the overall elastic search query
    * This is used to add to query object as well as each individual aggregation
@@ -391,7 +341,7 @@ export class SearchComponent implements OnInit {
           if (value.size > 1) {
             body = body.orFilter('term', modifiedInnerFilterValue, insideFilter);
           } else {
-          body = body.filter('term', modifiedInnerFilterValue, insideFilter);
+            body = body.filter('term', modifiedInnerFilterValue, insideFilter);
           }
         }
       });
@@ -430,12 +380,215 @@ export class SearchComponent implements OnInit {
       const modifiedKey = key.replace(/\./g, '_');
       if (count > 0) {
         body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size });
+          if (this.sortModeMap.has(key)) {
+            if (!this.sortModeMap.get(key)) {
+              return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size, order: {_term: 'asc'}});
+            }
+          }
+          return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size, order: {_count: 'desc'}});
         });
       } else {
-        body = body.agg('terms', key, modifiedKey, { size: this.shard_size });
+        body = body.agg('terms', key, modifiedKey, { size: this.shard_size, order: {_count: 'desc'}});
+        if (this.sortModeMap.has(key)) {
+          if (!this.sortModeMap.get(key)) {
+            body = body.agg('terms', key, modifiedKey, { size: this.shard_size, order: {_term: 'asc'}});
+          }
+        }
       }
     });
     return body;
   }
+
+  /**===============================================
+   *                Event Functions
+   * ==============================================
+   */
+  onKey(value: string) {
+    /* TODO: might need to check for safety injection */
+    this.values = value;
+    this.searchTerm = true;
+    if ((!value || 0 === value.length)) {
+      this.searchTerm = false;
+    }
+    this.onClick(null, null);
+  }
+  /**
+   * This handles clicking a facet and doing the search
+   * @param category
+   * @param categoryValue
+   */
+  onClick(category: string, categoryValue: string) {
+    if (category !== null && categoryValue !== null) {
+      const checked = this.checkboxMap.get(category).get(categoryValue);
+      this.checkboxMap.get(category).set(categoryValue, !checked);
+      this.handleFilters(category, categoryValue);
+    }
+
+    // calculate number of filters
+    let count = 0;
+    this.filters.forEach(filter => {
+      count += filter.size;
+    });
+    let body = bodybuilder()
+      .size(this.query_size);
+
+    // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
+    // The first query handles the aggregation and is used to update the sidebar buckets
+    // The second query updates the result table
+    body = this.appendQuery(body);
+    body = this.appendAggregations(count, body);
+    let body2 = bodybuilder().size(this.query_size);
+    body2 = this.appendQuery(body2);
+    body2 = this.appendFilter(body2, null);
+    this.buckets.clear();
+    this.resetEntryOrder();
+    const builtBody = body.build();
+    const builtBody2 = body2.build();
+    const query = JSON.stringify(builtBody);
+    console.log(query);
+    const query2 = JSON.stringify(builtBody2);
+    this.updateSideBar(query);
+    this.updateResultsTable(query2);
+  }
+
+  clickExpand(key: string) {
+    const isExpanded = this.fullyExpandMap.get(key);
+    this.fullyExpandMap.set(key, !isExpanded);
+  }
+  logClicked(clicked: CloudData) {
+    this.searchTerm = true;
+    this.values = clicked.text;
+    this.searchTermBox.nativeElement.value = '';
+    this.onClick(null, null);
+  }
+  switchExpandAll() {
+    this.expandAll = !this.expandAll;
+  }
+  clickTagCloudBtn(type: string) {
+    if (type === 'tool') {
+      this.showToolTagCloud = !this.showToolTagCloud;
+    } else {
+      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
+    }
+  }
+  clickSortMode(category: string, sortMode: boolean) {
+    const orderedMap = this.foo(this.orderedBuckets.get(category), sortMode);
+    this.orderedBuckets.set(category, orderedMap);
+    this.sortModeMap.set(category, sortMode);
+  }
+  /**===============================================
+   *                Helper Functions
+   * ==============================================
+   */
+  mapFriendlyValueNames(key, subBucket) {
+    if (key === 'tags_verified' || key === 'private_access') {
+      return this.friendlyValueNames.get(key).get(subBucket);
+    } else {
+      subBucket = subBucket.replace('_', '.');
+      subBucket = subBucket.replace('_', '.');
+      return subBucket;
+    }
+  }
+  filterEntry() {
+    this.workflowHits = [];
+    this.toolHits = [];
+    for (const hit of this.hits) {
+      /**TODO: this is not good, make it faster.../
+       */
+      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+      if (hit['_type'] === 'tool') {
+        this.toolHits.push(hit);
+      } else if (hit['_type'] === 'workflow') {
+        this.workflowHits.push(hit);
+      }
+    }
+  }
+  /**
+   * This handles selection of one filter, either taking it out from the list of active filters
+   * or adding it if not present
+   * @param category
+   * @param categoryValue
+   */
+  handleFilters(category: string, categoryValue: string) {
+    if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
+      this.filters.get(category).delete(categoryValue);
+      // wipe out the category if empty
+      if (this.filters.get(category).size === 0) {
+        this.filters.delete(category);
+      }
+    } else {
+      if (!this.filters.has(category)) {
+        this.filters.set(category, new Set<string>());
+      }
+      this.filters.get(category).add(categoryValue);
+    }
+  }
+  sortByAlphabet(orderedArray): any {
+    orderedArray = orderedArray.sort(function (a, b) {
+      return a.key > b.key ? 1 : -1;
+    });
+    return orderedArray;
+  }
+
+  sortByCount(orderedArray): any {
+    orderedArray = orderedArray.sort(function (a, b) {
+      if (a.value < b.value) {
+        return 1;
+      } else if (a.value === b.value) {
+        return a.key > b.key ? 1 : -1;
+      } else {
+        return -1;
+      }
+    });
+    return orderedArray;
+  }
+
+  sortCategoryValue(category: string, sortMode: boolean) {
+    //if (this.sortModeMap.get(category) !== sortMode) {
+      let orderedArray = <any>[];
+      this.orderedBuckets.get(category).forEach(
+        (value, key) => {
+          orderedArray.push(
+            {
+              key: key,
+              value: value
+            });
+        });
+      if (!sortMode) {
+        orderedArray = this.sortByAlphabet(orderedArray);
+      } else {
+        orderedArray = this.sortByCount(orderedArray);
+      };
+      const tempMap: Map<string, string> = new Map<string, string>();
+      orderedArray.forEach(
+        entry => {
+          tempMap.set(entry.key, entry.value);
+        });
+      this.orderedBuckets.set(category, tempMap);
+   // }
+  }
+
+  foo (valueMap: any, sortMode: boolean): any{
+    let orderedArray = <any>[];
+    valueMap.forEach(
+      (value, key) => {
+        orderedArray.push(
+          {
+            key: key,
+            value: value
+          });
+      });
+    if (!sortMode) {
+      orderedArray = this.sortByAlphabet(orderedArray);
+    } else {
+      orderedArray = this.sortByCount(orderedArray);
+    };
+    const tempMap: Map<string, string> = new Map<string, string>();
+    orderedArray.forEach(
+      entry => {
+        tempMap.set(entry.key, entry.value);
+      });
+    return tempMap;
+  }
+
 }

@@ -85,3 +85,20 @@
     box-shadow: 0 0 10px 0px #b0eed7;
   }
 }
+
+.sortBtn {
+  border-color:  #dbe3e8;
+  border-radius: 0;
+  color: #3b769a;
+  font-size: 12px;
+  background-color: #f9f9f9;
+  &.active {
+    background-color: #ededed;
+    color: #3b769a;
+  }
+  &:not(.active) {
+    &:hover {
+      background-color: #efefef;
+    }
+  }
+}
