@@ -23,7 +23,19 @@
     </a>
   </li>
   <li>
-    <strong tooltip="Path in Git repository to main descriptor file">Workflow Path</strong>: {{ workflow.workflow_path }}
+    <form #editWorkflowPathForm="ngForm" class="form-inline">
+      <div class="form-group">
+        <strong tooltip="Path in Git repository to main descriptor file">Workflow Path: </strong>
+        <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
+        <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
+          name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
+      </div>
+      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        (click)="toggleEditWorkflowPath()">
+        <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
+        {{ workflowPathEditing ? 'Save' : 'Edit' }}
+      </button>
+    </form>
   </li>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
@@ -32,7 +44,15 @@
     </a>
   </li>
   <li>
-    <strong tooltip="Type of descriptor language used">Descriptor Type</strong>: {{ workflow?.descriptorType }}
+    <div *ngIf="!isPublic">
+      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
+      <select (change)="save()" [(ngModel)]="workflow.descriptorType">
+        <option value="cwl">cwl</option>
+        <option value="wdl">wdl</option>
+      </select>
+    </div>
+    <div *ngIf="isPublic">
+      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ workflow?.descriptorType }}</div>
   </li>
 </ul>
 <div *ngIf="workflow">
