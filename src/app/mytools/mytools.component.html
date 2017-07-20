@@ -50,9 +50,14 @@
                     </div>
               </div>
           </div>
+            <button type="button"
+                    class="btn btn-primary btn-xs pull-right add-container-ns"
+                    (click)="setModalGitPathAndImgPath(nsObj?.namespace); showRegisterToolModal()">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
         </accordion-group>
       </accordion>
-      <button data-target=".registerContainerModal" data-toggle="modal" id="register_tool_button" type="button"
+      <button (click)="clearModalGitPathAndImgPath(); showRegisterToolModal()" id="register_tool_button" type="button"
               class="btn btn-primary btn-sm pull-right">
               Add Tool
       </button>
