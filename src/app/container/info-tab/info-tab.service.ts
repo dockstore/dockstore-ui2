@@ -32,7 +32,7 @@ export class InfoTabService {
         this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
             this.stateService.setRefreshing(true);
             this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
-                this.containerService.replaceTool(this.tools, this.tool, refreshResponse);
+                this.containerService.replaceTool(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
                 this.stateService.setRefreshing(false);
             });
