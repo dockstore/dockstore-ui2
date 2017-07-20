@@ -72,61 +72,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
-        <div>
-          <ul class="list-unstyled container-info" *ngIf="tool">
-            <li>
-              <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author || 'n/a' }}
-            </li>
-            <li>
-              <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
-              <span *ngIf="!tool?.email">n/a</span>
-              <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
-                {{ tool?.email }}
-              </a>
-            </li>
-            <li>
-              <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
-              <a [href]="tool?.providerUrl">
-                {{ tool?.providerUrl }}
-              </a>
-            </li>
-            <li>
-              <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
-              <a [href]="tool?.imgProviderUrl">
-                {{ tool?.imgProviderUrl }}
-              </a>
-            </li>
-            <li>
-              <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>: {{ tool?.default_dockerfile_path }}
-            </li>
-            <li>
-              <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>: {{ tool?.default_cwl_path || 'n/a' }}
-            </li>
-            <li>
-              <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>: {{ tool?.default_wdl_path || 'n/a' }}
-            </li>
-            <li>
-              <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
-            </li>
-            <li>
-              <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
-            </li>
-            <li>
-              <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
-            </li>
-          </ul>
-        </div>
-        <div *ngIf="tool">
-          <label tooltip="Description of tool obtained from tool descriptor">
-            Description
-          </label>
-          <div class="well well-sm">
-            <markdown [data]="tool?.description || 'No description associated with this container.'"></markdown>
-          </div>
-          <div *ngIf="validVersions">
-            <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
-          </div>
-        </div>
+      <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
       </tab>
       <tab id="labelsTab" heading="Labels" *ngIf="tool">
         <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
