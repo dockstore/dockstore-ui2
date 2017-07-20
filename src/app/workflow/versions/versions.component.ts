@@ -1,4 +1,6 @@
-import {Component, Input} from '@angular/core';
+import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
+import { WorkflowService } from './../../shared/workflow.service';
+import { Component, Input } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 
@@ -16,21 +18,34 @@ export class VersionsWorkflowComponent extends Versions {
   @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
   verifiedLink: string;
-
+  defaultVersion: string;
+  workflow: any;
   setNoOrderCols(): Array<number> {
-    return [ 4, 5 ];
+    return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService,
-              dateService: DateService) {
+  constructor(dockstoreService: DockstoreService, dateService: DateService,
+    private workflowService: WorkflowService, private workflowWebService: WorkflowWebService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
+    this.workflowService.workflow$.subscribe(workflow => {
+      this.workflow = workflow;
+      if (workflow) {
+        this.defaultVersion = workflow.defaultVersion;
+      }
+    });
+  }
+
+  updateDefaultVersion(newDefaultVersion: string) {
+    this.workflow.defaultVersion = newDefaultVersion;
+    this.workflowWebService.updateWorkflow(this.workflowId, this.workflow).subscribe(
+      response => this.workflowService.setWorkflow(response));
   }
 
   getVerifiedSource(name: string) {
     for (const source of this.verifiedSource) {
       if (source.version === name) {
-          return source.verifiedSource;
+        return source.verifiedSource;
       }
 
     }

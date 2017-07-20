@@ -9,7 +9,7 @@ export class HttpService {
   constructor(private http: Http,
               private authService: AuthService) { }
 
-  private getDockstoreToken() {
+  public getDockstoreToken() {
     return this.authService.getToken();
   }
 
@@ -23,7 +23,7 @@ export class HttpService {
     return new RequestOptions({ headers: headers });
   }
 
-  private getHeader(dockstoreToken?: string) {
+  public getHeader(dockstoreToken?: string) {
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     if (dockstoreToken) {

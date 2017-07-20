@@ -1,12 +1,12 @@
+import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
 import { CommunicatorService } from '../shared/communicator.service';
-import {Component, OnInit, ViewChild, enableProdMode, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, enableProdMode, ElementRef } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
-import {forEach} from "@angular/router/src/utils/collection";
 
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
@@ -42,6 +42,7 @@ export class SearchComponent implements OnInit {
   private hits: Object[];
   private _client: Client;
   private shard_size = 10000;
+  private activeToolBar = true;
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
@@ -49,34 +50,34 @@ export class SearchComponent implements OnInit {
   showWorkflowTagCloud = true;
   searchTerm = false;
   options: CloudOptions = {
-    width : 600,
-    height : 200,
+    width: 600,
+    height: 200,
     overflow: false,
   };
   data: Array<CloudData> = [
-    {text: 'Docker', weight: 10, color: '#ffaaee'},
-    {text: 'PCAWG', weight: 9},
-    {text: 'Tool', weight: 8},
-    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
-    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
-    {text: 'cancer', weight: 5, },
-    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
-    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
-    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
-    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+    { text: 'Docker', weight: 10, color: '#ffaaee' },
+    { text: 'PCAWG', weight: 9 },
+    { text: 'Tool', weight: 8 },
+    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
+    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
+    { text: 'cancer', weight: 5, },
+    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
+    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
+    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
+    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
   ];
 
   data2: Array<CloudData> = [
-    {text: 'Weight-10-link', weight: 10, link: 'https://google.com'},
-    {text: 'Weight-9-link', weight: 9, link: 'https://google.com'},
-    {text: 'Weight-8-link', weight: 8, link: 'https://google.com'},
-    {text: 'Weight-7-link', weight: 7, link: 'https://google.com'},
-    {text: 'Weight-6-link', weight: 5, link: 'https://google.com'},
-    {text: 'Weight-5-link', weight: 5, link: 'https://google.com'},
-    {text: 'Weight-4-link', weight: 4, link: 'https://google.com'},
-    {text: 'Weight-3-link', weight: 3, link: 'https://google.com'},
-    {text: 'Weight-2-link', weight: 2, link: 'https://google.com'},
-    {text: 'Weight-1-link', weight: 1, link: 'https://google.com'},
+    { text: 'Weight-10-link', weight: 10, link: 'https://google.com' },
+    { text: 'Weight-9-link', weight: 9, link: 'https://google.com' },
+    { text: 'Weight-8-link', weight: 8, link: 'https://google.com' },
+    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
+    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
+    { text: 'Weight-5-link', weight: 5, link: 'https://google.com' },
+    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
+    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
+    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
+    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
   ];
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -90,6 +91,7 @@ export class SearchComponent implements OnInit {
   // Shows the sorting mode for the categories
   // true: sort by count (default); false: sort by alphabet
   private sortModeMap: Map<string, boolean> = new Map<string, boolean>();
+  private sortModeMap2: Map<string, CategorySort> = new Map<string, CategorySort>();
 
   // Shows which of the buckets are current selected
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
@@ -118,30 +120,34 @@ export class SearchComponent implements OnInit {
     ['_type', 'Entry Type'],
     ['registry', 'Registry'],
     ['private_access', 'Private Access'],
-    ['tags_verified', 'Verified'],
+    ['tags.verified', 'Verified'],
     ['author', 'Author'],
     ['namespace', 'Organization'],
-    ['labels_value_keyword', 'Labels'],
-    ['tags_verifiedSource', 'Verified Source'],
+    ['labels.value.keyword', 'Labels'],
+    ['tags.verifiedSource', 'Verified Source'],
   ]);
   private entryOrder = new Map([
     ['_type', new Map<string, string>()],
     ['author', new Map<string, string>()],
     ['registry', new Map<string, string>()],
     ['namespace', new Map<string, string>()],
-    ['labels_value_keyword', new Map<string, string>()],
+    ['labels.value.keyword', new Map<string, string>()],
     ['private_access', new Map<string, string>()],
-    ['tags_verified', new Map<string, string>()],
-    ['tags_verifiedSource', new Map<string, string>()]
+    ['tags.verified', new Map<string, string>()],
+    ['tags.verifiedSource', new Map<string, string>()]
   ]);
   private friendlyValueNames = new Map([
-    ['tags_verified', new Map([
-      [1, 'verified'], [0, 'non-verified']
+    ['tags.verified', new Map([
+      ['1', 'verified'], ['0', 'non-verified']
     ])],
     ['private_access', new Map([
-      [1, 'private'], [0, 'public']
+      ['1', 'private'], ['0', 'public']
+    ])],
+    ['registry', new Map([
+      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub']
     ])]
   ]);
+
   /**
    * The current text search
    * @type {string}
@@ -151,21 +157,21 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService) {
+  constructor(private providerService: ProviderService, private searchService: SearchService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
       log: 'debug'
     });
     const body = bodybuilder()
-      .aggregation('terms', '_type', { size: this.shard_size }, '_type')
-      .aggregation('terms', 'registry', { size: this.shard_size }, 'registry')
-      .aggregation('terms', 'private_access', { size: this.shard_size }, 'private_access')
-      .aggregation('terms', 'tags.verified', { size: this.shard_size }, 'tags_verified')
-      .aggregation('terms', 'author', { size: this.shard_size }, 'author')
-      .aggregation('terms', 'namespace', { size: this.shard_size, order: {_term: 'asc'}}, 'namespace')
-      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size }, 'labels_value_keyword')
-      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size }, 'tags_verifiedSource')
+      .aggregation('terms', '_type', { size: this.shard_size })
+      .aggregation('terms', 'registry', { size: this.shard_size })
+      .aggregation('terms', 'private_access', { size: this.shard_size })
+      .aggregation('terms', 'tags.verified', { size: this.shard_size })
+      .aggregation('terms', 'author', { size: this.shard_size })
+      .aggregation('terms', 'namespace', { size: this.shard_size })
+      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
+      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
       .query('match_all', {})
       .size(this.query_size);
     // TODO: this needs to be improved, but this is the default "empty" query
@@ -177,9 +183,7 @@ export class SearchComponent implements OnInit {
   }
   /**===============================================
    *                SetUp Functions
-   * ==============================================
-   */
-
+   * ==============================================*/
   /**
    * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
    * based on one set of the hit's buckets to update the search view
@@ -189,18 +193,16 @@ export class SearchComponent implements OnInit {
    */
   setupBuckets(key, buckets: any) {
     buckets.forEach(bucket => {
-      if (this.buckets.get(key) == null) {
-        this.buckets.set(key, new Map<string, string>());
         if (!this.setFilter) {
           this.fullyExpandMap.set(key, false);
           this.checkboxMap.set(key, new Map<string, boolean>());
           if (buckets.length > 10) {
             this.sortModeMap.set(key, true);
+            const sortby: CategorySort = new CategorySort(true, false, true);
+            this.sortModeMap2.set(key, sortby);
           }
         }
-      }
       this.entryOrder.get(key).set(bucket.key, bucket.doc_count);
-      this.buckets.get(key).set(bucket.key, bucket.doc_count);
       if (!this.setFilter) {
         this.checkboxMap.get(key).set(bucket.key, false);
       }
@@ -213,8 +215,8 @@ export class SearchComponent implements OnInit {
         if (this.entryOrder.get(key).size > 0) {
           this.orderedBuckets.set(key, value);
         }
-      }
-    );
+      });
+    this.retainZeroBuckets();
   }
 
   /**
@@ -228,7 +230,7 @@ export class SearchComponent implements OnInit {
     Object.entries(aggregations).forEach(
       ([key, value]) => {
         if (value.buckets != null) {
-          this.setupBuckets(key, value.buckets);
+          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value.buckets);
         }
         // look for second level buckets (with filtering)
         // If there are second level buckets,
@@ -240,12 +242,30 @@ export class SearchComponent implements OnInit {
     this.setFilter = true;
   }
 
+
+  /**
+   * For buckets that were checked earlier, retain them even if there is 0 hits.
+   *
+   * @memberof SearchComponent
+   */
+  retainZeroBuckets() {
+    this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
+      value.forEach((innerValue: boolean, innerKey: string) => {
+        if (innerValue && this.orderedBuckets.get(key)) {
+          if (!this.orderedBuckets.get(key).get(innerKey)) {
+            this.orderedBuckets.get(key).set(innerKey, '0');
+          }
+        }
+      });
+    });
+  }
+
   /**===============================================
    *                Update Functions
    * ==============================================
    */
   /**
-   * This ugly function looks at what hits came back from a search and creates
+   * This function looks at what hits came back from a search and creates
    * data structures (buckets) needed for displaying the side bar information
    * @param value
    */
@@ -257,6 +277,7 @@ export class SearchComponent implements OnInit {
     }).then(hits => {
       this.setupAllBuckets(hits);
       this.setupOrderBuckets();
+
     });
   }
 
@@ -278,6 +299,7 @@ export class SearchComponent implements OnInit {
       this.filterEntry();
       this.toolSource.next(this.toolHits);
       this.workflowSource.next(this.workflowHits);
+      this.setTabActive();
     });
   }
 
@@ -307,10 +329,10 @@ export class SearchComponent implements OnInit {
       ['author', new Map<string, string>()],
       ['registry', new Map<string, string>()],
       ['namespace', new Map<string, string>()],
-      ['labels_value_keyword', new Map<string, string>()],
+      ['labels.value.keyword', new Map<string, string>()],
       ['private_access', new Map<string, string>()],
-      ['tags_verified', new Map<string, string>()],
-      ['tags_verifiedSource', new Map<string, string>()]
+      ['tags.verified', new Map<string, string>()],
+      ['tags.verifiedSource', new Map<string, string>()]
     ]);
     this.orderedBuckets.clear();
   }
@@ -328,20 +350,15 @@ export class SearchComponent implements OnInit {
   appendFilter(body: any, aggKey: string): any {
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
-        let modifiedInnerFilterValue = key;
-        // private_access is the only category we do not want modify
-        if (key !== 'private_access') {
-          modifiedInnerFilterValue = key.substring(0, 1) + key.substring(1).replace(/_/g, '.');
-        }
-        if (aggKey === key) {
-          // Return some garbage output because we've decided to append a filter, there's no turning back
+        if (aggKey === key && this.searchService.exclusiveFilters.indexOf(key) === -1) {
+          // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
-          body = body.notFilter('term', 'modifiedInnerFilterValue', insideFilter);
+          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
         } else {
           if (value.size > 1) {
-            body = body.orFilter('term', modifiedInnerFilterValue, insideFilter);
+            body = body.orFilter('term', key, insideFilter);
           } else {
-            body = body.filter('term', modifiedInnerFilterValue, insideFilter);
+            body = body.filter('term', key, insideFilter);
           }
         }
       });
@@ -377,23 +394,13 @@ export class SearchComponent implements OnInit {
   appendAggregations(count: number, body: any): any {
     // go through buckets
     this.bucketStubs.forEach(key => {
-      const modifiedKey = key.replace(/\./g, '_');
+      const order = this.parseOrderBy(key);
       if (count > 0) {
-        body = body.agg('filter', modifiedKey, modifiedKey, (a) => {
-          if (this.sortModeMap.has(key)) {
-            if (!this.sortModeMap.get(key)) {
-              return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size, order: {_term: 'asc'}});
-            }
-          }
-          return this.appendFilter(a, key).aggregation('terms', key, modifiedKey, { size: this.shard_size, order: {_count: 'desc'}});
+        body = body.agg('filter', key, key, (a) => {
+          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order});
         });
       } else {
-        body = body.agg('terms', key, modifiedKey, { size: this.shard_size, order: {_count: 'desc'}});
-        if (this.sortModeMap.has(key)) {
-          if (!this.sortModeMap.get(key)) {
-            body = body.agg('terms', key, modifiedKey, { size: this.shard_size, order: {_term: 'asc'}});
-          }
-        }
+        body = body.agg('terms', key, key, { size: this.shard_size, order});
       }
     });
     return body;
@@ -423,7 +430,6 @@ export class SearchComponent implements OnInit {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.handleFilters(category, categoryValue);
     }
-
     // calculate number of filters
     let count = 0;
     this.filters.forEach(filter => {
@@ -440,12 +446,10 @@ export class SearchComponent implements OnInit {
     let body2 = bodybuilder().size(this.query_size);
     body2 = this.appendQuery(body2);
     body2 = this.appendFilter(body2, null);
-    this.buckets.clear();
     this.resetEntryOrder();
     const builtBody = body.build();
     const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
-    console.log(query);
     const query2 = JSON.stringify(builtBody2);
     this.updateSideBar(query);
     this.updateResultsTable(query2);
@@ -472,20 +476,35 @@ export class SearchComponent implements OnInit {
     }
   }
   clickSortMode(category: string, sortMode: boolean) {
-    const orderedMap = this.foo(this.orderedBuckets.get(category), sortMode);
-    this.orderedBuckets.set(category, orderedMap);
+    let orderedMap;
     this.sortModeMap.set(category, sortMode);
+    if (this.sortModeMap2.get(category).SortBy === sortMode) {
+      console.log('switch order by');
+      let orderBy: boolean
+      if (this.sortModeMap2.get(category).SortBy) { // Sort by Count
+        orderBy = this.sortModeMap2.get(category).CountOrderBy;
+        this.sortModeMap2.get(category).CountOrderBy = !orderBy;
+      } else  {
+        orderBy = this.sortModeMap2.get(category).AlphabetOrderBy;
+        this.sortModeMap2.get(category).AlphabetOrderBy = !orderBy;
+      }
+    }
+    if (sortMode) {
+      orderedMap = this.sortCategoryValue(this.orderedBuckets.get(category), sortMode, this.sortModeMap2.get(category).CountOrderBy);
+    } else {
+      orderedMap = this.sortCategoryValue(this.orderedBuckets.get(category), sortMode, this.sortModeMap2.get(category).AlphabetOrderBy);
+    }
+    this.orderedBuckets.set(category, orderedMap);
+    this.sortModeMap2.get(category).SortBy = sortMode;
   }
   /**===============================================
    *                Helper Functions
    * ==============================================
    */
   mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags_verified' || key === 'private_access') {
-      return this.friendlyValueNames.get(key).get(subBucket);
+    if (key === 'tags.verified' || key === 'private_access') {
+      return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {
-      subBucket = subBucket.replace('_', '.');
-      subBucket = subBucket.replace('_', '.');
       return subBucket;
     }
   }
@@ -502,6 +521,36 @@ export class SearchComponent implements OnInit {
         this.workflowHits.push(hit);
       }
     }
+  }
+  parseOrderBy(key): any {
+    let order: any;
+    if (this.sortModeMap2.has(key)) {
+      switch (this.sortModeMap2.get(key).SortBy) {
+        case true: {
+          order = {
+            _count: this.sortModeMap2.get(key).CountOrderBy ? 'asc' : 'desc'
+          };
+          break;
+        }
+        case false: {
+          order = {
+            _term: this.sortModeMap2.get(key).AlphabetOrderBy ? 'asc' : 'desc'
+          };
+          break;
+        }
+        default: {
+          order = {
+            _count: 'desc'
+          };
+          break;
+        }
+      }
+    } else {
+      order = {
+        _count: 'desc'
+      };
+    }
+    return order;
   }
   /**
    * This handles selection of one filter, either taking it out from the list of active filters
@@ -523,52 +572,33 @@ export class SearchComponent implements OnInit {
       this.filters.get(category).add(categoryValue);
     }
   }
-  sortByAlphabet(orderedArray): any {
+  sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort(function (a, b) {
-      return a.key > b.key ? 1 : -1;
-    });
-    return orderedArray;
-  }
-
-  sortByCount(orderedArray): any {
-    orderedArray = orderedArray.sort(function (a, b) {
-      if (a.value < b.value) {
-        return 1;
-      } else if (a.value === b.value) {
+      if (orderMode) {
         return a.key > b.key ? 1 : -1;
-      } else {
-        return -1;
+      } else  {
+        return a.key < b.key ? 1 : -1;
       }
     });
     return orderedArray;
   }
 
-  sortCategoryValue(category: string, sortMode: boolean) {
-    //if (this.sortModeMap.get(category) !== sortMode) {
-      let orderedArray = <any>[];
-      this.orderedBuckets.get(category).forEach(
-        (value, key) => {
-          orderedArray.push(
-            {
-              key: key,
-              value: value
-            });
-        });
-      if (!sortMode) {
-        orderedArray = this.sortByAlphabet(orderedArray);
+  sortByCount(orderedArray, orderMode): any {
+    orderedArray = orderedArray.sort(function (a, b) {
+      if (a.value < b.value) {
+        return !orderMode ? 1 : -1;
+      } else if (a.value === b.value) {
+        return a.key > b.key ? 1 : -1;
       } else {
-        orderedArray = this.sortByCount(orderedArray);
-      };
-      const tempMap: Map<string, string> = new Map<string, string>();
-      orderedArray.forEach(
-        entry => {
-          tempMap.set(entry.key, entry.value);
-        });
-      this.orderedBuckets.set(category, tempMap);
-   // }
+        return !orderMode ? -1 : 1;
+      }
+    });
+    return orderedArray;
   }
 
-  foo (valueMap: any, sortMode: boolean): any{
+  sortCategoryValue (valueMap: any, sortMode: boolean, orderMode: boolean): any {
+    console.log('sortMode: ' + sortMode);
+    console.log('orderMode: ' + orderMode);
     let orderedArray = <any>[];
     valueMap.forEach(
       (value, key) => {
@@ -579,9 +609,9 @@ export class SearchComponent implements OnInit {
           });
       });
     if (!sortMode) {
-      orderedArray = this.sortByAlphabet(orderedArray);
+      orderedArray = this.sortByAlphabet(orderedArray, orderMode);
     } else {
-      orderedArray = this.sortByCount(orderedArray);
+      orderedArray = this.sortByCount(orderedArray, orderMode);
     };
     const tempMap: Map<string, string> = new Map<string, string>();
     orderedArray.forEach(
@@ -591,4 +621,24 @@ export class SearchComponent implements OnInit {
     return tempMap;
   }
 
+  setTabActive() {
+    if (this.toolHits.length === 0 && this.workflowHits.length > 0) {
+      this.activeToolBar = false;
+    } else if (this.workflowHits.length === 0 && this.toolHits.length > 0) {
+      this.activeToolBar = true;
+    } else {
+      this.activeToolBar = true;
+    }
+  }
+}
+
+export class CategorySort {
+  SortBy: boolean; // true: Sort by count; false: Sort by alphabetical
+  CountOrderBy: boolean; // true: asc order; false: desc order
+  AlphabetOrderBy: boolean; // true: asc order; false: desc order
+  constructor(sortBy, countOrderBy, alphabetOrderBy) {
+    this.SortBy = sortBy;
+    this.CountOrderBy = countOrderBy;
+    this.AlphabetOrderBy = alphabetOrderBy;
+  }
 }

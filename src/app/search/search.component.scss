@@ -87,18 +87,18 @@
 }
 
 .sortBtn {
-  border-color:  #dbe3e8;
+  border-color: #dddddd;
   border-radius: 0;
   color: #3b769a;
   font-size: 12px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   &.active {
-    background-color: #ededed;
+    background-color: #f4f4f4;
     color: #3b769a;
   }
   &:not(.active) {
     &:hover {
-      background-color: #efefef;
+      background-color: #f8f8f8;
     }
   }
 }

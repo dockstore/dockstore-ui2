@@ -10,7 +10,7 @@ import { StarentryService } from '../shared/starentry.service';
   templateUrl: './starredentries.component.html',
   styleUrls: ['./starredentries.component.scss'],
 })
-export class StarredentriesComponent implements OnInit {
+export class StarredEntriesComponent implements OnInit {
   starredTools: any;
   starredWorkflows: any;
   user: any;

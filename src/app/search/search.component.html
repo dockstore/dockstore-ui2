@@ -29,7 +29,7 @@
         </accordion-group>
         <accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
           <div accordion-heading>
-            {{friendlyNames.get(key)}} {{sortModeMap.get(key)}}
+            {{friendlyNames.get(key)}}
             <span>
               <i class="pull-right float-xs-right glyphicon"
                  [ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
@@ -37,11 +37,21 @@
             </span>
           </div>
           <div *ngIf="orderedBuckets.get(key).size > 10">
-            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key)}" class="btn btn-info col-md-6 sortBtn">
-              <i class="fa fa-sort" aria-hidden="true"></i> Count
+            <!--Sorted By:-->
+          <!--<span>-->
+            <!--<button (click)="clickSortMode(key, !sortModeMap.get(key))" [ngClass]="{'active': sortModeMap.get(key)}" class="btn btn-info"-->
+                    <!--style="margin-left: 10px; margin-top: 5px; font-size: 10px; background-color: #f9f9f9; width: 100px;-->
+                    <!--color: #2a3e6b; border-color: #dbe3e8">-->
+              <!--<i class="fa fa-sort" aria-hidden="true"></i> {{ sortModeMap.get(key)? 'Count' : 'Alphabetical' }}-->
+            <!--</button>-->
+          <!--</span>-->
+            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap2.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap2.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
             </button>
-            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key)}" class="btn btn-info col-md-6 sortBtn">
-                <i class="fa fa-sort" aria-hidden="true"></i> Alphabetical
+            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap2.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap2.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
             </button>
           </div>
           <div *ngFor='let subBucket of orderedBuckets.get(key).keys(); let i = index'>
@@ -107,15 +117,18 @@
           </span>
         </span>
         </div>
+        {{activeToolBar}}
           <tabset class="homeComponent" type="tabs">
-            <tab id="toolTab" [customClass]="browseToolsTab">
+            <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
               <ng-template tabHeading>
                 <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
                 Browse Tools
               </ng-template>
               <button type="button" style="width:100%; color: #2E629D; background-color: #aadeee;"
                       class="btn btn-info" (click)="clickTagCloudBtn('tool')">
-                {{showToolTagCloud ? 'Hide Tag Cloud' :  'Show Tag Cloud'}}</button>
+                <i [class]="showToolTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+                <span>Tag Cloud</span>
+              </button>
               <div class="tagCloud tool" *ngIf="showToolTagCloud">
                 <angular-tag-cloud
                   [data]="data"
@@ -128,10 +141,12 @@
               <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
               <app-listentry [entryType]="'tool'"></app-listentry>
             </tab>
-            <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+            <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab">
               <button type="button" style="width:100%; color: #198055; background-color: #aaeed2; border-color: #3fd999"
                       class="btn btn-info" (click)="clickTagCloudBtn('workflow')">
-                {{showWorkflowTagCloud ? 'Hide Tag Cloud' :  'Show Tag Cloud'}}</button>
+                <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+                <span>Tag Cloud</span>
+              </button>
               <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
                 <angular-tag-cloud
                   [data]="data2"

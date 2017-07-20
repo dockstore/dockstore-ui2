@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StarredentriesComponent } from './starredentries.component';
+import { StarredEntriesComponent } from './starredentries.component';
 import { StargazersModule } from '../stargazers/stargazers.module';
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
@@ -13,11 +13,11 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     TooltipModule.forRoot()
   ],
   exports: [
-    StarredentriesComponent
+    StarredEntriesComponent
   ],
   providers: [
     StarentryService,
     StarringService
   ]
 })
-export class StarredentriesModule { }
+export class StarredEntriesModule { }
