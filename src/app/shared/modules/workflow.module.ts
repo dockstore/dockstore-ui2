@@ -1,3 +1,4 @@
+import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -59,7 +60,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
     ViewWorkflowComponent,
-    VersionModalComponent
+    VersionModalComponent,
+    InfoTabComponent
   ],
   imports: [
     CommonModule,

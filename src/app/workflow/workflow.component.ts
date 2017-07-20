@@ -122,12 +122,6 @@ export class WorkflowComponent extends Tool {
     return false;
   };
 
-  restubWorkflow() {
-    this.workflowWebService.restub(this.workflow.id).subscribe(response => {
-      this.workflowService.setWorkflow(response);
-    });
-  }
-
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
     const workflowLabels = labelArray.join(', ');
