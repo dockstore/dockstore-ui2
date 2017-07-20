@@ -8,8 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css'],
-  providers: [InfoTabService]
+  styleUrls: ['./info-tab.component.css']
 })
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
@@ -20,7 +19,7 @@ export class InfoTabComponent implements OnInit {
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
   isPublic: boolean;
-  constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private StateService: StateService,
+  constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) { }
 
   ngOnInit() {
@@ -28,26 +27,26 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.dockerFileEditing$.subscribe(editing => this.dockerFileEditing = editing);
     this.infoTabService.cwlPathEditing$.subscribe(editing => this.cwlPathEditing = editing);
     this.infoTabService.wdlPathEditing$.subscribe(editing => this.wdlPathEditing = editing);
-    this.StateService.publicPage.subscribe(publicPage => this.isPublic = publicPage);
+    this.stateService.publicPage.subscribe(publicPage => this.isPublic = publicPage);
   }
 
   toggleEditDockerFile() {
     if (this.dockerFileEditing) {
-      this.containersService.updateContainer(this.tool.id, this.tool).subscribe();
+      this.infoTabService.updateAndRefresh();
     }
     this.infoTabService.setDockerFileEditing(!this.dockerFileEditing);
   }
 
   toggleEditCWLPath() {
     if (this.cwlPathEditing) {
-      this.containersService.updateContainer(this.tool.id, this.tool).subscribe();
+      this.infoTabService.updateAndRefresh();
     }
     this.infoTabService.setCWLPathEditing(!this.cwlPathEditing);
   }
 
   toggleEditWDLPath() {
     if (this.wdlPathEditing) {
-      this.containersService.updateContainer(this.tool.id, this.tool).subscribe();
+      this.infoTabService.updateAndRefresh();
     }
     this.infoTabService.setWDLPathEditing(!this.wdlPathEditing);
   }

@@ -1,12 +1,21 @@
+import { ContainerService } from './../../shared/container.service';
+import { StateService } from './../../shared/state.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 
 @Injectable()
 export class InfoTabService {
     public dockerFileEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public cwlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    constructor() { }
+    private tool;
+    private tools;
+    constructor(private containersService: ContainersService, private stateService: StateService,
+        private containerService: ContainerService) {
+        this.containerService.tool$.subscribe(tool => this.tool = tool);
+        this.containerService.tools.subscribe(tools => this.tools = tools);
+    }
     setDockerFileEditing(editing: boolean) {
         this.dockerFileEditing$.next(editing);
     }
@@ -17,5 +26,16 @@ export class InfoTabService {
 
     setWDLPathEditing(editing: boolean) {
         this.wdlPathEditing$.next(editing);
+    }
+
+    updateAndRefresh() {
+        this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
+            this.stateService.setRefreshing(true);
+            this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
+                this.containerService.replaceTool(this.tools, this.tool, refreshResponse);
+                this.containerService.setTool(refreshResponse);
+                this.stateService.setRefreshing(false);
+            });
+        });
     }
 }
