@@ -28,8 +28,8 @@ export class InfoTabService {
         this.wdlPathEditing$.next(editing);
     }
 
-    updateAndRefresh() {
-        this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
+    updateAndRefresh(tool: any) {
+        this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
             this.stateService.setRefreshing(true);
             this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
                 this.containerService.replaceTool(this.tools, refreshResponse);

@@ -32,21 +32,21 @@ export class InfoTabComponent implements OnInit {
 
   toggleEditDockerFile() {
     if (this.dockerFileEditing) {
-      this.infoTabService.updateAndRefresh();
+      this.infoTabService.updateAndRefresh(this.tool);
     }
     this.infoTabService.setDockerFileEditing(!this.dockerFileEditing);
   }
 
   toggleEditCWLPath() {
     if (this.cwlPathEditing) {
-      this.infoTabService.updateAndRefresh();
+      this.infoTabService.updateAndRefresh(this.tool);
     }
     this.infoTabService.setCWLPathEditing(!this.cwlPathEditing);
   }
 
   toggleEditWDLPath() {
     if (this.wdlPathEditing) {
-      this.infoTabService.updateAndRefresh();
+      this.infoTabService.updateAndRefresh(this.tool);
     }
     this.infoTabService.setWDLPathEditing(!this.wdlPathEditing);
   }
