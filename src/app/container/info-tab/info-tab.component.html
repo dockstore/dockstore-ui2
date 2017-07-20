@@ -1,56 +1,89 @@
-
-        <div>
-          <ul class="list-unstyled container-info" *ngIf="tool">
-            <li>
-              <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author || 'n/a' }}
-            </li>
-            <li>
-              <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
-              <span *ngIf="!tool?.email">n/a</span>
-              <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
-                {{ tool?.email }}
-              </a>
-            </li>
-            <li>
-              <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
-              <a [href]="tool?.providerUrl">
-                {{ tool?.providerUrl }}
-              </a>
-            </li>
-            <li>
-              <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
-              <a [href]="tool?.imgProviderUrl">
-                {{ tool?.imgProviderUrl }}
-              </a>
-            </li>
-            <li>
-              <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>: {{ tool?.default_dockerfile_path }}
-            </li>
-            <li>
-              <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>: {{ tool?.default_cwl_path || 'n/a' }}
-            </li>
-            <li>
-              <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>: {{ tool?.default_wdl_path || 'n/a' }}
-            </li>
-            <li>
-              <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
-            </li>
-            <li>
-              <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
-            </li>
-            <li>
-              <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
-            </li>
-          </ul>
+<div *ngIf="tool">
+  <ul class="list-unstyled container-info">
+    <li>
+      <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author || 'n/a' }}
+    </li>
+    <li>
+      <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
+      <span *ngIf="!tool?.email">n/a</span>
+      <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
+        {{ tool?.email }}
+      </a>
+    </li>
+    <li>
+      <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
+      <a [href]="tool?.providerUrl">
+        {{ tool?.providerUrl }}
+      </a>
+    </li>
+    <li>
+      <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
+      <a [href]="tool?.imgProviderUrl">
+        {{ tool?.imgProviderUrl }}
+      </a>
+    </li>
+    <li>
+      <form #editDockerfileForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
+          <span *ngIf="!dockerFileEditing">{{ tool?.default_dockerfile_path }}</span>
+          <input *ngIf="dockerFileEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" type="text" class="input-default form-control"
+            name="contDockerfilePath" [(ngModel)]="tool.default_dockerfile_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <div *ngIf="tool">
-          <label tooltip="Description of tool obtained from tool descriptor">
-            Description
-          </label>
-          <div class="well well-sm">
-            <markdown [data]="tool?.description || 'No description associated with this container.'"></markdown>
-          </div>
-          <div *ngIf="validVersions">
-            <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
-          </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="cwlPathEditing || wdlPathEditing || (dockerFileEditing && !editDockerfileForm.valid)" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+          (click)="toggleEditDockerFile()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
+          {{ dockerFileEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+    </li>
+    <li>
+      <form #editCWLPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
+          <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
+          <input *ngIf="cwlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control" name="contCWLPath" [(ngModel)]="tool.default_cwl_path" placeholder="e.g. /Dockerfile" />
         </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="wdlPathEditing || dockerFileEditing || (cwlPathEditing && !editCWLPathForm.valid)" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+          (click)="toggleEditCWLPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
+          {{ cwlPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+      
+    </li>
+    <li>
+      <form #editWDLPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
+          <span *ngIf="!wdlPathEditing">{{ tool?.default_wdl_path || 'n/a' }}</span>
+          <input *ngIf="wdlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
+            name="contWDLPath" [(ngModel)]="tool.default_wdl_path" placeholder="e.g. /Dockerfile" />
+        </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="cwlPathEditing || dockerFileEditing || (wdlPathEditing && !editWDLPathForm.valid)" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+          (click)="toggleEditWDLPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
+          {{ wdlPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+    </li>
+    <li>
+      <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
+    </li>
+    <li>
+      <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
+    </li>
+    <li>
+      <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
+    </li>
+  </ul>
+  <label tooltip="Description of tool obtained from tool descriptor">
+    Description
+  </label>
+  <div class="well well-sm">
+    <markdown [data]="tool?.description || 'No description associated with this container.'"></markdown>
+  </div>
+  <div *ngIf="validVersions">
+    <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
+  </div>
+</div>
