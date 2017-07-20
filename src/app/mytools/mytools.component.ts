@@ -65,12 +65,6 @@ export class MyToolsComponent implements OnInit {
     this.registerToolService.setTool(this.registerTool);
   }
 
-  clearModalGitPathAndImgPath() {
-    this.registerTool.gitPath = '';
-    this.registerTool.imagePath = '';
-    this.registerToolService.setTool(this.registerTool);
-  }
-
   showRegisterToolModal() {
     this.registerToolService.setIsModalShown(true);
   }
