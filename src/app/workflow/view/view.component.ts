@@ -4,8 +4,6 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AfterViewChecked, AfterViewInit, Component, Input, ViewChild, OnInit } from '@angular/core';
 
 import { View } from '../../shared/view';
-
-import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../../shared/date.service';
 import { WorkflowService } from '../../shared/workflow.service';
 
@@ -18,7 +16,7 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
   @Input() workflowId: string;
   items: any[];
   isPublic: boolean;
-  constructor(private viewService: ViewService,
+  constructor(
               private workflowService: WorkflowService,
               private versionModalService: VersionModalService,
               private stateService: StateService,
@@ -44,9 +42,7 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
           });
     }
   }
-  getSizeString(size) {
-    return this.viewService.getSizeString(size);
-  }
+
   ngAfterViewInit() {
     this.initItems();
   }
