@@ -1,3 +1,4 @@
+import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { RefreshService } from './../shared/refresh.service';
 import {Component, OnInit} from '@angular/core';
 
@@ -26,7 +27,8 @@ export class MyWorkflowsComponent implements OnInit {
   constructor(private myworkflowService: MyWorkflowsService,
               private userService: UserService,
               private workflowService: WorkflowService,
-              private refreshService: RefreshService) {
+              private refreshService: RefreshService,
+              private registerWorkflowModalService: RegisterWorkflowModalService) {
 
   }
   ngOnInit() {
@@ -55,6 +57,14 @@ export class MyWorkflowsComponent implements OnInit {
   selectWorkflow(workflow) {
     this.selWorkflowObj = workflow;
     this.workflowService.setWorkflow(workflow);
+  }
+
+  setModalGitURL(gitURL: string) {
+    this.registerWorkflowModalService.setWorkflowRepository(gitURL);
+  }
+
+  showModal() {
+    this.registerWorkflowModalService.setIsModalShown(true);
   }
 
   refreshAllWorkflows(): any {

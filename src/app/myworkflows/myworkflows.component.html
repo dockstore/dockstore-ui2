@@ -29,9 +29,16 @@
                   </div>
             </div>
           </div>
+          <button type="button"
+                    class="btn btn-primary btn-xs pull-right add-container-ns"
+                    (click)="setModalGitURL(orgObj?.organization + '/'); showModal()">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
         </accordion-group>
       </accordion>
-      
+      <div>
+      <button type="button" class="btn btn-primary btn-sm pull-right" (click)="setModalGitURL(''); showModal()">Register Workflow</button>
+      </div>
       <app-register-workflow-modal></app-register-workflow-modal>
     </div>
     <div class="col-md-9 containers-rsb">
