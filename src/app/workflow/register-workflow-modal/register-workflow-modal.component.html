@@ -65,7 +65,7 @@
                     </li>
                   </ul>
                 </div>
-                <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath" required tooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" />
+                <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath" required tooltip="Git Repository path." placeholder="e.g. /Dockstore.cwl" />
               </div>
               <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
             </div>
