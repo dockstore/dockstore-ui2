@@ -45,7 +45,7 @@
           <input *ngIf="dockerFileEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" type="text" class="input-default form-control"
             name="contDockerfilePath" [(ngModel)]="tool.default_dockerfile_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="cwlPathEditing || wdlPathEditing || (dockerFileEditing && !editDockerfileForm.valid)" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
           (click)="toggleEditDockerFile()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
           {{ dockerFileEditing ? 'Save' : 'Edit' }}
@@ -59,7 +59,7 @@
           <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
           <input *ngIf="cwlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control" name="contCWLPath" [(ngModel)]="tool.default_cwl_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="wdlPathEditing || dockerFileEditing || (cwlPathEditing && !editCWLPathForm.valid)" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
           (click)="toggleEditCWLPath()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
           {{ cwlPathEditing ? 'Save' : 'Edit' }}
@@ -75,10 +75,40 @@
           <input *ngIf="wdlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
             name="contWDLPath" [(ngModel)]="tool.default_wdl_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="cwlPathEditing || dockerFileEditing || (wdlPathEditing && !editWDLPathForm.valid)" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
           (click)="toggleEditWDLPath()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
           {{ wdlPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+    </li>
+   <li>
+      <form #editCWLTestPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
+          <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
+          <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /Dockerfile" />
+        </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+          (click)="toggleEditCWLTestPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlTestPathEditing, 'glyphicon-save': cwlTestPathEditing }"></span>
+          {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+
+    </li>
+    <li>
+      <form #editWDLTestPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
+          <span *ngIf="!wdlTestPathEditing">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
+          <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
+            name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /Dockerfile" />
+        </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+          (click)="toggleEditWDLTestPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlTestPathEditing, 'glyphicon-save': wdlTestPathEditing }"></span>
+          {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
         </button>
       </form>
     </li>

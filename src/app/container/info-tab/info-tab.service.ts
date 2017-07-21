@@ -26,6 +26,8 @@ export class InfoTabService {
     public dockerFileEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public cwlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tool;
     private tools;
     constructor(private containersService: ContainersService, private stateService: StateService,
@@ -43,6 +45,14 @@ export class InfoTabService {
 
     setWDLPathEditing(editing: boolean) {
         this.wdlPathEditing$.next(editing);
+    }
+
+    setCWLTestPathEditing(editing: boolean) {
+        this.cwlTestPathEditing$.next(editing);
+    }
+
+    setWDLTestPathEditing(editing: boolean) {
+        this.wdlTestPathEditing$.next(editing);
     }
 
     updateAndRefresh(tool: any) {
