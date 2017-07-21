@@ -59,9 +59,9 @@
     </button>
   </li>
   <li>
-    <div *ngIf="!isPublic">
+    <div *ngIf="!isPublic" class="form-inline">
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
-      <select (change)="save()" [(ngModel)]="workflow.descriptorType">
+      <select class="form-control input-sm" (change)="save()" [(ngModel)]="workflow.descriptorType">
         <option value="cwl">cwl</option>
         <option value="wdl">wdl</option>
       </select>
