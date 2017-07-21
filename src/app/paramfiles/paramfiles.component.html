@@ -1,5 +1,6 @@
 <div class="container separation">
   <div *ngIf="tagsMap.size">
+    <div class="form-inline">
     <strong>Container Version:</strong>
     <app-select [items]="tagNames" (select)="onVersionChange($event)"></app-select>
     <strong>Descriptor:</strong>
@@ -7,6 +8,7 @@
     <strong>File:</strong>
     <app-select [items]="filePaths" (select)="onPathChange($event)"></app-select>
     <section [innerHTML]="content" highlight-js-content=".highlight"></section>
+    </div>
   </div>
   <div *ngIf="!tagsMap.size">
     <div class="alert alert-info" role="alert">

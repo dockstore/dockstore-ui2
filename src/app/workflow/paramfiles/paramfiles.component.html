@@ -1,11 +1,13 @@
 <div>
   <span>
+    <div class="form-inline">
     <strong>Container Version:</strong>
     <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
     <strong>Descriptor Type:</strong>
     <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+    </div>
   </span>
   <section *ngIf="content" [innerHTML]="content"></section>
   <alert type="warning" *ngIf="!content">
