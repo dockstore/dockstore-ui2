@@ -28,11 +28,11 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   styleUrls: ['./register-workflow-modal.component.css']
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
-  public formErrors = formErrors;
-  public validationPatterns = validationPatterns;
-  public workflow: Workflow;
-  public cwlTestParameterFilePath: string;
-  public workflowRegisterError;
+  private formErrors = formErrors;
+  private validationPatterns = validationPatterns;
+  private workflow: Workflow;
+  private defaultTestParameterFilePath: string;
+  private workflowRegisterError;
   public isModalShown: boolean;
   public refreshMessage: string;
 
@@ -68,7 +68,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow(this.cwlTestParameterFilePath);
+    this.registerWorkflowModalService.registerWorkflow(this.defaultTestParameterFilePath);
   }
 
   showModal() {

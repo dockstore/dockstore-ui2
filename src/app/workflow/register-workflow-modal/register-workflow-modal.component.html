@@ -91,7 +91,7 @@
               Test Parameter File Path:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="cwlTestParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" />
+              <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="defaultTestParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" />
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.cwlTestParameterFilePath }} </div>
             </div>
           </div>

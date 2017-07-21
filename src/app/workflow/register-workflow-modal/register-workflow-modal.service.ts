@@ -21,6 +21,7 @@ import { WorkflowService } from './../../shared/workflow.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
+import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -33,7 +34,8 @@ export class RegisterWorkflowModalService {
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
-    constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService,
+    constructor(private workflowWebService: WorkflowWebService, private workflowsService: WorkflowsService,
+        private workflowService: WorkflowService,
         private stateService: StateService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
@@ -66,6 +68,27 @@ export class RegisterWorkflowModalService {
     setWorkflowRepository(repository) {
         this.actualWorkflow.gitUrl = repository;
         this.setWorkflow(this.actualWorkflow);
+    }
+
+    refreshWorkflow(workflowId, testParameterFilePath) {
+        this.workflowWebService.refresh(workflowId).subscribe(refreshResult => {
+            this.workflows.push(refreshResult);
+            this.workflowService.setWorkflows(this.workflows);
+            this.workflowService.setWorkflow(refreshResult);
+            for (const version of refreshResult.workflowVersions) {
+                this.workflowWebService.addTestParameterFiles(workflowId, [testParameterFilePath], null, version.name)
+                    .subscribe();
+                this.stateService.setRefreshing(false);
+                this.setIsModalShown(false);
+                this.clearWorkflowRegisterError();
+            }
+        }, error => {
+            this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
+                'workflow, please ensure that the workflow attributes are ' +
+                'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+                error._body);
+            this.stateService.setRefreshing(false);
+        });
     }
 
     registerWorkflow(testParameterFilePath: string) {
