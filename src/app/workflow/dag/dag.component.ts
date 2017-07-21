@@ -190,6 +190,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
       this.dagResult = result;
       this.refresh = true;
       this.updateMissingTool();
+    }, error => {this.dagResult = null; this.refresh = true; this.updateMissingTool();
     });
     } else {
       this.dagResult = null;
