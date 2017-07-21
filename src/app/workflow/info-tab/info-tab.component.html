@@ -30,10 +30,23 @@
         <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
       </div>
-      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+      <button *ngIf="!isPublic" type="button" [disabled]="testFilePathEditing || (workflowPathEditing && !editWorkflowPathForm.valid)" class="btn btn-link push-right"
         (click)="toggleEditWorkflowPath()">
         <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
         {{ workflowPathEditing ? 'Save' : 'Edit' }}
+      </button>
+    </form>
+    <form #editTestFilePathForm="ngForm" class="form-inline">
+      <div class="form-group">
+        <strong tooltip="Path in Git repository to main descriptor file">Workflow Path: </strong>
+        <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
+        <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
+          name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath" placeholder="e.g. /Dockstore.cwl" />
+      </div>
+      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)" class="btn btn-link push-right"
+        (click)="toggleEditDefaultTestFilePath()">
+        <span class="glyphicon" [ngClass]="{'glyphicon-edit': !defaultTestFilePathEditing, 'glyphicon-save': defaultTestFilePathEditing }"></span>
+        {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
       </button>
     </form>
   </li>

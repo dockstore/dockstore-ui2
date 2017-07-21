@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class InfoTabService {
     public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public descriptorTypeEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private workflows: Workflow[];
     private workflow: Workflow;
 
@@ -20,8 +20,8 @@ export class InfoTabService {
         this.workflowPathEditing$.next(editing);
     }
 
-    setDescriptorTypeEditing(editing: boolean) {
-        this.descriptorTypeEditing$.next(editing);
+    setDefaultTestFilePathEditing(editing: boolean) {
+        this.defaultTestFilePathEditing$.next(editing);
     }
 
     updateAndRefresh(workflow: Workflow) {
