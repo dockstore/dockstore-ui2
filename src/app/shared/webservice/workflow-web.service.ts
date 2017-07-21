@@ -22,26 +22,6 @@ export class WorkflowWebService {
     /**
     *
     * @method
-    * @name manualRegister
-    * @param {string} workflowRegistry - Workflow registry
-    * @param {string} workflowPath - Workflow repository
-    * @param {string} defaultWorkflowPath - Workflow container new descriptor path (CWL or WDL) and/or name
-    * @param {string} workflowName - Workflow name
-    * @param {string} descriptorType - Descriptor type
-    *
-    */
-    public manualRegister(
-        workflowRegistry: string,
-        workflowPath: string,
-        defaultWorkflowPath: string,
-        workflowName: string,
-        descriptorType: string) {
-        return this.workflowsService.manualRegister(workflowRegistry, workflowPath, defaultWorkflowPath, workflowName, descriptorType);
-    }
-
-    /**
-    *
-    * @method
     * @name refresh
     * @param {integer} workflowId - workflow ID
     *

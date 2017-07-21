@@ -14,7 +14,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   private formErrors = formErrors;
   private validationPatterns = validationPatterns;
   private workflow: Workflow;
-  private cwlTestParameterFilePath: string;
+  private defaultTestParameterFilePath: string;
   private workflowRegisterError;
   public isModalShown: boolean;
 
@@ -49,7 +49,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow(this.cwlTestParameterFilePath);
+    this.registerWorkflowModalService.registerWorkflow(this.defaultTestParameterFilePath);
   }
 
   showModal() {
