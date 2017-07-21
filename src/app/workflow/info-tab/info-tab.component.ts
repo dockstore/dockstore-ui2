@@ -36,7 +36,7 @@ export class InfoTabComponent implements OnInit {
   public WorkflowType = Workflow;
   public tooltip = Tooltip;
   workflowPathEditing: boolean;
-  descriptorTypeEditing: boolean;
+  defaultTestFilePathEditing: boolean;
   isPublic: boolean;
   public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
@@ -46,7 +46,8 @@ export class InfoTabComponent implements OnInit {
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
-    this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
+    this.infoTabService.defaultTestFilePathEditing$.subscribe(editing => this.defaultTestFilePathEditing = editing);
+    // this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
@@ -61,6 +62,13 @@ export class InfoTabComponent implements OnInit {
       this.save();
     }
     this.infoTabService.setWorkflowPathEditing(!this.workflowPathEditing);
+  }
+
+  toggleEditDefaultTestFilePath() {
+    if (this.defaultTestFilePathEditing) {
+      this.save();
+    }
+    this.infoTabService.setDefaultTestFilePathEditing(!this.defaultTestFilePathEditing);
   }
 
   save() {
