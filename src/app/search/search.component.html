@@ -45,16 +45,29 @@
               <!--<i class="fa fa-sort" aria-hidden="true"></i> {{ sortModeMap.get(key)? 'Count' : 'Alphabetical' }}-->
             <!--</button>-->
           <!--</span>-->
-            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap2.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
               <i class="float-xs-right glyphicon" aria-hidden="true"
-                 [ngClass]="sortModeMap2.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+                 [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
             </button>
-            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap2.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
               <i class="float-xs-right glyphicon" aria-hidden="true"
-                 [ngClass]="sortModeMap2.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+                 [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
             </button>
           </div>
-          <div *ngFor='let subBucket of orderedBuckets.get(key).keys(); let i = index'>
+          <div *ngFor='let subBucket of orderedBuckets2.get(key).SelectedItems.keys(); let i = index'>
+            <div class="panel-container-label" style="background-color: #e8eefd; color: #487980">
+              <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ mapFriendlyValueNames(key,subBucket) }}
+                  </span>
+              </div>
+              <div class="pull-right">
+                <p>({{ orderedBuckets.get(key).get(subBucket) }})</p>
+              </div>
+            </div>
+          </div>
+          <div *ngFor='let subBucket of orderedBuckets2.get(key).Items.keys(); let i = index'>
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
@@ -75,16 +88,17 @@
                   </span>
                 </div>
                 <div class="pull-right">
-                  <p>({{ orderedBuckets.get(key).get(subBucket) }})</p>
+                  <p>({{ orderedBuckets2.get(key).Items.get(subBucket) }})</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="panel-container-label" *ngIf="orderedBuckets.get(key).size > 5">
+
+          <div class="panel-container-label" *ngIf=" orderedBuckets2.get(key).Items.size > 5">
             <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
               <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
               <a>
-              {{ fullyExpandMap.get(key) ? 'Hide' : (orderedBuckets.get(key).size-5) + ' more'}}
+              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets2.get(key).Items.size-5) + ' more'}}
               </a>
             </span>
           </div>
