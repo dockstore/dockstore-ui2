@@ -86,6 +86,7 @@ export class PageComponent implements OnInit, AfterViewInit {
         js.id = id;
         js.src = 'https://platform.twitter.com/widgets.js';
         scriptElement.parentNode.insertBefore(js, scriptElement);
+        console.log(js);
       }
     }
     console.log(this.slug);
