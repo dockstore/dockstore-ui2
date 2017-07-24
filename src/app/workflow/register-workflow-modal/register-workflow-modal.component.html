@@ -1,5 +1,6 @@
 <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #registerWorkflowModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true">
+  role="dialog" aria-hidden="true"
+  (onHide)=hideModal()>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,7 +91,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="hideModal(); clearWorkflowRegisterError()">
+          <button type="button" class="btn btn-secondary" (click)="registerWorkflowModal.hide(); clearWorkflowRegisterError()">
             Close
           </button>
           <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerWorkflowForm.form.valid || savingActive || refreshingWorkflow">
