@@ -458,13 +458,13 @@ export class SearchComponent implements OnInit {
       }
       return body;
     } else {
-    // if there is a description search
-    if (this.values.toString().length > 0) {
-      body = body.query('match', 'description', this.values);
-    } else {
-      body = body.query('match_all', {});
-    }
-    return body;
+      // if there is a description search
+      if (this.values.toString().length > 0) {
+        body = body.query('match', 'description', this.values);
+      } else {
+        body = body.query('match_all', {});
+      }
+      return body;
     }
   }
 
