@@ -58,13 +58,9 @@ export class RegisterWorkflowModalService {
             this.workflows.push(refreshResult);
             this.workflowService.setWorkflows(this.workflows);
             this.workflowService.setWorkflow(refreshResult);
-            for (const version of refreshResult.workflowVersions) {
-                this.workflowWebService.addTestParameterFiles(workflowId, [testParameterFilePath], null, version.name)
-                    .subscribe();
-                this.stateService.setRefreshing(false);
-                this.setIsModalShown(false);
-                this.clearWorkflowRegisterError();
-            }
+            this.stateService.setRefreshing(false);
+            this.setIsModalShown(false);
+            this.clearWorkflowRegisterError();
         }, error => {
             this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                 'workflow, please ensure that the workflow attributes are ' +
