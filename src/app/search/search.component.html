@@ -36,15 +36,7 @@
               </i>
             </span>
           </div>
-          <div *ngIf="orderedBuckets.get(key).size > 10">
-            <!--Sorted By:-->
-          <!--<span>-->
-            <!--<button (click)="clickSortMode(key, !sortModeMap.get(key))" [ngClass]="{'active': sortModeMap.get(key)}" class="btn btn-info"-->
-                    <!--style="margin-left: 10px; margin-top: 5px; font-size: 10px; background-color: #f9f9f9; width: 100px;-->
-                    <!--color: #2a3e6b; border-color: #dbe3e8">-->
-              <!--<i class="fa fa-sort" aria-hidden="true"></i> {{ sortModeMap.get(key)? 'Count' : 'Alphabetical' }}-->
-            <!--</button>-->
-          <!--</span>-->
+          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
               <i class="float-xs-right glyphicon" aria-hidden="true"
                  [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
@@ -54,7 +46,7 @@
                  [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
             </button>
           </div>
-          <div *ngFor='let subBucket of orderedBuckets2.get(key).SelectedItems.keys(); let i = index'>
+          <div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>
             <div class="panel-container-label" style="background-color: #e8eefd; color: #487980">
               <div class="container-name-oflw pull-left">
                   <span>
@@ -63,11 +55,11 @@
                   </span>
               </div>
               <div class="pull-right">
-                <p>({{ orderedBuckets.get(key).get(subBucket) }})</p>
+                <p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>
               </div>
             </div>
           </div>
-          <div *ngFor='let subBucket of orderedBuckets2.get(key).Items.keys(); let i = index'>
+          <div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
@@ -77,7 +69,7 @@
                   </span>
                 </div>
                 <div class="pull-right">
-                  <p>({{ orderedBuckets.get(key).get(subBucket) }})</p>
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
                 </div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
@@ -88,17 +80,17 @@
                   </span>
                 </div>
                 <div class="pull-right">
-                  <p>({{ orderedBuckets2.get(key).Items.get(subBucket) }})</p>
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="panel-container-label" *ngIf=" orderedBuckets2.get(key).Items.size > 5">
+          <div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">
             <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
               <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
               <a>
-              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets2.get(key).Items.size-5) + ' more'}}
+              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}
               </a>
             </span>
           </div>
@@ -131,7 +123,6 @@
           </span>
         </span>
         </div>
-        {{activeToolBar}}
           <tabset class="homeComponent" type="tabs">
             <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
               <ng-template tabHeading>

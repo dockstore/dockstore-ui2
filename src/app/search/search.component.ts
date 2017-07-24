@@ -82,9 +82,7 @@ export class SearchComponent implements OnInit {
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
-  private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
-  private orderedBuckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
-  private orderedBuckets2: Map<string, SubBucket> = new Map<string, SubBucket>();
+  private orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
 
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
@@ -127,17 +125,6 @@ export class SearchComponent implements OnInit {
     ['tags.verifiedSource', 'Verified Source'],
   ]);
   private entryOrder = new Map([
-    ['_type', new Map<string, string>()],
-    ['author', new Map<string, string>()],
-    ['registry', new Map<string, string>()],
-    ['namespace', new Map<string, string>()],
-    ['labels.value.keyword', new Map<string, string>()],
-    ['private_access', new Map<string, string>()],
-    ['tags.verified', new Map<string, string>()],
-    ['tags.verifiedSource', new Map<string, string>()]
-  ]);
-
-  private entryOrder2 = new Map([
     ['_type', new SubBucket],
     ['author', new SubBucket],
     ['registry', new SubBucket],
@@ -212,11 +199,10 @@ export class SearchComponent implements OnInit {
             this.sortModeMap.set(key, sortby);
           }
         }
-      this.entryOrder.get(key).set(bucket.key, bucket.doc_count);
       if (this.checkboxMap.get(key).get(bucket.key)) {
-        this.entryOrder2.get(key).SelectedItems.set(bucket.key, bucket.doc_count);
+        this.entryOrder.get(key).SelectedItems.set(bucket.key, bucket.doc_count);
       } else {
-        this.entryOrder2.get(key).Items.set(bucket.key, bucket.doc_count);
+        this.entryOrder.get(key).Items.set(bucket.key, bucket.doc_count);
       }
       if (!this.setFilter) {
         this.checkboxMap.get(key).set(bucket.key, false);
@@ -227,15 +213,8 @@ export class SearchComponent implements OnInit {
   setupOrderBuckets() {
     this.entryOrder.forEach(
       (value, key) => {
-        if (this.entryOrder.get(key).size > 0) {
-          this.orderedBuckets.set(key, value);
-        }
-      });
-
-    this.entryOrder2.forEach(
-      (value, key) => {
         if (value.Items.size > 0 || value.SelectedItems.size > 0) {
-          this.orderedBuckets2.set(key, value);
+          this.orderedBuckets.set(key, value);
         }
       });
     this.retainZeroBuckets();
@@ -274,8 +253,8 @@ export class SearchComponent implements OnInit {
     this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
       value.forEach((innerValue: boolean, innerKey: string) => {
         if (innerValue && this.orderedBuckets.get(key)) {
-          if (!this.orderedBuckets.get(key).get(innerKey)) {
-            this.orderedBuckets.get(key).set(innerKey, '0');
+          if (!this.orderedBuckets.get(key).SelectedItems.get(innerKey)) {
+            this.orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
           }
         }
       });
@@ -348,17 +327,6 @@ export class SearchComponent implements OnInit {
   resetEntryOrder() {
     this.entryOrder.clear();
     this.entryOrder = new Map([
-      ['_type', new Map<string, string>()],
-      ['author', new Map<string, string>()],
-      ['registry', new Map<string, string>()],
-      ['namespace', new Map<string, string>()],
-      ['labels.value.keyword', new Map<string, string>()],
-      ['private_access', new Map<string, string>()],
-      ['tags.verified', new Map<string, string>()],
-      ['tags.verifiedSource', new Map<string, string>()]
-    ]);
-    this.entryOrder2.clear();
-    this.entryOrder2 = new Map([
       ['_type', new SubBucket],
       ['author', new SubBucket],
       ['registry', new SubBucket],
@@ -369,7 +337,6 @@ export class SearchComponent implements OnInit {
       ['tags.verifiedSource', new SubBucket]
     ]);
     this.orderedBuckets.clear();
-    this.orderedBuckets2.clear();
   }
   /**===============================================
    *                Append Functions
@@ -511,11 +478,10 @@ export class SearchComponent implements OnInit {
     }
   }
   clickSortMode(category: string, sortMode: boolean) {
-    let orderedMap;
+    // let orderedMap;
     let orderedMap2;
     if (this.sortModeMap.get(category).SortBy === sortMode) {
-      console.log('switch order by');
-      let orderBy: boolean
+      let orderBy: boolean;
       if (this.sortModeMap.get(category).SortBy) { // Sort by Count
         orderBy = this.sortModeMap.get(category).CountOrderBy;
         this.sortModeMap.get(category).CountOrderBy = !orderBy;
@@ -525,15 +491,12 @@ export class SearchComponent implements OnInit {
       }
     }
     if (sortMode) {
-      orderedMap = this.sortCategoryValue(this.orderedBuckets.get(category), sortMode, this.sortModeMap.get(category).CountOrderBy);
-      orderedMap2 = this.sortCategoryValue(this.orderedBuckets2.get(category).Items, sortMode, this.sortModeMap.get(category).CountOrderBy);
+      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode, this.sortModeMap.get(category).CountOrderBy);
     } else {
-      orderedMap = this.sortCategoryValue(this.orderedBuckets.get(category), sortMode, this.sortModeMap.get(category).AlphabetOrderBy);
-      orderedMap2 = this.sortCategoryValue(this.orderedBuckets2.get(category).Items, sortMode,
+      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
                                            this.sortModeMap.get(category).AlphabetOrderBy);
     }
-    this.orderedBuckets.set(category, orderedMap);
-    this.orderedBuckets2.get(category).Items = orderedMap2;
+    this.orderedBuckets.get(category).Items = orderedMap2;
     this.sortModeMap.get(category).SortBy = sortMode;
   }
   /**===============================================
