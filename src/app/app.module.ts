@@ -18,7 +18,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-
 import { MarkdownModule } from 'angular2-markdown';
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
