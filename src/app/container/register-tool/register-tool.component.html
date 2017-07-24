@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #registerToolModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true">
+  role="dialog" aria-hidden="true" (onHide)=hideModal()>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -168,7 +168,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideModal()">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="registerToolModal.hide()">
             Close
           </button>
           <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerToolForm.form.valid || savingActive || refreshing || isInvalidCustomRegistry() || isInvalidPrivateTool()">
