@@ -23,11 +23,7 @@ export class ParamFilesService {
 
   getTagsWithParam(toolId: number, validTags) {
     for (const tag of validTags) {
-       this.getContainerTestParamFiles(toolId, tag.name).subscribe(
-        (result) => {
-          console.log(result);
-        }
-       );
+       this.getContainerTestParamFiles(toolId, tag.name).subscribe();
     }
   }
 }

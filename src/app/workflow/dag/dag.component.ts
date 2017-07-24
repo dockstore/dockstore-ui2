@@ -146,11 +146,11 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
 
   ngOnInit() {
     if (this.defaultVersion) {
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-      this.dagResult = result;
-      this.refresh = true;
-      this.updateMissingTool();
-    });
+      this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
+        this.dagResult = result;
+        this.refresh = true;
+        this.updateMissingTool();
+      });
     } else {
       this.dagResult = null;
     }
@@ -184,14 +184,15 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('onChanges');
     if (this.defaultVersion) {
       this.selectVersion = this.defaultVersion;
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-      this.dagResult = result;
-      this.refresh = true;
-      this.updateMissingTool();
-    });
+      this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
+        this.dagResult = result;
+        this.refresh = true;
+        this.updateMissingTool();
+      }, error => {
+      this.dagResult = null; this.refresh = true; this.updateMissingTool();
+      });
     } else {
       this.dagResult = null;
       this.selectVersion = null;

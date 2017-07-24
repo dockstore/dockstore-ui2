@@ -1,6 +1,6 @@
-<button type="button" class="btn btn-primary btn-sm pull-right registerWorkflowModal" (click)="registerWorkflowModal.show()">Register Workflow</button>
-<div class="modal fade" bsModal #registerWorkflowModal="bs-modal" [config]="{backdrop: 'static'}"
-     tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #registerWorkflowModal="bs-modal" class="modal fade" tabindex="-1"
+  role="dialog" aria-hidden="true"
+  (onHide)=hideModal()>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -66,7 +66,7 @@
                     </li>
                   </ul>
                 </div>
-                <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath" required tooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" />
+                <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath" required tooltip="Git Repository path." placeholder="e.g. /Dockstore.cwl" />
               </div>
               <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
             </div>
@@ -76,7 +76,7 @@
               Test Parameter File Path:
             </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="workflow.default_cwl_test_parameter_file" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" />
+              <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="defaultTestParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" />
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.cwlTestParameterFilePath }} </div>
             </div>
           </div>

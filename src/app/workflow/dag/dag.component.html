@@ -17,10 +17,12 @@
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div class="ds-holder">
       <div class="ds-version-selector" id="dag-version-bar" [ngClass]="{'fullscreen-dropdown': expanded}">
-        <strong>Workflow Version</strong>:
-        <select (change)="onChange()" class="ds-version" [(ngModel)]="selectVersion">
-          <option *ngFor="let version of validVersions" [ngValue]="version"> {{version.name}} </option>
-        </select>
+        <div class="form-inline">
+          <strong>Workflow Version</strong>:
+          <select (change)="ngOnChanges()" class="form-control ds-version input-sm" [(ngModel)]="selectVersion">
+            <option *ngFor="let version of validVersions" [ngValue]="version"> {{version.name}} </option>
+          </select>
+        </div>
         <a href id="exportLink" (click)="download()" *ngIf="dagResult !== null && !notFound && !missingTool">
           <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
         <button id="dag_reload" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button" tooltip="Reset">
@@ -32,7 +34,7 @@
         </button>
       </div>
     </div>
-    <div class="alert alert-warning" role="alert" *ngIf="dagPromise === null || notFound">
+    <div class="alert alert-warning" role="alert" *ngIf="dagPromise === null || notFound || !dagResult">
       <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
       <span *ngIf="workflow?.descriptorType === 'wdl'">
         A Descriptor associated with this workflow could not be found.

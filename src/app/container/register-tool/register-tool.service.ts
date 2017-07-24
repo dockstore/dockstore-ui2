@@ -17,7 +17,7 @@ export class RegisterToolService {
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
     private selectedTool;
-
+    isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
@@ -44,6 +44,10 @@ export class RegisterToolService {
         this.tool.next(newTool);
     }
 
+    setIsModalShown(isModalShown: boolean) {
+        this.isModalShown.next(isModalShown);
+    }
+
     setToolRegisterError(error: any) {
         let errorObj = null;
         if (error) {
@@ -65,7 +69,7 @@ export class RegisterToolService {
             this.setToolRegisterError(null);
             this.stateService.setRefreshing(true);
             this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
-                (<any>$('#registerContainerModal')).modal('toggle');
+                this.setIsModalShown(false);
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
                 this.stateService.setRefreshing(false);
@@ -208,8 +212,8 @@ export class RegisterToolService {
             default_dockerfile_path: toolObj.default_dockerfile_path,
             default_cwl_path: toolObj.default_cwl_path,
             default_wdl_path: toolObj.default_wdl_path,
-            default_cwl_test_parameter_file: toolObj.default_cwl_test_parameter_file,
-            default_wdl_test_parameter_file: toolObj.default_wdl_test_parameter_file,
+            defaultCWLTestParameterFile: toolObj.default_cwl_test_parameter_file,
+            defaultWDLTestParameterFile: toolObj.default_wdl_test_parameter_file,
             is_published: false,
             private_access: toolObj.private_access,
             tool_maintainer_email: toolObj.tool_maintainer_email,

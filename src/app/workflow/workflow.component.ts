@@ -1,5 +1,6 @@
-import { Workflow } from './../shared/models/Workflow';
 import { Dockstore } from '../shared/dockstore.model';
+import { Workflow } from './../shared/swagger/model/workflow';
+import * as WorkflowMode from './../shared/swagger/model/workflow';
 import { WorkflowWebService } from './../shared/webservice/workflow-web.service';
 import { PublishRequest } from './../shared/models/PublishRequest';
 import { RefreshService } from './../shared/refresh.service';
@@ -86,7 +87,7 @@ export class WorkflowComponent extends Tool {
   }
 
   publishDisable() {
-    return this.refreshing || !this.isValid() || this.workflow.mode === 'STUB';
+    return this.refreshing || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
   }
 
   publish() {

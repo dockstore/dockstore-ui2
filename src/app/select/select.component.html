@@ -1,4 +1,4 @@
-<select [(ngModel)]="obj" (change)="changedSelect(obj)">
+<select class="form-control input-sm" [(ngModel)]="obj" (change)="changedSelect(obj)">
   <option *ngFor="let obj of items" [ngValue]="obj">
     <div *ngIf="field">
       {{ obj[field] }}
