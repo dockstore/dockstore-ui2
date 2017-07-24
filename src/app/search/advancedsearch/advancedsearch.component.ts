@@ -21,7 +21,7 @@ export class AdvancedSearchComponent implements OnInit, AfterViewChecked {
     this.advancedSearchService.NOTFilter$.subscribe((filter: string) => this.NOTFilter = filter);
   }
 
-  click(): void {
+  advancedSearch(): void {
     this.advancedSearchService.toAdvanceSearch$.next(true);
   }
 
@@ -30,5 +30,13 @@ export class AdvancedSearchComponent implements OnInit, AfterViewChecked {
     this.advancedSearchService.ANDSplitFilter$.next(this.ANDSplitFilter);
     this.advancedSearchService.ORFilter$.next(this.ORFilter);
     this.advancedSearchService.NOTFilter$.next(this.NOTFilter);
+  }
+
+  clearAll(): void {
+    this.advancedSearchService.toAdvanceSearch$.next(false);
+    this.advancedSearchService.ANDNoSplitFilter$.next('');
+    this.advancedSearchService.ANDSplitFilter$.next('');
+    this.advancedSearchService.ORFilter$.next('');
+    this.advancedSearchService.NOTFilter$.next('');
   }
 }

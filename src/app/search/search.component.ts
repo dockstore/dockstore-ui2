@@ -195,10 +195,7 @@ export class SearchComponent implements OnInit {
     this.advancedSearchService.NOTFilter$.subscribe((filter: string) => this.NOTFilter = filter);
     this.advancedSearchService.toAdvanceSearch$.subscribe((toAdvanceSearch: boolean) => {
       this.toAdvancedSearch = toAdvanceSearch;
-    if (toAdvanceSearch === true) {
       this.onClick(null, null);
-      this.advancedSearchService.toAdvanceSearch$.next(false);
-    }
     });
   }
   mapFriendlyValueNames(key, subBucket) {

@@ -9,9 +9,4 @@ export class AdvancedSearchService {
     NOTFilter$: BehaviorSubject<string> = new BehaviorSubject<string>('');
     toAdvanceSearch$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     constructor() { }
-
-    search(): void {
-        this.toAdvanceSearch$.next(true);
-    }
-
 }
