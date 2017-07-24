@@ -1,5 +1,5 @@
 <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true">
+  role="dialog" aria-hidden="true" (onHide)=hideModal()>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
