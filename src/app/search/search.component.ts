@@ -1,3 +1,4 @@
+import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
@@ -42,6 +43,14 @@ export class SearchComponent implements OnInit {
   private hits: Object[];
   private _client: Client;
   private shard_size = 10000;
+
+  // Advanced Search
+  private toAdvancedSearch: boolean;
+  private NOTFilter: string;
+  private ANDNoSplitFilter: string;
+  private ANDSplitFilter: string;
+  private ORFilter: string;
+
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
@@ -140,7 +149,8 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService, private searchService: SearchService) {
+  constructor(private providerService: ProviderService, private searchService: SearchService,
+    private advancedSearchService: AdvancedSearchService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
@@ -179,6 +189,17 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
+    this.advancedSearchService.ANDNoSplitFilter$.subscribe((filter: string) => this.ANDNoSplitFilter = filter);
+    this.advancedSearchService.ANDSplitFilter$.subscribe((filter: string) => this.ANDSplitFilter = filter);
+    this.advancedSearchService.ORFilter$.subscribe((filter: string) => this.ORFilter = filter);
+    this.advancedSearchService.NOTFilter$.subscribe((filter: string) => this.NOTFilter = filter);
+    this.advancedSearchService.toAdvanceSearch$.subscribe((toAdvanceSearch: boolean) => {
+      this.toAdvancedSearch = toAdvanceSearch;
+    if (toAdvanceSearch === true) {
+      this.onClick(null, null);
+      this.advancedSearchService.toAdvanceSearch$.next(false);
+    }
+    });
   }
   mapFriendlyValueNames(key, subBucket) {
     if (key === 'tags.verified' || key === 'private_access' || key === 'registry') {
@@ -423,6 +444,23 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendQuery(body: any): any {
+    if (this.toAdvancedSearch) {
+      if (this.ANDSplitFilter) {
+        const filters = this.ANDSplitFilter.split(' ');
+        filters.forEach(filter => body = body.query('term', 'description', filter));
+      }
+      if (this.ANDNoSplitFilter) {
+        body = body.query('term', 'description', this.ANDNoSplitFilter);
+      }
+      if (this.ORFilter) {
+        const filters = this.ORFilter.split(' ');
+        filters.forEach(filter => body = body.query('term', 'description', filter));
+      }
+      if (this.NOTFilter) {
+        body = body.notQuery('terms', 'description', this.NOTFilter.split(' '));
+      }
+      return body;
+    } else {
     // if there is a description search
     if (this.values.toString().length > 0) {
       body = body.query('match', 'description', this.values);
@@ -430,6 +468,7 @@ export class SearchComponent implements OnInit {
       body = body.query('match_all', {});
     }
     return body;
+    }
   }
 
   /**
