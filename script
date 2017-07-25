@@ -1,7 +1,23 @@
-sed -i 's/-//g' src/app/shared/swagger/model/Tool.ts && sed -i 's/-//g' src/app/shared/swagger/model/ToolVersion.ts && sed -i 's/-//g' src/app/shared/swagger/model/Metadata.ts 
-rm src/app/shared/swagger/index.ts src/app/shared/swagger/configuration.ts src/app/shared/swagger/variables.ts
-rm -rf src/app/shared/swagger/api
+sed -i 's/-//g' src/app/shared/swagger/model/tool.ts && sed -i 's/-//g' src/app/shared/swagger/model/toolVersion.ts && sed -i 's/-//g' src/app/shared/swagger/model/metadata.ts
+sed -i 's/isPublished/is_published/g' src/app/shared/swagger/model/workflow.ts
+sed -i 's/lastModified/last_modified/g' src/app/shared/swagger/model/workflow.ts
+sed -i 's/lastModified/last_modified/g' src/app/shared/swagger/model/workflowVersion.ts
+sed -i 's/workflowPath/workflow_path/g' src/app/shared/swagger/model/workflowVersion.ts
+sed -i 's/workflowPath/workflow_path/g' src/app/shared/swagger/model/workflow.ts
+sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/workflows.service.ts
+for f in src/app/shared/swagger/*.ts
+do 
+  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
+done
 for f in src/app/shared/swagger/model/*.ts
 do 
-  echo -e "// tslint:disable:max-line-length\n$(cat "$f")" > "$f"
+  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
+done
+for f in src/app/shared/swagger/api/*.ts
+do 
+  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
+done
+for f in src/app/shared/swagger/index.ts src/app/shared/swagger/configuration.ts src/app/shared/swagger/variables.ts
+do 
+  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
 done
