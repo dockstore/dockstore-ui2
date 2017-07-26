@@ -55,6 +55,7 @@ import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
 import { VersionsService } from './footer/versions.service';
+import { PagenumberService } from './shared/pagenumber.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
@@ -142,7 +143,8 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     StateService,
     UsersWebService,
     SearchService,
-    VersionsService
+    VersionsService,
+    PagenumberService
   ],
   bootstrap: [ AppComponent ]
 })

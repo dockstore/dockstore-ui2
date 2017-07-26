@@ -7,6 +7,7 @@ import { LogoutService } from './../shared/logout.service';
 import { Logout } from '../loginComponents/logout';
 import { TrackLoginService } from './../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
+import { PagenumberService } from './../shared/pagenumber.service';
 
 
 @Component({
@@ -16,11 +17,20 @@ import { UserService } from './../loginComponents/user.service';
 })
 export class NavbarComponent extends Logout {
   private user;
-  constructor (trackLoginService: TrackLoginService, logoutService: LogoutService, router: Router, userService: UserService) {
+  constructor (private pagenumberService: PagenumberService,
+               trackLoginService: TrackLoginService,
+               logoutService: LogoutService,
+               router: Router,
+               userService: UserService) {
     super(trackLoginService, logoutService, router);
     userService.getUser().subscribe(user => userService.setUser(user));
     userService.user$.subscribe(user => {
       this.user = user;
     });
+  }
+  resetPageNumber() {
+    console.log('resetPageNumber~~~~~');
+    this.pagenumberService.setToolsPageNumber(0);
+    this.pagenumberService.setWorkflowPageNumber(0);
   }
 }

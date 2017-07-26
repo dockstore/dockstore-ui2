@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { Subject } from 'rxjs/Rx';
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import { SearchComponent } from '../search/search.component';
 import { DataTableDirective } from 'angular-datatables';
 import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
+import { PagenumberService } from '../shared/pagenumber.service';
 
 @Component({
   selector: 'app-listentry',
@@ -19,9 +20,11 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   inited = false;
 
   private entrySubscription: Subscription;
+  private pageNumberSubscription: Subscription;
   constructor(private communicatorService: CommunicatorService,
               private searchComponent: SearchComponent,
-              private listContainersService: ListContainersService) { }
+              private listContainersService: ListContainersService,
+              private pagenumberService: PagenumberService) { }
 
   ngOnInit() {
     if (this.entryType === 'tool') {
@@ -36,6 +39,13 @@ export class ListentryComponent implements OnInit, AfterViewInit {
         });
     }
   }
+  setPageNumber(pageNum: number) {
+    if (this.dtElement) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.page(pageNum).draw(false);
+      });
+    }
+  }
   setHitSubscribe(hits: any) {
     if (this.inited) {
       this.rerender(hits);
@@ -44,6 +54,13 @@ export class ListentryComponent implements OnInit, AfterViewInit {
         this.hits = hits;
         this.dtTrigger.next();
         this.inited = true;
+        this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
+          pageNum => {
+            if (pageNum) {
+              console.log(pageNum);
+              this.setPageNumber(pageNum);
+            }
+          });
       }
     }
   }
@@ -52,11 +69,18 @@ export class ListentryComponent implements OnInit, AfterViewInit {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
   sendToolInfo(tool) {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      console.log('hiihihi');
+      console.log(dtInstance.page.info().page);
+      this.pagenumberService.setToolsPageNumber(dtInstance.page.info().page);
+      this.pagenumberService.setBackRoute('admin-search');
+    });
     this.communicatorService.setTool(tool);
   }
   rerender(hits: any): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
+      // console.log(dtInstance.page.info().page);
       dtInstance.destroy();
       this.hits = hits;
       // Call the dtTrigger to rerender again
@@ -64,6 +88,6 @@ export class ListentryComponent implements OnInit, AfterViewInit {
     });
   }
   ngAfterViewInit() {
-    console.log(this.entryType);
+    console.log(this.dtElement.dtInstance);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-
+import { Subject } from 'rxjs/Rx';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
 
@@ -9,6 +9,7 @@ export abstract class ToolLister implements OnInit {
   protected displayTable = false;
   protected publishedTools = [];
   protected _toolType: string;
+  dtTrigger: Subject<any> = new Subject();
 
   constructor(private listService: ListService,
               private providerService: ProviderService,
@@ -25,6 +26,7 @@ export abstract class ToolLister implements OnInit {
         this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool));
         this.initToolLister();
         this.displayTable = true;
+        console.log('uuu');
       });
   }
 

@@ -1,6 +1,5 @@
 <div class="separation">
-  <div *ngIf="displayTable">
-    <table datatable [dtOptions]="dtOptions" class="table row-border hover">
+    <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table row-border hover">
       <thead>
         <tr>
           <th>Name</th>
@@ -54,5 +53,4 @@
         </td>
       </tr>
     </table>
-  </div>
 </div>
