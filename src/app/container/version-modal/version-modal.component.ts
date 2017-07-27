@@ -57,23 +57,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   onSubmit() {
-    switch (this.mode) {
-      case TagEditorMode.Add: {
-        this.addTag();
-        break;
-      }
-      case TagEditorMode.Edit: {
-        this.editTag();
-        break;
-      }
-      default: {
-        console.log('No idea how you submitted in neither edit or add mode');
-      }
-    }
+    this.editTag();
   }
-  addTag() {
-    console.log('Saving tag...');
-  }
+
   ngAfterViewChecked() {
     this.formChanged();
   }
@@ -181,9 +167,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         break;
       }
       default: {
-        console.log('No idea how you submitted in neither edit or add mode');
+        this.handleUnrecognizedDescriptorType();
       }
     }
+  }
+
+  handleUnrecognizedDescriptorType() {
+    console.log('Unrecognized descriptor type.');
   }
 
   removeTestParameterFile(index: number, descriptorType: DescriptorType) {
@@ -197,7 +187,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         break;
       }
       default: {
-        console.log('No idea how you submitted in neither edit or add mode');
+        this.handleUnrecognizedDescriptorType();
       }
     }
   }
