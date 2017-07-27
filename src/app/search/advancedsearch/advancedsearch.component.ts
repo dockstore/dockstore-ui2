@@ -22,21 +22,21 @@ export class AdvancedSearchComponent implements OnInit, AfterViewChecked {
   }
 
   advancedSearch(): void {
-    this.advancedSearchService.toAdvanceSearch$.next(true);
+    this.advancedSearchService.setToAdvanceSearch(true);
   }
 
   ngAfterViewChecked() {
-    this.advancedSearchService.ANDNoSplitFilter$.next(this.ANDNoSplitFilter);
-    this.advancedSearchService.ANDSplitFilter$.next(this.ANDSplitFilter);
-    this.advancedSearchService.ORFilter$.next(this.ORFilter);
-    this.advancedSearchService.NOTFilter$.next(this.NOTFilter);
+    this.advancedSearchService.setANDNoSplitFilter(this.ANDNoSplitFilter);
+    this.advancedSearchService.setANDSplitFilter(this.ANDSplitFilter);
+    this.advancedSearchService.setORFilter(this.ORFilter);
+    this.advancedSearchService.setNOTFilter(this.NOTFilter);
   }
 
   clearAll(): void {
-    this.advancedSearchService.toAdvanceSearch$.next(false);
-    this.advancedSearchService.ANDNoSplitFilter$.next('');
-    this.advancedSearchService.ANDSplitFilter$.next('');
-    this.advancedSearchService.ORFilter$.next('');
-    this.advancedSearchService.NOTFilter$.next('');
+    this.advancedSearchService.setToAdvanceSearch(false);
+    this.advancedSearchService.setANDNoSplitFilter('');
+    this.advancedSearchService.setANDSplitFilter('');
+    this.advancedSearchService.setORFilter('');
+    this.advancedSearchService.setNOTFilter('');
   }
 }

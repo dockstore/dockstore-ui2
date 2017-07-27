@@ -9,4 +9,24 @@ export class AdvancedSearchService {
     NOTFilter$: BehaviorSubject<string> = new BehaviorSubject<string>('');
     toAdvanceSearch$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     constructor() { }
+
+    setANDSplitFilter(ANDSplitFilter: string) {
+        this.ANDSplitFilter$.next(ANDSplitFilter);
+    }
+
+    setANDNoSplitFilter(ANDNoSplitFilter: string) {
+        this.ANDNoSplitFilter$.next(ANDNoSplitFilter);
+    }
+
+    setORFilter(ORFilter: string) {
+        this.ORFilter$.next(ORFilter);
+    }
+
+    setNOTFilter(NOTFilter: string) {
+        this.NOTFilter$.next(NOTFilter);
+    }
+
+    setToAdvanceSearch(toAdvanceSearch: boolean) {
+        this.toAdvanceSearch$.next(toAdvanceSearch);
+    }
 }
