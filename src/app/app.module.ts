@@ -1,4 +1,7 @@
 import { SearchModule } from './search/search.module';
+import { Configuration } from './shared/swagger/configuration';
+import { ApiModule } from './shared/swagger/api.module';
+import { SearchService } from './search/search.service';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
@@ -115,8 +118,10 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    MarkdownModule.forRoot(),
     SearchModule
+    TagCloudModule,
+    ApiModule.forConfig(getApiConfig),
+    MarkdownModule.forRoot()
   ],
   providers: [
     AuthService,
@@ -142,4 +147,13 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
+}
+
+export const apiConfig = new Configuration({
+  accessToken: '',
+  basePath: ''
+});
+
+export function getApiConfig() {
+  return apiConfig;
 }
