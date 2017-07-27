@@ -35,12 +35,11 @@ export class VersionModalService {
 
     saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles) {
         this.stateService.setRefreshing(true);
-        const newCWL = newTestParameterFiles.filter(x => originalTestParameterFilePaths.indexOf(x) === -1);
-        console.log(workflowVersion.name);
+        const newCWL = newTestParameterFiles.filter(x => !originalTestParameterFilePaths.includes(x));
         if (newCWL && newCWL.length > 0) {
             this.workflowWebService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).subscribe();
         }
-        const missingCWL = originalTestParameterFilePaths.filter(x => newTestParameterFiles.indexOf(x) === -1);
+        const missingCWL = originalTestParameterFilePaths.filter(x => !newTestParameterFiles.includes(x));
         if (missingCWL && missingCWL.length > 0) {
             this.workflowWebService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name).subscribe();
         }

@@ -14,6 +14,7 @@ export class RegisterWorkflowModalService {
     sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
     workflows: any;
+    isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowWebService: WorkflowWebService,
@@ -29,6 +30,10 @@ export class RegisterWorkflowModalService {
         this.workflowRegisterError.next(null);
     }
 
+    setIsModalShown(isModalShown: boolean) {
+        this.isModalShown.next(isModalShown);
+    }
+
     setWorkflowRegisterError(message: any, errorDetails) {
         const error = {
             message: message,
@@ -37,7 +42,16 @@ export class RegisterWorkflowModalService {
         this.workflowRegisterError.next(error);
     }
 
-    registerWorkflow(modal: ModalDirective, testParameterFilePath: string) {
+    setWorkflow(workflow: Workflow) {
+        this.workflow.next(workflow);
+    }
+
+    setWorkflowRepository(repository) {
+        this.actualWorkflow.gitUrl = repository;
+        this.setWorkflow(this.actualWorkflow);
+    }
+
+    registerWorkflow(testParameterFilePath: string) {
         this.stateService.setRefreshing(true);
         this.workflowWebService.manualRegister(
             this.actualWorkflow.repository,
@@ -53,7 +67,7 @@ export class RegisterWorkflowModalService {
                         this.workflowWebService.addTestParameterFiles(result.id, [testParameterFilePath], null, version.name)
                         .subscribe();
                     this.stateService.setRefreshing(false);
-                    modal.hide();
+                    this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
                     }
                 });

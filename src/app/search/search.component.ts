@@ -399,7 +399,7 @@ export class SearchComponent implements OnInit {
   appendFilter(body: any, aggKey: string): any {
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
-        if (aggKey === key && this.searchService.exclusiveFilters.indexOf(key) === -1) {
+        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);

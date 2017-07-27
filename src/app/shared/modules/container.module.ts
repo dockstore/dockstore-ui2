@@ -1,3 +1,5 @@
+import { VersionModalService } from './../../container/version-modal/version-modal.service';
+import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -43,7 +45,6 @@ import { RegisterToolService } from './../../container/register-tool/register-to
 import { SelectModule } from './select.module';
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
-import { ViewService } from '../../container/view/view.service';
 import { WorkflowService } from '../workflow.service';
 import { StarringService } from '../../starring/starring.service';
 
@@ -59,7 +60,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     DescriptorsComponent,
     ParamfilesComponent,
     ModalComponent,
-    AddTagComponent
+    AddTagComponent,
+    VersionModalComponent
   ],
   imports: [
     ButtonsModule.forRoot(),
@@ -98,7 +100,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     RegisterToolService,
     WorkflowService,
     StarringService,
-    ViewService
+    VersionModalService
   ],
   exports: [
     ContainerComponent

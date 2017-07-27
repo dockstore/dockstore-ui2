@@ -42,7 +42,6 @@ import { LaunchService } from '../../container/launch/launch.service';
 import { ContainerService } from '../container.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
-import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
 import { WorkflowService } from '../../shared/workflow.service';
@@ -90,7 +89,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     FileService,
     ContainerService,
     LaunchService,
-    ViewService,
     DockerfileService,
     ParamfilesService,
     WorkflowService,
