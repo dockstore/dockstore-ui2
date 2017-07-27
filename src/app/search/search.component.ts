@@ -1,3 +1,4 @@
+import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
@@ -189,12 +190,12 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
-    this.advancedSearchService.ANDNoSplitFilter$.subscribe((filter: string) => this.ANDNoSplitFilter = filter);
-    this.advancedSearchService.ANDSplitFilter$.subscribe((filter: string) => this.ANDSplitFilter = filter);
-    this.advancedSearchService.ORFilter$.subscribe((filter: string) => this.ORFilter = filter);
-    this.advancedSearchService.NOTFilter$.subscribe((filter: string) => this.NOTFilter = filter);
-    this.advancedSearchService.toAdvanceSearch$.subscribe((toAdvanceSearch: boolean) => {
-      this.toAdvancedSearch = toAdvanceSearch;
+      this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+      this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
+      this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
+      this.ORFilter = advancedSearch.ORFilter;
+      this.NOTFilter = advancedSearch.NOTFilter;
+      this.toAdvancedSearch = advancedSearch.toAdvanceSearch;
       this.onClick(null, null);
     });
   }
@@ -451,7 +452,7 @@ export class SearchComponent implements OnInit {
       }
       if (this.ORFilter) {
         const filters = this.ORFilter.split(' ');
-        filters.forEach(filter => body = body.query('term', 'description', filter));
+        filters.forEach(filter => body = body.orQuery('term', 'description', filter));
       }
       if (this.NOTFilter) {
         body = body.notQuery('terms', 'description', this.NOTFilter.split(' '));

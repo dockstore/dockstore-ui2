@@ -1,3 +1,4 @@
+import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advanced-search.service';
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
@@ -6,37 +7,41 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.css']
 })
-export class AdvancedSearchComponent implements OnInit, AfterViewChecked {
+export class AdvancedSearchComponent implements OnInit {
   NOTFilter: string;
   ANDNoSplitFilter: string;
   ANDSplitFilter: string;
   ORFilter: string;
-
   constructor(private advancedSearchService: AdvancedSearchService) { }
 
   ngOnInit() {
-    this.advancedSearchService.ANDNoSplitFilter$.subscribe((filter: string) => this.ANDNoSplitFilter = filter);
-    this.advancedSearchService.ANDSplitFilter$.subscribe((filter: string) => this.ANDSplitFilter = filter);
-    this.advancedSearchService.ORFilter$.subscribe((filter: string) => this.ORFilter = filter);
-    this.advancedSearchService.NOTFilter$.subscribe((filter: string) => this.NOTFilter = filter);
+    this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+      this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
+      this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
+      this.ORFilter = advancedSearch.ORFilter;
+      this.NOTFilter = advancedSearch.NOTFilter;
+    });
   }
 
   advancedSearch(): void {
-    this.advancedSearchService.setToAdvanceSearch(true);
-  }
-
-  ngAfterViewChecked() {
-    this.advancedSearchService.setANDNoSplitFilter(this.ANDNoSplitFilter);
-    this.advancedSearchService.setANDSplitFilter(this.ANDSplitFilter);
-    this.advancedSearchService.setORFilter(this.ORFilter);
-    this.advancedSearchService.setNOTFilter(this.NOTFilter);
+    const advancedSearch: AdvancedSearchObject = {
+      ANDNoSplitFilter: this.ANDNoSplitFilter,
+      ANDSplitFilter: this.ANDSplitFilter,
+      ORFilter: this.ORFilter,
+      NOTFilter: this.NOTFilter,
+      toAdvanceSearch: true
+    };
+    this.advancedSearchService.setAdvancedSearch(advancedSearch);
   }
 
   clearAll(): void {
-    this.advancedSearchService.setToAdvanceSearch(false);
-    this.advancedSearchService.setANDNoSplitFilter('');
-    this.advancedSearchService.setANDSplitFilter('');
-    this.advancedSearchService.setORFilter('');
-    this.advancedSearchService.setNOTFilter('');
+    const advancedSearch: AdvancedSearchObject = {
+      ANDNoSplitFilter: '',
+      ANDSplitFilter: '',
+      ORFilter: '',
+      NOTFilter: '',
+      toAdvanceSearch: false
+    };
+    this.advancedSearchService.setAdvancedSearch(advancedSearch);
   }
 }
