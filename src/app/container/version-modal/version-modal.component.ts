@@ -95,19 +95,19 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   editTag() {
     console.log('Editing tag...');
-    const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => this.savedCWLTestParameterFilePaths.indexOf(x) === -1);
+    const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       this.paramfilesService.putFiles(this.tool.id, newCWL, this.version.name, 'CWL').subscribe();
     }
-    const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => this.unsavedCWLTestParameterFilePaths.indexOf(x) === -1);
+    const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
       this.paramfilesService.deleteFiles(this.tool.id, missingCWL, this.version.name, 'CWL').subscribe();
     }
-    const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => this.savedWDLTestParameterFilePaths.indexOf(x) === -1);
+    const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
       this.paramfilesService.putFiles(this.tool.id, newWDL, this.version.name, 'WDL').subscribe();
     }
-    const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => this.unsavedWDLTestParameterFilePaths.indexOf(x) === -1);
+    const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
       this.paramfilesService.deleteFiles(this.tool.id, missingWDL, this.version.name, 'WDL').subscribe();
     }
