@@ -1,7 +1,6 @@
 import { SearchModule } from './search/search.module';
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
-import { SearchService } from './search/search.service';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
@@ -118,10 +117,9 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    SearchModule
-    TagCloudModule,
-    ApiModule.forConfig(getApiConfig),
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    SearchModule,
+    ApiModule.forConfig(getApiConfig)
   ],
   providers: [
     AuthService,
