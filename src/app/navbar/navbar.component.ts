@@ -29,7 +29,6 @@ export class NavbarComponent extends Logout {
     });
   }
   resetPageNumber() {
-    console.log('resetPageNumber~~~~~');
     this.pagenumberService.setToolsPageNumber(0);
     this.pagenumberService.setWorkflowPageNumber(0);
   }

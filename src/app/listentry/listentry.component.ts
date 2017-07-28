@@ -20,11 +20,9 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   inited = false;
 
   private entrySubscription: Subscription;
-  private pageNumberSubscription: Subscription;
   constructor(private communicatorService: CommunicatorService,
               private searchComponent: SearchComponent,
-              private listContainersService: ListContainersService,
-              private pagenumberService: PagenumberService) { }
+              private listContainersService: ListContainersService) { }
 
   ngOnInit() {
     if (this.entryType === 'tool') {
@@ -39,13 +37,6 @@ export class ListentryComponent implements OnInit, AfterViewInit {
         });
     }
   }
-  setPageNumber(pageNum: number) {
-    if (this.dtElement) {
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.page(pageNum).draw(false);
-      });
-    }
-  }
   setHitSubscribe(hits: any) {
     if (this.inited) {
       this.rerender(hits);
@@ -54,13 +45,6 @@ export class ListentryComponent implements OnInit, AfterViewInit {
         this.hits = hits;
         this.dtTrigger.next();
         this.inited = true;
-        this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
-          pageNum => {
-            if (pageNum) {
-              console.log(pageNum);
-              this.setPageNumber(pageNum);
-            }
-          });
       }
     }
   }
@@ -69,12 +53,6 @@ export class ListentryComponent implements OnInit, AfterViewInit {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
   sendToolInfo(tool) {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      console.log('hiihihi');
-      console.log(dtInstance.page.info().page);
-      this.pagenumberService.setToolsPageNumber(dtInstance.page.info().page);
-      this.pagenumberService.setBackRoute('admin-search');
-    });
     this.communicatorService.setTool(tool);
   }
   rerender(hits: any): void {

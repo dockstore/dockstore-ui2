@@ -16,7 +16,6 @@ export class ContainerService {
   setTool(tool: any) {
     this.toolSource.next(tool);
   }
-
   setTools(tools: any) {
     this.tools.next(tools);
   }

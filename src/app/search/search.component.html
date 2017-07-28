@@ -51,7 +51,7 @@
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
-                  <span><input type="checkbox" (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
+                  <span><input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
                 </div>
                 <div class="pull-right">
                   <p>({{ buckets.get(key).get(subBucket) }})</p>

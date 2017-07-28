@@ -19,12 +19,11 @@ import { ListContainersService } from './list.service';
   selector: 'app-list-containers',
   templateUrl: './list.component.html'
 })
-export class ListContainersComponent extends ToolLister implements AfterViewInit {
+export class ListContainersComponent extends ToolLister {
   @Input() previewMode: boolean;
+  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   verifiedLink: string;
   private pageNumberSubscription: Subscription;
-  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
-
   // TODO: make an API endpoint to retrieve only the necessary properties for the containers table
   // name, author, path, registry, gitUrl
   dtOptions = {
@@ -36,8 +35,6 @@ export class ListContainersComponent extends ToolLister implements AfterViewInit
     ],
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
       const self = this;
-      // Unbind first in order to avoid any duplicate handler
-      // (see https://github.com/l-lin/angular-datatables/issues/87)
       $('td', row).unbind('click');
       $('td', row).bind('click', () => {
         self.findPageNumber(index);
@@ -58,16 +55,11 @@ export class ListContainersComponent extends ToolLister implements AfterViewInit
     super(listService, providerService, 'containers');
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
-  ngAfterViewInit() {
-    console.log('hii');
-  }
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      let realPG: number;
-      realPG = ((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10;
-      console.log('REAL PG NUMBER: ' + Math.floor(realPG));
-      this.pagenumberService.setToolsPageNumber(Math.floor(realPG));
-      this.pagenumberService.setBackRoute('tools');
+      const realPgNumber = ((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10;
+      this.pagenumberService.setToolsPageNumber(Math.floor(realPgNumber));
+      this.pagenumberService.setBackRoute('containers');
     });
   }
   sendToolInfo(tool, i) {
@@ -90,11 +82,9 @@ export class ListContainersComponent extends ToolLister implements AfterViewInit
     this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
       pageNum => {
         if (pageNum) {
-          console.log(pageNum);
           if (this.dtElement) {
             this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
               dtInstance.page(pageNum).draw(false);
-              console.log(dtInstance.page.info());
             });
           }
         }

@@ -24,8 +24,6 @@ export class ListWorkflowsComponent extends ToolLister {
   dtOptions = {
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
       const self = this;
-      // Unbind first in order to avoid any duplicate handler
-      // (see https://github.com/l-lin/angular-datatables/issues/87)
       $('td', row).unbind('click');
       $('td', row).bind('click', () => {
         self.findPageNumber(index);
@@ -48,10 +46,8 @@ export class ListWorkflowsComponent extends ToolLister {
 
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      let realPG: number;
-      realPG = ((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10;
-      console.log('REAL PG NUMBER: ' + Math.floor(realPG));
-      this.pagenumberService.setWorkflowPageNumber(Math.floor(realPG));
+      const realPgNumber = ((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10;
+      this.pagenumberService.setWorkflowPageNumber(Math.floor(realPgNumber));
       this.pagenumberService.setBackRoute('workflows');
     });
   }
@@ -65,11 +61,9 @@ export class ListWorkflowsComponent extends ToolLister {
     this.pageNumberSubscription = this.pagenumberService.pgNumWorkflows$.subscribe(
       pageNum => {
         if (pageNum) {
-          console.log(pageNum);
           if (this.dtElement) {
             this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
               dtInstance.page(pageNum).draw(false);
-              console.log(dtInstance.page.info());
             });
           }
         }

@@ -33,9 +33,10 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let nsObj of nsContainers" panelClass="containers-accordion" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
-            <div *ngFor="let containerObj of nsObj?.containers">
-              <div class="panel-container-label" [ngClass]="{selected: selContainerObj.id === containerObj.id}">
+        <accordion-group *ngFor="let nsObj of nsContainers" panelClass="containers-accordion" [heading]="nsObj?.namespace"
+                         [isOpen]="nsObj?.isFirstOpen">
+          <div *ngFor="let containerObj of nsObj?.containers">
+              <div class="panel-container-label" [ngClass]="{selected: tool.id === containerObj.id}">
                     <div class="container-name-oflw pull-left"
                          title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
                       <a style="cursor: pointer;" (click)="selectContainer(containerObj)">
