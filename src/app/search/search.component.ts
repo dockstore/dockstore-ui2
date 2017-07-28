@@ -190,7 +190,7 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
-      this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+    this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
       this.ORFilter = advancedSearch.ORFilter;
@@ -364,6 +364,7 @@ export class SearchComponent implements OnInit {
     const query2 = JSON.stringify(builtBody2);
     this.updateSideBar(query);
     this.updateResultsTable(query2);
+    console.log(query2);
   }
 
   /**
@@ -445,17 +446,18 @@ export class SearchComponent implements OnInit {
     if (this.toAdvancedSearch) {
       if (this.ANDSplitFilter) {
         const filters = this.ANDSplitFilter.split(' ');
-        filters.forEach(filter => body = body.query('term', 'description', filter));
+        body = body.filter('terms', 'description', filters);
       }
       if (this.ANDNoSplitFilter) {
-        body = body.query('term', 'description', this.ANDNoSplitFilter);
+        body = body.query('match_phrase', 'description', this.ANDNoSplitFilter);
       }
       if (this.ORFilter) {
         const filters = this.ORFilter.split(' ');
-        filters.forEach(filter => body = body.orQuery('term', 'description', filter));
+        body = body.filter('terms', 'description', filters);
       }
       if (this.NOTFilter) {
-        body = body.notQuery('terms', 'description', this.NOTFilter.split(' '));
+        const filters = this.NOTFilter.split(' ');
+        body = body.notQuery('terms', 'description', filters);
       }
       return body;
     } else {
@@ -467,6 +469,12 @@ export class SearchComponent implements OnInit {
       }
       return body;
     }
+  }
+
+  appendORFilter(body: any) {
+    const filters = this.ORFilter.split(' ');
+    filters.forEach(filter => body = body.filter('term', 'description', filter));
+    return body;
   }
 
   /**
