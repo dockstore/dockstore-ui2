@@ -205,9 +205,6 @@
           <button type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Edit" [disabled]="!tagEditorForm.form.valid" data-dismiss="modal">
             Save Changes
           </button>
-          <button id="addVersionTagButton" type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Add" ng-disabled="tagEditorForm.$invalid" data-dismiss="modal">
-            Add Tag
-          </button>
         </div>
       </form>
     </div>
