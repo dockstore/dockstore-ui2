@@ -178,8 +178,8 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
   ngAfterViewChecked() {
     if (this.refresh) {
-      this.refreshDocument();
       this.refresh = false;
+      this.refreshDocument();
     }
   }
 

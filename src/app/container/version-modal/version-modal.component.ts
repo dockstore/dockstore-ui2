@@ -174,7 +174,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   handleUnrecognizedDescriptorType() {
     console.log('Unrecognized descriptor type.');
   }
-  
+
   removeTestParameterFile(index: number, descriptorType: DescriptorType) {
     switch (descriptorType) {
       case DescriptorType.CWL: {

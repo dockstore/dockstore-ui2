@@ -98,6 +98,7 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
   imports: [
     BrowserModule,
     FormsModule,
+    MarkdownModule.forRoot(),
     HttpModule,
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
