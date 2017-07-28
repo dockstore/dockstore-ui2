@@ -446,7 +446,7 @@ export class SearchComponent implements OnInit {
     if (this.toAdvancedSearch) {
       if (this.ANDSplitFilter) {
         const filters = this.ANDSplitFilter.split(' ');
-        body = body.filter('terms', 'description', filters);
+        filters.forEach(filter => body = body.filter('term', 'description', filter));
       }
       if (this.ANDNoSplitFilter) {
         body = body.query('match_phrase', 'description', this.ANDNoSplitFilter);
