@@ -19,6 +19,7 @@ export class ListWorkflowsComponent extends ToolLister {
   @Input() previewMode: boolean;
   @Input() entryType: string;
   dtTrigger: Subject<any> = new Subject();
+  workflowsTable: Array<any> = new Array<any>();
   private pageNumberSubscription: Subscription;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
@@ -57,10 +58,25 @@ export class ListWorkflowsComponent extends ToolLister {
   }
 
   initToolLister(): void {
+    if (this.previewMode) {
+      this.setPreviewTable();
+    } else {
+      this.workflowsTable = this.publishedTools;
+    }
     this.dtTrigger.next();
     this.setupPageNumber();
   }
-
+  setPreviewTable() {
+    this.dtOptions['searching'] = false;
+    this.dtOptions['paging'] = false;
+    this.dtOptions['bInfo'] = false;
+    /* TODO: this function should be modified so it will display the most important 10 (or less) items */
+    for (let i = 0; i < this.publishedTools.length; i++) {
+      if (i < 10) {
+        this.workflowsTable.push(this.publishedTools[i]);
+      }
+    }
+  }
   setupPageNumber() {
     this.pageNumberSubscription = this.pagenumberService.pgNumWorkflows$.subscribe(
       pageInfo => {

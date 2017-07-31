@@ -26,7 +26,6 @@ export abstract class ToolLister implements OnInit {
         this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool));
         this.initToolLister();
         this.displayTable = true;
-        console.log('uuu');
       });
   }
 

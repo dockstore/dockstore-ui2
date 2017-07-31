@@ -27,10 +27,4 @@ export class PagenumberService {
   setBackRoute(backRoute) {
     this.backRouteSource.next(backRoute);
   }
-  getNeedSetPageNumber() {
-    return this.needSetPageNumber;
-  }
-  setNeedSetPageNumber(needSet: boolean) {
-    this.needSetPageNumber = needSet;
-  }
 }

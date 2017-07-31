@@ -12,7 +12,7 @@ import { PagenumberService } from '../shared/pagenumber.service';
   templateUrl: './listentry.component.html',
   styleUrls: ['./listentry.component.css']
 })
-export class ListentryComponent implements OnInit, AfterViewInit {
+export class ListentryComponent implements OnInit {
   @Input() entryType: string;
   @Output() userUpdated = new EventEmitter();
   hits: any;
@@ -65,8 +65,5 @@ export class ListentryComponent implements OnInit, AfterViewInit {
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
-  }
-  ngAfterViewInit() {
-    console.log(this.dtElement.dtInstance);
   }
 }

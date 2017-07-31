@@ -24,6 +24,7 @@ export class ListContainersComponent extends ToolLister {
   @Input() previewMode: boolean;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   verifiedLink: string;
+  toolsTable: any[] = new Array<any>();
   private pageNumberSubscription: Subscription;
   // TODO: make an API endpoint to retrieve only the necessary properties for the containers table
   // name, author, path, registry, gitUrl
@@ -32,7 +33,7 @@ export class ListContainersComponent extends ToolLister {
       {
         orderable: false,
         targets: [ 2, 3 ]
-      }
+      },
     ],
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
       const self = this;
@@ -67,7 +68,7 @@ export class ListContainersComponent extends ToolLister {
       this.pagenumberService.setBackRoute('containers');
     });
   }
-  sendToolInfo(tool, i) {
+  sendToolInfo(tool) {
     this.communicatorService.setTool(tool);
     this.containerService.setTool(tool);
   }
@@ -80,8 +81,24 @@ export class ListContainersComponent extends ToolLister {
     this.publishedTools = this.publishedTools.map(tool =>
       this.imageProviderService.setUpImageProvider(tool)
     );
+    if (this.previewMode) {
+      this.setPreviewTable();
+    } else {
+      this.toolsTable = this.publishedTools;
+    }
     this.dtTrigger.next();
     this.setupPageNumber();
+  }
+  setPreviewTable() {
+    this.dtOptions['searching'] = false;
+    this.dtOptions['paging'] = false;
+    this.dtOptions['bInfo'] = false;
+    /* TODO: this function should be modified so it will display the most important 10 (or less) items */
+    for (let i = 0; i < this.publishedTools.length; i++) {
+      if (i < 10) {
+        this.toolsTable.push(this.publishedTools[i]);
+      }
+    }
   }
   setupPageNumber() {
     this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
@@ -100,4 +117,5 @@ export class ListContainersComponent extends ToolLister {
   getVerified(tool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
+
 }

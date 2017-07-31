@@ -34,7 +34,6 @@ export class MyWorkflowsComponent implements OnInit {
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
-        console.log(workflow);
         this.selWorkflowObj = workflow;
         this.setIsFirstOpen();
       }
@@ -64,7 +63,6 @@ export class MyWorkflowsComponent implements OnInit {
     if (this.orgWorkflows && this.selWorkflowObj) {
       for (const orgObj of this.orgWorkflows) {
         if (this.containSelectedWorkflow(orgObj)) {
-          console.log('HOOOOOOOOAAAA~~~');
           orgObj.isFirstOpen = true;
           break;
         }
@@ -87,7 +85,6 @@ export class MyWorkflowsComponent implements OnInit {
   }
 
   refreshAllWorkflows(): any {
-    console.log('this happened');
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
 }
