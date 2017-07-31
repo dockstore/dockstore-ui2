@@ -16,8 +16,6 @@ export abstract class VersionSelector implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.onVersionChange(this.default);
-    console.log(this.versions);
-    console.log(this.default);
   }
 
   ngOnChanges(changeRecord) {
