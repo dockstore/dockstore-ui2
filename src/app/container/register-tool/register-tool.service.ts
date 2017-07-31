@@ -17,7 +17,7 @@ export class RegisterToolService {
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
     private selectedTool;
-
+    isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
         new Tool('GitHub', '', '/Dockerfile',
@@ -44,6 +44,10 @@ export class RegisterToolService {
         this.tool.next(newTool);
     }
 
+    setIsModalShown(isModalShown: boolean) {
+        this.isModalShown.next(isModalShown);
+    }
+
     setToolRegisterError(error: any) {
         let errorObj = null;
         if (error) {
@@ -67,7 +71,7 @@ export class RegisterToolService {
             this.setToolRegisterError(null);
             this.stateService.setRefreshing(true);
             this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
-                (<any>$('#registerContainerModal')).modal('toggle');
+                this.setIsModalShown(false);
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
                 this.stateService.setRefreshing(false);

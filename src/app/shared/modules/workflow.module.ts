@@ -1,3 +1,5 @@
+import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
+import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ContainersWebService } from './../webservice/containers-web.service';
 import { RefreshService } from './../refresh.service';
@@ -40,7 +42,6 @@ import { LaunchService } from '../../container/launch/launch.service';
 import { ContainerService } from '../container.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
-import { ViewService } from '../../container/view/view.service';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
 import { WorkflowService } from '../../shared/workflow.service';
@@ -57,7 +58,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchWorkflowComponent,
-    ViewWorkflowComponent
+    ViewWorkflowComponent,
+    VersionModalComponent
   ],
   imports: [
     CommonModule,
@@ -87,7 +89,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     FileService,
     ContainerService,
     LaunchService,
-    ViewService,
     DockerfileService,
     ParamfilesService,
     WorkflowService,
@@ -95,6 +96,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ContainersWebService,
     RefreshService,
     RegisterWorkflowModalService,
+    VersionModalService,
     WorkflowService,
     WorkflowWebService
   ],

@@ -2,7 +2,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
-import { Workflow } from './../../shared/models/Workflow';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 
@@ -11,9 +11,10 @@ export class RegisterWorkflowModalService {
     workflowRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     friendlyRepositoryKeys = ['GitHub', 'Bitbucket', 'GitLab'];
     descriptorTypes = ['cwl', 'wdl'];
-    sampleWorkflow: Workflow = new Workflow();
+    sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
     workflows: any;
+    isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowWebService: WorkflowWebService,
@@ -29,6 +30,10 @@ export class RegisterWorkflowModalService {
         this.workflowRegisterError.next(null);
     }
 
+    setIsModalShown(isModalShown: boolean) {
+        this.isModalShown.next(isModalShown);
+    }
+
     setWorkflowRegisterError(message: any, errorDetails) {
         const error = {
             message: message,
@@ -37,7 +42,16 @@ export class RegisterWorkflowModalService {
         this.workflowRegisterError.next(error);
     }
 
-    registerWorkflow(modal: ModalDirective) {
+    setWorkflow(workflow: Workflow) {
+        this.workflow.next(workflow);
+    }
+
+    setWorkflowRepository(repository) {
+        this.actualWorkflow.gitUrl = repository;
+        this.setWorkflow(this.actualWorkflow);
+    }
+
+    registerWorkflow(testParameterFilePath: string) {
         this.stateService.setRefreshing(true);
         this.workflowWebService.manualRegister(
             this.actualWorkflow.repository,
@@ -45,13 +59,18 @@ export class RegisterWorkflowModalService {
             this.actualWorkflow.workflow_path,
             this.actualWorkflow.workflowName,
             this.actualWorkflow.descriptorType).subscribe(result => {
-                this.workflowService.setWorkflow(result);
-                this.workflows.push(result);
-                this.workflowService.setWorkflows(this.workflows);
-                this.workflowService.setWorkflow(result);
-                this.stateService.setRefreshing(false);
-                modal.hide();
-                this.clearWorkflowRegisterError();
+                this.workflowWebService.refresh(result.id).subscribe(refreshResult => {
+                    this.workflows.push(refreshResult);
+                    this.workflowService.setWorkflows(this.workflows);
+                    this.workflowService.setWorkflow(refreshResult);
+                    for (const version of refreshResult.workflowVersions){
+                        this.workflowWebService.addTestParameterFiles(result.id, [testParameterFilePath], null, version.name)
+                        .subscribe();
+                    this.stateService.setRefreshing(false);
+                    this.setIsModalShown(false);
+                    this.clearWorkflowRegisterError();
+                    }
+                });
             }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                 'workflow, please ensure that the workflow attributes are ' +
                 'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +

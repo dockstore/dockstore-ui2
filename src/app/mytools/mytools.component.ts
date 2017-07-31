@@ -1,3 +1,5 @@
+import { Tool } from './../container/register-tool/tool';
+import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { RefreshService } from './../shared/refresh.service';
 import { Component, OnInit } from '@angular/core';
 import { CommunicatorService } from '../shared/communicator.service';
@@ -18,13 +20,13 @@ export class MyToolsComponent implements OnInit {
   tools: any;
   user: any;
   tool: any;
-  isInit = false;
+  private registerTool: Tool;
   constructor(private mytoolsService: MytoolsService,
     private communicatorService: CommunicatorService,
     private userService: UserService,
     private containerService: ContainerService,
-    private refreshService: RefreshService) {
-  }
+    private refreshService: RefreshService,
+    private registerToolService: RegisterToolService) {}
   ngOnInit() {
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {
@@ -53,6 +55,7 @@ export class MyToolsComponent implements OnInit {
           this.selectContainer(theFirstTool);
       }
     });
+    this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
   setIsFirstOpen() {
     if (this.nsContainers && this.tool) {
@@ -78,6 +81,18 @@ export class MyToolsComponent implements OnInit {
     this.tool = tool;
     this.containerService.setTool(tool);
     this.communicatorService.setTool(tool);
+  }
+
+  setModalGitPathAndImgPath(namespace: string) {
+    const namespaceArray = namespace.split('/');
+    const path = namespaceArray[1] + '/new_tool';
+    this.registerTool.gitPath = path;
+    this.registerTool.imagePath = path;
+    this.registerToolService.setTool(this.registerTool);
+  }
+
+  showRegisterToolModal() {
+    this.registerToolService.setIsModalShown(true);
   }
 
   refreshAllTools() {

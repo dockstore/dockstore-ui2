@@ -1,3 +1,5 @@
+import { RegisterToolService } from './../container/register-tool/register-tool.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -29,12 +31,14 @@ import { UsersWebService } from './../shared/webservice/users-web.service';
     HeaderModule,
     mytoolsRouting,
     AccordionModule.forRoot(),
+    ModalModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot()
   ],
   providers: [
     ContainerService,
-    UsersWebService
+    UsersWebService,
+    RegisterToolService
   ],
 })
 export class MyToolsModule {}

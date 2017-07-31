@@ -97,6 +97,13 @@
           <li>
             <strong tooltip="Path in Git repository to main descriptor file">Workflow Path</strong>: {{ workflow.workflow_path }}
           </li>
+          <li *ngIf="!isPublic">
+            <strong uib-tooltip-html="modeTooltip">Mode</strong>:
+            {{workflow?.mode}}
+            <a *ngIf="workflow?.mode !== 'STUB' && !workflow?.is_published && !refreshing" (click)="restubWorkflow()">
+              (Restub)
+            </a>
+          </li>
           <li>
             <strong tooltip="Type of descriptor language used">Descriptor Type</strong>: {{ workflow?.descriptorType }}
           </li>
