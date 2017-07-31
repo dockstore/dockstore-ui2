@@ -30,7 +30,7 @@
           </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <accordion-group *ngFor="let key of buckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+        <accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
           <div accordion-heading>
             {{friendlyNames.get(key)}}
             <span>
@@ -39,7 +39,30 @@
               </i>
             </span>
           </div>
-          <div *ngFor='let subBucket of buckets.get(key).keys(); let i = index'>
+          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
+            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+            </button>
+            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+            </button>
+          </div>
+          <div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>
+            <div class="panel-container-label" style="background-color: #e8eefd; color: #487980">
+              <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ mapFriendlyValueNames(key,subBucket) }}
+                  </span>
+              </div>
+              <div class="pull-right">
+                <p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>
+              </div>
+            </div>
+          </div>
+          <div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
@@ -49,24 +72,28 @@
                   </span>
                 </div>
                 <div class="pull-right">
-                  <p>({{ buckets.get(key).get(subBucket) }})</p>
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
                 </div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
-                  <span><input type="checkbox" (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ subBucket }}
+                  </span>
                 </div>
                 <div class="pull-right">
-                  <p>({{ buckets.get(key).get(subBucket) }})</p>
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="panel-container-label" *ngIf="buckets.get(key).size > 5">
+
+          <div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">
             <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
               <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
               <a>
-              {{ fullyExpandMap.get(key) ? 'Hide' : (buckets.get(key).size-5) + ' more'}}
+              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}
               </a>
             </span>
           </div>
@@ -107,14 +134,16 @@
         </span>
         </div>
           <tabset class="homeComponent" type="tabs">
-            <tab id="toolTab" [customClass]="browseToolsTab">
+            <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
               <ng-template tabHeading>
                 <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
                 Browse Tools
               </ng-template>
               <button type="button" style="width:100%; color: #2E629D; background-color: #aadeee;"
                       class="btn btn-info" (click)="clickTagCloudBtn('tool')">
-                {{showToolTagCloud ? 'Hide Tag Cloud' :  'Show Tag Cloud'}}</button>
+                <i [class]="showToolTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+                <span>Tag Cloud</span>
+              </button>
               <div class="tagCloud tool" *ngIf="showToolTagCloud">
                 <angular-tag-cloud
                   [data]="data"
@@ -127,10 +156,12 @@
               <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
               <app-listentry [entryType]="'tool'"></app-listentry>
             </tab>
-            <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+            <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab">
               <button type="button" style="width:100%; color: #198055; background-color: #aaeed2; border-color: #3fd999"
                       class="btn btn-info" (click)="clickTagCloudBtn('workflow')">
-                {{showWorkflowTagCloud ? 'Hide Tag Cloud' :  'Show Tag Cloud'}}</button>
+                <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+                <span>Tag Cloud</span>
+              </button>
               <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
                 <angular-tag-cloud
                   [data]="data2"

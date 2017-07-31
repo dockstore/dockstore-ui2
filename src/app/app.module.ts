@@ -1,6 +1,4 @@
-import { SearchModule } from './search/search.module';
-import { Configuration } from './shared/swagger/configuration';
-import { ApiModule } from './shared/swagger/api.module';
+import { SearchService } from './search/search.service';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
@@ -8,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -57,6 +54,7 @@ import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
 import { VersionsService } from './footer/versions.service';
+import { TwitterService } from './shared/twitter.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
@@ -67,11 +65,13 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import { SearchComponent } from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
+import { AdvancedSearchComponent } from './search/advancedsearch/advancedsearch.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 
@@ -81,6 +81,7 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     SponsorsComponent,
     NavbarComponent,
     HomeComponent,
+    SearchComponent,
     FooterComponent,
     HomeFootNoteComponent,
     ToolDetailsComponent,
@@ -92,6 +93,7 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     AuthComponent,
     TokensComponent,
     StarredEntriesComponent,
+    AdvancedSearchComponent,
     DownloadCLIClientComponent,
     SetupCompleteComponent
 ],
@@ -117,9 +119,8 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    MarkdownModule.forRoot(),
-    SearchModule,
-    ApiModule.forConfig(getApiConfig)
+    TagCloudModule,
+    MarkdownModule.forRoot()
   ],
   providers: [
     AuthService,
@@ -140,18 +141,11 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     CLIENT_ROUTER_PROVIDERS,
     StateService,
     UsersWebService,
-    VersionsService
+    SearchService,
+    VersionsService,
+    TwitterService
   ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
-}
-
-export const apiConfig = new Configuration({
-  accessToken: '',
-  basePath: ''
-});
-
-export function getApiConfig() {
-  return apiConfig;
 }
