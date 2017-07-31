@@ -8,8 +8,7 @@ import { Repository } from './../../shared/enum/Repository.enum';
 @Component({
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
-  styleUrls: ['./register-tool.component.css'],
-  providers: [RegisterToolService]
+  styleUrls: ['./register-tool.component.css']
 })
 export class RegisterToolComponent implements OnInit, AfterViewChecked {
   private toolRegisterError: boolean;
@@ -19,6 +18,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   private customDockerRegistryPath: string;
   private showCustomDockerRegistryPath: boolean;
   private refreshing: boolean;
+  private isModalShown: boolean;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -62,7 +62,16 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   clearToolRegisterError() {
-    return this.registerToolService.setToolRegisterError(null);
+    this.registerToolService.setToolRegisterError(null);
+  }
+
+  hideModal() {
+    this.registerToolService.setIsModalShown(false);
+    this.clearToolRegisterError();
+  }
+
+  showModal() {
+    this.registerToolService.setIsModalShown(true);
   }
 
   ngOnInit() {
@@ -72,6 +81,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
     this.stateService.refreshing.subscribe(status => this.refreshing = status);
+    this.registerToolService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 
   // Validation starts here, should move most of these to a service somehow

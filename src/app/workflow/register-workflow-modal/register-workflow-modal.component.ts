@@ -1,4 +1,4 @@
-import { Workflow } from './../../shared/models/Workflow';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { NgForm } from '@angular/forms';
 import { formErrors, validationPatterns, validationMessages } from './../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
@@ -14,18 +14,15 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   private formErrors = formErrors;
   private validationPatterns = validationPatterns;
   private workflow: Workflow;
+  private cwlTestParameterFilePath: string;
   private workflowRegisterError;
+  public isModalShown: boolean;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  @ViewChild('registerWorkflowModal') public registerWorkflowModal: ModalDirective;
-
   constructor(private registerWorkflowModalService: RegisterWorkflowModalService) {
-    this.registerWorkflowModalService.workflow.subscribe(workflow => this.workflow = workflow);
-    this.registerWorkflowModalService.workflowRegisterError.subscribe(
-      workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
-   }
+  }
 
   friendlyRepositoryKeys(): Array<string> {
     return this.registerWorkflowModalService.friendlyRepositoryKeys;
@@ -40,6 +37,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   ngOnInit() {
+    this.registerWorkflowModalService.workflow.subscribe(workflow => this.workflow = workflow);
+    this.registerWorkflowModalService.workflowRegisterError.subscribe(
+      workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
+    this.registerWorkflowModalService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -48,7 +49,15 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow(this.registerWorkflowModal);
+    this.registerWorkflowModalService.registerWorkflow(this.cwlTestParameterFilePath);
+  }
+
+  showModal() {
+    this.registerWorkflowModalService.setIsModalShown(true);
+  }
+
+  hideModal() {
+    this.registerWorkflowModalService.setIsModalShown(false);
   }
 
   formChanged() {
