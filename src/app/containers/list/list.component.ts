@@ -11,6 +11,7 @@ import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ToolLister } from '../../shared/tool-lister';
 import { PagenumberService } from '../../shared/pagenumber.service';
+import { PageInfo } from '../../shared/models/PageInfo';
 
 
 import { ListContainersService } from './list.service';
@@ -57,8 +58,12 @@ export class ListContainersComponent extends ToolLister {
   }
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      const realPgNumber = ((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10;
-      this.pagenumberService.setToolsPageNumber(Math.floor(realPgNumber));
+      console.log(dtInstance.search());
+      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10);
+      const pageInfo: PageInfo = new PageInfo();
+      pageInfo.pgNumber = realPgNumber;
+      pageInfo.searchQuery = dtInstance.search();
+      this.pagenumberService.setToolsPageInfo(pageInfo);
       this.pagenumberService.setBackRoute('containers');
     });
   }
@@ -80,11 +85,12 @@ export class ListContainersComponent extends ToolLister {
   }
   setupPageNumber() {
     this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
-      pageNum => {
-        if (pageNum) {
+      pageInfo => {
+        if (pageInfo) {
           if (this.dtElement) {
             this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.page(pageNum).draw(false);
+              dtInstance.search(pageInfo.searchQuery).draw(false);
+              dtInstance.page(pageInfo.pgNumber).draw(false);
             });
           }
         }

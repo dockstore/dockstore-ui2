@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild,  Output, EventEmitter} from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { SearchComponent } from '../search/search.component';
@@ -14,6 +14,7 @@ import { PagenumberService } from '../shared/pagenumber.service';
 })
 export class ListentryComponent implements OnInit, AfterViewInit {
   @Input() entryType: string;
+  @Output() userUpdated = new EventEmitter();
   hits: any;
   dtTrigger: Subject<any> = new Subject();
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
@@ -54,11 +55,11 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   }
   sendToolInfo(tool) {
     this.communicatorService.setTool(tool);
+    this.userUpdated.emit();
   }
   rerender(hits: any): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
-      // console.log(dtInstance.page.info().page);
       dtInstance.destroy();
       this.hits = hits;
       // Call the dtTrigger to rerender again

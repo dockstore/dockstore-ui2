@@ -2,6 +2,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {Injectable, OnInit} from '@angular/core';
 import { Router } from '@angular/router/';
 import { Subscription } from 'rxjs/Subscription';
+import { PageInfo } from './../shared/models/PageInfo';
 
 @Injectable()
 export class PagenumberService {
@@ -17,11 +18,11 @@ export class PagenumberService {
   constructor(private router: Router) {
     this.needSetPageNumber = false;
   }
-  setToolsPageNumber(pgnum: number) {
-    this.pgNumToolsSource.next(pgnum);
+  setToolsPageInfo(pginfo: PageInfo) {
+    this.pgNumToolsSource.next(pginfo);
   }
-  setWorkflowPageNumber(pgnum: number) {
-    this.pgNumWorkflowsSource.next(pgnum);
+  setWorkflowPageInfo(pginfo: PageInfo) {
+    this.pgNumWorkflowsSource.next(pginfo);
   }
   setBackRoute(backRoute) {
     this.backRouteSource.next(backRoute);

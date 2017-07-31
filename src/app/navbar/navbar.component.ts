@@ -8,6 +8,7 @@ import { Logout } from '../loginComponents/logout';
 import { TrackLoginService } from './../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
 import { PagenumberService } from './../shared/pagenumber.service';
+import { PageInfo } from './../shared/models/PageInfo';
 
 
 @Component({
@@ -29,7 +30,14 @@ export class NavbarComponent extends Logout {
     });
   }
   resetPageNumber() {
-    this.pagenumberService.setToolsPageNumber(0);
-    this.pagenumberService.setWorkflowPageNumber(0);
+    const toolPageInfo: PageInfo = new PageInfo();
+    toolPageInfo.pgNumber = 0;
+    toolPageInfo.searchQuery = '';
+
+    const workflowPageInfo: PageInfo = new PageInfo();
+    workflowPageInfo.pgNumber = 0;
+    workflowPageInfo.searchQuery = '';
+    this.pagenumberService.setToolsPageInfo(toolPageInfo);
+    this.pagenumberService.setWorkflowPageInfo(workflowPageInfo);
   }
 }

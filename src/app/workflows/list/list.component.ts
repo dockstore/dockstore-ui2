@@ -9,6 +9,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { WorkflowService } from '../../shared/workflow.service';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { PageInfo } from '../../shared/models/PageInfo';
 
 @Component({
   selector: 'app-list-workflows',
@@ -46,8 +47,11 @@ export class ListWorkflowsComponent extends ToolLister {
 
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      const realPgNumber = ((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10;
-      this.pagenumberService.setWorkflowPageNumber(Math.floor(realPgNumber));
+      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10);
+      const pageInfo: PageInfo = new PageInfo();
+      pageInfo.pgNumber = realPgNumber;
+      pageInfo.searchQuery = dtInstance.search();
+      this.pagenumberService.setWorkflowPageInfo((pageInfo));
       this.pagenumberService.setBackRoute('workflows');
     });
   }
@@ -59,11 +63,12 @@ export class ListWorkflowsComponent extends ToolLister {
 
   setupPageNumber() {
     this.pageNumberSubscription = this.pagenumberService.pgNumWorkflows$.subscribe(
-      pageNum => {
-        if (pageNum) {
+      pageInfo => {
+        if (pageInfo) {
           if (this.dtElement) {
             this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.page(pageNum).draw(false);
+              dtInstance.search(pageInfo.searchQuery).draw(false);
+              dtInstance.page(pageInfo.pgNumber).draw(false);
             });
           }
         }
