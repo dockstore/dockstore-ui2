@@ -412,6 +412,11 @@ export class SearchComponent implements OnInit {
   }
 
   openAdvancedSearch() {
+    if (this.values) {
+      const newAdvancedSearchObject = this.advancedSearchObject;
+      newAdvancedSearchObject.ORFilter = this.values;
+      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
+    }
     this.advancedSearchService.setShowModal(true);
   }
 

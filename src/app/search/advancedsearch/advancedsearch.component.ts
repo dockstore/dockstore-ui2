@@ -22,9 +22,7 @@ export class AdvancedSearchComponent implements OnInit {
       this.ORFilter = advancedSearch.ORFilter;
       this.NOTFilter = advancedSearch.NOTFilter;
     });
-    this.advancedSearchService.showModal$.subscribe((showModal: boolean) => {
-      this.isModalShown = showModal;
-    });
+    this.advancedSearchService.showModal$.subscribe((showModal: boolean) => this.isModalShown = showModal);
   }
 
   public onHidden(): void {
