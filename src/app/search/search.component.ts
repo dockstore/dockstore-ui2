@@ -1,3 +1,5 @@
+import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
+import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
@@ -7,6 +9,8 @@ import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { CategorySort } from '../shared/models/CategorySort';
+import { SubBucket } from '../shared/models/SubBucket';
 
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
@@ -43,6 +47,12 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
   private activeToolBar = true;
+  // Advanced Search
+  private toAdvancedSearch: boolean;
+  private NOTFilter: string;
+  private ANDNoSplitFilter: string;
+  private ANDSplitFilter: string;
+  private ORFilter: string;
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
@@ -142,7 +152,7 @@ export class SearchComponent implements OnInit {
       ['1', 'private'], ['0', 'public']
     ])],
     ['registry', new Map([
-      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub']
+      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
     ])]
   ]);
 
@@ -155,7 +165,8 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService, private searchService: SearchService) {
+  constructor(private providerService: ProviderService, private searchService: SearchService,
+    private advancedSearchService: AdvancedSearchService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
@@ -178,6 +189,14 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
+      this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+      this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
+      this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
+      this.ORFilter = advancedSearch.ORFilter;
+      this.NOTFilter = advancedSearch.NOTFilter;
+      this.toAdvancedSearch = advancedSearch.toAdvanceSearch;
+      this.onClick(null, null);
+    });
   }
   /**===============================================
    *                SetUp Functions
@@ -352,7 +371,7 @@ export class SearchComponent implements OnInit {
   appendFilter(body: any, aggKey: string): any {
     this.filters.forEach((value: Set<string>, key: string) => {
       value.forEach(insideFilter => {
-        if (aggKey === key && this.searchService.exclusiveFilters.indexOf(key) === -1) {
+        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
@@ -376,13 +395,31 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendQuery(body: any): any {
-    // if there is a description search
-    if (this.values.toString().length > 0) {
-      body = body.query('match', 'description', this.values);
+    if (this.toAdvancedSearch) {
+      if (this.ANDSplitFilter) {
+        const filters = this.ANDSplitFilter.split(' ');
+        filters.forEach(filter => body = body.query('term', 'description', filter));
+      }
+      if (this.ANDNoSplitFilter) {
+        body = body.query('term', 'description', this.ANDNoSplitFilter);
+      }
+      if (this.ORFilter) {
+        const filters = this.ORFilter.split(' ');
+        filters.forEach(filter => body = body.orQuery('term', 'description', filter));
+      }
+      if (this.NOTFilter) {
+        body = body.notQuery('terms', 'description', this.NOTFilter.split(' '));
+      }
+      return body;
     } else {
-      body = body.query('match_all', {});
+      // if there is a description search
+      if (this.values.toString().length > 0) {
+        body = body.query('match', 'description', this.values);
+      } else {
+        body = body.query('match_all', {});
+      }
+      return body;
     }
-    return body;
   }
 
   /**
@@ -575,7 +612,7 @@ export class SearchComponent implements OnInit {
     }
   }
   sortByAlphabet(orderedArray, orderMode): any {
-    orderedArray = orderedArray.sort(function (a, b) {
+    orderedArray = orderedArray.sort((a, b) => {
       if (orderMode) {
         return a.key > b.key ? 1 : -1;
       } else  {
@@ -586,7 +623,7 @@ export class SearchComponent implements OnInit {
   }
 
   sortByCount(orderedArray, orderMode): any {
-    orderedArray = orderedArray.sort(function (a, b) {
+    orderedArray = orderedArray.sort((a, b) => {
       if (a.value < b.value) {
         return !orderMode ? 1 : -1;
       } else if (a.value === b.value) {
@@ -630,20 +667,4 @@ export class SearchComponent implements OnInit {
       this.activeToolBar = true;
     }
   }
-}
-
-export class CategorySort {
-  SortBy: boolean; // true: Sort by count; false: Sort by alphabetical
-  CountOrderBy: boolean; // true: asc order; false: desc order
-  AlphabetOrderBy: boolean; // true: asc order; false: desc order
-  constructor(sortBy, countOrderBy, alphabetOrderBy) {
-    this.SortBy = sortBy;
-    this.CountOrderBy = countOrderBy;
-    this.AlphabetOrderBy = alphabetOrderBy;
-  }
-}
-
-export class SubBucket {
-  SelectedItems: Map<string, string> = new Map<string, string>();
-  Items: Map<string, string> = new Map<string, string>();
 }
