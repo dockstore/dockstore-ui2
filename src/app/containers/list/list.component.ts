@@ -59,7 +59,6 @@ export class ListContainersComponent extends ToolLister {
   }
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      console.log(dtInstance.search());
       const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10);
       const pageInfo: PageInfo = new PageInfo();
       pageInfo.pgNumber = realPgNumber;

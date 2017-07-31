@@ -63,8 +63,6 @@ export class RegisterToolService {
     }
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
-      console.log(newTool);
-      console.log(customDockerRegistryPath);
         this.setTool(newTool);
         const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
