@@ -1,3 +1,5 @@
+import { Configuration } from './shared/swagger/configuration';
+import { ApiModule } from './shared/swagger/api.module';
 import { SearchService } from './search/search.service';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
@@ -74,14 +76,13 @@ import { ListentryModule } from './listentry/listentry.module';
 import { AdvancedSearchComponent } from './search/advancedsearch/advancedsearch.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
-
+import { SearchModule } from './search/search.module';
 @NgModule({
   declarations: [
     AppComponent,
     SponsorsComponent,
     NavbarComponent,
     HomeComponent,
-    SearchComponent,
     FooterComponent,
     HomeFootNoteComponent,
     ToolDetailsComponent,
@@ -93,7 +94,6 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     AuthComponent,
     TokensComponent,
     StarredEntriesComponent,
-    AdvancedSearchComponent,
     DownloadCLIClientComponent,
     SetupCompleteComponent
 ],
@@ -120,7 +120,9 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     StargazersModule,
     ListentryModule,
     TagCloudModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    ApiModule.forConfig(getApiConfig),
+    SearchModule
   ],
   providers: [
     AuthService,
@@ -148,4 +150,13 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
+}
+
+export const apiConfig = new Configuration({
+  accessToken: '',
+  basePath: ''
+});
+
+export function getApiConfig() {
+  return apiConfig;
 }
