@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Doc } from '../doc.model';
 import { DocsService } from '../docs.service';
+import { TwitterService } from '../../shared/twitter.service';
 
 declare var Toc: any;
 
@@ -19,7 +20,8 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private docsService: DocsService) {
+              private docsService: DocsService,
+              private twitterService: TwitterService) {
   }
 
   getDoc(slug: string): Doc {
@@ -77,15 +79,7 @@ export class PageComponent implements OnInit, AfterViewInit {
         }, 200);
       });
       if (this.slug === 'blog') {
-        const doc = document;
-        const script = 'script';
-        const id = 'twitter-wjs';
-        let js: any;
-        const scriptElement = doc.getElementsByTagName(script)[0];
-        js = doc.createElement(script);
-        js.id = id;
-        js.src = 'https://platform.twitter.com/widgets.js';
-        scriptElement.parentNode.insertBefore(js, scriptElement);
+        this.twitterService.runScript();
       }
     }
   }
