@@ -21,6 +21,7 @@ enableProdMode();
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
+  private advancedSearchObject: AdvancedSearchObject;
 
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
@@ -191,6 +192,7 @@ export class SearchComponent implements OnInit {
     this.updateSideBar(this.initialQuery);
     this.updateResultsTable(this.initialQuery);
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+      this.advancedSearchObject = advancedSearch;
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
       this.ORFilter = advancedSearch.ORFilter;
@@ -407,6 +409,10 @@ export class SearchComponent implements OnInit {
       this.searchTerm = false;
     }
     this.onClick(null, null);
+  }
+
+  openAdvancedSearch() {
+    this.advancedSearchService.setShowModal(true);
   }
 
   /**

@@ -25,6 +25,9 @@
                      placeholder="Enter search term">
             </form>
           </div>
+          <button type="button" style="width: 90%; margin-bottom: 10px; background-color: #aaeed2; color: #198055; border-color: #3fd999" class="btn btn-success btn-sm center-block"
+            (click)="openAdvancedSearch()">Open Advanced Search
+          </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
         <accordion-group *ngFor="let key of buckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">

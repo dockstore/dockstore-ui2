@@ -11,9 +11,14 @@ export class AdvancedSearchService {
         NOTFilter: '',
         toAdvanceSearch: false
     });
+    showModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     constructor() { }
 
-    setAdvancedSearch(advancedSearch: AdvancedSearchObject) {
+    setAdvancedSearch(advancedSearch: AdvancedSearchObject): void {
         this.advancedSearch$.next(advancedSearch);
+    }
+
+    setShowModal(showModal: boolean): void {
+        this.showModal$.next(showModal);
     }
 }
