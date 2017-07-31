@@ -51,7 +51,7 @@
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
-                  <span><input type="checkbox" (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
+                  <span><input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/> {{ subBucket }}</span>
                 </div>
                 <div class="pull-right">
                   <p>({{ buckets.get(key).get(subBucket) }})</p>
@@ -115,7 +115,7 @@
                 </angular-tag-cloud>
               </div>
               <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-              <app-listentry [entryType]="'tool'"></app-listentry>
+              <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
             </tab>
             <tab id="workflowTab" [customClass]="browseWorkflowsTab">
               <button type="button" style="width:100%; color: #198055; background-color: #aaeed2; border-color: #3fd999"
@@ -135,7 +135,7 @@
                 Browse Workflows
               </ng-template>
               <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-              <app-listentry [entryType]="'workflow'"></app-listentry>
+              <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'workflow'"></app-listentry>
             </tab>
           </tabset>
       </div>

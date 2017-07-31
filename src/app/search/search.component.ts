@@ -92,7 +92,6 @@ export class SearchComponent implements OnInit {
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
   private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
-
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
 
@@ -188,9 +187,23 @@ export class SearchComponent implements OnInit {
     this.onClick(null, null);
   }
   ngOnInit() {
-    this.updateSideBar(this.initialQuery);
-    this.updateResultsTable(this.initialQuery);
-      this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+    this.searchService.searchInfo$.subscribe(
+      searchInfo => {
+        if (searchInfo) {
+          if (searchInfo.filter) {
+            this.filters = searchInfo.filter;
+          }
+          if (searchInfo.searchValues) {
+            this.values = searchInfo.searchValues;
+            this.searchTermBox.nativeElement.value = searchInfo.searchValues;
+          }
+          if (searchInfo.checkbox) {
+            this.checkboxMap = searchInfo.checkbox;
+          }
+        }
+        this.updateQuery();
+      });
+    this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
       this.ORFilter = advancedSearch.ORFilter;
@@ -204,10 +217,6 @@ export class SearchComponent implements OnInit {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     }
     return subBucket;
-  }
-  resetSearchTerm() {
-    this.searchTerm = false;
-    this.searchTermBox.nativeElement.value = '';
   }
   filterEntry() {
     this.workflowHits = [];
@@ -252,13 +261,16 @@ export class SearchComponent implements OnInit {
         this.buckets.set(key, new Map<string, string>());
         if (!this.setFilter) {
           this.fullyExpandMap.set(key, false);
-          this.checkboxMap.set(key, new Map<string, boolean>());
         }
       }
-      this.buckets.get(key).set(bucket.key, bucket.doc_count);
-      if (!this.setFilter) {
-        this.checkboxMap.get(key).set(bucket.key, false);
+      if (this.checkboxMap.get(key)) {
+        if (!this.checkboxMap.get(key).get(bucket.key)) {
+          this.checkboxMap.get(key).set(bucket.key, false);
+        }
+      } else {
+        this.checkboxMap.set(key, new Map<string, boolean>());
       }
+      this.buckets.get(key).set(bucket.key, bucket.doc_count);
     });
   }
 
@@ -285,8 +297,6 @@ export class SearchComponent implements OnInit {
     this.setFilter = true;
     this.retainZeroBuckets();
   }
-
-
   /**
    * For buckets that were checked earlier, retain them even if there is 0 hits.
    *
@@ -296,14 +306,15 @@ export class SearchComponent implements OnInit {
     this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
       value.forEach((innerValue: boolean, innerKey: string) => {
         if (innerValue) {
-          if (!this.buckets.get(key).get(innerKey)) {
-            this.buckets.get(key).set(innerKey, '0');
+          if (this.buckets.get(key)) {
+            if (!this.buckets.get(key).get(innerKey)) {
+              this.buckets.get(key).set(innerKey, '0');
+            }
           }
         }
       });
     });
   }
-
   /**
    * This handles selection of one filter, either taking it out from the list of active filters
    * or adding it if not present
@@ -341,7 +352,18 @@ export class SearchComponent implements OnInit {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.handleFilters(category, categoryValue);
     }
+    this.updateQuery();
+  }
 
+  saveSearchFilter() {
+    const searchInfo = {
+      filter: this.filters,
+      searchValues: this.values,
+      checkbox: this.checkboxMap
+    };
+    this.searchService.setSearchInfo(searchInfo);
+  }
+  updateQuery() {
     // calculate number of filters
     let count = 0;
     this.filters.forEach(filter => {
@@ -384,19 +406,24 @@ export class SearchComponent implements OnInit {
       this.filterEntry();
       this.toolSource.next(this.toolHits);
       this.workflowSource.next(this.workflowHits);
+      if (this.values.length > 0 && hits) {
+        this.searchTerm = true;
+      }
     });
   }
 
   resetFilters() {
     this.filters.clear();
+    this.values = '';
+    this.buckets.clear();
+    this.checkboxMap.clear();
     this.setFilter = false;
+    this.searchTerm = false;
+    this.searchTermBox.nativeElement.value = '';
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
-    this.values = '';
-    this.resetSearchTerm();
-    this.updateSideBar(this.initialQuery);
-    this.updateResultsTable(this.initialQuery);
+    this.searchService.setSearchInfo(null);
   }
   onKey(value: string) {
     /* TODO: might need to check for safety injection */
@@ -407,7 +434,6 @@ export class SearchComponent implements OnInit {
     }
     this.onClick(null, null);
   }
-
   /**
    * Append filters to a body builder object in order to add filter functionality to the overall elastic search query
    * This is used to add to query object as well as each individual aggregation

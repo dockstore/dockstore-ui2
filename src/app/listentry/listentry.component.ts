@@ -1,18 +1,20 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild,  Output, EventEmitter} from '@angular/core';
 import { Subject } from 'rxjs/Rx';
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import { SearchComponent } from '../search/search.component';
 import { DataTableDirective } from 'angular-datatables';
 import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
+import { PagenumberService } from '../shared/pagenumber.service';
 
 @Component({
   selector: 'app-listentry',
   templateUrl: './listentry.component.html',
   styleUrls: ['./listentry.component.css']
 })
-export class ListentryComponent implements OnInit, AfterViewInit {
+export class ListentryComponent implements OnInit {
   @Input() entryType: string;
+  @Output() userUpdated = new EventEmitter();
   hits: any;
   dtTrigger: Subject<any> = new Subject();
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
@@ -53,6 +55,7 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   }
   sendToolInfo(tool) {
     this.communicatorService.setTool(tool);
+    this.userUpdated.emit();
   }
   rerender(hits: any): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -62,8 +65,5 @@ export class ListentryComponent implements OnInit, AfterViewInit {
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
-  }
-  ngAfterViewInit() {
-    console.log(this.entryType);
   }
 }

@@ -57,6 +57,8 @@ import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
 import { VersionsService } from './footer/versions.service';
+import { PagenumberService } from './shared/pagenumber.service';
+import { SearchService } from './search/search.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
@@ -140,7 +142,9 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     CLIENT_ROUTER_PROVIDERS,
     StateService,
     UsersWebService,
-    VersionsService
+    SearchService,
+    VersionsService,
+    PagenumberService
   ],
   bootstrap: [ AppComponent ]
 })
