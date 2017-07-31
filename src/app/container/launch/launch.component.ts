@@ -13,6 +13,7 @@ import { ContainerService } from '../../shared/container.service';
 export class LaunchComponent extends DescriptorSelector {
 
   @Input() path;
+  @Input() toolname;
 
   params: string;
   cli: string;
@@ -35,9 +36,10 @@ export class LaunchComponent extends DescriptorSelector {
   }
 
   private changeMessages(toolPath: string, versionName: string) {
+    console.log(this.toolname);
     this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
-    this.cwl = this.launchService.getCwlString(toolPath, versionName);
+    this.cwl = this.launchService.getCwlString(toolPath, versionName, this.toolname);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
   }
 

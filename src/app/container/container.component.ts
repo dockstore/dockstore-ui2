@@ -59,6 +59,7 @@ export class ContainerComponent extends Tool {
     this.starGazersClicked = !this.starGazersClicked;
   }
   setProperties() {
+    console.log(this.tool);
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path);

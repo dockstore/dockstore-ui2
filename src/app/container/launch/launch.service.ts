@@ -24,9 +24,13 @@ export class LaunchService {
     return `$ dockstore tool launch --entry ${ toolPath }:${ versionName } --json Dockstore.json` + descriptor;
   }
 
-  getCwlString(toolPath: string, versionName: string) {
+  getCwlString(toolPath: string, versionName: string, toolName: string) {
+    let encodeToolName = '';
+    if (toolName) {
+      encodeToolName = `${ encodeURIComponent('/' + toolName) }`;
+    }
     return '$ cwltool --non-strict ' +
-            `${ Dockstore.API_URI }/api/ga4gh/v1/tools/${ encodeURIComponent(toolPath) }` +
+            `${ Dockstore.API_URI }/api/ga4gh/v1/tools/${ encodeURIComponent(toolPath) }${encodeToolName}` +
             `/versions/${ encodeURIComponent(versionName) }/plain-CWL/descriptor Dockstore.json`;
   }
 
