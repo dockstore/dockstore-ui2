@@ -398,7 +398,13 @@ export class SearchComponent implements OnInit {
     this.onClick(null, null);
   }
 
-  openAdvancedSearch() {
+
+  /**
+   * Handles the clicking of the "Open Advanced Search" button
+   * This sets up and opens the advanced search modal
+   * @memberof SearchComponent
+   */
+  openAdvancedSearch(): void {
     if (this.values) {
       const newAdvancedSearchObject = this.advancedSearchObject;
       newAdvancedSearchObject.ORFilter = this.values;
