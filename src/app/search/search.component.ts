@@ -46,13 +46,6 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
 
-  // Advanced Search
-  private toAdvancedSearch: boolean;
-  private NOTFilter: string;
-  private ANDNoSplitFilter: string;
-  private ANDSplitFilter: string;
-  private ORFilter: string;
-
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
@@ -193,11 +186,6 @@ export class SearchComponent implements OnInit {
     this.updateResultsTable(this.initialQuery);
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
-      this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
-      this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
-      this.ORFilter = advancedSearch.ORFilter;
-      this.NOTFilter = advancedSearch.NOTFilter;
-      this.toAdvancedSearch = advancedSearch.toAdvanceSearch;
       this.onClick(null, null);
     });
   }
@@ -366,7 +354,6 @@ export class SearchComponent implements OnInit {
     const query2 = JSON.stringify(builtBody2);
     this.updateSideBar(query);
     this.updateResultsTable(query2);
-    console.log(query2);
   }
 
   /**
@@ -454,20 +441,20 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendQuery(body: any): any {
-    if (this.toAdvancedSearch) {
-      if (this.ANDSplitFilter) {
-        const filters = this.ANDSplitFilter.split(' ');
+    if (this.advancedSearchObject.toAdvanceSearch) {
+      if (this.advancedSearchObject.ANDSplitFilter) {
+        const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
         filters.forEach(filter => body = body.filter('term', 'description', filter));
       }
-      if (this.ANDNoSplitFilter) {
-        body = body.query('match_phrase', 'description', this.ANDNoSplitFilter);
+      if (this.advancedSearchObject.ANDNoSplitFilter) {
+        body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
       }
-      if (this.ORFilter) {
-        const filters = this.ORFilter.split(' ');
+      if (this.advancedSearchObject.ORFilter) {
+        const filters = this.advancedSearchObject.ORFilter.split(' ');
         body = body.filter('terms', 'description', filters);
       }
-      if (this.NOTFilter) {
-        const filters = this.NOTFilter.split(' ');
+      if (this.advancedSearchObject.NOTFilter) {
+        const filters = this.advancedSearchObject.NOTFilter.split(' ');
         body = body.notQuery('terms', 'description', filters);
       }
       return body;
@@ -483,7 +470,7 @@ export class SearchComponent implements OnInit {
   }
 
   appendORFilter(body: any) {
-    const filters = this.ORFilter.split(' ');
+    const filters = this.advancedSearchObject.ORFilter.split(' ');
     filters.forEach(filter => body = body.filter('term', 'description', filter));
     return body;
   }
