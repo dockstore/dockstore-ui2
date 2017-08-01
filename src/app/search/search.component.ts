@@ -48,7 +48,7 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
   private activeToolBar = true;
-  
+
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
