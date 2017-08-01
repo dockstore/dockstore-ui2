@@ -155,6 +155,7 @@ export class SearchComponent implements OnInit {
       ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
     ])]
   ]);
+  private nonverifiedcount: number;
 
   /**
    * The current text search
@@ -172,23 +173,23 @@ export class SearchComponent implements OnInit {
       apiVersion: '5.x',
       log: 'debug'
     });
-    const body = bodybuilder()
-      .aggregation('terms', '_type', { size: this.shard_size })
-      .aggregation('terms', 'registry', { size: this.shard_size })
-      .aggregation('terms', 'private_access', { size: this.shard_size })
-      .aggregation('terms', 'tags.verified', { size: this.shard_size })
-      .aggregation('terms', 'author', { size: this.shard_size })
-      .aggregation('terms', 'namespace', { size: this.shard_size })
-      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
-      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
-      .query('match_all', {})
-      .size(this.query_size);
-    // TODO: this needs to be improved, but this is the default "empty" query
-    this.initialQuery = JSON.stringify(body.build());
+    // const body = bodybuilder()
+    //   .aggregation('terms', '_type', { size: this.shard_size })
+    //   .aggregation('terms', 'registry', { size: this.shard_size })
+    //   .aggregation('terms', 'private_access', { size: this.shard_size })
+    //   .aggregation('terms', 'tags.verified', { size: this.shard_size })
+    //   .aggregation('terms', 'author', { size: this.shard_size })
+    //   .aggregation('terms', 'namespace', { size: this.shard_size })
+    //   .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
+    //   .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
+    //   .query('match_all', {})
+    //   .size(this.query_size);
+    // // TODO: this needs to be improved, but this is the default "empty" query
+    // this.initialQuery = JSON.stringify(body.build());
   }
   ngOnInit() {
-    this.updateSideBar(this.initialQuery);
-    this.updateResultsTable(this.initialQuery);
+    // this.updateSideBar(this.initialQuery);
+    // this.updateResultsTable(this.initialQuery);
       this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
@@ -218,14 +219,39 @@ export class SearchComponent implements OnInit {
             this.sortModeMap.set(key, sortby);
           }
         }
-      if (this.checkboxMap.get(key).get(bucket.key)) {
-        this.entryOrder.get(key).SelectedItems.set(bucket.key, bucket.doc_count);
-      } else {
-        this.entryOrder.get(key).Items.set(bucket.key, bucket.doc_count);
+      let doc_count = bucket.doc_count;
+      if (key === 'tags.verified' && !bucket.key) {
+        doc_count = this.nonverifiedcount;
+        console.log('NONVERFIED DOC_COUNT:~~~~~~~~~~~: ' + this.nonverifiedcount);
+      }
+      if (doc_count > 0) {
+        if (this.checkboxMap.get(key).get(bucket.key)) {
+          this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
+        } else {
+          this.entryOrder.get(key).Items.set(bucket.key, doc_count);
+        }
       }
       if (!this.setFilter) {
         this.checkboxMap.get(key).set(bucket.key, false);
       }
+    });
+  }
+
+  /* TODO: Not the best way to do it, for testing....*/
+  setupNonVerifiedBucketCount() {
+    let bodyNotVerified = bodybuilder().size(this.query_size);
+    bodyNotVerified = this.appendQuery(bodyNotVerified);
+    const key = 'tags.verified';
+    bodyNotVerified =  bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
+    bodyNotVerified = this.appendFilter(bodyNotVerified, null);
+    const builtBodyNotVerified = bodyNotVerified.build();
+    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: queryBodyNotVerified
+    }).then(nonVerifiedHits => {
+      this.nonverifiedcount = nonVerifiedHits.hits.total;
     });
   }
 
@@ -297,7 +323,6 @@ export class SearchComponent implements OnInit {
     }).then(hits => {
       this.setupAllBuckets(hits);
       this.setupOrderBuckets();
-
     });
   }
 
@@ -336,8 +361,9 @@ export class SearchComponent implements OnInit {
     this.values = '';
     this.resetSearchTerm();
     this.resetEntryOrder();
-    this.updateSideBar(this.initialQuery);
-    this.updateResultsTable(this.initialQuery);
+    this.onClick(null, null);
+    // this.updateSideBar(this.initialQuery);
+    // this.updateResultsTable(this.initialQuery);
   }
   resetSearchTerm() {
     this.searchTerm = false;
@@ -379,7 +405,11 @@ export class SearchComponent implements OnInit {
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-            body = body.filter('term', key, insideFilter);
+            if (key === 'tags.verified' && !insideFilter) {
+              body =  body.notFilter('term', key, !insideFilter);
+            } else {
+              body = body.filter('term', key, insideFilter);
+            }
           }
         }
       });
@@ -490,6 +520,7 @@ export class SearchComponent implements OnInit {
     const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
     const query2 = JSON.stringify(builtBody2);
+    this.setupNonVerifiedBucketCount();
     this.updateSideBar(query);
     this.updateResultsTable(query2);
   }
