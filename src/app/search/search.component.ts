@@ -103,7 +103,6 @@ export class SearchComponent implements OnInit {
 
   // Shows which of the buckets are current selected
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
-  private initialQuery: string;
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
@@ -173,23 +172,8 @@ export class SearchComponent implements OnInit {
       apiVersion: '5.x',
       log: 'debug'
     });
-    // const body = bodybuilder()
-    //   .aggregation('terms', '_type', { size: this.shard_size })
-    //   .aggregation('terms', 'registry', { size: this.shard_size })
-    //   .aggregation('terms', 'private_access', { size: this.shard_size })
-    //   .aggregation('terms', 'tags.verified', { size: this.shard_size })
-    //   .aggregation('terms', 'author', { size: this.shard_size })
-    //   .aggregation('terms', 'namespace', { size: this.shard_size })
-    //   .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
-    //   .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
-    //   .query('match_all', {})
-    //   .size(this.query_size);
-    // // TODO: this needs to be improved, but this is the default "empty" query
-    // this.initialQuery = JSON.stringify(body.build());
   }
   ngOnInit() {
-    // this.updateSideBar(this.initialQuery);
-    // this.updateResultsTable(this.initialQuery);
       this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
@@ -222,7 +206,6 @@ export class SearchComponent implements OnInit {
       let doc_count = bucket.doc_count;
       if (key === 'tags.verified' && !bucket.key) {
         doc_count = this.nonverifiedcount;
-        console.log('NONVERFIED DOC_COUNT:~~~~~~~~~~~: ' + this.nonverifiedcount);
       }
       if (doc_count > 0) {
         if (this.checkboxMap.get(key).get(bucket.key)) {
@@ -362,8 +345,6 @@ export class SearchComponent implements OnInit {
     this.resetSearchTerm();
     this.resetEntryOrder();
     this.onClick(null, null);
-    // this.updateSideBar(this.initialQuery);
-    // this.updateResultsTable(this.initialQuery);
   }
   resetSearchTerm() {
     this.searchTerm = false;
@@ -546,7 +527,6 @@ export class SearchComponent implements OnInit {
     }
   }
   clickSortMode(category: string, sortMode: boolean) {
-    // let orderedMap;
     let orderedMap2;
     if (this.sortModeMap.get(category).SortBy === sortMode) {
       let orderBy: boolean;
