@@ -1,3 +1,4 @@
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SearchService } from './search.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HeaderModule } from './../shared/modules/header.module';
@@ -25,6 +26,7 @@ import { ListentryModule } from '../listentry/listentry.module';
     HeaderModule,
     TagCloudModule,
     TabsModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   providers: [AdvancedSearchService, SearchService],
   exports: [SearchComponent]

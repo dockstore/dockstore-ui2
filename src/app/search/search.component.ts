@@ -23,6 +23,7 @@ enableProdMode();
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
+  private advancedSearchObject: AdvancedSearchObject;
 
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
@@ -47,12 +48,7 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
   private activeToolBar = true;
-  // Advanced Search
-  private toAdvancedSearch: boolean;
-  private NOTFilter: string;
-  private ANDNoSplitFilter: string;
-  private ANDSplitFilter: string;
-  private ORFilter: string;
+
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
@@ -180,6 +176,8 @@ export class SearchComponent implements OnInit {
       this.ORFilter = advancedSearch.ORFilter;
       this.NOTFilter = advancedSearch.NOTFilter;
       this.toAdvancedSearch = advancedSearch.toAdvanceSearch;
+      this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+      this.advancedSearchObject = advancedSearch;
       this.onClick(null, null);
     });
   }
@@ -352,6 +350,21 @@ export class SearchComponent implements OnInit {
     this.searchTerm = false;
     this.searchTermBox.nativeElement.value = '';
   }
+
+  /**
+   * Handles the clicking of the "Open Advanced Search" button
+   * This sets up and opens the advanced search modal
+   * @memberof SearchComponent
+   */
+  openAdvancedSearch(): void {
+    if (this.values) {
+      const newAdvancedSearchObject = this.advancedSearchObject;
+      newAdvancedSearchObject.ORFilter = this.values;
+      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
+    }
+    this.advancedSearchService.setShowModal(true);
+  }
+
   resetEntryOrder() {
     this.entryOrder.clear();
     this.entryOrder = new Map([
@@ -408,20 +421,21 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendQuery(body: any): any {
-    if (this.toAdvancedSearch) {
-      if (this.ANDSplitFilter) {
-        const filters = this.ANDSplitFilter.split(' ');
-        filters.forEach(filter => body = body.query('term', 'description', filter));
+    if (this.advancedSearchObject.toAdvanceSearch) {
+      if (this.advancedSearchObject.ANDSplitFilter) {
+        const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
+        filters.forEach(filter => body = body.filter('term', 'description', filter));
       }
-      if (this.ANDNoSplitFilter) {
-        body = body.query('term', 'description', this.ANDNoSplitFilter);
+      if (this.advancedSearchObject.ANDNoSplitFilter) {
+        body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
       }
-      if (this.ORFilter) {
-        const filters = this.ORFilter.split(' ');
-        filters.forEach(filter => body = body.orQuery('term', 'description', filter));
+      if (this.advancedSearchObject.ORFilter) {
+        const filters = this.advancedSearchObject.ORFilter.split(' ');
+        body = body.filter('terms', 'description', filters);
       }
-      if (this.NOTFilter) {
-        body = body.notQuery('terms', 'description', this.NOTFilter.split(' '));
+      if (this.advancedSearchObject.NOTFilter) {
+        const filters = this.advancedSearchObject.NOTFilter.split(' ');
+        body = body.notQuery('terms', 'description', filters);
       }
       return body;
     } else {
@@ -433,6 +447,12 @@ export class SearchComponent implements OnInit {
       }
       return body;
     }
+  }
+
+  appendORFilter(body: any) {
+    const filters = this.advancedSearchObject.ORFilter.split(' ');
+    filters.forEach(filter => body = body.filter('term', 'description', filter));
+    return body;
   }
 
   /**
