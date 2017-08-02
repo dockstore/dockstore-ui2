@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
-import { LaunchService } from '../../container/launch/launch.service';
+import { LaunchService } from '../launch/launch.service';
 import { ContainerService } from '../../shared/container.service';
 
 @Component({

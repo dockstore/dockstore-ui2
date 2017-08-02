@@ -72,7 +72,8 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
-      <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+<!--[toolname]="tool?.toolname" needs to be placed in the info-tab component or use the observable -->
       </tab>
       <tab id="labelsTab" heading="Labels" *ngIf="tool">
         <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
