@@ -220,7 +220,9 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  /* TODO: Not the best way to do it, for testing....*/
+  /** this function will get the actual count number of non-verified items,
+   * Not the best way to do it, try to improve this later.
+   * **/
   setupNonVerifiedBucketCount() {
     let bodyNotVerified = bodybuilder().size(this.query_size);
     bodyNotVerified = this.appendQuery(bodyNotVerified);
