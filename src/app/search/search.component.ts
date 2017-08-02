@@ -568,7 +568,7 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags.verified' || key === 'private_access') {
+    if (this.friendlyValueNames.has(key)) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {
       return subBucket;
