@@ -212,8 +212,12 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  /** this function will get the actual count number of non-verified items,
-   * Not the best way to do it, try to improve this later.
+  /** This function takes care of the problem of non-verified items containing the set of verified items.
+   * this function calls a third elastic query which will get the correct number count of the non-verified items
+   * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
+   *
+   * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
+   *
    * **/
   setupNonVerifiedBucketCount() {
     let bodyNotVerified = bodybuilder().size(this.query_size);
@@ -519,6 +523,7 @@ export class SearchComponent implements OnInit {
     const query2 = JSON.stringify(builtBody2);
     this.setupNonVerifiedBucketCount();
     this.updateSideBar(query);
+    console.log(query);
     this.updateResultsTable(query2);
   }
 
