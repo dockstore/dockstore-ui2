@@ -3,12 +3,13 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
-import { CommunicatorService } from '../shared/communicator.service';
 import { Component, OnInit, ViewChild, enableProdMode, ElementRef } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { CategorySort } from '../shared/models/CategorySort';
+import { SubBucket } from '../shared/models/SubBucket';
 
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
@@ -21,6 +22,7 @@ enableProdMode();
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
+  private advancedSearchObject: AdvancedSearchObject;
 
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
@@ -44,13 +46,7 @@ export class SearchComponent implements OnInit {
   private hits: Object[];
   private _client: Client;
   private shard_size = 10000;
-
-  // Advanced Search
-  private toAdvancedSearch: boolean;
-  private NOTFilter: string;
-  private ANDNoSplitFilter: string;
-  private ANDSplitFilter: string;
-  private ORFilter: string;
+  private activeToolBar = true;
 
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
@@ -91,13 +87,16 @@ export class SearchComponent implements OnInit {
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
-  private buckets: Map<string, Map<string, string>> = new Map<string, Map<string, string>>();
+  private orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
 
+  // Shows the sorting mode for the categories
+  // true: sort by count (default); false: sort by alphabet
+  private sortModeMap: Map<string, CategorySort> = new Map<string, CategorySort>();
+
   // Shows which of the buckets are current selected
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
-  private initialQuery: string;
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
@@ -128,6 +127,16 @@ export class SearchComponent implements OnInit {
     ['labels.value.keyword', 'Labels'],
     ['tags.verifiedSource', 'Verified Source'],
   ]);
+  private entryOrder = new Map([
+    ['_type', new SubBucket],
+    ['author', new SubBucket],
+    ['registry', new SubBucket],
+    ['namespace', new SubBucket],
+    ['labels.value.keyword', new SubBucket],
+    ['private_access', new SubBucket],
+    ['tags.verified', new SubBucket],
+    ['tags.verifiedSource', new SubBucket]
+  ]);
   private friendlyValueNames = new Map([
     ['tags.verified', new Map([
       ['1', 'verified'], ['0', 'non-verified']
@@ -149,42 +158,14 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService, private searchService: SearchService,
-    private advancedSearchService: AdvancedSearchService) {
+  constructor(private providerService: ProviderService,
+              private searchService: SearchService,
+              private advancedSearchService: AdvancedSearchService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
       log: 'debug'
     });
-    const body = bodybuilder()
-      .aggregation('terms', '_type', { size: this.shard_size })
-      .aggregation('terms', 'registry', { size: this.shard_size })
-      .aggregation('terms', 'private_access', { size: this.shard_size })
-      .aggregation('terms', 'tags.verified', { size: this.shard_size })
-      .aggregation('terms', 'author', { size: this.shard_size })
-      .aggregation('terms', 'namespace', { size: this.shard_size })
-      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
-      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
-      .query('match_all', {})
-      .size(this.query_size);
-    // TODO: this needs to be improved, but this is the default "empty" query
-    this.initialQuery = JSON.stringify(body.build());
-  }
-  switchExpandAll() {
-    this.expandAll = !this.expandAll;
-  }
-  clickTagCloudBtn(type: string) {
-    if (type === 'tool') {
-      this.showToolTagCloud = !this.showToolTagCloud;
-    } else {
-      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
-    }
-  }
-  logClicked(clicked: CloudData) {
-    this.searchTerm = true;
-    this.values = clicked.text;
-    this.searchTermBox.nativeElement.value = '';
-    this.onClick(null, null);
   }
   ngOnInit() {
     this.searchService.searchInfo$.subscribe(
@@ -200,54 +181,20 @@ export class SearchComponent implements OnInit {
           if (searchInfo.checkbox) {
             this.checkboxMap = searchInfo.checkbox;
           }
+          if (searchInfo.sortModeMap) {
+            this.sortModeMap = searchInfo.sortModeMap;
+          }
         }
         this.updateQuery();
       });
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
-      this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
-      this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
-      this.ORFilter = advancedSearch.ORFilter;
-      this.NOTFilter = advancedSearch.NOTFilter;
-      this.toAdvancedSearch = advancedSearch.toAdvanceSearch;
-      this.onClick(null, null);
+      this.advancedSearchObject = advancedSearch;
+      this.updateQuery();
     });
   }
-  mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags.verified' || key === 'private_access' || key === 'registry') {
-      return this.friendlyValueNames.get(key).get(subBucket.toString());
-    }
-    return subBucket;
-  }
-  filterEntry() {
-    this.workflowHits = [];
-    this.toolHits = [];
-    for (const hit of this.hits) {
-      /**TODO: this is not good, make it faster.../
-       */
-      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (hit['_type'] === 'tool') {
-        this.toolHits.push(hit);
-      } else if (hit['_type'] === 'workflow') {
-        this.workflowHits.push(hit);
-      }
-    }
-  }
-
-  /**
-   * This ugly function looks at what hits came back from a search and creates
-   * data structures (buckets) needed for displaying the side bar information
-   * @param value
-   */
-  updateSideBar(value: string) {
-    this._client.search({
-      index: 'tools',
-      type: 'entry',
-      body: value
-    }).then(hits => {
-      this.setupAllBuckets(hits);
-    });
-  }
-
+  /**===============================================
+   *                SetUp Functions
+   * ==============================================*/
   /**
    * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
    * based on one set of the hit's buckets to update the search view
@@ -257,21 +204,36 @@ export class SearchComponent implements OnInit {
    */
   setupBuckets(key, buckets: any) {
     buckets.forEach(bucket => {
-      if (this.buckets.get(key) == null) {
-        this.buckets.set(key, new Map<string, string>());
-        if (!this.setFilter) {
-          this.fullyExpandMap.set(key, false);
+      if (!this.setFilter) {
+        this.fullyExpandMap.set(key, false);
+      }
+      if (buckets.length > 10) {
+        if (!this.sortModeMap.get(key)) {
+          const sortby: CategorySort = new CategorySort(true, false, true);
+          this.sortModeMap.set(key, sortby);
         }
       }
       if (this.checkboxMap.get(key)) {
         if (!this.checkboxMap.get(key).get(bucket.key)) {
           this.checkboxMap.get(key).set(bucket.key, false);
+          this.entryOrder.get(key).Items.set(bucket.key, bucket.doc_count);
+        } else if (this.checkboxMap.get(key).get(bucket.key)) {
+          this.entryOrder.get(key).SelectedItems.set(bucket.key, bucket.doc_count);
         }
       } else {
         this.checkboxMap.set(key, new Map<string, boolean>());
       }
-      this.buckets.get(key).set(bucket.key, bucket.doc_count);
     });
+  }
+
+  setupOrderBuckets() {
+    this.entryOrder.forEach(
+      (value, key) => {
+        if (value.Items.size > 0 || value.SelectedItems.size > 0) {
+          this.orderedBuckets.set(key, value);
+        }
+      });
+    this.retainZeroBuckets();
   }
 
   /**
@@ -295,7 +257,6 @@ export class SearchComponent implements OnInit {
         }
       });
     this.setFilter = true;
-    this.retainZeroBuckets();
   }
   /**
    * For buckets that were checked earlier, retain them even if there is 0 hits.
@@ -305,64 +266,29 @@ export class SearchComponent implements OnInit {
   retainZeroBuckets() {
     this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
       value.forEach((innerValue: boolean, innerKey: string) => {
-        if (innerValue) {
-          if (this.buckets.get(key)) {
-            if (!this.buckets.get(key).get(innerKey)) {
-              this.buckets.get(key).set(innerKey, '0');
-            }
+        if (innerValue && this.orderedBuckets.get(key)) {
+          if (!this.orderedBuckets.get(key).SelectedItems.get(innerKey)) {
+            this.orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
           }
         }
       });
     });
-  }
-  /**
-   * This handles selection of one filter, either taking it out from the list of active filters
-   * or adding it if not present
-   * @param category
-   * @param categoryValue
-   */
-  handleFilters(category: string, categoryValue: string) {
-    if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
-      this.filters.get(category).delete(categoryValue);
-      // wipe out the category if empty
-      if (this.filters.get(category).size === 0) {
-        this.filters.delete(category);
-      }
-    } else {
-      if (!this.filters.has(category)) {
-        this.filters.set(category, new Set<string>());
-      }
-      this.filters.get(category).add(categoryValue);
-    }
-  }
-
-  clickExpand(key: string) {
-    const isExpanded = this.fullyExpandMap.get(key);
-    this.fullyExpandMap.set(key, !isExpanded);
-  }
-
-  /**
-   * This handles clicking a facet and doing the search
-   * @param category
-   * @param categoryValue
-   */
-  onClick(category: string, categoryValue: string) {
-    if (category !== null && categoryValue !== null) {
-      const checked = this.checkboxMap.get(category).get(categoryValue);
-      this.checkboxMap.get(category).set(categoryValue, !checked);
-      this.handleFilters(category, categoryValue);
-    }
-    this.updateQuery();
   }
 
   saveSearchFilter() {
     const searchInfo = {
       filter: this.filters,
       searchValues: this.values,
-      checkbox: this.checkboxMap
+      checkbox: this.checkboxMap,
+      sortModeMap: this.sortModeMap
     };
     this.searchService.setSearchInfo(searchInfo);
   }
+
+  /**===============================================
+   *                Update Functions
+   * ==============================================e
+   */
   updateQuery() {
     // calculate number of filters
     let count = 0;
@@ -379,13 +305,24 @@ export class SearchComponent implements OnInit {
     let body2 = bodybuilder().size(this.query_size);
     body2 = this.appendQuery(body2);
     body2 = this.appendFilter(body2, null);
-    this.buckets.clear();
+    this.resetEntryOrder();
     const builtBody = body.build();
     const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
     const query2 = JSON.stringify(builtBody2);
     this.updateSideBar(query);
     this.updateResultsTable(query2);
+  }
+
+  updateSideBar(value: string) {
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: value
+    }).then(hits => {
+      this.setupAllBuckets(hits);
+      this.setupOrderBuckets();
+    });
   }
 
   /**
@@ -409,14 +346,19 @@ export class SearchComponent implements OnInit {
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
+      this.setTabActive();
     });
   }
 
+  /**===============================================
+   *                Reset Functions
+   * ==============================================
+   */
   resetFilters() {
     this.filters.clear();
     this.values = '';
-    this.buckets.clear();
     this.checkboxMap.clear();
+    this.sortModeMap.clear();
     this.setFilter = false;
     this.searchTerm = false;
     this.searchTermBox.nativeElement.value = '';
@@ -424,16 +366,27 @@ export class SearchComponent implements OnInit {
     this.workflowHits = [];
     this.toolHits = [];
     this.searchService.setSearchInfo(null);
+    this.resetEntryOrder();
   }
-  onKey(value: string) {
-    /* TODO: might need to check for safety injection */
-    this.values = value;
-    this.searchTerm = true;
-    if ((!value || 0 === value.length)) {
-      this.searchTerm = false;
-    }
-    this.onClick(null, null);
+
+  resetEntryOrder() {
+    this.entryOrder.clear();
+    this.entryOrder = new Map([
+      ['_type', new SubBucket],
+      ['author', new SubBucket],
+      ['registry', new SubBucket],
+      ['namespace', new SubBucket],
+      ['labels.value.keyword', new SubBucket],
+      ['private_access', new SubBucket],
+      ['tags.verified', new SubBucket],
+      ['tags.verifiedSource', new SubBucket]
+    ]);
+    this.orderedBuckets.clear();
   }
+  /**===============================================
+   *                Append Functions
+   * ==============================================
+   */
   /**
    * Append filters to a body builder object in order to add filter functionality to the overall elastic search query
    * This is used to add to query object as well as each individual aggregation
@@ -468,31 +421,37 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendQuery(body: any): any {
-    if (this.toAdvancedSearch) {
-      if (this.ANDSplitFilter) {
-        const filters = this.ANDSplitFilter.split(' ');
-        filters.forEach(filter => body = body.query('term', 'description', filter));
-      }
-      if (this.ANDNoSplitFilter) {
-        body = body.query('term', 'description', this.ANDNoSplitFilter);
-      }
-      if (this.ORFilter) {
-        const filters = this.ORFilter.split(' ');
-        filters.forEach(filter => body = body.orQuery('term', 'description', filter));
-      }
-      if (this.NOTFilter) {
-        body = body.notQuery('terms', 'description', this.NOTFilter.split(' '));
-      }
-      return body;
+    if (this.values.toString().length > 0) {
+      body = body.query('match', 'description', this.values);
     } else {
-      // if there is a description search
-      if (this.values.toString().length > 0) {
-        body = body.query('match', 'description', this.values);
-      } else {
-        body = body.query('match_all', {});
-      }
-      return body;
+      body = body.query('match_all', {});
     }
+    if (this.advancedSearchObject) {
+      if (this.advancedSearchObject.toAdvanceSearch) {
+        if (this.advancedSearchObject.ANDSplitFilter) {
+          const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
+          filters.forEach(filter => body = body.filter('term', 'description', filter));
+        }
+        if (this.advancedSearchObject.ANDNoSplitFilter) {
+          body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
+        }
+        if (this.advancedSearchObject.ORFilter) {
+          const filters = this.advancedSearchObject.ORFilter.split(' ');
+          body = body.filter('terms', 'description', filters);
+        }
+        if (this.advancedSearchObject.NOTFilter) {
+          const filters = this.advancedSearchObject.NOTFilter.split(' ');
+          body = body.notQuery('terms', 'description', filters);
+        }
+      }
+    }
+    return body;
+  }
+
+  appendORFilter(body: any) {
+    const filters = this.advancedSearchObject.ORFilter.split(' ');
+    filters.forEach(filter => body = body.filter('term', 'description', filter));
+    return body;
   }
 
   /**
@@ -506,14 +465,230 @@ export class SearchComponent implements OnInit {
   appendAggregations(count: number, body: any): any {
     // go through buckets
     this.bucketStubs.forEach(key => {
+      const order = this.parseOrderBy(key);
       if (count > 0) {
         body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size });
+          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order});
         });
       } else {
-        body = body.agg('terms', key, key, { size: this.shard_size });
+        body = body.agg('terms', key, key, { size: this.shard_size, order});
       }
     });
     return body;
+  }
+
+  /**===============================================
+   *                Event Functions
+   * ==============================================
+   */
+  onKey(value: string) {
+    /* TODO: might need to check for safety injection */
+    this.values = value;
+    this.searchTerm = true;
+    if ((!value || 0 === value.length)) {
+      this.searchTerm = false;
+    }
+    this.updateQuery();
+  }
+  /**
+   * This handles clicking a facet and doing the search
+   * @param category
+   * @param categoryValue
+   */
+  onClick(category: string, categoryValue: string) {
+    if (category !== null && categoryValue !== null) {
+      const checked = this.checkboxMap.get(category).get(categoryValue);
+      this.checkboxMap.get(category).set(categoryValue, !checked);
+      this.handleFilters(category, categoryValue);
+    }
+    this.updateQuery();
+  }
+  /**
+   * Handles the clicking of the "Open Advanced Search" button
+   * This sets up and opens the advanced search modal
+   * @memberof SearchComponent
+   */
+  openAdvancedSearch(): void {
+    if (this.values) {
+      const newAdvancedSearchObject = this.advancedSearchObject;
+      newAdvancedSearchObject.ORFilter = this.values;
+      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
+    }
+    this.advancedSearchService.setShowModal(true);
+  }
+  clickExpand(key: string) {
+    const isExpanded = this.fullyExpandMap.get(key);
+    this.fullyExpandMap.set(key, !isExpanded);
+  }
+  logClicked(clicked: CloudData) {
+    this.searchTerm = true;
+    this.values = clicked.text;
+    this.searchTermBox.nativeElement.value = '';
+    this.onClick(null, null);
+  }
+  switchExpandAll() {
+    this.expandAll = !this.expandAll;
+  }
+  clickTagCloudBtn(type: string) {
+    if (type === 'tool') {
+      this.showToolTagCloud = !this.showToolTagCloud;
+    } else {
+      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
+    }
+  }
+  clickSortMode(category: string, sortMode: boolean) {
+    let orderedMap2;
+    if (this.sortModeMap.get(category).SortBy === sortMode) {
+      let orderBy: boolean;
+      if (this.sortModeMap.get(category).SortBy) { // Sort by Count
+        orderBy = this.sortModeMap.get(category).CountOrderBy;
+        this.sortModeMap.get(category).CountOrderBy = !orderBy;
+      } else  {
+        orderBy = this.sortModeMap.get(category).AlphabetOrderBy;
+        this.sortModeMap.get(category).AlphabetOrderBy = !orderBy;
+      }
+    }
+    if (sortMode) {
+      /* Reorder the bucket map by count */
+      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
+                                           this.sortModeMap.get(category).CountOrderBy);
+    } else {
+      /* Reorder the bucket map by alphabet */
+      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
+                                           this.sortModeMap.get(category).AlphabetOrderBy);
+    }
+    this.orderedBuckets.get(category).Items = orderedMap2;
+    this.sortModeMap.get(category).SortBy = sortMode;
+  }
+  /**===============================================
+   *                Helper Functions
+   * ==============================================
+   */
+  mapFriendlyValueNames(key, subBucket) {
+    if (key === 'tags.verified' || key === 'private_access') {
+      return this.friendlyValueNames.get(key).get(subBucket.toString());
+    } else {
+      return subBucket;
+    }
+  }
+  filterEntry() {
+    this.workflowHits = [];
+    this.toolHits = [];
+    for (const hit of this.hits) {
+      /**TODO: this is not good, make it faster.../
+       */
+      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+      if (hit['_type'] === 'tool') {
+        this.toolHits.push(hit);
+      } else if (hit['_type'] === 'workflow') {
+        this.workflowHits.push(hit);
+      }
+    }
+  }
+  parseOrderBy(key): any {
+    let order: any;
+    if (this.sortModeMap.has(key)) {
+      switch (this.sortModeMap.get(key).SortBy) {
+        case true: {
+          order = {
+            _count: this.sortModeMap.get(key).CountOrderBy ? 'asc' : 'desc'
+          };
+          break;
+        }
+        case false: {
+          order = {
+            _term: this.sortModeMap.get(key).AlphabetOrderBy ? 'asc' : 'desc'
+          };
+          break;
+        }
+        default: {
+          order = {
+            _count: 'desc'
+          };
+          break;
+        }
+      }
+    } else {
+      order = {
+        _count: 'desc'
+      };
+    }
+    return order;
+  }
+  /**
+   * This handles selection of one filter, either taking it out from the list of active filters
+   * or adding it if not present
+   * @param category
+   * @param categoryValue
+   */
+  handleFilters(category: string, categoryValue: string) {
+    if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
+      this.filters.get(category).delete(categoryValue);
+      // wipe out the category if empty
+      if (this.filters.get(category).size === 0) {
+        this.filters.delete(category);
+      }
+    } else {
+      if (!this.filters.has(category)) {
+        this.filters.set(category, new Set<string>());
+      }
+      this.filters.get(category).add(categoryValue);
+    }
+  }
+  sortByAlphabet(orderedArray, orderMode): any {
+    orderedArray = orderedArray.sort((a, b) => {
+      if (orderMode) {
+        return a.key > b.key ? 1 : -1;
+      } else  {
+        return a.key < b.key ? 1 : -1;
+      }
+    });
+    return orderedArray;
+  }
+
+  sortByCount(orderedArray, orderMode): any {
+    orderedArray = orderedArray.sort((a, b) => {
+      if (a.value < b.value) {
+        return !orderMode ? 1 : -1;
+      } else if (a.value === b.value) {
+        return a.key > b.key ? 1 : -1;
+      } else {
+        return !orderMode ? -1 : 1;
+      }
+    });
+    return orderedArray;
+  }
+
+  sortCategoryValue (valueMap: any, sortMode: boolean, orderMode: boolean): any {
+    let orderedArray = <any>[];
+    valueMap.forEach(
+      (value, key) => {
+        orderedArray.push(
+          {
+            key: key,
+            value: value
+          });
+      });
+    if (!sortMode) {
+      orderedArray = this.sortByAlphabet(orderedArray, orderMode);
+    } else {
+      orderedArray = this.sortByCount(orderedArray, orderMode);
+    };
+    const tempMap: Map<string, string> = new Map<string, string>();
+    orderedArray.forEach(
+      entry => {
+        tempMap.set(entry.key, entry.value);
+      });
+    return tempMap;
+  }
+
+  setTabActive() {
+    if (this.toolHits.length === 0 && this.workflowHits.length > 0) {
+      this.activeToolBar = false;
+    } else if (this.workflowHits.length === 0 && this.toolHits.length > 0) {
+      this.activeToolBar = true;
+    } else {
+      this.activeToolBar = true;
+    }
   }
 }

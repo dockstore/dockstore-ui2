@@ -1,4 +1,3 @@
-import { SearchModule } from './search/search.module';
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
 import { StateService } from './shared/state.service';
@@ -8,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -59,6 +57,7 @@ import { LogoutService } from './shared/logout.service';
 import { VersionsService } from './footer/versions.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { SearchService } from './search/search.service';
+import { TwitterService } from './shared/twitter.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
@@ -69,14 +68,16 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import { SearchComponent } from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
+import { AdvancedSearchComponent } from './search/advancedsearch/advancedsearch.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
-
+import { SearchModule } from './search/search.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -119,6 +120,7 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
+    TagCloudModule,
     MarkdownModule.forRoot(),
     SearchModule,
     ApiModule.forConfig(getApiConfig)
@@ -144,7 +146,8 @@ import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomple
     UsersWebService,
     SearchService,
     VersionsService,
-    PagenumberService
+    PagenumberService,
+    TwitterService
   ],
   bootstrap: [ AppComponent ]
 })

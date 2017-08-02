@@ -3,9 +3,18 @@
     <div *ngIf="selectedDoc">
     <!-- main content area -->
     <div class="col-md-9">
-
+      <div *ngIf="slug === 'blog'">
+        <h1>Twitter Timeline</h1>
+        <a class="twitter-timeline"
+           data-width="650"
+           data-height="500"
+           data-theme="light"
+           href="https://twitter.com/DockstoreOrg">
+          Tweets by DockstoreOrg
+        </a>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
         <div id="markdown" Markdown [path]="selectedDoc?.getPath()"></div>
-
     </div>
     <!-- sidebar, which will move to the top on a small screen -->
     <div class="col-md-3">

@@ -54,25 +54,38 @@
     </div>
   </div>
 </div>
-<div class="container" style="padding-top:30px;">
-  <tabset class="homeComponent" type="tabs">
-    <tab id="toolTab" [customClass]="browseToolsTab">
-      <ng-template tabHeading>
-        <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
-        Browse Tools
-      </ng-template>
-      <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-      <app-list-containers [previewMode]="true"></app-list-containers>
-    </tab>
-    <tab id="workflowTab" [customClass]="browseWorkflowsTab">
-      <ng-template tabHeading>
-        <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
-        Browse Workflows
-      </ng-template>
-      <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-      <app-list-workflows [previewMode]="true"></app-list-workflows>
-    </tab>
-  </tabset>
+<div class="container mainScreen" #mainScreen>
+  <div class="row">
+    <div class="col-md-9">
+        <tabset class="homeComponent" type="tabs">
+          <tab id="toolTab" [customClass]="browseToolsTab">
+            <ng-template tabHeading>
+              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+              Browse Tools
+            </ng-template>
+            <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+            <app-list-containers [previewMode]="true"></app-list-containers>
+          </tab>
+          <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+            <ng-template tabHeading>
+              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+              Browse Workflows
+            </ng-template>
+            <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+            <app-list-workflows [previewMode]="true"></app-list-workflows>
+          </tab>
+        </tabset>
+    </div>
+    <div class="col-md-3 twitter">
+        <a class="twitter-timeline"
+           data-theme="light"
+           data-height="800"
+           href="https://twitter.com/DockstoreOrg">
+          Tweets by DockstoreOrg
+        </a>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+  </div>
 </div>
 
 <app-home-foot-note></app-home-foot-note>

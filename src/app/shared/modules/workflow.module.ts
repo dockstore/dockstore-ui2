@@ -14,7 +14,6 @@ import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 import { StarringModule } from '../../starring/starring.module';
-
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -38,7 +37,7 @@ import { ParamfilesModule } from '../modules/paramfiles.module';
 import { SelectModule } from '../modules/select.module';
 import { DagModule } from './../../workflow/dag/dag.module';
 /* Service */
-import { LaunchService } from '../../container/launch/launch.service';
+import { LaunchService } from '../../workflow/launch/launch.service';
 import { ContainerService } from '../container.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
