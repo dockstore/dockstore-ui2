@@ -339,7 +339,6 @@ export class SearchComponent implements OnInit {
     this.resetSearchTerm();
     this.resetEntryOrder();
     this.advancedSearchService.clear();
-    // this.onClick(null, null);
   }
   resetSearchTerm() {
     this.searchTerm = false;
