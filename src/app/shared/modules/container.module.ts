@@ -1,3 +1,5 @@
+import { InfoTabService } from './../../container/info-tab/info-tab.service';
+import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { WorkflowWebService } from './../webservice/workflow-web.service';
@@ -61,7 +63,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ParamfilesComponent,
     ModalComponent,
     AddTagComponent,
-    VersionModalComponent
+    VersionModalComponent,
+    InfoTabComponent
   ],
   imports: [
     ButtonsModule.forRoot(),
@@ -100,7 +103,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     RegisterToolService,
     WorkflowService,
     StarringService,
-    VersionModalService
+    VersionModalService,
+    InfoTabService
   ],
   exports: [
     ContainerComponent
