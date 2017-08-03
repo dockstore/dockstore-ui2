@@ -51,6 +51,8 @@ export class MyWorkflowsComponent implements OnInit {
       if (this.orgWorkflows && this.orgWorkflows.length > 0) {
         const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
         this.selectWorkflow(theFirstWorkflow);
+      } else {
+        this.selectWorkflow(null);
       }
     });
   }

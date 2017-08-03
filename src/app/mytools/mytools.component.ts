@@ -46,6 +46,8 @@ export class MyToolsComponent implements OnInit {
       if (this.nsContainers && this.nsContainers.length > 0) {
         const theFirstTool = this.nsContainers[0].containers[0];
         this.selectContainer(theFirstTool);
+      } else {
+        this.selectContainer(null);
       }
     }
     );

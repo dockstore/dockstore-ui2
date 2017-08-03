@@ -1,6 +1,5 @@
 <app-header>
-  <img src="../assets/images/dockstore/dockstore-workflows-purple.png">
-  My Workflows
+  <img src="../assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
   <div class="pull-right refresh-all-holder">
     <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllWorkflows()">
       Refresh All Workflows
@@ -8,6 +7,25 @@
   </div>
 </app-header>
 <div class="container padding-top">
+  <div class="row" *ngIf="orgWorkflows?.length == 0">
+    <div class="col-md-12">
+      <div class="alert alert-info" role="alert">
+        <p>
+          <span class="glyphicon glyphicon-info-sign"></span>
+          There are currently no workflows registered under this account, to add your first workflow, do one of the following:
+        </p>
+        <ul>
+          <li>
+            Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Workflows will be synchronized
+            in the linking process.
+          </li>
+          <li>
+            Press the 'Register Workflow' button to manually add a workflow.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <!--Tool Content Page-->
   <div class="row">
     <div class="col-md-3 containers-rsb">
@@ -15,33 +33,29 @@
         <accordion-group *ngFor="let orgObj of orgWorkflows" panelClass="containers-accordion" [heading]="orgObj?.organization" [isOpen]="orgObj?.isFirstOpen">
           <div *ngFor="let workflowObj of orgObj?.workflows">
             <div class="panel-container-label" [ngClass]="{selected: selWorkflowObj.id === workflowObj.id}">
-                  <div class="container-name-oflw pull-left"
-                       title="{{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}">
-                    <a style="cursor: pointer;" (click)="selectWorkflow(workflowObj)">
-                      {{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}
-                    </a>
-                  </div>
-                  <div class="pull-right">
-                    <span class="label"
-                          [ngClass]="workflowObj?.is_published ? 'label-primary' : 'label-warning'">
-                    {{ workflowObj?.is_published ? 'PUB' : 'UNPUB'}}
-                    </span>
-                  </div>
+              <div class="container-name-oflw pull-left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}">
+                <a style="cursor: pointer;" (click)="selectWorkflow(workflowObj)">
+                  {{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}
+                </a>
+              </div>
+              <div class="pull-right">
+                <span class="label" [ngClass]="workflowObj?.is_published ? 'label-primary' : 'label-warning'">
+                  {{ workflowObj?.is_published ? 'PUB' : 'UNPUB'}}
+                </span>
+              </div>
             </div>
           </div>
-          <button type="button"
-                    class="btn btn-primary btn-xs pull-right add-container-ns"
-                    (click)="setModalGitURL(orgObj?.organization + '/new_workflow'); showModal()">
-              <span class="glyphicon glyphicon-plus"></span>
-            </button>
+          <button type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitURL(orgObj?.organization + '/new_workflow'); showModal()">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
         </accordion-group>
       </accordion>
       <div>
-      <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showModal()">Register Workflow</button>
+        <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showModal()">Register Workflow</button>
       </div>
       <app-register-workflow-modal></app-register-workflow-modal>
     </div>
-    <div class="col-md-9 containers-rsb">
+    <div *ngIf="workflow" class="col-md-9 containers-rsb">
       <app-workflow [isWorkflowPublic]="false"></app-workflow>
     </div>
   </div>
