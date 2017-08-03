@@ -84,6 +84,6 @@
     <markdown [data]="tool?.description || 'No description associated with this container.'"></markdown>
   </div>
   <div *ngIf="validVersions">
-    <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path"></app-launch>
+    <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
   </div>
 </div>
