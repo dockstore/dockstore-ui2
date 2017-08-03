@@ -18,7 +18,6 @@ export class ContainerService {
   setTool(tool: any) {
     this.toolSource.next(tool);
   }
-
   setTools(tools: any) {
     this.tools.next(tools);
   }
@@ -26,6 +25,20 @@ export class ContainerService {
   addToTools(tools: any, tool: any) {
     tools.push(tool);
     this.tools.next(tools);
+  }
+
+  /**
+   * This function replaces the tool inside of tools with an updated tool
+   *
+   * @param {*} tools the current set of tools
+   * @param {*} newTool the new tool we are replacing
+   * @memberof ContainerService
+   */
+  replaceTool(tools: any, newTool) {
+    const oldTool = tools.find(x => x.id === newTool.id);
+    const index = tools.indexOf(oldTool);
+    tools[index] = newTool;
+    this.setTools(tools);
   }
 
   setNsContainers(tools: any) {

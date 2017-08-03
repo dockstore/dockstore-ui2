@@ -94,7 +94,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   editTag() {
-    console.log('Editing tag...');
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       this.paramfilesService.putFiles(this.tool.id, newCWL, this.version.name, 'CWL').subscribe();

@@ -1,0 +1,75 @@
+<ul class="list-unstyled container-info" *ngIf="workflow">
+  <li *ngIf="workflow?.path">
+    <strong tooltip="Complete path of workflow, used as a unique identifier">
+      Path
+    </strong>: {{ workflow?.path}}
+  </li>
+  <li *ngIf="workflow?.provider && workflow?.providerUrl">
+    <strong tooltip="Git repository for the associated descriptors">
+      {{ workflow?.provider}}
+    </strong>:
+    <a [href]="workflow?.providerUrl">
+      {{ workflow?.providerUrl }}
+    </a>
+  </li>
+  <li *ngIf="workflow?.author">
+    <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
+  </li>
+  <li *ngIf="workflow?.email">
+    <strong tooltip="E-mail of corresponding author for workflow">E-mail</strong>:
+    <a href="mailto:{{workflow?.email}}">
+      {{ workflow?.email }}
+    </a>
+  </li>
+  <li *ngIf="workflow?.workflow_path">
+    <form #editWorkflowPathForm="ngForm" class="form-inline">
+      <div class="form-group">
+        <strong tooltip="Path in Git repository to main descriptor file">Workflow Path: </strong>
+        <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
+        <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
+          name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
+      </div>
+      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        (click)="toggleEditWorkflowPath()">
+        <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
+        {{ workflowPathEditing ? 'Save' : 'Edit' }}
+      </button>
+    </form>
+  </li>
+  <li *ngIf="!isPublic">
+    <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
+    <a *ngIf="workflow?.mode !== 'STUB' && !workflow?.is_published && !refreshing" (click)="restubWorkflow()">
+      (Restub)
+    </a>
+  </li>
+  <li>
+    <div *ngIf="!isPublic">
+      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
+      <select (change)="save()" [(ngModel)]="workflow.descriptorType">
+        <option value="cwl">cwl</option>
+        <option value="wdl">wdl</option>
+      </select>
+    </div>
+    <div *ngIf="isPublic">
+      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ workflow?.descriptorType }}</div>
+  </li>
+</ul>
+<div *ngIf="workflow">
+  <div *ngIf="workflow?.description || !isPublic">
+    <label tooltip="Description of workflow obtained from workflow descriptor">
+      Description
+    </label>
+    <div *ngIf="workflow?.description" class="well well-sm">
+      <markdown [data]="workflow?.description"></markdown>
+    </div>
+    <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
+      <span class = "glyphicon glyphicon-warning-sign"></span>
+      <span ng-show="!containerObj.description">
+                No description associated with this workflow. See <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+              </span>
+    </div>
+  </div>
+  <div *ngIf="validVersions">
+    <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="workflow?.path"></app-launch>
+  </div>
+</div>

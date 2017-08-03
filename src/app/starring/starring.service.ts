@@ -9,7 +9,6 @@ export class StarringService {
   constructor(private httpService: HttpService,
               private authService: AuthService) { }
   setUnstar(entryID: number, entryType: string): any {
-    console.log('setUnstar');
     const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/unstar`;
     return this.httpService.delete(url);
   }

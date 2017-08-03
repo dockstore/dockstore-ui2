@@ -22,6 +22,7 @@ export class RegisterWorkflowModalService {
         private stateService: StateService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
+        this.sampleWorkflow.workflowName = '';
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }

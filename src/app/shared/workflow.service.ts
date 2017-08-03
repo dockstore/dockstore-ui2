@@ -1,3 +1,4 @@
+import { Workflow } from './swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 
@@ -19,6 +20,20 @@ export class WorkflowService {
 
   setWorkflows(workflows: any) {
     this.workflows$.next(workflows);
+  }
+
+  /**
+   * This function replaces the workflow inside of workflows with an updated workflow
+   *
+   * @param {*} workflows the current set of workflows
+   * @param {*} newWorkflow the new workflow we are replacing
+   * @memberof WorkflowService
+   */
+  replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) {
+    const oldTool = workflows.find(x => x.id === newWorkflow.id);
+    const index = workflows.indexOf(oldTool);
+    workflows[index] = newWorkflow;
+    this.setWorkflows(workflows);
   }
 
   setNsWorkflows(nsWorkflows: any) {

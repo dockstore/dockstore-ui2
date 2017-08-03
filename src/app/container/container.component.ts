@@ -123,7 +123,7 @@ export class ContainerComponent extends Tool {
   };
 
   refresh() {
-    this.refreshService.refreshContainer();
+    this.refreshService.refreshTool();
   }
 
   resetContainerEditData() {
