@@ -1,6 +1,5 @@
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
-import { SearchService } from './search/search.service';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
 import { NgModule } from '@angular/core';
@@ -19,7 +18,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 /* External Modules */
 import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
-import { TagCloudModule } from 'angular-tag-cloud-module';
 import { MarkdownModule } from 'angular2-markdown';
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -56,6 +54,8 @@ import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
 import { VersionsService } from './footer/versions.service';
+import { PagenumberService } from './shared/pagenumber.service';
+import { SearchService } from './search/search.service';
 import { TwitterService } from './shared/twitter.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
@@ -117,10 +117,9 @@ import { SearchModule } from './search/search.module';
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    TagCloudModule,
     MarkdownModule.forRoot(),
-    ApiModule.forConfig(getApiConfig),
-    SearchModule
+    SearchModule,
+    ApiModule.forConfig(getApiConfig)
   ],
   providers: [
     AuthService,
@@ -143,6 +142,7 @@ import { SearchModule } from './search/search.module';
     UsersWebService,
     SearchService,
     VersionsService,
+    PagenumberService,
     TwitterService
   ],
   bootstrap: [ AppComponent ]

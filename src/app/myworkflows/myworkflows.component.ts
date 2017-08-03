@@ -33,6 +33,12 @@ export class MyWorkflowsComponent implements OnInit {
   }
   ngOnInit() {
     this.workflowService.setWorkflow(null);
+    this.workflowService.workflow$.subscribe(
+      workflow => {
+        this.selWorkflowObj = workflow;
+        this.setIsFirstOpen();
+      }
+    );
     this.userService.getUser().subscribe(user => {
       this.user = user;
       this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
@@ -53,6 +59,26 @@ export class MyWorkflowsComponent implements OnInit {
         this.selectWorkflow(theFirstWorkflow);
       }
     });
+  }
+  setIsFirstOpen() {
+    if (this.orgWorkflows && this.selWorkflowObj) {
+      for (const orgObj of this.orgWorkflows) {
+        if (this.containSelectedWorkflow(orgObj)) {
+          orgObj.isFirstOpen = true;
+          break;
+        }
+      }
+    }
+  }
+  containSelectedWorkflow(orgObj) {
+    let containWorkflow = false;
+    for (const workflow of orgObj.workflows) {
+      if (workflow.id === this.selWorkflowObj.id) {
+        containWorkflow = true;
+        break;
+      }
+    }
+    return containWorkflow;
   }
   selectWorkflow(workflow) {
     this.selWorkflowObj = workflow;

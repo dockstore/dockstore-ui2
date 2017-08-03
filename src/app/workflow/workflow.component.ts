@@ -156,6 +156,6 @@ export class WorkflowComponent extends Tool {
   }
 
   refresh() {
-    this.refreshService.refreshWorkflow(this.workflow.id);
+    this.refreshService.refreshWorkflow();
   }
 }

@@ -1,6 +1,5 @@
 <div class="separation">
-  <div *ngIf="displayTable">
-    <table datatable [dtOptions]="dtOptions" class="table row-border hover">
+    <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table row-border hover">
       <thead>
         <tr>
           <th>Name</th>
@@ -10,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let tool of publishedTools">
+        <tr *ngFor="let tool of toolsTable">
           <td>
             <a (click)="sendToolInfo(tool)" [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name +
               (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
@@ -43,7 +42,7 @@
         </tr>
       </tbody>
       <!--Moved outside tbody because it interferes with Angular-Datatables library-->
-      <tr *ngIf="previewMode && publishedTools.length > 0">
+      <tr *ngIf="previewMode && toolsTable.length > 0">
         <td colspan="4" class="browse-all">
           <div class="button">
             <p><a href="/tools">Browse All Tools &raquo;</a></p>
@@ -54,5 +53,4 @@
         </td>
       </tr>
     </table>
-  </div>
 </div>

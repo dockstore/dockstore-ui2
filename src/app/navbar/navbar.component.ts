@@ -7,6 +7,8 @@ import { LogoutService } from './../shared/logout.service';
 import { Logout } from '../loginComponents/logout';
 import { TrackLoginService } from './../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
+import { PagenumberService } from './../shared/pagenumber.service';
+import { PageInfo } from './../shared/models/PageInfo';
 
 
 @Component({
@@ -16,11 +18,26 @@ import { UserService } from './../loginComponents/user.service';
 })
 export class NavbarComponent extends Logout {
   private user;
-  constructor (trackLoginService: TrackLoginService, logoutService: LogoutService, router: Router, userService: UserService) {
+  constructor (private pagenumberService: PagenumberService,
+               trackLoginService: TrackLoginService,
+               logoutService: LogoutService,
+               router: Router,
+               userService: UserService) {
     super(trackLoginService, logoutService, router);
     userService.getUser().subscribe(user => userService.setUser(user));
     userService.user$.subscribe(user => {
       this.user = user;
     });
+  }
+  resetPageNumber() {
+    const toolPageInfo: PageInfo = new PageInfo();
+    toolPageInfo.pgNumber = 0;
+    toolPageInfo.searchQuery = '';
+
+    const workflowPageInfo: PageInfo = new PageInfo();
+    workflowPageInfo.pgNumber = 0;
+    workflowPageInfo.searchQuery = '';
+    this.pagenumberService.setToolsPageInfo(toolPageInfo);
+    this.pagenumberService.setWorkflowPageInfo(workflowPageInfo);
   }
 }
