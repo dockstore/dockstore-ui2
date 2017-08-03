@@ -18,7 +18,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 /* External Modules */
 import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
-import { TagCloudModule } from 'angular-tag-cloud-module';
 import { MarkdownModule } from 'angular2-markdown';
 /* External Services */
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -68,13 +67,11 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
-import { SearchComponent } from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
-import { AdvancedSearchComponent } from './search/advancedsearch/advancedsearch.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 import { SearchModule } from './search/search.module';
@@ -120,7 +117,6 @@ import { SearchModule } from './search/search.module';
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    TagCloudModule,
     MarkdownModule.forRoot(),
     SearchModule,
     ApiModule.forConfig(getApiConfig)
