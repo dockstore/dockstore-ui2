@@ -67,13 +67,11 @@ import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
-import { SearchComponent } from './search/search.component';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
-import { AdvancedSearchComponent } from './search/advancedsearch/advancedsearch.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 import { SearchModule } from './search/search.module';
@@ -100,6 +98,7 @@ import { SearchModule } from './search/search.module';
   imports: [
     BrowserModule,
     FormsModule,
+    MarkdownModule.forRoot(),
     HttpModule,
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
@@ -119,10 +118,8 @@ import { SearchModule } from './search/search.module';
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    TagCloudModule,
-    MarkdownModule.forRoot(),
-    ApiModule.forConfig(getApiConfig),
-    SearchModule
+    SearchModule,
+    ApiModule.forConfig(getApiConfig)
   ],
   providers: [
     AuthService,
