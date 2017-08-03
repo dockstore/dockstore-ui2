@@ -148,6 +148,7 @@ export class SearchComponent implements OnInit {
       ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
     ])]
   ]);
+  private nonverifiedcount: number;
 
   /**
    * The current text search
@@ -213,16 +214,46 @@ export class SearchComponent implements OnInit {
           this.sortModeMap.set(key, sortby);
         }
       }
+      let doc_count = bucket.doc_count;
+      if (key === 'tags.verified' && !bucket.key) {
+        doc_count = this.nonverifiedcount;
+      }
       if (this.checkboxMap.get(key)) {
-        if (!this.checkboxMap.get(key).get(bucket.key)) {
-          this.checkboxMap.get(key).set(bucket.key, false);
-          this.entryOrder.get(key).Items.set(bucket.key, bucket.doc_count);
-        } else if (this.checkboxMap.get(key).get(bucket.key)) {
-          this.entryOrder.get(key).SelectedItems.set(bucket.key, bucket.doc_count);
+        if (doc_count > 0) {
+          if (!this.checkboxMap.get(key).get(bucket.key)) {
+            this.checkboxMap.get(key).set(bucket.key, false);
+            this.entryOrder.get(key).Items.set(bucket.key, doc_count);
+          } else if (this.checkboxMap.get(key).get(bucket.key)) {
+            this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
+          }
         }
       } else {
         this.checkboxMap.set(key, new Map<string, boolean>());
       }
+    });
+  }
+
+  /** This function takes care of the problem of non-verified items containing the set of verified items.
+   * this function calls a third elastic query which will get the correct number count of the non-verified items
+   * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
+   *
+   * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
+   *
+   * **/
+  setupNonVerifiedBucketCount() {
+    let bodyNotVerified = bodybuilder().size(this.query_size);
+    bodyNotVerified = this.appendQuery(bodyNotVerified);
+    const key = 'tags.verified';
+    bodyNotVerified =  bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
+    bodyNotVerified = this.appendFilter(bodyNotVerified, null);
+    const builtBodyNotVerified = bodyNotVerified.build();
+    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: queryBodyNotVerified
+    }).then(nonVerifiedHits => {
+      this.nonverifiedcount = nonVerifiedHits.hits.total;
     });
   }
 
@@ -310,6 +341,7 @@ export class SearchComponent implements OnInit {
     const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
     const query2 = JSON.stringify(builtBody2);
+    this.setupNonVerifiedBucketCount();
     this.updateSideBar(query);
     this.updateResultsTable(query2);
   }
@@ -367,6 +399,7 @@ export class SearchComponent implements OnInit {
     this.toolHits = [];
     this.searchService.setSearchInfo(null);
     this.resetEntryOrder();
+    this.advancedSearchService.clear();
   }
 
   resetEntryOrder() {
@@ -405,7 +438,11 @@ export class SearchComponent implements OnInit {
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-            body = body.filter('term', key, insideFilter);
+            if (key === 'tags.verified' && !insideFilter) {
+              body =  body.notFilter('term', key, !insideFilter);
+            } else {
+              body = body.filter('term', key, insideFilter);
+            }
           }
         }
       });
@@ -565,7 +602,7 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags.verified' || key === 'private_access') {
+    if (this.friendlyValueNames.has(key)) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {
       return subBucket;
