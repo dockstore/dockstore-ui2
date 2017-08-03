@@ -71,12 +71,12 @@
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <ul class="list-unstyled container-info" *ngIf="workflow">
-          <li>
+          <li *ngIf="workflow?.path">
             <strong tooltip="Complete path of workflow, used as a unique identifier">
               Path
             </strong>: {{ workflow?.path}}
           </li>
-          <li>
+          <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong tooltip="Git repository for the associated descriptors">
               {{ workflow?.provider}}
             </strong>:
@@ -84,18 +84,17 @@
               {{ workflow?.providerUrl }}
             </a>
           </li>
-          <li>
-            <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author || 'n/a' }}
+          <li *ngIf="workflow?.author">
+            <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
           </li>
-          <li>
+          <li *ngIf="workflow?.email">
             <strong tooltip="E-mail of corresponding author for workflow">E-mail</strong>:
-            <span *ngIf="!workflow?.email">n/a</span>
-            <a *ngIf="workflow?.email" href="mailto:{{workflow?.email}}">
+            <a href="mailto:{{workflow?.email}}">
               {{ workflow?.email }}
             </a>
           </li>
-          <li>
-            <strong tooltip="Path in Git repository to main descriptor file">Workflow Path</strong>: {{ workflow.workflow_path }}
+          <li *ngIf="workflow?.workflow_path">
+            <strong tooltip="Path in Git repository to main descriptor file">Workflow Path</strong>: {{ workflow?.workflow_path }}
           </li>
           <li *ngIf="!isPublic">
             <strong uib-tooltip-html="modeTooltip">Mode</strong>:
@@ -104,16 +103,24 @@
               (Restub)
             </a>
           </li>
-          <li>
+          <li *ngIf="workflow?.descriptorType">
             <strong tooltip="Type of descriptor language used">Descriptor Type</strong>: {{ workflow?.descriptorType }}
           </li>
         </ul>
         <div *ngIf="workflow">
-          <label tooltip="Description of workflow obtained from workflow descriptor">
-            Description
-          </label>
-          <div class="well well-sm">
-            <markdown [data]="workflow?.description || 'No description associated with this workflow.'"></markdown>
+          <div *ngIf="workflow?.description || !isWorkflowPublic">
+            <label tooltip="Description of workflow obtained from workflow descriptor">
+              Description
+            </label>
+            <div *ngIf="workflow?.description" class="well well-sm">
+              <markdown [data]="workflow?.description"></markdown>
+            </div>
+            <div *ngIf="!workflow?.description && !isWorkflowPublic" class="well well-sm">
+              <span class = "glyphicon glyphicon-warning-sign"></span>
+              <span ng-show="!containerObj.description">
+                No description associated with this workflow.  See <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+              </span>
+            </div>
           </div>
           <div *ngIf="validVersions">
             <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="workflow?.path"></app-launch>

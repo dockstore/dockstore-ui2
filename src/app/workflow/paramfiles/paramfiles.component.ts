@@ -4,6 +4,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
+import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -13,12 +14,14 @@ import { FileService } from '../../shared/file.service';
 export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
   @Input() id: number;
   content: string;
+
   contentHighlighted: boolean;
 
   constructor(private paramfilesService: ParamfilesService,
               private highlightJsService: HighlightJsService,
               private fileService: FileService,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef,
+              private workflowService: WorkflowService) {
     super();
   }
   getDescriptors(version): Array<any> {
@@ -30,7 +33,7 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
   }
 
   reactToFile(): void {
-    this.content = this.fileService.highlightCode(this.currentFile.content);
+    this.content = this.currentFile.content;
     this.contentHighlighted = true;
   }
 
@@ -39,5 +42,14 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
+  }
+  copyBtnSubscript(): void {
+    this.workflowService.copyBtn$.subscribe(
+      copyBtn => {
+        this.workflowCopyBtn = copyBtn;
+      });
+  }
+  workflowCopyBtnClick(copyBtn): void {
+    this.workflowService.setCopyBtn(copyBtn);
   }
 }

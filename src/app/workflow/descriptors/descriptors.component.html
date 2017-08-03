@@ -11,7 +11,12 @@
       &nbsp;A Descriptor File associated with this Docker container could not be found.
     </alert>
   </div>
-  <div *ngIf="!this.nullDescriptors">
-    <section *ngIf="content" [innerHTML]="content"></section>
+  <div *ngIf="!this.nullDescriptors" class="code-copy">
+    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content"
+            [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_descriptors_file'}"
+            (cbOnSuccess)="workflowCopyBtnClick('workflow_descriptors_file')">
+      <span class="glyphicon glyphicon-copy"></span>
+    </button>
+    <section *ngIf="content" [innerHTML]="fileService.highlightCode(content)"></section>
   </div>
 </div>

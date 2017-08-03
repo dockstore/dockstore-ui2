@@ -20,7 +20,6 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;
-
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private descriptorsService: DescriptorsService,
@@ -39,14 +38,23 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   }
 
   reactToFile(): void {
-    this.content = this.fileService.highlightCode(this.currentFile.content);
+    this.content = this.currentFile.content;
     this.contentHighlighted = true;
   }
 
   ngAfterViewChecked() {
-    if (this.contentHighlighted) {
+    if (this.contentHighlighted && !this.nullDescriptors) {
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
+  }
+  copyBtnSubscript(): void {
+    this.containerService.copyBtn$.subscribe(
+      copyBtn => {
+        this.toolCopyBtn = copyBtn;
+      });
+  }
+  toolCopyBtnClick(copyBtn): void {
+    this.containerService.setCopyBtn(copyBtn);
   }
 }

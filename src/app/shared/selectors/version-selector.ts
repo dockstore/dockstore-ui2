@@ -1,4 +1,5 @@
 import {Input, OnInit, OnChanges, OnDestroy} from '@angular/core';
+import {ContainerService} from '../container.service';
 
 export abstract class VersionSelector implements OnInit, OnChanges, OnDestroy {
 
@@ -6,8 +7,12 @@ export abstract class VersionSelector implements OnInit, OnChanges, OnDestroy {
   @Input() default;
 
   protected currentVersion;
+  protected workflowCopyBtn: string;
+  protected toolCopyBtn: string;
 
   abstract reactToVersion(): void;
+  abstract copyBtnSubscript(): void;
+  // constructor(private containerService: ContainerService) {}
 
   onVersionChange(version) {
     this.currentVersion = version;
@@ -16,6 +21,7 @@ export abstract class VersionSelector implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.onVersionChange(this.default);
+    this.copyBtnSubscript();
   }
 
   ngOnChanges(changeRecord) {
