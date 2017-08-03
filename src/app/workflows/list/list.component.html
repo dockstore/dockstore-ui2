@@ -1,6 +1,5 @@
 <div class="separation">
-  <div *ngIf="displayTable">
-    <table datatable class="table row-border hover">
+    <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table row-border hover">
       <thead>
         <tr>
           <th>Name</th>
@@ -10,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let workflow of publishedTools">
+        <tr *ngFor="let workflow of workflowsTable">
           <td>
             <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
           </td>
@@ -31,7 +30,7 @@
 
       </tbody>
       <!--Moved outside tbody because it interferes with Angular-Datatables library-->
-      <tr *ngIf="previewMode && publishedTools.length > 0">
+      <tr *ngIf="previewMode && workflowsTable.length > 0">
         <td colspan="4" class="browse-all">
           <div class="button">
             <p><a href="/workflows">Browse All Workflows &raquo;</a></p>
@@ -42,5 +41,4 @@
         </td>
       </tr>
     </table>
-  </div>
 </div>
