@@ -13,6 +13,7 @@ export class AdvancedSearchComponent implements OnInit {
   ANDSplitFilter: string;
   ORFilter: string;
   isModalShown: boolean;
+  searchMode = 'description';
   constructor(private advancedSearchService: AdvancedSearchService) { }
 
   ngOnInit() {
@@ -21,6 +22,7 @@ export class AdvancedSearchComponent implements OnInit {
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
       this.ORFilter = advancedSearch.ORFilter;
       this.NOTFilter = advancedSearch.NOTFilter;
+      this.searchMode = advancedSearch.searchMode;
     });
     this.advancedSearchService.showModal$.subscribe((showModal: boolean) => this.isModalShown = showModal);
   }
@@ -35,6 +37,7 @@ export class AdvancedSearchComponent implements OnInit {
       ANDSplitFilter: this.ANDSplitFilter,
       ORFilter: this.ORFilter,
       NOTFilter: this.NOTFilter,
+      searchMode: this.searchMode,
       toAdvanceSearch: true
     };
     this.advancedSearchService.setAdvancedSearch(advancedSearch);
@@ -47,9 +50,14 @@ export class AdvancedSearchComponent implements OnInit {
       ANDSplitFilter: '',
       ORFilter: '',
       NOTFilter: '',
+      searchMode: 'description',
       toAdvanceSearch: false
     };
     this.advancedSearchService.setAdvancedSearch(advancedSearch);
     this.onHidden();
+  }
+
+  switchSearchMode(searchMode): void {
+    this.searchMode = searchMode;
   }
 }

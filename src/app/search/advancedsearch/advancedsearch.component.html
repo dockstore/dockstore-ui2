@@ -8,7 +8,22 @@
         </button>
       </div>
       <div class="modal-body form-horizontal">
-        <p>Find tools and workflows with description that has...</p>
+        <p>Find tools and workflows with
+          <span class="btn-group" dropdown>
+             <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+               {{searchMode}} <span class="caret"></span>
+             </button>
+            <ul *dropdownMenu class="dropdown-menu" role="menu">
+              <li *ngIf="searchMode !== 'description'" role="menuitem">
+                <a class="dropdown-item" (click)="switchSearchMode('description')">description</a>
+              </li>
+              <li *ngIf="searchMode !== 'files'" role="menuitem">
+                <a class="dropdown-item" (click)="switchSearchMode('files')">files</a>
+              </li>
+            </ul>
+          </span>
+          that has...
+        </p>
         <div class="form-group form-group-sm">
           <label class="col-sm-4 col-md-4 col-lg-4 control-label">
             All these words:
