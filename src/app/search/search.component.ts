@@ -3,7 +3,6 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
-import { CommunicatorService } from '../shared/communicator.service';
 import { Component, OnInit, ViewChild, enableProdMode, ElementRef } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -89,7 +88,6 @@ export class SearchComponent implements OnInit {
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
   private orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
-
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
 
@@ -99,7 +97,6 @@ export class SearchComponent implements OnInit {
 
   // Shows which of the buckets are current selected
   private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
-  private initialQuery: string;
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
@@ -151,6 +148,7 @@ export class SearchComponent implements OnInit {
       ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
     ])]
   ]);
+  private nonverifiedcount: number;
 
   /**
    * The current text search
@@ -161,33 +159,38 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService, private searchService: SearchService,
-    private advancedSearchService: AdvancedSearchService) {
+  constructor(private providerService: ProviderService,
+              private searchService: SearchService,
+              private advancedSearchService: AdvancedSearchService) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
       log: 'debug'
     });
-    const body = bodybuilder()
-      .aggregation('terms', '_type', { size: this.shard_size })
-      .aggregation('terms', 'registry', { size: this.shard_size })
-      .aggregation('terms', 'private_access', { size: this.shard_size })
-      .aggregation('terms', 'tags.verified', { size: this.shard_size })
-      .aggregation('terms', 'author', { size: this.shard_size })
-      .aggregation('terms', 'namespace', { size: this.shard_size })
-      .aggregation('terms', 'labels.value.keyword', { size: this.shard_size })
-      .aggregation('terms', 'tags.verifiedSource', { size: this.shard_size })
-      .query('match_all', {})
-      .size(this.query_size);
-    // TODO: this needs to be improved, but this is the default "empty" query
-    this.initialQuery = JSON.stringify(body.build());
   }
   ngOnInit() {
-    this.updateSideBar(this.initialQuery);
-    this.updateResultsTable(this.initialQuery);
+    this.searchService.searchInfo$.subscribe(
+      searchInfo => {
+        if (searchInfo) {
+          if (searchInfo.filter) {
+            this.filters = searchInfo.filter;
+          }
+          if (searchInfo.searchValues) {
+            this.values = searchInfo.searchValues;
+            this.searchTermBox.nativeElement.value = searchInfo.searchValues;
+          }
+          if (searchInfo.checkbox) {
+            this.checkboxMap = searchInfo.checkbox;
+          }
+          if (searchInfo.sortModeMap) {
+            this.sortModeMap = searchInfo.sortModeMap;
+          }
+        }
+        this.updateQuery();
+      });
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
-      this.onClick(null, null);
+      this.updateQuery();
     });
   }
   /**===============================================
@@ -202,22 +205,55 @@ export class SearchComponent implements OnInit {
    */
   setupBuckets(key, buckets: any) {
     buckets.forEach(bucket => {
-        if (!this.setFilter) {
-          this.fullyExpandMap.set(key, false);
-          this.checkboxMap.set(key, new Map<string, boolean>());
-          if (buckets.length > 10) {
-            const sortby: CategorySort = new CategorySort(true, false, true);
-            this.sortModeMap.set(key, sortby);
+      if (!this.setFilter) {
+        this.fullyExpandMap.set(key, false);
+      }
+      if (buckets.length > 10) {
+        if (!this.sortModeMap.get(key)) {
+          const sortby: CategorySort = new CategorySort(true, false, true);
+          this.sortModeMap.set(key, sortby);
+        }
+      }
+      let doc_count = bucket.doc_count;
+      if (key === 'tags.verified' && !bucket.key) {
+        doc_count = this.nonverifiedcount;
+      }
+      if (this.checkboxMap.get(key)) {
+        if (doc_count > 0) {
+          if (!this.checkboxMap.get(key).get(bucket.key)) {
+            this.checkboxMap.get(key).set(bucket.key, false);
+            this.entryOrder.get(key).Items.set(bucket.key, doc_count);
+          } else if (this.checkboxMap.get(key).get(bucket.key)) {
+            this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
           }
         }
-      if (this.checkboxMap.get(key).get(bucket.key)) {
-        this.entryOrder.get(key).SelectedItems.set(bucket.key, bucket.doc_count);
       } else {
-        this.entryOrder.get(key).Items.set(bucket.key, bucket.doc_count);
+        this.checkboxMap.set(key, new Map<string, boolean>());
       }
-      if (!this.setFilter) {
-        this.checkboxMap.get(key).set(bucket.key, false);
-      }
+    });
+  }
+
+  /** This function takes care of the problem of non-verified items containing the set of verified items.
+   * this function calls a third elastic query which will get the correct number count of the non-verified items
+   * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
+   *
+   * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
+   *
+   * **/
+  setupNonVerifiedBucketCount() {
+    let bodyNotVerified = bodybuilder().size(this.query_size);
+    bodyNotVerified = this.appendQuery(bodyNotVerified);
+    const key = 'tags.verified';
+    bodyNotVerified =  bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
+    bodyNotVerified = this.appendFilter(bodyNotVerified, null);
+    const builtBodyNotVerified = bodyNotVerified.build();
+    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: queryBodyNotVerified
+    }).then(nonVerifiedHits => {
+      this.nonverifiedcount = nonVerifiedHits.hits.total;
     });
   }
 
@@ -253,8 +289,6 @@ export class SearchComponent implements OnInit {
       });
     this.setFilter = true;
   }
-
-
   /**
    * For buckets that were checked earlier, retain them even if there is 0 hits.
    *
@@ -272,15 +306,46 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  saveSearchFilter() {
+    const searchInfo = {
+      filter: this.filters,
+      searchValues: this.values,
+      checkbox: this.checkboxMap,
+      sortModeMap: this.sortModeMap
+    };
+    this.searchService.setSearchInfo(searchInfo);
+  }
+
   /**===============================================
    *                Update Functions
-   * ==============================================
+   * ==============================================e
    */
-  /**
-   * This function looks at what hits came back from a search and creates
-   * data structures (buckets) needed for displaying the side bar information
-   * @param value
-   */
+  updateQuery() {
+    // calculate number of filters
+    let count = 0;
+    this.filters.forEach(filter => {
+      count += filter.size;
+    });
+    let body = bodybuilder()
+      .size(this.query_size);
+    // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
+    // The first query handles the aggregation and is used to update the sidebar buckets
+    // The second query updates the result table
+    body = this.appendQuery(body);
+    body = this.appendAggregations(count, body);
+    let body2 = bodybuilder().size(this.query_size);
+    body2 = this.appendQuery(body2);
+    body2 = this.appendFilter(body2, null);
+    this.resetEntryOrder();
+    const builtBody = body.build();
+    const builtBody2 = body2.build();
+    const query = JSON.stringify(builtBody);
+    const query2 = JSON.stringify(builtBody2);
+    this.setupNonVerifiedBucketCount();
+    this.updateSideBar(query);
+    this.updateResultsTable(query2);
+  }
+
   updateSideBar(value: string) {
     this._client.search({
       index: 'tools',
@@ -289,7 +354,6 @@ export class SearchComponent implements OnInit {
     }).then(hits => {
       this.setupAllBuckets(hits);
       this.setupOrderBuckets();
-
     });
   }
 
@@ -311,6 +375,9 @@ export class SearchComponent implements OnInit {
       this.filterEntry();
       this.toolSource.next(this.toolHits);
       this.workflowSource.next(this.workflowHits);
+      if (this.values.length > 0 && hits) {
+        this.searchTerm = true;
+      }
       this.setTabActive();
     });
   }
@@ -321,33 +388,18 @@ export class SearchComponent implements OnInit {
    */
   resetFilters() {
     this.filters.clear();
+    this.values = '';
+    this.checkboxMap.clear();
+    this.sortModeMap.clear();
     this.setFilter = false;
+    this.searchTerm = false;
+    this.searchTermBox.nativeElement.value = '';
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
-    this.values = '';
-    this.resetSearchTerm();
+    this.searchService.setSearchInfo(null);
     this.resetEntryOrder();
-    this.updateSideBar(this.initialQuery);
-    this.updateResultsTable(this.initialQuery);
-  }
-  resetSearchTerm() {
-    this.searchTerm = false;
-    this.searchTermBox.nativeElement.value = '';
-  }
-
-  /**
-   * Handles the clicking of the "Open Advanced Search" button
-   * This sets up and opens the advanced search modal
-   * @memberof SearchComponent
-   */
-  openAdvancedSearch(): void {
-    if (this.values) {
-      const newAdvancedSearchObject = this.advancedSearchObject;
-      newAdvancedSearchObject.ORFilter = this.values;
-      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
-    }
-    this.advancedSearchService.setShowModal(true);
+    this.advancedSearchService.clear();
   }
 
   resetEntryOrder() {
@@ -386,7 +438,11 @@ export class SearchComponent implements OnInit {
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-            body = body.filter('term', key, insideFilter);
+            if (key === 'tags.verified' && !insideFilter) {
+              body =  body.notFilter('term', key, !insideFilter);
+            } else {
+              body = body.filter('term', key, insideFilter);
+            }
           }
         }
       });
@@ -402,32 +458,31 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   appendQuery(body: any): any {
-    if (this.advancedSearchObject.toAdvanceSearch) {
-      if (this.advancedSearchObject.ANDSplitFilter) {
-        const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-        filters.forEach(filter => body = body.filter('term', 'description', filter));
-      }
-      if (this.advancedSearchObject.ANDNoSplitFilter) {
-        body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
-      }
-      if (this.advancedSearchObject.ORFilter) {
-        const filters = this.advancedSearchObject.ORFilter.split(' ');
-        body = body.filter('terms', 'description', filters);
-      }
-      if (this.advancedSearchObject.NOTFilter) {
-        const filters = this.advancedSearchObject.NOTFilter.split(' ');
-        body = body.notQuery('terms', 'description', filters);
-      }
-      return body;
+    if (this.values.toString().length > 0) {
+      body = body.query('match', 'description', this.values);
     } else {
-      // if there is a description search
-      if (this.values.toString().length > 0) {
-        body = body.query('match', 'description', this.values);
-      } else {
-        body = body.query('match_all', {});
-      }
-      return body;
+      body = body.query('match_all', {});
     }
+    if (this.advancedSearchObject) {
+      if (this.advancedSearchObject.toAdvanceSearch) {
+        if (this.advancedSearchObject.ANDSplitFilter) {
+          const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
+          filters.forEach(filter => body = body.filter('term', 'description', filter));
+        }
+        if (this.advancedSearchObject.ANDNoSplitFilter) {
+          body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
+        }
+        if (this.advancedSearchObject.ORFilter) {
+          const filters = this.advancedSearchObject.ORFilter.split(' ');
+          body = body.filter('terms', 'description', filters);
+        }
+        if (this.advancedSearchObject.NOTFilter) {
+          const filters = this.advancedSearchObject.NOTFilter.split(' ');
+          body = body.notQuery('terms', 'description', filters);
+        }
+      }
+    }
+    return body;
   }
 
   appendORFilter(body: any) {
@@ -470,7 +525,7 @@ export class SearchComponent implements OnInit {
     if ((!value || 0 === value.length)) {
       this.searchTerm = false;
     }
-    this.onClick(null, null);
+    this.updateQuery();
   }
   /**
    * This handles clicking a facet and doing the search
@@ -483,31 +538,21 @@ export class SearchComponent implements OnInit {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.handleFilters(category, categoryValue);
     }
-    // calculate number of filters
-    let count = 0;
-    this.filters.forEach(filter => {
-      count += filter.size;
-    });
-    let body = bodybuilder()
-      .size(this.query_size);
-
-    // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
-    // The first query handles the aggregation and is used to update the sidebar buckets
-    // The second query updates the result table
-    body = this.appendQuery(body);
-    body = this.appendAggregations(count, body);
-    let body2 = bodybuilder().size(this.query_size);
-    body2 = this.appendQuery(body2);
-    body2 = this.appendFilter(body2, null);
-    this.resetEntryOrder();
-    const builtBody = body.build();
-    const builtBody2 = body2.build();
-    const query = JSON.stringify(builtBody);
-    const query2 = JSON.stringify(builtBody2);
-    this.updateSideBar(query);
-    this.updateResultsTable(query2);
+    this.updateQuery();
   }
-
+  /**
+   * Handles the clicking of the "Open Advanced Search" button
+   * This sets up and opens the advanced search modal
+   * @memberof SearchComponent
+   */
+  openAdvancedSearch(): void {
+    if (this.values) {
+      const newAdvancedSearchObject = this.advancedSearchObject;
+      newAdvancedSearchObject.ORFilter = this.values;
+      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
+    }
+    this.advancedSearchService.setShowModal(true);
+  }
   clickExpand(key: string) {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
@@ -529,7 +574,6 @@ export class SearchComponent implements OnInit {
     }
   }
   clickSortMode(category: string, sortMode: boolean) {
-    // let orderedMap;
     let orderedMap2;
     if (this.sortModeMap.get(category).SortBy === sortMode) {
       let orderBy: boolean;
@@ -542,8 +586,11 @@ export class SearchComponent implements OnInit {
       }
     }
     if (sortMode) {
-      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode, this.sortModeMap.get(category).CountOrderBy);
+      /* Reorder the bucket map by count */
+      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
+                                           this.sortModeMap.get(category).CountOrderBy);
     } else {
+      /* Reorder the bucket map by alphabet */
       orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
                                            this.sortModeMap.get(category).AlphabetOrderBy);
     }
@@ -555,7 +602,7 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   mapFriendlyValueNames(key, subBucket) {
-    if (key === 'tags.verified' || key === 'private_access') {
+    if (this.friendlyValueNames.has(key)) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {
       return subBucket;

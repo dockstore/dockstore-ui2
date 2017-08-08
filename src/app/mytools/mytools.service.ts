@@ -56,9 +56,6 @@ export class MytoolsService {
     if (orIndex >= 0) {
       sortedNSContainers.push(orNSObj);
     }
-    if (sortedNSContainers.length > 0) {
-      sortedNSContainers[0].isFirstOpen = true;
-    }
     return sortedNSContainers;
   }
 
