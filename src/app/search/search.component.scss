@@ -102,3 +102,39 @@
     }
   }
 }
+
+.sidebar-btn {
+  width: 100%;
+  background-color: #51aad8;
+  &.expand {
+    margin-bottom: 10px;
+  }
+  &.reset {
+    margin-top: 10px;
+  }
+}
+
+.search-container {
+  padding-top:30px;
+}
+
+.advancedSearch-btn {
+  width: 90%;
+  margin-bottom: 10px;
+  background-color: #aaeed2;
+  color: #198055;
+  border-color: #3fd999;
+}
+
+.tagCloud-btn {
+  width:100%;
+  &.tool {
+    color: #2E629D;
+    background-color: #aadeee;
+  }
+  &.workflow {
+    color: #198055;
+    background-color: #aaeed2;
+    border-color: #3fd999;
+  }
+}

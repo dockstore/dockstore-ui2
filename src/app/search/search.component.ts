@@ -457,9 +457,6 @@ export class SearchComponent implements OnInit {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  foo (a) {
-    a.filter('match', 'tags.sourceFiles.content', 'docker');
-  }
   appendQuery(body: any): any {
     if (this.values.toString().length > 0) {
       body = body.orQuery('match', 'description', this.values)
