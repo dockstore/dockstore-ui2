@@ -12,7 +12,6 @@ export abstract class VersionSelector implements OnInit, OnChanges, OnDestroy {
 
   abstract reactToVersion(): void;
   abstract copyBtnSubscript(): void;
-  // constructor(private containerService: ContainerService) {}
 
   onVersionChange(version) {
     this.currentVersion = version;
