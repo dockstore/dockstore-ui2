@@ -108,10 +108,10 @@
           Sorry, no matches found for <strong>{{box.value}}</strong>. Do you mean: <strong>some_key_word</strong>?
         </div>
         <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
-          <strong>Search Description: </strong> contains key term <strong>"{{values}}"</strong>
+          <strong>Search: </strong> contains key term <strong>"{{values}}"</strong>
         </div>
         <div *ngIf="advancedSearchObject?.toAdvanceSearch" class="alert alert-info">
-          <strong>Advanced Search Description: </strong>
+          <strong>Advanced Search: </strong>
           <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{advancedSearchObject.ANDSplitFilter}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
           <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{advancedSearchObject.ANDNoSplitFilter}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
           <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{advancedSearchObject.ORFilter}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>

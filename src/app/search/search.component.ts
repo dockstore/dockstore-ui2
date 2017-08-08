@@ -185,6 +185,9 @@ export class SearchComponent implements OnInit {
           if (searchInfo.sortModeMap) {
             this.sortModeMap = searchInfo.sortModeMap;
           }
+          if (searchInfo.advancedSearchObject) {
+            this.advancedSearchObject = searchInfo.advancedSearchObject;
+          }
         }
         this.updateQuery();
       });
@@ -311,7 +314,8 @@ export class SearchComponent implements OnInit {
       filter: this.filters,
       searchValues: this.values,
       checkbox: this.checkboxMap,
-      sortModeMap: this.sortModeMap
+      sortModeMap: this.sortModeMap,
+      advancedSearchObject: this.advancedSearchObject
     };
     this.searchService.setSearchInfo(searchInfo);
   }
@@ -459,9 +463,10 @@ export class SearchComponent implements OnInit {
    */
   appendQuery(body: any): any {
     if (this.values.toString().length > 0) {
-      body = body.orQuery('match', 'description', this.values)
-                 .orQuery('match', 'tags.sourceFiles.content',  this.values)
-                 .orQuery('match', 'workflowVersions.sourceFiles.content', this.values);
+      if (this.advancedSearchObject) {
+        this.advancedSearchObject.ORFilter = this.values;
+        this.advancedSearchFiles(body);
+      }
     } else {
       body = body.query('match_all', {});
     }
@@ -505,24 +510,25 @@ export class SearchComponent implements OnInit {
       filters.forEach(filter => {
         insideFilter_workflow = insideFilter_workflow.filter('term', 'workflowVersions.sourceFiles.content', filter);
       });
-      body = body
-        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool
-        )
-        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow
-        );
+      body = body.filter('bool', filter => filter
+        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
-      body = body.orFilter('bool', toolfilter => toolfilter
-        .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
+      body = body.filter('bool', filter => filter
+        .orFilter('bool', toolfilter => toolfilter
+          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
         .orFilter('bool', workflowfilter => workflowfilter
-          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter));
+          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      body = body.orFilter('bool', toolfilter => toolfilter
-        .filter('terms', 'tags.sourceFiles.content', filters))
+      body = body.filter('bool', filter => filter
+        .orFilter('bool', toolfilter => toolfilter
+          .filter('terms', 'tags.sourceFiles.content', filters))
         .orFilter('bool', workflowfilter => workflowfilter
-          .filter('terms', 'workflowVersions.sourceFiles.content', filters));
+          .filter('terms', 'workflowVersions.sourceFiles.content', filters))
+      );
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');

@@ -9,6 +9,7 @@
       </div>
       <div class="modal-body form-horizontal">
         <p>Find tools and workflows with
+          <span *ngIf="searchMode === 'description'"> a </span>
           <span class="btn-group" dropdown>
              <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
                {{searchMode}} <span class="caret"></span>
@@ -22,7 +23,10 @@
               </li>
             </ul>
           </span>
-          that has...
+          that
+          <span *ngIf="searchMode === 'description'"> has </span>
+          <span *ngIf="searchMode === 'files'"> have </span>
+          ...
         </p>
         <div class="form-group form-group-sm">
           <label class="col-sm-4 col-md-4 col-lg-4 control-label">
