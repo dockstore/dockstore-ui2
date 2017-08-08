@@ -48,11 +48,13 @@ export class MyToolsComponent implements OnInit {
       }
     });
     this.containerService.nsContainers.subscribe(containers => {
-        this.nsContainers = containers;
-        /* For the first initial time, set the first tool to be the selected one */
-        if (this.nsContainers && this.nsContainers.length > 0) {
-          const theFirstTool = this.nsContainers[0].containers[0];
-          this.selectContainer(theFirstTool);
+      this.nsContainers = containers;
+      /* For the first initial time, set the first tool to be the selected one */
+      if (this.nsContainers && this.nsContainers.length > 0) {
+        const theFirstTool = this.nsContainers[0].containers[0];
+        this.selectContainer(theFirstTool);
+      } else {
+        this.selectContainer(null);
       }
     });
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
