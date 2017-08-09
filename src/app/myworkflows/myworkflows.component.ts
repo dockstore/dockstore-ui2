@@ -21,7 +21,7 @@ import {UserService} from '../loginComponents/user.service';
 export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
   oneAtATime = true;
-  selWorkflowObj: any;
+  workflow: any;
   user: any;
   workflows: any;
   constructor(private myworkflowService: MyWorkflowsService,
@@ -35,7 +35,7 @@ export class MyWorkflowsComponent implements OnInit {
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
-        this.selWorkflowObj = workflow;
+        this.workflow = workflow;
         this.setIsFirstOpen();
       }
     );
@@ -63,7 +63,7 @@ export class MyWorkflowsComponent implements OnInit {
     });
   }
   setIsFirstOpen() {
-    if (this.orgWorkflows && this.selWorkflowObj) {
+    if (this.orgWorkflows && this.workflow) {
       for (const orgObj of this.orgWorkflows) {
         if (this.containSelectedWorkflow(orgObj)) {
           orgObj.isFirstOpen = true;
@@ -75,7 +75,7 @@ export class MyWorkflowsComponent implements OnInit {
   containSelectedWorkflow(orgObj) {
     let containWorkflow = false;
     for (const workflow of orgObj.workflows) {
-      if (workflow.id === this.selWorkflowObj.id) {
+      if (workflow.id === this.workflow.id) {
         containWorkflow = true;
         break;
       }
@@ -83,7 +83,7 @@ export class MyWorkflowsComponent implements OnInit {
     return containWorkflow;
   }
   selectWorkflow(workflow) {
-    this.selWorkflowObj = workflow;
+    this.workflow = workflow;
     this.workflowService.setWorkflow(workflow);
   }
 
