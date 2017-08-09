@@ -9,11 +9,11 @@ export class AdvancedSearchService {
     ANDNoSplitFilter: '',
     ORFilter: '',
     NOTFilter: '',
+    searchMode: 'description',
     toAdvanceSearch: false
   };
   advancedSearch$: BehaviorSubject<AdvancedSearchObject> = new BehaviorSubject<AdvancedSearchObject>(this.initAdvancedSearch);
   showModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
   constructor() {
   }
 

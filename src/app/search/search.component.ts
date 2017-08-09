@@ -185,6 +185,9 @@ export class SearchComponent implements OnInit {
           if (searchInfo.sortModeMap) {
             this.sortModeMap = searchInfo.sortModeMap;
           }
+          if (searchInfo.advancedSearchObject) {
+            this.advancedSearchObject = searchInfo.advancedSearchObject;
+          }
         }
         this.updateQuery();
       });
@@ -311,7 +314,8 @@ export class SearchComponent implements OnInit {
       filter: this.filters,
       searchValues: this.values,
       checkbox: this.checkboxMap,
-      sortModeMap: this.sortModeMap
+      sortModeMap: this.sortModeMap,
+      advancedSearchObject: this.advancedSearchObject
     };
     this.searchService.setSearchInfo(searchInfo);
   }
@@ -459,30 +463,78 @@ export class SearchComponent implements OnInit {
    */
   appendQuery(body: any): any {
     if (this.values.toString().length > 0) {
-      body = body.query('match', 'description', this.values);
+      if (this.advancedSearchObject) {
+        this.advancedSearchObject.ORFilter = this.values;
+        this.advancedSearchFiles(body);
+      }
     } else {
       body = body.query('match_all', {});
     }
     if (this.advancedSearchObject) {
       if (this.advancedSearchObject.toAdvanceSearch) {
-        if (this.advancedSearchObject.ANDSplitFilter) {
-          const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-          filters.forEach(filter => body = body.filter('term', 'description', filter));
-        }
-        if (this.advancedSearchObject.ANDNoSplitFilter) {
-          body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
-        }
-        if (this.advancedSearchObject.ORFilter) {
-          const filters = this.advancedSearchObject.ORFilter.split(' ');
-          body = body.filter('terms', 'description', filters);
-        }
-        if (this.advancedSearchObject.NOTFilter) {
-          const filters = this.advancedSearchObject.NOTFilter.split(' ');
-          body = body.notQuery('terms', 'description', filters);
+        if (this.advancedSearchObject.searchMode === 'description') {
+          this.advancedSearchDescription(body);
+        } else if (this.advancedSearchObject.searchMode === 'files') {
+          this.advancedSearchFiles(body);
         }
       }
     }
     return body;
+  }
+  advancedSearchDescription(body: any) {
+    if (this.advancedSearchObject.ANDSplitFilter) {
+      const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
+      filters.forEach(filter => body = body.filter('term', 'description', filter));
+    }
+    if (this.advancedSearchObject.ANDNoSplitFilter) {
+      body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
+    }
+    if (this.advancedSearchObject.ORFilter) {
+      const filters = this.advancedSearchObject.ORFilter.split(' ');
+      body = body.filter('terms', 'description', filters);
+    }
+    if (this.advancedSearchObject.NOTFilter) {
+      const filters = this.advancedSearchObject.NOTFilter.split(' ');
+      body = body.notQuery('terms', 'description', filters);
+    }
+  }
+
+  advancedSearchFiles(body: any) {
+    if (this.advancedSearchObject.ANDSplitFilter) {
+      const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
+      let insideFilter_tool = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_tool = insideFilter_tool.filter('term', 'tags.sourceFiles.content', filter);
+      });
+      let insideFilter_workflow = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_workflow = insideFilter_workflow.filter('term', 'workflowVersions.sourceFiles.content', filter);
+      });
+      body = body.filter('bool', filter => filter
+        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
+    }
+    if (this.advancedSearchObject.ANDNoSplitFilter) {
+      body = body.filter('bool', filter => filter
+        .orFilter('bool', toolfilter => toolfilter
+          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
+        .orFilter('bool', workflowfilter => workflowfilter
+          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
+    }
+    if (this.advancedSearchObject.ORFilter) {
+      const filters = this.advancedSearchObject.ORFilter.split(' ');
+      body = body.filter('bool', filter => filter
+        .orFilter('bool', toolfilter => toolfilter
+          .filter('terms', 'tags.sourceFiles.content', filters))
+        .orFilter('bool', workflowfilter => workflowfilter
+          .filter('terms', 'workflowVersions.sourceFiles.content', filters))
+      );
+    }
+    if (this.advancedSearchObject.NOTFilter) {
+      const filters = this.advancedSearchObject.NOTFilter.split(' ');
+      body = body.notQuery('terms', 'tags.sourceFiles.content', filters)
+        .notQuery('terms', 'workflowVersions.sourceFiles.content', filters);
+    }
   }
 
   appendORFilter(body: any) {
