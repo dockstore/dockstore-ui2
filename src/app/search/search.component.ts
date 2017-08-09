@@ -524,12 +524,10 @@ export class SearchComponent implements OnInit {
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('terms', 'tags.sourceFiles.content', filters))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('terms', 'workflowVersions.sourceFiles.content', filters))
-      );
+      filters.forEach(filter => {
+        body = body.orFilter('match', 'tags.sourceFiles.content', filter);
+        body = body.orFilter('match', 'workflowVersions.sourceFiles.content', filter);
+      });
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
