@@ -27,31 +27,31 @@
 </div>
 <div class="row">
   <div class="col-md-7">
-  <h3>
-    <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
-      <a href= {{workflow?.verifiedLinks}}>
-        <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
-      </a>
-    </span>
-    {{ title }}
-    <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
-  </h3>
-  <div *ngIf="workflow">
-    <span class="label label-default container-label" *ngFor="let label of labels">
-      {{label}}
-    </span>
+    <h3>
+      <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
+        <a href= {{workflow?.verifiedLinks}}>
+          <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+        </a>
+      </span>
+      {{ title }}
+      <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
+    </h3>
+    <div *ngIf="workflow">
+      <span class="label label-default container-label" *ngFor="let label of labels">
+        {{label}}
+      </span>
+    </div>
+    <p class="update">
+      Last Modified: {{ workflow?.agoMessage || 'n/a' }}
+    </p>
+    <div *ngIf="starGazersClicked">
+      <app-stargazers></app-stargazers>
+      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+      </button>
+    </div>
   </div>
-  <p class="update">
-    Last Modified: {{ workflow?.agoMessage || 'n/a' }}
-  </p>
-  <div *ngIf="starGazersClicked">
-    <app-stargazers></app-stargazers>
-    <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
-      <i class="glyphicon glyphicon-chevron-left"></i>Back to details
-    </button>
-  </div>
-  </div>
-    <div *ngIf="!publicPage">
+  <div *ngIf="!publicPage">
     <h3>
       <div class="pull-right">
         <div class="btn-group" role="group">

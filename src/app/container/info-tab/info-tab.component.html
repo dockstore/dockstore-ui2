@@ -1,28 +1,27 @@
 <div *ngIf="tool">
   <ul class="list-unstyled container-info">
-    <li>
-      <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author || 'n/a' }}
+    <li *ngIf="tool?.author">
+      <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author }}
     </li>
-    <li>
+    <li *ngIf="tool?.email">
       <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
-      <span *ngIf="!tool?.email">n/a</span>
-      <a *ngIf="tool?.email" href="mailto:{{tool?.email}}">
+      <a href="mailto:{{tool?.email}}">
         {{ tool?.email }}
       </a>
     </li>
-    <li>
+    <li *ngIf="tool?.providerUrl">
       <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
       <a [href]="tool?.providerUrl">
         {{ tool?.providerUrl }}
       </a>
     </li>
-    <li>
+    <li *ngIf="tool?.imgProviderUrl">
       <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
       <a [href]="tool?.imgProviderUrl">
         {{ tool?.imgProviderUrl }}
       </a>
     </li>
-    <li>
+    <li *ngIf="tool?.default_dockerfile_path">
       <form #editDockerfileForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
@@ -37,7 +36,7 @@
         </button>
       </form>
     </li>
-    <li>
+    <li *ngIf="tool?.default_cwl_path">
       <form #editCWLPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
@@ -50,9 +49,9 @@
           {{ cwlPathEditing ? 'Save' : 'Edit' }}
         </button>
       </form>
-      
+
     </li>
-    <li>
+    <li *ngIf="tool?.default_wdl_path">
       <form #editWDLPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
@@ -67,21 +66,29 @@
         </button>
       </form>
     </li>
-    <li>
+    <li *ngIf="tool?.buildMode">
       <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
-    <li>
+    <li *ngIf="tool?.lastBuildDate">
       <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
     </li>
-    <li>
+    <li *ngIf="tool?.lastUpdatedDate">
       <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
     </li>
   </ul>
-  <label tooltip="Description of tool obtained from tool descriptor">
-    Description
-  </label>
-  <div class="well well-sm">
-    <markdown [data]="tool?.description || 'No description associated with this container.'"></markdown>
+  <div *ngIf="tool?.description || !isPublic">
+    <label tooltip="Description of tool obtained from tool descriptor">
+      Description
+    </label>
+    <div *ngIf="tool?.description" class="well well-sm">
+      <markdown [data]="tool?.description"></markdown>
+    </div>
+    <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
+      <span class = "glyphicon glyphicon-warning-sign"></span>
+      <span ng-show="!containerObj.description">
+              No description associated with this tool. See <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+            </span>
+    </div>
   </div>
   <div *ngIf="validVersions">
     <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>

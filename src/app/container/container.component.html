@@ -126,7 +126,8 @@
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
           <span class="input-group-btn">
-            <button class="btn btn-default" [ngClass]="{'btn-copy':isCopied}" type="button" ngxClipboard [cbContent]="dockerPullCmd" (cbOnSuccess)="isCopied = true">
+            <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
+                    (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
               <span class="glyphicon glyphicon-copy"></span>
             </button>
           </span>

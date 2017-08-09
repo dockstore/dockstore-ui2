@@ -14,7 +14,7 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends FileSelector  implements AfterViewChecked, OnInit {
+export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
   @Input() id: number;
   content: string;
   contentHighlighted: boolean;
@@ -34,7 +34,7 @@ export class DescriptorsWorkflowComponent extends FileSelector  implements After
   }
 
   reactToFile(): void {
-    this.content = this.fileService.highlightCode(this.currentFile.content);
+    this.content = this.currentFile.content;
     this.contentHighlighted = true;
   }
   ngAfterViewChecked() {
@@ -42,5 +42,14 @@ export class DescriptorsWorkflowComponent extends FileSelector  implements After
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
+  }
+  copyBtnSubscript(): void {
+    this.workflowService.copyBtn$.subscribe(
+      copyBtn => {
+        this.workflowCopyBtn = copyBtn;
+      });
+  }
+  workflowCopyBtnClick(copyBtn): void {
+    this.workflowService.setCopyBtn(copyBtn);
   }
 }

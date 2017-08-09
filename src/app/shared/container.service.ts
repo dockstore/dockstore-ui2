@@ -11,6 +11,8 @@ export class ContainerService {
   private toolSource = new BehaviorSubject<any>(null);
   tool$ = this.toolSource.asObservable(); // This is the selected tool
   tools = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
+  private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
+  copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
   constructor(private dockstoreService: DockstoreService) { }
   setTool(tool: any) {
@@ -41,6 +43,9 @@ export class ContainerService {
 
   setNsContainers(tools: any) {
     this.nsContainers.next(tools);
+  }
+  setCopyBtn(copyBtn: any) {
+    this.copyBtnSource.next(copyBtn);
   }
 
   getDescriptors(versions, version) {

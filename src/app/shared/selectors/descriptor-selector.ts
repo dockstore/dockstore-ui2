@@ -20,9 +20,10 @@ export abstract class DescriptorSelector extends VersionSelector {
       this.nullDescriptors = true;
     }
   }
-
   onDescriptorChange(descriptor) {
     this.currentDescriptor = descriptor;
     this.reactToDescriptor();
+  }
+  copyBtnSubscript(): void {
   }
 }

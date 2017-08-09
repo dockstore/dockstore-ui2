@@ -27,7 +27,6 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
               private elementRef: ElementRef) {
     super();
   }
-
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this.currentVersion);
   }
@@ -37,7 +36,7 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
   }
 
   reactToFile(): void {
-    this.content = this.fileService.highlightCode(this.currentFile.content);
+    this.content = this.currentFile.content;
     this.contentHighlighted = true;
   }
 
@@ -47,5 +46,13 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
-
+  copyBtnSubscript(): void {
+    this.containerService.copyBtn$.subscribe(
+      copyBtn => {
+        this.toolCopyBtn = copyBtn;
+      });
+  }
+  toolCopyBtnClick(copyBtn): void {
+    this.containerService.setCopyBtn(copyBtn);
+  }
 }

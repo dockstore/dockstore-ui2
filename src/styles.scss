@@ -442,6 +442,9 @@ div.button a {
 .button:hover {
   text-decoration: underline;
 }
+.code-copy {
+  position:relative
+}
 
 .refresh-all-button {
   background-color: #487980 !important;
@@ -1036,8 +1039,8 @@ div.tabs>div:target>div,
 }
 
 .code-copy-button {
-  top: 2px;
-  right: 2px;
+  top: 20px;
+  right: 20px;
   position: absolute;
 }
 

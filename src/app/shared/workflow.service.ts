@@ -11,6 +11,8 @@ export class WorkflowService {
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
+  private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
+  copyBtn$ = this.copyBtnSource.asObservable();
   constructor(private httpService: HttpService) {}
   setWorkflow(workflow: any) {
     this.workflowSource.next(workflow);
@@ -37,7 +39,9 @@ export class WorkflowService {
   setNsWorkflows(nsWorkflows: any) {
     this.nsWorkflows$.next(nsWorkflows);
   }
-
+  setCopyBtn(copyBtn: any) {
+    this.copyBtnSource.next(copyBtn);
+  }
   getParamsString(path: string, tagName: string) {
     return 'dockstore workflow convert entry2json --entry ' + path + ':' + tagName + ` > Dockstore.json
             \nvim Dockstore.json`;

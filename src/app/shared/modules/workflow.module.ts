@@ -8,7 +8,6 @@ import { RefreshService } from './../refresh.service';
 import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,6 +15,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 import { StarringModule } from '../../starring/starring.module';
+import { ClipboardModule } from 'ngx-clipboard';
 /* Bootstrap */
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -83,7 +83,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     OrderByModule,
     FormsModule,
     DagModule,
-    StargazersModule
+    StargazersModule,
+    ClipboardModule
   ],
   providers: [
     HighlightJsService,

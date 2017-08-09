@@ -7,7 +7,17 @@
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
   </span>
-  <section *ngIf="content" [innerHTML]="content"></section>
+  <span *ngIf="content" class="input-group-btn code-copy">
+
+  </span>
+  <div *ngIf="content" class="code-copy">
+    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content"
+            [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_param_file'}"
+            (cbOnSuccess)="workflowCopyBtnClick('workflow_param_file')">
+      <span class="glyphicon glyphicon-copy"></span>
+    </button>
+    <section [innerHTML]="fileService.highlightCode(content)"></section>
+  </div>
   <alert type="warning" *ngIf="!content">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp; A Test Parameter File associated with this workflow could not be found.

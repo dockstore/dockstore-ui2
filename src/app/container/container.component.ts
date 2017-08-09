@@ -152,7 +152,6 @@ export class ContainerComponent extends Tool {
         this.tool.labels = tool.labels;
         this.updateContainer.setTool(tool);
         this.labelsEditMode = false;
-      }
-      );
+      });
   }
 }

@@ -19,14 +19,12 @@ export class LaunchComponent extends DescriptorSelector {
   cli: string;
   cwl: string;
   consonance: string;
-
   descriptors: Array<any>;
 
   constructor(private launchService: LaunchService,
               private containerService: ContainerService) {
     super();
   }
-
   getDescriptors(currentVersion): any {
     return this.containerService.getDescriptors(this.versions, this.default);
   }

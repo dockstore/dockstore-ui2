@@ -7,5 +7,18 @@
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
   </span>
-  <section [innerHTML]="content"></section>
+
+  <div *ngIf="!content">
+    <alert type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
+    </alert>
+  </div>
+  <div *ngIf="content" class="code-copy">
+    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'test_param_file'}"
+            (cbOnSuccess)="toolCopyBtnClick('test_param_file')">
+      <span class="glyphicon glyphicon-copy"></span>
+    </button>
+    <section [innerHTML]="fileService.highlightCode(content)"></section>
+  </div>
 </div>

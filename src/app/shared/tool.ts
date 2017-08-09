@@ -30,7 +30,11 @@ export abstract class Tool implements OnInit, OnDestroy {
   private routeSub: Subscription;
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
+  private toolCopyBtnSubscription: Subscription;
+  private workflowCopyBtnSubscription: Subscription;
   private loginSubscription: Subscription;
+  private toolCopyBtn: string;
+  private workflowCopyBtn: string;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   private publicPage: boolean;
@@ -72,6 +76,16 @@ export abstract class Tool implements OnInit, OnDestroy {
         this.setUpTool(tool);
       }
     );
+    this.toolCopyBtnSubscription = this.containerService.copyBtn$.subscribe(
+      toolCopyBtn => {
+        this.toolCopyBtn = toolCopyBtn;
+      }
+    );
+    this.workflowCopyBtnSubscription = this.workflowService.copyBtn$.subscribe(
+      workflowCopyBtn => {
+        this.workflowCopyBtn = workflowCopyBtn;
+      }
+    );
     if (this._toolType === 'workflows') {
       this.stateService.setPublicPage(this.isWorkflowPublic);
       if (this.isWorkflowPublic) {
@@ -99,6 +113,8 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
     this.workflowSubscription.unsubscribe();
     this.toolSubscription.unsubscribe();
+    this.toolCopyBtnSubscription.unsubscribe();
+    this.workflowCopyBtnSubscription.unsubscribe();
   }
 
   abstract setProperties(): void;
@@ -173,6 +189,7 @@ export abstract class Tool implements OnInit, OnDestroy {
     this.setProperties();
     this.getValidVersions();
     this.chooseDefaultVersion();
+    this.resetCopyBtn();
   }
 
   private chooseDefaultVersion() {
@@ -221,6 +238,16 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
 
     return null;
+  }
+  private resetCopyBtn(): void {
+    if (this._toolType === 'workflows') {
+      this.workflowService.setCopyBtn(null);
+    } else {
+      this.containerService.setCopyBtn(null);
+    }
+  }
+  private toolCopyBtnClick(copyBtn): void {
+    this.containerService.setCopyBtn(copyBtn);
   }
 
 }
