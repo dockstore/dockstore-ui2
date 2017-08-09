@@ -485,18 +485,18 @@ export class SearchComponent implements OnInit {
   advancedSearchDescription(body: any) {
     if (this.advancedSearchObject.ANDSplitFilter) {
       const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach(filter => body = body.filter('match', 'description', filter));
+      filters.forEach(filter => body = body.filter('match_phrase', 'description', filter));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
       body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      filters.forEach(filter => body = body.orFilter('match', 'description', filter));
+      filters.forEach(filter => body = body.orFilter('match_phrase', 'description', filter));
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      filters.forEach(filter => body = body.notQuery('match', 'description', filter));
+      filters.forEach(filter => body = body.notQuery('match_phrase', 'description', filter));
     }
   }
 
