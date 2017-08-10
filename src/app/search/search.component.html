@@ -49,7 +49,7 @@
             </button>
           </div>
           <div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>
-            <div class="panel-container-label">
+            <div class="panel-container-label selected-item">
               <div class="container-name-oflw pull-left">
                   <span>
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
@@ -108,14 +108,14 @@
           Sorry, no matches found for <strong>{{box.value}}</strong>. Do you mean: <strong>some_key_word</strong>?
         </div>
         <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
-          <strong>Search: </strong> contains key term <strong>"{{values}}"</strong>
+          <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
         </div>
         <div *ngIf="advancedSearchObject?.toAdvanceSearch" class="alert alert-info">
           <strong>Advanced Search: </strong>
-          <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{advancedSearchObject.ANDSplitFilter}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-          <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{advancedSearchObject.ANDNoSplitFilter}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-          <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{advancedSearchObject.ORFilter}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
-          <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{advancedSearchObject.NOTFilter}}"</strong></span>
+          <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+          <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+          <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
+          <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
         </div>
         <div *ngIf="filters.size > 0" class="alert alert-info">
           <strong>Search Filter: </strong>

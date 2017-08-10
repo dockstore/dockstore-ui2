@@ -221,17 +221,16 @@ export class SearchComponent implements OnInit {
       if (key === 'tags.verified' && !bucket.key) {
         doc_count = this.nonverifiedcount;
       }
-      if (this.checkboxMap.get(key)) {
-        if (doc_count > 0) {
-          if (!this.checkboxMap.get(key).get(bucket.key)) {
-            this.checkboxMap.get(key).set(bucket.key, false);
-            this.entryOrder.get(key).Items.set(bucket.key, doc_count);
-          } else if (this.checkboxMap.get(key).get(bucket.key)) {
-            this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
-          }
+      if (doc_count > 0) {
+        if (!this.checkboxMap.get(key)) {
+          this.checkboxMap.set(key, new Map<string, boolean>());
         }
-      } else {
-        this.checkboxMap.set(key, new Map<string, boolean>());
+        if (!this.checkboxMap.get(key).get(bucket.key)) {
+          this.checkboxMap.get(key).set(bucket.key, false);
+          this.entryOrder.get(key).Items.set(bucket.key, doc_count);
+        } else if (this.checkboxMap.get(key).get(bucket.key)) {
+          this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
+        }
       }
     });
   }
@@ -320,6 +319,10 @@ export class SearchComponent implements OnInit {
     this.searchService.setSearchInfo(searchInfo);
   }
 
+  joinComma(searchTerm: string): string{
+    return searchTerm.split(' ').join(', ');
+  }
+
   /**===============================================
    *                Update Functions
    * ==============================================e
@@ -345,6 +348,7 @@ export class SearchComponent implements OnInit {
     const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
     const query2 = JSON.stringify(builtBody2);
+    console.log(query2);
     this.setupNonVerifiedBucketCount();
     this.updateSideBar(query);
     this.updateResultsTable(query2);
@@ -392,18 +396,21 @@ export class SearchComponent implements OnInit {
    */
   resetFilters() {
     this.filters.clear();
-    this.values = '';
     this.checkboxMap.clear();
     this.sortModeMap.clear();
     this.setFilter = false;
-    this.searchTerm = false;
-    this.searchTermBox.nativeElement.value = '';
+    this.resetSearchBox();
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
     this.searchService.setSearchInfo(null);
     this.resetEntryOrder();
     this.advancedSearchService.clear();
+  }
+  resetSearchBox() {
+    this.values = '';
+    this.searchTerm = false;
+    this.searchTermBox.nativeElement.value = '';
   }
 
   resetEntryOrder() {
@@ -463,10 +470,17 @@ export class SearchComponent implements OnInit {
    */
   appendQuery(body: any): any {
     if (this.values.toString().length > 0) {
-      if (this.advancedSearchObject) {
+      if (this.advancedSearchObject && !this.advancedSearchObject.toAdvanceSearch) {
         this.advancedSearchObject.ORFilter = this.values;
         this.advancedSearchFiles(body);
       }
+      // const filters = this.values.split(' ');
+      // body = body.filter('bool', filter => filter
+      //   .orFilter('bool', toolfilter => toolfilter
+      //     .filter('terms', 'tags.sourceFiles.content', filters))
+      //   .orFilter('bool', workflowfilter => workflowfilter
+      //     .filter('terms', 'workflowVersions.sourceFiles.content', filters))
+      // );
     } else {
       body = body.query('match_all', {});
     }
@@ -484,31 +498,37 @@ export class SearchComponent implements OnInit {
   advancedSearchDescription(body: any) {
     if (this.advancedSearchObject.ANDSplitFilter) {
       const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach(filter => body = body.filter('term', 'description', filter));
+      filters.forEach(filter => body = body.filter('match_phrase', 'description', filter));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
       body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      body = body.filter('terms', 'description', filters);
+      console.log(filters);
+      filters.forEach(filter => {
+        body = body.orFilter('match_phrase', 'description', filter);
+      });
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      body = body.notQuery('terms', 'description', filters);
+      filters.forEach(filter => {
+        body = body.notQuery('match_phrase', 'description', filter);
+      });
     }
   }
 
+  /* TODO: Make this better */
   advancedSearchFiles(body: any) {
     if (this.advancedSearchObject.ANDSplitFilter) {
       const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
       let insideFilter_tool = bodybuilder();
       filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.filter('term', 'tags.sourceFiles.content', filter);
+        insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
       });
       let insideFilter_workflow = bodybuilder();
       filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.filter('term', 'workflowVersions.sourceFiles.content', filter);
+        insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
       body = body.filter('bool', filter => filter
         .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
@@ -523,17 +543,32 @@ export class SearchComponent implements OnInit {
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
+      console.log(filters);
+      let insideFilter_tool = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
+      });
+      let insideFilter_workflow = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
+      });
       body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('terms', 'tags.sourceFiles.content', filters))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('terms', 'workflowVersions.sourceFiles.content', filters))
-      );
+        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      body = body.notQuery('terms', 'tags.sourceFiles.content', filters)
-        .notQuery('terms', 'workflowVersions.sourceFiles.content', filters);
+      let insideFilter_tool = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
+      });
+      let insideFilter_workflow = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
+      });
+      body = body.filter('bool', filter => filter
+        .filter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .filter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
   }
 
@@ -598,11 +633,6 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   openAdvancedSearch(): void {
-    if (this.values) {
-      const newAdvancedSearchObject = this.advancedSearchObject;
-      newAdvancedSearchObject.ORFilter = this.values;
-      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
-    }
     this.advancedSearchService.setShowModal(true);
   }
   clickExpand(key: string) {
