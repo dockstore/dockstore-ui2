@@ -348,6 +348,7 @@ export class SearchComponent implements OnInit {
     this.setupNonVerifiedBucketCount();
     this.updateSideBar(query);
     this.updateResultsTable(query2);
+    console.log(query2);
   }
 
   updateSideBar(value: string) {
@@ -484,18 +485,18 @@ export class SearchComponent implements OnInit {
   advancedSearchDescription(body: any) {
     if (this.advancedSearchObject.ANDSplitFilter) {
       const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach(filter => body = body.filter('term', 'description', filter));
+      filters.forEach(filter => body = body.filter('match_phrase', 'description', filter));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
       body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      body = body.filter('terms', 'description', filters);
+      filters.forEach(filter => body = body.orFilter('match_phrase', 'description', filter));
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      body = body.notQuery('terms', 'description', filters);
+      filters.forEach(filter => body = body.notQuery('match_phrase', 'description', filter));
     }
   }
 
@@ -523,12 +524,10 @@ export class SearchComponent implements OnInit {
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('terms', 'tags.sourceFiles.content', filters))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('terms', 'workflowVersions.sourceFiles.content', filters))
-      );
+      filters.forEach(filter => {
+        body = body.orFilter('match', 'tags.sourceFiles.content', filter);
+        body = body.orFilter('match', 'workflowVersions.sourceFiles.content', filter);
+      });
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
