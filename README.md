@@ -88,6 +88,16 @@ os: linux x64
 If you wish to serve the dist folder in a VM, make sure you have nginx and security rules set up properly.
 [Nginx](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04)
 
+## Swagger
+
+You will need to generate the Dockstore client classes (version numbers may change frequently)
+```
+wget https://oss.sonatype.org/content/repositories/snapshots/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170808.174853-69.jar -O swagger-codegen-cli.jar
+java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/1.2.5/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger
+./script
+
+```
+
 ## Project Set Up
 
 The Dockstore class in `dockstore-ui2/src/app/shared/dockstore.model.ts` is for integrating supported services.
