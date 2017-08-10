@@ -18,7 +18,6 @@ export class AdvancedSearchComponent implements OnInit {
 
   ngOnInit() {
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
-      console.log(advancedSearch.ORFilter);
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
       this.ORFilter = advancedSearch.ORFilter;

@@ -47,6 +47,7 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
   private activeToolBar = true;
+  private loading = false;
 
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
@@ -172,22 +173,12 @@ export class SearchComponent implements OnInit {
     this.searchService.searchInfo$.subscribe(
       searchInfo => {
         if (searchInfo) {
-          if (searchInfo.filter) {
-            this.filters = searchInfo.filter;
-          }
-          if (searchInfo.searchValues) {
-            this.values = searchInfo.searchValues;
-            this.searchTermBox.nativeElement.value = searchInfo.searchValues;
-          }
-          if (searchInfo.checkbox) {
-            this.checkboxMap = searchInfo.checkbox;
-          }
-          if (searchInfo.sortModeMap) {
-            this.sortModeMap = searchInfo.sortModeMap;
-          }
-          if (searchInfo.advancedSearchObject) {
-            this.advancedSearchObject = searchInfo.advancedSearchObject;
-          }
+          this.filters = searchInfo.filter;
+          this.values = searchInfo.searchValues;
+          this.searchTermBox.nativeElement.value = searchInfo.searchValues;
+          this.checkboxMap = searchInfo.checkbox;
+          this.sortModeMap = searchInfo.sortModeMap;
+          this.advancedSearchObject = searchInfo.advancedSearchObject;
         }
         this.updateQuery();
       });
@@ -195,6 +186,11 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
+    this.searchService.loading$.subscribe(
+      loading => {
+        this.loading = loading;
+      }
+    );
   }
   /**===============================================
    *                SetUp Functions
@@ -319,15 +315,12 @@ export class SearchComponent implements OnInit {
     this.searchService.setSearchInfo(searchInfo);
   }
 
-  joinComma(searchTerm: string): string{
-    return searchTerm.split(' ').join(', ');
-  }
-
   /**===============================================
    *                Update Functions
    * ==============================================e
    */
   updateQuery() {
+    this.searchService.setLoading(true);
     // calculate number of filters
     let count = 0;
     this.filters.forEach(filter => {
@@ -348,7 +341,6 @@ export class SearchComponent implements OnInit {
     const builtBody2 = body2.build();
     const query = JSON.stringify(builtBody);
     const query2 = JSON.stringify(builtBody2);
-    console.log(query2);
     this.setupNonVerifiedBucketCount();
     this.updateSideBar(query);
     this.updateResultsTable(query2);
@@ -387,6 +379,7 @@ export class SearchComponent implements OnInit {
         this.searchTerm = true;
       }
       this.setTabActive();
+      this.searchService.setLoading(false);
     });
   }
 
@@ -399,11 +392,11 @@ export class SearchComponent implements OnInit {
     this.checkboxMap.clear();
     this.sortModeMap.clear();
     this.setFilter = false;
-    this.resetSearchBox();
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
     this.searchService.setSearchInfo(null);
+    this.resetSearchBox();
     this.resetEntryOrder();
     this.advancedSearchService.clear();
   }
@@ -473,14 +466,8 @@ export class SearchComponent implements OnInit {
       if (this.advancedSearchObject && !this.advancedSearchObject.toAdvanceSearch) {
         this.advancedSearchObject.ORFilter = this.values;
         this.advancedSearchFiles(body);
+        this.advancedSearchObject.ORFilter = '';
       }
-      // const filters = this.values.split(' ');
-      // body = body.filter('bool', filter => filter
-      //   .orFilter('bool', toolfilter => toolfilter
-      //     .filter('terms', 'tags.sourceFiles.content', filters))
-      //   .orFilter('bool', workflowfilter => workflowfilter
-      //     .filter('terms', 'workflowVersions.sourceFiles.content', filters))
-      // );
     } else {
       body = body.query('match_all', {});
     }
@@ -491,6 +478,7 @@ export class SearchComponent implements OnInit {
         } else if (this.advancedSearchObject.searchMode === 'files') {
           this.advancedSearchFiles(body);
         }
+        this.resetSearchBox();
       }
     }
     return body;
@@ -505,7 +493,6 @@ export class SearchComponent implements OnInit {
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      console.log(filters);
       filters.forEach(filter => {
         body = body.orFilter('match_phrase', 'description', filter);
       });
@@ -531,19 +518,18 @@ export class SearchComponent implements OnInit {
         insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
       body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
+                    .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+                    .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
       body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
+                 .orFilter('bool', toolfilter => toolfilter
+                   .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
+                 .orFilter('bool', workflowfilter => workflowfilter
+                   .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      console.log(filters);
       let insideFilter_tool = bodybuilder();
       filters.forEach(filter => {
         insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
@@ -570,12 +556,6 @@ export class SearchComponent implements OnInit {
         .filter('bool', toolfilter => toolfilter = insideFilter_tool)
         .filter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
-  }
-
-  appendORFilter(body: any) {
-    const filters = this.advancedSearchObject.ORFilter.split(' ');
-    filters.forEach(filter => body = body.filter('term', 'description', filter));
-    return body;
   }
 
   /**
@@ -607,6 +587,7 @@ export class SearchComponent implements OnInit {
    */
   onKey(value: string) {
     /* TODO: might need to check for safety injection */
+    this.advancedSearchObject.toAdvanceSearch = false;
     this.values = value;
     this.searchTerm = true;
     if ((!value || 0 === value.length)) {
@@ -681,8 +662,12 @@ export class SearchComponent implements OnInit {
   }
   /**===============================================
    *                Helper Functions
-   * ==============================================
+   * ===============================================
+   *
    */
+  joinComma(searchTerm: string): string {
+    return searchTerm.trim().split(' ').join(', ');
+  }
   mapFriendlyValueNames(key, subBucket) {
     if (this.friendlyValueNames.has(key)) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());

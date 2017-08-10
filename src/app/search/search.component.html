@@ -2,7 +2,7 @@
   <img src="../assets/images/dockstore/dockstore-tools-blue.png">
   Search
 </app-header>
-<div class="container search-container" >
+<div class="container search-container">
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <button (click) = switchExpandAll() type="button" class="btn btn-info btn-sm sidebar-btn expand">
@@ -29,74 +29,74 @@
           </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
-          <div accordion-heading>
-            {{friendlyNames.get(key)}}
-            <span>
-              <i class="pull-right float-xs-right glyphicon"
-                 [ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
-              </i>
-            </span>
-          </div>
-          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
-            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                 [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
-            </button>
-            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                 [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
-            </button>
-          </div>
-          <div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>
-            <div class="panel-container-label selected-item">
-              <div class="container-name-oflw pull-left">
-                  <span>
-                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ mapFriendlyValueNames(key,subBucket) }}
-                  </span>
-              </div>
-              <div class="pull-right">
-                <p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>
-              </div>
-            </div>
-          </div>
-          <div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>
-            <div class="panel-container-label">
-              <div *ngIf="i < 5">
-                <div class="container-name-oflw pull-left">
-                  <span>
-                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ mapFriendlyValueNames(key,subBucket) }}
-                  </span>
-                </div>
-                <div class="pull-right">
-                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
-                </div>
-              </div>
-              <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
-                <div class="container-name-oflw pull-left">
-                  <span>
-                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ subBucket }}
-                  </span>
-                </div>
-                <div class="pull-right">
-                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!--<accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">-->
+          <!--<div accordion-heading>-->
+            <!--{{friendlyNames.get(key)}}-->
+            <!--<span>-->
+              <!--<i class="pull-right float-xs-right glyphicon"-->
+                 <!--[ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">-->
+              <!--</i>-->
+            <!--</span>-->
+          <!--</div>-->
+          <!--<div *ngIf="orderedBuckets.get(key).Items.size > 10">-->
+            <!--<button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">-->
+              <!--<i class="float-xs-right glyphicon" aria-hidden="true"-->
+                 <!--[ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical-->
+            <!--</button>-->
+            <!--<button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">-->
+              <!--<i class="float-xs-right glyphicon" aria-hidden="true"-->
+                 <!--[ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count-->
+            <!--</button>-->
+          <!--</div>-->
+          <!--<div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>-->
+            <!--<div class="panel-container-label selected-item">-->
+              <!--<div class="container-name-oflw pull-left">-->
+                  <!--<span>-->
+                    <!--<input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>-->
+                    <!--{{ mapFriendlyValueNames(key,subBucket) }}-->
+                  <!--</span>-->
+              <!--</div>-->
+              <!--<div class="pull-right">-->
+                <!--<p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>-->
+            <!--<div class="panel-container-label">-->
+              <!--<div *ngIf="i < 5">-->
+                <!--<div class="container-name-oflw pull-left">-->
+                  <!--<span>-->
+                    <!--<input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>-->
+                    <!--{{ mapFriendlyValueNames(key,subBucket) }}-->
+                  <!--</span>-->
+                <!--</div>-->
+                <!--<div class="pull-right">-->
+                  <!--<p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div *ngIf="i >= 5 && fullyExpandMap.get(key)">-->
+                <!--<div class="container-name-oflw pull-left">-->
+                  <!--<span>-->
+                    <!--<input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>-->
+                    <!--{{ subBucket }}-->
+                  <!--</span>-->
+                <!--</div>-->
+                <!--<div class="pull-right">-->
+                  <!--<p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
 
-          <div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">
-            <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
-              <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
-              <a>
-              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}
-              </a>
-            </span>
-          </div>
-        </accordion-group>
+          <!--<div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">-->
+            <!--<span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">-->
+              <!--<i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>-->
+              <!--<a>-->
+              <!--{{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}-->
+              <!--</a>-->
+            <!--</span>-->
+          <!--</div>-->
+        <!--</accordion-group>-->
       </accordion>
       <button (click) = resetFilters() type="button" class="btn btn-info btn-sm sidebar-btn reset">
         Reset Filters
@@ -104,78 +104,85 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-        <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
-          Sorry, no matches found for <strong>{{box.value}}</strong>. Do you mean: <strong>some_key_word</strong>?
-        </div>
-        <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
-          <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
-        </div>
-        <div *ngIf="advancedSearchObject?.toAdvanceSearch" class="alert alert-info">
-          <strong>Advanced Search: </strong>
-          <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-          <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-          <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
-          <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
-        </div>
-        <div *ngIf="filters.size > 0" class="alert alert-info">
-          <strong>Search Filter: </strong>
-          <span *ngFor="let key of filters.keys(); let i = index">
-            the <strong>{{friendlyNames.get(key)}}</strong> is
-          <span *ngFor='let subBucket of filters.get(key); let j = index'>
-            <strong>{{mapFriendlyValueNames(key, subBucket)}}</strong>
-            <span *ngIf="j < filters.get(key).size - 1">
-              OR
-            </span>
+        <div class="alert alert-info" role="alert" *ngIf="loading">
+          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
           </span>
-          <span *ngIf="i < filters.size - 1">
-            AND
-          </span>
-        </span>
+          Please wait, retrieving search result...
         </div>
-          <tabset class="homeComponent" type="tabs">
-            <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
-              <ng-template tabHeading>
-                <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
-                Browse Tools
-              </ng-template>
-              <button type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
-                <i [class]="showToolTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
-                <span>Tag Cloud</span>
-              </button>
-              <div class="tagCloud tool" *ngIf="showToolTagCloud">
-                <angular-tag-cloud
-                  [data]="data"
-                  [width]="options.width"
-                  [height]="options.height"
-                  [overflow]="options.overflow"
-                  (clicked)="logClicked($event)">
-                </angular-tag-cloud>
-              </div>
-              <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-              <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
-            </tab>
-            <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab">
-              <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
-                <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
-                <span>Tag Cloud</span>
-              </button>
-              <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
-                <angular-tag-cloud
-                  [data]="data2"
-                  [width]="options.width"
-                  [height]="options.height"
-                  [overflow]="options.overflow"
-                  (clicked)="logClicked($event)">
-                </angular-tag-cloud>
-              </div>
-              <ng-template tabHeading>
-                <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
-                Browse Workflows
-              </ng-template>
-              <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-              <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'workflow'"></app-listentry>
-            </tab>
-          </tabset>
+        <div *ngIf="!loading">
+          <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
+            Sorry, no matches found for <strong>{{box.value}}</strong>. Do you mean: <strong>some_key_word</strong>?
+          </div>
+          <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
+            <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
+          </div>
+          <div *ngIf="advancedSearchObject?.toAdvanceSearch" class="alert alert-info">
+            <strong>Advanced Search: </strong>
+            <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+            <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+            <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
+            <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
+          </div>
+          <div *ngIf="filters.size > 0" class="alert alert-info">
+            <strong>Search Filter: </strong>
+            <span *ngFor="let key of filters.keys(); let i = index">
+              the <strong>{{friendlyNames.get(key)}}</strong> is
+              <span *ngFor='let subBucket of filters.get(key); let j = index'>
+                <strong>{{mapFriendlyValueNames(key, subBucket)}}</strong>
+                <span *ngIf="j < filters.get(key).size - 1">
+                  OR
+                </span>
+              </span>
+              <span *ngIf="i < filters.size - 1">
+              AND
+              </span>
+          </span>
+          </div>
+        </div>
+        <tabset class="homeComponent" type="tabs">
+          <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
+            <ng-template tabHeading>
+              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+              Browse Tools
+            </ng-template>
+            <button type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
+              <i [class]="showToolTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+              <span>Tag Cloud</span>
+            </button>
+            <div class="tagCloud tool" *ngIf="showToolTagCloud">
+              <angular-tag-cloud
+                [data]="data"
+                [width]="options.width"
+                [height]="options.height"
+                [overflow]="options.overflow"
+                (clicked)="logClicked($event)">
+              </angular-tag-cloud>
+            </div>
+            <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+            <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
+          </tab>
+          <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab">
+            <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
+              <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+              <span>Tag Cloud</span>
+            </button>
+            <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
+              <angular-tag-cloud
+                [data]="data2"
+                [width]="options.width"
+                [height]="options.height"
+                [overflow]="options.overflow"
+                (clicked)="logClicked($event)">
+              </angular-tag-cloud>
+            </div>
+            <ng-template tabHeading>
+              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+              Browse Workflows
+            </ng-template>
+            <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+            <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'workflow'"></app-listentry>
+          </tab>
+        </tabset>
       </div>
     </div>
   </div>

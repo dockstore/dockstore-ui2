@@ -62,6 +62,7 @@ export class ListentryComponent implements OnInit {
       // Destroy the table first
       dtInstance.destroy();
       this.hits = hits;
+      // console.log(this.hits);
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
