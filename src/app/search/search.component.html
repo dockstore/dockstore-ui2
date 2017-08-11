@@ -18,85 +18,83 @@
               </i>
             </span>
           </div>
-          <div class="search-wrapper center-block">
-            <form>
-              <input type="text" name="focus"  required class="search-box" #box (keyup)="onKey(box.value)"
-                     placeholder="Enter search term">
-            </form>
+          <div>
+            <input type="text" name="focus" required class="search-box" (ngModelChange)="onKey()"
+                   placeholder="Enter search term" [(ngModel)]="values"/>
           </div>
           <button type="button" class="btn btn-success btn-sm center-block advancedSearch-btn" (click)="openAdvancedSearch()">
             Open Advanced Search
           </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <!--<accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">-->
-          <!--<div accordion-heading>-->
-            <!--{{friendlyNames.get(key)}}-->
-            <!--<span>-->
-              <!--<i class="pull-right float-xs-right glyphicon"-->
-                 <!--[ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">-->
-              <!--</i>-->
-            <!--</span>-->
-          <!--</div>-->
-          <!--<div *ngIf="orderedBuckets.get(key).Items.size > 10">-->
-            <!--<button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">-->
-              <!--<i class="float-xs-right glyphicon" aria-hidden="true"-->
-                 <!--[ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical-->
-            <!--</button>-->
-            <!--<button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">-->
-              <!--<i class="float-xs-right glyphicon" aria-hidden="true"-->
-                 <!--[ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count-->
-            <!--</button>-->
-          <!--</div>-->
-          <!--<div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>-->
-            <!--<div class="panel-container-label selected-item">-->
-              <!--<div class="container-name-oflw pull-left">-->
-                  <!--<span>-->
-                    <!--<input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>-->
-                    <!--{{ mapFriendlyValueNames(key,subBucket) }}-->
-                  <!--</span>-->
-              <!--</div>-->
-              <!--<div class="pull-right">-->
-                <!--<p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>-->
-            <!--<div class="panel-container-label">-->
-              <!--<div *ngIf="i < 5">-->
-                <!--<div class="container-name-oflw pull-left">-->
-                  <!--<span>-->
-                    <!--<input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>-->
-                    <!--{{ mapFriendlyValueNames(key,subBucket) }}-->
-                  <!--</span>-->
-                <!--</div>-->
-                <!--<div class="pull-right">-->
-                  <!--<p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div *ngIf="i >= 5 && fullyExpandMap.get(key)">-->
-                <!--<div class="container-name-oflw pull-left">-->
-                  <!--<span>-->
-                    <!--<input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>-->
-                    <!--{{ subBucket }}-->
-                  <!--</span>-->
-                <!--</div>-->
-                <!--<div class="pull-right">-->
-                  <!--<p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
+        <accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+          <div accordion-heading>
+            {{friendlyNames.get(key)}}
+            <span>
+              <i class="pull-right float-xs-right glyphicon"
+                 [ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
+              </i>
+            </span>
+          </div>
+          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
+            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+            </button>
+            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+            </button>
+          </div>
+          <div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>
+            <div class="panel-container-label selected-item">
+              <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ mapFriendlyValueNames(key,subBucket) }}
+                  </span>
+              </div>
+              <div class="pull-right">
+                <p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>
+              </div>
+            </div>
+          </div>
+          <div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>
+            <div class="panel-container-label">
+              <div *ngIf="i < 5">
+                <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ mapFriendlyValueNames(key,subBucket) }}
+                  </span>
+                </div>
+                <div class="pull-right">
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
+                </div>
+              </div>
+              <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
+                <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ subBucket }}
+                  </span>
+                </div>
+                <div class="pull-right">
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <!--<div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">-->
-            <!--<span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">-->
-              <!--<i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>-->
-              <!--<a>-->
-              <!--{{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}-->
-              <!--</a>-->
-            <!--</span>-->
-          <!--</div>-->
-        <!--</accordion-group>-->
+          <div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">
+            <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
+              <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+              <a>
+              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}
+              </a>
+            </span>
+          </div>
+        </accordion-group>
       </accordion>
       <button (click) = resetFilters() type="button" class="btn btn-info btn-sm sidebar-btn reset">
         Reset Filters
@@ -111,7 +109,7 @@
         </div>
         <div *ngIf="!loading">
           <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
-            Sorry, no matches found for <strong>{{box.value}}</strong>. Do you mean: <strong>some_key_word</strong>?
+            Sorry, no matches found for <strong>{{values}}</strong>. Do you mean: <strong>some_key_word</strong>?
           </div>
           <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
             <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>

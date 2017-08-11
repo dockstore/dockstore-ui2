@@ -10,12 +10,10 @@ import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-
+import { NgZone } from '@angular/core';
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
  **/
-enableProdMode();
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -32,6 +30,7 @@ export class SearchComponent implements OnInit {
   /* Observable */
   private toolSource = new BehaviorSubject<any>(null);
   toolhit$ = this.toolSource.asObservable();
+  _timeout = false;
 
   /* Observable */
   private workflowSource = new BehaviorSubject<any>(null);
@@ -162,7 +161,8 @@ export class SearchComponent implements OnInit {
    */
   constructor(private providerService: ProviderService,
               private searchService: SearchService,
-              private advancedSearchService: AdvancedSearchService) {
+              private advancedSearchService: AdvancedSearchService,
+              public lc: NgZone) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
@@ -175,7 +175,6 @@ export class SearchComponent implements OnInit {
         if (searchInfo) {
           this.filters = searchInfo.filter;
           this.values = searchInfo.searchValues;
-          this.searchTermBox.nativeElement.value = searchInfo.searchValues;
           this.checkboxMap = searchInfo.checkbox;
           this.sortModeMap = searchInfo.sortModeMap;
           this.advancedSearchObject = searchInfo.advancedSearchObject;
@@ -192,6 +191,8 @@ export class SearchComponent implements OnInit {
       }
     );
   }
+
+
   /**===============================================
    *                SetUp Functions
    * ==============================================*/
@@ -326,24 +327,23 @@ export class SearchComponent implements OnInit {
     this.filters.forEach(filter => {
       count += filter.size;
     });
-    let body = bodybuilder()
-      .size(this.query_size);
     // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    body = this.appendQuery(body);
-    body = this.appendAggregations(count, body);
-    let body2 = bodybuilder().size(this.query_size);
-    body2 = this.appendQuery(body2);
-    body2 = this.appendFilter(body2, null);
+    let sidebarBody = bodybuilder().size(this.query_size);
+    sidebarBody = this.appendQuery(sidebarBody);
+    sidebarBody = this.appendAggregations(count, sidebarBody);
+    let tableBody = bodybuilder().size(this.query_size);
+    tableBody = this.appendQuery(tableBody);
+    tableBody = this.appendFilter(tableBody, null);
     this.resetEntryOrder();
-    const builtBody = body.build();
-    const builtBody2 = body2.build();
-    const query = JSON.stringify(builtBody);
-    const query2 = JSON.stringify(builtBody2);
+    const builtSideBarBody = sidebarBody.build();
+    const builtTableBody = tableBody.build();
+    const sideBarQuery = JSON.stringify(builtSideBarBody);
+    const tableQuery = JSON.stringify(builtTableBody);
     this.setupNonVerifiedBucketCount();
-    this.updateSideBar(query);
-    this.updateResultsTable(query2);
+    this.updateSideBar(sideBarQuery);
+    this.updateResultsTable(tableQuery);
   }
 
   updateSideBar(value: string) {
@@ -388,6 +388,8 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   resetFilters() {
+    this.values = '';
+    this.searchTerm = false;
     this.filters.clear();
     this.checkboxMap.clear();
     this.sortModeMap.clear();
@@ -396,14 +398,8 @@ export class SearchComponent implements OnInit {
     this.workflowHits = [];
     this.toolHits = [];
     this.searchService.setSearchInfo(null);
-    this.resetSearchBox();
     this.resetEntryOrder();
     this.advancedSearchService.clear();
-  }
-  resetSearchBox() {
-    this.values = '';
-    this.searchTerm = false;
-    this.searchTermBox.nativeElement.value = '';
   }
 
   resetEntryOrder() {
@@ -478,7 +474,8 @@ export class SearchComponent implements OnInit {
         } else if (this.advancedSearchObject.searchMode === 'files') {
           this.advancedSearchFiles(body);
         }
-        this.resetSearchBox();
+        this.values = '';
+        this.searchTerm = false;
       }
     }
     return body;
@@ -585,15 +582,20 @@ export class SearchComponent implements OnInit {
    *                Event Functions
    * ==============================================
    */
-  onKey(value: string) {
-    /* TODO: might need to check for safety injection */
-    this.advancedSearchObject.toAdvanceSearch = false;
-    this.values = value;
-    this.searchTerm = true;
-    if ((!value || 0 === value.length)) {
-      this.searchTerm = false;
+  onKey() {
+    if (this._timeout) {
+    } else {
+      this.advancedSearchObject.toAdvanceSearch = false;
+      this.searchTerm = true;
+      this._timeout = true;
+      window.setTimeout(() => {
+        if ((!this.values || 0 === this.values.length)) {
+          this.searchTerm = false;
+        }
+        this.updateQuery();
+        this._timeout = false;
+      }, 500);
     }
-    this.updateQuery();
   }
   /**
    * This handles clicking a facet and doing the search
