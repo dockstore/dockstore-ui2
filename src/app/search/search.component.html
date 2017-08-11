@@ -19,8 +19,9 @@
             </span>
           </div>
           <div>
-            <input type="text" name="focus" required class="search-box" (ngModelChange)="onKey()"
-                   placeholder="Enter search term" [(ngModel)]="values"/>
+            <input  tooltip="Find tools and workflows with files that have at least one of these terms"
+                    type="text" name="focus" class="search-box" (ngModelChange)="onKey()"
+                    placeholder="Enter search term" [(ngModel)]="values"/>
           </div>
           <button type="button" class="btn btn-success btn-sm center-block advancedSearch-btn" (click)="openAdvancedSearch()">
             Open Advanced Search
@@ -109,7 +110,7 @@
         </div>
         <div *ngIf="!loading">
           <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
-            Sorry, no matches found for <strong>{{values}}</strong>. Do you mean: <strong>some_key_word</strong>?
+            Sorry, no matches found for <strong>{{joinComma(values)}}</strong>. Do you mean: <strong>some_key_word</strong>?
           </div>
           <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
             <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
