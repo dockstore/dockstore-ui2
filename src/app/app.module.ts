@@ -1,3 +1,4 @@
+import { Dockstore } from './shared/dockstore.model';
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
 import { StateService } from './shared/state.service';
@@ -152,7 +153,7 @@ export class AppModule {
 
 export const apiConfig = new Configuration({
   accessToken: '',
-  basePath: ''
+  basePath: Dockstore.API_URI
 });
 
 export function getApiConfig() {

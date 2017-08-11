@@ -24,11 +24,13 @@ export class ListContainersComponent extends ToolLister {
   @Input() previewMode: boolean;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   verifiedLink: string;
-  toolsTable: any[] = new Array<any>();
+  toolsTable: any[] = [];
   private pageNumberSubscription: Subscription;
   // TODO: make an API endpoint to retrieve only the necessary properties for the containers table
   // name, author, path, registry, gitUrl
   dtOptions = {
+    /* No ordering applied by DataTables during initialisation */
+    order: [],
     columnDefs: [
       {
         orderable: false,
@@ -82,22 +84,18 @@ export class ListContainersComponent extends ToolLister {
     );
     if (this.previewMode) {
       this.setPreviewTable();
-    } else {
-      this.toolsTable = this.publishedTools;
     }
+    this.toolsTable = this.publishedTools;
     this.dtTrigger.next();
     this.setupPageNumber();
   }
   setPreviewTable() {
     this.dtOptions['searching'] = false;
-    this.dtOptions['paging'] = false;
+    this.dtOptions['paging'] = true;
     this.dtOptions['bInfo'] = false;
-    /* TODO: this function should be modified so it will display the most important 10 (or less) items */
-    for (let i = 0; i < this.publishedTools.length; i++) {
-      if (i < 10) {
-        this.toolsTable.push(this.publishedTools[i]);
-      }
-    }
+    this.dtOptions['lengthChange'] = false;
+    this.dtOptions['pageLength'] = 10;
+    this.dtOptions['dom'] = 'lfrti';
   }
   setupPageNumber() {
     this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(

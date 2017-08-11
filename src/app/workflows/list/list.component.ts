@@ -19,11 +19,13 @@ export class ListWorkflowsComponent extends ToolLister {
   @Input() previewMode: boolean;
   @Input() entryType: string;
   dtTrigger: Subject<any> = new Subject();
-  workflowsTable: Array<any> = new Array<any>();
+  workflowsTable: Array<any> = [];
   private pageNumberSubscription: Subscription;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
   dtOptions = {
+    /* No ordering applied by DataTables during initialisation */
+    order: [],
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
       const self = this;
       $('td', row).unbind('click');
@@ -60,22 +62,18 @@ export class ListWorkflowsComponent extends ToolLister {
   initToolLister(): void {
     if (this.previewMode) {
       this.setPreviewTable();
-    } else {
-      this.workflowsTable = this.publishedTools;
     }
+    this.workflowsTable = this.publishedTools;
     this.dtTrigger.next();
     this.setupPageNumber();
   }
   setPreviewTable() {
     this.dtOptions['searching'] = false;
-    this.dtOptions['paging'] = false;
+    this.dtOptions['paging'] = true;
     this.dtOptions['bInfo'] = false;
-    /* TODO: this function should be modified so it will display the most important 10 (or less) items */
-    for (let i = 0; i < this.publishedTools.length; i++) {
-      if (i < 10) {
-        this.workflowsTable.push(this.publishedTools[i]);
-      }
-    }
+    this.dtOptions['lengthChange'] = false;
+    this.dtOptions['pageLength'] = 10;
+    this.dtOptions['dom'] = 'lfrti';
   }
   setupPageNumber() {
     this.pageNumberSubscription = this.pagenumberService.pgNumWorkflows$.subscribe(
