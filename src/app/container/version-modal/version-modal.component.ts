@@ -194,6 +194,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
+
   ngOnInit() {
     this.versionModalService.version.subscribe(version => {
       this.version = version;
@@ -225,6 +226,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
   }
+
   getDateTimeMessage(timestamp) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
