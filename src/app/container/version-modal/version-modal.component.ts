@@ -23,19 +23,19 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = DescriptorType;
   public isModalShown: boolean;
-  private editMode;
-  private mode: TagEditorMode;
-  private tool: any;
-  private unsavedVersion;
+  public editMode: boolean;
+  public mode: TagEditorMode;
+  public tool: any;
+  public unsavedVersion;
   private savedCWLTestParameterFiles: Array<any>;
   private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
-  private unsavedCWLTestParameterFilePaths: Array<string>;
-  private unsavedWDLTestParameterFilePaths: Array<string>;
-  private unsavedTestCWLFile = '';
-  private unsavedTestWDLFile = '';
-  private formErrors = formErrors;
+  public unsavedCWLTestParameterFilePaths: Array<string>;
+  public unsavedWDLTestParameterFilePaths: Array<string>;
+  public unsavedTestCWLFile = '';
+  public unsavedTestWDLFile = '';
+  public formErrors = formErrors;
   private version: ToolVersion;
   public validationPatterns = validationPatterns;
   tagEditorForm: NgForm;
@@ -124,7 +124,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  closeModal() {
+  onHidden() {
     this.versionModalService.setIsModalShown(false);
     this.versionModalService.setCurrentMode(null);
   }

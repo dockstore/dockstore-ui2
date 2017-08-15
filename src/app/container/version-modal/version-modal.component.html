@@ -192,7 +192,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-default" (click)="onHidden()">Close</button>
           <button type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Edit" [disabled]="!tagEditorForm.form.valid" data-dismiss="modal">
             Save Changes
           </button>
