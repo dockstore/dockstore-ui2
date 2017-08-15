@@ -20,7 +20,7 @@
           </div>
           <div>
             <input  tooltip="Find tools and workflows with files that have at least one of these terms"
-                    type="text" name="focus" class="search-box" (ngModelChange)="onKey()"
+                    type="text" name="focus" class="search-box form-control" (ngModelChange)="onKey()"
                     placeholder="Enter search term" [(ngModel)]="values"/>
           </div>
           <button type="button" class="btn btn-success btn-sm center-block advancedSearch-btn" (click)="openAdvancedSearch()">
