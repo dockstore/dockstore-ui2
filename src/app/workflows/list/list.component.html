@@ -3,6 +3,7 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>Stars</th>
           <th>Author</th>
           <th>Format</th>
           <th>Project Links</th>
@@ -12,6 +13,9 @@
         <tr *ngFor="let workflow of workflowsTable">
           <td>
             <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
+          </td>
+          <td>
+            {{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
           </td>
           <td>
               <span id="verifiedIcon" *ngIf="getVerified(workflow)">
@@ -31,7 +35,7 @@
       </tbody>
       <!--Moved outside tbody because it interferes with Angular-Datatables library-->
       <tr *ngIf="previewMode && workflowsTable.length > 0">
-        <td colspan="4" class="browse-all">
+        <td colspan="5" class="browse-all">
           <div class="button">
             <p><a href="/workflows">Browse All Workflows &raquo;</a></p>
           </div>

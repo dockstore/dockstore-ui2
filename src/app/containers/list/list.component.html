@@ -3,6 +3,7 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>Stars</th>
           <th>Author</th>
           <th>Project Links</th>
           <th>Docker Pull</th>
@@ -13,6 +14,9 @@
           <td>
             <a (click)="sendToolInfo(tool)" [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name +
               (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
+          </td>
+          <td>
+            {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
           </td>
           <td>
             <span id="verifiedIcon" *ngIf="getVerified(tool)">
@@ -43,7 +47,7 @@
       </tbody>
       <!--Moved outside tbody because it interferes with Angular-Datatables library-->
       <tr *ngIf="previewMode && toolsTable.length > 0">
-        <td colspan="4" class="browse-all">
+        <td colspan="5" class="browse-all">
           <div class="button">
             <p><a href="/tools">Browse All Tools &raquo;</a></p>
           </div>
