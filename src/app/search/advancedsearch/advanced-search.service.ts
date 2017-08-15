@@ -9,7 +9,7 @@ export class AdvancedSearchService {
     ANDNoSplitFilter: '',
     ORFilter: '',
     NOTFilter: '',
-    searchMode: 'description',
+    searchMode: 'files',
     toAdvanceSearch: false
   };
   advancedSearch$: BehaviorSubject<AdvancedSearchObject> = new BehaviorSubject<AdvancedSearchObject>(this.initAdvancedSearch);
@@ -26,6 +26,14 @@ export class AdvancedSearchService {
   }
 
   clear(): void {
+    this.initAdvancedSearch = {
+      ANDSplitFilter: '',
+      ANDNoSplitFilter: '',
+      ORFilter: '',
+      NOTFilter: '',
+      searchMode: 'files',
+      toAdvanceSearch: false
+    };
     this.advancedSearch$.next(this.initAdvancedSearch);
   }
 }

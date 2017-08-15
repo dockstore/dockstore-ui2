@@ -13,7 +13,7 @@ export class AdvancedSearchComponent implements OnInit {
   ANDSplitFilter: string;
   ORFilter: string;
   isModalShown: boolean;
-  searchMode = 'description';
+  searchMode = 'files';
   constructor(private advancedSearchService: AdvancedSearchService) { }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class AdvancedSearchComponent implements OnInit {
       ANDSplitFilter: '',
       ORFilter: '',
       NOTFilter: '',
-      searchMode: 'description',
+      searchMode: 'files',
       toAdvanceSearch: false
     };
     this.advancedSearchService.setAdvancedSearch(advancedSearch);

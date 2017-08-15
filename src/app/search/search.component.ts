@@ -10,12 +10,10 @@ import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-
+import { NgZone } from '@angular/core';
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
  **/
-enableProdMode();
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -32,6 +30,7 @@ export class SearchComponent implements OnInit {
   /* Observable */
   private toolSource = new BehaviorSubject<any>(null);
   toolhit$ = this.toolSource.asObservable();
+  _timeout = false;
 
   /* Observable */
   private workflowSource = new BehaviorSubject<any>(null);
@@ -47,6 +46,7 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
   private activeToolBar = true;
+  private loading = false;
 
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
@@ -161,7 +161,8 @@ export class SearchComponent implements OnInit {
    */
   constructor(private providerService: ProviderService,
               private searchService: SearchService,
-              private advancedSearchService: AdvancedSearchService) {
+              private advancedSearchService: AdvancedSearchService,
+              public lc: NgZone) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
@@ -172,22 +173,11 @@ export class SearchComponent implements OnInit {
     this.searchService.searchInfo$.subscribe(
       searchInfo => {
         if (searchInfo) {
-          if (searchInfo.filter) {
-            this.filters = searchInfo.filter;
-          }
-          if (searchInfo.searchValues) {
-            this.values = searchInfo.searchValues;
-            this.searchTermBox.nativeElement.value = searchInfo.searchValues;
-          }
-          if (searchInfo.checkbox) {
-            this.checkboxMap = searchInfo.checkbox;
-          }
-          if (searchInfo.sortModeMap) {
-            this.sortModeMap = searchInfo.sortModeMap;
-          }
-          if (searchInfo.advancedSearchObject) {
-            this.advancedSearchObject = searchInfo.advancedSearchObject;
-          }
+          this.filters = searchInfo.filter;
+          this.values = searchInfo.searchValues;
+          this.checkboxMap = searchInfo.checkbox;
+          this.sortModeMap = searchInfo.sortModeMap;
+          this.advancedSearchObject = searchInfo.advancedSearchObject;
         }
         this.updateQuery();
       });
@@ -195,7 +185,14 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
+    this.searchService.loading$.subscribe(
+      loading => {
+        this.loading = loading;
+      }
+    );
   }
+
+
   /**===============================================
    *                SetUp Functions
    * ==============================================*/
@@ -221,17 +218,16 @@ export class SearchComponent implements OnInit {
       if (key === 'tags.verified' && !bucket.key) {
         doc_count = this.nonverifiedcount;
       }
-      if (this.checkboxMap.get(key)) {
-        if (doc_count > 0) {
-          if (!this.checkboxMap.get(key).get(bucket.key)) {
-            this.checkboxMap.get(key).set(bucket.key, false);
-            this.entryOrder.get(key).Items.set(bucket.key, doc_count);
-          } else if (this.checkboxMap.get(key).get(bucket.key)) {
-            this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
-          }
+      if (doc_count > 0) {
+        if (!this.checkboxMap.get(key)) {
+          this.checkboxMap.set(key, new Map<string, boolean>());
         }
-      } else {
-        this.checkboxMap.set(key, new Map<string, boolean>());
+        if (!this.checkboxMap.get(key).get(bucket.key)) {
+          this.checkboxMap.get(key).set(bucket.key, false);
+          this.entryOrder.get(key).Items.set(bucket.key, doc_count);
+        } else if (this.checkboxMap.get(key).get(bucket.key)) {
+          this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
+        }
       }
     });
   }
@@ -325,30 +321,29 @@ export class SearchComponent implements OnInit {
    * ==============================================e
    */
   updateQuery() {
+    this.searchService.setLoading(true);
     // calculate number of filters
     let count = 0;
     this.filters.forEach(filter => {
       count += filter.size;
     });
-    let body = bodybuilder()
-      .size(this.query_size);
     // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    body = this.appendQuery(body);
-    body = this.appendAggregations(count, body);
-    let body2 = bodybuilder().size(this.query_size);
-    body2 = this.appendQuery(body2);
-    body2 = this.appendFilter(body2, null);
+    let sidebarBody = bodybuilder().size(this.query_size);
+    sidebarBody = this.appendQuery(sidebarBody);
+    sidebarBody = this.appendAggregations(count, sidebarBody);
+    let tableBody = bodybuilder().size(this.query_size);
+    tableBody = this.appendQuery(tableBody);
+    tableBody = this.appendFilter(tableBody, null);
     this.resetEntryOrder();
-    const builtBody = body.build();
-    const builtBody2 = body2.build();
-    const query = JSON.stringify(builtBody);
-    const query2 = JSON.stringify(builtBody2);
+    const builtSideBarBody = sidebarBody.build();
+    const builtTableBody = tableBody.build();
+    const sideBarQuery = JSON.stringify(builtSideBarBody);
+    const tableQuery = JSON.stringify(builtTableBody);
     this.setupNonVerifiedBucketCount();
-    this.updateSideBar(query);
-    this.updateResultsTable(query2);
-    console.log(query2);
+    this.updateSideBar(sideBarQuery);
+    this.updateResultsTable(tableQuery);
   }
 
   updateSideBar(value: string) {
@@ -384,6 +379,7 @@ export class SearchComponent implements OnInit {
         this.searchTerm = true;
       }
       this.setTabActive();
+      this.searchService.setLoading(false);
     });
   }
 
@@ -392,13 +388,12 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   resetFilters() {
-    this.filters.clear();
     this.values = '';
+    this.searchTerm = false;
+    this.filters.clear();
     this.checkboxMap.clear();
     this.sortModeMap.clear();
     this.setFilter = false;
-    this.searchTerm = false;
-    this.searchTermBox.nativeElement.value = '';
     this.hits = [];
     this.workflowHits = [];
     this.toolHits = [];
@@ -464,9 +459,10 @@ export class SearchComponent implements OnInit {
    */
   appendQuery(body: any): any {
     if (this.values.toString().length > 0) {
-      if (this.advancedSearchObject) {
+      if (this.advancedSearchObject && !this.advancedSearchObject.toAdvanceSearch) {
         this.advancedSearchObject.ORFilter = this.values;
         this.advancedSearchFiles(body);
+        this.advancedSearchObject.ORFilter = '';
       }
     } else {
       body = body.query('match_all', {});
@@ -478,6 +474,8 @@ export class SearchComponent implements OnInit {
         } else if (this.advancedSearchObject.searchMode === 'files') {
           this.advancedSearchFiles(body);
         }
+        this.values = '';
+        this.searchTerm = false;
       }
     }
     return body;
@@ -492,54 +490,69 @@ export class SearchComponent implements OnInit {
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
-      filters.forEach(filter => body = body.orFilter('match_phrase', 'description', filter));
+      filters.forEach(filter => {
+        body = body.orFilter('match_phrase', 'description', filter);
+      });
     }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      filters.forEach(filter => body = body.notQuery('match_phrase', 'description', filter));
+      filters.forEach(filter => {
+        body = body.notQuery('match_phrase', 'description', filter);
+      });
     }
   }
 
+  /* TODO: Make this better */
   advancedSearchFiles(body: any) {
     if (this.advancedSearchObject.ANDSplitFilter) {
       const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
       let insideFilter_tool = bodybuilder();
       filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.filter('term', 'tags.sourceFiles.content', filter);
+        insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
       });
       let insideFilter_workflow = bodybuilder();
       filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.filter('term', 'workflowVersions.sourceFiles.content', filter);
+        insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
+      });
+      body = body.filter('bool', filter => filter
+                    .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+                    .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
+    }
+    if (this.advancedSearchObject.ANDNoSplitFilter) {
+      body = body.filter('bool', filter => filter
+                 .orFilter('bool', toolfilter => toolfilter
+                   .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
+                 .orFilter('bool', workflowfilter => workflowfilter
+                   .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
+    }
+    if (this.advancedSearchObject.ORFilter) {
+      const filters = this.advancedSearchObject.ORFilter.split(' ');
+      let insideFilter_tool = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
+      });
+      let insideFilter_workflow = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
       body = body.filter('bool', filter => filter
         .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
         .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
-    if (this.advancedSearchObject.ANDNoSplitFilter) {
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
-    }
-    if (this.advancedSearchObject.ORFilter) {
-      const filters = this.advancedSearchObject.ORFilter.split(' ');
-      filters.forEach(filter => {
-        body = body.orFilter('match', 'tags.sourceFiles.content', filter);
-        body = body.orFilter('match', 'workflowVersions.sourceFiles.content', filter);
-      });
-    }
     if (this.advancedSearchObject.NOTFilter) {
       const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      body = body.notQuery('terms', 'tags.sourceFiles.content', filters)
-        .notQuery('terms', 'workflowVersions.sourceFiles.content', filters);
+      let insideFilter_tool = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
+      });
+      let insideFilter_workflow = bodybuilder();
+      filters.forEach(filter => {
+        insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
+      });
+      body = body.filter('bool', filter => filter
+        .filter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .filter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
-  }
-
-  appendORFilter(body: any) {
-    const filters = this.advancedSearchObject.ORFilter.split(' ');
-    filters.forEach(filter => body = body.filter('term', 'description', filter));
-    return body;
   }
 
   /**
@@ -569,14 +582,20 @@ export class SearchComponent implements OnInit {
    *                Event Functions
    * ==============================================
    */
-  onKey(value: string) {
-    /* TODO: might need to check for safety injection */
-    this.values = value;
-    this.searchTerm = true;
-    if ((!value || 0 === value.length)) {
-      this.searchTerm = false;
+  onKey() {
+    if (this._timeout) {
+    } else {
+      this.advancedSearchObject.toAdvanceSearch = false;
+      this.searchTerm = true;
+      this._timeout = true;
+      window.setTimeout(() => {
+        if ((!this.values || 0 === this.values.length)) {
+          this.searchTerm = false;
+        }
+        this.updateQuery();
+        this._timeout = false;
+      }, 500);
     }
-    this.updateQuery();
   }
   /**
    * This handles clicking a facet and doing the search
@@ -597,11 +616,6 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   openAdvancedSearch(): void {
-    if (this.values) {
-      const newAdvancedSearchObject = this.advancedSearchObject;
-      newAdvancedSearchObject.ORFilter = this.values;
-      this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
-    }
     this.advancedSearchService.setShowModal(true);
   }
   clickExpand(key: string) {
@@ -650,8 +664,12 @@ export class SearchComponent implements OnInit {
   }
   /**===============================================
    *                Helper Functions
-   * ==============================================
+   * ===============================================
+   *
    */
+  joinComma(searchTerm: string): string {
+    return searchTerm.trim().split(' ').join(', ');
+  }
   mapFriendlyValueNames(key, subBucket) {
     if (this.friendlyValueNames.has(key)) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());

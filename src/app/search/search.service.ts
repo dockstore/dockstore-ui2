@@ -4,7 +4,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
+  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   searchInfo$ = this.searchInfoSource.asObservable();
+  loading$ = this.loading.asObservable();
   /**
    * These are the terms which use "must" filters
    * Example: Results returned can be private or public but never both
@@ -14,6 +16,9 @@ export class SearchService {
   public exclusiveFilters = ['tags.verified', 'private_access'];
   setSearchInfo(searchInfo) {
     this.searchInfoSource.next(searchInfo);
+  }
+  setLoading(loading: boolean) {
+    this.loading.next(loading);
   }
   constructor() {
   }
