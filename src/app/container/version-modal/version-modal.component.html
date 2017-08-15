@@ -13,12 +13,8 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input id="versionTagInput" type="text" class="form-control" name="name" [(ngModel)]="unsavedVersion.name"
-                     ng-maxlength="128" ng-pattern="/^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$/i" required title="Docker Image tag name."
+                     ng-maxlength="128" required title="Docker Image tag name."
                      placeholder="e.g. develop" [disabled]="!(mode=='Add')" />
-              <div class="form-error-messages" ng-messages="tagEditorForm.name.$error" ng-if="tagEditorForm.name.$touched">
-                <div ng-messages-include="templates/validation/tags/name.html">
-                </div>
-              </div>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -26,11 +22,10 @@
               Git Reference:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input id="gitReferenceInput" type="text" class="form-control" name="reference" [(ngModel)]="unsavedVersion.reference" ng-minlength="3" ng-maxlength="128" ng-pattern="/^[\w-]+((\/|\.)[\w-]+)*$/i" title="Git branch or tag name." placeholder="e.g. develop" [disabled]="!editMode || (editMode && unsavedVersion.automated)" />
-              <div class="form-error-messages" ng-messages="tagEditorForm.reference.$error" ng-if="tagEditorForm.reference.$touched">
-                <div ng-messages-include="templates/validation/tags/reference.html">
+              <input id="gitReferenceInput" type="text" class="form-control" name="reference" [(ngModel)]="unsavedVersion.reference" ng-minlength="3" ng-maxlength="128" [pattern]="validationPatterns.reference" title="Git branch or tag name." placeholder="e.g. develop" [disabled]="!editMode || (editMode && unsavedVersion.automated)" />
+              <div *ngIf="formErrors.reference" class="form-error-messages">
+                  {{formErrors.reference}}
                 </div>
-              </div>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -38,11 +33,7 @@
               Image ID:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="image_id" [(ngModel)]="unsavedVersion.image_id" ng-minlength="3" ng-maxlength="128" pattern="^[a-zA-Z0-9]*$" title="Docker Image ID." placeholder="e.g. 28d30887157514b6047c9" [disabled]="true" />
-              <div class="form-error-messages" ng-messages="tagEditorForm.image_id.$error" ng-if="tagEditorForm.image_id.$touched">
-                <div ng-messages-include="templates/validation/tags/imageid.html">
-                </div>
-              </div>
+              <input type="text" class="form-control" name="image_id" [(ngModel)]="unsavedVersion.image_id" title="Docker Image ID." placeholder="e.g. 28d30887157514b6047c9" [disabled]="true" />
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -50,7 +41,7 @@
               Dockerfile:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" #name="ngModel" id="dockerfilePath" name="dockerfilePath" [(ngModel)]="unsavedVersion.dockerfile_path" minlength="3" maxlength="256" pattern="^/([^\/?:*|<>]+/)*Dockerfile$" required title="Relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" [disabled]="!editMode" />
+              <input type="text" class="form-control" #name="ngModel" id="dockerfilePath" name="dockerfilePath" [(ngModel)]="unsavedVersion.dockerfile_path" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" required title="Relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" [disabled]="!editMode" />
               <div *ngIf="formErrors.dockerfilePath" class="form-error-messages">
                 {{formErrors.dockerfilePath}}
               </div>
@@ -61,7 +52,7 @@
               CWL Descriptor:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode" />
+              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode" />
               <div *ngIf="formErrors.cwlPath" class="form-error-messages">
                 {{formErrors.cwlPath}}
               </div>
@@ -72,7 +63,7 @@
               WDL Descriptor:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
+              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
               <div *ngIf="formErrors.wdlPath" class="form-error-messages">
                 {{formErrors.wdlPath}}
               </div>
@@ -84,7 +75,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
               <div class="input-group">
-                <input type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <input type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                 <button title="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.CWL)" ng-hide="!editMode" [disabled]="model1.invalid || unsavedTestCWLFile.length < 1">
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
@@ -97,7 +88,7 @@
           <div class="form-group form-group-sm" style="clear:both;">
             <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
               <div class="input-group">
-                <input type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" [disabled] minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <input type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" [disabled] minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                 <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.CWL)">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
@@ -110,7 +101,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
               <div class="input-group">
-                <input type="text" #model2="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <input type="text" #model2="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                 <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode" [disabled]="model2.invalid || unsavedTestWDLFile.length < 1">
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
@@ -123,7 +114,7 @@
           <div class="form-group form-group-sm" style="clear:both;">
             <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index;">
               <div class="input-group">
-                <input type="text" class="form-control" name="unsavedWDLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedWDLTestParameterFilePaths[i]" minlength="3" maxlength="128" pattern="^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <input type="text" class="form-control" name="unsavedWDLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedWDLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
                 <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.WDL)">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>

@@ -11,7 +11,7 @@ import { ListContainersService } from './../../containers/list/list.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { StateService } from './../../shared/state.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { validationMessages, formErrors } from '../../shared/validationMessages.model';
+import { validationMessages, validationPatterns, formErrors } from '../../shared/validationMessages.model';
 import { View } from '../../shared/view';
 
 @Component({
@@ -37,7 +37,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   private unsavedTestWDLFile = '';
   private formErrors = formErrors;
   private version: ToolVersion;
-
+  public validationPatterns = validationPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
 
