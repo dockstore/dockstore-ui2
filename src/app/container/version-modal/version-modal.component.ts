@@ -11,7 +11,7 @@ import { ListContainersService } from './../../containers/list/list.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { StateService } from './../../shared/state.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { validationMessages, formErrors } from '../../shared/validationMessages.model';
+import { validationMessages, validationPatterns, formErrors } from '../../shared/validationMessages.model';
 import { View } from '../../shared/view';
 
 @Component({
@@ -23,21 +23,21 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = DescriptorType;
   public isModalShown: boolean;
-  private editMode;
-  private mode: TagEditorMode;
-  private tool: any;
-  private unsavedVersion;
+  public editMode: boolean;
+  public mode: TagEditorMode;
+  public tool: any;
+  public unsavedVersion;
   private savedCWLTestParameterFiles: Array<any>;
   private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
-  private unsavedCWLTestParameterFilePaths: Array<string>;
-  private unsavedWDLTestParameterFilePaths: Array<string>;
-  private unsavedTestCWLFile = '';
-  private unsavedTestWDLFile = '';
-  private formErrors = formErrors;
+  public unsavedCWLTestParameterFilePaths: Array<string>;
+  public unsavedWDLTestParameterFilePaths: Array<string>;
+  public unsavedTestCWLFile = '';
+  public unsavedTestWDLFile = '';
+  public formErrors = formErrors;
   private version: ToolVersion;
-
+  public validationPatterns = validationPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
 
@@ -124,7 +124,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  closeModal() {
+  onHidden() {
     this.versionModalService.setIsModalShown(false);
     this.versionModalService.setCurrentMode(null);
   }
@@ -194,6 +194,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
+
   ngOnInit() {
     this.versionModalService.version.subscribe(version => {
       this.version = version;
@@ -225,6 +226,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
   }
+
   getDateTimeMessage(timestamp) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
