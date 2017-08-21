@@ -1,15 +1,16 @@
+import { ErrorService } from './../container/error.service';
 import { Workflow } from './swagger/model/workflow';
-import {Injectable, Input, OnDestroy, OnInit} from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
 import { StateService } from './state.service';
-import {Router} from '@angular/router/';
-import {Subscription} from 'rxjs/Subscription';
+import { Router } from '@angular/router/';
+import { Subscription } from 'rxjs/Subscription';
 
-import {ToolService} from './tool.service';
-import {CommunicatorService} from './communicator.service';
-import {ProviderService} from './provider.service';
+import { ToolService } from './tool.service';
+import { CommunicatorService } from './communicator.service';
+import { ProviderService } from './provider.service';
 
-import {WorkflowService} from './workflow.service';
-import {ContainerService} from '../shared/container.service';
+import { WorkflowService } from './workflow.service';
+import { ContainerService } from '../shared/container.service';
 import { TrackLoginService } from '../shared/track-login.service';
 
 @Injectable()
@@ -18,10 +19,8 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected title: string;
   protected _toolType: string;
   protected isLoggedIn: boolean;
-
   protected validVersions;
   protected defaultVersion;
-
   protected tool;
   protected workflow: Workflow;
   protected published: boolean;
@@ -35,22 +34,25 @@ export abstract class Tool implements OnInit, OnDestroy {
   private loginSubscription: Subscription;
   private toolCopyBtn: string;
   private workflowCopyBtn: string;
+  protected error;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   private publicPage: boolean;
   constructor(private trackLoginService: TrackLoginService,
-              private toolService: ToolService,
-              private communicatorService: CommunicatorService,
-              private providerService: ProviderService,
-              private router: Router,
-              public workflowService: WorkflowService,
-              private containerService: ContainerService,
-              private stateService: StateService,
-              toolType: string) {
+    private toolService: ToolService,
+    private communicatorService: CommunicatorService,
+    private providerService: ProviderService,
+    private router: Router,
+    public workflowService: WorkflowService,
+    private containerService: ContainerService,
+    private stateService: StateService,
+    private errorService: ErrorService,
+    toolType: string) {
     this._toolType = toolType;
   }
 
   ngOnInit() {
+    this.errorService.toolError.subscribe(toolError => this.error = toolError);
     this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(
@@ -107,6 +109,10 @@ export abstract class Tool implements OnInit, OnDestroy {
     }
   }
 
+  closeError() {
+    this.errorService.toolError.next(null);
+  }
+
   ngOnDestroy() {
     if (this.routeSub) {
       this.routeSub.unsubscribe();
@@ -156,15 +162,15 @@ export abstract class Tool implements OnInit, OnDestroy {
   private urlToolChanged(event) {
     if (event.url) {
       if (event.url.includes('containers')) {
-        this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
+        this.title = this.decodedString(event.url.replace(`/${this._toolType}/`, ''));
         // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
         // as opposed to just /tools or /docs etc.
         this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
-        .subscribe(tool => {
-          this.containerService.setTool(tool);
-        }, error => {
-          this.router.navigate(['../']);
-        });
+          .subscribe(tool => {
+            this.containerService.setTool(tool);
+          }, error => {
+            this.router.navigate(['../']);
+          });
       }
     }
   }
@@ -172,16 +178,16 @@ export abstract class Tool implements OnInit, OnDestroy {
   private urlWorkflowChanged(event) {
     // reuse provider and image provider
     if (!this.workflow) {
-      this.title = this.decodedString(event.url.replace(`/${ this._toolType }/`, ''));
+      this.title = this.decodedString(event.url.replace(`/${this._toolType}/`, ''));
     } else {
       this.title = this.workflow.path;
     }
     this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
       .subscribe(workflow => {
-          this.workflowService.setWorkflow(workflow);
-        }, error => {
-          this.router.navigate(['../']);
-        }
+        this.workflowService.setWorkflow(workflow);
+      }, error => {
+        this.router.navigate(['../']);
+      }
       );
   }
 

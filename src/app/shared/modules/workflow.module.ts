@@ -1,3 +1,4 @@
+import { ErrorService } from './../../container/error.service';
 import { InfoTabService } from './../../workflow/info-tab/info-tab.service';
 import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
@@ -92,6 +93,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     FileService,
     ContainerService,
     LaunchService,
+    ErrorService,
     DockerfileService,
     ParamfilesService,
     WorkflowService,

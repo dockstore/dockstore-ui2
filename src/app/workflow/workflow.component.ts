@@ -1,3 +1,4 @@
+import { ErrorService } from './../container/error.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Workflow } from './../shared/swagger/model/workflow';
 import * as WorkflowMode from './../shared/swagger/model/workflow';
@@ -47,9 +48,10 @@ export class WorkflowComponent extends Tool {
     router: Router,
     workflowService: WorkflowService,
     containerService: ContainerService,
-    stateService: StateService) {
+    stateService: StateService,
+  errorService: ErrorService) {
     super(trackLoginService, toolService, communicatorService, providerService, router,
-      workflowService, containerService, stateService, 'workflows');
+      workflowService, containerService, stateService, errorService, 'workflows');
   }
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;

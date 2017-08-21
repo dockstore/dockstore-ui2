@@ -1,3 +1,4 @@
+import { ErrorService } from './../container/error.service';
 import { Injectable } from '@angular/core';
 
 import { WorkflowsService } from './swagger/api/workflows.service';
@@ -18,7 +19,8 @@ export class RefreshService {
     private workflows;
     private refreshing: boolean;
     constructor(private WorkflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
-        private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService) {
+        private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
+        private errorService: ErrorService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools.subscribe(tools => this.tools = tools);
@@ -35,6 +37,9 @@ export class RefreshService {
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
             this.replaceTool(response);
             this.containerService.setTool(response);
+            this.stateService.setRefreshing(false);
+        }, error => {
+            this.errorService.setToolRegisterError(error);
             this.stateService.setRefreshing(false);
         });
     }

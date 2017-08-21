@@ -1,3 +1,4 @@
+import { ErrorService } from './../../container/error.service';
 import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
@@ -92,6 +93,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     HighlightJsService,
     ContainerTagsWebService,
     ContainersWebService,
+    ErrorService,
     WorkflowWebService,
     DateService,
     FileService,

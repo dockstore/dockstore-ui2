@@ -1,3 +1,4 @@
+import { ErrorService } from './error.service';
 import { ContainersWebService } from './../shared/webservice/containers-web.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
@@ -51,13 +52,15 @@ export class ContainerComponent extends Tool {
     router: Router,
     workflowService: WorkflowService,
     containerService: ContainerService,
-    stateService: StateService) {
+    stateService: StateService,
+    errorService: ErrorService) {
     super(trackLoginService, toolService, communicatorService, providerService, router,
-      workflowService, containerService, stateService, 'containers');
+      workflowService, containerService, stateService, errorService, 'containers');
   }
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
   }
+
   setProperties() {
     let toolRef = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
