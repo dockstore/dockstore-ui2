@@ -15,8 +15,7 @@ export class WorkflowWebService {
     constructor(
         protected http: Http,
         private configuration: Configuration, private httpService: HttpService, private workflowsService: WorkflowsService) {
-        this.configuration.accessToken = this.httpService.getDockstoreToken();
-        this.configuration.basePath = Dockstore.API_URI;
+            this.configuration.accessToken = this.httpService.getDockstoreToken();
     }
 
     /**

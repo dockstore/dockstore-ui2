@@ -1,3 +1,5 @@
+import { HttpService } from './../shared/http.service';
+import { Configuration } from './../shared/swagger/configuration';
 import { Tool } from './../container/register-tool/tool';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { RefreshService } from './../shared/refresh.service';
@@ -21,13 +23,14 @@ export class MyToolsComponent implements OnInit {
   user: any;
   tool: any;
   private registerTool: Tool;
-  constructor(private mytoolsService: MytoolsService,
+  constructor(private mytoolsService: MytoolsService, private configuration: Configuration, private httpService: HttpService,
     private communicatorService: CommunicatorService,
     private userService: UserService,
     private containerService: ContainerService,
     private refreshService: RefreshService,
     private registerToolService: RegisterToolService) {}
   ngOnInit() {
+    this.configuration.accessToken = this.httpService.getDockstoreToken();
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {
       this.tool = selectedTool;
