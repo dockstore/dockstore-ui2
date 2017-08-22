@@ -1,3 +1,5 @@
+import { Tag } from './../../shared/swagger/model/tag';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -20,7 +22,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
   public validationPatterns = validationPatterns;
   editMode = true;
-  unsavedVersion = {
+  unsavedVersion: Tag = {
     'name': '',
     'reference': '',
     'image_id': '',
@@ -38,9 +40,8 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedTestWDLFile = '';
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
-  constructor(private containerService: ContainerService,
-    private containerTagsService: ContainerTagsWebService,
-    private paramFilesService: ParamfilesService) {
+  constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
+    private containerTagsService: ContainerTagsWebService, private paramFilesService: ParamfilesService) {
   }
 
   ngOnInit() {
@@ -91,7 +92,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   }
 
   addTag() {
-    this.containerTagsService.postTags(this.tool.id, this.unsavedVersion).subscribe(response => {
+    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
       console.log(response);
       this.tool.tags = response;
       this.paramFilesService.putFiles(this.tool.id, this.unsavedCWLTestParameterFilePaths, this.unsavedVersion.name, 'CWL').subscribe();
