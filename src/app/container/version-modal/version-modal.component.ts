@@ -115,15 +115,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  deleteTag() {
-    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(deleteResponse => {
-      this.containerTagsService.getTags(this.tool.id).subscribe(response => {
-        this.tool.tags = response;
-        this.containerService.setTool(this.tool);
-      });
-    });
-  }
-
   onHidden() {
     this.versionModalService.setIsModalShown(false);
     this.versionModalService.setCurrentMode(null);
