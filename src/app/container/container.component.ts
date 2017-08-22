@@ -14,7 +14,7 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 
-import { Tool } from '../shared/tool';
+import { Entry } from '../shared/entry';
 
 import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
@@ -28,7 +28,7 @@ import { TrackLoginService } from '../shared/track-login.service';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Tool {
+export class ContainerComponent extends Entry {
   labels: string[];
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;

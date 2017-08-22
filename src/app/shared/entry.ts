@@ -15,7 +15,7 @@ import { ContainerService } from '../shared/container.service';
 import { TrackLoginService } from '../shared/track-login.service';
 
 @Injectable()
-export abstract class Tool implements OnInit, OnDestroy {
+export abstract class Entry implements OnInit, OnDestroy {
 
   protected title: string;
   protected _toolType: string;

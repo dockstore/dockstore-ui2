@@ -16,7 +16,7 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ToolService } from '../shared/tool.service';
-import { Tool } from '../shared/tool';
+import { Entry } from '../shared/entry';
 
 import { ContainerService } from '../shared/container.service';
 import { validationPatterns } from '../shared/validationMessages.model';
@@ -27,7 +27,7 @@ import { TrackLoginService } from '../shared/track-login.service';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Tool {
+export class WorkflowComponent extends Entry {
   labels: string[];
   mode: string;
   workflowEditData: any;
