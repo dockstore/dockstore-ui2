@@ -1,5 +1,5 @@
+import { ContainersService } from './../shared/swagger/api/containers.service';
 import { ErrorService } from './error.service';
-import { ContainersWebService } from './../shared/webservice/containers-web.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
@@ -44,7 +44,7 @@ export class ContainerComponent extends Entry {
     private listContainersService: ListContainersService,
     private refreshService: RefreshService,
     private updateContainer: ContainerService,
-    private containerWebService: ContainersWebService,
+    private containersService: ContainersService,
     trackLoginService: TrackLoginService,
     toolService: ToolService,
     communicatorService: CommunicatorService,
@@ -90,7 +90,7 @@ export class ContainerComponent extends Entry {
     } else {
       const request: PublishRequest = new PublishRequest;
       request.publish = this.published;
-      this.containerWebService.publish(this.tool.id, request).subscribe(
+      this.containersService.publish(this.tool.id, request).subscribe(
         response => this.tool.is_published = response.is_published, err => this.published = !this.published);
     }
   }

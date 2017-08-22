@@ -3,7 +3,6 @@ import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
-import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -26,7 +25,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../container.service';
-import { ContainersWebService } from './../webservice/containers-web.service';
 import { DateService } from '../date.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
@@ -90,9 +88,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
   ],
   providers: [
     HighlightJsService,
-    ContainersWebService,
     ErrorService,
-    WorkflowWebService,
     DateService,
     FileService,
     ContainerService,

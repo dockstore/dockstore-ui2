@@ -1,4 +1,5 @@
-import { ContainersWebService } from './../../shared/webservice/containers-web.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { StateService } from './../../shared/state.service';
 import { ContainerService } from './../../shared/container.service';
 import { Tool } from './tool';
@@ -24,15 +25,15 @@ export class RegisterToolService {
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainersWebService,
+    constructor(private containersService: ContainersService,
         private containerService: ContainerService,
         private stateService: StateService) {
-        this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
+        this.containersService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.containerService.tools.subscribe(tools => this.tools = tools);
         this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
     deregisterTool() {
-        this.containerWebService.deleteContainer(this.selectedTool.id).subscribe(response => {
+        this.containersService.deleteContainer(this.selectedTool.id).subscribe(response => {
             const index = this.tools.indexOf(this.selectedTool);
             this.tools.splice(index, 1);
             this.containerService.setTools(this.tools);
@@ -64,11 +65,11 @@ export class RegisterToolService {
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
         this.setTool(newTool);
-        const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
-        this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
+        const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
+        this.containersService.registerManual(normalizedToolObj).subscribe(response => {
             this.setToolRegisterError(null);
             this.stateService.setRefreshing(true);
-            this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
+            this.containersService.refresh(response.id).subscribe(refreshResponse => {
                 this.setIsModalShown(false);
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
@@ -201,9 +202,9 @@ export class RegisterToolService {
         return this.dockerRegistryMap.map(a => a.enum);
     }
 
-    getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string) {
-        const normToolObj = {
-            mode: 'MANUAL_IMAGE_PATH',
+    getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string): DockstoreTool {
+        const normToolObj: any = {
+            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
             name: this.getImagePath(toolObj.imagePath, 'name'),
             toolname: toolObj.toolname,
             namespace: this.getImagePath(toolObj.imagePath, 'namespace'),

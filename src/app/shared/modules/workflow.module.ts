@@ -4,7 +4,6 @@ import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { ContainersWebService } from './../webservice/containers-web.service';
 import { RefreshService } from './../refresh.service';
 import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
@@ -98,7 +97,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ParamfilesService,
     WorkflowService,
     DescriptorsService,
-    ContainersWebService,
     InfoTabService,
     RefreshService,
     RegisterWorkflowModalService,
