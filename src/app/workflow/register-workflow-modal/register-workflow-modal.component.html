@@ -93,7 +93,7 @@
           <button type="button" class="btn btn-secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
-          <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerWorkflowForm.form.valid || savingActive || refreshingWorkflow">
+          <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerWorkflowForm.form.valid || savingActive || refreshing">
             Register Workflow
           </button>
         </div>

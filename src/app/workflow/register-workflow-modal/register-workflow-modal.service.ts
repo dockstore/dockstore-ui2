@@ -41,6 +41,7 @@ export class RegisterWorkflowModalService {
             errorDetails: errorDetails
         };
         this.workflowRegisterError.next(error);
+        this.stateService.refreshing.next(false);
     }
 
     setWorkflow(workflow: Workflow) {
