@@ -145,15 +145,6 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   ngOnInit() {
-    if (this.defaultVersion) {
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-      this.dagResult = result;
-      this.refresh = true;
-      this.updateMissingTool();
-    });
-    } else {
-      this.dagResult = null;
-    }
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.style = this.dagService.style;
     this.missingTool = false;
@@ -183,18 +174,31 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
     }
   }
 
+  onChange() {
+    this.getDag(this.selectVersion.id);
+  }
+
   ngOnChanges() {
     if (this.defaultVersion) {
       this.selectVersion = this.defaultVersion;
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-      this.dagResult = result;
-      this.refresh = true;
-      this.updateMissingTool();
-    }, error => {this.dagResult = null; this.refresh = true; this.updateMissingTool();
-    });
+      this.getDag(this.defaultVersion.id);
     } else {
       this.dagResult = null;
       this.selectVersion = null;
     }
+  }
+
+  getDag(versionId: number) {
+    this.dagService.getCurrentDAG(this.id, versionId).subscribe(result => {
+      this.handleDagResponse(result);
+    }, error => {
+      this.handleDagResponse(null);
+    });
+  }
+
+  handleDagResponse(result: any) {
+    this.dagResult = result;
+    this.refresh = true;
+    this.updateMissingTool();
   }
 }
