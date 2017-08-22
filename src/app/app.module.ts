@@ -42,7 +42,6 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
-import { UsersWebService } from './shared/webservice/users-web.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
@@ -138,7 +137,6 @@ import { SearchModule } from './search/search.module';
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     StateService,
-    UsersWebService,
     SearchService,
     VersionsService,
     PagenumberService,
