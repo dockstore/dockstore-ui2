@@ -62,7 +62,6 @@ import { TwitterService } from './shared/twitter.service';
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { TabModule } from './shared/modules/tabs.module';
 import { ProviderService } from './shared/provider.service';
 import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
@@ -105,7 +104,6 @@ import { SearchModule } from './search/search.module';
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    TabModule,
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
