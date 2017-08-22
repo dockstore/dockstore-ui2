@@ -62,7 +62,7 @@ export class ContainerComponent extends Tool {
   }
 
   setProperties() {
-    let toolRef = this.tool;
+    let toolRef: any = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);

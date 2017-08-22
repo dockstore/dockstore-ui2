@@ -1,3 +1,4 @@
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ErrorService } from './../container/error.service';
 import { Workflow } from './swagger/model/workflow';
 import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
@@ -22,7 +23,7 @@ export abstract class Tool implements OnInit, OnDestroy {
   protected validVersions;
   protected defaultVersion;
   protected tool;
-  protected workflow: Workflow;
+  protected workflow;
   protected published: boolean;
   protected refreshing: boolean;
   labelsEditMode: boolean;
@@ -94,8 +95,6 @@ export abstract class Tool implements OnInit, OnDestroy {
         this.routeSub = this.router.events.subscribe(event =>
           this.urlWorkflowChanged(event)
         );
-      } else {
-        this.setUpWorkflow(this.communicatorService.getWorkflow());
       }
     } else if (this._toolType === 'containers') {
       this.stateService.setPublicPage(this.isToolPublic);
@@ -103,8 +102,6 @@ export abstract class Tool implements OnInit, OnDestroy {
         this.routeSub = this.router.events.subscribe(event =>
           this.urlToolChanged(event)
         );
-      } else {
-        this.setUpTool((this.communicatorService.getTool()));
       }
     }
   }
@@ -145,8 +142,7 @@ export abstract class Tool implements OnInit, OnDestroy {
         this.providerService.setUpProvider(tool);
       }
       this.tool = Object.assign(tool, this.tool);
-      this.title = this.tool.tool_path;
-      const toolRef = this.tool;
+      const toolRef: any = this.tool;
       toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
       toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
       this.initTool();
