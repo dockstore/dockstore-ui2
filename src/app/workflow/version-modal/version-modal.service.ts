@@ -1,5 +1,5 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { StateService } from './../../shared/state.service';
-import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
@@ -14,7 +14,7 @@ export class VersionModalService {
     testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
     private workflowId;
     constructor(
-        private stateService: StateService, private workflowService: WorkflowService, private workflowWebService: WorkflowWebService) {
+        private stateService: StateService, private workflowService: WorkflowService, private workflowsService: WorkflowsService) {
         workflowService.workflow$.subscribe(workflow => {
             if (workflow) {
                 this.workflowId = workflow.id;
@@ -37,13 +37,13 @@ export class VersionModalService {
         this.stateService.setRefreshing(true);
         const newCWL = newTestParameterFiles.filter(x => !originalTestParameterFilePaths.includes(x));
         if (newCWL && newCWL.length > 0) {
-            this.workflowWebService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).subscribe();
+            this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).subscribe();
         }
         const missingCWL = originalTestParameterFilePaths.filter(x => !newTestParameterFiles.includes(x));
         if (missingCWL && missingCWL.length > 0) {
-            this.workflowWebService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name).subscribe();
+            this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name).subscribe();
         }
-        this.workflowWebService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
+        this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
             response => this.stateService.setRefreshing(false));
             this.setIsModalShown(false);
     }

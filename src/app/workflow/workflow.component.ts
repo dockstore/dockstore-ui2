@@ -1,8 +1,8 @@
+import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { ErrorService } from './../container/error.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Workflow } from './../shared/swagger/model/workflow';
 import * as WorkflowMode from './../shared/swagger/model/workflow';
-import { WorkflowWebService } from './../shared/webservice/workflow-web.service';
 import { PublishRequest } from './../shared/models/PublishRequest';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
@@ -40,7 +40,7 @@ export class WorkflowComponent extends Entry {
     private dateService: DateService,
     private updateWorkflow: WorkflowService,
     private refreshService: RefreshService,
-    private workflowWebService: WorkflowWebService,
+    private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
     toolService: ToolService,
     communicatorService: CommunicatorService,
@@ -98,7 +98,7 @@ export class WorkflowComponent extends Entry {
     } else {
       const request: PublishRequest = new PublishRequest();
       request.publish = this.published;
-      this.workflowWebService.publish(this.workflow.id, request).subscribe(
+      this.workflowsService.publish(this.workflow.id, request).subscribe(
         response => this.workflow.is_published = response.is_published, err => this.published = !this.published);
     }
   }
@@ -125,7 +125,7 @@ export class WorkflowComponent extends Entry {
   };
 
   restubWorkflow() {
-    this.workflowWebService.restub(this.workflow.id).subscribe(response => {
+    this.workflowsService.restub(this.workflow.id).subscribe(response => {
       this.workflowService.setWorkflow(response);
     });
   }

@@ -5,7 +5,6 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { RefreshService } from './../refresh.service';
-import { WorkflowWebService } from './../webservice/workflow-web.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgModule } from '@angular/core';
@@ -101,8 +100,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     RefreshService,
     RegisterWorkflowModalService,
     VersionModalService,
-    WorkflowService,
-    WorkflowWebService
+    WorkflowService
   ],
   exports: [
     WorkflowComponent
