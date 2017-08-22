@@ -27,7 +27,6 @@ import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ContainerComponent } from '../../container/container.component';
 import { ContainerService } from '../container.service';
 import { ContainersWebService } from './../webservice/containers-web.service';
-import { ContainerTagsWebService } from './../webservice/container-tags-web.service';
 import { DateService } from '../date.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
@@ -91,7 +90,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
   ],
   providers: [
     HighlightJsService,
-    ContainerTagsWebService,
     ContainersWebService,
     ErrorService,
     WorkflowWebService,
