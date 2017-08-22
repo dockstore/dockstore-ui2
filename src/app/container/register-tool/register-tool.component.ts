@@ -11,14 +11,14 @@ import { Repository } from './../../shared/enum/Repository.enum';
   styleUrls: ['./register-tool.component.css']
 })
 export class RegisterToolComponent implements OnInit, AfterViewChecked {
-  private toolRegisterError: boolean;
-  private tool: any;
-  private formErrors = formErrors;
-  private validationPatterns = validationPatterns;
-  private customDockerRegistryPath: string;
+  public toolRegisterError: boolean;
+  public tool: any;
+  public formErrors = formErrors;
+  public validationPatterns = validationPatterns;
+  public customDockerRegistryPath: string;
   private showCustomDockerRegistryPath: boolean;
-  private refreshing: boolean;
-  private isModalShown: boolean;
+  public refreshing: boolean;
+  public isModalShown: boolean;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;

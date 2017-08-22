@@ -21,7 +21,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   versionEditorForm: NgForm;
   public testParameterFilePaths: string[];
   originalTestParameterFilePaths: string[];
-  private testParameterFilePath = '';
+  public testParameterFilePath = '';
   formErrors = formErrors;
   validationMessages = validationMessages;
   validationPatterns = validationPatterns;

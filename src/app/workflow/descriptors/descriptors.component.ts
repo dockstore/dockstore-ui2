@@ -20,7 +20,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   contentHighlighted: boolean;
   constructor(private highlightJsService: HighlightJsService,
               private descriptorsService: DescriptorsService,
-              private fileService: FileService,
+              public fileService: FileService,
               private workflowService: WorkflowService,
               private elementRef: ElementRef) {
     super();

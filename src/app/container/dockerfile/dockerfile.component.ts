@@ -20,7 +20,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
 
   constructor(private dockerfileService: DockerfileService,
               private highlightJsService: HighlightJsService,
-              private fileService: FileService,
+              public fileService: FileService,
               private elementRef: ElementRef,
               private containerService: ContainerService) {
     super();

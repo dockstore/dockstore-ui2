@@ -17,7 +17,7 @@ import { PageInfo } from './../shared/models/PageInfo';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent extends Logout {
-  private user;
+  public user;
   constructor (private pagenumberService: PagenumberService,
                trackLoginService: TrackLoginService,
                logoutService: LogoutService,

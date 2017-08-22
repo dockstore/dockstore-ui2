@@ -18,16 +18,16 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
 
   private currentWorkflowId;
   private element: any;
-  private dagResult: any;
+  public dagResult: any;
   private cy: any;
 
   public expanded: Boolean = false;
-  private selectVersion;
+  public selectVersion;
   @ViewChild('cy') el: ElementRef;
   private style;
-  private workflow;
+  public workflow;
   private tooltip: string;
-  private missingTool;
+  public missingTool;
   private refresh = false;
 
   refreshDocument() {

@@ -10,7 +10,7 @@ import { SponsorsService } from './sponsors.service';
 })
 export class SponsorsComponent implements OnInit {
 
-  sponsors: Sponsor[];
+  public sponsors: Sponsor[];
 
   constructor(private sponsorsService: SponsorsService) { }
 

@@ -23,7 +23,7 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private descriptorsService: DescriptorsService,
-              private fileService: FileService,
+              public fileService: FileService,
               private elementRef: ElementRef
   ) {
     super();

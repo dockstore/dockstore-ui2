@@ -11,11 +11,11 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   styleUrls: ['./register-workflow-modal.component.css']
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
-  private formErrors = formErrors;
-  private validationPatterns = validationPatterns;
-  private workflow: Workflow;
-  private cwlTestParameterFilePath: string;
-  private workflowRegisterError;
+  public formErrors = formErrors;
+  public validationPatterns = validationPatterns;
+  public workflow: Workflow;
+  public cwlTestParameterFilePath: string;
+  public workflowRegisterError;
   public isModalShown: boolean;
 
   registerWorkflowForm: NgForm;

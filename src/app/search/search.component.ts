@@ -20,7 +20,7 @@ import { NgZone } from '@angular/core';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  private advancedSearchObject: AdvancedSearchObject;
+  public advancedSearchObject: AdvancedSearchObject;
 
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
@@ -42,11 +42,11 @@ export class SearchComponent implements OnInit {
   public browseWorkflowsTab = 'browseWorkflowsTab';
   private toolHits: Object[];
   private workflowHits: Object[];
-  private hits: Object[];
+  public hits: Object[];
   private _client: Client;
   private shard_size = 10000;
-  private activeToolBar = true;
-  private loading = false;
+  public activeToolBar = true;
+  public loading = false;
 
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
@@ -87,22 +87,22 @@ export class SearchComponent implements OnInit {
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
-  private orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
+  public orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
-  private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+  public fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
 
   // Shows the sorting mode for the categories
   // true: sort by count (default); false: sort by alphabet
-  private sortModeMap: Map<string, CategorySort> = new Map<string, CategorySort>();
+  public sortModeMap: Map<string, CategorySort> = new Map<string, CategorySort>();
 
   // Shows which of the buckets are current selected
-  private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
+  public checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
    * @type {Map<String, Set<string>>}
    */
-  private filters: Map<String, Set<string>> = new Map<String, Set<string>>();
+  public filters: Map<String, Set<string>> = new Map<String, Set<string>>();
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
@@ -117,7 +117,7 @@ export class SearchComponent implements OnInit {
     ['Labels', 'labels.value.keyword'],
     ['Verified Source', 'tags.verifiedSource'],
   ]);
-  private friendlyNames = new Map([
+  public friendlyNames = new Map([
     ['_type', 'Entry Type'],
     ['registry', 'Registry'],
     ['private_access', 'Private Access'],
@@ -154,7 +154,7 @@ export class SearchComponent implements OnInit {
    * The current text search
    * @type {string}
    */
-  private values = '';
+  public values = '';
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService

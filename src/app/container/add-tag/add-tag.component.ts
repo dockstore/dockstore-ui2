@@ -16,9 +16,9 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
   @ViewChild('addTagForm') currentForm: NgForm;
   public DescriptorType = DescriptorType;
-  private tool;
-  private formErrors = formErrors;
-  private validationPatterns = validationPatterns;
+  public tool;
+  public formErrors = formErrors;
+  public validationPatterns = validationPatterns;
   editMode = true;
   unsavedVersion = {
     'name': '',
