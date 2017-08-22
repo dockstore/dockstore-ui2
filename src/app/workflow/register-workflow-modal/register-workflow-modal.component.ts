@@ -1,3 +1,4 @@
+import { StateService } from './../../shared/state.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { NgForm } from '@angular/forms';
 import { formErrors, validationPatterns, validationMessages } from './../../shared/validationMessages.model';
@@ -17,11 +18,12 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public cwlTestParameterFilePath: string;
   public workflowRegisterError;
   public isModalShown: boolean;
+  public refreshing: boolean;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService) {
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService) {
   }
 
   friendlyRepositoryKeys(): Array<string> {
@@ -41,6 +43,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.workflowRegisterError.subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
     this.registerWorkflowModalService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
   }
 
   // Validation starts here, should move most of these to a service somehow
