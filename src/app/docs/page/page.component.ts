@@ -14,7 +14,7 @@ declare var Toc: any;
 export class PageComponent implements OnInit, AfterViewInit {
 
   private valid = true;
-  private slug: string;
+  public slug: string;
 
   selectedDoc: Doc;
 

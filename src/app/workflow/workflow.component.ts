@@ -122,7 +122,7 @@ export class WorkflowComponent extends Entry {
       }
     }
     return false;
-  };
+  }
 
   restubWorkflow() {
     this.workflowsService.restub(this.workflow.id).subscribe(response => {

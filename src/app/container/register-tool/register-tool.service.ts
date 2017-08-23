@@ -13,7 +13,7 @@ export class RegisterToolService {
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private repositories = Repository;
     private friendlyRepositories = FriendlyRepositories;
-    showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private dockerRegistryMap = [];
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
@@ -126,7 +126,7 @@ export class RegisterToolService {
             imageName = (part !== 'name') ? matchObj[1] : matchObj[4];
         }
         return imageName;
-    };
+    }
 
     getGitUrl(gitPath, scrProvider) {
         let gitUrl = '';
@@ -144,7 +144,7 @@ export class RegisterToolService {
         }
         gitUrl += gitPath;
         return gitUrl;
-    };
+    }
 
     createPath(toolObj: Tool, customDockerRegistryPath) {
         let path = '';
@@ -155,7 +155,7 @@ export class RegisterToolService {
         }
         path += '/' + this.getImagePath(toolObj.imagePath, 'namespace') + '/' + this.getImagePath(toolObj.imagePath, 'name');
         return path;
-    };
+    }
 
     checkForSpecialDockerRegistry(toolObj: Tool) {
         for (const registry of this.dockerRegistryMap) {
@@ -176,7 +176,7 @@ export class RegisterToolService {
                 }
             }
         }
-    };
+    }
 
     getImageRegistryPath(irProvider): string {
         let foundEnum;
@@ -186,7 +186,7 @@ export class RegisterToolService {
             }
         });
         return foundEnum;
-    };
+    }
 
     getToolRegistry(irProvider): string {
         let foundEnum;
@@ -196,7 +196,7 @@ export class RegisterToolService {
             }
         });
         return foundEnum;
-    };
+    }
 
     registryKeys(): Array<string> {
         return this.dockerRegistryMap.map(a => a.enum);
@@ -224,7 +224,7 @@ export class RegisterToolService {
             delete normToolObj.toolname;
         }
         return normToolObj;
-    };
+    }
 
     repositoryKeys(): Array<string> {
         const keys = Object.keys(this.repositories);
@@ -233,7 +233,7 @@ export class RegisterToolService {
 
     friendlyRegistryKeys(): Array<string> {
         if (this.dockerRegistryMap) {
-            return this.dockerRegistryMap.map((a) => { return a.friendlyName; });
+            return this.dockerRegistryMap.map((a) => a.friendlyName);
         }
     }
 

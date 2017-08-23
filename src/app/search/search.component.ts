@@ -779,7 +779,7 @@ export class SearchComponent implements OnInit {
       orderedArray = this.sortByAlphabet(orderedArray, orderMode);
     } else {
       orderedArray = this.sortByCount(orderedArray, orderMode);
-    };
+    }
     const tempMap: Map<string, string> = new Map<string, string>();
     orderedArray.forEach(
       entry => {

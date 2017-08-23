@@ -16,7 +16,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
   public validationPatterns = validationPatterns;
   public customDockerRegistryPath: string;
-  private showCustomDockerRegistryPath: boolean;
+  public showCustomDockerRegistryPath: boolean;
   public refreshing: boolean;
   public isModalShown: boolean;
 

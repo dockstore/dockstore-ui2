@@ -123,7 +123,7 @@ export class ContainerComponent extends Entry {
       }
     }
     return false;
-  };
+  }
 
   refresh() {
     this.refreshService.refreshTool();

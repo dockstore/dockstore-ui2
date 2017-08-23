@@ -8,9 +8,9 @@ import { VersionsService } from '../../../footer/versions.service';
   styleUrls: ['./downloadcliclient.component.scss']
 })
 export class DownloadCLIClientComponent implements OnInit {
-  private downloadCli: string;
-  private dsToken: any;
-  private dsServerURI: any;
+  public downloadCli: string;
+  public dsToken: any;
+  public dsServerURI: any;
 
   constructor(private authService: AuthService,
               private versionsService: VersionsService) { }
