@@ -40,19 +40,33 @@ export abstract class Entry implements OnInit, OnDestroy {
   @Input() isToolPublic = true;
   private publicPage: boolean;
   constructor(private trackLoginService: TrackLoginService,
-    private toolService: ToolService,
+    public toolService: ToolService,
     private communicatorService: CommunicatorService,
     private providerService: ProviderService,
-    private router: Router,
+    public router: Router,
     public workflowService: WorkflowService,
-    private containerService: ContainerService,
+    public containerService: ContainerService,
     private stateService: StateService,
     private errorService: ErrorService,
     toolType: string) {
     this._toolType = toolType;
   }
 
+  abstract setupPublicEntry(url: String);
+
   ngOnInit() {
+    const url = this.router.url;
+    if (this._toolType === 'workflows') {
+      if (this.isWorkflowPublic) {
+        this.setupPublicEntry(url);
+      }
+      this.stateService.setPublicPage(this.isWorkflowPublic);
+    } else if (this._toolType === 'containers') {
+      if (this.isToolPublic) {
+        this.setupPublicEntry(url);
+      }
+      this.stateService.setPublicPage(this.isToolPublic);
+    }
     this.errorService.toolError.subscribe(toolError => this.error = toolError);
     this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
@@ -89,21 +103,6 @@ export abstract class Entry implements OnInit, OnDestroy {
         this.workflowCopyBtn = workflowCopyBtn;
       }
     );
-    if (this._toolType === 'workflows') {
-      this.stateService.setPublicPage(this.isWorkflowPublic);
-      if (this.isWorkflowPublic) {
-        this.routeSub = this.router.events.subscribe(event =>
-          this.urlWorkflowChanged(event)
-        );
-      }
-    } else if (this._toolType === 'containers') {
-      this.stateService.setPublicPage(this.isToolPublic);
-      if (this.isToolPublic) {
-        this.routeSub = this.router.events.subscribe(event =>
-          this.urlToolChanged(event)
-        );
-      }
-    }
   }
 
   closeError() {
@@ -155,38 +154,6 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.labelsEditMode = !this.labelsEditMode;
   }
 
-  private urlToolChanged(event) {
-    if (event.url) {
-      if (event.url.includes('containers')) {
-        this.title = this.decodedString(event.url.replace(`/${this._toolType}/`, ''));
-        // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
-        // as opposed to just /tools or /docs etc.
-        this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
-          .subscribe(tool => {
-            this.containerService.setTool(tool);
-          }, error => {
-            this.router.navigate(['../']);
-          });
-      }
-    }
-  }
-
-  private urlWorkflowChanged(event) {
-    // reuse provider and image provider
-    if (!this.workflow) {
-      this.title = this.decodedString(event.url.replace(`/${this._toolType}/`, ''));
-    } else {
-      this.title = this.workflow.path;
-    }
-    this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
-      .subscribe(workflow => {
-        this.workflowService.setWorkflow(workflow);
-      }, error => {
-        this.router.navigate(['../']);
-      }
-      );
-  }
-
   private initTool() {
     this.setProperties();
     this.getValidVersions();
@@ -218,7 +185,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     }
   }
 
-  private encodedString(url: string): string {
+  public encodedString(url: string): string {
     if (!this.isEncoded(url)) {
       return encodeURIComponent(url);
     }
@@ -226,7 +193,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     return url;
   }
 
-  private decodedString(url: string): string {
+  public decodedString(url: string): string {
     if (this.isEncoded(url)) {
       return decodeURIComponent(url);
     }

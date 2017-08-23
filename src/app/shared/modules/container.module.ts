@@ -91,7 +91,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ErrorService,
     DateService,
     FileService,
-    ContainerService,
     LaunchService,
     DockerfileService,
     ParamfilesService,

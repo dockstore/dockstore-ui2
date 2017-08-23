@@ -89,7 +89,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     HighlightJsService,
     DateService,
     FileService,
-    ContainerService,
     LaunchService,
     ErrorService,
     DockerfileService,

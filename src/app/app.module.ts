@@ -1,3 +1,5 @@
+import { ContainerService } from './shared/container.service';
+import { WorkflowService } from './shared/workflow.service';
 import { Dockstore } from './shared/dockstore.model';
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
@@ -134,6 +136,8 @@ import { SearchModule } from './search/search.module';
     CommunicatorService,
     ToolService,
     ProviderService,
+    ContainerService,
+    WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     StateService,

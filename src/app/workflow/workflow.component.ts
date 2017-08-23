@@ -73,6 +73,21 @@ export class WorkflowComponent extends Entry {
       this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
     }
   }
+
+  public setupPublicEntry(url: String) {
+      if (url.includes('workflows')) {
+          this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+        // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
+        // as opposed to just /tools or /docs etc.
+        this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+          .subscribe(workflow => {
+            this.workflowService.setWorkflow(workflow);
+          }, error => {
+            this.router.navigate(['../']);
+          });
+      }
+  }
+
   sumCounts(count) {
     this.totalShare += count;
   }

@@ -34,7 +34,6 @@ import { RegisterToolComponent } from './../container/register-tool/register-too
     TooltipModule.forRoot()
   ],
   providers: [
-    ContainerService,
     RegisterToolService
   ],
 })
