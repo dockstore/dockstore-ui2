@@ -16,7 +16,6 @@ import { ProviderService } from '../shared/provider.service';
 
 import { Entry } from '../shared/entry';
 
-import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ListContainersService } from '../containers/list/list.service';
@@ -46,7 +45,6 @@ export class ContainerComponent extends Entry {
     private updateContainer: ContainerService,
     private containersService: ContainersService,
     trackLoginService: TrackLoginService,
-    toolService: ToolService,
     communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
@@ -54,7 +52,7 @@ export class ContainerComponent extends Entry {
     containerService: ContainerService,
     stateService: StateService,
     errorService: ErrorService) {
-    super(trackLoginService, toolService, communicatorService, providerService, router,
+    super(trackLoginService, communicatorService, providerService, router,
       workflowService, containerService, stateService, errorService, 'containers');
   }
   starGazersChange() {
@@ -89,7 +87,7 @@ export class ContainerComponent extends Entry {
         this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
         // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
         // as opposed to just /tools or /docs etc.
-        this.toolService.getPublishedToolByPath(this.encodedString(this.title), this._toolType)
+        this.containersService.getPublishedContainerByToolPath(this.encodedString(this.title), this._toolType)
           .subscribe(tool => {
             this.containerService.setTool(tool);
           }, error => {

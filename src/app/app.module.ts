@@ -64,7 +64,6 @@ import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { ProviderService } from './shared/provider.service';
-import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
@@ -134,7 +133,6 @@ import { SearchModule } from './search/search.module';
     UserService,
     ListService,
     CommunicatorService,
-    ToolService,
     ProviderService,
     ContainerService,
     WorkflowService,

@@ -15,7 +15,6 @@ import { URLSearchParams } from '@angular/http';
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
 import { WorkflowService } from '../shared/workflow.service';
-import { ToolService } from '../shared/tool.service';
 import { Entry } from '../shared/entry';
 
 import { ContainerService } from '../shared/container.service';
@@ -42,7 +41,6 @@ export class WorkflowComponent extends Entry {
     private refreshService: RefreshService,
     private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
-    toolService: ToolService,
     communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
@@ -50,7 +48,7 @@ export class WorkflowComponent extends Entry {
     containerService: ContainerService,
     stateService: StateService,
   errorService: ErrorService) {
-    super(trackLoginService, toolService, communicatorService, providerService, router,
+    super(trackLoginService, communicatorService, providerService, router,
       workflowService, containerService, stateService, errorService, 'workflows');
   }
   starGazersChange() {
@@ -79,7 +77,7 @@ export class WorkflowComponent extends Entry {
           this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
         // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
         // as opposed to just /tools or /docs etc.
-        this.toolService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+        this.workflowsService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
           .subscribe(workflow => {
             this.workflowService.setWorkflow(workflow);
           }, error => {

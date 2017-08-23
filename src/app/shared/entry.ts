@@ -6,7 +6,6 @@ import { StateService } from './state.service';
 import { Router } from '@angular/router/';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ToolService } from './tool.service';
 import { CommunicatorService } from './communicator.service';
 import { ProviderService } from './provider.service';
 
@@ -40,7 +39,6 @@ export abstract class Entry implements OnInit, OnDestroy {
   @Input() isToolPublic = true;
   private publicPage: boolean;
   constructor(private trackLoginService: TrackLoginService,
-    public toolService: ToolService,
     private communicatorService: CommunicatorService,
     private providerService: ProviderService,
     public router: Router,
