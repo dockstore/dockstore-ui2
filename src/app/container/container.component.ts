@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { ErrorService } from './error.service';
 import { StateService } from './../shared/state.service';
@@ -17,7 +18,6 @@ import { ProviderService } from '../shared/provider.service';
 import { Entry } from '../shared/entry';
 
 import { ContainerService } from '../shared/container.service';
-import { WorkflowService } from '../shared/workflow.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -28,15 +28,14 @@ import { TrackLoginService } from '../shared/track-login.service';
   templateUrl: './container.component.html',
 })
 export class ContainerComponent extends Entry {
-  labels: string[];
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
-  totalShare = 0;
-  shareURL: string;
   containerEditData: any;
   thisisValid = true;
-  labelPattern = validationPatterns.label;
-  starGazersClicked = false;
+  public tool;
+  private toolSubscription: Subscription;
+  private toolCopyBtnSubscription: Subscription;
+  public toolCopyBtn: string;
   constructor(private dockstoreService: DockstoreService,
     private dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -48,15 +47,24 @@ export class ContainerComponent extends Entry {
     communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
-    workflowService: WorkflowService,
-    containerService: ContainerService,
+    private containerService: ContainerService,
     stateService: StateService,
     errorService: ErrorService) {
-    super(trackLoginService, communicatorService, providerService, router,
-      workflowService, containerService, stateService, errorService, 'containers');
+    super(trackLoginService, providerService, router,
+      stateService, errorService);
+    this._toolType = 'containers';
   }
-  starGazersChange() {
-    this.starGazersClicked = !this.starGazersClicked;
+
+  public getDefaultVersionName(): string {
+    return this.tool.defaultVersion;
+  }
+
+  isPublic(): boolean {
+    return this.isToolPublic;
+  }
+
+  public resetCopyBtn(): void {
+    this.containerService.setCopyBtn(null);
   }
 
   setProperties() {
@@ -78,25 +86,58 @@ export class ContainerComponent extends Entry {
     }
     this.resetContainerEditData();
   }
-  sumCounts(count) {
-    this.totalShare += count;
+
+  public subscriptions(): void {
+    this.toolSubscription = this.containerService.tool$.subscribe(
+      tool => {
+        this.tool = tool;
+        if (tool) {
+          this.published = this.tool.is_published;
+        }
+        this.setUpTool(tool);
+      }
+    );
+    this.toolCopyBtnSubscription = this.containerService.copyBtn$.subscribe(
+      toolCopyBtn => {
+        this.toolCopyBtn = toolCopyBtn;
+      }
+    );
+  }
+
+  onDestroy(): void {
+    this.toolSubscription.unsubscribe();
+    this.toolCopyBtnSubscription.unsubscribe();
+  }
+
+  protected setUpTool(tool: any) {
+    if (tool) {
+      this.tool = tool;
+      if (!tool.providerUrl) {
+        this.providerService.setUpProvider(tool);
+      }
+      this.tool = Object.assign(tool, this.tool);
+      const toolRef: any = this.tool;
+      toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
+      toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
+      this.initTool();
+    }
   }
 
   public setupPublicEntry(url: String) {
-      if (url.includes('containers')) {
-        this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
-        // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
-        // as opposed to just /tools or /docs etc.
-        this.containersService.getPublishedContainerByToolPath(this.encodedString(this.title), this._toolType)
-          .subscribe(tool => {
-            this.containerService.setTool(tool);
-          }, error => {
-            this.router.navigate(['../']);
-          });
-      }
+    if (url.includes('containers')) {
+      this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+      // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
+      // as opposed to just /tools or /docs etc.
+      this.containersService.getPublishedContainerByToolPath(this.encodedString(this.title), this._toolType)
+        .subscribe(tool => {
+          this.containerService.setTool(tool);
+        }, error => {
+          this.router.navigate(['../']);
+        });
+    }
   }
 
-  publishTool() {
+  publish() {
     if (this.publishDisable()) {
       return;
     } else {
@@ -169,4 +210,9 @@ export class ContainerComponent extends Entry {
         this.labelsEditMode = false;
       });
   }
+
+  public toolCopyBtnClick(copyBtn): void {
+    this.containerService.setCopyBtn(copyBtn);
+  }
+
 }

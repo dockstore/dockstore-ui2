@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { ErrorService } from './../container/error.service';
 import { Dockstore } from '../shared/dockstore.model';
@@ -27,33 +28,30 @@ import { TrackLoginService } from '../shared/track-login.service';
   styleUrls: ['./workflow.component.css']
 })
 export class WorkflowComponent extends Entry {
-  labels: string[];
   mode: string;
   workflowEditData: any;
-  labelPattern = validationPatterns.label;
-  totalShare = 0;
-  shareURL: string;
-  starGazersClicked = false;
   dnastackURL: string;
-  constructor(private dockstoreService: DockstoreService,
-    private dateService: DateService,
-    private updateWorkflow: WorkflowService,
-    private refreshService: RefreshService,
-    private workflowsService: WorkflowsService,
-    trackLoginService: TrackLoginService,
-    communicatorService: CommunicatorService,
-    providerService: ProviderService,
-    router: Router,
-    workflowService: WorkflowService,
-    containerService: ContainerService,
-    stateService: StateService,
-  errorService: ErrorService) {
-    super(trackLoginService, communicatorService, providerService, router,
-      workflowService, containerService, stateService, errorService, 'workflows');
+  public workflow;
+  private workflowSubscription: Subscription;
+  private workflowCopyBtnSubscription: Subscription;
+  private workflowCopyBtn: string;
+  constructor(private dockstoreService: DockstoreService, private dateService: DateService, private refreshService: RefreshService,
+    private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
+    router: Router, private workflowService: WorkflowService,
+    stateService: StateService, errorService: ErrorService) {
+    super(trackLoginService, providerService, router,
+      stateService, errorService);
+    this._toolType = 'workflows';
   }
-  starGazersChange() {
-    this.starGazersClicked = !this.starGazersClicked;
+
+  isPublic(): boolean {
+    return this.isWorkflowPublic;
   }
+
+  public resetCopyBtn(): void {
+    this.workflowService.setCopyBtn(null);
+  }
+
   setProperties() {
     const workflowRef: any = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
@@ -72,23 +70,53 @@ export class WorkflowComponent extends Entry {
     }
   }
 
-  public setupPublicEntry(url: String) {
-      if (url.includes('workflows')) {
-          this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
-        // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
-        // as opposed to just /tools or /docs etc.
-        this.workflowsService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
-          .subscribe(workflow => {
-            this.workflowService.setWorkflow(workflow);
-          }, error => {
-            this.router.navigate(['../']);
-          });
-      }
+  public getDefaultVersionName(): string {
+    return this.workflow.defaultVersion;
   }
 
-  sumCounts(count) {
-    this.totalShare += count;
+  private setUpWorkflow(workflow: any) {
+    if (workflow) {
+      this.workflow = workflow;
+      if (!workflow.providerUrl) {
+        this.providerService.setUpProvider(workflow);
+      }
+      this.workflow = Object.assign(workflow, this.workflow);
+      this.title = this.workflow.path;
+      this.initTool();
+    }
   }
+
+  public subscriptions(): void {
+    this.workflowSubscription = this.workflowService.workflow$.subscribe(
+      workflow => {
+        this.workflow = workflow;
+        if (workflow) {
+          this.published = this.workflow.is_published;
+        }
+        this.setUpWorkflow(workflow);
+      }
+    );
+    this.workflowCopyBtnSubscription = this.workflowService.copyBtn$.subscribe(
+      workflowCopyBtn => {
+        this.workflowCopyBtn = workflowCopyBtn;
+      }
+    );
+  }
+
+  public setupPublicEntry(url: String) {
+    if (url.includes('workflows')) {
+      this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+      // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
+      // as opposed to just /tools or /docs etc.
+      this.workflowsService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+        .subscribe(workflow => {
+          this.workflowService.setWorkflow(workflow);
+        }, error => {
+          this.router.navigate(['../']);
+        });
+    }
+  }
+
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
@@ -129,12 +157,17 @@ export class WorkflowComponent extends Entry {
       return false;
     }
 
-    for (const versionTag of versionTags)  {
+    for (const versionTag of versionTags) {
       if (versionTag.valid) {
         return true;
       }
     }
     return false;
+  }
+
+  onDestroy(): void {
+    this.workflowSubscription.unsubscribe();
+    this.workflowCopyBtnSubscription.unsubscribe();
   }
 
   restubWorkflow() {
@@ -163,9 +196,9 @@ export class WorkflowComponent extends Entry {
   }
   setWorkflowLabels(): any {
     return this.dockstoreService.setWorkflowLabels(this.workflow.id, this.workflowEditData.labels).
-      subscribe( workflow => {
+      subscribe(workflow => {
         this.workflow.labels = workflow.labels;
-        this.updateWorkflow.setWorkflow(workflow);
+        this.workflowService.setWorkflow(workflow);
         this.labelsEditMode = false;
       });
   }
