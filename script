@@ -3,19 +3,3 @@ sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers
 sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/containertags.service.ts
 sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/workflows.service.ts
 sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/containers.service.ts
-for f in src/app/shared/swagger/*.ts
-do 
-  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
-done
-for f in src/app/shared/swagger/model/*.ts
-do 
-  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
-done
-for f in src/app/shared/swagger/api/*.ts
-do 
-  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
-done
-for f in src/app/shared/swagger/index.ts src/app/shared/swagger/configuration.ts src/app/shared/swagger/variables.ts
-do 
-  echo -e "/* tslint:disable */\n$(cat "$f")" > "$f"
-done
