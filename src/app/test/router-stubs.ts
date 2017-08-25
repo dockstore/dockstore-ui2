@@ -1,3 +1,4 @@
+/* tslint:disable */
 // export for convenience.
 export { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 

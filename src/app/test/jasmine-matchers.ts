@@ -1,5 +1,3 @@
-/// <reference path="./jasmine-matchers.d.ts" />
-
 ////  Jasmine Custom Matchers ////
 // Be sure to extend jasmine-matchers.d.ts when adding matchers
 
