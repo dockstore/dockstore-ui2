@@ -35,7 +35,7 @@ import { convertToParamMap, ParamMap } from '@angular/router';
 
 @Injectable()
 export class ActivatedRouteStub {
-
+    private params = new BehaviorSubject(convertToParamMap(this.testParamMap));
     // ActivatedRoute.paramMap is Observable
     private subject = new BehaviorSubject(convertToParamMap(this.testParamMap));
     paramMap = this.subject.asObservable();
