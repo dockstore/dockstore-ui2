@@ -1,3 +1,4 @@
+import { SearchService } from './../search/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { Doc } from './../docs/doc.model';
@@ -31,5 +32,26 @@ export class GA4GHStubService {
             apiversion: '3',
         };
         return Observable.of(metadata);
+    }
+}
+
+export class SearchStubService {
+
+}
+
+export class ListContainersStubService {
+}
+
+export class TrackLoginStubService {
+
+}
+
+export class LoginStubService {
+
+}
+
+export class AuthStubService {
+    getToken() {
+        return 'asdf';
     }
 }

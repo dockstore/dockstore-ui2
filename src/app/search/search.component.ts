@@ -27,15 +27,7 @@ export class SearchComponent implements OnInit {
    * and paginate to be scalable
    */
   @ViewChild('box') searchTermBox: ElementRef;
-  /* Observable */
-  private toolSource = new BehaviorSubject<any>(null);
-  toolhit$ = this.toolSource.asObservable();
   _timeout = false;
-
-  /* Observable */
-  private workflowSource = new BehaviorSubject<any>(null);
-  workflowhit$ = this.workflowSource.asObservable();
-
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public browseToolsTab = 'browseToolsTab';
@@ -373,8 +365,8 @@ export class SearchComponent implements OnInit {
       this.workflowHits = [];
       this.toolHits = [];
       this.filterEntry();
-      this.toolSource.next(this.toolHits);
-      this.workflowSource.next(this.workflowHits);
+      this.searchService.toolhit$.next(this.toolHits);
+      this.searchService.workflowhit$.next(this.workflowHits);
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
