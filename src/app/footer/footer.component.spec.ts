@@ -1,3 +1,5 @@
+import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
+import { GA4GHStubService } from './../test/service-stubs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FooterComponent } from './footer.component';
@@ -8,7 +10,8 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterComponent ]
+      declarations: [ FooterComponent ],
+      providers: [ {provide: GA4GHService, useClass: GA4GHStubService}]
     })
     .compileComponents();
   }));

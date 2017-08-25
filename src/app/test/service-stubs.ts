@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { Metadata } from './../shared/swagger/model/metadata';
 import { Doc } from './../docs/doc.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ContainerStubService {
@@ -19,5 +21,15 @@ export class DocsStubService {
     }
     getDoc(slug: string): Doc {
         return null;
+    }
+}
+
+export class GA4GHStubService {
+    metadataGet(): Observable<Metadata> {
+        const metadata: Metadata = {
+            version: '3',
+            apiversion: '3',
+        };
+        return Observable.of(metadata);
     }
 }

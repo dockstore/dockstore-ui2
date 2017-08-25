@@ -55,7 +55,6 @@ import { HttpService } from './shared/http.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
-import { VersionsService } from './footer/versions.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { SearchService } from './search/search.service';
 import { TwitterService } from './shared/twitter.service';
@@ -140,7 +139,6 @@ import { SearchModule } from './search/search.module';
     CLIENT_ROUTER_PROVIDERS,
     StateService,
     SearchService,
-    VersionsService,
     PagenumberService,
     TwitterService
   ],
