@@ -3,17 +3,21 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
 import { Client } from 'elasticsearch';
-import { Component, OnInit, ViewChild, enableProdMode, ElementRef } from '@angular/core';
+import { Component, OnInit, enableProdMode } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-import { NgZone } from '@angular/core';
+import { Router} from '@angular/router/';
+import { Location } from '@angular/common';
+import { Subscription } from 'rxjs/Subscription';
+
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
  **/
+enableProdMode();
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -21,14 +25,15 @@ import { NgZone } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
   private advancedSearchObject: AdvancedSearchObject;
-
+  private routeSub: Subscription;
+  private permalink: string;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
-  @ViewChild('box') searchTermBox: ElementRef;
   /* Observable */
   private toolSource = new BehaviorSubject<any>(null);
+  private curURL = '';
   toolhit$ = this.toolSource.asObservable();
   _timeout = false;
 
@@ -47,43 +52,25 @@ export class SearchComponent implements OnInit {
   private shard_size = 10000;
   private activeToolBar = true;
   private loading = false;
+  private suggestTerm = '';
+  private firstInit = true;
+  location: Location;
+
 
   // Possibly 100 workflows and 100 tools
   private query_size = 200;
   expandAll = true;
-  showToolTagCloud = true;
-  showWorkflowTagCloud = true;
+  showToolTagCloud = false;
+  showWorkflowTagCloud = false;
   searchTerm = false;
   options: CloudOptions = {
     width: 600,
     height: 200,
     overflow: false,
   };
-  data: Array<CloudData> = [
-    { text: 'Docker', weight: 10, color: '#ffaaee' },
-    { text: 'PCAWG', weight: 9 },
-    { text: 'Tool', weight: 8 },
-    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
-    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
-    { text: 'cancer', weight: 5, },
-    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
-    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
-    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
-    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
-  ];
-
-  data2: Array<CloudData> = [
-    { text: 'Weight-10-link', weight: 10, link: 'https://google.com' },
-    { text: 'Weight-9-link', weight: 9, link: 'https://google.com' },
-    { text: 'Weight-8-link', weight: 8, link: 'https://google.com' },
-    { text: 'Weight-7-link', weight: 7, link: 'https://google.com' },
-    { text: 'Weight-6-link', weight: 5, link: 'https://google.com' },
-    { text: 'Weight-5-link', weight: 5, link: 'https://google.com' },
-    { text: 'Weight-4-link', weight: 4, link: 'https://google.com' },
-    { text: 'Weight-3-link', weight: 3, link: 'https://google.com' },
-    { text: 'Weight-2-link', weight: 2, link: 'https://google.com' },
-    { text: 'Weight-1-link', weight: 1, link: 'https://google.com' },
-  ];
+  autocompleteTerms: Array<string> = new Array<string>();
+  toolTagCloudData: Array<CloudData>;
+  workflowTagCloudData: Array<CloudData>;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -109,7 +96,7 @@ export class SearchComponent implements OnInit {
    */
   private bucketStubs = new Map([
     ['Entry Type', '_type'],
-    ['Registry', 'registry'], /*WRONG*/
+    ['Registry', 'registry'],
     ['Private Access', 'private_access'],
     ['Verified', 'tags.verified'],
     ['Author', 'author'],
@@ -162,7 +149,9 @@ export class SearchComponent implements OnInit {
   constructor(private providerService: ProviderService,
               private searchService: SearchService,
               private advancedSearchService: AdvancedSearchService,
-              public lc: NgZone) {
+              private router: Router,
+              private Location: Location) {
+    this.location = Location;
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
@@ -170,6 +159,9 @@ export class SearchComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.createTagCloud('tool');
+    this.createTagCloud('workflow');
+    this.curURL = this.router.url;
     this.searchService.searchInfo$.subscribe(
       searchInfo => {
         if (searchInfo) {
@@ -178,6 +170,7 @@ export class SearchComponent implements OnInit {
           this.checkboxMap = searchInfo.checkbox;
           this.sortModeMap = searchInfo.sortModeMap;
           this.advancedSearchObject = searchInfo.advancedSearchObject;
+          this.firstInit = false;
         }
         this.updateQuery();
       });
@@ -185,14 +178,65 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
-    this.searchService.loading$.subscribe(
-      loading => {
-        this.loading = loading;
+  }
+  parseFilter() {
+    const filterObj = this.searchService.createURIParams(this.curURL);
+    filterObj.paramsMap.forEach(((value, key) => {
+      if (this.filters) {
+          value.forEach(categoryValue => {
+            categoryValue = decodeURIComponent(categoryValue);
+            this.handleFilters(key, categoryValue);
+          });
+        this.firstInit = false;
       }
-    );
+    }));
   }
 
+  createTagCloud(type: string) {
+    let body = bodybuilder().size();
+    body = body.query('match', '_type', type);
+    body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
+    const toolQuery = JSON.stringify(body, null, 1);
+    this.createToolTagCloud(toolQuery, type);
+  }
 
+  createToolTagCloud(toolQuery, type) {
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: toolQuery
+    }).then(hits => {
+      let weight = 10;
+      let count = 0;
+      hits.aggregations.tagcloud.buckets.forEach(
+        tag => {
+          const theTag = {
+            text: tag.key,
+            weight: weight
+          };
+          if (weight === 10) {
+            /** just for fun...**/
+            theTag['color'] = '#ffaaee';
+          }
+          if (count % 2 !== 0) {
+            weight--;
+          }
+          if (type === 'tool') {
+            if (!this.toolTagCloudData) {
+              this.toolTagCloudData = new Array<CloudData>();
+            }
+            this.toolTagCloudData.push(theTag);
+          } else {
+            if (!this.workflowTagCloudData) {
+              this.workflowTagCloudData = new Array<CloudData>();
+            }
+            this.workflowTagCloudData.push(theTag);
+          }
+          count--;
+        }
+      );
+    });
+  }
   /**===============================================
    *                SetUp Functions
    * ==============================================*/
@@ -224,9 +268,16 @@ export class SearchComponent implements OnInit {
         }
         if (!this.checkboxMap.get(key).get(bucket.key)) {
           this.checkboxMap.get(key).set(bucket.key, false);
-          this.entryOrder.get(key).Items.set(bucket.key, doc_count);
-        } else if (this.checkboxMap.get(key).get(bucket.key)) {
+          if (this.filters.has(key)) {
+            if (this.filters.get(key).has(bucket.key.toString())) {
+              this.checkboxMap.get(key).set(bucket.key, true);
+            }
+          }
+        }
+        if (this.checkboxMap.get(key).get(bucket.key)) {
           this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
+        } else {
+          this.entryOrder.get(key).Items.set(bucket.key, doc_count);
         }
       }
     });
@@ -316,14 +367,25 @@ export class SearchComponent implements OnInit {
     this.searchService.setSearchInfo(searchInfo);
   }
 
+  shareBtnClick() {
+    const searchInfo = {
+      filter: this.filters,
+      searchValues: this.values,
+      advancedSearchObject: this.advancedSearchObject
+    };
+    this.permalink = this.searchService.createPermalinks(searchInfo);
+  }
+
   /**===============================================
    *                Update Functions
-   * ==============================================e
+   * ===============================================
    */
   updateQuery() {
-    this.searchService.setLoading(true);
     // calculate number of filters
     let count = 0;
+    if (this.curURL !== '/admin-search' && this.firstInit) {
+      this.parseFilter();
+    }
     this.filters.forEach(filter => {
       count += filter.size;
     });
@@ -379,7 +441,10 @@ export class SearchComponent implements OnInit {
         this.searchTerm = true;
       }
       this.setTabActive();
-      this.searchService.setLoading(false);
+      this.loading = false;
+      if (this.searchTerm && this.hits.length === 0) {
+        this.suggestKeyTerm();
+      }
     });
   }
 
@@ -388,6 +453,7 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   resetFilters() {
+    this.loading = true;
     this.values = '';
     this.searchTerm = false;
     this.filters.clear();
@@ -583,8 +649,37 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   onKey() {
-    if (this._timeout) {
-    } else {
+    /*TODO: FOR DEMO USE, make this better later...*/
+    const pattern = this.values + '.*';
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: {
+        'size': 0,
+        'aggs': {
+          'autocomplete': {
+            'terms': {
+              'field': 'description',
+              'size': 4,
+              'order': {
+                '_count': 'desc'
+              },
+              'include': {
+                'pattern': pattern
+              }
+            }
+          }
+        }
+      }
+    }).then(hits => {
+      this.autocompleteTerms = [];
+      hits.aggregations.autocomplete.buckets.forEach(
+        term => {
+          this.autocompleteTerms.push(term.key);
+        }
+      );
+    });
+    if (!this._timeout) {
       this.advancedSearchObject.toAdvanceSearch = false;
       this.searchTerm = true;
       this._timeout = true;
@@ -596,6 +691,34 @@ export class SearchComponent implements OnInit {
         this._timeout = false;
       }, 500);
     }
+  }
+/*TODO: FOR DEMO USE, make this better later...*/
+  suggestKeyTerm() {
+    this._client.search({
+      index: 'tools',
+      type: 'entry',
+      body: {
+        'suggest': {
+          'do_you_mean': {
+            'text': this.values,
+            'term': {
+              'field': 'description'
+            }
+          }
+        }
+      }
+    }).then(hits => {
+       if (hits['suggest']['do_you_mean'][0].options.length > 0) {
+         this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
+       } else {
+         this.suggestTerm = '';
+       }
+    });
+  }
+
+  searchSuggestTerm() {
+    this.values = this.suggestTerm;
+    this.updateQuery();
   }
   /**
    * This handles clicking a facet and doing the search
@@ -622,11 +745,10 @@ export class SearchComponent implements OnInit {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
   }
-  logClicked(clicked: CloudData) {
+  tagClicked(clicked: CloudData) {
     this.searchTerm = true;
     this.values = clicked.text;
-    this.searchTermBox.nativeElement.value = '';
-    this.onClick(null, null);
+    this.updateQuery();
   }
   switchExpandAll() {
     this.expandAll = !this.expandAll;
@@ -741,29 +863,6 @@ export class SearchComponent implements OnInit {
       this.filters.get(category).add(categoryValue);
     }
   }
-  sortByAlphabet(orderedArray, orderMode): any {
-    orderedArray = orderedArray.sort((a, b) => {
-      if (orderMode) {
-        return a.key > b.key ? 1 : -1;
-      } else  {
-        return a.key < b.key ? 1 : -1;
-      }
-    });
-    return orderedArray;
-  }
-
-  sortByCount(orderedArray, orderMode): any {
-    orderedArray = orderedArray.sort((a, b) => {
-      if (a.value < b.value) {
-        return !orderMode ? 1 : -1;
-      } else if (a.value === b.value) {
-        return a.key > b.key ? 1 : -1;
-      } else {
-        return !orderMode ? -1 : 1;
-      }
-    });
-    return orderedArray;
-  }
 
   sortCategoryValue (valueMap: any, sortMode: boolean, orderMode: boolean): any {
     let orderedArray = <any>[];
@@ -776,9 +875,9 @@ export class SearchComponent implements OnInit {
           });
       });
     if (!sortMode) {
-      orderedArray = this.sortByAlphabet(orderedArray, orderMode);
+      orderedArray = this.searchService.sortByAlphabet(orderedArray, orderMode);
     } else {
-      orderedArray = this.sortByCount(orderedArray, orderMode);
+      orderedArray = this.searchService.sortByCount(orderedArray, orderMode);
     };
     const tempMap: Map<string, string> = new Map<string, string>();
     orderedArray.forEach(
