@@ -12,3 +12,8 @@ export class ContainerStubService {
   }
 
 export class FileStubService { }
+export class DocsStubService {
+    getDocs() {
+        return null;
+    }
+ }
