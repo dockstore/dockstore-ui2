@@ -1,3 +1,4 @@
+import { ContainersService } from '../../shared/swagger';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -20,7 +21,7 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
   content: string;
   contentHighlighted: boolean;
 
-  constructor(private containerService: ContainerService,
+  constructor(private containerService: ContainerService, private containersService: ContainersService,
               private highlightJsService: HighlightJsService,
               private paramfilesService: ParamfilesService,
               public fileService: FileService,

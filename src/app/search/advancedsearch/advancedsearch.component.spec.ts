@@ -1,3 +1,7 @@
+import { AdvancedSearchStubService } from '../../test/service-stubs';
+import { AdvancedSearchService } from './advanced-search.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdvancedSearchComponent } from './advancedsearch.component';
@@ -8,7 +12,10 @@ describe('AdvancedSearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdvancedSearchComponent ]
+      declarations: [ AdvancedSearchComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ],
+      imports: [ ModalModule.forRoot() ],
+      providers: [{provide: AdvancedSearchService, useClass: AdvancedSearchStubService}]
     })
     .compileComponents();
   }));

@@ -105,3 +105,8 @@ export class LogoutStubService {
 export class UserStubService {
     user$ = Observable.of({});
 }
+
+export class AdvancedSearchStubService {
+    showModal$ = Observable.of(true);
+    advancedSearch$ = Observable.of({});
+}
