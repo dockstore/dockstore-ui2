@@ -6,7 +6,7 @@ import { HttpService } from '../shared/http.service';
 import { RouterOutletStubComponent } from './../test/router-stubs';
 import { RouterLinkStubDirective } from '../test';
 import { UserService } from '../loginComponents/user.service';
-import { ConfigurationStub, UsersServiceStub,
+import { ConfigurationStub, UsersStubService,
   HttpStubService, WorkflowStubService, RefreshStubService, RegisterWorkflowModalStubService } from './../test/service-stubs';
 import { Configuration } from './../shared/swagger/configuration';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -23,7 +23,7 @@ describe('MyWorkflowsComponent', () => {
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [
         { provide: Configuration, useClass: ConfigurationStub },
-        { provide: UsersService, useClass: UsersServiceStub },
+        { provide: UsersService, useClass: UsersStubService },
         { provide: HttpService, useClass: HttpStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },

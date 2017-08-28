@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
     copyBtn$ = this.copyBtnSource.asObservable();
+    tool$ = Observable.of({});
     getDescriptors() {
         return null;
     }
@@ -65,11 +66,17 @@ export class ConfigurationStub {
 
 }
 
-export class UsersServiceStub {
+export class UsersStubService {
     getUser() {
         return Observable.of({});
     }
     userWorkflows() {
+        return Observable.of([]);
+    }
+    getStarredTools() {
+        return Observable.of([]);
+    }
+    getStarredWorkflows() {
         return Observable.of([]);
     }
 }
@@ -112,4 +119,18 @@ export class UserStubService {
 export class AdvancedSearchStubService {
     showModal$ = Observable.of(true);
     advancedSearch$ = Observable.of({});
+}
+
+export class StarringStubService {
+    getStarring(id: any, type: any) {
+        return Observable.of({});
+    }
+}
+
+export class StarEntryStubService {
+    starEntry$ = Observable.of({});
+}
+
+export class ImageProviderStubService {
+
 }
