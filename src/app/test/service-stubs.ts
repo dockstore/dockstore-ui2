@@ -38,7 +38,9 @@ export class GA4GHStubService {
 }
 
 export class SearchStubService {
-
+    searchInfo$ = Observable.of({});
+    setLoading() {
+    }
 }
 
 export class ListContainersStubService {
