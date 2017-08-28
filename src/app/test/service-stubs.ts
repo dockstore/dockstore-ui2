@@ -155,3 +155,18 @@ export class ParamFilesStubService {
         return Observable.of({});
     }
 }
+
+export class DockstoreStubService {
+    getIconClass() {
+
+    }
+}
+
+export class DateStubService {
+    getVerifiedLink() {
+        return '/docs/faq#what-is-a-verified-tool-or-workflow-';
+    }
+}
+
+export class WorkflowsStubService {
+}
