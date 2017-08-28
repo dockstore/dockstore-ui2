@@ -43,7 +43,7 @@ script:
   - ng build # this does syntax checking, unit testing, and jshint
   - ng test --watch=false --code-coverage
 
-after_succes:
+after_success:
   - ./node_modules/codecov/bin/codecov
 
 notifications:
