@@ -45,7 +45,7 @@ export class ListContainersStubService {
 }
 
 export class TrackLoginStubService {
-
+    isLoggedIn$ = Observable.of(true);
 }
 
 export class LoginStubService {
@@ -96,4 +96,12 @@ export class RefreshStubService {
 export class RegisterWorkflowModalStubService {
 }
 
+export class PageNumberStubService {
+}
 
+export class LogoutStubService {
+}
+
+export class UserStubService {
+    user$ = Observable.of({});
+}
