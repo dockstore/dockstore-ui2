@@ -146,3 +146,9 @@ export class DagStubService {
 export class DescriptorsStubService {
 
 }
+
+export class ParamFilesStubService {
+    getVersions() {
+        return Observable.of([]);
+    }
+}
