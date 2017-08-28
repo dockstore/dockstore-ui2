@@ -99,7 +99,9 @@ export class WorkflowStubService {
     setNsWorkflows(thing: any) {
     }
     getDescriptors() {
-
+    }
+    getTestJson() {
+        return Observable.of({});
     }
 }
 
@@ -166,7 +168,18 @@ export class DateStubService {
     getVerifiedLink() {
         return '/docs/faq#what-is-a-verified-tool-or-workflow-';
     }
+    getDateTimeMessage() {
+
+    }
 }
 
 export class WorkflowsStubService {
+}
+
+export class VersionModalStubService {
+
+}
+
+export class StateStubService {
+    publicPage$ = Observable.of(false);
 }
