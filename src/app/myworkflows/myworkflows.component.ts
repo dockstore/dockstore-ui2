@@ -1,3 +1,4 @@
+import { UsersService } from './../shared/swagger/api/users.service';
 import { HttpService } from './../shared/http.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
@@ -9,9 +10,6 @@ import {ProviderService} from '../shared/provider.service';
 import {WorkflowService} from '../shared/workflow.service';
 
 import {MyWorkflowsService} from './myworkflows.service';
-import {UserService} from '../loginComponents/user.service';
-
-
 
 @Component({
   selector: 'app-myworkflows',
@@ -27,12 +25,13 @@ export class MyWorkflowsComponent implements OnInit {
   user: any;
   workflows: any;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-              private userService: UserService, private httpService: HttpService,
+              private httpService: HttpService, private usersService: UsersService,
               private workflowService: WorkflowService,
               private refreshService: RefreshService,
               private registerWorkflowModalService: RegisterWorkflowModalService) {
 
   }
+
   ngOnInit() {
     this.configuration.accessToken = this.httpService.getDockstoreToken();
     this.workflowService.setWorkflow(null);
@@ -42,9 +41,9 @@ export class MyWorkflowsComponent implements OnInit {
         this.setIsFirstOpen();
       }
     );
-    this.userService.getUser().subscribe(user => {
+    this.usersService.getUser().subscribe(user => {
       this.user = user;
-      this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
+      this.usersService.userWorkflows(user.id).subscribe(workflows => {
         this.workflowService.setWorkflows(workflows);
       });
     });

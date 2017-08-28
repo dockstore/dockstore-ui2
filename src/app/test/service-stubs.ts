@@ -1,3 +1,5 @@
+import { Workflow } from './../shared/swagger/model/workflow';
+import { Configuration } from './../shared/swagger/configuration';
 import { SearchService } from './../search/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Metadata } from './../shared/swagger/model/metadata';
@@ -55,3 +57,43 @@ export class AuthStubService {
         return 'asdf';
     }
 }
+
+export class ConfigurationStub {
+
+}
+
+export class UsersServiceStub {
+    getUser() {
+        return Observable.of({});
+    }
+    userWorkflows() {
+        return Observable.of([]);
+    }
+}
+
+export class HttpStubService {
+    getDockstoreToken() {
+        return 'IMAFAKEDOCKSTORETOKEN';
+    }
+}
+
+export class WorkflowStubService {
+    workflows$ = Observable.of([]);
+    nsWorkflows$ = Observable.of([]);
+    workflow$ = Observable.of({});
+    setWorkflow(thing: Workflow) {
+    }
+    setWorkflows(thing: any) {
+    }
+    setNsWorkflows(thing: any) {
+    }
+}
+
+export class RefreshStubService {
+
+}
+
+export class RegisterWorkflowModalStubService {
+}
+
+

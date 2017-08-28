@@ -1,6 +1,7 @@
-import { By } from '@angular/platform-browser';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+
 import { SetupCompleteComponent } from './setupcomplete.component';
 
 describe('SetupCompleteComponent', () => {
@@ -10,10 +11,10 @@ describe('SetupCompleteComponent', () => {
   let el: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SetupCompleteComponent ],
+      declarations: [SetupCompleteComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
