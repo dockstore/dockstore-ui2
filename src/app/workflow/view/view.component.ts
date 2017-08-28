@@ -48,6 +48,6 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
   }
 
   ngOnInit() {
-    this.stateService.publicPage.subscribe(isPublic => this.isPublic = isPublic);
+    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
   }
 }

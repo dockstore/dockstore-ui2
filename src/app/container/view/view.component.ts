@@ -40,7 +40,7 @@ export class ViewContainerComponent extends View implements OnInit {
   }
 
   ngOnInit() {
-    this.stateService.publicPage.subscribe(isPublic => this.isPublic = isPublic);
+    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.containerService.tool$.subscribe(tool => this.tool = tool);
   }
 }

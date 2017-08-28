@@ -198,7 +198,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         }
       }
     );
-    this.stateService.publicPage.subscribe(publicPage => this.editMode = !publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
     });

@@ -48,7 +48,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     }
     this.stateService.setPublicPage(this.isPublic());
     this.errorService.toolError.subscribe(toolError => this.error = toolError);
-    this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
   }
