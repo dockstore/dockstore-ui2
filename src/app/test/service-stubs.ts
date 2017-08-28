@@ -134,3 +134,7 @@ export class StarEntryStubService {
 export class ImageProviderStubService {
 
 }
+
+export class DagStubService {
+
+}
