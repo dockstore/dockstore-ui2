@@ -91,11 +91,15 @@ export class WorkflowStubService {
     workflows$ = Observable.of([]);
     nsWorkflows$ = Observable.of([]);
     workflow$ = Observable.of({});
+    copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
     }
     setWorkflows(thing: any) {
     }
     setNsWorkflows(thing: any) {
+    }
+    getDescriptors() {
+
     }
 }
 
@@ -136,5 +140,9 @@ export class ImageProviderStubService {
 }
 
 export class DagStubService {
+
+}
+
+export class DescriptorsStubService {
 
 }
