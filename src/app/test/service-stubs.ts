@@ -151,4 +151,7 @@ export class ParamFilesStubService {
     getVersions() {
         return Observable.of([]);
     }
+    getDescriptors() {
+        return Observable.of({});
+    }
 }
