@@ -15,8 +15,7 @@ export class ParamfilesService {
   // - get versions with test paramfiles
   // - get descriptors with test paramfiles for each version
 
-  constructor(private httpService: HttpService, private authService: AuthService, public http: Http,
-    private containersService: ContainersService, private workflowsService: WorkflowsService) { }
+  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) { }
 
   getFiles(id: number, type: string, versionName?: string, descriptor?: string) {
     if (type === 'workflows') {
