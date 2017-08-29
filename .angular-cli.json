@@ -74,6 +74,9 @@
   "test": {
     "karma": {
       "config": "./karma.conf.js"
+    },
+    "codeCoverage": {
+      "exclude": ["src/app/shared/swagger/**"]
     }
   },
   "defaults": {
