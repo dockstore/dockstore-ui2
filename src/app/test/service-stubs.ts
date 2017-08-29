@@ -1,3 +1,4 @@
+import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { Configuration } from './../shared/swagger/configuration';
@@ -194,6 +195,31 @@ export class WorkflowsStubService {
             'workflowVersions': []
         };
         return Observable.of(refreshedWorkflow);
+    }
+    updateWorkflow(workflowId: number, body: Workflow, extraHttpRequestParams?: any): Observable<Workflow> {
+        const updatedWorkflow: Workflow = {
+            'descriptorType': 'cwl',
+            'gitUrl': 'updatedGitUrl',
+            'mode': Workflow.ModeEnum.FULL,
+            'organization': 'updatedOrganization',
+            'repository': 'updatedRepository',
+            'workflow_path': 'updatedWorkflowPath',
+            'workflowVersions': []
+        };
+        return Observable.of(updatedWorkflow);
+    }
+    updateWorkflowVersion(workflowId: number, body: Array<WorkflowVersion>, extraHttpRequestParams?: any):
+    Observable<Array<WorkflowVersion>> {
+        const updatedWorkflowVersions: WorkflowVersion[] = [];
+        return Observable.of(updatedWorkflowVersions);
+    }
+    addTestParameterFiles(workflowId: number, testParameterPaths: Array<string>, body?: string, version?: string,
+        extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
+            return Observable.of([]);
+    }
+    deleteTestParameterFiles(workflowId: number, testParameterPaths: Array<string>, version?: string, extraHttpRequestParams?: any):
+    Observable<Array<SourceFile>> {
+        return Observable.of([]);
     }
 }
 
