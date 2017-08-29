@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MytoolsService {
@@ -6,12 +6,7 @@ export class MytoolsService {
   }
 
   getNSIndex(nsContainers: any[], namespace: string): number {
-    for (let i = 0; i < nsContainers.length; i++) {
-      if (nsContainers[i].namespace === namespace) {
-        return i;
-      }
-    }
-    return -1;
+    return nsContainers.findIndex(nsContainer => nsContainer.namespace === namespace);
   }
 
   sortNamespaces(nsContainers: any[], username: string): any {
@@ -59,6 +54,14 @@ export class MytoolsService {
     return sortedNSContainers;
   }
 
+  /**
+   * Takes in an array of tools and outputs an array of objects.  These objects are used to construct the mytools left side bar.
+   *
+   * @param {any[]} tools An array of tools
+   * @param {string} username The name of the user
+   * @returns {*} An array of objects that contains 3 properties: Array of tools, whether it's open or not, and the namespace
+   * @memberof MytoolsService
+   */
   sortNSContainers(tools: any[], username: string): any {
     const nsContainers = [];
     for (let i = 0; i < tools.length; i++) {
@@ -77,18 +80,14 @@ export class MytoolsService {
       }
     }
     /* Sort Containers/Tools in Each Namespace */
-    for (let j = 0; j < nsContainers.length; j++) {
-      nsContainers[j].containers.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        } else {
-          return 0;
-        }
+    nsContainers.forEach(nsContainer => {
+      nsContainer.containers.sort((a, b) => {
+        if (a.name < b.name) { return -1; }
+        if (a.name > b.name) { return 1; }
+        return 0;
       });
-    }
+    });
+
     /* Return Namespaces w/ Nested Containers */
     return this.sortNamespaces(nsContainers, username);
   }
