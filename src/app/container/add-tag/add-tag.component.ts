@@ -1,3 +1,4 @@
+import { ContainersService } from '../../shared/swagger';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
@@ -40,7 +41,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private paramFilesService: ParamfilesService) {
+    private containersService: ContainersService, private paramFilesService: ParamfilesService) {
   }
 
   ngOnInit() {
@@ -94,8 +95,10 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
       console.log(response);
       this.tool.tags = response;
-      this.paramFilesService.putFiles(this.tool.id, this.unsavedCWLTestParameterFilePaths, this.unsavedVersion.name, 'CWL').subscribe();
-      this.paramFilesService.putFiles(this.tool.id, this.unsavedWDLTestParameterFilePaths, this.unsavedVersion.name, 'WDL').subscribe();
+      const id = this.tool.id;
+      const tagName = this.unsavedVersion.name;
+      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, null, tagName, 'CWL').subscribe();
+      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, null, tagName, 'WDL').subscribe();
       this.containerService.setTool(this.tool);
     }, error => console.log(error));
   }

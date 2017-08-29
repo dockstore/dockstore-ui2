@@ -1,3 +1,5 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { Http, URLSearchParams, RequestMethod } from '@angular/http';
 import { AuthService } from 'ng2-ui-auth';
 import { Injectable } from '@angular/core';
@@ -13,45 +15,15 @@ export class ParamfilesService {
   // - get versions with test paramfiles
   // - get descriptors with test paramfiles for each version
 
-  constructor(private httpService: HttpService, private authService: AuthService, public http: Http) { }
+  constructor(private httpService: HttpService, private authService: AuthService, public http: Http,
+    private containersService: ContainersService, private workflowsService: WorkflowsService) { }
 
   getFiles(id: number, type: string, versionName?: string, descriptor?: string) {
-    let testParamFilesUrl = Dockstore.API_URI + '/' + type + '/' + id + '/testParameterFiles';
-    if (type === 'containers') {
-      if (versionName && descriptor) {
-        testParamFilesUrl += '?tag=' + versionName;
-        testParamFilesUrl += '&descriptorType=' + descriptor;
-      } else if (versionName) {
-        testParamFilesUrl += '?tag=' + versionName;
-      } else if (testParamFilesUrl) {
-        testParamFilesUrl += '?descriptor=' + descriptor;
-      }
-    } else if (type === 'workflows') {
-      if (versionName) {
-        testParamFilesUrl += '?version=' + versionName;
-      }
+    if (type === 'workflows') {
+      return this.workflowsService.getTestParameterFiles(id, versionName);
+    } else {
+      return this.containersService.getTestParameterFiles(id, versionName, descriptor);
     }
-    return this.httpService.getResponse(testParamFilesUrl);
-  }
-
-  putFiles(containerId: number, testParameterFiles: Array<string>, tagName: string, descriptorType: string) {
-    return this.requestFiles(containerId, testParameterFiles, tagName, descriptorType, RequestMethod.Put);
-  }
-
-  deleteFiles(containerId: number, testParameterFiles: Array<string>, tagName: string, descriptorType: string) {
-    return this.requestFiles(containerId, testParameterFiles, tagName, descriptorType, RequestMethod.Delete);
-  }
-
-  private requestFiles(containerId: number, testParameterFiles: Array<string>,
-    tagName: string, descriptorType: string, method: RequestMethod) {
-    const url = `${Dockstore.API_URI}/containers/${containerId}/testParameterFiles`;
-    const myParams = new URLSearchParams();
-    testParameterFiles.forEach((file) => {
-      myParams.append('testParameterPaths', file);
-    });
-    myParams.set('tagName', tagName);
-    myParams.set('descriptorType', descriptorType);
-    return this.httpService.request(url, myParams, method, this.authService.getToken());
   }
 
   // get descriptors which have test parameter files
