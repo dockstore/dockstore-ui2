@@ -1,3 +1,4 @@
+import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { Configuration } from './../shared/swagger/configuration';
 import { SearchService } from './../search/search.service';
@@ -174,6 +175,33 @@ export class DateStubService {
 }
 
 export class WorkflowsStubService {
+    getTestParameterFiles(workflowId: number, version?: string, extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
+        return Observable.of([]);
+    }
+
+    manualRegister(workflowRegistry: string, workflowPath: string, defaultWorkflowPath: string, workflowName: string,
+        descriptorType: string, extraHttpRequestParams?: any): Observable<Workflow> {
+        return Observable.of({});
+    }
+    refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
+        const refreshedWorkflow: Workflow = {
+            'descriptorType': 'cwl',
+            'gitUrl': 'refreshedGitUrl',
+            'mode': Workflow.ModeEnum.FULL,
+            'organization': 'refreshedOrganization',
+            'repository': 'refreshedRepository',
+            'workflow_path': 'refreshedWorkflowPath',
+            'workflowVersions': []
+        };
+        return Observable.of(refreshedWorkflow);
+    }
+}
+
+export class ContainersStubService {
+    getTestParameterFiles(containerId: number, tag?: string, descriptorType?: string, extraHttpRequestParams?: any):
+        Observable<Array<SourceFile>> {
+        return Observable.of([]);
+    }
 }
 
 export class VersionModalStubService {

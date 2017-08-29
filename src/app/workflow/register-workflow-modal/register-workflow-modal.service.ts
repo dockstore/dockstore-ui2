@@ -8,13 +8,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class RegisterWorkflowModalService {
-    workflowRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     friendlyRepositoryKeys = ['GitHub', 'Bitbucket', 'GitLab'];
     descriptorTypes = ['cwl', 'wdl'];
     sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
     workflows: any;
-    isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService,
@@ -27,11 +27,11 @@ export class RegisterWorkflowModalService {
     }
 
     clearWorkflowRegisterError() {
-        this.workflowRegisterError.next(null);
+        this.workflowRegisterError$.next(null);
     }
 
     setIsModalShown(isModalShown: boolean) {
-        this.isModalShown.next(isModalShown);
+        this.isModalShown$.next(isModalShown);
     }
 
     setWorkflowRegisterError(message: any, errorDetails) {
@@ -39,7 +39,7 @@ export class RegisterWorkflowModalService {
             message: message,
             errorDetails: errorDetails
         };
-        this.workflowRegisterError.next(error);
+        this.workflowRegisterError$.next(error);
         this.stateService.refreshing.next(false);
     }
 
@@ -64,14 +64,10 @@ export class RegisterWorkflowModalService {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
                     this.workflowService.setWorkflow(refreshResult);
-                    for (const version of refreshResult.workflowVersions){
-                        this.workflowsService.addTestParameterFiles(result.id, [testParameterFilePath], null, version.name)
-                        .subscribe();
                     this.stateService.setRefreshing(false);
                     this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
-                    }
-                });
+                }, error => this.stateService.setRefreshing(false));
             }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                 'workflow, please ensure that the workflow attributes are ' +
                 'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
