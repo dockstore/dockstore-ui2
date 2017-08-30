@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Configuration } from './../shared/swagger/configuration';
 import { UsersService } from '../shared/swagger';
 import { User } from './../shared/swagger/model/user';
@@ -11,7 +12,7 @@ import { Md5 } from 'ts-md5/dist/md5';
 @Injectable()
 export class UserService {
 
-  private userSource = new Subject<User>();
+  private userSource = new BehaviorSubject<User>(null);
 
   user$ = this.userSource.asObservable();
 

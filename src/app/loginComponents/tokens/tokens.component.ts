@@ -30,13 +30,14 @@ export class TokensComponent extends Logout implements OnInit {
     super(trackLoginService, logoutService, router);
   }
   ngOnInit() {
-    this.usersService.getUser()
-      .map(user => user.id, user => alert(user.id))
-      .flatMap(id => this.usersService.getUserTokens(id))
-      .subscribe(tokens => {
-        this.tokens = tokens;
-        this.setProperty();
+    this.userService.user$.subscribe(user => {
+      if (user) {
+        this.usersService.getUserTokens(user.id)
+        .subscribe(tokens => {
+          this.tokens = tokens;
+          this.setProperty();
       });
+    }});
   }
   // Delete a token and unlink service in the UI
   deleteToken(id: number) {
