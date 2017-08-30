@@ -8,6 +8,13 @@ import { Injectable } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
 import { HttpService } from '../shared/http.service';
 
+
+/**
+ * This service contains the token array observable that is returned from usersService.getUserTokens().
+ * No other component should be getting the tokens.  Every component should be getting the tokens from this service.
+ * @export
+ * @class TokenService
+ */
 @Injectable()
 export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);

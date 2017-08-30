@@ -11,7 +11,7 @@ import { Md5 } from 'ts-md5/dist/md5';
 
 
 /**
- * This class contains the user observable that is returned from the usersService.getUser() call.
+ * This service contains the user observable that is returned from usersService.getUser().
  * No other component should be getting the user.  Every component should be getting the user from this service.
  *
  * @export
