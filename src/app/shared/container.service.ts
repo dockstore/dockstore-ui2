@@ -10,7 +10,7 @@ export class ContainerService {
   private static readonly descriptorWdl = ' --descriptor wdl';
   private toolSource = new BehaviorSubject<any>(null);
   tool$ = this.toolSource.asObservable(); // This is the selected tool
-  tools = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
+  tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
@@ -19,12 +19,12 @@ export class ContainerService {
     this.toolSource.next(tool);
   }
   setTools(tools: any) {
-    this.tools.next(tools);
+    this.tools$.next(tools);
   }
 
   addToTools(tools: any, tool: any) {
     tools.push(tool);
-    this.tools.next(tools);
+    this.tools$.next(tools);
   }
 
   /**

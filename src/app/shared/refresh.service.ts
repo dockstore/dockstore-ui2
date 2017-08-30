@@ -23,7 +23,7 @@ export class RefreshService {
         private errorService: ErrorService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-        this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
         this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
     }

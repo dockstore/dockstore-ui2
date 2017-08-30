@@ -29,7 +29,7 @@ export class RegisterToolService {
         private containerService: ContainerService,
         private stateService: StateService) {
         this.containersService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
-        this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
     deregisterTool() {

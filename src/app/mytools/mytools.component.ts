@@ -44,7 +44,7 @@ export class MyToolsComponent implements OnInit {
         this.containerService.setTools(tools);
       });
     });
-    this.containerService.tools.subscribe(tools => {
+    this.containerService.tools$.subscribe(tools => {
       this.tools = tools;
       if (this.user) {
         const sortedContainers = this.mytoolsService.sortNSContainers(tools, this.user.username);
