@@ -1,3 +1,4 @@
+import { ContainersService } from './swagger';
 import { Injectable } from '@angular/core';
 
 import { Dockstore } from './dockstore.model';
@@ -11,11 +12,11 @@ export class ImageProviderService {
 
   private dockerRegistryList: Array<any>;
 
-  constructor(private httpService: HttpService) {
+  constructor(private containersService: ContainersService) {
     this.dockerRegistryList = JSON.parse(localStorage.getItem('dockerRegistryList'));
 
     if (!this.dockerRegistryList) {
-      this.getDockerRegistryList()
+      this.containersService.getDockerRegistries()
         .subscribe(registryList => {
           this.dockerRegistryList = registryList;
           localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
@@ -23,24 +24,18 @@ export class ImageProviderService {
     }
   }
 
-  private getDockerRegistryList() {
-    return this.httpService.getResponse(`${ Dockstore.API_URI }/containers/dockerRegistryList`);
-  }
-
   setUpImageProvider(tool) {
     const registry = this.getImageProvider(tool.registry);
-    tool.imgProvider = registry.friendlyName;
-    tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+    const friendlyRegistryName = registry ? registry.friendlyName : null;
+    tool.imgProvider = friendlyRegistryName;
+    if (registry) {
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+    }
     return tool;
   }
 
   private getImageProvider(imageProvider: string): any {
-    for (const registry of this.dockerRegistryList) {
-      if (imageProvider === registry.enum) {
-        return registry;
-      }
-    }
-    return null;
+    return this.dockerRegistryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
   }
 
   private getImageProviderUrl(path: string, registry) {
@@ -68,12 +63,11 @@ export class ImageProviderService {
   }
 
   checkPrivateOnlyRegistry(tool: any) {
-    for (const dockerReg of this.dockerRegistryList){
-      if (tool.registry === dockerReg.enum) {
-        return dockerReg.privateOnly === 'true';
-      }
+    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
+    if (dockerReg) {
+      return dockerReg.privateOnly === 'true';
+    } else {
+      return false;
     }
-    return false;
   }
-
 }

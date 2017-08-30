@@ -231,6 +231,42 @@ export class ContainersStubService {
         Observable<Array<SourceFile>> {
         return Observable.of([]);
     }
+    getDockerRegistries(extraHttpRequestParams?: any): Observable<Array<{ [key: string]: any; }>> {
+        return Observable.of([
+            {
+              'dockerPath': 'quay.io',
+              'customDockerPath': 'false',
+              'privateOnly': 'false',
+              'enum': 'QUAY_IO',
+              'friendlyName': 'Quay.io',
+              'url': 'https://quay.io/repository/'
+            },
+            {
+              'dockerPath': 'registry.hub.docker.com',
+              'customDockerPath': 'false',
+              'privateOnly': 'false',
+              'enum': 'DOCKER_HUB',
+              'friendlyName': 'Docker Hub',
+              'url': 'https://hub.docker.com/'
+            },
+            {
+              'dockerPath': 'registry.gitlab.com',
+              'customDockerPath': 'false',
+              'privateOnly': 'false',
+              'enum': 'GITLAB',
+              'friendlyName': 'GitLab',
+              'url': 'https://gitlab.com/'
+            },
+            {
+              'dockerPath': null,
+              'customDockerPath': 'true',
+              'privateOnly': 'true',
+              'enum': 'AMAZON_ECR',
+              'friendlyName': 'Amazon ECR',
+              'url': null
+            }
+          ]);
+    }
 }
 
 export class VersionModalStubService {
