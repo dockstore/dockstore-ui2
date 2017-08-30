@@ -1,3 +1,4 @@
+import { AuthService } from 'ng2-ui-auth';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Configuration } from './../shared/swagger/configuration';
 import { UsersService } from '../shared/swagger';
@@ -24,8 +25,8 @@ export class UserService {
 
   user$ = this.userSource.asObservable();
 
-  constructor(private httpService: HttpService, private usersService: UsersService, private configuration: Configuration) {
-    this.configuration.accessToken = this.httpService.getDockstoreToken();
+  constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration) {
+    this.configuration.accessToken = this.authService.getToken();
     this.usersService.getUser().subscribe((user: User) => this.setUser(user));
    }
 
@@ -40,7 +41,7 @@ export class UserService {
       if (defaultImg) {
         return defaultImg;
       } else {
-        return 'http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg';
+        return 'http://www.gravatar.com/avatar/?d=mm&s=500';
       }
     }
   }
