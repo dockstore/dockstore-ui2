@@ -1,3 +1,4 @@
+import { UsersService } from './../../shared/swagger/api/users.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
@@ -22,16 +23,16 @@ export class TokensComponent extends Logout implements OnInit {
 
   constructor(private dockstoreService: DockstoreService,
               private tokenService: TokenService,
-              private userService: UserService,
+              private userService: UserService, private usersService: UsersService,
               trackLoginService: TrackLoginService,
               logoutService: LogoutService,
               router: Router) {
     super(trackLoginService, logoutService, router);
   }
   ngOnInit() {
-    this.userService.getUser()
+    this.usersService.getUser()
       .map(user => user.id, user => alert(user.id))
-      .flatMap(id => this.userService.getTokens(id))
+      .flatMap(id => this.usersService.getUserTokens(id))
       .subscribe(tokens => {
         this.tokens = tokens;
         this.setProperty();

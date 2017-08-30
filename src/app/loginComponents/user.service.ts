@@ -1,3 +1,4 @@
+import { UsersService } from '../shared/swagger';
 import { User } from './../shared/swagger/model/user';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
@@ -13,35 +14,10 @@ export class UserService {
 
   user$ = this.userSource.asObservable();
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private usersService: UsersService) { }
 
   setUser(user) {
     this.userSource.next(user);
-  }
-
-  updateUser() {
-    const updateUserUrl = `${ Dockstore.API_URI }/users/user/updateUserMetadata`;
-    return this.httpService.getAuthResponse(updateUserUrl);
-  }
-
-  getUser() {
-    const getUserUrl = `${ Dockstore.API_URI }/users/user`;
-    return this.httpService.getAuthResponse(getUserUrl);
-  }
-
-  getTokens(userId: number) {
-    const getUserTokensUrl = `${ Dockstore.API_URI }/users/${ userId }/tokens`;
-    return this.httpService.getAuthResponse(getUserTokensUrl);
-  }
-
-  getUserTools(userId: number) {
-    const getUserToolsUrl = `${ Dockstore.API_URI }/users/${ userId }/containers`;
-    return this.httpService.getAuthResponse(getUserToolsUrl);
-  }
-
-  getUserWorkflowList(userId: number) {
-    const getUserWorkflowUrl = `${ Dockstore.API_URI }/users/${ userId }/workflows`;
-    return this.httpService.getAuthResponse(getUserWorkflowUrl);
   }
 
   gravatarUrl(email: string, defaultImg: string) {
@@ -58,7 +34,7 @@ export class UserService {
 
   getUserTokenStatusSet(userId) {
     let tokenSet;
-    this.getTokens(userId).subscribe(
+    this.usersService.getUserTokens(userId).subscribe(
       tokens => {
         const tokenStatusSet = {
           dockstore: false,

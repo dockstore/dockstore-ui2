@@ -1,3 +1,4 @@
+import { UsersService } from '../../shared/swagger';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
@@ -9,11 +10,11 @@ import { UserService } from '../user.service';
 export class OnboardingComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private usersService: UsersService) {
   }
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
-    this.userService.getUser().subscribe(
+    this.usersService.getUser().subscribe(
       user => {
         const tokenStatusSet =  this.userService.getUserTokenStatusSet(user.id);
         if (tokenStatusSet) {

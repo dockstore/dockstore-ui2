@@ -1,3 +1,4 @@
+import { UsersService } from './../shared/swagger/api/users.service';
 import { HttpService } from './../shared/http.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { Tool } from './../container/register-tool/tool';
@@ -24,7 +25,7 @@ export class MyToolsComponent implements OnInit {
   tool: any;
   private registerTool: Tool;
   constructor(private mytoolsService: MytoolsService, private configuration: Configuration, private httpService: HttpService,
-    private communicatorService: CommunicatorService,
+    private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService,
     private containerService: ContainerService,
     private refreshService: RefreshService,
@@ -37,9 +38,9 @@ export class MyToolsComponent implements OnInit {
       this.communicatorService.setTool(selectedTool);
       this.setIsFirstOpen();
     });
-    this.userService.getUser().subscribe(user => {
+    this.usersService.getUser().subscribe(user => {
       this.user = user;
-      this.userService.getUserTools(user.id).subscribe(tools => {
+      this.usersService.userContainers(user.id).subscribe(tools => {
         this.containerService.setTools(tools);
       });
     });
