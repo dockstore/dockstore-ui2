@@ -1,9 +1,9 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { DynamicPopover } from './dynamicPopover.model';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Dockstore } from './../../shared/dockstore.model';
-import { HttpService } from './../../shared/http.service';
 import { Injectable } from '@angular/core';
 
 
@@ -106,13 +106,13 @@ export class DagService {
         }
     ];
 
-    constructor(private httpService: HttpService) {
+    constructor(private workflowsService: WorkflowsService) {
     }
 
     getTooltipText(name: string, tool: string, type: string, docker: string, run: string) {
         this.setDynamicPopover(name, tool, type, docker, run);
         return `<div>
-          <div><b>Type:</b>` + this.dynamicPopover.type + `</div>` +
+          <div><b>Type: </b>` + this.dynamicPopover.type + `</div>` +
           this.getRunText(this.dynamicPopover.run) +
           this.getDockerText(this.dynamicPopover.link, this.dynamicPopover.docker) +
            `</div>`
@@ -146,18 +146,18 @@ export class DagService {
     getRunText(run: string) {
         const isHttp = this.isHttp(run);
         if (isHttp) {
-            return `<div><b>Run:</b> <a href='` + run + `'>` + run + `</a></div>`;
+            return `<div><b>Run: </b> <a href='` + run + `'>` + run + `</a></div>`;
         } else {
-            return `<div><b>Run:</b>` + run + `</div>`;
+            return `<div><b>Run: </b>` + run + `</div>`;
         }
     }
 
     getDockerText(link: string, docker: string) {
         const validLink = !this.isNA(docker);
         if (validLink) {
-            return `<div><b>Docker:</b> <a href='` + link + `'>` + docker + `</a></div>`;
+            return `<div><b>Docker: </b> <a href='` + link + `'>` + docker + `</a></div>`;
         } else {
-            return `<div><b>Docker:</b>` + docker + `</div>`;
+            return `<div><b>Docker: </b>` + docker + `</div>`;
         }
     }
 
@@ -184,18 +184,10 @@ export class DagService {
     setDagResults(results: any): void {
         this.currentDagResults.next(results);
     }
-    updateDagResults(workflowId, versionId) {
-        const url: string = Dockstore.API_URI + '/workflows/' + workflowId + '/dag/' + versionId;
-        this.httpService.getAuthResponse(url).subscribe(results => this.currentDagResults.next(results));
-    }
-    getDagResults(workflowId, versionId): Observable<any> {
-        const url: string = Dockstore.API_URI + '/workflows/' + workflowId + '/dag/' + versionId;
-        return this.httpService.getAuthResponse(url);
-    }
+
     getCurrentDAG(workflowId, versionId) {
-        if (workflowId != null && versionId != null) {
-            const url: string = Dockstore.API_URI + '/workflows/' + workflowId + '/dag/' + versionId;
-            return this.httpService.getAuthResponse(url);
+        if (workflowId && versionId) {
+            return this.workflowsService.getWorkflowDag(workflowId, versionId);
         } else {
             return null;
         }

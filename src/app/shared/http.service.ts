@@ -42,21 +42,9 @@ export class HttpService {
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 
-  postResponse(url: string, body, dockstoreToken?: string) {
-    return this.http.post(url, body, this.addOptions(this.getDockstoreToken()))
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
-  }
-
   putResponse(url: string, body, dockstoreToken?: string) {
     return this.http.put(url, body, this.addOptions(this.authService.getToken()))
       .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
-  }
-
-  deleteResponse(url: string, body, dockstoreToken?: string) {
-    return this.http.delete(url, new RequestOptions({headers: this.getHeader(dockstoreToken), body: body}))
-      .map((res: Response) => res.text())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 
@@ -67,18 +55,6 @@ export class HttpService {
   delete(url: string, dockstoreToken?: string) {
     return this.http.delete(url, this.addOptions(this.authService.getToken()))
       .map((res: Response) => res.text())
-      .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
-  }
-
-  request(url: string, myParams: URLSearchParams,  method: RequestMethod, dockstoreToken?: string) {
-    const options = new RequestOptions({
-      url: url,
-      headers: this.getHeader(this.authService.getToken()),
-      method: method,
-      params: myParams
-    });
-    return this.http.request(new Request(options))
-      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error || `Server error ${ url }`));
   }
 }

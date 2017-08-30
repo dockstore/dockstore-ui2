@@ -221,6 +221,9 @@ export class WorkflowsStubService {
     Observable<Array<SourceFile>> {
         return Observable.of([]);
     }
+    getWorkflowDag(workflowId: number, workflowVersionId: number, extraHttpRequestParams?: any): Observable<string> {
+        return Observable.of('someDAG');
+    }
 }
 
 export class ContainersStubService {

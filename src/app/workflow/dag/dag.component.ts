@@ -1,3 +1,5 @@
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Workflow } from './../../shared/swagger/model/workflow';
 declare var cytoscape: any;
 declare var window: any;
 import { Observable } from 'rxjs/Rx';
@@ -22,10 +24,10 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   private cy: any;
 
   public expanded: Boolean = false;
-  public selectVersion;
+  public selectVersion: WorkflowVersion;
   @ViewChild('cy') el: ElementRef;
   private style;
-  public workflow;
+  public workflow: Workflow;
   private tooltip: string;
   public missingTool;
   private refresh = false;

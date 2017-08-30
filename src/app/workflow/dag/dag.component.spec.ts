@@ -1,6 +1,8 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { HttpService } from '../../shared/http.service';
-import { DagStubService, HttpStubService, WorkflowStubService } from './../../test/service-stubs';
+import { DagStubService, HttpStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { DagService } from './dag.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 /* tslint:disable:no-unused-variable */
@@ -13,12 +15,13 @@ import { DagComponent } from './dag.component';
 describe('DagComponent', () => {
   let component: DagComponent;
   let fixture: ComponentFixture<DagComponent>;
-
+  // let de: DebugElement;
+  // let el: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DagComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ {provide: HttpService, useClass: HttpStubService },
+      providers: [ {provide: WorkflowsService, useClass: WorkflowsStubService },
         {provide: WorkflowService, useClass: WorkflowStubService}]
     })
     .compileComponents();
@@ -33,4 +36,24 @@ describe('DagComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // it('should be able to download', () => {
+  //   component.download();
+  //   component.selectVersion = {
+  //     reference: 'reference',
+  //     name: 'master',
+  //   };
+  //   component.workflow = {
+  //     'descriptorType': 'cwl',
+  //     'gitUrl': '',
+  //     'mode': Workflow.ModeEnum.FULL,
+  //     'organization': '',
+  //     'repository': 'l',
+  //     'workflow_path': ''
+  //   };
+  //   fixture.detectChanges();
+  //   de = fixture.debugElement.query(By.css('#exportLink'));
+  //   el = de.nativeElement;
+  //   expect(el.getAttribute('href')).toBe('l_master.png');
+  // });
 });

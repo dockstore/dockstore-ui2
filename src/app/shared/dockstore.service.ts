@@ -1,3 +1,5 @@
+import { WorkflowsService } from './swagger/api/workflows.service';
+import { ContainersService } from './swagger/api/containers.service';
 import {Inject, Injectable} from '@angular/core';
 import { RequestMethod, URLSearchParams} from '@angular/http';
 import { AuthService } from 'ng2-ui-auth';
@@ -8,7 +10,7 @@ import { HttpService } from './http.service';
 @Injectable()
 export class DockstoreService {
   constructor(private httpService: HttpService,
-              private authService: AuthService) {
+              private authService: AuthService, private containersService: ContainersService, private workflowsService: WorkflowsService) {
   }
 
   getValidVersions(versions) {
@@ -117,17 +119,11 @@ export class DockstoreService {
       return 'glyphicon-sort';
     }
   }
-  setContainerLabels(containerId: number, labels) {
-    const url = `${ Dockstore.API_URI }/containers/${ containerId }/labels`;
-    const myParams = new URLSearchParams();
-    myParams.set('labels', labels);
-    return this.httpService.request(url, myParams, RequestMethod.Put, this.authService.getToken());
+  setContainerLabels(containerId: number, labels: string) {
+    return this.containersService.updateLabels(containerId, labels);
   }
 
-  setWorkflowLabels(workflowId: number, labels) {
-    const url = `${ Dockstore.API_URI }/workflows/${ workflowId }/labels`;
-    const myParams = new URLSearchParams();
-    myParams.set('labels', labels);
-    return this.httpService.request(url, myParams, RequestMethod.Put, this.authService.getToken());
+  setWorkflowLabels(workflowId: number, labels: string) {
+    return this.workflowsService.updateLabels(workflowId, labels);
   }
 }
