@@ -1,3 +1,4 @@
+import { Configuration } from './../shared/swagger/configuration';
 import { UsersService } from '../shared/swagger';
 import { User } from './../shared/swagger/model/user';
 import { Injectable } from '@angular/core';
@@ -14,7 +15,10 @@ export class UserService {
 
   user$ = this.userSource.asObservable();
 
-  constructor(private httpService: HttpService, private usersService: UsersService) { }
+  constructor(private httpService: HttpService, private usersService: UsersService, private configuration: Configuration) {
+    this.configuration.accessToken = this.httpService.getDockstoreToken();
+    this.usersService.getUser().subscribe((user: User) => this.setUser(user));
+   }
 
   setUser(user) {
     this.userSource.next(user);
