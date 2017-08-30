@@ -1,3 +1,4 @@
+import { Token } from './../../shared/swagger/model/token';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +18,7 @@ import { LogoutService } from '../../shared/logout.service';
 })
 export class TokensComponent extends Logout implements OnInit {
   user;
-  tokens;
+  tokens = [];
   sortColumn: string;
   sortReverse: boolean;
 
@@ -30,14 +31,12 @@ export class TokensComponent extends Logout implements OnInit {
     super(trackLoginService, logoutService, router);
   }
   ngOnInit() {
-    this.userService.user$.subscribe(user => {
-      if (user) {
-        this.usersService.getUserTokens(user.id)
-        .subscribe(tokens => {
-          this.tokens = tokens;
-          this.setProperty();
-      });
-    }});
+    this.tokenService.tokens$.subscribe(tokens => {
+      this.tokens = tokens;
+      if (tokens) {
+        this.setProperty();
+      }
+    });
   }
   // Delete a token and unlink service in the UI
   deleteToken(id: number) {

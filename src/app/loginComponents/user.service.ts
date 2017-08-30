@@ -9,6 +9,14 @@ import { Dockstore } from '../shared/dockstore.model';
 import { HttpService } from '../shared/http.service';
 import { Md5 } from 'ts-md5/dist/md5';
 
+
+/**
+ * This class contains the user observable that is returned from the usersService.getUser() call.
+ * No other component should be getting the user.  Every component should be getting the user from this service.
+ *
+ * @export
+ * @class UserService
+ */
 @Injectable()
 export class UserService {
 
@@ -36,40 +44,4 @@ export class UserService {
       }
     }
   }
-
-  getUserTokenStatusSet(userId) {
-    let tokenSet;
-    this.usersService.getUserTokens(userId).subscribe(
-      tokens => {
-        const tokenStatusSet = {
-          dockstore: false,
-          github: false,
-          bitbucket: false,
-          quayio: false,
-          gitlab: false
-        };
-        for (let i = 0; i < tokens.length; i++) {
-          switch (tokens[i].tokenSource) {
-            case 'dockstore':
-              tokenStatusSet.dockstore = true;
-              break;
-            case 'github.com':
-              tokenStatusSet.github = true;
-              break;
-            case 'bitbucket.org':
-              tokenStatusSet.bitbucket = true;
-              break;
-            case 'quay.io':
-              tokenStatusSet.quayio = true;
-              break;
-            case 'gitlab.com':
-              tokenStatusSet.gitlab = true;
-              break;
-          }
-        }
-        tokenSet = tokenStatusSet;
-      });
-    return tokenSet;
-  }
-
 }

@@ -11,9 +11,7 @@ import { UserService } from '../../user.service';
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css']
 })
-export class AccountsInternalComponent implements OnInit, OnDestroy {
-
-  private subscription: ISubscription;
+export class AccountsInternalComponent implements OnInit {
   user;
   syncingWithGithub: boolean;
 
@@ -23,19 +21,20 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
   syncGitHub() {
     this.syncingWithGithub = true;
     this.usersService.updateUserMetadata().subscribe(user => {
-        this.user = user;
-        this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
-        this.syncingWithGithub = false;
+      this.user = user;
+      this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
+      this.syncingWithGithub = false;
     }
     );
   }
 
   private getUser() {
-    this.configuration.accessToken = this.authService.getToken();
-    this.subscription = this.usersService.getUser().subscribe(user => {
-        this.user = user;
+    this.userService.user$.subscribe(user => {
+      this.user = user;
+      if (user) {
         this.setProperty();
       }
+    }
     );
 
   }
@@ -44,9 +43,5 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getUser();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

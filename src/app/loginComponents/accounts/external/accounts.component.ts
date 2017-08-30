@@ -138,13 +138,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Set tokens and linked services
   private setTokens(tokens): void {
     this.tokens = tokens;
-    this.setAvailableTokens(tokens);
+    if (tokens) {
+      this.setAvailableTokens(tokens);
+    }
   }
 
   ngOnInit() {
-    this.tokensSubscription = this.getUserId()
-      .flatMap(id => this.usersService.getUserTokens(id))
-      .subscribe(tokens => this.setTokens(tokens));
+    this.tokenService.tokens$.subscribe(tokens => this.setTokens(tokens));
   }
 
   ngOnDestroy() {
