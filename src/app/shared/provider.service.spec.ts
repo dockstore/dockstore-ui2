@@ -1,9 +1,8 @@
-import { register } from 'ts-node/dist';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ProviderService } from './provider.service';
 import { TestBed, inject } from '@angular/core/testing';
 
-describe('AsdfService', () => {
+describe('ProviderService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [ProviderService]

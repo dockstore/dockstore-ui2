@@ -2,7 +2,7 @@ import { SearchService } from './search.service';
 import { register } from 'ts-node/dist';
 import { TestBed, inject } from '@angular/core/testing';
 
-describe('AsdfService', () => {
+describe('SearchService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [SearchService]
