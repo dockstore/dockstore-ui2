@@ -76,7 +76,7 @@
       "config": "./karma.conf.js"
     },
     "codeCoverage": {
-      "exclude": ["src/app/shared/swagger/**"]
+      "exclude": ["src/app/shared/swagger/**", "src/app/shared/angular2-highlight-js/lib/**"]
     }
   },
   "defaults": {
