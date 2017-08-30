@@ -9,7 +9,7 @@ import { TrackLoginService } from '../shared/track-login.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   constructor(private trackLoginService: TrackLoginService,
               private authService: LoginService,
@@ -30,9 +30,4 @@ export class LoginComponent implements OnInit {
   loginWithGitHub() {
     this.login(this.authService.authenticate('github'));
   }
-
-  ngOnInit() {
-
-  }
-
 }
