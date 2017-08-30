@@ -18,6 +18,6 @@ describe('ErrorService', () => {
             errorDetails: '[HTTP ' + 'status' + '] ' + 'statusText' + ': ' +
             '_body'
         };
-        expect(service.toolError.getValue()).toEqual(errorObj);
+        expect(service.toolError$.getValue()).toEqual(errorObj);
     }));
 });

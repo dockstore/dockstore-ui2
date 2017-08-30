@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ErrorService {
-    toolError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    toolError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     constructor() { }
     setToolRegisterError(error: any) {
         let errorObj = null;
@@ -14,6 +14,6 @@ export class ErrorService {
                 error._body
             };
         }
-        this.toolError.next(errorObj);
+        this.toolError$.next(errorObj);
     }
 }
