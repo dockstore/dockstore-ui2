@@ -1,3 +1,4 @@
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Workflow } from './../shared/swagger/model/workflow';
@@ -10,13 +11,20 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
     copyBtn$ = this.copyBtnSource.asObservable();
-    tool$ = Observable.of({});
+    tool$: BehaviorSubject<any> = new BehaviorSubject({});
+    tools$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     getDescriptors() {
         return null;
     }
     toolCopyBtnClick(copyBtn): void {
     }
     copyBtnSubscript(): void {
+    }
+    setTools(tools: DockstoreTool[]) {
+        this.tools$.next(tools);
+    }
+    setTool(tools: DockstoreTool) {
+        this.tool$.next(tools);
     }
 }
 
@@ -64,6 +72,10 @@ export class AuthStubService {
     }
 }
 
+export class ErrorStubService {
+
+}
+
 export class ConfigurationStub {
 
 }
@@ -81,6 +93,12 @@ export class UsersStubService {
     getStarredWorkflows() {
         return Observable.of([]);
     }
+    refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {
+        return Observable.of([]);
+    }
+    refreshWorkflows(userId: number, extraHttpRequestParams?: any): Observable<Array<Workflow>> {
+        return Observable.of([]);
+    }
 }
 
 export class HttpStubService {
@@ -90,13 +108,15 @@ export class HttpStubService {
 }
 
 export class WorkflowStubService {
-    workflows$ = Observable.of([]);
     nsWorkflows$ = Observable.of([]);
-    workflow$ = Observable.of({});
+    workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
+    workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
+        this.workflow$.next(thing);
     }
     setWorkflows(thing: any) {
+        this.workflows$.next(thing);
     }
     setNsWorkflows(thing: any) {
     }
@@ -267,6 +287,21 @@ export class ContainersStubService {
             }
           ]);
     }
+    refresh(containerId: number, extraHttpRequestParams?: any): Observable<DockstoreTool> {
+        const tool: DockstoreTool = {
+            default_cwl_path: 'refreshedDefaultCWLPath',
+            default_dockerfile_path: 'refreshedDefaultDockerfilePath',
+            default_wdl_path: 'refreshedDefaultWDLPath',
+            gitUrl: 'refreshedGitUrl',
+            mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
+            name: 'refreshedName',
+            namespace: 'refreshedNamespace',
+            private_access: false,
+            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            toolname: 'refreshedToolname'
+        };
+        return Observable.of(tool);
+    }
 }
 
 export class VersionModalStubService {
@@ -275,4 +310,5 @@ export class VersionModalStubService {
 
 export class StateStubService {
     publicPage$ = Observable.of(false);
+    refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 }
