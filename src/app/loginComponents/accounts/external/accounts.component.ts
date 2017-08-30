@@ -113,17 +113,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       .subscribe(() => this.unlinkToken(source));
   }
 
-  // Get user ID
-  private getUserId() {
-    this.configuration.accessToken = this.authService.getToken();
-    return this.usersService.getUser()
-      .map(user => {
-        this.userService.setUser(user);
-        this.userId = user.id;
-        return user.id;
-      });
-  }
-
   // Show linked services in the UI
   private setAvailableTokens(tokens) {
     for (const token of tokens) {

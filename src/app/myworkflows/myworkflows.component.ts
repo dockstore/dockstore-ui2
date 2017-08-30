@@ -1,22 +1,23 @@
+import { UserService } from './../loginComponents/user.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { HttpService } from './../shared/http.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { RefreshService } from './../shared/refresh.service';
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {DockstoreService} from '../shared/dockstore.service';
-import {ProviderService} from '../shared/provider.service';
-import {WorkflowService} from '../shared/workflow.service';
+import { DockstoreService } from '../shared/dockstore.service';
+import { ProviderService } from '../shared/provider.service';
+import { WorkflowService } from '../shared/workflow.service';
 
-import {MyWorkflowsService} from './myworkflows.service';
+import { MyWorkflowsService } from './myworkflows.service';
 
 @Component({
   selector: 'app-myworkflows',
   templateUrl: './myworkflows.component.html',
   styleUrls: ['./myworkflows.component.css'],
   providers: [MyWorkflowsService, ProviderService,
-              DockstoreService]
+    DockstoreService]
 })
 export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
@@ -25,10 +26,10 @@ export class MyWorkflowsComponent implements OnInit {
   user: any;
   workflows: any;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-              private httpService: HttpService, private usersService: UsersService,
-              private workflowService: WorkflowService,
-              private refreshService: RefreshService,
-              private registerWorkflowModalService: RegisterWorkflowModalService) {
+    private httpService: HttpService, private usersService: UsersService, private userService: UserService,
+    private workflowService: WorkflowService,
+    private refreshService: RefreshService,
+    private registerWorkflowModalService: RegisterWorkflowModalService) {
 
   }
 
@@ -41,11 +42,13 @@ export class MyWorkflowsComponent implements OnInit {
         this.setIsFirstOpen();
       }
     );
-    this.usersService.getUser().subscribe(user => {
-      this.user = user;
-      this.usersService.userWorkflows(user.id).subscribe(workflows => {
-        this.workflowService.setWorkflows(workflows);
-      });
+    this.userService.user$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.usersService.userWorkflows(user.id).subscribe(workflows => {
+          this.workflowService.setWorkflows(workflows);
+        });
+      }
     });
     this.workflowService.workflows$.subscribe(workflows => {
       this.workflows = workflows;

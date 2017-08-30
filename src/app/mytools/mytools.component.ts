@@ -29,7 +29,7 @@ export class MyToolsComponent implements OnInit {
     private userService: UserService,
     private containerService: ContainerService,
     private refreshService: RefreshService,
-    private registerToolService: RegisterToolService) {}
+    private registerToolService: RegisterToolService) { }
   ngOnInit() {
     this.configuration.accessToken = this.httpService.getDockstoreToken();
     this.containerService.setTool(null);
@@ -38,11 +38,13 @@ export class MyToolsComponent implements OnInit {
       this.communicatorService.setTool(selectedTool);
       this.setIsFirstOpen();
     });
-    this.usersService.getUser().subscribe(user => {
-      this.user = user;
-      this.usersService.userContainers(user.id).subscribe(tools => {
-        this.containerService.setTools(tools);
-      });
+    this.userService.user$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.usersService.userContainers(user.id).subscribe(tools => {
+          this.containerService.setTools(tools);
+        });
+      }
     });
     this.containerService.tools$.subscribe(tools => {
       this.tools = tools;
