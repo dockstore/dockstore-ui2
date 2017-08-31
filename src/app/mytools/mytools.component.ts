@@ -32,6 +32,7 @@ export class MyToolsComponent implements OnInit {
     private registerToolService: RegisterToolService) { }
   ngOnInit() {
     this.configuration.accessToken = this.httpService.getDockstoreToken();
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {
       this.tool = selectedTool;
