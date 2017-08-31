@@ -26,12 +26,16 @@ export class UserService {
   user$ = this.userSource.asObservable();
 
   constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration) {
-    this.configuration.accessToken = this.authService.getToken();
-    this.usersService.getUser().subscribe((user: User) => this.setUser(user));
+    this.updateUser();
    }
 
   setUser(user) {
     this.userSource.next(user);
+  }
+
+  updateUser() {
+    this.configuration.accessToken = this.authService.getToken();
+    this.usersService.getUser().subscribe((user: User) => this.setUser(user));
   }
 
   gravatarUrl(email: string, defaultImg: string) {

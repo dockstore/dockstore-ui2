@@ -1,6 +1,7 @@
+import { UserService } from './../loginComponents/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginService } from './login.service';
-import { TrackLoginStubService, LoginStubService } from './../test/service-stubs';
+import { LoginStubService, TrackLoginStubService, UserStubService } from './../test/service-stubs';
 import { TrackLoginService } from './../shared/track-login.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -17,7 +18,8 @@ describe('LoginComponent', () => {
       schemas: [ NO_ERRORS_SCHEMA ],
       imports: [RouterTestingModule],
       providers: [ {provide: TrackLoginService, useClass: TrackLoginStubService},
-        { provide: LoginService, useClass: LoginStubService}]
+        { provide: LoginService, useClass: LoginStubService},
+        { provide: UserService, useClass: UserStubService }]
     })
     .compileComponents();
   }));
