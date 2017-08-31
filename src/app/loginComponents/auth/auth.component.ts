@@ -62,9 +62,10 @@ export class AuthComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const prevPage = localStorage.getItem('page');
 
-    this.tokenSubscription = this.addToken().subscribe(token =>
-      this.router.navigate([`${ prevPage }`])
-    );
+    this.tokenSubscription = this.addToken().subscribe(token => {
+      this.tokenService.updateTokens();
+      this.router.navigate([`${ prevPage }`]);
+    });
   }
 
   ngOnDestroy() {

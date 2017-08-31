@@ -24,7 +24,7 @@ export class TokenService {
     userService.user$.subscribe(user => {
       this.user = user;
       if (user) {
-        this.usersService.getUserTokens(user.id).subscribe(token => this.setTokens(token));
+        this.updateTokens();
       }
     });
     this.tokens$.subscribe(tokens => this.tokens = tokens);
@@ -32,6 +32,10 @@ export class TokenService {
 
   setTokens(tokens: Token[]) {
     this.tokens$.next(tokens);
+  }
+
+  updateTokens() {
+    this.usersService.getUserTokens(this.user.id).subscribe(token => this.setTokens(token));
   }
 
   registerToken(token: string, provider: string) {
