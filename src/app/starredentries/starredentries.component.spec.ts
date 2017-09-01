@@ -38,4 +38,16 @@ describe('StarredEntriesComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+  it('should check isOwner', () => {
+    component.user = {
+      id: 5
+    };
+    expect(component.isOwner([{id: 5}, {id: 10}])).toBeTruthy();
+    expect(component.isOwner([{id: 6}, {id: 10}])).toBeFalsy();
+  });
+  it('should toggle stargazers', () => {
+    component.starGazersChange();
+    fixture.detectChanges();
+    expect(component.starGazersClicked).toBeTruthy();
+  });
 });

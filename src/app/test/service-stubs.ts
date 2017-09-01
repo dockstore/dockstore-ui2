@@ -1,3 +1,5 @@
+import { User } from './../shared/swagger/model/user';
+import { StarRequest } from './../shared/swagger/model/starRequest';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
@@ -200,6 +202,18 @@ export class WorkflowsStubService {
         return Observable.of([]);
     }
 
+    starEntry(workflowId: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
+        return Observable.of({});
+    }
+
+    unstarEntry(workflowId: number, extraHttpRequestParams?: any): Observable<{}> {
+        return Observable.of({});
+    }
+
+    getStarredUsers(workflowId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
+        return Observable.of([]);
+    }
+
     manualRegister(workflowRegistry: string, workflowPath: string, defaultWorkflowPath: string, workflowName: string,
         descriptorType: string, extraHttpRequestParams?: any): Observable<Workflow> {
         return Observable.of({});
@@ -251,6 +265,19 @@ export class ContainersStubService {
         Observable<Array<SourceFile>> {
         return Observable.of([]);
     }
+
+    starEntry(containerId: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
+        return Observable.of({});
+    }
+
+    unstarEntry(containerId: number, extraHttpRequestParams?: any): Observable<{}> {
+        return Observable.of({});
+    }
+
+    getStarredUsers(containerId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
+        return Observable.of([]);
+    }
+
     getDockerRegistries(extraHttpRequestParams?: any): Observable<Array<{ [key: string]: any; }>> {
         return Observable.of([
             {
