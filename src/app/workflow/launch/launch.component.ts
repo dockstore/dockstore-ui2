@@ -33,5 +33,6 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
     this.cli = this.launchService.getCliString(workflowPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
+    console.log(this.consonance);
   }
 }

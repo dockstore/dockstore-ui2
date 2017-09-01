@@ -9,17 +9,11 @@ export class LaunchService {
     if (currentDescriptor === 'wdl') {
       descriptor = LaunchService.descriptorWdl;
     }
-    return '$ dockstore workflow convert entry2json --entry ' + `${ workflowPath }:${ versionName } > Dockstore.json
+    return '$ dockstore workflow convert entry2json --entry' + descriptor + ` ${ workflowPath }:${ versionName } > Dockstore.json
             \n$ vim Dockstore.json`;
   }
 
   getCliString(workflowPath: string, versionName: string, currentDescriptor: string) {
-    let descriptor = '';
-
-    if (currentDescriptor === 'wdl') {
-      descriptor = LaunchService.descriptorWdl;
-    }
-
     return `$ dockstore workflow launch --entry ${ workflowPath }:${ versionName } --json Dockstore.json`;
   }
 
