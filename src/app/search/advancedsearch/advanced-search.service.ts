@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class AdvancedSearchService {
-  private initAdvancedSearch = {
+  private readonly initAdvancedSearch = {
     ANDSplitFilter: '',
     ANDNoSplitFilter: '',
     ORFilter: '',
@@ -26,14 +26,6 @@ export class AdvancedSearchService {
   }
 
   clear(): void {
-    this.initAdvancedSearch = {
-      ANDSplitFilter: '',
-      ANDNoSplitFilter: '',
-      ORFilter: '',
-      NOTFilter: '',
-      searchMode: 'files',
-      toAdvanceSearch: false
-    };
     this.advancedSearch$.next(this.initAdvancedSearch);
   }
 }
