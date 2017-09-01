@@ -1,4 +1,3 @@
-import { LoginApi } from './login.api';
 import { LoginService } from './login.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { UsersStubService, ConfigurationStub } from './../test/service-stubs';
@@ -11,8 +10,7 @@ describe('LoginService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [LoginService,
-                { provide: AuthService, useClass: AuthStubService},
-                { provide: LoginApi, useClass: LoginApi}
+                { provide: AuthService, useClass: AuthStubService}
             ],
         });
     });
@@ -21,6 +19,8 @@ describe('LoginService', () => {
         expect(service).toBeTruthy();
     }));
     it('should be able to authenticate', inject([LoginService], (service: LoginService) => {
-        expect(service.authenticate('github')).toBeTruthy();
+        service.authenticate('github').subscribe(user => {
+            expect(user).toEqual({});
+        });
     }));
 });

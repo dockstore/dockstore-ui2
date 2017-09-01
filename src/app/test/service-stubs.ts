@@ -72,6 +72,9 @@ export class AuthStubService {
     getToken() {
         return 'asdf';
     }
+    authenticate() {
+        return Observable.of({});
+    }
 }
 
 export class ErrorStubService {

@@ -31,7 +31,6 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { FooterComponent } from './footer/footer.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
-import { LoginApi } from './login/login.api';
 
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -121,7 +120,6 @@ import { SearchModule } from './search/search.module';
   ],
   providers: [
     AuthService,
-    LoginApi,
     LoginService,
     LogoutService,
     DockstoreService,
