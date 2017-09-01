@@ -195,8 +195,8 @@ export class WorkflowComponent extends Entry {
     }
   }
   setWorkflowLabels(): any {
-    return this.dockstoreService.setWorkflowLabels(this.workflow.id, this.workflowEditData.labels).
-      subscribe(workflow => {
+    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels)
+      .subscribe(workflow => {
         this.workflow.labels = workflow.labels;
         this.workflowService.setWorkflow(workflow);
         this.labelsEditMode = false;

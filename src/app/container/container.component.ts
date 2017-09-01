@@ -202,7 +202,7 @@ export class ContainerComponent extends Entry {
     }
   }
   setContainerLabels(): any {
-    return this.dockstoreService.setContainerLabels(this.tool.id, this.containerEditData.labels).
+    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels).
       subscribe(
       tool => {
         this.tool.labels = tool.labels;
