@@ -1,5 +1,4 @@
 import { DateService } from './date.service';
-import * as path from 'path';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ContainersStubService } from '../test/service-stubs';
 import { ContainersService } from './swagger/api/containers.service';
