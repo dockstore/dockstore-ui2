@@ -1,10 +1,10 @@
+import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { WorkflowService } from '../../shared/workflow.service';
-import { DescriptorsService } from '../../container/descriptors/descriptors.service';
 
 import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
@@ -19,7 +19,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   content: string;
   contentHighlighted: boolean;
   constructor(private highlightJsService: HighlightJsService,
-              private descriptorsService: DescriptorsService,
+              private WorkflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
               private workflowService: WorkflowService,
               private elementRef: ElementRef) {
@@ -30,7 +30,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflows');
+    return this.WorkflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflows');
   }
 
   reactToFile(): void {

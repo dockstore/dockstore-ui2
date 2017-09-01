@@ -1,7 +1,7 @@
+import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { FileService } from './../../shared/file.service';
 import { DescriptorsStubService, FileStubService, WorkflowStubService } from './../../test/service-stubs';
-import { DescriptorsService } from '../../container/descriptors/descriptors.service';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -16,7 +16,7 @@ describe('DescriptorsWorkflowComponent', () => {
       declarations: [ DescriptorsWorkflowComponent ],
       imports: [ HighlightJsModule],
       providers: [ HighlightJsService, {
-        provide: DescriptorsService, useClass: DescriptorsStubService
+        provide: WorkflowDescriptorService, useClass: DescriptorsStubService
       }, {provide: FileService, useClass: FileStubService}, {
         provide: WorkflowService, useClass: WorkflowStubService
       }],
