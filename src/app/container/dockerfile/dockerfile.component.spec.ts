@@ -1,7 +1,7 @@
+import { ContainersService } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
-import { FileStubService, ContainerStubService } from './../../test/service-stubs';
+import { FileStubService, ContainerStubService, ContainersStubService } from './../../test/service-stubs';
 import { FileService } from './../../shared/file.service';
-import { DockerfileService } from './dockerfile.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DockerfileComponent } from './dockerfile.component';
@@ -16,9 +16,10 @@ describe('DockerfileComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DockerfileComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [HighlightJsService, { provide: DockerfileService, useClass: DockerFileStubService },
+      providers: [HighlightJsService,
         { provide: FileService, useClass: FileStubService },
-        { provide: ContainerService, useClass: ContainerStubService }
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: ContainersService, useClass: ContainersStubService}
       ]
     })
     .compileComponents();

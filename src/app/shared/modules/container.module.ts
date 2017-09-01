@@ -28,7 +28,6 @@ import { ContainerService } from '../container.service';
 import { DateService } from '../date.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
-import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { FilesContainerComponent } from '../../container/files/files.component';
 import { FileService } from '../file.service';
 import { HeaderModule } from './header.module';
@@ -92,7 +91,6 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     DateService,
     FileService,
     ToolLaunchService,
-    DockerfileService,
     ParamfilesService,
     RefreshService,
     RegisterToolService,

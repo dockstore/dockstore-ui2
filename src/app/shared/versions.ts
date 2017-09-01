@@ -12,7 +12,7 @@ export abstract class Versions implements OnInit {
 
   abstract setNoOrderCols(): Array<number>;
 
-  constructor(private dockstoreService: DockstoreService,
+  constructor(protected dockstoreService: DockstoreService,
               private dateService: DateService) {
     this.sortColumn = 'name';
     this.sortReverse = false;

@@ -1,3 +1,4 @@
+import { updatedWorkflow } from './mocked-objects';
 import { User } from './../shared/swagger/model/user';
 import { StarRequest } from './../shared/swagger/model/starRequest';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
@@ -234,15 +235,6 @@ export class WorkflowsStubService {
         return Observable.of(refreshedWorkflow);
     }
     updateWorkflow(workflowId: number, body: Workflow, extraHttpRequestParams?: any): Observable<Workflow> {
-        const updatedWorkflow: Workflow = {
-            'descriptorType': 'cwl',
-            'gitUrl': 'updatedGitUrl',
-            'mode': Workflow.ModeEnum.FULL,
-            'organization': 'updatedOrganization',
-            'repository': 'updatedRepository',
-            'workflow_path': 'updatedWorkflowPath',
-            'workflowVersions': []
-        };
         return Observable.of(updatedWorkflow);
     }
     updateWorkflowVersion(workflowId: number, body: Array<WorkflowVersion>, extraHttpRequestParams?: any):

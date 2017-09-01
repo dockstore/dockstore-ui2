@@ -18,6 +18,15 @@ export class DockstoreService {
     }
   }
 
+  getVerifiedSource(name: string, verifiedSource: any) {
+    for (const source of verifiedSource) {
+      if (source.version === name) {
+        return source.verifiedSource;
+      }
+    }
+    return '';
+  }
+
   getVerifiedSources(toolRef) {
     const sources = [];
     if (toolRef !== null) {

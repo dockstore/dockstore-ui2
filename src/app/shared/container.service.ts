@@ -1,22 +1,18 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
-
-import { Dockstore } from './dockstore.model';
-import { DockstoreService } from './dockstore.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
-  private toolSource = new BehaviorSubject<any>(null);
-  tool$ = this.toolSource.asObservable(); // This is the selected tool
+  tool$ = new BehaviorSubject<any>(null); // This is the selected tool
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
-  constructor(private dockstoreService: DockstoreService) { }
+  constructor() { }
   setTool(tool: any) {
-    this.toolSource.next(tool);
+    this.tool$.next(tool);
   }
   setTools(tools: any) {
     this.tools$.next(tools);

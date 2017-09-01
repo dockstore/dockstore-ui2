@@ -12,7 +12,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
-import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
@@ -84,7 +83,6 @@ import { RefreshService } from './../refresh.service';
     FileService,
     WorkflowLaunchService,
     ErrorService,
-    DockerfileService,
     ParamfilesService,
     WorkflowService,
     WorkflowDescriptorService,

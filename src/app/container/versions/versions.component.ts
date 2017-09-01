@@ -48,11 +48,6 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   getVerifiedSource(name: string) {
-    for (const source of this.verifiedSource) {
-      if (source.version === name) {
-        return source.verifiedSource;
-      }
-    }
-    return '';
+    this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 }
