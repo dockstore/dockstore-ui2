@@ -33,7 +33,7 @@ import { FilesContainerComponent } from '../../container/files/files.component';
 import { FileService } from '../file.service';
 import { HeaderModule } from './header.module';
 import { LaunchComponent } from '../../container/launch/launch.component';
-import { LaunchService } from '../../container/launch/launch.service';
+import { ToolLaunchService } from '../../container/launch/tool-launch.service';
 import { ListContainersModule } from './list-containers.module';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { OrderByModule } from '../../shared/modules/orderby.module';
@@ -91,7 +91,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ErrorService,
     DateService,
     FileService,
-    LaunchService,
+    ToolLaunchService,
     DockerfileService,
     ParamfilesService,
     RefreshService,

@@ -1,6 +1,6 @@
 import { ContainerStubService } from './../../test/service-stubs';
 import { ContainerService } from './../../shared/container.service';
-import { LaunchService } from './launch.service';
+import { WorkflowLaunchService } from './workflow-launch.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LaunchWorkflowComponent } from './launch.component';
@@ -13,7 +13,7 @@ describe('LaunchWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ LaunchWorkflowComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ LaunchService, {provide: ContainerService, useClass: ContainerStubService}]
+      providers: [ WorkflowLaunchService, {provide: ContainerService, useClass: ContainerStubService}]
     })
     .compileComponents();
   }));

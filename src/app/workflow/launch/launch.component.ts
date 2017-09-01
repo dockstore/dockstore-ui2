@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
-import { LaunchService } from '../launch/launch.service';
+import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ContainerService } from '../../shared/container.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
 
   descriptors: Array<any>;
 
-  constructor(private launchService: LaunchService,
+  constructor(private launchService: WorkflowLaunchService,
               private containerService: ContainerService) {
     super();
   }

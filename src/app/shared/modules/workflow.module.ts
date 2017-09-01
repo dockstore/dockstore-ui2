@@ -23,7 +23,7 @@ import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descrip
 import { WorkflowDescriptorService } from '../../workflow/descriptors/workflow-descriptor.service';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
-import { LaunchService } from '../../workflow/launch/launch.service';
+import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
 import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
@@ -82,7 +82,7 @@ import { RefreshService } from './../refresh.service';
     HighlightJsService,
     DateService,
     FileService,
-    LaunchService,
+    WorkflowLaunchService,
     ErrorService,
     DockerfileService,
     ParamfilesService,
