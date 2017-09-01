@@ -1,3 +1,5 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { ContainersService } from '../../shared/swagger';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -14,7 +16,7 @@ export class DescriptorsService {
     ['wdl', 'DOCKSTORE_WDL']
   ]);
 
-  constructor(private httpService: HttpService) { }
+  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) { }
 
   getFiles(id: number, versionName: string, descriptor: string, type: string) {
     let observable;
@@ -24,14 +26,12 @@ export class DescriptorsService {
     } else if (descriptor === 'wdl') {
       observable = this.getWdlFiles(id, versionName);
     }
-
     return observable.map(filesArray => {
       const files = [];
       files.push(filesArray[0]);
       for (const file of filesArray[1]) {
         files.push(file);
       }
-
       return files;
     });
   }
@@ -51,22 +51,34 @@ export class DescriptorsService {
   }
 
   private getCwl(id: number, versionName: string) {
-    const cwlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/cwl?tag=${ versionName }`;
-    return this.httpService.getResponse(cwlURL);
+    if (this.type === 'workflows') {
+      return this.workflowsService.cwl(id, versionName);
+    } else {
+      return this.containersService.cwl(id, versionName);
+    }
   }
 
   private getSecondaryCwl(id: number, versionName: string) {
-    const sec_cwlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/secondaryCwl?tag=${ versionName }`;
-    return this.httpService.getResponse(sec_cwlURL);
+    if (this.type === 'workflows') {
+      return this.workflowsService.secondaryCwl(id, versionName);
+    } else {
+      return this.containersService.secondaryCwl(id, versionName);
+    }
   }
 
   private getWdl(id: number, versionName: string) {
-    const wdlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/wdl?tag=${ versionName }`;
-    return this.httpService.getResponse(wdlURL);
+    if (this.type === 'workflows') {
+      return this.workflowsService.wdl(id, versionName);
+    } else {
+      return this.containersService.wdl(id, versionName);
+    }
   }
 
   private getSecondaryWdl(id: number, versionName: string) {
-    const sec_wdlURL = `${ Dockstore.API_URI }/${ this.type }/${ id }/secondaryWdl?tag=${ versionName }`;
-    return this.httpService.getResponse(sec_wdlURL);
+    if (this.type === 'workflows') {
+      return this.workflowsService.secondaryWdl(id, versionName);
+    } else {
+      return this.containersService.secondaryWdl(id, versionName);
+    }
   }
 }
