@@ -134,10 +134,15 @@ export class WorkflowStubService {
 }
 
 export class RefreshStubService {
-
+    refreshAllWorkflows() {}
 }
 
 export class RegisterWorkflowModalStubService {
+    setIsModalShown() {
+
+    }
+    setWorkflowRepository(repository) {
+    }
 }
 
 export class PageNumberStubService {

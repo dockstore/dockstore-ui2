@@ -78,14 +78,12 @@ export class MyWorkflowsComponent implements OnInit {
     }
   }
   containSelectedWorkflow(orgObj) {
-    let containWorkflow = false;
-    for (const workflow of orgObj.workflows) {
-      if (workflow.id === this.workflow.id) {
-        containWorkflow = true;
-        break;
-      }
+    const workflows: Array<any> = orgObj.workflows;
+    if (workflows.find(workflow => workflow.id === this.workflow.id)) {
+      return true;
+    } else {
+      return false;
     }
-    return containWorkflow;
   }
   selectWorkflow(workflow) {
     this.workflow = workflow;
