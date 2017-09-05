@@ -1,3 +1,5 @@
+import { sampleTool2, sampleTool3 } from './../test/mocked-objects';
+import { sampleTool1 } from '../test/mocked-objects';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { inject, TestBed } from '@angular/core/testing';
 
@@ -14,32 +16,57 @@ describe('ContainerService', () => {
         expect(service).toBeTruthy();
     }));
     it('should set observables', inject([ContainerService], (service: ContainerService) => {
-        const tool: DockstoreTool = {
-            default_cwl_path: 'sampleDefaultCWLPath',
-            default_dockerfile_path: 'sampleDefaultDockerfilePath',
-            default_wdl_path: 'sampleDefaultWDLPath',
-            gitUrl: 'sampleGitUrl',
-            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
-            name: 'sampleName',
-            namespace: 'sampleNamespace',
-            private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
-            toolname: 'sampleToolname'
-        };
-        const tool1: DockstoreTool = {
-            default_cwl_path: 'sampleDefaultCWLPath',
-            default_dockerfile_path: 'sampleDefaultDockerfilePath',
-            default_wdl_path: 'sampleDefaultWDLPath',
-            gitUrl: 'sampleGitUrl',
-            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
-            name: 'sampleName',
-            namespace: 'sampleNamespace',
-            private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
-            toolname: 'sampleToolname'
-        };
+        const tool: DockstoreTool = sampleTool1;
+        const tool1: DockstoreTool = sampleTool2;
+
         service.setTool(tool);
+        service.setNsContainers('2');
+        service.setCopyBtn('1');
         expect(service.tool$.getValue()).not.toBe(tool1);
         expect(service.tool$.getValue()).toEqual(tool);
+        service.copyBtn$.subscribe(value => expect(value).toEqual('1'));
+        service.nsContainers.subscribe(value => expect(value).toEqual('2'));
+    }));
+
+    it('should replace tool', inject([ContainerService], (service: ContainerService) => {
+        const tools: DockstoreTool[] = [sampleTool1, sampleTool2, sampleTool3];
+        const newSampleTool1: DockstoreTool = {
+            id: 1,
+            default_cwl_path: 'sampleDefaultCWLPath',
+            default_dockerfile_path: 'sampleDefaultDockerfilePath',
+            default_wdl_path: 'sampleDefaultWDLPath',
+            gitUrl: 'sampleGitUrl',
+            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+            name: 'sampleName',
+            namespace: 'sampleNamespace',
+            private_access: false,
+            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            toolname: 'sampleToolname'
+        };
+        service.replaceTool(tools, newSampleTool1);
+        expect(service.tools$.getValue()).toEqual([newSampleTool1, sampleTool2, sampleTool3]);
+    }));
+
+    it('should add to tools', inject([ContainerService], (service: ContainerService) => {
+        const tools: DockstoreTool[] = [sampleTool1, sampleTool2];
+        service.setTools(tools);
+        service.addToTools(tools, sampleTool3);
+        expect(service.tools$.getValue()).toEqual([sampleTool1, sampleTool2, sampleTool3]);
+    }));
+
+    it('should get build mode', inject([ContainerService], (service: ContainerService) => {
+        expect(service.getBuildMode('AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS')).toEqual('Fully-Automated');
+        expect(service.getBuildMode('AUTO_DETECT_QUAY_TAGS_WITH_MIXED')).toEqual('Partially-Automated');
+        expect(service.getBuildMode('MANUAL_IMAGE_PATH')).toEqual('Manual');
+        expect(service.getBuildMode('mmmrrrggglll')).toEqual('Unknown');
+    }));
+
+    it('should get build mode tooltip', inject([ContainerService], (service: ContainerService) => {
+        expect(service.getBuildModeTooltip('AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS'))
+            .toEqual('Fully-Automated: All versions are automated builds');
+        expect(service.getBuildModeTooltip('AUTO_DETECT_QUAY_TAGS_WITH_MIXED'))
+            .toEqual('Partially-Automated: At least one version is an automated build');
+        expect(service.getBuildModeTooltip('MANUAL_IMAGE_PATH')).toEqual('Manual: No versions are automated builds');
+        expect(service.getBuildModeTooltip('mmmrrrggglll')).toEqual('Unknown: Build information not known');
     }));
 });

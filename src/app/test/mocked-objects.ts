@@ -1,3 +1,4 @@
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { Workflow } from './../shared/swagger/model/workflow';
 export const updatedWorkflow: Workflow = {
     'descriptorType': 'cwl',
@@ -40,4 +41,45 @@ export const sampleWorkflow3: Workflow = {
     'repository': 'sampleRepository',
     'workflow_path': 'sampleWorkflowPath',
     'workflowVersions': []
+};
+
+export const sampleTool1: DockstoreTool = {
+    id: 1,
+    default_cwl_path: 'sampleDefaultCWLPath',
+    default_dockerfile_path: 'sampleDefaultDockerfilePath',
+    default_wdl_path: 'sampleDefaultWDLPath',
+    gitUrl: 'sampleGitUrl',
+    mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+    name: 'sampleName',
+    namespace: 'sampleNamespace',
+    private_access: false,
+    registry: DockstoreTool.RegistryEnum.QUAYIO,
+    toolname: 'sampleToolname'
+};
+export const sampleTool2: DockstoreTool = {
+    id: 2,
+    default_cwl_path: 'sampleDefaultCWLPath',
+    default_dockerfile_path: 'sampleDefaultDockerfilePath',
+    default_wdl_path: 'sampleDefaultWDLPath',
+    gitUrl: 'sampleGitUrl',
+    mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+    name: 'sampleName',
+    namespace: 'sampleNamespace',
+    private_access: false,
+    registry: DockstoreTool.RegistryEnum.QUAYIO,
+    toolname: 'sampleToolname'
+};
+
+export const sampleTool3: DockstoreTool = {
+    id: 3,
+    default_cwl_path: 'sampleDefaultCWLPath',
+    default_dockerfile_path: 'sampleDefaultDockerfilePath',
+    default_wdl_path: 'sampleDefaultWDLPath',
+    gitUrl: 'sampleGitUrl',
+    mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+    name: 'sampleName',
+    namespace: 'sampleNamespace',
+    private_access: false,
+    registry: DockstoreTool.RegistryEnum.QUAYIO,
+    toolname: 'sampleToolname'
 };
