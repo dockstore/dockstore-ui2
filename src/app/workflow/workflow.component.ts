@@ -1,10 +1,10 @@
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { ErrorService } from './../container/error.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Workflow } from './../shared/swagger/model/workflow';
 import * as WorkflowMode from './../shared/swagger/model/workflow';
-import { PublishRequest } from './../shared/models/PublishRequest';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
 import { Component } from '@angular/core';
@@ -137,8 +137,9 @@ export class WorkflowComponent extends Entry {
     if (this.publishDisable()) {
       return;
     } else {
-      const request: PublishRequest = new PublishRequest();
-      request.publish = this.published;
+      const request: PublishRequest = {
+        publish: this.published
+      };
       this.workflowsService.publish(this.workflow.id, request).subscribe(
         response => this.workflow.is_published = response.is_published, err => this.published = !this.published);
     }
