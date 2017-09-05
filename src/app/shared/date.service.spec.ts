@@ -16,7 +16,9 @@ describe('DateService', () => {
         expect(service).toBeTruthy();
     }));
     it('should be getDateTimeMessage', inject([DateService], (service: DateService) => {
-        expect(service.getDateTimeMessage(1504214211322)).toEqual('Aug. 31 2017 at 17:16:51');
+        const date: String = service.getDateTimeMessage(1504214211322);
+        const result = (date === 'Aug. 31 2017 at 17:16:51' || date === 'Aug. 31 2017 at 17:16:51');
+        expect(result).toBe(true);
     }));
     it('should be getAgoMessage', inject([DateService], (service: DateService) => {
         expect(service.getAgoMessage(null)).toEqual('n/a');

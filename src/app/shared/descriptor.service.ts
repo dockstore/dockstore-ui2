@@ -1,3 +1,4 @@
+import { SourceFile } from './swagger/model/sourceFile';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
@@ -41,18 +42,28 @@ export abstract class DescriptorService {
             this.getSecondaryWdl(id, versionName)
         );
     }
+
+
+    /**
+     * Gets the descriptor types (cwl and or wdl) that the version has a sourcefile of
+     *
+     * @param {any} versions all version of the workflow/tool (currently not used be left in here just in case)
+     * @param {any} version the current selected version of the workflow or tool
+     * @returns an array that may contain 'cwl' or 'wdl'
+     * @memberof DescriptorService
+     */
     getDescriptors(versions, version) {
         if (version) {
-            const typesAvailable = new Array();
-            for (const file of version.sourceFiles) {
-                const type = file.type;
-                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
-                    typesAvailable.push('cwl');
-                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes('wdl')) {
-                    typesAvailable.push('wdl');
+            const descriptorTypes = new Array();
+            const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
+            unique.forEach(element => {
+                if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
+                    descriptorTypes.push('cwl');
+                } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
+                    descriptorTypes.push('wdl');
                 }
-            }
-            return typesAvailable;
+            });
+            return descriptorTypes;
         }
     }
 }
