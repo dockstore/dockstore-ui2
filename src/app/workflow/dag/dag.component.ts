@@ -31,7 +31,9 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   private tooltip: string;
   public missingTool;
   private refresh = false;
-
+  setDagResult(dagResult: any) {
+    this.dagResult = dagResult;
+  }
   refreshDocument() {
     const self = this;
     if (this.dagResult) {
@@ -165,9 +167,11 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   download() {
-    const pngDAG = this.cy.png({ full: true, scale: 2 });
-    const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
-    $('#exportLink').attr('href', pngDAG).attr('download', name);
+    if (this.cy) {
+      const pngDAG = this.cy.png({ full: true, scale: 2 });
+      const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
+      $('#exportLink').attr('href', pngDAG).attr('download', name);
+    }
   }
   ngAfterViewChecked() {
     if (this.refresh) {
@@ -185,7 +189,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
       this.selectVersion = this.defaultVersion;
       this.getDag(this.defaultVersion.id);
     } else {
-      this.dagResult = null;
+      this.setDagResult(null);
       this.selectVersion = null;
     }
   }
@@ -199,7 +203,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   handleDagResponse(result: any) {
-    this.dagResult = result;
+    this.setDagResult(result);
     this.refresh = true;
     this.updateMissingTool();
   }
