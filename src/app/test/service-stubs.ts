@@ -131,6 +131,7 @@ export class WorkflowStubService {
     getTestJson() {
         return Observable.of({});
     }
+    replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) {}
 }
 
 export class RefreshStubService {
