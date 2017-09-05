@@ -19,18 +19,18 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   content: string;
   contentHighlighted: boolean;
   constructor(private highlightJsService: HighlightJsService,
-              private WorkflowDescriptorService: WorkflowDescriptorService,
+              private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
               private workflowService: WorkflowService,
               private elementRef: ElementRef) {
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.workflowService.getDescriptors(this.versions, this.currentVersion);
+    return this.workflowDescriptorService.getDescriptors(this.versions, this.currentVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.WorkflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflows');
+    return this.workflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflows');
   }
 
   reactToFile(): void {

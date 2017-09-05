@@ -1,3 +1,4 @@
+import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
 import { Component, Input } from '@angular/core';
 
 import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
@@ -22,11 +23,11 @@ export class LaunchComponent extends DescriptorSelector {
   descriptors: Array<any>;
 
   constructor(private launchService: ToolLaunchService,
-              private containerService: ContainerService) {
+              private toolDescriptorService: ToolDescriptorService) {
     super();
   }
   getDescriptors(currentVersion): any {
-    return this.containerService.getDescriptors(this.versions, this.default);
+    return this.toolDescriptorService.getDescriptors(this.versions, this.default);
   }
 
   reactToDescriptor(): void {

@@ -1,4 +1,6 @@
-import { ContainerStubService } from './../../test/service-stubs';
+import { DescriptorService } from '../../shared/descriptor.service';
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
+import { ContainerStubService, DescriptorsStubService } from './../../test/service-stubs';
 import { ContainerService } from './../../shared/container.service';
 import { WorkflowLaunchService } from './workflow-launch.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -13,7 +15,8 @@ describe('LaunchWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ LaunchWorkflowComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ WorkflowLaunchService, {provide: ContainerService, useClass: ContainerStubService}]
+      providers: [ WorkflowLaunchService, {provide: ContainerService, useClass: ContainerStubService},
+      { provide: WorkflowDescriptorService, useClass: DescriptorsStubService}]
     })
     .compileComponents();
   }));

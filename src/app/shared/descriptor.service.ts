@@ -41,4 +41,18 @@ export abstract class DescriptorService {
             this.getSecondaryWdl(id, versionName)
         );
     }
+    getDescriptors(versions, version) {
+        if (version) {
+            const typesAvailable = new Array();
+            for (const file of version.sourceFiles) {
+                const type = file.type;
+                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
+                    typesAvailable.push('cwl');
+                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes('wdl')) {
+                    typesAvailable.push('wdl');
+                }
+            }
+            return typesAvailable;
+        }
+    }
 }

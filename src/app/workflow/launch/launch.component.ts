@@ -1,3 +1,4 @@
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { Component, Input } from '@angular/core';
 import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
@@ -18,12 +19,11 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
 
   descriptors: Array<any>;
 
-  constructor(private launchService: WorkflowLaunchService,
-              private containerService: ContainerService) {
+  constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
     super();
   }
   getDescriptors(currentVersion): any {
-    return this.containerService.getDescriptors(this.versions, this.default);
+    return this.workflowDescriptorService.getDescriptors(this.versions, this.default);
   }
   reactToDescriptor(): void {
     this.changeMessages(this.path, this.currentVersion.name);
@@ -33,6 +33,5 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
     this.cli = this.launchService.getCliString(workflowPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
-    console.log(this.consonance);
   }
 }

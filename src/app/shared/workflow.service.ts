@@ -41,22 +41,4 @@ export class WorkflowService {
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }
-
-  getDescriptors(versions, version) {
-    if (versions.length && version) {
-
-      const typesAvailable = new Array();
-
-      for (const file of version.sourceFiles) {
-        const type = file.type;
-        if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
-          typesAvailable.push('cwl');
-
-        } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes('wdl')) {
-          typesAvailable.push('wdl');
-        }
-      }
-      return typesAvailable;
-    }
-  }
 }

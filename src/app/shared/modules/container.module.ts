@@ -1,3 +1,4 @@
+import { ToolDescriptorService } from '../../container/descriptors/tool-descriptor.service';
 import { ErrorService } from './../../container/error.service';
 import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -97,7 +98,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     WorkflowService,
     StarringService,
     VersionModalService,
-    InfoTabService
+    InfoTabService,
+    ToolDescriptorService
   ],
   exports: [
     ContainerComponent
