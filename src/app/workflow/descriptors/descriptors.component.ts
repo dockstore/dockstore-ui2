@@ -30,7 +30,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.workflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'workflows');
+    return this.workflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {

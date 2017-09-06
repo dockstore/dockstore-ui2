@@ -34,7 +34,7 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'containers');
+    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {

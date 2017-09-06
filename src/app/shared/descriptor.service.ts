@@ -6,14 +6,12 @@ import { Injectable } from '@angular/core';
 export abstract class DescriptorService {
 
     constructor() { }
-    protected type: string;
     protected abstract getSecondaryWdl(id: number, versionName: string);
     protected abstract getWdl(id: number, versionName: string);
     protected abstract getSecondaryCwl(id: number, versionName: string);
     protected abstract getCwl(id: number, versionName: string);
-    getFiles(id: number, versionName: string, descriptor: string, type: string) {
+    getFiles(id: number, versionName: string, descriptor: string) {
         let observable;
-        this.type = type;
         if (descriptor === 'cwl') {
             observable = this.getCwlFiles(id, versionName);
         } else if (descriptor === 'wdl') {
