@@ -1,4 +1,6 @@
-import { updatedWorkflow } from './mocked-objects';
+import { Dockstore } from './../shared/dockstore.model';
+import { Token } from './../shared/swagger/model/token';
+import { bitbucketToken, gitLabToken, quayToken, updatedWorkflow, gitHubToken } from './mocked-objects';
 import { User } from './../shared/swagger/model/user';
 import { StarRequest } from './../shared/swagger/model/starRequest';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
@@ -83,7 +85,11 @@ export class ErrorStubService {
 }
 
 export class ConfigurationStub {
-
+    apiKeys = {
+        accessToken: '',
+        apiKeys: {},
+        basePath: Dockstore.API_URI
+    };
 }
 
 export class UsersStubService {
@@ -103,6 +109,9 @@ export class UsersStubService {
         return Observable.of([]);
     }
     refreshWorkflows(userId: number, extraHttpRequestParams?: any): Observable<Array<Workflow>> {
+        return Observable.of([]);
+    }
+    getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<Token>> {
         return Observable.of([]);
     }
 }
@@ -131,11 +140,11 @@ export class WorkflowStubService {
     getTestJson() {
         return Observable.of({});
     }
-    replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) {}
+    replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
 }
 
 export class RefreshStubService {
-    refreshAllWorkflows() {}
+    refreshAllWorkflows() { }
 }
 
 export class RegisterWorkflowModalStubService {
@@ -154,6 +163,24 @@ export class LogoutStubService {
 
 export class UserStubService {
     user$ = Observable.of({});
+}
+
+export class TokensStubService {
+    public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+        return Observable.of(quayToken);
+    }
+    public addBitbucketToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+        return Observable.of(bitbucketToken);
+    }
+    public addGithubToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+        return Observable.of(gitHubToken);
+    }
+    public addGitlabToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+        return Observable.of(gitLabToken);
+    }
+    public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {
+        return Observable.of({});
+    }
 }
 
 export class AdvancedSearchStubService {
@@ -257,16 +284,16 @@ export class WorkflowsStubService {
         return Observable.of(updatedWorkflow);
     }
     updateWorkflowVersion(workflowId: number, body: Array<WorkflowVersion>, extraHttpRequestParams?: any):
-    Observable<Array<WorkflowVersion>> {
+        Observable<Array<WorkflowVersion>> {
         const updatedWorkflowVersions: WorkflowVersion[] = [];
         return Observable.of(updatedWorkflowVersions);
     }
     addTestParameterFiles(workflowId: number, testParameterPaths: Array<string>, body?: string, version?: string,
         extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
-            return Observable.of([]);
+        return Observable.of([]);
     }
     deleteTestParameterFiles(workflowId: number, testParameterPaths: Array<string>, version?: string, extraHttpRequestParams?: any):
-    Observable<Array<SourceFile>> {
+        Observable<Array<SourceFile>> {
         return Observable.of([]);
     }
     getWorkflowDag(workflowId: number, workflowVersionId: number, extraHttpRequestParams?: any): Observable<string> {
@@ -295,38 +322,38 @@ export class ContainersStubService {
     getDockerRegistries(extraHttpRequestParams?: any): Observable<Array<{ [key: string]: any; }>> {
         return Observable.of([
             {
-              'dockerPath': 'quay.io',
-              'customDockerPath': 'false',
-              'privateOnly': 'false',
-              'enum': 'QUAY_IO',
-              'friendlyName': 'Quay.io',
-              'url': 'https://quay.io/repository/'
+                'dockerPath': 'quay.io',
+                'customDockerPath': 'false',
+                'privateOnly': 'false',
+                'enum': 'QUAY_IO',
+                'friendlyName': 'Quay.io',
+                'url': 'https://quay.io/repository/'
             },
             {
-              'dockerPath': 'registry.hub.docker.com',
-              'customDockerPath': 'false',
-              'privateOnly': 'false',
-              'enum': 'DOCKER_HUB',
-              'friendlyName': 'Docker Hub',
-              'url': 'https://hub.docker.com/'
+                'dockerPath': 'registry.hub.docker.com',
+                'customDockerPath': 'false',
+                'privateOnly': 'false',
+                'enum': 'DOCKER_HUB',
+                'friendlyName': 'Docker Hub',
+                'url': 'https://hub.docker.com/'
             },
             {
-              'dockerPath': 'registry.gitlab.com',
-              'customDockerPath': 'false',
-              'privateOnly': 'false',
-              'enum': 'GITLAB',
-              'friendlyName': 'GitLab',
-              'url': 'https://gitlab.com/'
+                'dockerPath': 'registry.gitlab.com',
+                'customDockerPath': 'false',
+                'privateOnly': 'false',
+                'enum': 'GITLAB',
+                'friendlyName': 'GitLab',
+                'url': 'https://gitlab.com/'
             },
             {
-              'dockerPath': null,
-              'customDockerPath': 'true',
-              'privateOnly': 'true',
-              'enum': 'AMAZON_ECR',
-              'friendlyName': 'Amazon ECR',
-              'url': null
+                'dockerPath': null,
+                'customDockerPath': 'true',
+                'privateOnly': 'true',
+                'enum': 'AMAZON_ECR',
+                'friendlyName': 'Amazon ECR',
+                'url': null
             }
-          ]);
+        ]);
     }
     refresh(containerId: number, extraHttpRequestParams?: any): Observable<DockstoreTool> {
         const tool: DockstoreTool = {

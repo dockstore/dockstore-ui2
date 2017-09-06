@@ -1,3 +1,4 @@
+import { Token } from './../shared/swagger/model/token';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { Workflow } from './../shared/swagger/model/workflow';
 export const updatedWorkflow: Workflow = {
@@ -56,6 +57,7 @@ export const sampleTool1: DockstoreTool = {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname'
 };
+
 export const sampleTool2: DockstoreTool = {
     id: 2,
     default_cwl_path: 'sampleDefaultCWLPath',
@@ -82,4 +84,44 @@ export const sampleTool3: DockstoreTool = {
     private_access: false,
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname'
+};
+
+export const gitLabToken: Token = {
+    'id': 4,
+    'tokenSource': 'gitlab.com',
+    'content': 'fakeGitLabToken',
+    'username': 'garyluu',
+    'refreshToken': null,
+    'userId': 2,
+    'token': 'fakeGitLabToken'
+};
+
+export const gitHubToken: Token = {
+    'id': 3,
+    'tokenSource': 'github.com',
+    'content': 'fakeGitHubToken',
+    'username': 'garyluu',
+    'refreshToken': null,
+    'userId': 2,
+    'token': 'fakeGitHubToken'
+};
+
+export const bitbucketToken: Token = {
+    'id': 2,
+    'tokenSource': 'bitbucket.org',
+    'content': 'fakeBitbucketToken',
+    'username': 'garyluu',
+    'refreshToken': null,
+    'userId': 2,
+    'token': 'fakeBitbucketToken'
+};
+
+export const quayToken: Token = {
+    'id': 1,
+    'tokenSource': 'quay.io',
+    'content': 'fakeQuayToken',
+    'username': 'garyluu',
+    'refreshToken': null,
+    'userId': 2,
+    'token': 'fakeQuayToken'
 };

@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { Configuration, TokensService } from '../shared/swagger';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User } from './../shared/swagger/model/user';
 import { UserService } from './user.service';
@@ -20,13 +22,16 @@ export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);
   tokens: Token[];
   user: User;
-  constructor(private httpService: HttpService, private usersService: UsersService, private userService: UserService) {
+  constructor(private httpService: HttpService, private usersService: UsersService, private userService: UserService,
+    private tokensService: TokensService, private configuration: Configuration) {
     userService.user$.subscribe(user => {
       this.user = user;
       if (user) {
         this.updateTokens();
       }
     });
+    this.configuration.accessToken = this.httpService.getDockstoreToken();
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
     this.tokens$.subscribe(tokens => this.tokens = tokens);
   }
 
@@ -39,21 +44,22 @@ export class TokenService {
   }
 
   registerToken(token: string, provider: string) {
-    let registerTokenUrl = `${Dockstore.API_URI}/auth/tokens/${provider}`;
-
-    if (provider === 'quay.io') {
-      registerTokenUrl += `?access_token=${token}`;
-    } else {
-      registerTokenUrl += `?code=${token}`;
+    switch (provider) {
+      case 'quay.io':
+        return this.tokensService.addQuayToken(token);
+      case 'bitbucket.org':
+        return this.tokensService.addBitbucketToken(token);
+      case 'github.com':
+        return this.tokensService.addGithubToken(token);
+      case 'gitlab.com':
+        return this.tokensService.addGitlabToken(token);
+      default:
+        return Observable.throw('Unknown provider.');
     }
-
-    return this.httpService.getAuthResponse(registerTokenUrl);
   }
 
   deleteToken(tokenId: number) {
-    const deleteTokenUrl = `${Dockstore.API_URI}/auth/tokens/${tokenId}`;
-
-    return this.httpService.deleteAuth(deleteTokenUrl);
+    return this.tokensService.deleteToken(tokenId);
   }
 
   getUserTokenStatusSet(tokens: Token[]) {
