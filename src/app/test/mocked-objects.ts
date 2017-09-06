@@ -93,7 +93,6 @@ export const gitLabToken: Token = {
     'username': 'garyluu',
     'refreshToken': null,
     'userId': 2,
-    'token': 'fakeGitLabToken'
 };
 
 export const gitHubToken: Token = {
@@ -103,7 +102,6 @@ export const gitHubToken: Token = {
     'username': 'garyluu',
     'refreshToken': null,
     'userId': 2,
-    'token': 'fakeGitHubToken'
 };
 
 export const bitbucketToken: Token = {
@@ -113,7 +111,6 @@ export const bitbucketToken: Token = {
     'username': 'garyluu',
     'refreshToken': null,
     'userId': 2,
-    'token': 'fakeBitbucketToken'
 };
 
 export const quayToken: Token = {
@@ -123,5 +120,4 @@ export const quayToken: Token = {
     'username': 'garyluu',
     'refreshToken': null,
     'userId': 2,
-    'token': 'fakeQuayToken'
 };

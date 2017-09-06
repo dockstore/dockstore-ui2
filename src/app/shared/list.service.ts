@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
@@ -10,7 +11,7 @@ export class ListService {
   constructor(private containersService: ContainersService, private workflowsService: WorkflowsService,
     private usersService: UsersService) { }
 
-  getPublishedTools(toolType: string) {
+  getPublishedTools(toolType: any): Observable<any> {
     if (toolType === 'workflows') {
       return this.workflowsService.allPublishedWorkflows();
     } else {
