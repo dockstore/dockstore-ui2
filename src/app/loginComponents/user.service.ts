@@ -1,14 +1,11 @@
+import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Configuration } from './../shared/swagger/configuration';
-import { UsersService } from '../shared/swagger';
-import { User } from './../shared/swagger/model/user';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-
-import { Dockstore } from '../shared/dockstore.model';
-import { HttpService } from '../shared/http.service';
 import { Md5 } from 'ts-md5/dist/md5';
+
+import { UsersService } from '../shared/swagger';
+import { Configuration } from './../shared/swagger/configuration';
+import { User } from './../shared/swagger/model/user';
 
 
 /**

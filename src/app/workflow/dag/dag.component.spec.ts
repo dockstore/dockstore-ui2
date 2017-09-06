@@ -1,17 +1,14 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
-import { HttpService } from '../../shared/http.service';
-import { DagStubService, HttpStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
-import { DagService } from './dag.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-declare var cytoscape: any;
+import { WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { DagComponent } from './dag.component';
 
+/* tslint:disable:no-unused-variable */
+declare var cytoscape: any;
 describe('DagComponent', () => {
   let component: DagComponent;
   let fixture: ComponentFixture<DagComponent>;

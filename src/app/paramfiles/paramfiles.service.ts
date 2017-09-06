@@ -1,24 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from '../shared/dockstore.model';
-import { HttpService } from '../shared/http.service';
+import { ContainersService } from '../shared/swagger';
 
 @Injectable()
 export class ParamFilesService {
 
-  constructor(private httpService: HttpService) { }
+  constructor(private containersService: ContainersService) { }
 
   getContainerTestParamFiles(toolId: number, tagName?: string, descriptorType?: string) {
-    let testParamFilesUrl = Dockstore.API_URI + '/containers/' + toolId + '/testParameterFiles';
-    if (tagName && descriptorType) {
-      testParamFilesUrl += '?tag=' + tagName;
-      testParamFilesUrl += '&descriptorType=' + descriptorType;
-    } else if (tagName) {
-      testParamFilesUrl += '?tag=' + tagName;
-    } else if (testParamFilesUrl) {
-      testParamFilesUrl += '?descriptorType=' + descriptorType;
-    }
-    return this.httpService.getResponse(testParamFilesUrl);
+    return this.containersService.getTestParameterFiles(toolId, tagName, descriptorType);
   }
 
   getTagsWithParam(toolId: number, validTags) {

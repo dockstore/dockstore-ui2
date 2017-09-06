@@ -50,7 +50,6 @@ import { DateService } from './shared/date.service';
 
 /* Internal Services */
 import { DockstoreService } from './shared/dockstore.service';
-import { HttpService } from './shared/http.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
@@ -124,7 +123,6 @@ import { SearchModule } from './search/search.module';
     LogoutService,
     DockstoreService,
     DateService,
-    HttpService,
     TrackLoginService,
     TokenService,
     UserService,

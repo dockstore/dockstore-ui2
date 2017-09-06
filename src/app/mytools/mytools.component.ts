@@ -1,15 +1,16 @@
-import { UsersService } from './../shared/swagger/api/users.service';
-import { HttpService } from './../shared/http.service';
-import { Configuration } from './../shared/swagger/configuration';
-import { Tool } from './../container/register-tool/tool';
-import { RegisterToolService } from './../container/register-tool/register-tool.service';
-import { RefreshService } from './../shared/refresh.service';
 import { Component, OnInit } from '@angular/core';
-import { CommunicatorService } from '../shared/communicator.service';
-import { DockstoreService } from '../shared/dockstore.service';
-import { MytoolsService } from './mytools.service';
+import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+
 import { UserService } from '../loginComponents/user.service';
+import { CommunicatorService } from '../shared/communicator.service';
 import { ContainerService } from '../shared/container.service';
+import { DockstoreService } from '../shared/dockstore.service';
+import { RegisterToolService } from './../container/register-tool/register-tool.service';
+import { Tool } from './../container/register-tool/tool';
+import { RefreshService } from './../shared/refresh.service';
+import { UsersService } from './../shared/swagger/api/users.service';
+import { Configuration } from './../shared/swagger/configuration';
+import { MytoolsService } from './mytools.service';
 
 @Component({
   selector: 'app-mytools',
@@ -24,14 +25,14 @@ export class MyToolsComponent implements OnInit {
   user: any;
   tool: any;
   private registerTool: Tool;
-  constructor(private mytoolsService: MytoolsService, private configuration: Configuration, private httpService: HttpService,
+  constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
-    private userService: UserService,
+    private userService: UserService, private authService: AuthService,
     private containerService: ContainerService,
     private refreshService: RefreshService,
     private registerToolService: RegisterToolService) { }
   ngOnInit() {
-    this.configuration.accessToken = this.httpService.getDockstoreToken();
+    this.configuration.accessToken = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {

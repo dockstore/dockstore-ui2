@@ -1,11 +1,11 @@
+import { inject, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { HttpService } from './../../shared/http.service';
-import { HttpStubService, WorkflowsStubService } from './../../test/service-stubs';
-/* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { WorkflowsStubService } from './../../test/service-stubs';
 import { DagService } from './dag.service';
+
+/* tslint:disable:no-unused-variable */
 
 describe('Service: Dag', () => {
   beforeEach(() => {

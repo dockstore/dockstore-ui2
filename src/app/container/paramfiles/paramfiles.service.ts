@@ -1,12 +1,7 @@
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { Http, URLSearchParams, RequestMethod } from '@angular/http';
-import { AuthService } from 'ng2-ui-auth';
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from '../../shared/dockstore.model';
-
-import { HttpService } from '../../shared/http.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 
 @Injectable()
 export class ParamfilesService {

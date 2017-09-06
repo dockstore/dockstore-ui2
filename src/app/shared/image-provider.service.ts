@@ -1,9 +1,6 @@
-import { ContainersService } from './swagger';
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from './dockstore.model';
-
-import { HttpService } from './http.service';
+import { ContainersService } from './swagger';
 
 @Injectable()
 export class ImageProviderService {

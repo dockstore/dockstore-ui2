@@ -1,14 +1,13 @@
-import { Observable } from 'rxjs/Observable';
-import { Configuration, TokensService } from '../shared/swagger';
+import { Injectable } from '@angular/core';
+import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { User } from './../shared/swagger/model/user';
-import { UserService } from './user.service';
+import { Observable } from 'rxjs/Observable';
+
+import { Configuration, TokensService } from '../shared/swagger';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Token } from './../shared/swagger/model/token';
-import { Injectable } from '@angular/core';
-
-import { Dockstore } from '../shared/dockstore.model';
-import { HttpService } from '../shared/http.service';
+import { User } from './../shared/swagger/model/user';
+import { UserService } from './user.service';
 
 
 /**
@@ -22,15 +21,15 @@ export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);
   tokens: Token[];
   user: User;
-  constructor(private httpService: HttpService, private usersService: UsersService, private userService: UserService,
-    private tokensService: TokensService, private configuration: Configuration) {
+  constructor(private usersService: UsersService, private userService: UserService,
+    private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {
       this.user = user;
       if (user) {
         this.updateTokens();
       }
     });
-    this.configuration.accessToken = this.httpService.getDockstoreToken();
+    this.configuration.accessToken = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
     this.tokens$.subscribe(tokens => this.tokens = tokens);
   }

@@ -1,15 +1,14 @@
-import { UserService } from './../loginComponents/user.service';
-import { UsersService } from './../shared/swagger/api/users.service';
-import { HttpService } from './../shared/http.service';
-import { Configuration } from './../shared/swagger/configuration';
-import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
-import { RefreshService } from './../shared/refresh.service';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'ng2-ui-auth';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
 import { WorkflowService } from '../shared/workflow.service';
-
+import { UserService } from './../loginComponents/user.service';
+import { RefreshService } from './../shared/refresh.service';
+import { UsersService } from './../shared/swagger/api/users.service';
+import { Configuration } from './../shared/swagger/configuration';
+import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './myworkflows.service';
 
 @Component({
@@ -26,15 +25,15 @@ export class MyWorkflowsComponent implements OnInit {
   user: any;
   workflows: any;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-    private httpService: HttpService, private usersService: UsersService, private userService: UserService,
-    private workflowService: WorkflowService,
+    private usersService: UsersService, private userService: UserService,
+    private workflowService: WorkflowService, private authService: AuthService,
     private refreshService: RefreshService,
     private registerWorkflowModalService: RegisterWorkflowModalService) {
 
   }
 
   ngOnInit() {
-    this.configuration.accessToken = this.httpService.getDockstoreToken();
+    this.configuration.accessToken = this.authService.getToken();
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {

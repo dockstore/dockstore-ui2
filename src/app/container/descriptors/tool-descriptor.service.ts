@@ -1,11 +1,7 @@
-import { DescriptorService } from '../../shared/descriptor.service';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-
-import { Dockstore } from '../../shared/dockstore.model';
-import { HttpService } from '../../shared/http.service';
+import { DescriptorService } from '../../shared/descriptor.service';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
 
 @Injectable()
 export class ToolDescriptorService extends DescriptorService {

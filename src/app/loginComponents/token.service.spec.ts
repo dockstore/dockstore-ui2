@@ -1,18 +1,24 @@
-import { Token } from './../shared/swagger/model/token';
-import { quayToken, bitbucketToken, gitLabToken, gitHubToken } from './../test/mocked-objects';
-import { UserService } from './user.service';
-import { ConfigurationStub, TokensStubService, UsersStubService, UserStubService } from './../test/service-stubs';
+import { inject, TestBed } from '@angular/core/testing';
+import { AuthService } from 'ng2-ui-auth';
+
 import { Configuration, TokensService, UsersService } from '../shared/swagger';
-import { HttpStubService } from '../test/service-stubs';
-import { HttpService } from '../shared/http.service';
+import { Token } from './../shared/swagger/model/token';
+import { bitbucketToken, gitHubToken, gitLabToken, quayToken } from './../test/mocked-objects';
+import {
+    AuthStubService,
+    ConfigurationStub,
+    TokensStubService,
+    UsersStubService,
+    UserStubService,
+} from './../test/service-stubs';
 import { TokenService } from './token.service';
-import { TestBed, inject } from '@angular/core/testing';
+import { UserService } from './user.service';
 
 describe('TokenService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [TokenService,
-                { provide: HttpService, useClass: HttpStubService },
+                { provide: AuthService, useClass: AuthStubService },
                 { provide: UsersService, useClass: UsersStubService },
                 { provide: UserService, useClass: UserStubService },
                 { provide: TokensService, useClass: TokensStubService },
