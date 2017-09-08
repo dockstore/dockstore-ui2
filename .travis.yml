@@ -8,7 +8,7 @@ services:
 jdk:
   - oraclejdk8
 env:
-  - WEBSERVICE_VERSION="1.2.0"
+  - WEBSERVICE_VERSION="1.2.0-beta.0"
 addons:
   apt:
     sources:
@@ -24,6 +24,11 @@ before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start 
+  - 'npm install -g cypress-cli' #test using cypress cli for integrationg testing
+  - 'wget --tries=10 https://github.com/ga4gh/dockstore/releases/download/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar'
+  - 'chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar'
+  - 'sleep 3' # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+
 
 install:
   - 'npm install -g bower'
@@ -39,9 +44,16 @@ before_script:
   - ./script
   - npm run-script prebuild
   - ng lint
+  - psql 'postgres' -U postgres < travisci/db_dump.sql
+  - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
+  - 'sleep 20'
+
 script:
   - ng build # this does syntax checking, unit testing, and jshint
+  - ng serve --silent &
   - ng test --watch=false --code-coverage
+  - cypress run --record --config defaultCommandTimeout=10000 #test using cypress for integration testing
+
 
 after_success:
   - ./node_modules/codecov/bin/codecov
