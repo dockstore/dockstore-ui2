@@ -1,69 +1,81 @@
 describe('Dockstore Tool Details', function() {
-  require('./helper.js')
-	beforeEach(function () {
-     cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
-  });
-
-  it('Change tab to labels', function() {
-    cy
-      .get("#labelsTab")
-          .click()
-  });
-
-  it('Change tab to versions', function() {
-    cy
-      .get("#versionsTab")
-          .click()
-  });
-
-  describe('Change tab to files', function() {
+    require('./helper.js')
     beforeEach(function() {
-      cy
-        .get("#filesTab")
-          .click()
+        cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
     });
 
-    it('Should have Dockerfile tab selected', function() {
-      cy
-        .get("#dockerfileTab")
-          .should("have.class", "active")
+    it('Change tab to labels', function() {
+        cy
+            .get('.nav-link')
+            .contains('Labels')
+            .parent()
+            .click()
     });
 
-    it('Should have content in file viewer', function() {
-      cy
-        .get(".hljs.yaml")
-          .children()
-          .should("exist")
+    it('Change tab to versions', function() {
+        cy
+            .get('.nav-link')
+            .contains('Versions')
+            .parent()
+            .click()
     });
 
-      describe('Change tab to Descriptor files', function() {
-          beforeEach(function() {
+    describe('Change tab to files', function() {
+        beforeEach(function() {
             cy
-              .get("#descriptorTab")
+                .get('.nav-link')
+                .contains('Files')
+                .parent()
                 .click()
-          });
+        });
 
-          it('Should have content in file viewer', function() {
+        it('Should have Dockerfile tab selected', function() {
             cy
-              .get(".hljs.yaml")
-                .children()
-                .should("exist")
-          });
-      });
-
-      describe('Change tab to Test Parameters', function() {
-          beforeEach(function() {
-            cy
-              .get("#testParameterTab")
+                .get('.nav-link')
+                .contains('Dockerfile')
+                .parent()
                 .click()
-          });
+                .should("have.class", "active")
 
-          it('Should not have content in file viewer', function() {
-            cy
-              .get(".hljs.yaml")
-                .children()
-                .should("not.exist")
-          });
-      });
-  });
+            it('Should have content in file viewer', function() {
+                cy
+                    .get(".hljs.yaml")
+                    .should("be.visible")
+            });
+        });
+
+        describe('Change tab to Descriptor files', function() {
+            beforeEach(function() {
+                cy
+                    .get('.nav-link')
+                    .contains('Descriptor Files')
+                    .parent()
+                    .click()
+            });
+
+            it('Should have content in file viewer', function() {
+                cy
+                    .get(".hljs.yaml")
+                    .should("be.visible")
+            });
+        });
+
+        describe('Change tab to Test Parameters', function() {
+            beforeEach(function() {
+                cy
+                    .get('.nav-link')
+                    .contains('Test Parameter Files')
+                    .parent()
+                    .click()
+            });
+
+            it('Should not have content in file viewer', function() {
+                cy
+                    .get(".hljs.yaml")
+                    .should("not.be.visible")
+                cy
+                    .contains('A Test Parameter File associated with this Docker container, descriptor type and version could not be found.')
+            });
+        });
+    });
 })
