@@ -11,13 +11,8 @@ export class ImageProviderService {
 
   constructor(private containersService: ContainersService) {
     this.dockerRegistryList = JSON.parse(localStorage.getItem('dockerRegistryList'));
-
     if (!this.dockerRegistryList) {
-      this.containersService.getDockerRegistries()
-        .subscribe(registryList => {
-          this.dockerRegistryList = registryList;
-          localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
-        });
+      this.getDockerRegistryList();
     }
   }
 
@@ -32,7 +27,14 @@ export class ImageProviderService {
   }
 
   private getImageProvider(imageProvider: string): any {
-    return this.dockerRegistryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
+    if (this.dockerRegistryList) {
+      return this.dockerRegistryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
+    } else {
+      console.log('This should not be necessary');
+      this.containersService.getDockerRegistries().subscribe(registryList => {
+        return registryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
+      });
+    }
   }
 
   private getImageProviderUrl(path: string, registry) {
@@ -59,12 +61,34 @@ export class ImageProviderService {
     return null;
   }
 
+  private getDockerRegistryList() {
+    this.containersService.getDockerRegistries()
+    .subscribe(registryList => {
+      this.dockerRegistryList = registryList;
+      console.log('finally gotten');
+      localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
+    });
+  }
+
   checkPrivateOnlyRegistry(tool: any) {
+    // TODO: Figure out why we need to grab the docker registry list again when the constructor already does it
+    if (!this.dockerRegistryList) {
+      console.log('This should not be necessary');
+      this.containersService.getDockerRegistries().subscribe(registryList => {
+        const dockerReg = registryList.find(x => x.enum === tool.registry);
+        if (dockerReg) {
+          return dockerReg.privateOnly === 'true';
+        } else {
+          return false;
+        }
+      });
+    } else {
     const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
     if (dockerReg) {
       return dockerReg.privateOnly === 'true';
     } else {
       return false;
     }
+  }
   }
 }

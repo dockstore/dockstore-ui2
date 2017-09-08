@@ -2,25 +2,27 @@ describe('Dockstore my tools', function() {
   require('./helper.js')
 
 	beforeEach(function () {
-     cy.visit(String(global.baseUrl) + "/my-containers")
+     cy.visit(String(global.baseUrl) + "/mytools")
   });
 
   describe('publish a tool', function() {
     it("publish and unpublish", function() {
       cy
-        .get('.panel-group')
+        .get('accordion')
           .children(':nth-child(2)')
           .click()
+          .get('.panel')
           .children(':nth-child(2)')
           .find('a')
+          .contains('b')
           .first()
           .click()
           .get('#publishToolButton')
-          .should('contain', 'Unpublish')
-          .click()
           .should('contain', 'Publish')
           .click()
           .should('contain', 'Unpublish')
+          .click()
+          .should('contain', 'Publish')
     });
   });
 
@@ -46,7 +48,8 @@ describe('Dockstore my tools', function() {
       cy
         .get('#imageRegistrySpinner')
         .click()
-        .get('#imageRegistrySpinner_AMAZON_ECR')
+      cy
+        .contains('Amazon ECR')
         .click()
 
       cy
@@ -58,12 +61,20 @@ describe('Dockstore my tools', function() {
         .type('test@email.com')
 
       cy
+        .get('#imageRegistryInput')
+        .type('testnamespace/testname')
+
+      cy
         .get('#submitButton')
         .click()
 
       cy
         .get('#tool-path')
         .should('contain', 'amazon.ecr.registry/testnamespace/testname')
+
+      cy
+        .contains('Versions')
+        .click()
 
       cy
         .get('#addTagButton')
@@ -102,6 +113,14 @@ describe('Dockstore my tools', function() {
       cy
         .get('#deregisterButton')
         .click()
+      cy
+        .get('#deregisterConfirmButton')
+        .click()
+
+        // This should be activated later
+        // cy
+        // .get('#tool-path')
+        // .should('not.contain', 'amazon.ecr.registry/testnamespace/testname')
     });
   });
 });
