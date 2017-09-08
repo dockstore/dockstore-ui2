@@ -1,3 +1,4 @@
+import { User } from './../shared/swagger/model/user';
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import { UserService } from '../loginComponents/user.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -22,6 +23,7 @@ export class StarringComponent implements OnInit {
   isLoggedIn: boolean;
   rate: boolean;
   total_stars = 0;
+  private starredUsers: User[];
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
   private loginSubscription: Subscription;
@@ -33,6 +35,7 @@ export class StarringComponent implements OnInit {
               private starentryService: StarentryService) { }
 
   ngOnInit() {
+    this.trackLoginService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     // get tool from the observer
     if (!this.workflow && !this.tool) {
       this.setupSubscription();
@@ -42,6 +45,7 @@ export class StarringComponent implements OnInit {
     }
     this.userService.user$.subscribe(user => this.user = user);
   }
+
   setupSubscription() {
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
       workflow => {
@@ -52,6 +56,7 @@ export class StarringComponent implements OnInit {
         this.setupTool(tool);
       });
   }
+
   setupInputEntry() {
     if (this.tool) {
       this.setupTool(this.tool);
@@ -60,46 +65,31 @@ export class StarringComponent implements OnInit {
       this.setupWorkflow(this.workflow);
     }
   }
+
   setupTool(tool: any) {
     this.entry = tool;
     this.entryType = 'containers';
-    this.setupUserStarring();
     this.getStarredUsers();
   }
   setupWorkflow(workflow: any) {
     this.entry = workflow;
     this.entryType = 'workflows';
-    this.setupUserStarring();
     this.getStarredUsers();
   }
-  setupUserStarring() {
+
+  calculateRate(starredUsers: User[]) {
     if (!this.user) {
-      this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(
-        state => {
-          this.isLoggedIn = state;
-          if (state) {
-            this.getStarring();
-          }
-        });
+      this.rate = false;
+    }
+    let matchingUser: User;
+    matchingUser = starredUsers.find(user => user.id === this.user.id);
+    if (matchingUser) {
+      this.rate = true;
     } else {
-      this.getStarring();
+      this.rate = false;
     }
   }
-  getStarring(): any {
-    if (this.entry && this.entryType && this.user) {
-      this.starringService.getStarring(this.entry.id, this.entryType).subscribe(
-        starring => {
-          let match = false;
-          for (const star of starring) {
-            if (star.id === this.user.id) {
-              match = true;
-              break;
-            }
-          }
-          this.rate = match;
-        });
-    }
-  }
+
   setStarring() {
     this.rate = !this.rate;
     if (this.isLoggedIn) {
@@ -122,6 +112,7 @@ export class StarringComponent implements OnInit {
       this.starringService.getStarring(this.entry.id, this.entryType).subscribe(
         starring => {
           this.total_stars = starring.length;
+          this.calculateRate(starring);
         });
     }
   }
