@@ -10,69 +10,82 @@ describe('Dockstore Workflow Details', function() {
     // unless logged in as the author, edit button should not be present in "Workflows"
     cy
       .get("#editButton")
-        .should("exist")
-        .should("not.be.visible")
+        .should("not.exist")
   });
 
   it('Change tab to labels', function() {
     cy
-      .get("#labelsTab")
-        .click()
+    .get('.nav-link')
+    .contains('Labels')
+    .parent()
+    .click()
   });
 
   it('Change tab to versions', function() {
     cy
-      .get("#versionsTab")
-        .click()
+    .get('.nav-link')
+    .contains('Versions')
+    .parent()
+    .click()
   });
 
   describe('Change tab to files', function() {
     beforeEach(function() {
       cy
-        .get("#filesTab")
-          .click()
+      .get('.nav-link')
+      .contains('Files')
+      .parent()
+      .click()
     });
 
     it('Should have Descriptor files tab selected', function() {
       cy
-        .get("#descriptorTab")
+      .get('.nav-link')
+      .contains('Descriptor Files')
+      .parent()
+      .click()
           .should("have.class", "active")
     });
 
     it('Should have content in file viewer', function() {
       cy
-        .get(".hljs.yaml")
-          .children()
-          .should("exist")
+      .get(".hljs.yaml")
+      .should("be.visible")
     });
 
       describe('Change tab to Test Parameters', function() {
           beforeEach(function() {
             cy
-              .get("#testParameterTab")
-                .click()
+            .get('.nav-link')
+            .contains('Test Parameter Files')
+            .parent()
+            .click()
           });
 
           it('Should not have content in file viewer', function() {
             cy
               .get(".hljs.yaml")
                 .children()
-                .should("not.exist")
+                .should("not.be.visible")
           });
       });
   });
 
   it('Change tab to tools', function() {
     cy
-      .get("#toolsTab")
-          .click()
+    .get('.nav-link')
+    .contains('Tools')
+    .parent()
+    .click()
   });
 
   describe('Change tab to dag', function () {
     beforeEach(function() {
       cy
-        .get("#dagTab")
-          .click()
+      .get('.nav-link')
+      .contains('DAG')
+      .parent()
+      .click()
     });
 
     it('Change to fullscreen and back', function() {
