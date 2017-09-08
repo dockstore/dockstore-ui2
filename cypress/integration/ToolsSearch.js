@@ -6,11 +6,11 @@ describe('Dockstore tool search page', function() {
   });
 
   describe('Select a tool', function() {
-    it('Should have three tools (and a hidden row)', function() {
+    it('Should have three tools and no hidden row)', function() {
       cy
         .get('tbody')
         .children('tr')
-        .should('have.length', 4)
+        .should('have.length', 3)
     });
 
     it('Select dockstore-tool-imports', function() {
@@ -22,7 +22,7 @@ describe('Dockstore tool search page', function() {
         .first()
         .click()
         .get('#tool-path')
-        .should('contain', 'quay.io/A2/a ')
+        .should('contain', 'quay.io/A2/a')
     });
   });
 })
