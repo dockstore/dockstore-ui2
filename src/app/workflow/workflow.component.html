@@ -55,7 +55,7 @@
     <h3>
       <div class="pull-right">
         <div class="btn-group" role="group">
-          <button id="publishWorkflowButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="!isValid" btnCheckbox>
+          <button id="publishButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable()" btnCheckbox>
             {{workflow?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
         </div>
@@ -105,16 +105,16 @@
           </div>
         </form>
       </tab>
-      <tab id="versionsTab" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
+      <tab id="versionsTab" [disabled]="isStub()" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
         <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id">
         </app-versions-workflow>
       </tab>
-      <tab id="fileTab" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
+      <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
         <app-files-workflow *ngIf="validVersions && checkMode('Files')" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
         </app-files-workflow>
       </tab>
-      <tab id="toolsTab" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')"></tab>
-      <tab id="dagTab" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
+      <tab id="toolsTab" [disabled]="isStub()" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')"></tab>
+      <tab id="dagTab" [disabled]="isStub()" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
         <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
       </tab>
     </tabset>

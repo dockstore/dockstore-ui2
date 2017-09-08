@@ -10,31 +10,43 @@ describe('Dockstore my workflows', function() {
     it('Invalid workflow should not be publishable', function() {
       cy
         .get('#publishButton')
-        .should('be.disabled')
+        .should('have.class', 'disabled')
       cy
         .get('#refreshButton')
-        .should('not.be.disabled')
+        .should('not.have.class', 'disabled')
     });
 
     it('Only Info and Labels tab should be enabled', function() {
       cy
-        .get('#infoTab')
+        .get('.nav-link')
+        .contains('Info')
+        .parent()
         .should('have.class', 'active')
         .and('not.have.class', 'disabled')
       cy
-        .get('#labelsTab')
+        .get('.nav-link')
+        .contains('Labels')
+        .parent()
         .should('not.have.class', 'disabled')
       cy
-        .get('#versionsTab')
+        .get('.nav-link')
+        .contains('Versions')
+        .parent()
         .should('have.class', 'disabled')
       cy
-        .get('#filesTab')
+        .get('.nav-link')
+        .contains('Files')
+        .parent()
         .should('have.class', 'disabled')
       cy
-        .get('#toolsTab')
+        .get('.nav-link')
+        .contains('Tools')
+        .parent()
         .should('have.class', 'disabled')
       cy
-        .get('#dagTab')
+        .get('.nav-link')
+        .contains('DAG')
+        .parent()
         .should('have.class', 'disabled')
     });
   });
@@ -42,33 +54,43 @@ describe('Dockstore my workflows', function() {
   describe('Look at a published workflow', function() {
     it('Look at each tab', function(){
       cy
-        .get('.panel-group')
+        .get('accordion')
           .children(':nth-child(1)')
-          .children(':nth-child(2)')
-          .children(':nth-child(1)')
-          .children(':nth-child(13)')
           .find('a')
+          .contains('l')
           .first()
           .click()
-      cy
-        .get('#infoTab')
-        .should('have.class', 'active')
-        .and('not.have.class', 'disabled')
-      cy
-        .get('#labelsTab')
-        .should('not.have.class', 'disabled')
-      cy
-        .get('#versionsTab')
-        .should('not.have.class', 'disabled')
-      cy
-        .get('#filesTab')
-        .should('not.have.class', 'disabled')
-      cy
-        .get('#toolsTab')
-        .should('not.have.class', 'disabled')
-      cy
-        .get('#dagTab')
-        .should('not.have.class', 'disabled')
+          cy
+          .get('.nav-link')
+          .contains('Info')
+          .parent()
+          .should('have.class', 'active')
+          .and('not.have.class', 'disabled')
+        cy
+          .get('.nav-link')
+          .contains('Labels')
+          .parent()
+          .should('not.have.class', 'disabled')
+        cy
+          .get('.nav-link')
+          .contains('Versions')
+          .parent()
+          .should('not.have.class', 'disabled')
+        cy
+          .get('.nav-link')
+          .contains('Files')
+          .parent()
+          .should('not.have.class', 'disabled')
+        cy
+          .get('.nav-link')
+          .contains('Tools')
+          .parent()
+          .should('not.have.class', 'disabled')
+        cy
+          .get('.nav-link')
+          .contains('DAG')
+          .parent()
+          .should('not.have.class', 'disabled')
 
       cy
         .get('#publishButton')
