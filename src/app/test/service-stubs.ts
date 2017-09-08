@@ -189,8 +189,8 @@ export class AdvancedSearchStubService {
 }
 
 export class StarringStubService {
-    getStarring(id: any, type: any) {
-        return Observable.of({});
+    getStarring(id: any, type: any): Observable<Array<User>> {
+        return Observable.of([]);
     }
 }
 
