@@ -9,7 +9,7 @@ describe('Dockstore workflow search page', function() {
        cy
          .get('tbody')
          .children('tr')
-         .should('have.length', 2)
+         .should('have.length', 1)
      });
 
      it('Select test_workflow_cwl', function() {
