@@ -1,4 +1,4 @@
-
+import { User } from './../shared/swagger/model/user';
 import { AuthService } from 'ng2-ui-auth';
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { PageInfo } from './../shared/models/PageInfo';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent extends Logout {
-  private user;
+  public user: User;
   constructor (private pagenumberService: PagenumberService,
                trackLoginService: TrackLoginService,
                logoutService: LogoutService,

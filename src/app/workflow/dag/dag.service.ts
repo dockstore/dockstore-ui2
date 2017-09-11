@@ -117,7 +117,7 @@ export class DagService {
           this.getDockerText(this.dynamicPopover.link, this.dynamicPopover.docker) +
            `</div>`
         ;
-    };
+    }
 
     updateUndefinedPopoverContent() {
     if (this.dynamicPopover.title === undefined) {
@@ -132,7 +132,7 @@ export class DagService {
     if (this.dynamicPopover.run === undefined) {
       this.dynamicPopover.run = 'n/a';
     }
-  };
+  }
 
     setDynamicPopover(name: string, tool: string, type: string, docker: string, run: string) {
     this.dynamicPopover.title = name;
@@ -150,7 +150,7 @@ export class DagService {
         } else {
             return `<div><b>Run:</b>` + run + `</div>`;
         }
-    };
+    }
 
     getDockerText(link: string, docker: string) {
         const validLink = !this.isNA(docker);
@@ -163,7 +163,7 @@ export class DagService {
 
     isNA(docker: string) {
         return(docker === 'n/a');
-    };
+    }
 
     isHttp(run: string) {
         if (run.match('^http') || run.match('^https')) {
@@ -171,7 +171,7 @@ export class DagService {
         } else {
             return false;
         }
-    };
+    }
 
     setCurrentWorkflowId(newWorkflowId: number): void {
         this.currentWorkflowId.next(newWorkflowId);

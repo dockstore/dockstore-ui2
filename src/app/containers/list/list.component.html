@@ -19,10 +19,8 @@
             {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
           </td>
           <td>
-            <span id="verifiedIcon" *ngIf="getVerified(tool)">
-              <a href={{verifiedLink}}>
-                <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
-              </a>
+            <span  *ngIf="getVerified(tool)">  
+                <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"href={{verifiedLink}}></a>
             </span>
             {{ tool?.author || 'n/a' }}
           </td>

@@ -1,3 +1,5 @@
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { DateService } from './../../shared/date.service';
 import { ToolVersion } from './../../shared/swagger/model/toolVersion';
 import { VersionModalService } from './version-modal.service';
@@ -5,7 +7,6 @@ import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsWebService } from './../../shared/webservice/container-tags-web.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { ListContainersService } from './../../containers/list/list.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
@@ -25,7 +26,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public isModalShown: boolean;
   public editMode: boolean;
   public mode: TagEditorMode;
-  public tool: any;
+  public tool: DockstoreTool;
   public unsavedVersion;
   private savedCWLTestParameterFiles: Array<any>;
   private savedWDLTestParameterFiles: Array<any>;
@@ -41,14 +42,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
 
-  constructor(
-    private paramfilesService: ParamfilesService,
-    private versionModalService: VersionModalService,
-    private listContainersService: ListContainersService,
-    private containerService: ContainerService,
-    private containerTagsService: ContainerTagsWebService,
-    private stateService: StateService,
-    private dateService: DateService) {
+  constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
+    private listContainersService: ListContainersService, private containerService: ContainerService,
+    private containertagsService: ContainertagsService, private stateService: StateService, private dateService: DateService) {
   }
 
   // Almost all these functions should be moved to a service
@@ -110,17 +106,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     if (missingWDL && missingWDL.length > 0) {
       this.paramfilesService.deleteFiles(this.tool.id, missingWDL, this.version.name, 'WDL').subscribe();
     }
-    this.containerTagsService.putTags(this.tool.id, this.unsavedVersion).subscribe(response => {
+    this.containertagsService.updateTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
+      this.tool.tags = response;
+      this.containerService.setTool(this.tool);
       this.versionModalService.setIsModalShown(false);
-    });
-  }
-
-  deleteTag() {
-    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(deleteResponse => {
-      this.containerTagsService.getTags(this.tool.id).subscribe(response => {
-        this.tool.tags = response;
-        this.containerService.setTool(this.tool);
-      });
     });
   }
 

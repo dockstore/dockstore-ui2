@@ -113,7 +113,9 @@
         <app-files-workflow *ngIf="validVersions && checkMode('Files')" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
         </app-files-workflow>
       </tab>
-      <tab id="toolsTab" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')"></tab>
+      <tab id="toolsTab" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')">
+        <app-tool-tab></app-tool-tab>
+      </tab>
       <tab id="dagTab" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
         <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
       </tab>

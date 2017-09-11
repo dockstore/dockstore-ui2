@@ -7,8 +7,8 @@ import { UserService } from '../user.service';
   templateUrl: './onboarding.component.html'
 })
 export class OnboardingComponent implements OnInit {
-  private curStep = 1;
-  private tokenSetComplete;
+  public curStep = 1;
+  public tokenSetComplete;
   constructor(private userService: UserService) {
   }
   ngOnInit() {

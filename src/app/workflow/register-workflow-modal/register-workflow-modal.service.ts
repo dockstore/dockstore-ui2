@@ -1,7 +1,7 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
@@ -17,8 +17,7 @@ export class RegisterWorkflowModalService {
     isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
-    constructor(private workflowWebService: WorkflowWebService,
-        private workflowService: WorkflowService,
+    constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService,
         private stateService: StateService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
@@ -41,6 +40,7 @@ export class RegisterWorkflowModalService {
             errorDetails: errorDetails
         };
         this.workflowRegisterError.next(error);
+        this.stateService.refreshing.next(false);
     }
 
     setWorkflow(workflow: Workflow) {
@@ -54,18 +54,18 @@ export class RegisterWorkflowModalService {
 
     registerWorkflow(testParameterFilePath: string) {
         this.stateService.setRefreshing(true);
-        this.workflowWebService.manualRegister(
+        this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
             this.actualWorkflow.workflow_path,
             this.actualWorkflow.workflowName,
             this.actualWorkflow.descriptorType).subscribe(result => {
-                this.workflowWebService.refresh(result.id).subscribe(refreshResult => {
+                this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
                     this.workflowService.setWorkflow(refreshResult);
                     for (const version of refreshResult.workflowVersions){
-                        this.workflowWebService.addTestParameterFiles(result.id, [testParameterFilePath], null, version.name)
+                        this.workflowsService.addTestParameterFiles(result.id, [testParameterFilePath], null, version.name)
                         .subscribe();
                     this.stateService.setRefreshing(false);
                     this.setIsModalShown(false);

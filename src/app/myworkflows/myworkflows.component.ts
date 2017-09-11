@@ -1,3 +1,5 @@
+import { HttpService } from './../shared/http.service';
+import { Configuration } from './../shared/swagger/configuration';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { RefreshService } from './../shared/refresh.service';
 import {Component, OnInit} from '@angular/core';
@@ -24,14 +26,15 @@ export class MyWorkflowsComponent implements OnInit {
   workflow: any;
   user: any;
   workflows: any;
-  constructor(private myworkflowService: MyWorkflowsService,
-              private userService: UserService,
+  constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
+              private userService: UserService, private httpService: HttpService,
               private workflowService: WorkflowService,
               private refreshService: RefreshService,
               private registerWorkflowModalService: RegisterWorkflowModalService) {
 
   }
   ngOnInit() {
+    this.configuration.accessToken = this.httpService.getDockstoreToken();
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {

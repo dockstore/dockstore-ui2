@@ -19,7 +19,7 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
 
   constructor(private paramfilesService: ParamfilesService,
               private highlightJsService: HighlightJsService,
-              private fileService: FileService,
+              public fileService: FileService,
               private elementRef: ElementRef,
               private workflowService: WorkflowService) {
     super();

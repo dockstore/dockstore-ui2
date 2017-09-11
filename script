@@ -1,9 +1,6 @@
 sed -i 's/-//g' src/app/shared/swagger/model/tool.ts && sed -i 's/-//g' src/app/shared/swagger/model/toolVersion.ts && sed -i 's/-//g' src/app/shared/swagger/model/metadata.ts
-sed -i 's/isPublished/is_published/g' src/app/shared/swagger/model/workflow.ts
-sed -i 's/lastModified/last_modified/g' src/app/shared/swagger/model/workflow.ts
-sed -i 's/lastModified/last_modified/g' src/app/shared/swagger/model/workflowVersion.ts
-sed -i 's/workflowPath/workflow_path/g' src/app/shared/swagger/model/workflowVersion.ts
-sed -i 's/workflowPath/workflow_path/g' src/app/shared/swagger/model/workflow.ts
+sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/users.service.ts
+sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/containertags.service.ts
 sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/workflows.service.ts
 sed -i "s/let headers = new Headers(this\.defaultHeaders\.toJSON());/let headers = new Headers(this\.defaultHeaders\.toJSON()); headers\.set('Authorization', 'Bearer ' + this\.configuration\.accessToken);/g" src/app/shared/swagger/api/containers.service.ts
 for f in src/app/shared/swagger/*.ts

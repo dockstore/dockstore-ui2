@@ -1,3 +1,5 @@
+import { ContainerService } from './shared/container.service';
+import { WorkflowService } from './shared/workflow.service';
 import { Dockstore } from './shared/dockstore.model';
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
@@ -42,7 +44,6 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
-import { UsersWebService } from './shared/webservice/users-web.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
@@ -62,9 +63,7 @@ import { TwitterService } from './shared/twitter.service';
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { TabModule } from './shared/modules/tabs.module';
 import { ProviderService } from './shared/provider.service';
-import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
@@ -105,7 +104,6 @@ import { SearchModule } from './search/search.module';
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    TabModule,
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
@@ -135,12 +133,12 @@ import { SearchModule } from './search/search.module';
     UserService,
     ListService,
     CommunicatorService,
-    ToolService,
     ProviderService,
+    ContainerService,
+    WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     StateService,
-    UsersWebService,
     SearchService,
     VersionsService,
     PagenumberService,

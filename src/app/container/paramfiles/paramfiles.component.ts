@@ -23,7 +23,7 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private paramfilesService: ParamfilesService,
-              private fileService: FileService,
+              public fileService: FileService,
               private elementRef: ElementRef) {
     super();
   }

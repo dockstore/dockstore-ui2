@@ -1,4 +1,4 @@
-import { WorkflowWebService } from './../../shared/webservice/workflow-web.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { Component, Input } from '@angular/core';
 
@@ -25,7 +25,7 @@ export class VersionsWorkflowComponent extends Versions {
   }
 
   constructor(dockstoreService: DockstoreService, dateService: DateService,
-    private workflowService: WorkflowService, private workflowWebService: WorkflowWebService) {
+    private workflowService: WorkflowService, private workflowsService: WorkflowsService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
     this.workflowService.workflow$.subscribe(workflow => {
@@ -38,7 +38,7 @@ export class VersionsWorkflowComponent extends Versions {
 
   updateDefaultVersion(newDefaultVersion: string) {
     this.workflow.defaultVersion = newDefaultVersion;
-    this.workflowWebService.updateWorkflow(this.workflowId, this.workflow).subscribe(
+    this.workflowsService.updateWorkflow(this.workflowId, this.workflow).subscribe(
       response => this.workflowService.setWorkflow(response));
   }
 
