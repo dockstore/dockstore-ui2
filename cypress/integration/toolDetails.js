@@ -2,6 +2,9 @@ describe('Dockstore Tool Details', function() {
     require('./helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
+        cy
+            .get('tab')
+            .should('have.length', 7)
     });
 
     it('Change tab to labels', function() {
