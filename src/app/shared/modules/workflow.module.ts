@@ -1,8 +1,3 @@
-import { ErrorService } from './../../container/error.service';
-import { InfoTabService } from './../../workflow/info-tab/info-tab.service';
-import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
-import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
-import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { RefreshService } from './../refresh.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
@@ -30,6 +25,9 @@ import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfile
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
+import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
+import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
+import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
 
 /* Module */
 import { HeaderModule } from '../modules/header.module';
@@ -37,9 +35,12 @@ import { ListWorkflowsModule } from '../modules/list-workflows.module';
 import { ParamfilesModule } from '../modules/paramfiles.module';
 import { SelectModule } from '../modules/select.module';
 import { DagModule } from './../../workflow/dag/dag.module';
+
 /* Service */
+import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
+import { ErrorService } from './../../container/error.service';
+import { InfoTabService } from './../../workflow/info-tab/info-tab.service';
 import { LaunchService } from '../../workflow/launch/launch.service';
-import { ContainerService } from '../container.service';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { DateService } from '../date.service';
@@ -60,7 +61,8 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     LaunchWorkflowComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
-    InfoTabComponent
+    InfoTabComponent,
+    ToolTabComponent
   ],
   imports: [
     CommonModule,
