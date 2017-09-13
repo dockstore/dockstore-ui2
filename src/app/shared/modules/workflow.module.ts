@@ -1,3 +1,4 @@
+import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -52,7 +53,8 @@ import { RefreshService } from './../refresh.service';
     LaunchWorkflowComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
-    InfoTabComponent
+    InfoTabComponent,
+    ToolTabComponent
   ],
   imports: [
     CommonModule,

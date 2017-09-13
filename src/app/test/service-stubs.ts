@@ -1,6 +1,6 @@
 import { Dockstore } from './../shared/dockstore.model';
 import { Token } from './../shared/swagger/model/token';
-import { bitbucketToken, gitLabToken, quayToken, updatedWorkflow, gitHubToken } from './mocked-objects';
+import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
 import { User } from './../shared/swagger/model/user';
 import { StarRequest } from './../shared/swagger/model/starRequest';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
@@ -124,7 +124,7 @@ export class HttpStubService {
 
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
-    workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
+    workflow$: BehaviorSubject<any> = new BehaviorSubject({sampleWorkflow1}); // This is the selected workflow
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
