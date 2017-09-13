@@ -89,8 +89,9 @@ export abstract class Tool implements OnInit, OnDestroy {
     if (this._toolType === 'workflows') {
       this.stateService.setPublicPage(this.isWorkflowPublic);
       if (this.isWorkflowPublic) {
-        this.routeSub = this.router.events.subscribe(event =>
-          this.urlWorkflowChanged(event)
+        this.routeSub = this.router.events.subscribe(event => {
+            this.urlWorkflowChanged(event);
+        }
         );
       } else {
         this.setUpWorkflow(this.communicatorService.getWorkflow());
@@ -98,8 +99,9 @@ export abstract class Tool implements OnInit, OnDestroy {
     } else if (this._toolType === 'containers') {
       this.stateService.setPublicPage(this.isToolPublic);
       if (this.isToolPublic) {
-        this.routeSub = this.router.events.subscribe(event =>
-          this.urlToolChanged(event)
+        this.routeSub = this.router.events.subscribe(event => {
+            this.urlToolChanged(event);
+        }
         );
       } else {
         this.setUpTool((this.communicatorService.getTool()));

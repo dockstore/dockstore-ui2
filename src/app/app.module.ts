@@ -58,6 +58,7 @@ import { VersionsService } from './footer/versions.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { SearchService } from './search/search.service';
 import { TwitterService } from './shared/twitter.service';
+import { ContainerService } from './shared/container.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
@@ -144,7 +145,8 @@ import { SearchModule } from './search/search.module';
     SearchService,
     VersionsService,
     PagenumberService,
-    TwitterService
+    TwitterService,
+    ContainerService
   ],
   bootstrap: [ AppComponent ]
 })

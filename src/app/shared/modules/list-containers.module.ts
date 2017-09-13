@@ -24,8 +24,7 @@ import { ContainerService } from '../container.service';
     TooltipModule.forRoot(),
   ],
   providers: [
-    ListContainersService,
-    ContainerService
+    ListContainersService
   ],
   exports: [
     ListContainersComponent
