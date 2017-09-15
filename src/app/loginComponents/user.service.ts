@@ -37,7 +37,7 @@ export class UserService {
 
   gravatarUrl(email: string, defaultImg: string) {
     if (email) {
-      return 'https://www.gravatar.com/avatar/' +  Md5.hashStr(email) + '?d=' + defaultImg + '&s=500';
+      return 'https://www.gravatar.com/avatar/' + Md5.hashStr(email) + '?d=' + defaultImg + '&s=500';
     } else {
       if (defaultImg) {
         return defaultImg;

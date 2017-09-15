@@ -29,7 +29,6 @@ before_install:
   - 'chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar'
   - 'sleep 3' # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
 
-
 install:
   - 'npm install -g bower'
   - 'npm install'
@@ -53,7 +52,6 @@ script:
   - ng serve --silent &
   - ng test --watch=false --code-coverage
   - cypress run --record --config defaultCommandTimeout=10000 #test using cypress for integration testing
-
 
 after_success:
   - ./node_modules/codecov/bin/codecov
