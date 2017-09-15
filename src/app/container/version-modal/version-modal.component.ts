@@ -1,3 +1,4 @@
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { DateService } from './../../shared/date.service';
@@ -44,7 +45,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService,
-    private containertagsService: ContainertagsService, private stateService: StateService, private dateService: DateService) {
+    private containersService: ContainersService, private containertagsService: ContainertagsService,
+    private stateService: StateService, private dateService: DateService) {
   }
 
   // Almost all these functions should be moved to a service
@@ -90,23 +92,25 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   editTag() {
+    const id = this.tool.id;
+    const tagName = this.version.name;
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
-      this.paramfilesService.putFiles(this.tool.id, newCWL, this.version.name, 'CWL').subscribe();
+      this.containersService.addTestParameterFiles(id, newCWL, null, tagName, 'CWL').subscribe();
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.paramfilesService.deleteFiles(this.tool.id, missingCWL, this.version.name, 'CWL').subscribe();
+      this.containersService.deleteTestParameterFiles(id, missingCWL, tagName, 'CWL').subscribe();
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.paramfilesService.putFiles(this.tool.id, newWDL, this.version.name, 'WDL').subscribe();
+      this.containersService.addTestParameterFiles(id, newWDL, null, tagName, 'WDL').subscribe();
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.paramfilesService.deleteFiles(this.tool.id, missingWDL, this.version.name, 'WDL').subscribe();
+      this.containersService.deleteTestParameterFiles(id, missingWDL, tagName, 'WDL').subscribe();
     }
-    this.containertagsService.updateTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
+    this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
       this.tool.tags = response;
       this.containerService.setTool(this.tool);
       this.versionModalService.setIsModalShown(false);
@@ -198,7 +202,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         }
       }
     );
-    this.stateService.publicPage.subscribe(publicPage => this.editMode = !publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
     });

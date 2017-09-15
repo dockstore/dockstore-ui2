@@ -1,3 +1,5 @@
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Workflow } from './../../shared/swagger/model/workflow';
 declare var cytoscape: any;
 declare var window: any;
 import { Observable } from 'rxjs/Rx';
@@ -22,14 +24,16 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   private cy: any;
 
   public expanded: Boolean = false;
-  public selectVersion;
+  public selectVersion: WorkflowVersion;
   @ViewChild('cy') el: ElementRef;
   private style;
-  public workflow;
+  public workflow: Workflow;
   private tooltip: string;
   public missingTool;
   private refresh = false;
-
+  setDagResult(dagResult: any) {
+    this.dagResult = dagResult;
+  }
   refreshDocument() {
     const self = this;
     if (this.dagResult) {
@@ -163,9 +167,11 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   download() {
-    const pngDAG = this.cy.png({ full: true, scale: 2 });
-    const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
-    $('#exportLink').attr('href', pngDAG).attr('download', name);
+    if (this.cy) {
+      const pngDAG = this.cy.png({ full: true, scale: 2 });
+      const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
+      $('#exportLink').attr('href', pngDAG).attr('download', name);
+    }
   }
   ngAfterViewChecked() {
     if (this.refresh) {
@@ -183,7 +189,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
       this.selectVersion = this.defaultVersion;
       this.getDag(this.defaultVersion.id);
     } else {
-      this.dagResult = null;
+      this.setDagResult(null);
       this.selectVersion = null;
     }
   }
@@ -197,7 +203,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   handleDagResponse(result: any) {
-    this.dagResult = result;
+    this.setDagResult(result);
     this.refresh = true;
     this.updateMissingTool();
   }

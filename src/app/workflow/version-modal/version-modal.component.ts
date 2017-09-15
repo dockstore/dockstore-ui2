@@ -32,7 +32,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.versionModalService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.subscribe(version => this.version = version);
     this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
@@ -43,7 +43,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         this.originalTestParameterFilePaths.push(testParameterFile.path);
       }
     });
-    this.stateService.publicPage.subscribe(publicPage => this.isPublic = publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
     this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
   }
 

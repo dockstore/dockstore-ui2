@@ -1,10 +1,10 @@
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Subscription } from 'rxjs/Subscription';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { ErrorService } from './error.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
-import { PublishRequest } from './../shared/models/PublishRequest';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -141,8 +141,9 @@ export class ContainerComponent extends Entry {
     if (this.publishDisable()) {
       return;
     } else {
-      const request: PublishRequest = new PublishRequest;
-      request.publish = this.published;
+      const request: PublishRequest = {
+        publish: this.published
+      };
       this.containersService.publish(this.tool.id, request).subscribe(
         response => this.tool.is_published = response.is_published, err => this.published = !this.published);
     }
@@ -202,7 +203,7 @@ export class ContainerComponent extends Entry {
     }
   }
   setContainerLabels(): any {
-    return this.dockstoreService.setContainerLabels(this.tool.id, this.containerEditData.labels).
+    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels).
       subscribe(
       tool => {
         this.tool.labels = tool.labels;

@@ -29,7 +29,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   ngOnInit() {
-    this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
       if (tool) {
@@ -48,11 +48,6 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   getVerifiedSource(name: string) {
-    for (const source of this.verifiedSource) {
-      if (source.version === name) {
-        return source.verifiedSource;
-      }
-    }
-    return '';
+    this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 }

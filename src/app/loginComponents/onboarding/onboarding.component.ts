@@ -1,3 +1,5 @@
+import { TokenService } from '../token.service';
+import { UsersService } from '../../shared/swagger';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
@@ -9,15 +11,17 @@ import { UserService } from '../user.service';
 export class OnboardingComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private usersService: UsersService, private tokenService: TokenService) {
   }
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
-    this.userService.getUser().subscribe(
-      user => {
-        const tokenStatusSet =  this.userService.getUserTokenStatusSet(user.id);
-        if (tokenStatusSet) {
-          this.tokenSetComplete = tokenStatusSet.github;
+    this.tokenService.tokens$.subscribe(
+      tokens => {
+        if (tokens) {
+          const tokenStatusSet = this.tokenService.getUserTokenStatusSet(tokens);
+          if (tokenStatusSet) {
+            this.tokenSetComplete = tokenStatusSet.github;
+          }
         }
       }
     );
@@ -28,7 +32,7 @@ export class OnboardingComponent implements OnInit {
     }
   }
   nextStep() {
-    if (this.tokenSetComplete) {
+    if (!this.tokenSetComplete) {
       return;
     }
     switch (this.curStep) {

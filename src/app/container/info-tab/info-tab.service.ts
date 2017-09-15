@@ -14,7 +14,7 @@ export class InfoTabService {
     constructor(private containersService: ContainersService, private stateService: StateService,
         private containerService: ContainerService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
-        this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
     setDockerFileEditing(editing: boolean) {
         this.dockerFileEditing$.next(editing);

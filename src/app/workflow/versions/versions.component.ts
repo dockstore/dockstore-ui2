@@ -43,12 +43,6 @@ export class VersionsWorkflowComponent extends Versions {
   }
 
   getVerifiedSource(name: string) {
-    for (const source of this.verifiedSource) {
-      if (source.version === name) {
-        return source.verifiedSource;
-      }
-
-    }
-    return '';
+    return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 }

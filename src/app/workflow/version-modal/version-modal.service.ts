@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class VersionModalService {
-    isModalShown: Subject<boolean> = new BehaviorSubject<boolean>(false);
+    isModalShown$: Subject<boolean> = new BehaviorSubject<boolean>(false);
     version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
     testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
     private workflowId;
@@ -22,7 +22,7 @@ export class VersionModalService {
         });
     }
     setIsModalShown(isModalShown: boolean) {
-        this.isModalShown.next(isModalShown);
+        this.isModalShown$.next(isModalShown);
     }
 
     setVersion(version: WorkflowVersion) {

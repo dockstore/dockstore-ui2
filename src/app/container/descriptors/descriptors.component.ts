@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { ContainerService } from '../../shared/container.service';
-import { DescriptorsService } from './descriptors.service';
+import { ToolDescriptorService } from './tool-descriptor.service';
 
 import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
@@ -12,7 +12,7 @@ import { FileService } from '../../shared/file.service';
 @Component({
   selector: 'app-descriptors-container',
   templateUrl: './descriptors.component.html',
-  providers: [DescriptorsService]
+  providers: [ToolDescriptorService]
 })
 
 export class DescriptorsComponent extends FileSelector implements AfterViewChecked {
@@ -22,7 +22,7 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   contentHighlighted: boolean;
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
-              private descriptorsService: DescriptorsService,
+              private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
               private elementRef: ElementRef
   ) {
@@ -30,11 +30,11 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   }
 
   getDescriptors(version): Array<any> {
-    return this.containerService.getDescriptors(this.versions, this.currentVersion);
+    return this.descriptorsService.getDescriptors(this.versions, this.currentVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor, 'containers');
+    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {

@@ -1,3 +1,4 @@
+import { ToolDescriptorService } from '../../container/descriptors/tool-descriptor.service';
 import { ErrorService } from './../../container/error.service';
 import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -28,12 +29,11 @@ import { ContainerService } from '../container.service';
 import { DateService } from '../date.service';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
-import { DockerfileService } from '../../container/dockerfile/dockerfile.service';
 import { FilesContainerComponent } from '../../container/files/files.component';
 import { FileService } from '../file.service';
 import { HeaderModule } from './header.module';
 import { LaunchComponent } from '../../container/launch/launch.component';
-import { LaunchService } from '../../container/launch/launch.service';
+import { ToolLaunchService } from '../../container/launch/tool-launch.service';
 import { ListContainersModule } from './list-containers.module';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { OrderByModule } from '../../shared/modules/orderby.module';
@@ -91,15 +91,15 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
     ErrorService,
     DateService,
     FileService,
-    LaunchService,
-    DockerfileService,
+    ToolLaunchService,
     ParamfilesService,
     RefreshService,
     RegisterToolService,
     WorkflowService,
     StarringService,
     VersionModalService,
-    InfoTabService
+    InfoTabService,
+    ToolDescriptorService
   ],
   exports: [
     ContainerComponent

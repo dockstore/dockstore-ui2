@@ -7,6 +7,11 @@ export class SearchService {
   private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   searchInfo$ = this.searchInfoSource.asObservable();
   loading$ = this.loading.asObservable();
+  /* Observable */
+  public toolhit$ = new BehaviorSubject<any>(null);
+
+  /* Observable */
+  public workflowhit$ = new BehaviorSubject<any>(null);
   /**
    * These are the terms which use "must" filters
    * Example: Results returned can be private or public but never both
@@ -17,9 +22,11 @@ export class SearchService {
   setSearchInfo(searchInfo) {
     this.searchInfoSource.next(searchInfo);
   }
+
   setLoading(loading: boolean) {
     this.loading.next(loading);
   }
+
   constructor() {
   }
   /**

@@ -31,7 +31,6 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { FooterComponent } from './footer/footer.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
-import { LoginApi } from './login/login.api';
 
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -51,11 +50,9 @@ import { DateService } from './shared/date.service';
 
 /* Internal Services */
 import { DockstoreService } from './shared/dockstore.service';
-import { HttpService } from './shared/http.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
-import { VersionsService } from './footer/versions.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { SearchService } from './search/search.service';
 import { TwitterService } from './shared/twitter.service';
@@ -122,12 +119,10 @@ import { SearchModule } from './search/search.module';
   ],
   providers: [
     AuthService,
-    LoginApi,
     LoginService,
     LogoutService,
     DockstoreService,
     DateService,
-    HttpService,
     TrackLoginService,
     TokenService,
     UserService,
@@ -140,7 +135,6 @@ import { SearchModule } from './search/search.module';
     CLIENT_ROUTER_PROVIDERS,
     StateService,
     SearchService,
-    VersionsService,
     PagenumberService,
     TwitterService
   ],
@@ -151,6 +145,7 @@ export class AppModule {
 
 export const apiConfig = new Configuration({
   accessToken: '',
+  apiKeys: {},
   basePath: Dockstore.API_URI
 });
 

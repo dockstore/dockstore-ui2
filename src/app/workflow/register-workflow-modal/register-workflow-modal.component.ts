@@ -40,9 +40,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
 
   ngOnInit() {
     this.registerWorkflowModalService.workflow.subscribe(workflow => this.workflow = workflow);
-    this.registerWorkflowModalService.workflowRegisterError.subscribe(
+    this.registerWorkflowModalService.workflowRegisterError$.subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
-    this.registerWorkflowModalService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
   }
 

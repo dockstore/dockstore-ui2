@@ -24,7 +24,7 @@ export class InfoTabComponent implements OnInit {
 
   ngOnInit() {
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-    this.stateService.publicPage.subscribe(isPublic => this.isPublic = isPublic);
+    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
   }

@@ -1,3 +1,4 @@
+import { UsersService } from './../shared/swagger/api/users.service';
 import { Component, OnInit } from '@angular/core';
 import { StarringService } from '../starring/starring.service';
 import { ProviderService } from '../shared/provider.service';
@@ -21,7 +22,7 @@ export class StarredEntriesComponent implements OnInit {
               private userService: UserService,
               private imageProviderService: ImageProviderService,
               private providerService: ProviderService,
-              private starentryService: StarentryService) { }
+              private starentryService: StarentryService, private usersService: UsersService) { }
 
   ngOnInit() {
     this.entrySubscription = this.starentryService.starEntry$.subscribe(
@@ -29,11 +30,9 @@ export class StarredEntriesComponent implements OnInit {
         this.selectedEntry = entry;
       }
     );
-    this.starringService.getStarredTools().subscribe(
+    this.userService.user$.subscribe(user => this.user = user);
+    this.usersService.getStarredTools().subscribe(
       starredTool => {
-        this.userService.getUser().subscribe(user => {
-          this.user = user;
-        });
         this.starredTools = starredTool;
         this.starredTools.forEach(
           tool => {
@@ -45,7 +44,7 @@ export class StarredEntriesComponent implements OnInit {
             }
           });
       });
-    this.starringService.getStarredWorkflows().subscribe(
+    this.usersService.getStarredWorkflows().subscribe(
       starredWorkflow => {
         this.starredWorkflows = starredWorkflow;
         this.starredWorkflows.forEach(

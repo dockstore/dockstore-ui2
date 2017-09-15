@@ -1,3 +1,4 @@
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { StateService } from './../../shared/state.service';
 import { VersionModalService } from './../version-modal/version-modal.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -13,20 +14,21 @@ import { WorkflowService } from '../../shared/workflow.service';
   styleUrls: ['./view.component.css']
 })
 export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit {
-  @Input() workflowId: string;
+  @Input() workflowId: number;
   items: any[];
   isPublic: boolean;
   constructor(
               private workflowService: WorkflowService,
               private versionModalService: VersionModalService,
               private stateService: StateService,
+              private workflowsService: WorkflowsService,
               dateService: DateService) {
     super(dateService);
   }
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
-    this.workflowService.getTestJson(this.workflowId, this.version.name)
+    this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name)
         .subscribe(items => {
             this.items = items;
             this.versionModalService.setTestParameterFiles(this.items);
@@ -36,7 +38,7 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
 
   initItems() {
     if (this.version) {
-      this.workflowService.getTestJson(this.workflowId, this.version.name)
+      this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name)
         .subscribe(items => {
             this.items = items;
           });
@@ -48,6 +50,6 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
   }
 
   ngOnInit() {
-    this.stateService.publicPage.subscribe(isPublic => this.isPublic = isPublic);
+    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
   }
 }

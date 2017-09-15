@@ -17,9 +17,13 @@ export class ToolTabComponent implements OnInit {
 
   ngOnInit() {
     this.workflowService.workflow$.subscribe(workflow => {
-      this.workflow = workflow;
-      this.selectVersion = this.workflow.workflowVersions.find(x => x.name === this.workflow.defaultVersion);
-      this.onChange();
+      if (workflow) {
+        this.workflow = workflow;
+        if (workflow.workflowVersions) {
+          this.selectVersion = this.workflow.workflowVersions.find(x => x.name === this.workflow.defaultVersion);
+          this.onChange();
+        }
+      }
     });
   }
 

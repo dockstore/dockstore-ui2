@@ -47,11 +47,6 @@ export class DocsService {
   }
 
   getDoc(slug: string): Doc {
-    for (const doc of this.docs) {
-      if (doc.getSlug() === slug) {
-        return doc;
-      }
-    }
-    return null;
+    return this.docs.find(x => x.getSlug() === slug);
   }
 }

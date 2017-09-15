@@ -27,15 +27,7 @@ export class SearchComponent implements OnInit {
    * and paginate to be scalable
    */
   @ViewChild('box') searchTermBox: ElementRef;
-  /* Observable */
-  private toolSource = new BehaviorSubject<any>(null);
-  toolhit$ = this.toolSource.asObservable();
   _timeout = false;
-
-  /* Observable */
-  private workflowSource = new BehaviorSubject<any>(null);
-  workflowhit$ = this.workflowSource.asObservable();
-
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public browseToolsTab = 'browseToolsTab';
@@ -160,9 +152,9 @@ export class SearchComponent implements OnInit {
    * @param providerService
    */
   constructor(private providerService: ProviderService,
-              private searchService: SearchService,
-              private advancedSearchService: AdvancedSearchService,
-              public lc: NgZone) {
+    private searchService: SearchService,
+    private advancedSearchService: AdvancedSearchService,
+    public lc: NgZone) {
     this._client = new Client({
       host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
       apiVersion: '5.x',
@@ -243,7 +235,7 @@ export class SearchComponent implements OnInit {
     let bodyNotVerified = bodybuilder().size(this.query_size);
     bodyNotVerified = this.appendQuery(bodyNotVerified);
     const key = 'tags.verified';
-    bodyNotVerified =  bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
+    bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
     bodyNotVerified = this.appendFilter(bodyNotVerified, null);
     const builtBodyNotVerified = bodyNotVerified.build();
     const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
@@ -324,9 +316,11 @@ export class SearchComponent implements OnInit {
     this.searchService.setLoading(true);
     // calculate number of filters
     let count = 0;
-    this.filters.forEach(filter => {
-      count += filter.size;
-    });
+    if (this.filters) {
+      this.filters.forEach(filter => {
+        count += filter.size;
+      });
+    }
     // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -373,8 +367,8 @@ export class SearchComponent implements OnInit {
       this.workflowHits = [];
       this.toolHits = [];
       this.filterEntry();
-      this.toolSource.next(this.toolHits);
-      this.workflowSource.next(this.workflowHits);
+      this.searchService.toolhit$.next(this.toolHits);
+      this.searchService.workflowhit$.next(this.workflowHits);
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
@@ -439,7 +433,7 @@ export class SearchComponent implements OnInit {
             body = body.orFilter('term', key, insideFilter);
           } else {
             if (key === 'tags.verified' && !insideFilter) {
-              body =  body.notFilter('term', key, !insideFilter);
+              body = body.notFilter('term', key, !insideFilter);
             } else {
               body = body.filter('term', key, insideFilter);
             }
@@ -515,15 +509,15 @@ export class SearchComponent implements OnInit {
         insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
       body = body.filter('bool', filter => filter
-                    .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-                    .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
+        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
       body = body.filter('bool', filter => filter
-                 .orFilter('bool', toolfilter => toolfilter
-                   .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
-                 .orFilter('bool', workflowfilter => workflowfilter
-                   .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
+        .orFilter('bool', toolfilter => toolfilter
+          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
+        .orFilter('bool', workflowfilter => workflowfilter
+          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
@@ -569,10 +563,10 @@ export class SearchComponent implements OnInit {
       const order = this.parseOrderBy(key);
       if (count > 0) {
         body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order});
+          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order });
         });
       } else {
-        body = body.agg('terms', key, key, { size: this.shard_size, order});
+        body = body.agg('terms', key, key, { size: this.shard_size, order });
       }
     });
     return body;
@@ -645,7 +639,7 @@ export class SearchComponent implements OnInit {
       if (this.sortModeMap.get(category).SortBy) { // Sort by Count
         orderBy = this.sortModeMap.get(category).CountOrderBy;
         this.sortModeMap.get(category).CountOrderBy = !orderBy;
-      } else  {
+      } else {
         orderBy = this.sortModeMap.get(category).AlphabetOrderBy;
         this.sortModeMap.get(category).AlphabetOrderBy = !orderBy;
       }
@@ -653,11 +647,11 @@ export class SearchComponent implements OnInit {
     if (sortMode) {
       /* Reorder the bucket map by count */
       orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
-                                           this.sortModeMap.get(category).CountOrderBy);
+        this.sortModeMap.get(category).CountOrderBy);
     } else {
       /* Reorder the bucket map by alphabet */
       orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
-                                           this.sortModeMap.get(category).AlphabetOrderBy);
+        this.sortModeMap.get(category).AlphabetOrderBy);
     }
     this.orderedBuckets.get(category).Items = orderedMap2;
     this.sortModeMap.get(category).SortBy = sortMode;
@@ -745,7 +739,7 @@ export class SearchComponent implements OnInit {
     orderedArray = orderedArray.sort((a, b) => {
       if (orderMode) {
         return a.key > b.key ? 1 : -1;
-      } else  {
+      } else {
         return a.key < b.key ? 1 : -1;
       }
     });
@@ -765,7 +759,7 @@ export class SearchComponent implements OnInit {
     return orderedArray;
   }
 
-  sortCategoryValue (valueMap: any, sortMode: boolean, orderMode: boolean): any {
+  sortCategoryValue(valueMap: any, sortMode: boolean, orderMode: boolean): any {
     let orderedArray = <any>[];
     valueMap.forEach(
       (value, key) => {
