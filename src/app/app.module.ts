@@ -1,3 +1,5 @@
+import { ContainerService } from './shared/container.service';
+import { WorkflowService } from './shared/workflow.service';
 import { Dockstore } from './shared/dockstore.model';
 import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
@@ -29,7 +31,6 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { FooterComponent } from './footer/footer.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
-import { LoginApi } from './login/login.api';
 
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -42,7 +43,6 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
-import { UsersWebService } from './shared/webservice/users-web.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
@@ -50,22 +50,17 @@ import { DateService } from './shared/date.service';
 
 /* Internal Services */
 import { DockstoreService } from './shared/dockstore.service';
-import { HttpService } from './shared/http.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
-import { VersionsService } from './footer/versions.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { SearchService } from './search/search.service';
 import { TwitterService } from './shared/twitter.service';
-import { ContainerService } from './shared/container.service';
 /* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { TabModule } from './shared/modules/tabs.module';
 import { ProviderService } from './shared/provider.service';
-import { ToolService } from './shared/tool.service';
 import { TrackLoginService } from './shared/track-login.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
@@ -106,7 +101,6 @@ import { SearchModule } from './search/search.module';
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    TabModule,
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
@@ -125,25 +119,22 @@ import { SearchModule } from './search/search.module';
   ],
   providers: [
     AuthService,
-    LoginApi,
     LoginService,
     LogoutService,
     DockstoreService,
     DateService,
-    HttpService,
     TrackLoginService,
     TokenService,
     UserService,
     ListService,
     CommunicatorService,
-    ToolService,
     ProviderService,
+    ContainerService,
+    WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     StateService,
-    UsersWebService,
     SearchService,
-    VersionsService,
     PagenumberService,
     TwitterService,
     ContainerService
@@ -155,6 +146,7 @@ export class AppModule {
 
 export const apiConfig = new Configuration({
   accessToken: '',
+  apiKeys: {},
   basePath: Dockstore.API_URI
 });
 

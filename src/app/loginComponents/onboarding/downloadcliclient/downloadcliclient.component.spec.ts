@@ -1,3 +1,8 @@
+import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
+import { AuthService } from 'ng2-ui-auth';
+import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
+import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
+import { ClipboardModule } from 'ngx-clipboard';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
@@ -8,7 +13,11 @@ describe('DownloadCLIClientComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DownloadCLIClientComponent ]
+      declarations: [ DownloadCLIClientComponent,
+        RouterLinkStubDirective, RouterOutletStubComponent ],
+      imports: [ClipboardModule],
+      providers: [ {provide: AuthService, useClass: AuthStubService},
+      {provide: GA4GHService, useClass: GA4GHStubService}]
     })
     .compileComponents();
   }));

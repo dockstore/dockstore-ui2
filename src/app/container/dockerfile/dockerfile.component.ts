@@ -1,9 +1,9 @@
+import { ContainersService } from '../../shared/swagger';
 import {Component, Input, ElementRef, AfterViewChecked, AfterViewInit} from '@angular/core';
 
 import { VersionSelector } from '../../shared/selectors/version-selector';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-import { DockerfileService } from './dockerfile.service';
 import { FileService } from '../../shared/file.service';
 import { ContainerService } from '../../shared/container.service';
 
@@ -18,11 +18,10 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
   nullContent: boolean;
   contentHighlighted: boolean;
 
-  constructor(private dockerfileService: DockerfileService,
-              private highlightJsService: HighlightJsService,
-              private fileService: FileService,
+  constructor(private highlightJsService: HighlightJsService,
+              public fileService: FileService,
               private elementRef: ElementRef,
-              private containerService: ContainerService) {
+              private containerService: ContainerService, private containersService: ContainersService) {
     super();
     this.nullContent = false;
   }
@@ -30,7 +29,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
   reactToVersion(): void {
     if (this.currentVersion) {
       this.nullContent = false;
-      this.dockerfileService.getDockerfile(this.id, this.currentVersion.name)
+      this.containersService.dockerfile(this.id, this.currentVersion.name)
         .subscribe(file => {
             this.content = file.content;
             this.contentHighlighted = true;

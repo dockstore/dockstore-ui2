@@ -1,3 +1,5 @@
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Workflow } from './../../shared/swagger/model/workflow';
 declare var cytoscape: any;
 declare var window: any;
 import { Observable } from 'rxjs/Rx';
@@ -18,18 +20,20 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
 
   private currentWorkflowId;
   private element: any;
-  private dagResult: any;
+  public dagResult: any;
   private cy: any;
 
   public expanded: Boolean = false;
-  private selectVersion;
+  public selectVersion: WorkflowVersion;
   @ViewChild('cy') el: ElementRef;
   private style;
-  private workflow;
+  public workflow: Workflow;
   private tooltip: string;
-  private missingTool;
+  public missingTool;
   private refresh = false;
-
+  setDagResult(dagResult: any) {
+    this.dagResult = dagResult;
+  }
   refreshDocument() {
     const self = this;
     if (this.dagResult) {
@@ -145,15 +149,6 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   ngOnInit() {
-    if (this.defaultVersion) {
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-      this.dagResult = result;
-      this.refresh = true;
-      this.updateMissingTool();
-    });
-    } else {
-      this.dagResult = null;
-    }
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.style = this.dagService.style;
     this.missingTool = false;
@@ -172,9 +167,11 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   download() {
-    const pngDAG = this.cy.png({ full: true, scale: 2 });
-    const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
-    $('#exportLink').attr('href', pngDAG).attr('download', name);
+    if (this.cy) {
+      const pngDAG = this.cy.png({ full: true, scale: 2 });
+      const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
+      $('#exportLink').attr('href', pngDAG).attr('download', name);
+    }
   }
   ngAfterViewChecked() {
     if (this.refresh) {
@@ -183,18 +180,31 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
     }
   }
 
+  onChange() {
+    this.getDag(this.selectVersion.id);
+  }
+
   ngOnChanges() {
     if (this.defaultVersion) {
       this.selectVersion = this.defaultVersion;
-    this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-      this.dagResult = result;
-      this.refresh = true;
-      this.updateMissingTool();
-    }, error => {this.dagResult = null; this.refresh = true; this.updateMissingTool();
-    });
+      this.getDag(this.defaultVersion.id);
     } else {
-      this.dagResult = null;
+      this.setDagResult(null);
       this.selectVersion = null;
     }
+  }
+
+  getDag(versionId: number) {
+    this.dagService.getCurrentDAG(this.id, versionId).subscribe(result => {
+      this.handleDagResponse(result);
+    }, error => {
+      this.handleDagResponse(null);
+    });
+  }
+
+  handleDagResponse(result: any) {
+    this.setDagResult(result);
+    this.refresh = true;
+    this.updateMissingTool();
   }
 }

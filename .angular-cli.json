@@ -60,18 +60,23 @@
   "lint": [
     {
       "project": "src/tsconfig.app.json",
-      "exclude": "**/node_modules/**/*"
+      "exclude": ["**/node_modules/**", "**/src/app/shared/swagger/**"]
     },
     {
-      "project": "src/tsconfig.spec.json"
+      "project": "src/tsconfig.spec.json",
+      "exclude": ["**/node_modules/**", "**/src/app/shared/swagger/**"]
     },
     {
-      "project": "e2e/tsconfig.e2e.json"
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": ["**/node_modules/**", "**/src/app/shared/swagger/**"]
     }
   ],
   "test": {
     "karma": {
       "config": "./karma.conf.js"
+    },
+    "codeCoverage": {
+      "exclude": ["src/app/shared/swagger/**", "src/app/shared/angular2-highlight-js/lib/**", "src/app/test/**"]
     }
   },
   "defaults": {

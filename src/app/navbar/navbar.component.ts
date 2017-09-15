@@ -1,4 +1,5 @@
-
+import { UsersService } from './../shared/swagger/api/users.service';
+import { User } from './../shared/swagger/model/user';
 import { AuthService } from 'ng2-ui-auth';
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
@@ -16,19 +17,20 @@ import { PageInfo } from './../shared/models/PageInfo';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent extends Logout {
-  private user;
-  constructor (private pagenumberService: PagenumberService,
-               trackLoginService: TrackLoginService,
-               logoutService: LogoutService,
-               router: Router,
-               userService: UserService) {
+export class NavbarComponent extends Logout implements OnInit {
+  public user: User;
+  constructor(private pagenumberService: PagenumberService,
+    trackLoginService: TrackLoginService,
+    logoutService: LogoutService,
+    router: Router,
+    private userService: UserService) {
     super(trackLoginService, logoutService, router);
-    userService.getUser().subscribe(user => userService.setUser(user));
-    userService.user$.subscribe(user => {
-      this.user = user;
-    });
   }
+
+  ngOnInit() {
+    this.userService.user$.subscribe(user => this.user = user);
+  }
+
   resetPageNumber() {
     const toolPageInfo: PageInfo = new PageInfo();
     toolPageInfo.pgNumber = 0;

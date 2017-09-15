@@ -1,3 +1,4 @@
+import { ErrorService } from './../container/error.service';
 import { Injectable } from '@angular/core';
 
 import { WorkflowsService } from './swagger/api/workflows.service';
@@ -18,10 +19,11 @@ export class RefreshService {
     private workflows;
     private refreshing: boolean;
     constructor(private WorkflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
-        private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService) {
+        private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
+        private errorService: ErrorService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-        this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
         this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
     }
@@ -36,6 +38,9 @@ export class RefreshService {
             this.replaceTool(response);
             this.containerService.setTool(response);
             this.stateService.setRefreshing(false);
+        }, error => {
+            this.errorService.setToolRegisterError(error);
+            this.stateService.setRefreshing(false);
         });
     }
 
@@ -46,7 +51,7 @@ export class RefreshService {
     refreshWorkflow() {
         this.stateService.setRefreshing(true);
         this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
-            this.replaceWorkflow(response);
+            this.workflowService.replaceWorkflow(this.workflows, response);
             this.workflowService.setWorkflow(response);
             this.stateService.setRefreshing(false);
         });
@@ -94,17 +99,5 @@ export class RefreshService {
         this.tools = this.tools.filter(obj => obj.id !== tool.id);
         this.tools.push(tool);
         this.containerService.setTools(this.tools);
-    }
-
-    /**
-     * The list of workflows is outdated.
-     * Replace outdated workflow with the same id with the updated workflow.
-     * @param {*} workflow  The updated workflow
-     * @memberof RefreshService
-     */
-    replaceWorkflow(workflow: Workflow) {
-        this.workflows = this.workflows.filter(obj => obj.id !== workflow.id);
-        this.workflows.push(workflow);
-        this.workflowService.setWorkflows(this.workflows);
     }
 }

@@ -1,7 +1,7 @@
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainersWebService } from './../../shared/webservice/containers-web.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { StateService } from './../../shared/state.service';
@@ -20,17 +20,16 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   defaultVersion: string;
   tool: any;
 
-  constructor(dockstoreService: DockstoreService,
+  constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService,
               private stateService: StateService,
-              private containerService: ContainerService,
-              private containersWebService: ContainersWebService) {
+              private containerService: ContainerService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
   }
 
   ngOnInit() {
-    this.stateService.publicPage.subscribe(publicPage => this.publicPage = publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
       if (tool) {
@@ -45,15 +44,10 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   updateDefaultVersion(newDefaultVersion: string) {
     this.tool.defaultVersion = newDefaultVersion;
-    this.containersWebService.updateContainer(this.tool.id, this.tool).subscribe(response => this.containerService.setTool(response));
+    this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => this.containerService.setTool(response));
   }
 
   getVerifiedSource(name: string) {
-    for (const source of this.verifiedSource) {
-      if (source.version === name) {
-        return source.verifiedSource;
-      }
-    }
-    return '';
+    this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 }

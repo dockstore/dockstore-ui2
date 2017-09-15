@@ -19,7 +19,7 @@ export const validationPatterns = {
   'gitPath': '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'cwlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)',
   'wdlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$',
-  'dockerfilePath': '^/([^\/?:*|<>]+/)*Dockerfile$',
+  'dockerfilePath': '^/([^\/?:*|<>]+/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
   'testFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'imagePath': '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'toolName': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',

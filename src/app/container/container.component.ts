@@ -1,8 +1,10 @@
-import { ContainersWebService } from './../shared/webservice/containers-web.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { Subscription } from 'rxjs/Subscription';
+import { ContainersService } from './../shared/swagger/api/containers.service';
+import { ErrorService } from './error.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
-import { PublishRequest } from './../shared/models/PublishRequest';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -13,11 +15,9 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 
-import { Tool } from '../shared/tool';
+import { Entry } from '../shared/entry';
 
-import { ToolService } from '../shared/tool.service';
 import { ContainerService } from '../shared/container.service';
-import { WorkflowService } from '../shared/workflow.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -27,39 +27,48 @@ import { TrackLoginService } from '../shared/track-login.service';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Tool {
-  labels: string[];
+export class ContainerComponent extends Entry {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
-  totalShare = 0;
-  shareURL: string;
   containerEditData: any;
   thisisValid = true;
-  labelPattern = validationPatterns.label;
-  starGazersClicked = false;
+  public tool;
+  private toolSubscription: Subscription;
+  private toolCopyBtnSubscription: Subscription;
+  public toolCopyBtn: string;
   constructor(private dockstoreService: DockstoreService,
     private dateService: DateService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
     private refreshService: RefreshService,
     private updateContainer: ContainerService,
-    private containerWebService: ContainersWebService,
+    private containersService: ContainersService,
     trackLoginService: TrackLoginService,
-    toolService: ToolService,
     communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
-    workflowService: WorkflowService,
-    containerService: ContainerService,
-    stateService: StateService) {
-    super(trackLoginService, toolService, communicatorService, providerService, router,
-      workflowService, containerService, stateService, 'containers');
+    private containerService: ContainerService,
+    stateService: StateService,
+    errorService: ErrorService) {
+    super(trackLoginService, providerService, router,
+      stateService, errorService);
+    this._toolType = 'containers';
   }
-  starGazersChange() {
-    this.starGazersClicked = !this.starGazersClicked;
+
+  public getDefaultVersionName(): string {
+    return this.tool.defaultVersion;
   }
+
+  isPublic(): boolean {
+    return this.isToolPublic;
+  }
+
+  public resetCopyBtn(): void {
+    this.containerService.setCopyBtn(null);
+  }
+
   setProperties() {
-    let toolRef = this.tool;
+    let toolRef: any = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
@@ -77,17 +86,65 @@ export class ContainerComponent extends Tool {
     }
     this.resetContainerEditData();
   }
-  sumCounts(count) {
-    this.totalShare += count;
+
+  public subscriptions(): void {
+    this.toolSubscription = this.containerService.tool$.subscribe(
+      tool => {
+        this.tool = tool;
+        if (tool) {
+          this.published = this.tool.is_published;
+        }
+        this.setUpTool(tool);
+      }
+    );
+    this.toolCopyBtnSubscription = this.containerService.copyBtn$.subscribe(
+      toolCopyBtn => {
+        this.toolCopyBtn = toolCopyBtn;
+      }
+    );
   }
 
-  publishTool() {
+  onDestroy(): void {
+    this.toolSubscription.unsubscribe();
+    this.toolCopyBtnSubscription.unsubscribe();
+  }
+
+  protected setUpTool(tool: any) {
+    if (tool) {
+      this.tool = tool;
+      if (!tool.providerUrl) {
+        this.providerService.setUpProvider(tool);
+      }
+      this.tool = Object.assign(tool, this.tool);
+      const toolRef: any = this.tool;
+      toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
+      toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
+      this.initTool();
+    }
+  }
+
+  public setupPublicEntry(url: String) {
+    if (url.includes('containers')) {
+      this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+      // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
+      // as opposed to just /tools or /docs etc.
+      this.containersService.getPublishedContainerByToolPath(this.encodedString(this.title), this._toolType)
+        .subscribe(tool => {
+          this.containerService.setTool(tool);
+        }, error => {
+          this.router.navigate(['../']);
+        });
+    }
+  }
+
+  publish() {
     if (this.publishDisable()) {
       return;
     } else {
-      const request: PublishRequest = new PublishRequest;
-      request.publish = this.published;
-      this.containerWebService.publish(this.tool.id, request).subscribe(
+      const request: PublishRequest = {
+        publish: this.published
+      };
+      this.containersService.publish(this.tool.id, request).subscribe(
         response => this.tool.is_published = response.is_published, err => this.published = !this.published);
     }
   }
@@ -120,7 +177,7 @@ export class ContainerComponent extends Tool {
       }
     }
     return false;
-  };
+  }
 
   refresh() {
     this.refreshService.refreshTool();
@@ -146,7 +203,7 @@ export class ContainerComponent extends Tool {
     }
   }
   setContainerLabels(): any {
-    return this.dockstoreService.setContainerLabels(this.tool.id, this.containerEditData.labels).
+    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels).
       subscribe(
       tool => {
         this.tool.labels = tool.labels;
@@ -154,4 +211,9 @@ export class ContainerComponent extends Tool {
         this.labelsEditMode = false;
       });
   }
+
+  public toolCopyBtnClick(copyBtn): void {
+    this.containerService.setCopyBtn(copyBtn);
+  }
+
 }

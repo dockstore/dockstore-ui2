@@ -35,19 +35,14 @@ export class SearchComponent implements OnInit {
   private toolSource = new BehaviorSubject<any>(null);
   private curURL = '';
   toolhit$ = this.toolSource.asObservable();
-  _timeout = false;
-
-  /* Observable */
-  private workflowSource = new BehaviorSubject<any>(null);
-  workflowhit$ = this.workflowSource.asObservable();
-
+  _timeout = false; 
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
   private toolHits: Object[];
   private workflowHits: Object[];
-  private hits: Object[];
+  public hits: Object[];
   private _client: Client;
   private shard_size = 10000;
   private activeToolBar = true;
@@ -74,22 +69,22 @@ export class SearchComponent implements OnInit {
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
-  private orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
+  public orderedBuckets: Map<string, SubBucket> = new Map<string, SubBucket>();
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
-  private fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+  public fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
 
   // Shows the sorting mode for the categories
   // true: sort by count (default); false: sort by alphabet
-  private sortModeMap: Map<string, CategorySort> = new Map<string, CategorySort>();
+  public sortModeMap: Map<string, CategorySort> = new Map<string, CategorySort>();
 
   // Shows which of the buckets are current selected
-  private checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
+  public checkboxMap: Map<string, Map<string, boolean>> = new Map<string, Map<string, boolean>>();
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
    * @type {Map<String, Set<string>>}
    */
-  private filters: Map<String, Set<string>> = new Map<String, Set<string>>();
+  public filters: Map<String, Set<string>> = new Map<String, Set<string>>();
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
@@ -104,7 +99,7 @@ export class SearchComponent implements OnInit {
     ['Labels', 'labels.value.keyword'],
     ['Verified Source', 'tags.verifiedSource'],
   ]);
-  private friendlyNames = new Map([
+  public friendlyNames = new Map([
     ['_type', 'Entry Type'],
     ['registry', 'Registry'],
     ['private_access', 'Private Access'],
@@ -141,7 +136,7 @@ export class SearchComponent implements OnInit {
    * The current text search
    * @type {string}
    */
-  private values = '';
+  public values = '';
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -294,7 +289,7 @@ export class SearchComponent implements OnInit {
     let bodyNotVerified = bodybuilder().size(this.query_size);
     bodyNotVerified = this.appendQuery(bodyNotVerified);
     const key = 'tags.verified';
-    bodyNotVerified =  bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
+    bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
     bodyNotVerified = this.appendFilter(bodyNotVerified, null);
     const builtBodyNotVerified = bodyNotVerified.build();
     const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
@@ -435,8 +430,8 @@ export class SearchComponent implements OnInit {
       this.workflowHits = [];
       this.toolHits = [];
       this.filterEntry();
-      this.toolSource.next(this.toolHits);
-      this.workflowSource.next(this.workflowHits);
+      this.searchService.toolhit$.next(this.toolHits);
+      this.searchService.workflowhit$.next(this.workflowHits);
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
@@ -505,7 +500,7 @@ export class SearchComponent implements OnInit {
             body = body.orFilter('term', key, insideFilter);
           } else {
             if (key === 'tags.verified' && !insideFilter) {
-              body =  body.notFilter('term', key, !insideFilter);
+              body = body.notFilter('term', key, !insideFilter);
             } else {
               body = body.filter('term', key, insideFilter);
             }
@@ -581,15 +576,15 @@ export class SearchComponent implements OnInit {
         insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
       body = body.filter('bool', filter => filter
-                    .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-                    .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
+        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
+        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
     }
     if (this.advancedSearchObject.ANDNoSplitFilter) {
       body = body.filter('bool', filter => filter
-                 .orFilter('bool', toolfilter => toolfilter
-                   .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
-                 .orFilter('bool', workflowfilter => workflowfilter
-                   .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
+        .orFilter('bool', toolfilter => toolfilter
+          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
+        .orFilter('bool', workflowfilter => workflowfilter
+          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
     }
     if (this.advancedSearchObject.ORFilter) {
       const filters = this.advancedSearchObject.ORFilter.split(' ');
@@ -635,10 +630,10 @@ export class SearchComponent implements OnInit {
       const order = this.parseOrderBy(key);
       if (count > 0) {
         body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order});
+          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order });
         });
       } else {
-        body = body.agg('terms', key, key, { size: this.shard_size, order});
+        body = body.agg('terms', key, key, { size: this.shard_size, order });
       }
     });
     return body;
@@ -767,7 +762,7 @@ export class SearchComponent implements OnInit {
       if (this.sortModeMap.get(category).SortBy) { // Sort by Count
         orderBy = this.sortModeMap.get(category).CountOrderBy;
         this.sortModeMap.get(category).CountOrderBy = !orderBy;
-      } else  {
+      } else {
         orderBy = this.sortModeMap.get(category).AlphabetOrderBy;
         this.sortModeMap.get(category).AlphabetOrderBy = !orderBy;
       }
@@ -775,11 +770,11 @@ export class SearchComponent implements OnInit {
     if (sortMode) {
       /* Reorder the bucket map by count */
       orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
-                                           this.sortModeMap.get(category).CountOrderBy);
+        this.sortModeMap.get(category).CountOrderBy);
     } else {
       /* Reorder the bucket map by alphabet */
       orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
-                                           this.sortModeMap.get(category).AlphabetOrderBy);
+        this.sortModeMap.get(category).AlphabetOrderBy);
     }
     this.orderedBuckets.get(category).Items = orderedMap2;
     this.sortModeMap.get(category).SortBy = sortMode;
@@ -864,7 +859,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  sortCategoryValue (valueMap: any, sortMode: boolean, orderMode: boolean): any {
+  sortCategoryValue(valueMap: any, sortMode: boolean, orderMode: boolean): any {
     let orderedArray = <any>[];
     valueMap.forEach(
       (value, key) => {

@@ -1,3 +1,6 @@
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { DateService } from './../../shared/date.service';
 import { ToolVersion } from './../../shared/swagger/model/toolVersion';
 import { VersionModalService } from './version-modal.service';
@@ -5,13 +8,12 @@ import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsWebService } from './../../shared/webservice/container-tags-web.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { ListContainersService } from './../../containers/list/list.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { StateService } from './../../shared/state.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { validationMessages, formErrors } from '../../shared/validationMessages.model';
+import { validationMessages, validationPatterns, formErrors } from '../../shared/validationMessages.model';
 import { View } from '../../shared/view';
 
 @Component({
@@ -23,32 +25,28 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = DescriptorType;
   public isModalShown: boolean;
-  private editMode;
-  private mode: TagEditorMode;
-  private tool: any;
-  private unsavedVersion;
+  public editMode: boolean;
+  public mode: TagEditorMode;
+  public tool: DockstoreTool;
+  public unsavedVersion;
   private savedCWLTestParameterFiles: Array<any>;
   private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
-  private unsavedCWLTestParameterFilePaths: Array<string>;
-  private unsavedWDLTestParameterFilePaths: Array<string>;
-  private unsavedTestCWLFile = '';
-  private unsavedTestWDLFile = '';
-  private formErrors = formErrors;
+  public unsavedCWLTestParameterFilePaths: Array<string>;
+  public unsavedWDLTestParameterFilePaths: Array<string>;
+  public unsavedTestCWLFile = '';
+  public unsavedTestWDLFile = '';
+  public formErrors = formErrors;
   private version: ToolVersion;
-
+  public validationPatterns = validationPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
 
-  constructor(
-    private paramfilesService: ParamfilesService,
-    private versionModalService: VersionModalService,
-    private listContainersService: ListContainersService,
-    private containerService: ContainerService,
-    private containerTagsService: ContainerTagsWebService,
-    private stateService: StateService,
-    private dateService: DateService) {
+  constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
+    private listContainersService: ListContainersService, private containerService: ContainerService,
+    private containersService: ContainersService, private containertagsService: ContainertagsService,
+    private stateService: StateService, private dateService: DateService) {
   }
 
   // Almost all these functions should be moved to a service
@@ -94,37 +92,32 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   editTag() {
+    const id = this.tool.id;
+    const tagName = this.version.name;
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
-      this.paramfilesService.putFiles(this.tool.id, newCWL, this.version.name, 'CWL').subscribe();
+      this.containersService.addTestParameterFiles(id, newCWL, null, tagName, 'CWL').subscribe();
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.paramfilesService.deleteFiles(this.tool.id, missingCWL, this.version.name, 'CWL').subscribe();
+      this.containersService.deleteTestParameterFiles(id, missingCWL, tagName, 'CWL').subscribe();
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.paramfilesService.putFiles(this.tool.id, newWDL, this.version.name, 'WDL').subscribe();
+      this.containersService.addTestParameterFiles(id, newWDL, null, tagName, 'WDL').subscribe();
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.paramfilesService.deleteFiles(this.tool.id, missingWDL, this.version.name, 'WDL').subscribe();
+      this.containersService.deleteTestParameterFiles(id, missingWDL, tagName, 'WDL').subscribe();
     }
-    this.containerTagsService.putTags(this.tool.id, this.unsavedVersion).subscribe(response => {
+    this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
+      this.tool.tags = response;
+      this.containerService.setTool(this.tool);
       this.versionModalService.setIsModalShown(false);
     });
   }
 
-  deleteTag() {
-    this.containerTagsService.deleteTag(this.tool.id, this.unsavedVersion.id).subscribe(deleteResponse => {
-      this.containerTagsService.getTags(this.tool.id).subscribe(response => {
-        this.tool.tags = response;
-        this.containerService.setTool(this.tool);
-      });
-    });
-  }
-
-  closeModal() {
+  onHidden() {
     this.versionModalService.setIsModalShown(false);
     this.versionModalService.setCurrentMode(null);
   }
@@ -194,6 +187,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
+
   ngOnInit() {
     this.versionModalService.version.subscribe(version => {
       this.version = version;
@@ -208,7 +202,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         }
       }
     );
-    this.stateService.publicPage.subscribe(publicPage => this.editMode = !publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
     });
@@ -225,6 +219,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
   }
+
   getDateTimeMessage(timestamp) {
     return this.dateService.getDateTimeMessage(timestamp);
   }

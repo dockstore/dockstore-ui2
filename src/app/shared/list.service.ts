@@ -1,19 +1,25 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
-import { Dockstore } from './dockstore.model';
-
-import { HttpService } from './http.service';
+import { ContainersService } from './swagger';
+import { UsersService } from './swagger/api/users.service';
+import { WorkflowsService } from './swagger/api/workflows.service';
 
 @Injectable()
 export class ListService {
 
-  constructor(private httpService: HttpService) { }
+  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService,
+    private usersService: UsersService) { }
 
-  getPublishedTools(toolType: string) {
-    return this.httpService.getResponse(`${ Dockstore.API_URI }/${ toolType }/published`);
+  getPublishedTools(toolType: any): Observable<any> {
+    if (toolType === 'workflows') {
+      return this.workflowsService.allPublishedWorkflows();
+    } else {
+      return this.containersService.allPublishedContainers();
+    }
   }
 
   getUserTools(userId: number) {
-    return this.httpService.getResponse(`${ Dockstore.API_URI }/users/${ userId }/containers`);
-  }
+      return this.usersService.userContainers(userId);
+    }
 }

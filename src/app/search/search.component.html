@@ -95,7 +95,7 @@
             </div>
           </div>
 
-          <div class="panel-container-label" *ngIf=" orderedBuckets.get(key).Items.size > 5">
+          <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
               <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
               <a>

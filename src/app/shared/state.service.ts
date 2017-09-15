@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class StateService {
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    publicPage: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    publicPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     constructor() { }
 
     setRefreshing(refreshing: boolean) {
@@ -19,6 +19,6 @@ export class StateService {
     }
 
     setPublicPage(publicPage: boolean) {
-        this.publicPage.next(publicPage);
+        this.publicPage$.next(publicPage);
     }
 }

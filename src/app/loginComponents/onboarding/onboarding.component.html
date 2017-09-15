@@ -17,7 +17,7 @@
       <li *ngIf="curStep > 1">
         <button class="changePage" (click)="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span>Previous</button>
       </li>
-      <li *ngIf="!tokenSetComplete">
+      <li *ngIf="tokenSetComplete">
         <button class="changePage" (click)="nextStep()" id="next_step" *ngIf="curStep < 3">Next<span class="glyphicon glyphicon-chevron-right"></span></button>
         <button class="changePage" routerLink="/docs" id="finish_step" *ngIf="curStep >= 3">Finish<span class="glyphicon glyphicon-chevron-right"></span></button>
       </li>

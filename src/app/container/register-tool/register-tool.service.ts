@@ -1,4 +1,5 @@
-import { ContainersWebService } from './../../shared/webservice/containers-web.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { StateService } from './../../shared/state.service';
 import { ContainerService } from './../../shared/container.service';
 import { Tool } from './tool';
@@ -12,7 +13,7 @@ export class RegisterToolService {
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private repositories = Repository;
     private friendlyRepositories = FriendlyRepositories;
-    showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private dockerRegistryMap = [];
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
@@ -24,15 +25,15 @@ export class RegisterToolService {
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containerWebService: ContainersWebService,
+    constructor(private containersService: ContainersService,
         private containerService: ContainerService,
         private stateService: StateService) {
-        this.containerWebService.getDockerRegistryList().subscribe(map => this.dockerRegistryMap = map);
-        this.containerService.tools.subscribe(tools => this.tools = tools);
+        this.containersService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
+        this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
     deregisterTool() {
-        this.containerWebService.deleteContainer(this.selectedTool.id).subscribe(response => {
+        this.containersService.deleteContainer(this.selectedTool.id).subscribe(response => {
             const index = this.tools.indexOf(this.selectedTool);
             this.tools.splice(index, 1);
             this.containerService.setTools(this.tools);
@@ -64,11 +65,11 @@ export class RegisterToolService {
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
         this.setTool(newTool);
-        const normalizedToolObj = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
-        this.containerWebService.postRegisterManual(normalizedToolObj).subscribe(response => {
+        const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
+        this.containersService.registerManual(normalizedToolObj).subscribe(response => {
             this.setToolRegisterError(null);
             this.stateService.setRefreshing(true);
-            this.containerWebService.getContainerRefresh(response.id).subscribe(refreshResponse => {
+            this.containersService.refresh(response.id).subscribe(refreshResponse => {
                 this.setIsModalShown(false);
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
@@ -125,7 +126,7 @@ export class RegisterToolService {
             imageName = (part !== 'name') ? matchObj[1] : matchObj[4];
         }
         return imageName;
-    };
+    }
 
     getGitUrl(gitPath, scrProvider) {
         let gitUrl = '';
@@ -143,7 +144,7 @@ export class RegisterToolService {
         }
         gitUrl += gitPath;
         return gitUrl;
-    };
+    }
 
     createPath(toolObj: Tool, customDockerRegistryPath) {
         let path = '';
@@ -154,7 +155,7 @@ export class RegisterToolService {
         }
         path += '/' + this.getImagePath(toolObj.imagePath, 'namespace') + '/' + this.getImagePath(toolObj.imagePath, 'name');
         return path;
-    };
+    }
 
     checkForSpecialDockerRegistry(toolObj: Tool) {
         for (const registry of this.dockerRegistryMap) {
@@ -175,7 +176,7 @@ export class RegisterToolService {
                 }
             }
         }
-    };
+    }
 
     getImageRegistryPath(irProvider): string {
         let foundEnum;
@@ -185,7 +186,7 @@ export class RegisterToolService {
             }
         });
         return foundEnum;
-    };
+    }
 
     getToolRegistry(irProvider): string {
         let foundEnum;
@@ -195,15 +196,15 @@ export class RegisterToolService {
             }
         });
         return foundEnum;
-    };
+    }
 
     registryKeys(): Array<string> {
         return this.dockerRegistryMap.map(a => a.enum);
     }
 
-    getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string) {
-        const normToolObj = {
-            mode: 'MANUAL_IMAGE_PATH',
+    getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string): DockstoreTool {
+        const normToolObj: any = {
+            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
             name: this.getImagePath(toolObj.imagePath, 'name'),
             toolname: toolObj.toolname,
             namespace: this.getImagePath(toolObj.imagePath, 'namespace'),
@@ -223,7 +224,7 @@ export class RegisterToolService {
             delete normToolObj.toolname;
         }
         return normToolObj;
-    };
+    }
 
     repositoryKeys(): Array<string> {
         const keys = Object.keys(this.repositories);
@@ -232,7 +233,7 @@ export class RegisterToolService {
 
     friendlyRegistryKeys(): Array<string> {
         if (this.dockerRegistryMap) {
-            return this.dockerRegistryMap.map((a) => { return a.friendlyName; });
+            return this.dockerRegistryMap.map((a) => a.friendlyName);
         }
     }
 

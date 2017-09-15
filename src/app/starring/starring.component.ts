@@ -40,6 +40,7 @@ export class StarringComponent implements OnInit {
       // get the tool from the input, used by the starred Page
       this.setupInputEntry();
     }
+    this.userService.user$.subscribe(user => this.user = user);
   }
   setupSubscription() {
     this.workflowSubscription = this.workflowService.workflow$.subscribe(
@@ -77,10 +78,7 @@ export class StarringComponent implements OnInit {
         state => {
           this.isLoggedIn = state;
           if (state) {
-            this.userService.getUser().subscribe(user => {
-              this.user = user;
-              this.getStarring();
-            });
+            this.getStarring();
           }
         });
     } else {

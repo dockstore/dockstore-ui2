@@ -1,3 +1,4 @@
+import { StateService } from './../../shared/state.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { NgForm } from '@angular/forms';
 import { formErrors, validationPatterns, validationMessages } from './../../shared/validationMessages.model';
@@ -11,17 +12,18 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   styleUrls: ['./register-workflow-modal.component.css']
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
-  private formErrors = formErrors;
-  private validationPatterns = validationPatterns;
-  private workflow: Workflow;
-  private cwlTestParameterFilePath: string;
-  private workflowRegisterError;
+  public formErrors = formErrors;
+  public validationPatterns = validationPatterns;
+  public workflow: Workflow;
+  public cwlTestParameterFilePath: string;
+  public workflowRegisterError;
   public isModalShown: boolean;
+  public refreshing: boolean;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService) {
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService) {
   }
 
   friendlyRepositoryKeys(): Array<string> {
@@ -38,9 +40,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
 
   ngOnInit() {
     this.registerWorkflowModalService.workflow.subscribe(workflow => this.workflow = workflow);
-    this.registerWorkflowModalService.workflowRegisterError.subscribe(
+    this.registerWorkflowModalService.workflowRegisterError$.subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
-    this.registerWorkflowModalService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
   }
 
   // Validation starts here, should move most of these to a service somehow

@@ -23,7 +23,7 @@ import { ListContainersService } from './list.service';
 export class ListContainersComponent extends ToolLister {
   @Input() previewMode: boolean;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
-  verifiedLink: string;
+  public verifiedLink: string;
   toolsTable: any[] = [];
   private pageNumberSubscription: Subscription;
   // TODO: make an API endpoint to retrieve only the necessary properties for the containers table

@@ -1,93 +1,49 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-
-import { Dockstore } from '../shared/dockstore.model';
-import { HttpService } from '../shared/http.service';
+import { AuthService } from 'ng2-ui-auth';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Md5 } from 'ts-md5/dist/md5';
 
+import { UsersService } from '../shared/swagger';
+import { Configuration } from './../shared/swagger/configuration';
+import { User } from './../shared/swagger/model/user';
+
+
+/**
+ * This service contains the user observable that is returned from usersService.getUser().
+ * No other component should be getting the user.  Every component should be getting the user from this service.
+ *
+ * @export
+ * @class UserService
+ */
 @Injectable()
 export class UserService {
 
-  private userSource = new Subject<any>();
+  private userSource = new BehaviorSubject<User>(null);
 
   user$ = this.userSource.asObservable();
 
-  constructor(private httpService: HttpService) { }
+  constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration) {
+    this.updateUser();
+  }
 
   setUser(user) {
     this.userSource.next(user);
   }
 
   updateUser() {
-    const updateUserUrl = `${ Dockstore.API_URI }/users/user/updateUserMetadata`;
-    return this.httpService.getAuthResponse(updateUserUrl);
-  }
-
-  getUser() {
-    const getUserUrl = `${ Dockstore.API_URI }/users/user`;
-    return this.httpService.getAuthResponse(getUserUrl);
-  }
-
-  getTokens(userId: number) {
-    const getUserTokensUrl = `${ Dockstore.API_URI }/users/${ userId }/tokens`;
-    return this.httpService.getAuthResponse(getUserTokensUrl);
-  }
-
-  getUserTools(userId: number) {
-    const getUserToolsUrl = `${ Dockstore.API_URI }/users/${ userId }/containers`;
-    return this.httpService.getAuthResponse(getUserToolsUrl);
-  }
-
-  getUserWorkflowList(userId: number) {
-    const getUserWorkflowUrl = `${ Dockstore.API_URI }/users/${ userId }/workflows`;
-    return this.httpService.getAuthResponse(getUserWorkflowUrl);
+    this.configuration.accessToken = this.authService.getToken();
+    this.usersService.getUser().subscribe((user: User) => this.setUser(user));
   }
 
   gravatarUrl(email: string, defaultImg: string) {
     if (email) {
-      return 'https://www.gravatar.com/avatar/' +  Md5.hashStr(email) + '?d=' + defaultImg + '&s=500';
+      return 'https://www.gravatar.com/avatar/' + Md5.hashStr(email) + '?d=' + defaultImg + '&s=500';
     } else {
       if (defaultImg) {
         return defaultImg;
       } else {
-        return 'http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg';
+        return 'http://www.gravatar.com/avatar/?d=mm&s=500';
       }
     }
   }
-
-  getUserTokenStatusSet(userId) {
-    let tokenSet;
-    this.getTokens(userId).subscribe(
-      tokens => {
-        const tokenStatusSet = {
-          dockstore: false,
-          github: false,
-          bitbucket: false,
-          quayio: false,
-          gitlab: false
-        };
-        for (let i = 0; i < tokens.length; i++) {
-          switch (tokens[i].tokenSource) {
-            case 'dockstore':
-              tokenStatusSet.dockstore = true;
-              break;
-            case 'github.com':
-              tokenStatusSet.github = true;
-              break;
-            case 'bitbucket.org':
-              tokenStatusSet.bitbucket = true;
-              break;
-            case 'quay.io':
-              tokenStatusSet.quayio = true;
-              break;
-            case 'gitlab.com':
-              tokenStatusSet.gitlab = true;
-              break;
-          }
-        }
-        tokenSet = tokenStatusSet;
-      });
-    return tokenSet;
-  }
-
 }

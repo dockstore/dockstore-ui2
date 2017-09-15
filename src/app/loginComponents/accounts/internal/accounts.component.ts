@@ -1,3 +1,6 @@
+import { AuthService } from 'ng2-ui-auth';
+import { Configuration } from '../../../shared/swagger';
+import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -8,29 +11,30 @@ import { UserService } from '../../user.service';
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css']
 })
-export class AccountsInternalComponent implements OnInit, OnDestroy {
-
-  private subscription: ISubscription;
+export class AccountsInternalComponent implements OnInit {
   user;
   syncingWithGithub: boolean;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
+    private authService: AuthService) { }
 
   syncGitHub() {
     this.syncingWithGithub = true;
-    this.userService.updateUser().subscribe(user => {
-        this.user = user;
-        this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
-        this.syncingWithGithub = false;
+    this.usersService.updateUserMetadata().subscribe(user => {
+      this.user = user;
+      this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
+      this.syncingWithGithub = false;
     }
     );
   }
 
   private getUser() {
-    this.subscription = this.userService.getUser().subscribe(user => {
-        this.user = user;
+    this.userService.user$.subscribe(user => {
+      this.user = user;
+      if (user) {
         this.setProperty();
       }
+    }
     );
 
   }
@@ -39,9 +43,5 @@ export class AccountsInternalComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getUser();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

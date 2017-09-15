@@ -1,8 +1,10 @@
+import { ContainersService } from '../../shared/swagger';
+import { Tag } from './../../shared/swagger/model/tag';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
-import { ContainerTagsWebService } from './../../shared/webservice/container-tags-web.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
@@ -16,11 +18,11 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
   @ViewChild('addTagForm') currentForm: NgForm;
   public DescriptorType = DescriptorType;
-  private tool;
-  private formErrors = formErrors;
-  private validationPatterns = validationPatterns;
+  public tool;
+  public formErrors = formErrors;
+  public validationPatterns = validationPatterns;
   editMode = true;
-  unsavedVersion = {
+  unsavedVersion: Tag = {
     'name': '',
     'reference': '',
     'image_id': '',
@@ -38,9 +40,8 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedTestWDLFile = '';
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
-  constructor(private containerService: ContainerService,
-    private containerTagsService: ContainerTagsWebService,
-    private paramFilesService: ParamfilesService) {
+  constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
+    private containersService: ContainersService, private paramFilesService: ParamfilesService) {
   }
 
   ngOnInit() {
@@ -91,11 +92,13 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   }
 
   addTag() {
-    this.containerTagsService.postTags(this.tool.id, this.unsavedVersion).subscribe(response => {
+    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
       console.log(response);
       this.tool.tags = response;
-      this.paramFilesService.putFiles(this.tool.id, this.unsavedCWLTestParameterFilePaths, this.unsavedVersion.name, 'CWL').subscribe();
-      this.paramFilesService.putFiles(this.tool.id, this.unsavedWDLTestParameterFilePaths, this.unsavedVersion.name, 'WDL').subscribe();
+      const id = this.tool.id;
+      const tagName = this.unsavedVersion.name;
+      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, null, tagName, 'CWL').subscribe();
+      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, null, tagName, 'WDL').subscribe();
       this.containerService.setTool(this.tool);
     }, error => console.log(error));
   }

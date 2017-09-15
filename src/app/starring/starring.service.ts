@@ -1,37 +1,43 @@
 import { Injectable } from '@angular/core';
-import { RequestMethod, URLSearchParams} from '@angular/http';
-import { AuthService } from 'ng2-ui-auth';
-import { Dockstore } from '../shared/dockstore.model';
-import { HttpService } from '../shared/http.service';
+
+import { ContainersService, WorkflowsService } from '../shared/swagger';
+import { UsersService } from './../shared/swagger/api/users.service';
 
 @Injectable()
 export class StarringService {
-  constructor(private httpService: HttpService,
-              private authService: AuthService) { }
+  constructor(private usersService: UsersService, private containersService: ContainersService,
+    private workflowsService: WorkflowsService) { }
   setUnstar(entryID: number, entryType: string): any {
-    const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/unstar`;
-    return this.httpService.delete(url);
+    if (entryType === 'workflows') {
+      return this.workflowsService.unstarEntry(entryID);
+    } else {
+      return this.containersService.unstarEntry(entryID);
+    }
   }
   setStar(entryID: number, entryType: string): any {
-    const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/star`;
     const body = {
       containerId: entryID,
       workflowId: entryID
     };
-    return this.httpService.putResponse(url, body, this.authService.getToken());
+    if (entryType === 'workflows') {
+      return this.workflowsService.starEntry(entryID, body);
+    } else {
+      return this.containersService.starEntry(entryID, body);
+    }
   }
   getStarring(entryID: number, entryType: string): any {
-    const url = `${ Dockstore.API_URI }/${ entryType }/${ entryID }/starredUsers`;
-    return this.httpService.getAuthResponse(url);
+    if (entryType === 'workflows') {
+      return this.workflowsService.getStarredUsers(entryID);
+    } else {
+      return this.containersService.getStarredUsers(entryID);
+    }
   }
 
   getStarredTools(): any {
-    const url = `${ Dockstore.API_URI }/users/starredTools/`;
-    return this.httpService.getAuthResponse(url);
+    return this.usersService.getStarredTools();
   }
 
   getStarredWorkflows(): any {
-    const url = `${ Dockstore.API_URI }/users/starredWorkflows/`;
-    return this.httpService.getAuthResponse(url);
+    return this.usersService.getStarredWorkflows();
   }
 }

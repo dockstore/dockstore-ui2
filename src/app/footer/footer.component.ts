@@ -1,25 +1,24 @@
+import { Metadata } from './../shared/swagger/model/metadata';
 import { Component, OnInit } from '@angular/core';
 
-import { VersionsService } from './versions.service';
-
 import { versions } from './versions';
+import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
-  providers: [VersionsService]
+  styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
   version: string;
   tag: string;
 
-  constructor(private versionsService: VersionsService) { }
+  constructor(private gA4GHService: GA4GHService) { }
 
   ngOnInit() {
-    this.versionsService.getVersion()
+    this.gA4GHService.metadataGet()
       .subscribe(
-        metadata => {
+        (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
             this.version = metadata['version'];
             this.tag = versions.tag;

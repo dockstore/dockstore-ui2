@@ -1,22 +1,22 @@
-import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'ng2-ui-auth';
+
+import { DockstoreService } from '../shared/dockstore.service';
+import { ProviderService } from '../shared/provider.service';
+import { WorkflowService } from '../shared/workflow.service';
+import { UserService } from './../loginComponents/user.service';
 import { RefreshService } from './../shared/refresh.service';
-import {Component, OnInit} from '@angular/core';
-
-import {DockstoreService} from '../shared/dockstore.service';
-import {ProviderService} from '../shared/provider.service';
-import {WorkflowService} from '../shared/workflow.service';
-
-import {MyWorkflowsService} from './myworkflows.service';
-import {UserService} from '../loginComponents/user.service';
-
-
+import { UsersService } from './../shared/swagger/api/users.service';
+import { Configuration } from './../shared/swagger/configuration';
+import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
+import { MyWorkflowsService } from './myworkflows.service';
 
 @Component({
   selector: 'app-myworkflows',
   templateUrl: './myworkflows.component.html',
   styleUrls: ['./myworkflows.component.css'],
   providers: [MyWorkflowsService, ProviderService,
-              DockstoreService]
+    DockstoreService]
 })
 export class MyWorkflowsComponent implements OnInit {
   orgWorkflows = [];
@@ -24,14 +24,16 @@ export class MyWorkflowsComponent implements OnInit {
   workflow: any;
   user: any;
   workflows: any;
-  constructor(private myworkflowService: MyWorkflowsService,
-              private userService: UserService,
-              private workflowService: WorkflowService,
-              private refreshService: RefreshService,
-              private registerWorkflowModalService: RegisterWorkflowModalService) {
+  constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
+    private usersService: UsersService, private userService: UserService,
+    private workflowService: WorkflowService, private authService: AuthService,
+    private refreshService: RefreshService,
+    private registerWorkflowModalService: RegisterWorkflowModalService) {
 
   }
+
   ngOnInit() {
+    this.configuration.accessToken = this.authService.getToken();
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
@@ -39,11 +41,13 @@ export class MyWorkflowsComponent implements OnInit {
         this.setIsFirstOpen();
       }
     );
-    this.userService.getUser().subscribe(user => {
-      this.user = user;
-      this.userService.getUserWorkflowList(user.id).subscribe(workflows => {
-        this.workflowService.setWorkflows(workflows);
-      });
+    this.userService.user$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.usersService.userWorkflows(user.id).subscribe(workflows => {
+          this.workflowService.setWorkflows(workflows);
+        });
+      }
     });
     this.workflowService.workflows$.subscribe(workflows => {
       this.workflows = workflows;
@@ -73,14 +77,12 @@ export class MyWorkflowsComponent implements OnInit {
     }
   }
   containSelectedWorkflow(orgObj) {
-    let containWorkflow = false;
-    for (const workflow of orgObj.workflows) {
-      if (workflow.id === this.workflow.id) {
-        containWorkflow = true;
-        break;
-      }
+    const workflows: Array<any> = orgObj.workflows;
+    if (workflows.find(workflow => workflow.id === this.workflow.id)) {
+      return true;
+    } else {
+      return false;
     }
-    return containWorkflow;
   }
   selectWorkflow(workflow) {
     this.workflow = workflow;

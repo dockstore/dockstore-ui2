@@ -19,7 +19,7 @@ export class StargazersComponent implements OnInit {
   ngOnInit() {
     this.entrySubscription = this.starentryService.starEntry$.subscribe(
       entry => {
-        if (entry) {
+        if (entry && entry.theEntry) {
           this.starringService.getStarring(entry.theEntry.id, entry.theEntryType).subscribe(
             starring => {
               this.starGazers = starring;

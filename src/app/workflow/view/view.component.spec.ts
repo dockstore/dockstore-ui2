@@ -1,3 +1,16 @@
+import { WorkflowsService } from '../../shared/swagger';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { DateService } from './../../shared/date.service';
+import { StateService } from '../../shared/state.service';
+import { VersionModalService } from '../version-modal/version-modal.service';
+import {
+    DateStubService,
+    StateStubService,
+    VersionModalStubService,
+    WorkflowsStubService,
+    WorkflowStubService,
+} from './../../test/service-stubs';
+import { WorkflowService } from '../../shared/workflow.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ViewWorkflowComponent } from './view.component';
@@ -8,14 +21,23 @@ describe('ViewWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewWorkflowComponent ]
+      declarations: [ViewWorkflowComponent],
+      providers: [
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: VersionModalService, useClass: VersionModalStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService},
+        { provide: StateService, useClass: StateStubService },
+        { provide: DateService, useClass: DateStubService }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewWorkflowComponent);
     component = fixture.componentInstance;
+    const workflowVersion: WorkflowVersion = {id: 5, reference: 'stuff', name: 'name'};
+    component.version = workflowVersion;
     fixture.detectChanges();
   });
 

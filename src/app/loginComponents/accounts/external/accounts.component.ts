@@ -1,3 +1,6 @@
+import { Configuration } from './../../../shared/swagger/configuration';
+import { AuthService } from 'ng2-ui-auth';
+import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
@@ -48,11 +51,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   private deleteSubscription: ISubscription;
   private routeSubscription: ISubscription;
 
-  constructor(private trackLoginService: TrackLoginService,
-              private tokenService: TokenService,
-              private userService: UserService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {
+  constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
+    private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
+    private authService: AuthService, private configuration: Configuration) {
     this.routeSubscription = this.trackLoginService.isLoggedIn$.subscribe(
       state => {
         if (!state) {
@@ -74,8 +75,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   link(source: string) {
     switch (source) {
       case 'github.com':
-            this.openWindow(Links.GITHUB);
-            break;
+        this.openWindow(Links.GITHUB);
+        break;
       case 'bitbucket.org':
         this.openWindow(Links.BITBUCKET);
         break;
@@ -112,16 +113,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       .subscribe(() => this.unlinkToken(source));
   }
 
-  // Get user ID
-  private getUserId() {
-    return this.userService.getUser()
-      .map(user => {
-        this.userService.setUser(user);
-        this.userId = user.id;
-        return user.id;
-      });
-  }
-
   // Show linked services in the UI
   private setAvailableTokens(tokens) {
     for (const token of tokens) {
@@ -136,13 +127,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Set tokens and linked services
   private setTokens(tokens): void {
     this.tokens = tokens;
-    this.setAvailableTokens(tokens);
+    if (tokens) {
+      this.setAvailableTokens(tokens);
+    }
   }
 
   ngOnInit() {
-    this.tokensSubscription = this.getUserId()
-      .flatMap(id => this.userService.getTokens(id))
-      .subscribe(tokens => this.setTokens(tokens));
+    this.tokenService.tokens$.subscribe(tokens => this.setTokens(tokens));
   }
 
   ngOnDestroy() {

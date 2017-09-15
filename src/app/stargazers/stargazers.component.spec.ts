@@ -1,3 +1,7 @@
+import { StarentryService } from './../shared/starentry.service';
+import { UserService } from '../loginComponents/user.service';
+import { StarEntryStubService, StarringStubService, UserStubService } from './../test/service-stubs';
+import { StarringService } from '../starring/starring.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StargazersComponent } from './stargazers.component';
@@ -8,7 +12,10 @@ describe('StargazersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StargazersComponent ]
+      declarations: [ StargazersComponent ],
+      providers: [{provide: StarringService, useClass: StarringStubService},
+      {provide: UserService, useClass: UserStubService},
+    {provide: StarentryService, useClass: StarEntryStubService}]
     })
     .compileComponents();
   }));

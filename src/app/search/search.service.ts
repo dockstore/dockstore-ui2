@@ -7,6 +7,11 @@ import { Dockstore } from '../shared/dockstore.model';
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
   searchInfo$ = this.searchInfoSource.asObservable();
+  /* Observable */
+  public toolhit$ = new BehaviorSubject<any>(null);
+
+  /* Observable */
+  public workflowhit$ = new BehaviorSubject<any>(null);
   /**
    * These are the terms which use "must" filters
    * Example: Results returned can be private or public but never both
@@ -31,7 +36,8 @@ export class SearchService {
   }
 
   createPermalinks(searchInfo) {
-    const url = `${ Dockstore.LOCAL_URI }/admin-search`;
+    //const url = `${ Dockstore.LOCAL_URI }/admin-search`;
+    const url = "placeholder"
     let params = new URLSearchParams();
     const filter = searchInfo.filter;
     filter.forEach(
