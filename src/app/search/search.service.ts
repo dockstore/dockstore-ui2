@@ -35,10 +35,11 @@ export class SearchService {
     return aggregationName.replace('agg_terms_', '');
   }
 
+  // This function is related to permalinks, which is not implemented yet
   createPermalinks(searchInfo) {
-    //const url = `${ Dockstore.LOCAL_URI }/admin-search`;
-    const url = "placeholder"
-    let params = new URLSearchParams();
+    // const url = `${ Dockstore.LOCAL_URI }/admin-search`;
+    const url = 'placeholder';
+    const params = new URLSearchParams();
     const filter = searchInfo.filter;
     filter.forEach(
       (value, key) => {
@@ -49,7 +50,7 @@ export class SearchService {
     );
     return url + '?' + params.toString();
   }
-
+  // This function is related to permalinks, which is not implemented yet
   createURIParams(cururl) {
     const url = cururl.substr('/admin-search'.length + 1);
     const params = new URLSearchParams(url);
