@@ -52,6 +52,14 @@ export class WorkflowComponent extends Entry {
     this.workflowService.setCopyBtn(null);
   }
 
+  isStub(): boolean {
+    if (this.workflow) {
+      return this.workflow.mode === Workflow.ModeEnum.STUB;
+    } else {
+      return true;
+    }
+  }
+
   setProperties() {
     const workflowRef: any = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);

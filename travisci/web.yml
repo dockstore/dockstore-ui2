@@ -1,0 +1,51 @@
+template: Hello, %s!
+quayClientID: <quay_client_id_here>
+quayRedirectURI: http://localhost:8080/static/quay_callback.htm
+githubClientID: <github_client_id_here>
+githubClientSecret: <github_client_secret_here>
+githubRedirectURI: http://localhost:8080/auth/tokens/github.com
+gitlabClientID: <gitlab_client_id_here>
+gitlabClientSecret: <gitlab_client_secret_here>
+gitlabRedirectURI: http://localhost:9001/auth/gitlab.com
+bitbucketClientID:  <bitbucket client is here>
+bitbucketClientSecret: <bitbucket secret here>
+hostname: localhost
+scheme: http
+port: 8080
+
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
+
+database:
+  # the name of your JDBC driver
+  driverClass: org.postgresql.Driver
+
+  # the username
+  user: postgres
+
+  # the password
+  password: postgres
+
+  # the JDBC URL
+  url: jdbc:postgresql://localhost:5432/postgres
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    # create database as needed, disable in production
+    hibernate.hbm2ddl.auto: update
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyApplication Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
