@@ -24,7 +24,7 @@ export class UserService {
 
   constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration) {
     this.updateUser();
-  }
+   }
 
   setUser(user) {
     this.userSource.next(user);

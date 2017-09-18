@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" (click)="addTagModal.show()">
+<button id="addTagButton" type="button" class="btn btn-primary" (click)="addTagModal.show()">
   Add Tag</button>
 <div class="modal fade" bsModal #addTagModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -13,7 +13,7 @@
               Version Tag:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input id="versionTagInput" type="text" class="form-control" name="versionTag" id="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag" required title="Docker Image tag name." placeholder="e.g. develop" />
+              <input id="versionTagInput" type="text" class="form-control" name="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag" required title="Docker Image tag name." placeholder="e.g. develop" />
               <div *ngIf="formErrors.versionTag" class="form-error-messages">
                 {{formErrors.versionTag}}
               </div>
