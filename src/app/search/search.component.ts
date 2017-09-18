@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
   private toolSource = new BehaviorSubject<any>(null);
   private curURL = '';
   toolhit$ = this.toolSource.asObservable();
-  _timeout = false;
+  _timeout = false; 
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public browseToolsTab = 'browseToolsTab';
