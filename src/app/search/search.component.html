@@ -111,12 +111,6 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-        <div class="alert alert-info" role="alert" *ngIf="loading">
-          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
-          </span>
-          Please wait, retrieving search result...
-        </div>
-        <div *ngIf="!loading">
           <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
             Sorry, no matches found for <strong>{{joinComma(values)}}</strong>.
             <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
@@ -167,7 +161,6 @@
               </span>
           </span>
           </div>
-        </div>
         <tabset class="homeComponent" type="tabs">
           <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
             <ng-template tabHeading>

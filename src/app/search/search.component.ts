@@ -46,7 +46,6 @@ export class SearchComponent implements OnInit {
   private _client: Client;
   private shard_size = 10000;
   public activeToolBar = true;
-  public loading = false;
   public suggestTerm = '';
   private firstInit = true;
   location: Location;
@@ -436,7 +435,6 @@ export class SearchComponent implements OnInit {
         this.searchTerm = true;
       }
       this.setTabActive();
-      this.loading = false;
       if (this.searchTerm && this.hits.length === 0) {
         this.suggestKeyTerm();
       }
@@ -448,7 +446,6 @@ export class SearchComponent implements OnInit {
    * ==============================================
    */
   resetFilters() {
-    this.loading = true;
     this.values = '';
     this.searchTerm = false;
     this.filters.clear();
