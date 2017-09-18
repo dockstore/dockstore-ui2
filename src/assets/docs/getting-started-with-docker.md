@@ -131,7 +131,7 @@ Great! This looks fine!
 
 OK, so you've built the image.  Now what?
 
-The next step will be to test the tool directly via Docker to ensure that your `Dockerfile` is valid and correctly installed the tool.  If you were developing a new tool there might be multiple rounds of `docker build`, followed by tesing with `docker run` before you get your Dockerfile right.  Here I'm executing the Docker image, launching it as a container (make sure you launch on a host with at least 8GB of RAM and dozens of GB of disk space!):
+The next step will be to test the tool directly via Docker to ensure that your `Dockerfile` is valid and correctly installed the tool.  If you were developing a new tool there might be multiple rounds of `docker build`, followed by testing with `docker run` before you get your Dockerfile right.  Here I'm executing the Docker image, launching it as a container (make sure you launch on a host with at least 8GB of RAM and dozens of GB of disk space!):
 
 ```
 $> docker run -it -v `pwd`:/home/ubuntu quay.io/collaboratory/dockstore-tool-bamstats:1.25-3 /bin/bash
