@@ -24,9 +24,9 @@ enableProdMode();
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  private advancedSearchObject: AdvancedSearchObject;
+  public advancedSearchObject: AdvancedSearchObject;
   private routeSub: Subscription;
-  private permalink: string;
+  public permalink: string;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -45,9 +45,9 @@ export class SearchComponent implements OnInit {
   public hits: Object[];
   private _client: Client;
   private shard_size = 10000;
-  private activeToolBar = true;
-  private loading = false;
-  private suggestTerm = '';
+  public activeToolBar = true;
+  public loading = false;
+  public suggestTerm = '';
   private firstInit = true;
   location: Location;
 
@@ -873,7 +873,7 @@ export class SearchComponent implements OnInit {
       orderedArray = this.searchService.sortByAlphabet(orderedArray, orderMode);
     } else {
       orderedArray = this.searchService.sortByCount(orderedArray, orderMode);
-    };
+    }
     const tempMap: Map<string, string> = new Map<string, string>();
     orderedArray.forEach(
       entry => {
