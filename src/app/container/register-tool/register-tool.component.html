@@ -113,13 +113,13 @@
             <div class="col-sm-9">
               <div class="input-group">
                 <div class="input-group-btn">
-                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <button id="imageRegistrySpinner" type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
                     {{tool.irProvider}}
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu">
                     <li *ngFor="let registry of friendlyRegistryKeys()">
-                      <a class="dropdown-item" (click)="tool.irProvider = registry; checkForSpecialDockerRegistry()">
+                      <a [attr.id]="'imageRegistrySpinner' + registry" class="dropdown-item" (click)="tool.irProvider = registry; checkForSpecialDockerRegistry()">
                         {{registry}}
                       </a>
                     </li>

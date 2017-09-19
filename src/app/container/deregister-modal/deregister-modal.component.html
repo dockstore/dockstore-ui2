@@ -12,8 +12,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="staticModal.hide()">Close</button>
-        <button type="button" (click)="deregister(); staticModal.hide()" class="btn btn-primary">
-          Save Changes
+        <button id="deregisterConfirmButton" type="button" class="btn btn-danger" (click)="deregister(); staticModal.hide()" >
+          Deregister
         </button>
       </div>
     </div>
