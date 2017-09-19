@@ -48,7 +48,6 @@ describe('Dockstore Home', function() {
         cy
           .get('.btn.youtube').click()
           .get('#cboxContent').should("visible")
-          .get('#cboxOverlay').should("visible")
           .get('#cboxClose').click()
           .get('#cboxContent').should("not.visible")
       });
