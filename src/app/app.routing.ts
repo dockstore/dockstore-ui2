@@ -23,7 +23,7 @@ const APP_ROUTES: Routes = [
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
   { path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard] },
   { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard] },
-  { path: 'admin-search', component: SearchComponent },
+  { path: 'search*', component: SearchComponent },
   { path: 'login', component: LoginComponent },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { URLSearchParams} from '@angular/http';
+import { Dockstore } from '../shared/dockstore.model';
 
 @Injectable()
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
-  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   searchInfo$ = this.searchInfoSource.asObservable();
-  loading$ = this.loading.asObservable();
   /* Observable */
   public toolhit$ = new BehaviorSubject<any>(null);
 
@@ -22,11 +22,6 @@ export class SearchService {
   setSearchInfo(searchInfo) {
     this.searchInfoSource.next(searchInfo);
   }
-
-  setLoading(loading: boolean) {
-    this.loading.next(loading);
-  }
-
   constructor() {
   }
   /**
@@ -38,5 +33,51 @@ export class SearchService {
    */
   aggregationNameToTerm(aggregationName: string): string {
     return aggregationName.replace('agg_terms_', '');
+  }
+
+  // This function is related to permalinks, which is not implemented yet
+  createPermalinks(searchInfo) {
+    // const url = `${ Dockstore.LOCAL_URI }/search`;
+    const url = 'placeholder';
+    const params = new URLSearchParams();
+    const filter = searchInfo.filter;
+    filter.forEach(
+      (value, key) => {
+        value.forEach(subBucket => {
+          params.append(key, subBucket);
+        });
+      }
+    );
+    return url + '?' + params.toString();
+  }
+  // This function is related to permalinks, which is not implemented yet
+  createURIParams(cururl) {
+    const url = cururl.substr('/search'.length + 1);
+    const params = new URLSearchParams(url);
+    return params;
+  }
+
+  sortByAlphabet(orderedArray, orderMode): any {
+    orderedArray = orderedArray.sort((a, b) => {
+      if (orderMode) {
+        return a.key > b.key ? 1 : -1;
+      } else  {
+        return a.key < b.key ? 1 : -1;
+      }
+    });
+    return orderedArray;
+  }
+
+  sortByCount(orderedArray, orderMode): any {
+    orderedArray = orderedArray.sort((a, b) => {
+      if (a.value < b.value) {
+        return !orderMode ? 1 : -1;
+      } else if (a.value === b.value) {
+        return a.key > b.key ? 1 : -1;
+      } else {
+        return !orderMode ? -1 : 1;
+      }
+    });
+    return orderedArray;
   }
 }

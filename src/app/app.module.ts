@@ -136,7 +136,8 @@ import { SearchModule } from './search/search.module';
     StateService,
     SearchService,
     PagenumberService,
-    TwitterService
+    TwitterService,
+    ContainerService
   ],
   bootstrap: [ AppComponent ]
 })

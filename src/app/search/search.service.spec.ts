@@ -20,9 +20,5 @@ describe('SearchService', () => {
         service.searchInfo$.subscribe(result => {
             expect(result).toEqual('stuff');
         });
-        service.setLoading(true);
-        service.loading$.subscribe(result => {
-            expect(result).toEqual(true);
-        });
     }));
 });

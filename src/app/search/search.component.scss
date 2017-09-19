@@ -98,6 +98,14 @@
   }
 }
 
+.suggestTerm {
+  cursor: pointer;
+  &:hover {
+    color: #31708f;
+    text-decoration: underline;
+  }
+}
+
 .sidebar-btn {
   width: 100%;
   background-color: #51aad8;
