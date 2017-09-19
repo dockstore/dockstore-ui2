@@ -377,7 +377,7 @@ export class SearchComponent implements OnInit {
   updateQuery() {
     // calculate number of filters
     let count = 0;
-    if (this.curURL !== '/admin-search' && this.firstInit) {
+    if (this.curURL !== '/search' && this.firstInit) {
       this.parseFilter();
     }
     this.filters.forEach(filter => {

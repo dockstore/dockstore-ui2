@@ -19,7 +19,7 @@
             {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
           </td>
           <td>
-            <span  *ngIf="getVerified(tool)">  
+            <span  *ngIf="getVerified(tool)">
                 <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"href={{verifiedLink}}></a>
             </span>
             {{ tool?.author || 'n/a' }}
@@ -50,7 +50,7 @@
             <p><a href="/tools">Browse All Tools &raquo;</a></p>
           </div>
           <div class="button">
-            <p><a href="/admin-search">Search Tools &raquo;</a></p>
+            <p><a href="/search">Search Tools &raquo;</a></p>
           </div>
         </td>
       </tr>

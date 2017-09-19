@@ -4,8 +4,8 @@ import { SearchComponent } from './search.component';
 
 const CONTAINERS_ROUTES: Routes = [
   {
-    path: 'admin-search', component: SearchComponent, children: [
-    { path: 'admin-search?**', component: SearchComponent }
+    path: 'search', component: SearchComponent, children: [
+    { path: 'search?**', component: SearchComponent }
   ]
   }
 ];
