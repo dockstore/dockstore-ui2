@@ -361,7 +361,7 @@ export class SearchComponent implements OnInit {
     this.searchService.setSearchInfo(searchInfo);
   }
 
-  shareBtnClick() {
+  updatePermalink() {
     const searchInfo = {
       filter: this.filters,
       searchValues: this.values,
@@ -375,6 +375,7 @@ export class SearchComponent implements OnInit {
    * ===============================================
    */
   updateQuery() {
+    this.updatePermalink();
     // calculate number of filters
     let count = 0;
     if (this.curURL !== '/search' && this.firstInit) {

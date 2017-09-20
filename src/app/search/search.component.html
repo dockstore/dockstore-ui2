@@ -126,7 +126,7 @@
             <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
           </div>
           <div *ngIf="filters.size > 0" class="alert alert-info">
-            <template #popTemplate *ngIf="false">
+            <template #popTemplate>
               <div class="row">
                 <div class="col-md-10">
                   <input type="text" class="form-control" [(ngModel)]="permalink" value="{{permalink}}" readonly>
@@ -142,8 +142,7 @@
             <button type="button" class="refresh-all-button btn btn-primary"
                     [popover]="popTemplate"
                     popoverTitle="Link to this page"
-                    placement="bottom"
-                    (click)="shareBtnClick()"  *ngIf="false">
+                    placement="bottom">
               <i class="fa fa-share-alt" aria-hidden="true"></i>
               Share
             </button>
