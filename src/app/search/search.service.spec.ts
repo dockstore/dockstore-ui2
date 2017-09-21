@@ -21,4 +21,8 @@ describe('SearchService', () => {
             expect(result).toEqual('stuff');
         });
     }));
+    it('should decide whether to disable tabs or not', inject([SearchService], (service: SearchService) => {
+        expect(service.haveNoHits([])).toEqual(true);
+        expect(service.haveNoHits([{'asdf': 'asdf'}])).toEqual(false);
+    }));
 });
