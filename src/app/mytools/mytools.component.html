@@ -51,6 +51,7 @@
                     </div>
               </div>
           </div>
+          <app-refresh-tool-organization class="pull-right" [organization]="nsObj.namespace"></app-refresh-tool-organization>
             <button type="button"
                     class="btn btn-primary btn-xs pull-right add-container-ns"
                     (click)="setModalGitPathAndImgPath(nsObj?.namespace); showRegisterToolModal()">

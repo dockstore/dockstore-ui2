@@ -1,3 +1,7 @@
+import { RefreshOrganizationComponent } from './../shared/refresh-organization/refresh-organization.component';
+import {
+    RefreshToolOrganizationComponent,
+} from '../container/refresh-tool-organization/refresh-tool-organization.component';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CommonModule } from '@angular/common';
@@ -20,7 +24,9 @@ import { RegisterToolComponent } from './../container/register-tool/register-too
 @NgModule({
   declarations: [
     MyToolsComponent,
-    RegisterToolComponent
+    RegisterToolComponent,
+    RefreshToolOrganizationComponent,
+    RefreshOrganizationComponent // Have to add this extended component to appease compiler
   ],
   imports: [
     CommonModule,
