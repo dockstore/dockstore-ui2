@@ -156,32 +156,38 @@ export class SearchComponent implements OnInit {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.curURL = this.router.url;
-    this.searchService.searchInfo$.subscribe(
-      searchInfo => {
-        if (searchInfo) {
-          this.filters = searchInfo.filter;
-          this.values = searchInfo.searchValues;
-          this.checkboxMap = searchInfo.checkbox;
-          this.sortModeMap = searchInfo.sortModeMap;
-          this.advancedSearchObject = searchInfo.advancedSearchObject;
-          this.firstInit = false;
-        }
-        this.updateQuery();
-      });
+    this.parseParams();
+
+    // this.searchService.searchInfo$.subscribe(
+    //   searchInfo => {
+    //     if (searchInfo) {
+    //       this.filters = searchInfo.filter;
+    //       this.values = searchInfo.searchValues;
+    //       this.checkboxMap = searchInfo.checkbox;
+    //       this.sortModeMap = searchInfo.sortModeMap;
+    //       this.advancedSearchObject = searchInfo.advancedSearchObject;
+    //       this.firstInit = false;
+    //     }
+    //     this.updateQuery();
+    //   });
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
   }
-  parseFilter() {
-    const filterObj = this.searchService.createURIParams(this.curURL);
-    filterObj.paramsMap.forEach(((value, key) => {
-      if (this.filters) {
+
+  parseParams() {
+    const URIParams = this.searchService.createURIParams(this.curURL);
+    URIParams.paramsMap.forEach(((value, key) => {
+      if (this.friendlyNames.get(key)) {
           value.forEach(categoryValue => {
             categoryValue = decodeURIComponent(categoryValue);
             this.handleFilters(key, categoryValue);
           });
         this.firstInit = false;
+      } else if (key === "search") {
+        this.searchTerm = true;
+        this.values = value[0];
       }
     }));
   }
@@ -378,9 +384,9 @@ export class SearchComponent implements OnInit {
     this.updatePermalink();
     // calculate number of filters
     let count = 0;
-    if (this.curURL !== '/search' && this.firstInit) {
-      this.parseFilter();
-    }
+    // if (this.curURL !== '/search' && this.firstInit) {
+    //   this.parseFilter();
+    // }
     this.filters.forEach(filter => {
       count += filter.size;
     });

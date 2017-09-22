@@ -111,11 +111,11 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-          <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
+          <div *ngIf="searchTerm && hits && hits.length == 0" class="alert alert-warning">
             Sorry, no matches found for <strong>{{joinComma(values)}}</strong>.
             <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
           </div>
-          <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
+          <div *ngIf="searchTerm && hits && hits.length > 0" class="alert alert-info">
             <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
           </div>
           <div *ngIf="advancedSearchObject?.toAdvanceSearch" class="alert alert-info">

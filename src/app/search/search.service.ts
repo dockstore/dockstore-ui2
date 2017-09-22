@@ -46,6 +46,9 @@ export class SearchService {
         });
       }
     );
+    if (searchInfo.searchValues) {
+      params.append("search", searchInfo.searchValues);
+    }
     return url + '?' + params.toString();
   }
 
