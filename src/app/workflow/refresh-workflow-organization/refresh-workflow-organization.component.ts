@@ -15,8 +15,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
 
   constructor(private usersService: UsersService, userService: UserService, private workflowService: WorkflowService,
-    private stateService: StateService) {
-      super(userService);
+    public stateService: StateService) {
+      super(userService, stateService);
   }
 
   refreshOrganization(): void {

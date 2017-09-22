@@ -15,9 +15,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
 
-  constructor(userService: UserService, private stateService: StateService, private usersService: UsersService,
+  constructor(userService: UserService, public stateService: StateService, private usersService: UsersService,
     private containerService: ContainerService) {
-    super(userService);
+    super(userService, stateService);
   }
 
   refreshOrganization(): void {
