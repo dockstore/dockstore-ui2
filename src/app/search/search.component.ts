@@ -131,6 +131,15 @@ export class SearchComponent implements OnInit {
   ]);
   private nonverifiedcount: number;
 
+  private advancedSearchOptions = [
+    'ANDSplitFilter',
+    'ANDNoSplitFilter',
+    'ORFilter',
+    'NOTFilter',
+    'searchMode',
+    'toAdvanceSearch'
+  ]
+
   /**
    * The current text search
    * @type {string}
@@ -156,20 +165,16 @@ export class SearchComponent implements OnInit {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.curURL = this.router.url;
+    this.advancedSearchObject = {
+      ANDSplitFilter: '',
+      ANDNoSplitFilter: '',
+      ORFilter: '',
+      NOTFilter: '',
+      searchMode: 'files',
+      toAdvanceSearch: false
+    };
     this.parseParams();
-
-    // this.searchService.searchInfo$.subscribe(
-    //   searchInfo => {
-    //     if (searchInfo) {
-    //       this.filters = searchInfo.filter;
-    //       this.values = searchInfo.searchValues;
-    //       this.checkboxMap = searchInfo.checkbox;
-    //       this.sortModeMap = searchInfo.sortModeMap;
-    //       this.advancedSearchObject = searchInfo.advancedSearchObject;
-    //       this.firstInit = false;
-    //     }
-    //     this.updateQuery();
-    //   });
+    this.updateQuery();
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
@@ -177,6 +182,7 @@ export class SearchComponent implements OnInit {
   }
 
   parseParams() {
+    let useAdvSearch = false;
     const URIParams = this.searchService.createURIParams(this.curURL);
     URIParams.paramsMap.forEach(((value, key) => {
       if (this.friendlyNames.get(key)) {
@@ -188,8 +194,15 @@ export class SearchComponent implements OnInit {
       } else if (key === "search") {
         this.searchTerm = true;
         this.values = value[0];
+      } else if (this.advancedSearchOptions.indexOf(key) > -1 && key.includes("Filter")) {
+        useAdvSearch = true;
+        this.advancedSearchObject[key] = value[0];
       }
     }));
+    if (useAdvSearch) {
+      this.advancedSearchObject.toAdvanceSearch = true;
+      this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
+    }
   }
 
   createTagCloud(type: string) {
@@ -371,7 +384,8 @@ export class SearchComponent implements OnInit {
     const searchInfo = {
       filter: this.filters,
       searchValues: this.values,
-      advancedSearchObject: this.advancedSearchObject
+      advancedSearchObject: this.advancedSearchObject,
+      searchTerm: this.searchTerm
     };
     this.permalink = this.searchService.createPermalinks(searchInfo);
   }

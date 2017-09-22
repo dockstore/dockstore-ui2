@@ -46,8 +46,16 @@ export class SearchService {
         });
       }
     );
-    if (searchInfo.searchValues) {
+
+    if (searchInfo.searchTerm) {
       params.append("search", searchInfo.searchValues);
+    } else {
+      for (let key in searchInfo.advancedSearchObject) {
+        let val = searchInfo.advancedSearchObject[key];
+        if (key.includes("Filter") && val != "") {
+          params.append(key, val);
+        }
+      }
     }
     return url + '?' + params.toString();
   }
