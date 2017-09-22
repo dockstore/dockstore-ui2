@@ -182,6 +182,9 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  /**
+  * Applies parameters from the permalink to the search
+  */
   parseParams() {
     let useAdvSearch = false;
     const URIParams = this.searchService.createURIParams(this.curURL);
@@ -200,6 +203,7 @@ export class SearchComponent implements OnInit {
           useAdvSearch = true;
           this.advancedSearchObject[key] = value[0];
         } else if (key === "searchMode") {
+          useAdvSearch = true;
           if (value[0] !== "files" && value[0] !== "description") {
             this.advancedSearchObject[key] = "files";
           } else {
@@ -408,9 +412,6 @@ export class SearchComponent implements OnInit {
     this.updatePermalink();
     // calculate number of filters
     let count = 0;
-    // if (this.curURL !== '/search' && this.firstInit) {
-    //   this.parseFilter();
-    // }
     this.filters.forEach(filter => {
       count += filter.size;
     });
@@ -918,5 +919,37 @@ export class SearchComponent implements OnInit {
     } else {
       this.activeToolBar = true;
     }
+  }
+
+  /**
+  * Returns true if either basic search is set and has results, or advanced search is set
+  */
+  hasSearchText() {
+    return (this.hasResults() || this.advancedSearchObject.toAdvanceSearch);
+  }
+
+  /**
+  * Returns true if basic search has no results
+  */
+  noResults() {
+    return this.searchTerm && this.hits && this.hits.length == 0;
+  }
+
+  /**
+  * Returns true if basic search has results
+  */
+  hasResults() {
+    return this.searchTerm && this.hits && this.hits.length > 0;
+  }
+
+  /**
+  * Returns true if at least one filter is set
+  */
+  hasFilters() {
+    let count = 0;
+      this.filters.forEach(filter => {
+        count += filter.size;
+      });
+      return count > 0;
   }
 }
