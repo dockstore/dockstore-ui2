@@ -52,7 +52,7 @@ export class SearchService {
     } else {
       for (let key in searchInfo.advancedSearchObject) {
         let val = searchInfo.advancedSearchObject[key];
-        if (key.includes("Filter") && val != "") {
+        if ((key.includes("Filter") || key === "searchMode") && val != "") {
           params.append(key, val);
         }
       }

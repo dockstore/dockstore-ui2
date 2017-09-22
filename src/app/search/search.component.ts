@@ -175,6 +175,7 @@ export class SearchComponent implements OnInit {
     };
     this.parseParams();
     this.updateQuery();
+
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
@@ -194,11 +195,20 @@ export class SearchComponent implements OnInit {
       } else if (key === "search") {
         this.searchTerm = true;
         this.values = value[0];
-      } else if (this.advancedSearchOptions.indexOf(key) > -1 && key.includes("Filter")) {
-        useAdvSearch = true;
-        this.advancedSearchObject[key] = value[0];
+      } else if (this.advancedSearchOptions.indexOf(key) > -1) {
+        if (key.includes("Filter")) {
+          useAdvSearch = true;
+          this.advancedSearchObject[key] = value[0];
+        } else if (key === "searchMode") {
+          if (value[0] !== "files" && value[0] !== "description") {
+            this.advancedSearchObject[key] = "files";
+          } else {
+            this.advancedSearchObject[key] = value[0];
+          }
+        }
       }
     }));
+
     if (useAdvSearch) {
       this.advancedSearchObject.toAdvanceSearch = true;
       this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
