@@ -159,6 +159,7 @@ export class LogoutStubService {
 }
 
 export class UserStubService {
+    userId$ = Observable.of(5);
     user$ = Observable.of({});
 }
 

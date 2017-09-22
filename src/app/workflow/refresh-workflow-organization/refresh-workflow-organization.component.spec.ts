@@ -1,17 +1,25 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
-import { RefreshWorkflowOrganizationComponent } from './refresh-organization.component';
+import { UserService } from './../../loginComponents/user.service';
+import { StateService } from './../../shared/state.service';
+import { UsersService } from './../../shared/swagger/api/users.service';
+import { WorkflowService } from './../../shared/workflow.service';
+import { StateStubService, UsersStubService, UserStubService, WorkflowStubService } from './../../test/service-stubs';
+import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
 
-describe('RefreshOrganizationComponent', () => {
+/* tslint:disable:no-unused-variable */
+describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
   let fixture: ComponentFixture<RefreshWorkflowOrganizationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RefreshWorkflowOrganizationComponent ]
+      declarations: [ RefreshWorkflowOrganizationComponent ],
+      providers: [
+        { provide: UserService, useClass: UserStubService },
+        { provide: StateService, useClass: StateStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService }]
     })
     .compileComponents();
   }));
