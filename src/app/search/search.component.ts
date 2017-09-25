@@ -197,6 +197,7 @@ export class SearchComponent implements OnInit {
         this.firstInit = false;
       } else if (key === 'search') {
         this.searchTerm = true;
+        this.advancedSearchObject.toAdvanceSearch = false;
         this.values = value[0];
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         if (key.includes('Filter')) {
@@ -214,6 +215,7 @@ export class SearchComponent implements OnInit {
     }));
 
     if (useAdvSearch) {
+      this.searchTerm = false;
       this.advancedSearchObject.toAdvanceSearch = true;
       this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
     }

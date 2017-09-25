@@ -118,7 +118,7 @@
 
         <div *ngIf="hasSearchText() || hasFilters()">
           <div class="alert alert-warning">
-            <template #popTemplate>
+            <ng-template #popTemplate>
               <div class="row">
                 <div class="col-md-10">
                   <input type="text" class="form-control" [(ngModel)]="permalink" value="{{permalink}}" readonly>
@@ -130,7 +130,7 @@
                   </button>
                 </span>
               </div>
-            </template>
+            </ng-template>
             <button type="button" class="refresh-all-button btn btn-primary"
                     [popover]="popTemplate"
                     popoverTitle="Link to this page"
@@ -142,12 +142,14 @@
             <span *ngIf="hasResults()">
               <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
             </span>
-            <strong *ngIf="advancedSearchObject?.toAdvanceSearch">Search: </strong>
-            <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-            <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-            <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
-            <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
 
+            <span *ngIf="advancedSearchObject?.toAdvanceSearch">
+              <strong>Search: </strong>
+              <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
+            </span>
             <span *ngIf="hasSearchText() && hasFilters()">AND </span>
             <strong *ngIf="!hasSearchText() && hasFilters()">Search: </strong>
 
