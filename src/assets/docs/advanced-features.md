@@ -4,7 +4,9 @@
 
 As a convenience, the dockstore command-line can perform file provisioning for inputs and outputs.
 
-For example, for this [tool](https://dockstore.org/containers/quay.io/collaboratory/dockstore-tool-bamstats) we provide a couple of parameter files that can be used to parameterize a run of bamstats.
+File provisioning for some protocols like http and ftp is built in while other protocols are handled by plugins as documented [here](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent). 
+
+To illustrate, for this [tool](https://dockstore.org/containers/quay.io/collaboratory/dockstore-tool-bamstats) we provide a couple of parameter files that can be used to parameterize a run of bamstats.
 
 In the following JSON file, this file indicates for a CWL run that the input file should be present and readable at `/tmp/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam`. The output file will be copied to `/tmp/bamstats_report.zip` (which should be writeable).
 
@@ -44,13 +46,21 @@ For some file provisioning methods, additional configuration may be required.
 
 For AWS S3, create a `~/.aws/credentials` file and a `~/.aws/config` file as documented at the following [location](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files).
 
+Get more information on the implementing plugin at [s3-plugin](https://github.com/dockstore/s3-plugin). 
+
 ### ICGC Storage
 
-For ICGC Storage, configure the location of the client using the configuration key `dcc_storage.client` in `~/.dockstore/config`. Then configure the ICGC storage client as documented [here](http://docs.icgc.org/cloud/guide/#configuration).
+For ICGC Storage, configure the location of the client using the configuration key `dockstore-file-icgc-storage-client-plugin.client` in `~/.dockstore/config` under the section `[dockstore-file-icgc-storage-client-plugin]`. Then configure the ICGC storage client as documented [here](http://docs.icgc.org/cloud/guide/#configuration).
+
+Get more information on the implementing plugin at [icgc-storage-client-plugin](https://github.com/dockstore/icgc-storage-client-plugin). 
+
 
 ### Synapse
 
-For Synapse, you can add `synapse-api-key` and `synapse-user-name` to `~/.dockstore/config`.
+For Synapse, you can add `synapse-api-key` and `synapse-user-name` to `~/.dockstore/config` under the section `[dockstore-file-synapse-plugin]`.
+
+Get more information on the implementing plugin at [synapse-plugin
+](https://github.com/dockstore/synapse-plugin). 
 
 
 ## Input File Cache
@@ -68,6 +78,10 @@ cache-dir =
 
 The former is false by default and can be set to true in order to activate the cache.
 The latter is `~/.dockstore/cache/` by default and can be set to any directory location.
+
+## File Provision Retries
+
+By default, Dockstore will attempt to download files up to three times. Control this with the `file-provision-retries` parameter inside `~/.dockstore/config`.
 
 ## Running CWL-runner with extra tags
 

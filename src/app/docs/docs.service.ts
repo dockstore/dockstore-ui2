@@ -1,4 +1,4 @@
-import { Doc } from './doc.model';
+import {Doc} from './doc.model';
 
 export class DocsService {
   private docs: Doc[] = [
@@ -34,12 +34,27 @@ export class DocsService {
                       'Dockstore news and events',
                       'News and Events'),
     new Doc('advanced-features',
-                      `This page introduces advanced features of Dockstore that may make using
-                      or developing Dockstore tools more convenient`,
+                      `This page covers our recommended best practices for CWL-based tools and workflows`,
                       'Advanced Features'),
+    new Doc('best-practices',
+      `This page introduces advanced features of Dockstore that may make using
+                      or developing Dockstore tools more convenient`,
+      'Best Practices '),
     new Doc('faq',
-                      'This page gathers tools and tips on using Dockstore along with tips on creating tools with Docker and CWL 1.0',
-                      'FAQ')
+      'This page gathers tools and tips on using Dockstore along with tips on creating tools with Docker and CWL 1.0',
+      'FAQ'),
+    new Doc('user-created',
+      'This page gathers user-created code and documentation for how to work with Dockstore formatted tools in various contexts',
+      'User Created Projects'),
+    new Doc('developers',
+      'This page is for developers working with Dockstore',
+      'For Developers'),
+    new Doc('aws-batch-tutorial',
+      'This page is for users of AWS, specifically AWS Batch',
+      'AWS Batch'),
+    new Doc('azure-batch-tutorial',
+      'This page is for users of Azure, specifically Azure Batch',
+      'Azure Batch')
   ];
 
   getDocs(): Doc[] {

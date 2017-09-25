@@ -40,8 +40,8 @@ export class SearchComponent implements OnInit {
   private setFilter = false;
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
-  private toolHits: Object[];
-  private workflowHits: Object[];
+  public toolHits: Object[] = [];
+  public workflowHits: Object[] = [];
   public hits: Object[];
   private _client: Client;
   private shard_size = 10000;
@@ -219,6 +219,10 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject.toAdvanceSearch = true;
       this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
     }
+  }
+
+  haveNoHits(object: Object[]): boolean {
+    return this.searchService.haveNoHits(object);
   }
 
   createTagCloud(type: string) {

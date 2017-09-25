@@ -18,7 +18,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['tags.verified', 'private_access'];
+  public exclusiveFilters = ['tags.verified', 'private_access', '_type'];
   setSearchInfo(searchInfo) {
     this.searchInfoSource.next(searchInfo);
   }
@@ -35,6 +35,16 @@ export class SearchService {
     return aggregationName.replace('agg_terms_', '');
   }
 
+
+  haveNoHits(object: Object[]): boolean {
+    if (!object || object.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // This function is related to permalinks, which is not implemented yet
   createPermalinks(searchInfo) {
     const url = `${ Dockstore.LOCAL_URI }/search`;
     const params = new URLSearchParams();

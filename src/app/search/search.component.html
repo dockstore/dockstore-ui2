@@ -168,7 +168,7 @@
           </div>
         </div>
         <tabset class="homeComponent" type="tabs">
-          <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab">
+          <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab" [disabled]="haveNoHits(toolHits)">
             <ng-template tabHeading>
               <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
               Browse Tools
@@ -191,7 +191,7 @@
             <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
             <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
           </tab>
-          <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab">
+          <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
             <div *ngIf="workflowTagCloudData">
               <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
                 <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
