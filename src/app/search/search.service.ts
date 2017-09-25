@@ -48,11 +48,11 @@ export class SearchService {
     );
 
     if (searchInfo.searchTerm) {
-      params.append("search", searchInfo.searchValues);
+      params.append('search', searchInfo.searchValues);
     } else {
-      for (let key in searchInfo.advancedSearchObject) {
-        let val = searchInfo.advancedSearchObject[key];
-        if ((key.includes("Filter") || key === "searchMode") && val != "") {
+      for (const key in Object.keys(searchInfo.advancedSearchObject)) {
+        const val = searchInfo.advancedSearchObject[key];
+        if ((key.includes('Filter') || key === 'searchMode') && val !== '') {
           params.append(key, val);
         }
       }

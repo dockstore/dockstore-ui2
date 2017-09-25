@@ -138,7 +138,7 @@ export class SearchComponent implements OnInit {
     'NOTFilter',
     'searchMode',
     'toAdvanceSearch'
-  ]
+  ];
 
   /**
    * The current text search
@@ -195,17 +195,17 @@ export class SearchComponent implements OnInit {
             this.handleFilters(key, categoryValue);
           });
         this.firstInit = false;
-      } else if (key === "search") {
+      } else if (key === 'search') {
         this.searchTerm = true;
         this.values = value[0];
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
-        if (key.includes("Filter")) {
+        if (key.includes('Filter')) {
           useAdvSearch = true;
           this.advancedSearchObject[key] = value[0];
-        } else if (key === "searchMode") {
+        } else if (key === 'searchMode') {
           useAdvSearch = true;
-          if (value[0] !== "files" && value[0] !== "description") {
-            this.advancedSearchObject[key] = "files";
+          if (value[0] !== 'files' && value[0] !== 'description') {
+            this.advancedSearchObject[key] = 'files';
           } else {
             this.advancedSearchObject[key] = value[0];
           }
@@ -932,7 +932,7 @@ export class SearchComponent implements OnInit {
   * Returns true if basic search has no results
   */
   noResults() {
-    return this.searchTerm && this.hits && this.hits.length == 0;
+    return this.searchTerm && this.hits && this.hits.length === 0;
   }
 
   /**
