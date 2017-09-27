@@ -37,7 +37,7 @@ install:
 
 before_script:
   - pwd
-  - mvn dependency:get -DgroupId=io.swagger -DartifactId=swagger-codegen-cli -Dversion=LATEST  -DremoteRepositories=https://oss.sonatype.org/content/repositories/snapshots -Ddest=swagger-codegen-cli.jar
+  - wget https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/1.2.5/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
   - ./script
   - npm run-script prebuild
