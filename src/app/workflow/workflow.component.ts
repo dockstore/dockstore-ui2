@@ -116,7 +116,7 @@ export class WorkflowComponent extends Entry {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.encodedString(this.title), this._toolType)
+      this.workflowsService.getPublishedWorkflowByPath(this.title, this._toolType)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
         }, error => {
