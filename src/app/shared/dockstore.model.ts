@@ -1,5 +1,5 @@
 export class Dockstore {
-  static readonly HOSTNAME = 'fill this in';
+  static readonly HOSTNAME = 'localhost';
   static readonly API_PORT = '8080';
   static readonly UI_PORT = '4200';
 
