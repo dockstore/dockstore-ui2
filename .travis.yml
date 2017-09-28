@@ -10,6 +10,11 @@ jdk:
 env:
   - WEBSERVICE_VERSION="1.2.0-beta.0"
 addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
   firefox: "latest"
   postgresql: "9.4"
   chrome: stable
