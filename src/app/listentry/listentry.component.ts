@@ -19,12 +19,14 @@ export class ListentryComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   inited = false;
+  dtOptions: any;
 
   private entrySubscription: Subscription;
   constructor(private searchService: SearchService,
               private listContainersService: ListContainersService) { }
 
   ngOnInit() {
+    this.dtOptions = {searching: false}
     if (this.entryType === 'tool') {
       this.entrySubscription = this.searchService.toolhit$.subscribe(
         hits => {
