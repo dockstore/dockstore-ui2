@@ -149,7 +149,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.tokenService.tokens$.subscribe((tokens: Token[]) => {
       this.setTokens(tokens);
-      console.log(tokens);
     });
   }
 

@@ -51,7 +51,6 @@ describe('VersionsWorkflowComponent', () => {
     const source3 = {version: '3', verifiedSource: 'c'};
     component.verifiedSource = [source1, source2, source3];
     fixture.detectChanges();
-    console.log(component.verifiedSource);
     expect(component.getVerifiedSource('1')).toEqual('a');
     expect(component.getVerifiedSource('2')).toEqual('b');
     expect(component.getVerifiedSource('3')).toEqual('c');
