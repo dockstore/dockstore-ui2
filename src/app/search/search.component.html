@@ -60,7 +60,7 @@
               <div class="container-name-oflw pull-left">
                   <span>
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ mapFriendlyValueNames(key,subBucket) }}
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
                   </span>
               </div>
               <div class="pull-right">
@@ -74,7 +74,7 @@
                 <div class="container-name-oflw pull-left">
                   <span>
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ mapFriendlyValueNames(key,subBucket) }}
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
                   </span>
                 </div>
                 <div class="pull-right">
@@ -111,12 +111,12 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-        <div *ngIf="noResults()" class="alert alert-warning">
-          Sorry, no matches found for <strong>{{joinComma(values)}}</strong>.
+        <div *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+          Sorry, no matches found for <strong>{{searchService.joinComma(values)}}</strong>.
           <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
         </div>
 
-        <div *ngIf="hasSearchText() || hasFilters()">
+        <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <div class="alert alert-info">
             <ng-template #popTemplate>
               <div class="row">
@@ -139,24 +139,24 @@
               Share
             </button>
 
-            <span *ngIf="hasResults()">
-              <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
+            <span *ngIf="searchService.hasResults(searchTerm, hits)">
+              <strong>Search: </strong> contains one of <strong>"{{searchService.joinComma(values)}}"</strong>
             </span>
 
             <span *ngIf="advancedSearchObject?.toAdvanceSearch">
               <strong>Search: </strong>
-              <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-              <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-              <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
-              <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
+              <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{searchService.joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{searchService.joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{searchService.joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{searchService.joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
             </span>
-            <span *ngIf="hasSearchText() && hasFilters()">AND </span>
-            <strong *ngIf="!hasSearchText() && hasFilters()">Search: </strong>
+            <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">AND </span>
+            <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">Search: </strong>
 
             <span *ngFor="let key of filters.keys(); let i = index">
               the <strong>{{friendlyNames.get(key)}}</strong> is
               <span *ngFor='let subBucket of filters.get(key); let j = index'>
-                <strong>{{mapFriendlyValueNames(key, subBucket)}}</strong>
+                <strong>{{searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames)}}</strong>
                 <span *ngIf="j < filters.get(key).size - 1">
                   OR
                 </span>
