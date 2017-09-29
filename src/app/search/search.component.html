@@ -168,7 +168,7 @@
           </div>
         </div>
 
-        <div class="alert alert-info" *ngIf="hits !== null && hits.length > query_size - 1">
+        <div class="alert alert-info" *ngIf="hits.length > query_size - 1">
           <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only up to {{ query_size - 1 }} results are shown.
             We recommend that you use filters to find more relevant results.</p>
         </div>

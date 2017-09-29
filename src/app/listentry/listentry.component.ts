@@ -26,7 +26,7 @@ export class ListentryComponent implements OnInit {
               private listContainersService: ListContainersService) { }
 
   ngOnInit() {
-    this.dtOptions = {searching: false}
+    this.dtOptions = {searching: false};
     if (this.entryType === 'tool') {
       this.entrySubscription = this.searchService.toolhit$.subscribe(
         hits => {

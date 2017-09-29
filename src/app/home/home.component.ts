@@ -19,6 +19,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   goToSearch(searchValue: string) {
-    window.location.href = "/search?search=" + searchValue;
+    window.location.href = '/search?search=' + searchValue;
   }
 }
