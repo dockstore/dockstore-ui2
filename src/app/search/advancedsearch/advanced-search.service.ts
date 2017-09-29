@@ -28,5 +28,4 @@ export class AdvancedSearchService {
   clear(): void {
     this.advancedSearch$.next(this.initAdvancedSearch);
   }
-
 }
