@@ -51,8 +51,8 @@ export class SearchComponent implements OnInit {
   location: Location;
 
 
-  // Possibly 100 workflows and 100 tools
-  private query_size = 200;
+  // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
+  private query_size = 201;
   expandAll = true;
   showToolTagCloud = false;
   showWorkflowTagCloud = false;
@@ -162,6 +162,7 @@ export class SearchComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.hits = [];
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.curURL = this.router.url;
@@ -832,15 +833,21 @@ export class SearchComponent implements OnInit {
   filterEntry() {
     this.workflowHits = [];
     this.toolHits = [];
+    let counter = 0;
     for (const hit of this.hits) {
       /**TODO: this is not good, make it faster.../
        */
-      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (hit['_type'] === 'tool') {
-        this.toolHits.push(hit);
-      } else if (hit['_type'] === 'workflow') {
-        this.workflowHits.push(hit);
+      // Do not add 201st result if it exists
+      if (!(counter == this.hits.length - 1 && this.hits.length == this.query_size)) {
+        hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+        if (hit['_type'] === 'tool') {
+          this.toolHits.push(hit);
+        } else if (hit['_type'] === 'workflow') {
+          this.workflowHits.push(hit);
+        }
       }
+
+      counter++;
     }
   }
   parseOrderBy(key): any {

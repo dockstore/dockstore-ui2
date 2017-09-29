@@ -117,7 +117,7 @@
         </div>
 
         <div *ngIf="hasSearchText() || hasFilters()">
-          <div class="alert alert-warning">
+          <div class="alert alert-info">
             <ng-template #popTemplate>
               <div class="row">
                 <div class="col-md-10">
@@ -167,6 +167,12 @@
             </span>
           </div>
         </div>
+
+        <div class="alert alert-info" *ngIf="hits !== null && hits.length > query_size - 1">
+          <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only up to {{ query_size - 1 }} results are shown.
+            We recommend that you use filters to find more relevant results.</p>
+        </div>
+
         <tabset class="homeComponent" type="tabs">
           <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab" [disabled]="haveNoHits(toolHits)">
             <ng-template tabHeading>
@@ -191,6 +197,7 @@
             <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
             <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
           </tab>
+
           <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
             <div *ngIf="workflowTagCloudData">
               <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
