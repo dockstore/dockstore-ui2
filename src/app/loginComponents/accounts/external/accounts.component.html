@@ -4,21 +4,24 @@
     <div *ngFor="let row of accountsInfo">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="btn-group pull-right">
-            <div *ngIf="row.isLinked">
-              <button class="btn btn-success btn-xs">
-                <span class="glyphicon glyphicon-ok"></span>
+          <h3 class="panel-title">{{ row.name }}
+            <span *ngIf="row.isLinked">
+              <span class="label label-success">
+                <span class="glyphicon glyphicon-link">Linked</span>
+              </span>
+              <button class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
+                <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
+                <span *ngIf="!row.show" class="glyphicon glyphicon-eye-open"></span>
               </button>
-              <button class="btn btn-primary btn-xs" (click)="unlink(row.source)">
-                <span>Unlink</span>
+              <span *ngIf="row.show">{{getTokenFromSource(row.source)}}</span>
+              <button class="pull-right btn btn-default btn-xs" (click)="unlink(row.source)">
+                <span class="glyphicon glyphicon-link text-danger">Unlink</span>
               </button>
-            </div>
-            <button *ngIf="!row.isLinked"
-                    class="btn btn-primary btn-xs" (click)="link(row.source)">
+            </span>
+            <button *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-xs" (click)="link(row.source)">
               <span class="glyphicon glyphicon-link">Link</span>
             </button>
-          </div>
-          <h4>{{ row.name }}</h4>
+          </h3>
         </div>
         <div class="panel-body">
           <strong>{{ row.bold }} </strong> {{ row.message }}
