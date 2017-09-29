@@ -131,6 +131,15 @@ export class SearchComponent implements OnInit {
   ]);
   private nonverifiedcount: number;
 
+  private advancedSearchOptions = [
+    'ANDSplitFilter',
+    'ANDNoSplitFilter',
+    'ORFilter',
+    'NOTFilter',
+    'searchMode',
+    'toAdvanceSearch'
+  ];
+
   /**
    * The current text search
    * @type {string}
@@ -156,34 +165,60 @@ export class SearchComponent implements OnInit {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.curURL = this.router.url;
-    this.searchService.searchInfo$.subscribe(
-      searchInfo => {
-        if (searchInfo) {
-          this.filters = searchInfo.filter;
-          this.values = searchInfo.searchValues;
-          this.checkboxMap = searchInfo.checkbox;
-          this.sortModeMap = searchInfo.sortModeMap;
-          this.advancedSearchObject = searchInfo.advancedSearchObject;
-          this.firstInit = false;
-        }
-        this.updateQuery();
-      });
+    this.advancedSearchObject = {
+      ANDSplitFilter: '',
+      ANDNoSplitFilter: '',
+      ORFilter: '',
+      NOTFilter: '',
+      searchMode: 'files',
+      toAdvanceSearch: false
+    };
+    this.parseParams();
+    this.updateQuery();
+
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
   }
-  parseFilter() {
-    const filterObj = this.searchService.createURIParams(this.curURL);
-    filterObj.paramsMap.forEach(((value, key) => {
-      if (this.filters) {
+
+  /**
+  * Applies parameters from the permalink to the search
+  */
+  parseParams() {
+    let useAdvSearch = false;
+    const URIParams = this.searchService.createURIParams(this.curURL);
+    URIParams.paramsMap.forEach(((value, key) => {
+      if (this.friendlyNames.get(key)) {
           value.forEach(categoryValue => {
             categoryValue = decodeURIComponent(categoryValue);
             this.handleFilters(key, categoryValue);
           });
         this.firstInit = false;
+      } else if (key === 'search') {
+        this.searchTerm = true;
+        this.advancedSearchObject.toAdvanceSearch = false;
+        this.values = value[0];
+      } else if (this.advancedSearchOptions.indexOf(key) > -1) {
+        if (key.includes('Filter')) {
+          useAdvSearch = true;
+          this.advancedSearchObject[key] = value[0];
+        } else if (key === 'searchMode') {
+          useAdvSearch = true;
+          if (value[0] !== 'files' && value[0] !== 'description') {
+            this.advancedSearchObject[key] = 'files';
+          } else {
+            this.advancedSearchObject[key] = value[0];
+          }
+        }
       }
     }));
+
+    if (useAdvSearch) {
+      this.searchTerm = false;
+      this.advancedSearchObject.toAdvanceSearch = true;
+      this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
+    }
   }
 
   haveNoHits(object: Object[]): boolean {
@@ -365,11 +400,12 @@ export class SearchComponent implements OnInit {
     this.searchService.setSearchInfo(searchInfo);
   }
 
-  shareBtnClick() {
+  updatePermalink() {
     const searchInfo = {
       filter: this.filters,
       searchValues: this.values,
-      advancedSearchObject: this.advancedSearchObject
+      advancedSearchObject: this.advancedSearchObject,
+      searchTerm: this.searchTerm
     };
     this.permalink = this.searchService.createPermalinks(searchInfo);
   }
@@ -379,11 +415,9 @@ export class SearchComponent implements OnInit {
    * ===============================================
    */
   updateQuery() {
+    this.updatePermalink();
     // calculate number of filters
     let count = 0;
-    if (this.curURL !== '/search' && this.firstInit) {
-      this.parseFilter();
-    }
     this.filters.forEach(filter => {
       count += filter.size;
     });
@@ -891,5 +925,37 @@ export class SearchComponent implements OnInit {
     } else {
       this.activeToolBar = true;
     }
+  }
+
+  /**
+  * Returns true if either basic search is set and has results, or advanced search is set
+  */
+  hasSearchText() {
+    return (this.hasResults() || this.advancedSearchObject.toAdvanceSearch);
+  }
+
+  /**
+  * Returns true if basic search has no results
+  */
+  noResults() {
+    return this.searchTerm && this.hits && this.hits.length === 0;
+  }
+
+  /**
+  * Returns true if basic search has results
+  */
+  hasResults() {
+    return this.searchTerm && this.hits && this.hits.length > 0;
+  }
+
+  /**
+  * Returns true if at least one filter is set
+  */
+  hasFilters() {
+    let count = 0;
+      this.filters.forEach(filter => {
+        count += filter.size;
+      });
+      return count > 0;
   }
 }

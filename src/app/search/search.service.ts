@@ -46,8 +46,7 @@ export class SearchService {
 
   // This function is related to permalinks, which is not implemented yet
   createPermalinks(searchInfo) {
-    // const url = `${ Dockstore.LOCAL_URI }/search`;
-    const url = 'placeholder';
+    const url = `${ Dockstore.LOCAL_URI }/search`;
     const params = new URLSearchParams();
     const filter = searchInfo.filter;
     filter.forEach(
@@ -57,9 +56,22 @@ export class SearchService {
         });
       }
     );
+
+    if (searchInfo.searchTerm && !searchInfo.advancedSearchObject.toAdvanceSearch) {
+      params.append('search', searchInfo.searchValues);
+    } else {
+      const advSearchKeys = Object.keys(searchInfo.advancedSearchObject);
+      for (let index = 0; index < advSearchKeys.length; index++) {
+        const key = advSearchKeys[index];
+        const val = searchInfo.advancedSearchObject[key];
+        if ((key.includes('Filter') || key === 'searchMode') && val !== '') {
+          params.append(key, val);
+        }
+      }
+    }
     return url + '?' + params.toString();
   }
-  // This function is related to permalinks, which is not implemented yet
+
   createURIParams(cururl) {
     const url = cururl.substr('/search'.length + 1);
     const params = new URLSearchParams(url);
