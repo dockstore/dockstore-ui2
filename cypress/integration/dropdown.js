@@ -38,13 +38,13 @@ describe('Dropdown test', function() {
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
             cy
-                .get('h4').contains('GitHub').siblings('.btn-group').children('div').children('.btn-success').should('be.visible')
+                .get('h4').contains('GitHub').contains('Unlink Account')
             cy
-                .get('h4').contains('Quay.io').siblings('.btn-group').children('div').children('.btn-success').should('be.visible')
+                .get('h4').contains('Quay.io').contains('Unlink Account')
             cy
-                .get('h4').contains('Bitbucket').siblings('.btn-group').children('div').should('not.be.visible')
+                .get('h4').contains('Bitbucket').contains('Link Account')
             cy
-                .get('h4').contains('GitLab').siblings('.btn-group').children('div').should('not.be.visible')
+                .get('h4').contains('GitLab').contains('Link Account')
         });
     });
 
@@ -73,13 +73,13 @@ describe('Dropdown test', function() {
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
             cy
-                .get('h4').contains('GitHub').siblings('.btn-group').children('div').children('.btn-success').should('be.visible')
+                .get('h4').contains('GitHub').contains('Unlink Account')
             cy
-                .get('h4').contains('Quay.io').siblings('.btn-group').children('div').children('.btn-success').should('be.visible')
+                .get('h4').contains('Quay.io').contains('Unlink Account')
             cy
-                .get('h4').contains('Bitbucket').siblings('.btn-group').children('div').should('not.be.visible')
+                .get('h4').contains('Bitbucket').contains('Link Account')
             cy
-                .get('h4').contains('GitLab').siblings('.btn-group').children('div').should('not.be.visible')
+                .get('h4').contains('GitLab').contains('Link Account')
         });
 
         it('Go through steps', function() {

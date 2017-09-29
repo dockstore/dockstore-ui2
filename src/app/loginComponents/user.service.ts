@@ -38,7 +38,6 @@ export class UserService {
       (user: User) => this.setUser(user),
       error => {
         this.setUser(null);
-        this.router.navigate(['/login']);
       }
     );
   }

@@ -4,10 +4,11 @@
     <div *ngFor="let row of accountsInfo">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">{{ row.name }}
+          <h4 class="panel-title">{{ row.name }}
             <span *ngIf="row.isLinked">
               <span class="label label-success">
-                <span class="glyphicon glyphicon-link">Linked</span>
+                <span class="glyphicon glyphicon-link"></span>
+                <span>Linked</span>
               </span>
               <button class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
                 <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
@@ -15,13 +16,15 @@
               </button>
               <span *ngIf="row.show">{{getTokenFromSource(row.source)}}</span>
               <button class="pull-right btn btn-default btn-xs" (click)="unlink(row.source)">
-                <span class="glyphicon glyphicon-link text-danger">Unlink</span>
+                <span class="text-danger glyphicon glyphicon-link"></span>
+                <span class="text-danger">Unlink Account</span>
               </button>
             </span>
             <button *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-xs" (click)="link(row.source)">
-              <span class="glyphicon glyphicon-link">Link</span>
+              <span class="glyphicon glyphicon-link"></span>
+              <span>Link Account</span>
             </button>
-          </h3>
+          </h4>
         </div>
         <div class="panel-body">
           <strong>{{ row.bold }} </strong> {{ row.message }}
