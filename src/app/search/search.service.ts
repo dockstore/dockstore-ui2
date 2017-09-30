@@ -44,7 +44,6 @@ export class SearchService {
       return false;
     }
   }
-  
   // Given a search info object, will create the permalink for the current search
   createPermalinks(searchInfo) {
     const url = `${ Dockstore.LOCAL_URI }/search`;
