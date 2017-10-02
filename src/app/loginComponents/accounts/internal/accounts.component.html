@@ -7,10 +7,12 @@
       <div class="col-lg-8 col-md-7 col-sm-6">
         <ul class="list-unstyled">
           <li>
-            <strong>Username</strong>: <span id="account-username">{{user?.username}}</span>
+            <strong>Username</strong>:
+            <span id="account-username">{{user?.username}}</span>
           </li>
           <li>
-            <strong>Administrator</strong>: <span id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</span>
+            <strong>Administrator</strong>:
+            <span id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</span>
           </li>
           <li *ngIf="user?.email">
             <strong>Email</strong>: {{user?.email}}
@@ -24,8 +26,16 @@
           <li *ngIf="user?.location">
             <strong>Location</strong>: {{user?.location}}
           </li>
-          <li *ngIf="getDockstoreToken()">
-            <strong>Dockstore Token</strong>: {{getDockstoreToken()}}
+          <li class="form-inline" *ngIf="getDockstoreToken()">
+            <strong>Dockstore Token</strong>:
+            <span class="input-group">
+              <span class="form-control">{{getDockstoreToken()}}</span>
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
+                  <span class="glyphicon glyphicon-copy"></span>
+                </button>
+              </span>
+            </span>
           </li>
         </ul>
       </div>

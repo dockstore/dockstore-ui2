@@ -15,7 +15,8 @@ import { TrackLoginService } from '../../../shared/track-login.service';
 
 @Component({
   selector: 'app-accounts-external',
-  templateUrl: './accounts.component.html'
+  templateUrl: './accounts.component.html',
+  styleUrls: ['./accounts.component.css']
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
 
