@@ -28,6 +28,10 @@ export class AccountsInternalComponent implements OnInit {
     );
   }
 
+  getDockstoreToken(): string {
+    return this.authService.getToken();
+  }
+
   private getUser() {
     this.userService.user$.subscribe(user => {
       this.user = user;
