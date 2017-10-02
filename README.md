@@ -46,7 +46,7 @@ Until bootstrap-toc moves to npm or a better table of contents(toc) library come
 sudo npm install -g bower
 bower -v
 1.8.0
-sudo npm install -g @angular/cli@1.0.3
+sudo npm install -g @angular/cli@1.3.1
 bower update
 ```
 
@@ -71,21 +71,22 @@ $ ng -v
  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
 /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
                |___/
-@angular/cli: 1.0.3
-node: 7.10.0
+@angular/cli: 1.3.1
+node: 7.9.0
 os: linux x64
-@angular/animations: 4.1.2
-@angular/common: 4.1.2
-@angular/compiler: 4.1.2
-@angular/compiler-cli: 4.1.2
-@angular/core: 4.1.2
-@angular/forms: 4.1.2
-@angular/http: 4.1.2
-@angular/platform-browser: 4.1.2
-@angular/platform-browser-dynamic: 4.1.2
-@angular/platform-server: 4.1.2
-@angular/router: 4.1.2
-@angular/cli: 1.0.3
+@angular/animations: 4.3.6
+@angular/common: 4.3.6
+@angular/compiler: 4.3.6
+@angular/core: 4.3.6
+@angular/flex-layout: 2.0.0-beta.9
+@angular/forms: 4.3.6
+@angular/http: 4.3.6
+@angular/platform-browser: 4.3.6
+@angular/platform-browser-dynamic: 4.3.6
+@angular/router: 4.3.6
+@angular/cli: 1.3.1
+@angular/compiler-cli: 4.3.6
+@angular/language-service: 4.3.6
 ```
 
 If you wish to serve the dist folder in a VM, make sure you have nginx and security rules set up properly.
@@ -93,41 +94,12 @@ If you wish to serve the dist folder in a VM, make sure you have nginx and secur
 
 ## Swagger
 
-You will need to generate the Dockstore client classes (version numbers may change frequently)
-```
-wget https://oss.sonatype.org/content/repositories/snapshots/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170808.174853-69.jar -O swagger-codegen-cli.jar
-java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/1.2.5/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger
-./script
-
-```
+You will need to generate the Dockstore client classes (version numbers may change frequently).
+Look at the setup in the travis.yml
 
 ## Project Set Up
 
 The Dockstore class in `dockstore-ui2/src/app/shared/dockstore.model.ts` is for integrating supported services.
-```
-export class Dockstore {
-
-  static readonly API_URI = 'https://staging.dockstore.org:8443';
-
-  static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
-  static readonly GITHUB_CLIENT_ID = '';
-  static readonly GITHUB_REDIRECT_URI = 'http://localhost:4200/auth/github';
-  static readonly GITHUB_SCOPE = 'read:org';
-
-  static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
-  static readonly QUAYIO_REDIRECT_URI = 'http://localhost:4200/auth/quay';
-  static readonly QUAYIO_SCOPE = 'repo:read,user:read';
-  static readonly QUAYIO_CLIENT_ID = '';
-
-  static readonly BITBUCKET_AUTH_URL = 'https://bitbucket.org/site/oauth2/authorize';
-  static readonly BITBUCKET_CLIENT_ID = '';
-
-  static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
-  static readonly GITLAB_CLIENT_ID = '';
-  static readonly GITLAB_REDIRECT_URI = 'http://localhost:4200/auth/gitlab';
-
-}
-```
 
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
