@@ -95,7 +95,7 @@ If you wish to serve the dist folder in a VM, make sure you have nginx and secur
 ## Swagger
 
 You will need to generate the Dockstore client classes (version numbers may change frequently).
-Look at the setup in the travis.yml
+Look at the setup in the [travis.yml](.travis.yml)
 
 ## Project Set Up
 
