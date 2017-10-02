@@ -115,7 +115,10 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Delete a token and unlink service in the UI
   unlink(source: string) {
     this.deleteSubscription = this.deleteToken(source)
-      .subscribe(() => this.unlinkToken(source));
+      .subscribe(() => {
+        this.tokenService.updateTokens();
+        this.unlinkToken(source);
+      });
   }
 
   // Show linked services in the UI
