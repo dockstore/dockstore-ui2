@@ -169,8 +169,8 @@
         </div>
 
         <div class="alert alert-info" *ngIf="hits.length > query_size - 1">
-          <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only up to {{ query_size - 1 }} results are shown.
-            We recommend that you use filters to find more relevant results.</p>
+          <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
+            We recommend that you narrow your search to find more relevant results.</p>
         </div>
 
         <tabset class="homeComponent" type="tabs">
