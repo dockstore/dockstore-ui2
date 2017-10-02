@@ -17,4 +17,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.twitterService.runScript();
   }
+
+  goToSearch(searchValue: string) {
+    window.location.href = '/search?search=' + searchValue;
+  }
 }

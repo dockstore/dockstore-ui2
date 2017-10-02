@@ -51,8 +51,8 @@ export class SearchComponent implements OnInit {
   location: Location;
 
 
-  // Possibly 100 workflows and 100 tools
-  private query_size = 200;
+  // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
+  public query_size = 201;
   expandAll = true;
   showToolTagCloud = false;
   showWorkflowTagCloud = false;
@@ -88,47 +88,10 @@ export class SearchComponent implements OnInit {
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
    */
-  private bucketStubs = new Map([
-    ['Entry Type', '_type'],
-    ['Registry', 'registry'],
-    ['Private Access', 'private_access'],
-    ['Verified', 'tags.verified'],
-    ['Author', 'author'],
-    ['Organization', 'namespace'],
-    ['Labels', 'labels.value.keyword'],
-    ['Verified Source', 'tags.verifiedSource'],
-  ]);
-  public friendlyNames = new Map([
-    ['_type', 'Entry Type'],
-    ['registry', 'Registry'],
-    ['private_access', 'Private Access'],
-    ['tags.verified', 'Verified'],
-    ['author', 'Author'],
-    ['namespace', 'Organization'],
-    ['labels.value.keyword', 'Labels'],
-    ['tags.verifiedSource', 'Verified Source'],
-  ]);
-  private entryOrder = new Map([
-    ['_type', new SubBucket],
-    ['author', new SubBucket],
-    ['registry', new SubBucket],
-    ['namespace', new SubBucket],
-    ['labels.value.keyword', new SubBucket],
-    ['private_access', new SubBucket],
-    ['tags.verified', new SubBucket],
-    ['tags.verifiedSource', new SubBucket]
-  ]);
-  private friendlyValueNames = new Map([
-    ['tags.verified', new Map([
-      ['1', 'verified'], ['0', 'non-verified']
-    ])],
-    ['private_access', new Map([
-      ['1', 'private'], ['0', 'public']
-    ])],
-    ['registry', new Map([
-      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
-    ])]
-  ]);
+  private bucketStubs: Map<string, string>;
+  public friendlyNames: Map<string, string>;
+  private entryOrder: Map<string, SubBucket>;
+  private friendlyValueNames: Map<string, Map<string, string>>;
   private nonverifiedcount: number;
 
   private advancedSearchOptions = [
@@ -150,7 +113,7 @@ export class SearchComponent implements OnInit {
    * @param providerService
    */
   constructor(private providerService: ProviderService,
-              private searchService: SearchService,
+              public searchService: SearchService,
               private advancedSearchService: AdvancedSearchService,
               private router: Router,
               private Location: Location) {
@@ -162,6 +125,13 @@ export class SearchComponent implements OnInit {
     });
   }
   ngOnInit() {
+    // Initialize mappings
+    this.bucketStubs  = this.searchService.initializeBucketStubs();
+    this.friendlyNames = this.searchService.initializeFriendlyNames();
+    this.entryOrder = this.searchService.initializeEntryOrder();
+    this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
+
+    this.hits = [];
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.curURL = this.router.url;
@@ -192,7 +162,7 @@ export class SearchComponent implements OnInit {
       if (this.friendlyNames.get(key)) {
           value.forEach(categoryValue => {
             categoryValue = decodeURIComponent(categoryValue);
-            this.handleFilters(key, categoryValue);
+            this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
           });
         this.firstInit = false;
       } else if (key === 'search') {
@@ -389,6 +359,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  // Saves the current search filter and passes to search searvice for sharing with advanced search
   saveSearchFilter() {
     const searchInfo = {
       filter: this.filters,
@@ -400,6 +371,7 @@ export class SearchComponent implements OnInit {
     this.searchService.setSearchInfo(searchInfo);
   }
 
+  // Updates the permalink to reflect changes to search
   updatePermalink() {
     const searchInfo = {
       filter: this.filters,
@@ -414,6 +386,8 @@ export class SearchComponent implements OnInit {
    *                Update Functions
    * ===============================================
    */
+
+  // Called when any change to the search is made to update the results
   updateQuery() {
     this.updatePermalink();
     // calculate number of filters
@@ -500,16 +474,7 @@ export class SearchComponent implements OnInit {
 
   resetEntryOrder() {
     this.entryOrder.clear();
-    this.entryOrder = new Map([
-      ['_type', new SubBucket],
-      ['author', new SubBucket],
-      ['registry', new SubBucket],
-      ['namespace', new SubBucket],
-      ['labels.value.keyword', new SubBucket],
-      ['private_access', new SubBucket],
-      ['tags.verified', new SubBucket],
-      ['tags.verifiedSource', new SubBucket]
-    ]);
+    this.entryOrder = this.searchService.initializeEntryOrder();
     this.orderedBuckets.clear();
   }
   /**===============================================
@@ -662,7 +627,7 @@ export class SearchComponent implements OnInit {
   appendAggregations(count: number, body: any): any {
     // go through buckets
     this.bucketStubs.forEach(key => {
-      const order = this.parseOrderBy(key);
+      const order = this.searchService.parseOrderBy(key, this.sortModeMap);
       if (count > 0) {
         body = body.agg('filter', key, key, (a) => {
           return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order });
@@ -759,7 +724,7 @@ export class SearchComponent implements OnInit {
     if (category !== null && categoryValue !== null) {
       const checked = this.checkboxMap.get(category).get(categoryValue);
       this.checkboxMap.get(category).set(categoryValue, !checked);
-      this.handleFilters(category, categoryValue);
+      this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
     this.updateQuery();
   }
@@ -804,11 +769,11 @@ export class SearchComponent implements OnInit {
     }
     if (sortMode) {
       /* Reorder the bucket map by count */
-      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
+      orderedMap2 = this.searchService.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
         this.sortModeMap.get(category).CountOrderBy);
     } else {
       /* Reorder the bucket map by alphabet */
-      orderedMap2 = this.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
+      orderedMap2 = this.searchService.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
         this.sortModeMap.get(category).AlphabetOrderBy);
     }
     this.orderedBuckets.get(category).Items = orderedMap2;
@@ -819,102 +784,26 @@ export class SearchComponent implements OnInit {
    * ===============================================
    *
    */
-  joinComma(searchTerm: string): string {
-    return searchTerm.trim().split(' ').join(', ');
-  }
-  mapFriendlyValueNames(key, subBucket) {
-    if (this.friendlyValueNames.has(key)) {
-      return this.friendlyValueNames.get(key).get(subBucket.toString());
-    } else {
-      return subBucket;
-    }
-  }
+
   filterEntry() {
     this.workflowHits = [];
     this.toolHits = [];
+    let counter = 0;
     for (const hit of this.hits) {
       /**TODO: this is not good, make it faster.../
        */
-      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (hit['_type'] === 'tool') {
-        this.toolHits.push(hit);
-      } else if (hit['_type'] === 'workflow') {
-        this.workflowHits.push(hit);
-      }
-    }
-  }
-  parseOrderBy(key): any {
-    let order: any;
-    if (this.sortModeMap.has(key)) {
-      switch (this.sortModeMap.get(key).SortBy) {
-        case true: {
-          order = {
-            _count: this.sortModeMap.get(key).CountOrderBy ? 'asc' : 'desc'
-          };
-          break;
-        }
-        case false: {
-          order = {
-            _term: this.sortModeMap.get(key).AlphabetOrderBy ? 'asc' : 'desc'
-          };
-          break;
-        }
-        default: {
-          order = {
-            _count: 'desc'
-          };
-          break;
+      // Do not add 201st result if it exists
+      if (!(counter === this.hits.length - 1 && this.hits.length === this.query_size)) {
+        hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+        if (hit['_type'] === 'tool') {
+          this.toolHits.push(hit);
+        } else if (hit['_type'] === 'workflow') {
+          this.workflowHits.push(hit);
         }
       }
-    } else {
-      order = {
-        _count: 'desc'
-      };
-    }
-    return order;
-  }
-  /**
-   * This handles selection of one filter, either taking it out from the list of active filters
-   * or adding it if not present
-   * @param category
-   * @param categoryValue
-   */
-  handleFilters(category: string, categoryValue: string) {
-    if (this.filters.has(category) && this.filters.get(category).has(categoryValue)) {
-      this.filters.get(category).delete(categoryValue);
-      // wipe out the category if empty
-      if (this.filters.get(category).size === 0) {
-        this.filters.delete(category);
-      }
-    } else {
-      if (!this.filters.has(category)) {
-        this.filters.set(category, new Set<string>());
-      }
-      this.filters.get(category).add(categoryValue);
-    }
-  }
 
-  sortCategoryValue(valueMap: any, sortMode: boolean, orderMode: boolean): any {
-    let orderedArray = <any>[];
-    valueMap.forEach(
-      (value, key) => {
-        orderedArray.push(
-          {
-            key: key,
-            value: value
-          });
-      });
-    if (!sortMode) {
-      orderedArray = this.searchService.sortByAlphabet(orderedArray, orderMode);
-    } else {
-      orderedArray = this.searchService.sortByCount(orderedArray, orderMode);
+      counter++;
     }
-    const tempMap: Map<string, string> = new Map<string, string>();
-    orderedArray.forEach(
-      entry => {
-        tempMap.set(entry.key, entry.value);
-      });
-    return tempMap;
   }
 
   setTabActive() {
@@ -925,37 +814,5 @@ export class SearchComponent implements OnInit {
     } else {
       this.activeToolBar = true;
     }
-  }
-
-  /**
-  * Returns true if either basic search is set and has results, or advanced search is set
-  */
-  hasSearchText() {
-    return (this.hasResults() || this.advancedSearchObject.toAdvanceSearch);
-  }
-
-  /**
-  * Returns true if basic search has no results
-  */
-  noResults() {
-    return this.searchTerm && this.hits && this.hits.length === 0;
-  }
-
-  /**
-  * Returns true if basic search has results
-  */
-  hasResults() {
-    return this.searchTerm && this.hits && this.hits.length > 0;
-  }
-
-  /**
-  * Returns true if at least one filter is set
-  */
-  hasFilters() {
-    let count = 0;
-      this.filters.forEach(filter => {
-        count += filter.size;
-      });
-      return count > 0;
   }
 }
