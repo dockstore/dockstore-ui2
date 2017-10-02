@@ -37,10 +37,8 @@ export class UserService {
     this.usersService.getUser().subscribe(
       (user: User) => this.setUser(user),
       error => {
-        // If you were logged in, but you're not really, go to login page
-        if (this.userSource.getValue()) {
-          this.router.navigate(['/login']);
-        }
+        // TODO: Figure out what to do when error.
+        // Currently this function is executed whether the user is logged in or not.
         this.setUser(null);
       }
     );
