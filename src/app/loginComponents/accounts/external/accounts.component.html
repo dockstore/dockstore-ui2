@@ -1,25 +1,39 @@
-<h3>Step 1: Link External Accounts</h3>
 <hr />
 <div class="container">
   <div class="row">
     <div *ngFor="let row of accountsInfo">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="btn-group pull-right">
-            <div *ngIf="row.isLinked">
-              <button class="btn btn-success btn-xs">
-                <span class="glyphicon glyphicon-ok"></span>
+          <h4 class="panel-title">{{ row.name }}
+            <span *ngIf="row.isLinked">
+              <span class="label label-success">
+                <span class="glyphicon glyphicon-link"></span>
+                <span>Linked</span>
+              </span>
+              <button class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
+                <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
+                <span *ngIf="!row.show" class="glyphicon glyphicon-eye-open"></span>
               </button>
-              <button class="btn btn-primary btn-xs" (click)="unlink(row.source)">
-                <span>Unlink</span>
+              <span class="form-inline" *ngIf="row.show">
+                <span class="input-group">
+                  <span class="form-control input-xs">{{getTokenFromSource(row.source)}}</span>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs" type="button" ngxClipboard [cbContent]="getTokenFromSource(row.source)" (cbOnSuccess)="isCopied1 = true">
+                      <span class="glyphicon glyphicon-copy"></span>
+                    </button>
+                  </span>
+                </span>
+              </span>
+              <button class="pull-right btn btn-default btn-sm" (click)="unlink(row.source)">
+                <span class="text-danger glyphicon glyphicon-link"></span>
+                <span class="text-danger">Unlink Account</span>
               </button>
-            </div>
-            <button *ngIf="!row.isLinked"
-                    class="btn btn-primary btn-xs" (click)="link(row.source)">
-              <span class="glyphicon glyphicon-link">Link</span>
+            </span>
+            <button *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-sm" (click)="link(row.source)">
+              <span class="glyphicon glyphicon-link"></span>
+              <span>Link Account</span>
             </button>
-          </div>
-          <h4>{{ row.name }}</h4>
+          </h4>
         </div>
         <div class="panel-body">
           <strong>{{ row.bold }} </strong> {{ row.message }}

@@ -13,19 +13,23 @@ import { UserService } from '../../user.service';
 })
 export class AccountsInternalComponent implements OnInit {
   user;
-  syncingWithGithub: boolean;
+  public syncingWithGithub = false;
 
   constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
     private authService: AuthService) { }
 
   syncGitHub() {
     this.syncingWithGithub = true;
-    this.usersService.updateUserMetadata().subscribe(user => {
+    this.usersService.updateLoggedInUserMetadata().subscribe(user => {
       this.user = user;
       this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
       this.syncingWithGithub = false;
     }
     );
+  }
+
+  getDockstoreToken(): string {
+    return this.authService.getToken();
   }
 
   private getUser() {

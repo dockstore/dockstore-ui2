@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -22,7 +23,8 @@ export class UserService {
 
   user$ = this.userSource.asObservable();
 
-  constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration) {
+  constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration,
+    private router: Router) {
     this.updateUser();
    }
 
@@ -32,7 +34,14 @@ export class UserService {
 
   updateUser() {
     this.configuration.accessToken = this.authService.getToken();
-    this.usersService.getUser().subscribe((user: User) => this.setUser(user));
+    this.usersService.getUser().subscribe(
+      (user: User) => this.setUser(user),
+      error => {
+        // TODO: Figure out what to do when error.
+        // Currently this function is executed whether the user is logged in or not.
+        this.setUser(null);
+      }
+    );
   }
 
   gravatarUrl(email: string, defaultImg: string) {
