@@ -1,5 +1,5 @@
 <app-header>
-  <img src="../assets/images/dockstore/dockstore-tools-blue.png">
+  <span class="glyphicon glyphicon-search"></span>
   Search
   <div class="pull-right">
   </div>
@@ -60,7 +60,7 @@
               <div class="container-name-oflw pull-left">
                   <span>
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ mapFriendlyValueNames(key,subBucket) }}
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
                   </span>
               </div>
               <div class="pull-right">
@@ -74,7 +74,7 @@
                 <div class="container-name-oflw pull-left">
                   <span>
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ mapFriendlyValueNames(key,subBucket) }}
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
                   </span>
                 </div>
                 <div class="pull-right">
@@ -111,47 +111,52 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-          <div *ngIf="searchTerm && hits.length == 0" class="alert alert-warning">
-            Sorry, no matches found for <strong>{{joinComma(values)}}</strong>.
-            <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
-          </div>
-          <div *ngIf="searchTerm && hits.length > 0" class="alert alert-info">
-            <strong>Search: </strong> contains one of <strong>"{{joinComma(values)}}"</strong>
-          </div>
-          <div *ngIf="advancedSearchObject?.toAdvanceSearch" class="alert alert-info">
-            <strong>Advanced Search: </strong>
-            <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-            <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
-            <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
-            <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
-          </div>
-          <div *ngIf="filters.size > 0" class="alert alert-info">
-            <template #popTemplate *ngIf="false">
+        <div *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+          Sorry, no matches found for <strong>{{searchService.joinComma(values)}}</strong>.
+          <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
+        </div>
+
+        <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
+          <div class="alert alert-info">
+            <ng-template #popTemplate>
               <div class="row">
                 <div class="col-md-10">
                   <input type="text" class="form-control" [(ngModel)]="permalink" value="{{permalink}}" readonly>
                 </div>
                 <span>
-            <button class="btn btn-default" style="margin-right: 5px" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
+                  <button class="btn btn-default" style="margin-right: 5px" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
                     (cbOnSuccess)="isCopied = true">
-              <span class="glyphicon glyphicon-copy"></span>
-            </button>
-          </span>
+                    <span class="glyphicon glyphicon-copy"></span>
+                  </button>
+                </span>
               </div>
-            </template>
+            </ng-template>
             <button type="button" class="refresh-all-button btn btn-primary"
                     [popover]="popTemplate"
                     popoverTitle="Link to this page"
-                    placement="bottom"
-                    (click)="shareBtnClick()"  *ngIf="false">
+                    placement="bottom" [outsideClick]="true">
               <i class="fa fa-share-alt" aria-hidden="true"></i>
               Share
             </button>
-            <strong>Search Filter: </strong>
+
+            <span *ngIf="searchService.hasResults(searchTerm, hits)">
+              <strong>Search: </strong> contains one of <strong>"{{searchService.joinComma(values)}}"</strong>
+            </span>
+
+            <span *ngIf="advancedSearchObject?.toAdvanceSearch">
+              <strong>Search: </strong>
+              <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{searchService.joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{searchService.joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{searchService.joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{searchService.joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
+            </span>
+            <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">AND </span>
+            <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">Search: </strong>
+
             <span *ngFor="let key of filters.keys(); let i = index">
               the <strong>{{friendlyNames.get(key)}}</strong> is
               <span *ngFor='let subBucket of filters.get(key); let j = index'>
-                <strong>{{mapFriendlyValueNames(key, subBucket)}}</strong>
+                <strong>{{searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames)}}</strong>
                 <span *ngIf="j < filters.get(key).size - 1">
                   OR
                 </span>
@@ -159,8 +164,15 @@
               <span *ngIf="i < filters.size - 1">
               AND
               </span>
-          </span>
+            </span>
           </div>
+        </div>
+
+        <div class="alert alert-info" *ngIf="hits.length > query_size - 1">
+          <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
+            We recommend that you narrow your search to find more relevant results.</p>
+        </div>
+
         <tabset class="homeComponent" type="tabs">
           <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab" [disabled]="haveNoHits(toolHits)">
             <ng-template tabHeading>
@@ -185,6 +197,7 @@
             <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
             <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
           </tab>
+
           <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
             <div *ngIf="workflowTagCloudData">
               <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
