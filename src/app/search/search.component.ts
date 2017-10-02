@@ -1,8 +1,8 @@
+import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { SearchService } from './search.service';
 import bodybuilder from 'bodybuilder';
-import { Client } from 'elasticsearch';
 import { Component, OnInit, enableProdMode } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -38,14 +38,10 @@ export class SearchComponent implements OnInit {
   _timeout = false;
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
   public toolHits: Object[] = [];
   public workflowHits: Object[] = [];
   public hits: Object[];
-  private _client: Client;
   private shard_size = 10000;
-  public activeToolBar = true;
   public suggestTerm = '';
   private firstInit = true;
   location: Location;
@@ -54,17 +50,9 @@ export class SearchComponent implements OnInit {
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public query_size = 201;
   expandAll = true;
-  showToolTagCloud = false;
-  showWorkflowTagCloud = false;
   searchTerm = false;
-  options: CloudOptions = {
-    width: 600,
-    height: 200,
-    overflow: false,
-  };
+
   autocompleteTerms: Array<string> = new Array<string>();
-  toolTagCloudData: Array<CloudData>;
-  workflowTagCloudData: Array<CloudData>;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -118,11 +106,6 @@ export class SearchComponent implements OnInit {
               private router: Router,
               private Location: Location) {
     this.location = Location;
-    this._client = new Client({
-      host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
-      apiVersion: '5.x',
-      log: 'debug'
-    });
   }
   ngOnInit() {
     // Initialize mappings
@@ -130,10 +113,19 @@ export class SearchComponent implements OnInit {
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
-
+    this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
+      if (toSaveSearch) {
+        this.saveSearchFilter();
+        this.searchService.toSaveSearch$.next(false);
+      }
+    });
+    this.searchService.values$.subscribe(values => {
+      this.values = values;
+      if (this.values) {
+        this.tagClicked();
+      }
+    });
     this.hits = [];
-    this.createTagCloud('tool');
-    this.createTagCloud('workflow');
     this.curURL = this.router.url;
     this.advancedSearchObject = {
       ANDSplitFilter: '',
@@ -191,55 +183,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  haveNoHits(object: Object[]): boolean {
-    return this.searchService.haveNoHits(object);
-  }
-
-  createTagCloud(type: string) {
-    let body = bodybuilder().size();
-    body = body.query('match', '_type', type);
-    body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
-    const toolQuery = JSON.stringify(body, null, 1);
-    this.createToolTagCloud(toolQuery, type);
-  }
-
-  createToolTagCloud(toolQuery, type) {
-    this._client.search({
-      index: 'tools',
-      type: 'entry',
-      body: toolQuery
-    }).then(hits => {
-      let weight = 10;
-      let count = 0;
-      hits.aggregations.tagcloud.buckets.forEach(
-        tag => {
-          const theTag = {
-            text: tag.key,
-            weight: weight
-          };
-          if (weight === 10) {
-            /** just for fun...**/
-            theTag['color'] = '#ffaaee';
-          }
-          if (count % 2 !== 0) {
-            weight--;
-          }
-          if (type === 'tool') {
-            if (!this.toolTagCloudData) {
-              this.toolTagCloudData = new Array<CloudData>();
-            }
-            this.toolTagCloudData.push(theTag);
-          } else {
-            if (!this.workflowTagCloudData) {
-              this.workflowTagCloudData = new Array<CloudData>();
-            }
-            this.workflowTagCloudData.push(theTag);
-          }
-          count--;
-        }
-      );
-    });
-  }
   /**===============================================
    *                SetUp Functions
    * ==============================================*/
@@ -286,6 +229,11 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  tagClicked(): void {
+    this.searchTerm = true;
+    this.updateQuery();
+  }
+
   /** This function takes care of the problem of non-verified items containing the set of verified items.
    * this function calls a third elastic query which will get the correct number count of the non-verified items
    * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
@@ -301,7 +249,7 @@ export class SearchComponent implements OnInit {
     bodyNotVerified = this.appendFilter(bodyNotVerified, null);
     const builtBodyNotVerified = bodyNotVerified.build();
     const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: queryBodyNotVerified
@@ -359,7 +307,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  // Saves the current search filter and passes to search searvice for sharing with advanced search
+  // Saves the current search filter and passes to search service for sharing with advanced search
   saveSearchFilter() {
     const searchInfo = {
       filter: this.filters,
@@ -415,7 +363,7 @@ export class SearchComponent implements OnInit {
   }
 
   updateSideBar(value: string) {
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: value
@@ -432,7 +380,7 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   updateResultsTable(value: string) {
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: value
@@ -446,7 +394,6 @@ export class SearchComponent implements OnInit {
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
-      this.setTabActive();
       if (this.searchTerm && this.hits.length === 0) {
         this.suggestKeyTerm();
       }
@@ -646,7 +593,7 @@ export class SearchComponent implements OnInit {
   onKey() {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = this.values + '.*';
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: {
@@ -678,6 +625,7 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject.toAdvanceSearch = false;
       this.searchTerm = true;
       this._timeout = true;
+      console.log('asdf');
       window.setTimeout(() => {
         if ((!this.values || 0 === this.values.length)) {
           this.searchTerm = false;
@@ -689,7 +637,7 @@ export class SearchComponent implements OnInit {
   }
 /*TODO: FOR DEMO USE, make this better later...*/
   suggestKeyTerm() {
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: {
@@ -740,21 +688,11 @@ export class SearchComponent implements OnInit {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
   }
-  tagClicked(clicked: CloudData) {
-    this.searchTerm = true;
-    this.values = clicked.text;
-    this.updateQuery();
-  }
+
   switchExpandAll() {
     this.expandAll = !this.expandAll;
   }
-  clickTagCloudBtn(type: string) {
-    if (type === 'tool') {
-      this.showToolTagCloud = !this.showToolTagCloud;
-    } else {
-      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
-    }
-  }
+
   clickSortMode(category: string, sortMode: boolean) {
     let orderedMap2;
     if (this.sortModeMap.get(category).SortBy === sortMode) {
@@ -803,16 +741,6 @@ export class SearchComponent implements OnInit {
       }
 
       counter++;
-    }
-  }
-
-  setTabActive() {
-    if (this.toolHits.length === 0 && this.workflowHits.length > 0) {
-      this.activeToolBar = false;
-    } else if (this.workflowHits.length === 0 && this.toolHits.length > 0) {
-      this.activeToolBar = true;
-    } else {
-      this.activeToolBar = true;
     }
   }
 }

@@ -16,11 +16,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ClipboardModule } from 'ngx-clipboard';
 import { searchRouting } from './search.routing';
+import { SearchResultsComponent } from './search-results/search-results.component';
 @NgModule({
   declarations: [
     AdvancedSearchComponent,
-    SearchComponent
-  ],
+    SearchComponent,
+    SearchResultsComponent
+],
   imports: [
     CommonModule,
     ListentryModule,
