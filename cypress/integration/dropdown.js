@@ -48,21 +48,6 @@ describe('Dropdown test', function() {
         });
     });
 
-    describe('Go to tokens page', function() {
-        beforeEach(function() {
-            // Select dropdown tokens
-            cy
-                .get('#dropdown-tokens')
-                .click()
-        });
-
-        it('Should have three tokens', function() {
-            expect(('#dockstore_token')).to.exist;
-            expect(('#github.com_token')).to.exist;
-            expect(('#quay.io_token')).to.exist;
-        });
-    });
-
     describe('Go to setup page', function() {
         beforeEach(function() {
             // Select dropdown setup
