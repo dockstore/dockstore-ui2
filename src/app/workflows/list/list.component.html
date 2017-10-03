@@ -12,17 +12,17 @@
       <tbody>
         <tr *ngFor="let workflow of workflowsTable">
           <td>
+            <span id="verifiedIcon" *ngIf="getVerified(workflow)">
+              <a href={{verifiedLink}}>
+                <span an class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+              </a>
+            </span>
             <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
           </td>
           <td>
             {{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
           </td>
           <td>
-              <span id="verifiedIcon" *ngIf="getVerified(workflow)">
-                <a href={{verifiedLink}}>
-                  <span an class="glyphicon glyphicon-ok" tooltip="Verified"></span>
-                </a>
-              </span>
             {{ workflow?.author || 'n/a' }}</td>
           <td>{{ workflow?.descriptorType | uppercase }}</td>
           <td>
