@@ -38,9 +38,9 @@
   </li>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
-    <a *ngIf="workflow?.mode !== 'STUB' && !workflow?.is_published && !refreshing" (click)="restubWorkflow()">
-      (Restub)
-    </a>
+    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== 'STUB' && !workflow?.is_published && !refreshing" (click)="restubWorkflow()">
+      <span class="glyphicon glyphicon-remove"></span> Restub
+    </button>
   </li>
   <li>
     <div *ngIf="!isPublic">
