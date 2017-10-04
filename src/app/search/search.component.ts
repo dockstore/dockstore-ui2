@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs/Subscription';
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...
  **/
-enableProdMode();
+// enableProdMode();
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -150,6 +150,9 @@ export class SearchComponent implements OnInit {
   parseParams() {
     let useAdvSearch = false;
     const URIParams = this.searchService.createURIParams(this.curURL);
+    if (!URIParams.paramsMap) {
+      return;
+    }
     URIParams.paramsMap.forEach(((value, key) => {
       if (this.friendlyNames.get(key)) {
         value.forEach(categoryValue => {
