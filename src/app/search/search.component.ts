@@ -1,18 +1,17 @@
-import { QueryBuilderService } from './query-builder.service';
-import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
-import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
-import { SearchService } from './search.service';
-import { Component, OnInit, enableProdMode } from '@angular/core';
-import { ProviderService } from '../shared/provider.service';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router/';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Dockstore } from '../shared/dockstore.model';
-import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { Subscription } from 'rxjs/Subscription';
+
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-import { Router } from '@angular/router/';
-import { Location } from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
+import { ProviderService } from '../shared/provider.service';
+import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
+import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
+import { QueryBuilderService } from './query-builder.service';
+import { SearchService } from './search.service';
 
 /** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
  *  so you shouldn't just dismiss it, but try to figure out why it's happening...

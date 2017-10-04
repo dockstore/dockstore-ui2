@@ -1,8 +1,9 @@
-import { QueryBuilderService } from './../query-builder.service';
-import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
-import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
-import { SearchService } from './../search.service';
 import { Component, OnInit } from '@angular/core';
+import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+
+import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
+import { QueryBuilderService } from './../query-builder.service';
+import { SearchService } from './../search.service';
 
 @Component({
   selector: 'app-search-results',
