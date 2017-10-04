@@ -1,5 +1,5 @@
 <div>
-  <span>
+  <span *ngIf="versions?.length > 0">
     <strong>Workflow Version:</strong>
     <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
     <strong>File:</strong>
