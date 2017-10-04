@@ -1,13 +1,12 @@
 <div class="container">
-  <ul>
-    <li>In Affiliation with: </li>
-    <li *ngFor="let sponsor of sponsors">
+  <div class="row" style="padding-bottom:30px">
+    <h4 style="color:#21335B">In Affiliation With:</h4>
+    <div *ngFor="let sponsor of sponsors" class="col-md-3 col-sm-6"  style="padding-bottom:30px">
       <a href="{{sponsor.url}}" target="_blank">
-        <img [src]="sponsor.current"
-             (mouseover)="onMouseOver(sponsor)"
-             (mouseout)="onMouseOut(sponsor)"/>
+        <img [src]="sponsor.current" class="img-responsive center-image"
+        (mouseover)="onMouseOver(sponsor)"
+        (mouseout)="onMouseOut(sponsor)"/>
       </a>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
-
