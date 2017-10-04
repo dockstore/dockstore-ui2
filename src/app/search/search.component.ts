@@ -1,8 +1,8 @@
+import { QueryBuilderService } from './query-builder.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { SearchService } from './search.service';
-import bodybuilder from 'bodybuilder';
 import { Component, OnInit, enableProdMode } from '@angular/core';
 import { ProviderService } from '../shared/provider.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -10,7 +10,7 @@ import { Dockstore } from '../shared/dockstore.model';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-import { Router} from '@angular/router/';
+import { Router } from '@angular/router/';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -100,16 +100,16 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService,
-              public searchService: SearchService,
-              private advancedSearchService: AdvancedSearchService,
-              private router: Router,
-              private Location: Location) {
+  constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
+    public searchService: SearchService,
+    private advancedSearchService: AdvancedSearchService,
+    private router: Router,
+    private Location: Location) {
     this.location = Location;
   }
   ngOnInit() {
     // Initialize mappings
-    this.bucketStubs  = this.searchService.initializeBucketStubs();
+    this.bucketStubs = this.searchService.initializeBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
@@ -152,10 +152,10 @@ export class SearchComponent implements OnInit {
     const URIParams = this.searchService.createURIParams(this.curURL);
     URIParams.paramsMap.forEach(((value, key) => {
       if (this.friendlyNames.get(key)) {
-          value.forEach(categoryValue => {
-            categoryValue = decodeURIComponent(categoryValue);
-            this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
-          });
+        value.forEach(categoryValue => {
+          categoryValue = decodeURIComponent(categoryValue);
+          this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
+        });
         this.firstInit = false;
       } else if (key === 'search') {
         this.searchTerm = true;
@@ -242,13 +242,8 @@ export class SearchComponent implements OnInit {
    *
    * **/
   setupNonVerifiedBucketCount() {
-    let bodyNotVerified = bodybuilder().size(this.query_size);
-    bodyNotVerified = this.appendQuery(bodyNotVerified);
-    const key = 'tags.verified';
-    bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
-    bodyNotVerified = this.appendFilter(bodyNotVerified, null);
-    const builtBodyNotVerified = bodyNotVerified.build();
-    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
+    const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
+      this.advancedSearchObject, this.searchTerm, this.filters);
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
@@ -346,17 +341,11 @@ export class SearchComponent implements OnInit {
     // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    let sidebarBody = bodybuilder().size(this.query_size);
-    sidebarBody = this.appendQuery(sidebarBody);
-    sidebarBody = this.appendAggregations(count, sidebarBody);
-    let tableBody = bodybuilder().size(this.query_size);
-    tableBody = this.appendQuery(tableBody);
-    tableBody = this.appendFilter(tableBody, null);
+    const sideBarQuery = this.queryBuilderService.getSidebarQuery(this.query_size, this.values, this.advancedSearchObject,
+      this.searchTerm, this.bucketStubs, this.filters, this.sortModeMap);
+    const tableQuery = this.queryBuilderService.getResultQuery(this.query_size, this.values, this.advancedSearchObject,
+      this.searchTerm, this.filters);
     this.resetEntryOrder();
-    const builtSideBarBody = sidebarBody.build();
-    const builtTableBody = tableBody.build();
-    const sideBarQuery = JSON.stringify(builtSideBarBody);
-    const tableQuery = JSON.stringify(builtTableBody);
     this.setupNonVerifiedBucketCount();
     this.updateSideBar(sideBarQuery);
     this.updateResultsTable(tableQuery);
@@ -424,167 +413,7 @@ export class SearchComponent implements OnInit {
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.orderedBuckets.clear();
   }
-  /**===============================================
-   *                Append Functions
-   * ==============================================
-   */
-  /**
-   * Append filters to a body builder object in order to add filter functionality to the overall elastic search query
-   * This is used to add to query object as well as each individual aggregation
-   * @param {*} body
-   * @returns the new body builder object with filter applied
-   * @memberof SearchComponent
-   */
-  appendFilter(body: any, aggKey: string): any {
-    this.filters.forEach((value: Set<string>, key: string) => {
-      value.forEach(insideFilter => {
-        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
-          // Return some garbage filter because we've decided to append a filter, there's no turning back
-          // return body;  // <--- this does not work
-          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
-        } else {
-          if (value.size > 1) {
-            body = body.orFilter('term', key, insideFilter);
-          } else {
-            if (key === 'tags.verified' && !insideFilter) {
-              body = body.notFilter('term', key, !insideFilter);
-            } else {
-              body = body.filter('term', key, insideFilter);
-            }
-          }
-        }
-      });
-    });
-    return body;
-  }
 
-  /**
-   * Append the query to a body builder object in order to add query functionality to the overall elastic search query
-   *
-   * @param {*} body the body build object
-   * @returns {*} the new body builder object
-   * @memberof SearchComponent
-   */
-  appendQuery(body: any): any {
-    if (this.values.toString().length > 0) {
-      if (this.advancedSearchObject && !this.advancedSearchObject.toAdvanceSearch) {
-        this.advancedSearchObject.ORFilter = this.values;
-        this.advancedSearchFiles(body);
-        this.advancedSearchObject.ORFilter = '';
-      }
-    } else {
-      body = body.query('match_all', {});
-    }
-    if (this.advancedSearchObject) {
-      if (this.advancedSearchObject.toAdvanceSearch) {
-        if (this.advancedSearchObject.searchMode === 'description') {
-          this.advancedSearchDescription(body);
-        } else if (this.advancedSearchObject.searchMode === 'files') {
-          this.advancedSearchFiles(body);
-        }
-        this.values = '';
-        this.searchTerm = false;
-      }
-    }
-    return body;
-  }
-  advancedSearchDescription(body: any) {
-    if (this.advancedSearchObject.ANDSplitFilter) {
-      const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach(filter => body = body.filter('match_phrase', 'description', filter));
-    }
-    if (this.advancedSearchObject.ANDNoSplitFilter) {
-      body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
-    }
-    if (this.advancedSearchObject.ORFilter) {
-      const filters = this.advancedSearchObject.ORFilter.split(' ');
-      filters.forEach(filter => {
-        body = body.orFilter('match_phrase', 'description', filter);
-      });
-    }
-    if (this.advancedSearchObject.NOTFilter) {
-      const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      filters.forEach(filter => {
-        body = body.notQuery('match_phrase', 'description', filter);
-      });
-    }
-  }
-
-  /* TODO: Make this better */
-  advancedSearchFiles(body: any) {
-    if (this.advancedSearchObject.ANDSplitFilter) {
-      const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
-    }
-    if (this.advancedSearchObject.ANDNoSplitFilter) {
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
-    }
-    if (this.advancedSearchObject.ORFilter) {
-      const filters = this.advancedSearchObject.ORFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
-    }
-    if (this.advancedSearchObject.NOTFilter) {
-      const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', filter => filter
-        .filter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .filter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
-    }
-  }
-
-  /**
-   * Append aggregations to a body builder object in order to add aggregation functionality to the overall elastic search query
-   *
-   * @param {number} count number of filters
-   * @param {*} body the body builder object
-   * @returns {*} the new body builder object
-   * @memberof SearchComponent
-   */
-  appendAggregations(count: number, body: any): any {
-    // go through buckets
-    this.bucketStubs.forEach(key => {
-      const order = this.searchService.parseOrderBy(key, this.sortModeMap);
-      if (count > 0) {
-        body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order });
-        });
-      } else {
-        body = body.agg('terms', key, key, { size: this.shard_size, order });
-      }
-    });
-    return body;
-  }
 
   /**===============================================
    *                Event Functions
@@ -635,7 +464,7 @@ export class SearchComponent implements OnInit {
       }, 500);
     }
   }
-/*TODO: FOR DEMO USE, make this better later...*/
+  /*TODO: FOR DEMO USE, make this better later...*/
   suggestKeyTerm() {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
@@ -651,11 +480,11 @@ export class SearchComponent implements OnInit {
         }
       }
     }).then(hits => {
-       if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-         this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
-       } else {
-         this.suggestTerm = '';
-       }
+      if (hits['suggest']['do_you_mean'][0].options.length > 0) {
+        this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
+      } else {
+        this.suggestTerm = '';
+      }
     });
   }
 

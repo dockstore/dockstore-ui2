@@ -1,3 +1,4 @@
+import { QueryBuilderService } from './query-builder.service';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SearchService } from './search.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -38,7 +39,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
     ClipboardModule,
     searchRouting
   ],
-  providers: [AdvancedSearchService, SearchService],
+  providers: [AdvancedSearchService, SearchService, QueryBuilderService],
   exports: [SearchComponent]
 
 })
