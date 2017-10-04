@@ -1,8 +1,8 @@
+import { QueryBuilderService } from './../query-builder.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { SearchService } from './../search.service';
 import { Component, OnInit } from '@angular/core';
-import bodybuilder from 'bodybuilder';
 
 @Component({
   selector: 'app-search-results',
@@ -24,7 +24,7 @@ export class SearchResultsComponent implements OnInit {
     height: 200,
     overflow: false,
   };
-  constructor(private searchService: SearchService) {
+  constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService) {
 
   }
 
@@ -42,10 +42,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   createTagCloud(type: string) {
-    let body = bodybuilder().size();
-    body = body.query('match', '_type', type);
-    body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
-    const toolQuery = JSON.stringify(body, null, 1);
+    const toolQuery = this.queryBuilderService.getTagCloudQuery(type);
     this.createToolTagCloud(toolQuery, type);
   }
 

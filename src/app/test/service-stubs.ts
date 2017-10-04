@@ -43,6 +43,13 @@ export class DocsStubService {
     }
 }
 
+
+export class QueryBuilderStubService {
+    getTagCloudQuery(type: string): string {
+        return '';
+    }
+}
+
 export class GA4GHStubService {
     metadataGet(): Observable<Metadata> {
         const metadata: Metadata = {
@@ -54,7 +61,16 @@ export class GA4GHStubService {
 }
 
 export class SearchStubService {
+    workflowhit$ = Observable.of([]);
+    toolhit$ = Observable.of([]);
     searchInfo$ = Observable.of({});
+    haveNoHits(object: Object[]): boolean {
+        if (!object || object.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
 }
 
 export class ListContainersStubService {
