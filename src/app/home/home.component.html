@@ -23,7 +23,7 @@
   <div class="container">
     <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
     <div class="row header-lower">
-      <div class="col-md-6">
+      <div class="col-md-6 col-sm-12">
         <h4 class="title caption">
           Dockstore, developed by the <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer Genome
           Collaboratory</a>, is an open platform used by the <a class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a>
@@ -32,7 +32,7 @@
           Description Language (WDL)</a>.
         </h4>
       </div>
-      <div class="col-md-3 row-center">
+      <div class="col-md-3 col-sm-12 row-center">
         <a class='btn youtube' href="https://www.youtube.com/embed/RYHUX9jGx24" role="button">
           <div>
             <span class="glyphicon glyphicon-play-circle"></span>
@@ -40,18 +40,18 @@
           </div>
         </a>
       </div>
-      <div class="col-md-3 row-center">
-        <div class="button">
-          <p><a routerLink="login">Sign up to Contribute &raquo;</a></p>
-        </div>
-        <div class="button">
-          <p><a routerLink="docs/blog">News and Events &raquo;</a></p>
-        </div>
-        <div class="button">
-          <p><a routerLink="docs/getting-started">Get Started &raquo;</a></p>
-        </div>
-        <div style="margin-bottom: 20px">
+      <div class="col-md-3 col-sm-12 row-center">
+        <div class="row">
           <div class="button">
+            <p><a routerLink="login">Sign up to Contribute &raquo;</a></p>
+          </div>
+          <div class="button">
+            <p><a routerLink="docs/blog">News and Events &raquo;</a></p>
+          </div>
+          <div class="button">
+            <p><a routerLink="docs/getting-started">Get Started &raquo;</a></p>
+          </div>
+          <div class="button" style="margin-bottom: 20px">
             <p><a href="https://discuss.dockstore.org/">Discuss &raquo;</a></p>
           </div>
         </div>
@@ -61,7 +61,7 @@
 </div>
 <div class="container mainScreen" #mainScreen>
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-sm-12">
         <tabset class="homeComponent" type="tabs">
           <tab id="toolTab" [customClass]="browseToolsTab">
             <ng-template tabHeading>
@@ -81,7 +81,7 @@
           </tab>
         </tabset>
     </div>
-    <div class="col-md-3 twitter">
+    <div class="col-md-3 col-sm-12 twitter">
         <a class="twitter-timeline"
            data-theme="light"
            data-height="800"

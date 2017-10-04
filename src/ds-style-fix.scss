@@ -259,6 +259,7 @@ div.panel-container-label.selected {
 
   .panel-body{
     padding: 0;
+    padding-bottom: 10px;
     font-size: 12px;
   }
 }
@@ -398,8 +399,6 @@ div.container-verified p {
 }
 
 div.container-sharing {
-  width: 180px;
-  margin: 0 auto;
   div {
     line-height: 1em;
   }
@@ -657,4 +656,10 @@ div.contact-button {
 
 .padding-top {
   padding-top: 12px;
+}
+
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
