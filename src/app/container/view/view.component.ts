@@ -39,6 +39,10 @@ export class ViewContainerComponent extends View implements OnInit {
       });
   }
 
+  isManualTool(): boolean {
+    return this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
+  }
+
   ngOnInit() {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.containerService.tool$.subscribe(tool => this.tool = tool);

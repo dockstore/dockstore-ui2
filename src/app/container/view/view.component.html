@@ -5,7 +5,7 @@
 <a href *ngIf="!isPublic" (click)="setMode(TagEditorMode.Edit); false">
   Edit
 </a>
-<a href *ngIf="!isPublic" (click)="deleteTag(); false">
+<a href *ngIf="!isPublic && isManualTool()" (click)="deleteTag(); false">
   Delete
 </a>
 <!-- Modal -->
