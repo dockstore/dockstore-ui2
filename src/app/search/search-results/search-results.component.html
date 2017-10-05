@@ -1,0 +1,49 @@
+<tabset class="homeComponent" type="tabs">
+  <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab" [disabled]="haveNoHits(toolHits)">
+    <ng-template tabHeading>
+      <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+      Browse Tools
+    </ng-template>
+    <div *ngIf="toolTagCloudData">
+      <button type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
+        <i [class]="showToolTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+        <span>Tag Cloud</span>
+      </button>
+      <div class="tagCloud tool" *ngIf="showToolTagCloud">
+        <angular-tag-cloud
+          [data]="toolTagCloudData"
+          [width]="options.width"
+          [height]="options.height"
+          [overflow]="options.overflow"
+          (clicked)="tagClicked($event)">
+        </angular-tag-cloud>
+      </div>
+    </div>
+    <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+    <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
+  </tab>
+
+  <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
+    <div *ngIf="workflowTagCloudData">
+      <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
+        <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+        <span>Tag Cloud</span>
+      </button>
+      <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
+        <angular-tag-cloud
+          [data]="workflowTagCloudData"
+          [width]="options.width"
+          [height]="options.height"
+          [overflow]="options.overflow"
+          (clicked)="tagClicked($event)">
+        </angular-tag-cloud>
+      </div>
+    </div>
+    <ng-template tabHeading>
+      <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+      Browse Workflows
+    </ng-template>
+    <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+    <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'workflow'"></app-listentry>
+  </tab>
+</tabset>

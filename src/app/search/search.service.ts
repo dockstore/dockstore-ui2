@@ -7,6 +7,10 @@ import { SubBucket } from '../shared/models/SubBucket';
 @Injectable()
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
+  public toSaveSearch$ = new BehaviorSubject<boolean>(false);
+  public values$ = new BehaviorSubject<string>('');
+  public searchTerm$ = new BehaviorSubject<boolean>(false);
+  public tagClicked$ = new BehaviorSubject<boolean>(false);
   searchInfo$ = this.searchInfoSource.asObservable();
   /* Observable */
   public toolhit$ = new BehaviorSubject<any>(null);
