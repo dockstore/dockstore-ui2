@@ -3,7 +3,6 @@
   Search
   <div class="pull-right">
   </div>
-
 </app-header>
 <div class="container search-container">
   <div class="row">
@@ -195,7 +194,7 @@
               </div>
             </div>
             <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-            <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'tool'"></app-listentry>
+            <app-listentry (userUpdated)="saveSearchFilter()" [entryType]="'tool'"></app-listentry>
           </tab>
 
           <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
@@ -219,7 +218,7 @@
               Browse Workflows
             </ng-template>
             <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-            <app-listentry (userUpdated)="saveSearchFilter($event)" [entryType]="'workflow'"></app-listentry>
+            <app-listentry (userUpdated)="saveSearchFilter()" [entryType]="'workflow'"></app-listentry>
           </tab>
         </tabset>
       </div>

@@ -5,15 +5,16 @@ import { StargazersModule } from '../stargazers/stargazers.module';
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { HeaderModule } from '../shared/modules/header.module';
+import { StarringModule } from '../starring/starring.module';
 
 @NgModule({
   imports: [
     CommonModule,
     StargazersModule,
-    TooltipModule.forRoot()
-  ],
-  exports: [
-    StarredEntriesComponent
+    TooltipModule.forRoot(),
+    HeaderModule,
+    StarringModule
   ],
   providers: [
     StarentryService,
