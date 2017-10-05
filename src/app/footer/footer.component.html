@@ -1,44 +1,48 @@
 <div class="container-fluid">
-  <ul class="nav navbar-nav navbar-left">
-    <li>
-      <span>
-        <a routerLink="docs/about">
-          <u>About Dockstore</u>
-        </a>
-        <div>
-          <a href="https://github.com/ga4gh/dockstore/releases/tag/{{ version }}">
-            DockstoreAPI - {{ version }}
-          </a><br/>
-          <a href="https://github.com/dockstore/dockstore-ui2/releases/tag/{{ tag }}">
-             DockstoreUI - {{tag}}
-          </a>
-        </div>
-      </span>
-    </li>
-    <li>
-      <span>
-        Can't find what you're looking for?
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul>
+          <li>
+            <a routerLink="docs/about">
+              <u>About Dockstore</u>
+            </a>
+          </li>
+          <li >
+            <a href="https://github.com/ga4gh/dockstore/releases/tag/{{ version }}">
+              <small>DockstoreAPI - {{ version }}</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/dockstore/dockstore-ui2/releases/tag/{{ tag }}">
+              <small>DockstoreUI - {{tag}}</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/ga4gh/dockstore/blob/1.2.10/LICENSE">&copy; 2017 OICR</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-4 text-center">
+        Can't find what you're looking for?<br />
         <a href="https://gitter.im/ga4gh/dockstore"><u>Chat With Us on Gitter&raquo;</u></a>
-      </span>
-    </li>
-  </ul>
-  <ul class="nav navbar-nav navbar-right">
-    <li>
-      <span>
-        <a href="https://github.com/ga4gh/dockstore">
-          <img src="../assets/images/dockstore/github.png">
-          Github Repository
-        </a>
-      </span>
-    </li>
-    <li>
-      <span>
-        <a href="https://twitter.com/DockstoreOrg">
-          <img src="../assets/images/dockstore/twitter.png">
-          Follow Us
-        </a>
-      </span>
-    </li>
-  </ul>
+      </div>
+      <div class="col-sm-4">
+        <ul>
+          <li>
+            <a href="https://github.com/ga4gh/dockstore">
+              <img src="../assets/images/dockstore/github.png">
+              Github Repository
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/DockstoreOrg">
+              <img src="../assets/images/dockstore/twitter.png">
+              Follow Us
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
-
