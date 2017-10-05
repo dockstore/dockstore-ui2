@@ -13,10 +13,6 @@ import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchService } from './search.service';
 
-/** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
- *  so you shouldn't just dismiss it, but try to figure out why it's happening...
- **/
-// enableProdMode();
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -40,6 +36,8 @@ export class SearchComponent implements OnInit {
   public toolHits: Object[] = [];
   public workflowHits: Object[] = [];
   public hits: Object[];
+
+  // TODO: Comment on why shard_size is 10,000
   private shard_size = 10000;
   public suggestTerm = '';
   private firstInit = true;

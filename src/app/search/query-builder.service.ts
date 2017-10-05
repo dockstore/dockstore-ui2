@@ -12,6 +12,7 @@ import { SearchService } from './search.service';
  */
 @Injectable()
 export class QueryBuilderService {
+    // TODO: Comment on why shard_size is 10,000
     private shard_size = 10000;
     constructor(private searchService: SearchService) { }
 

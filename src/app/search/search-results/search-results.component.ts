@@ -102,9 +102,6 @@ export class SearchResultsComponent implements OnInit {
     this.searchService.searchTerm$.next(true);
     this.searchService.values$.next(clicked.text);
     this.searchService.tagClicked$.next(true);
-    // this.searchTerm = true;
-    // this.values = clicked.text;
-    // this.updateQuery();
   }
 
   /**
