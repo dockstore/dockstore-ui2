@@ -6,9 +6,7 @@
           <label tooltip="Tags from Docker repository">
             Version
           </label>
-          <span class="glyphicon pull-right"
-                [ngClass]="getIconClass('name')"
-                (click)="clickSortColumn('name')">
+          <span class="glyphicon pull-right" [ngClass]="getIconClass('name')" (click)="clickSortColumn('name')">
           </span>
         </th>
         <th>
@@ -16,44 +14,31 @@
                        to populate the info tab including 'launch with'">
             Git Reference
           </label>
-          <span class="glyphicon pull-right"
-                [ngClass]="getIconClass('reference')"
-                (click)="clickSortColumn('reference')">
+          <span class="glyphicon pull-right" [ngClass]="getIconClass('reference')" (click)="clickSortColumn('reference')">
           </span>
         </th>
-
         <th>
           <label tooltip="Tool paths for given version">Tool Path</label>
-          <span class="glyphicon pull-right"
-                [ngClass]="getIconClass('name')"
-                (click)="clickSortColumn('name')">
+          <span class="glyphicon pull-right" [ngClass]="getIconClass('name')" (click)="clickSortColumn('name')">
           </span>
         </th>
-
         <th>
           <label tooltip="Date of last build of the Docker image">Date Built</label>
-          <span class="glyphicon pull-right"
-                [ngClass]="getIconClass('last_modified')"
-                (click)="clickSortColumn('last_modified')">
+          <span class="glyphicon pull-right" [ngClass]="getIconClass('last_modified')" (click)="clickSortColumn('last_modified')">
           </span>
         </th>
-
         <th>
           <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
             Valid
           </label>
-          <span class="glyphicon pull-right"
-                [ngClass]="getIconClass('valid')"
-                (click)="clickSortColumn('valid')">
+          <span class="glyphicon pull-right" [ngClass]="getIconClass('valid')" (click)="clickSortColumn('valid')">
           </span>
         </th>
-
         <th>
           <label tooltip="A version is verified if it has been verified to work by a person/group">
             Verified
           </label>
         </th>
-
         <th>
           <label tooltip="View more information about the given version">
             Actions
@@ -68,19 +53,17 @@
         </td>
       </tr>
       <tr *ngFor="let version of versions | orderBy : convertSorting()">
-        <td>{{ version.name }}</td>
         <td>
-          <input class="radio-button-reference" *ngIf="!publicPage && version.name !== 'latest'" type="radio" name="defaultVersion"
-                     [(ngModel)]="defaultVersion" [value]="version.reference" (click)="updateDefaultVersion(version.name)"
-                     tooltip="Set as default branch"/>
-                     {{ version.reference || 'n/a' }}</td>
+          <input class="radio-button-reference" *ngIf="!publicPage && version.name !== 'latest'" type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
+            [value]="version.name" (click)="updateDefaultVersion(version.name)" tooltip="Set as default branch" /> {{ version.name }}
+        </td>
+        <td>
+          {{ version.reference || 'n/a' }}</td>
         <td>
           <div>
             {{ version.cwl_path }}
-            <hr>
-            {{ version.wdl_path }}
-            <hr>
-            {{ version.dockerfile_path }}
+            <hr> {{ version.wdl_path }}
+            <hr> {{ version.dockerfile_path }}
             <hr>
           </div>
         </td>
@@ -90,7 +73,7 @@
           <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
         </td>
         <td>
-          <a href={{verifiedLink}}>
+          <a href= {{verifiedLink}}>
             <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
           </a>
           <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
