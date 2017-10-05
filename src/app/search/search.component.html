@@ -33,7 +33,7 @@
           </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+        <accordion-group *ngFor="let key of getKeys(orderedBuckets)" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
           <div accordion-heading>
             {{friendlyNames.get(key)}}
             <span>
@@ -65,7 +65,7 @@
               </div>
             </div>
           </div>
-          <div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>
+          <div *ngFor='let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index'>
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">

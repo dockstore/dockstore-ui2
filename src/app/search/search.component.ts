@@ -106,6 +106,11 @@ export class SearchComponent implements OnInit {
     private Location: Location) {
     this.location = Location;
   }
+
+  getKeys(map: Map<any, any>): Array<string> {
+    return Array.from(map.keys());
+  }
+
   ngOnInit() {
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeBucketStubs();
