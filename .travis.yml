@@ -47,9 +47,9 @@ before_script:
   - 'sleep 20'
 
 script:
-  - ng build # this does syntax checking, unit testing, and jshint
-  - ng serve --silent &
-  - ng test --watch=false --code-coverage
+  - ng build --environment=qa # this does syntax checking, unit testing, and jshint
+  - ng serve --environment=qa --silent &
+  - ng test --environment=qa --watch=false --code-coverage
   - cypress run --record --config defaultCommandTimeout=10000 #test using cypress for integration testing
 
 after_success:

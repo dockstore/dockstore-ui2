@@ -1,5 +1,8 @@
+import { Dockstore } from './../shared/dockstore.model';
+import { environment } from './../../environments/environment';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { TwitterService } from '../shared/twitter.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -8,6 +11,7 @@ import { TwitterService } from '../shared/twitter.service';
 export class HomeComponent implements OnInit, AfterViewInit {
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
+  public prod = environment.production;
   constructor(private twitterService: TwitterService) {
   }
 
@@ -20,5 +24,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   goToSearch(searchValue: string) {
     window.location.href = '/search?search=' + searchValue;
+  }
+
+  goToUI1() {
+    window.location.href = Dockstore.UI1_URI;
   }
 }
