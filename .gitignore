@@ -9,6 +9,9 @@
 src/app/shared/swagger/
 swagger-codegen-cli.jar
 
+# dev environment only
+src/environments/environment.ts
+
 # dependencies
 /node_modules
 /bower_components

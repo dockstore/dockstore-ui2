@@ -7,13 +7,13 @@
 
 export const environment = {
   production: false,
-  HOSTNAME: 'http://##.##.##.## change this to your own IP',
-  API_PORT: '8080 change this to your own port',
-  UI_PORT: '4200 change this to your own port',
-  UI1_PORT: '9000 change this to your own port',
+  HOSTNAME: 'fill this in',
+  API_PORT: 'fil this in',
+  UI_PORT: 'fil this in ',
+  UI1_PORT: 'fil this in',
 
-  GITHUB_CLIENT_ID: 'fill this in with your own',
-  QUAYIO_CLIENT_ID: 'fill this in with your own',
-  BITBUCKET_CLIENT_ID: 'fill this in with your own',
-  GITLAB_CLIENT_ID: 'fill this in with your own',
+  GITHUB_CLIENT_ID: 'fil this in',
+  QUAYIO_CLIENT_ID: 'fil this in',
+  BITBUCKET_CLIENT_ID: 'fill this in',
+  GITLAB_CLIENT_ID: 'fill this in',
 };
