@@ -56,7 +56,7 @@
 
           <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
         </div>
-        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshing">
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
           Refresh
         </button>
       </div>

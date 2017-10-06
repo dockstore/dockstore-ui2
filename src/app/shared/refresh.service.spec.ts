@@ -46,7 +46,7 @@ describe('RefreshService', () => {
                 toolname: 'refreshedToolname'
             };
         service.refreshTool();
-        stateService.refreshing$.subscribe(refreshing => {
+        stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         containerService.tool$.subscribe(tool => {
@@ -65,7 +65,7 @@ describe('RefreshService', () => {
                 'workflowVersions': []
             };
         service.refreshWorkflow();
-        stateService.refreshing$.subscribe(refreshing => {
+        stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         workflowService.workflow$.subscribe(workflow => {

@@ -154,7 +154,7 @@ export class ContainerComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshing || !this.isContainerValid();
+    return this.refreshMessage !== null || !this.isContainerValid();
   }
 
   isContainerValid() {

@@ -25,7 +25,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   protected validVersions;
   protected defaultVersion;
   protected published: boolean;
-  protected refreshing: boolean;
+  protected refreshMessage: string;
   public labelPattern = validationPatterns.label;
   public labelsEditMode: boolean;
   private loginSubscription: Subscription;
@@ -49,7 +49,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.stateService.setPublicPage(this.isPublic());
     this.errorService.toolError$.subscribe(toolError => this.error = toolError);
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
-    this.stateService.refreshing$.subscribe(refreshing => this.refreshing = refreshing);
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
   }
 

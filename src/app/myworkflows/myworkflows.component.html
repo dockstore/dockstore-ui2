@@ -51,7 +51,7 @@
         </accordion-group>
       </accordion>
       <div>
-        <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showModal()">Register Workflow</button>
+        <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
       </div>
       <app-register-workflow-modal></app-register-workflow-modal>
     </div>

@@ -19,8 +19,7 @@ import { HeaderModule } from '../shared/modules/header.module';
 @NgModule({
   declarations: [
     MyWorkflowsComponent,
-    RegisterWorkflowModalComponent,
-    RefreshAlertModule
+    RegisterWorkflowModalComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +29,7 @@ import { HeaderModule } from '../shared/modules/header.module';
     myworkflowRouting,
     ModalModule.forRoot(),
     AccordionModule.forRoot(),
+    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot()
   ]

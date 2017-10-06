@@ -49,7 +49,7 @@ describe('Service: paramFiles.service.ts', () => {
         (service: RegisterWorkflowModalService, stateService: StateService) => {
         service.setWorkflowRegisterError('oh no!', 'oh yes');
         service.workflowRegisterError$.subscribe(error => expect(error).toEqual(expectedError));
-        stateService.refreshing$.subscribe(refreshing => expect(refreshing).toBeFalsy());
+        stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toBeFalsy());
     }));
     it('should set register workflow and clear refreshing state and error', inject([RegisterWorkflowModalService, StateService],
         (service: RegisterWorkflowModalService, stateService: StateService) => {

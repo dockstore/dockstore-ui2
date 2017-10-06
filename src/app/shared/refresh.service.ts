@@ -17,7 +17,6 @@ export class RefreshService {
     private tools;
     private workflow: Workflow;
     private workflows;
-    private refreshing: boolean;
     constructor(private WorkflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
         private errorService: ErrorService) {
@@ -25,7 +24,6 @@ export class RefreshService {
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
-        this.stateService.refreshing$.subscribe(refreshing => this.refreshing = refreshing);
     }
 
     /**

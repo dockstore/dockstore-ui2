@@ -40,7 +40,7 @@ export class RegisterWorkflowModalService {
             errorDetails: errorDetails
         };
         this.workflowRegisterError$.next(error);
-        this.stateService.refreshing$.next(false);
+        this.stateService.refreshMessage$.next(null);
     }
 
     setWorkflow(workflow: Workflow) {
@@ -53,7 +53,7 @@ export class RegisterWorkflowModalService {
     }
 
     registerWorkflow(testParameterFilePath: string) {
-        this.stateService.setRefreshing(true);
+        this.stateService.setRefreshMessage('Registering workflow...');
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
@@ -64,10 +64,10 @@ export class RegisterWorkflowModalService {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
                     this.workflowService.setWorkflow(refreshResult);
-                    this.stateService.setRefreshing(false);
+                    this.stateService.setRefreshMessage(null);
                     this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
-                }, error => this.stateService.setRefreshing(false));
+                }, error => this.stateService.setRefreshMessage(null));
             }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                 'workflow, please ensure that the workflow attributes are ' +
                 'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +

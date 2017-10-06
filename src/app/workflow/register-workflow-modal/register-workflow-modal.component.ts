@@ -18,7 +18,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public cwlTestParameterFilePath: string;
   public workflowRegisterError;
   public isModalShown: boolean;
-  public refreshing: boolean;
+  public refreshMessage: string;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
@@ -43,7 +43,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.workflowRegisterError$.subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
     this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.stateService.refreshing$.subscribe(refreshing => this.refreshing = refreshing);
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   // Validation starts here, should move most of these to a service somehow

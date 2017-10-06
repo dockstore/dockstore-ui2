@@ -10,7 +10,6 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class StateService {
-    refreshing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     publicPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
     /**
@@ -21,10 +20,6 @@ export class StateService {
      */
     refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     constructor() { }
-
-    setRefreshing(refreshing: boolean): void {
-        this.refreshing$.next(refreshing);
-    }
 
     setPublicPage(publicPage: boolean): void {
         this.publicPage$.next(publicPage);

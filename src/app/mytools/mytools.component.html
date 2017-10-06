@@ -60,7 +60,7 @@
         </accordion-group>
       </accordion>
       <button (click)="showRegisterToolModal()" id="register_tool_button" type="button"
-              class="btn btn-primary btn-sm pull-right">
+              class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
               Add Tool
       </button>
 
