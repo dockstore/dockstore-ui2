@@ -1,3 +1,4 @@
+import { Dockstore } from './../shared/dockstore.model';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { Component, OnInit } from '@angular/core';
 
@@ -12,6 +13,8 @@ import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service'
 export class FooterComponent implements OnInit {
   version: string;
   tag: string;
+  public prod = true;
+  public UI1_WEBSITE = Dockstore.HOSTNAME + ':' + '9000';
 
   constructor(private gA4GHService: GA4GHService) { }
 
