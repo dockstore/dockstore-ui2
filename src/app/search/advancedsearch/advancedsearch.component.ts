@@ -1,6 +1,7 @@
+import { Component, OnInit } from '@angular/core';
+
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advanced-search.service';
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
 @Component({
   selector: 'app-advancedsearch',

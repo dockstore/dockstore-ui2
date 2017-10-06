@@ -1,3 +1,4 @@
+import { QueryBuilderService } from './query-builder.service';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SearchService } from './search.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -16,11 +17,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ClipboardModule } from 'ngx-clipboard';
 import { searchRouting } from './search.routing';
+import { SearchResultsComponent } from './search-results/search-results.component';
 @NgModule({
   declarations: [
     AdvancedSearchComponent,
-    SearchComponent
-  ],
+    SearchComponent,
+    SearchResultsComponent
+],
   imports: [
     CommonModule,
     ListentryModule,
@@ -36,7 +39,7 @@ import { searchRouting } from './search.routing';
     ClipboardModule,
     searchRouting
   ],
-  providers: [AdvancedSearchService, SearchService],
+  providers: [AdvancedSearchService, SearchService, QueryBuilderService],
   exports: [SearchComponent]
 
 })

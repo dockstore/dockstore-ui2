@@ -1,8 +1,11 @@
 <app-header>
   <span class="glyphicon glyphicon-search"></span>
   Search
+<<<<<<< HEAD
   <div class="pull-right">
   </div>
+=======
+>>>>>>> develop
 </app-header>
 <div class="container search-container">
   <div class="row">
@@ -35,7 +38,7 @@
           </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <accordion-group *ngFor="let key of orderedBuckets.keys();" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+        <accordion-group *ngFor="let key of getKeys(orderedBuckets)" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
           <div accordion-heading>
             {{friendlyNames.get(key)}}
             <span>
@@ -67,7 +70,7 @@
               </div>
             </div>
           </div>
-          <div *ngFor='let subBucket of orderedBuckets.get(key).Items.keys(); let i = index'>
+          <div *ngFor='let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index'>
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
@@ -171,6 +174,7 @@
           <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
             We recommend that you narrow your search to find more relevant results.</p>
         </div>
+<<<<<<< HEAD
 
         <tabset class="homeComponent" type="tabs">
           <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab" [disabled]="haveNoHits(toolHits)">
@@ -221,6 +225,9 @@
             <app-listentry (userUpdated)="saveSearchFilter()" [entryType]="'workflow'"></app-listentry>
           </tab>
         </tabset>
+=======
+        <app-search-results></app-search-results>
+>>>>>>> develop
       </div>
     </div>
   </div>

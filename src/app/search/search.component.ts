@@ -1,23 +1,18 @@
-import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
-import { SearchService } from './search.service';
-import bodybuilder from 'bodybuilder';
-import { Client } from 'elasticsearch';
-import { Component, OnInit, enableProdMode } from '@angular/core';
-import { ProviderService } from '../shared/provider.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Dockstore } from '../shared/dockstore.model';
-import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
-import { CategorySort } from '../shared/models/CategorySort';
-import { SubBucket } from '../shared/models/SubBucket';
-import { Router} from '@angular/router/';
 import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router/';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
-/** TODO: ExpressionChangedAfterItHasBeenCheckedError is indicator that something is wrong with the bindings,
- *  so you shouldn't just dismiss it, but try to figure out why it's happening...
- **/
-enableProdMode();
+import { CategorySort } from '../shared/models/CategorySort';
+import { SubBucket } from '../shared/models/SubBucket';
+import { ProviderService } from '../shared/provider.service';
+import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
+import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
+import { QueryBuilderService } from './query-builder.service';
+import { SearchService } from './search.service';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -38,14 +33,12 @@ export class SearchComponent implements OnInit {
   _timeout = false;
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
   public toolHits: Object[] = [];
   public workflowHits: Object[] = [];
   public hits: Object[];
-  private _client: Client;
+
+  // TODO: Comment on why shard_size is 10,000
   private shard_size = 10000;
-  public activeToolBar = true;
   public suggestTerm = '';
   private firstInit = true;
   location: Location;
@@ -54,17 +47,9 @@ export class SearchComponent implements OnInit {
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public query_size = 201;
   expandAll = true;
-  showToolTagCloud = false;
-  showWorkflowTagCloud = false;
   searchTerm = false;
-  options: CloudOptions = {
-    width: 600,
-    height: 200,
-    overflow: false,
-  };
+
   autocompleteTerms: Array<string> = new Array<string>();
-  toolTagCloudData: Array<CloudData>;
-  workflowTagCloudData: Array<CloudData>;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -112,28 +97,37 @@ export class SearchComponent implements OnInit {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService,
-              public searchService: SearchService,
-              private advancedSearchService: AdvancedSearchService,
-              private router: Router,
-              private Location: Location) {
+  constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
+    public searchService: SearchService,
+    private advancedSearchService: AdvancedSearchService,
+    private router: Router,
+    private Location: Location) {
     this.location = Location;
-    this._client = new Client({
-      host: Dockstore.API_URI + '/api/ga4gh/v1/extended',
-      apiVersion: '5.x',
-      log: 'debug'
-    });
   }
+
+  getKeys(map: Map<any, any>): Array<string> {
+    return Array.from(map.keys());
+  }
+
   ngOnInit() {
     // Initialize mappings
-    this.bucketStubs  = this.searchService.initializeBucketStubs();
+    this.bucketStubs = this.searchService.initializeBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
-
+    this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
+      if (toSaveSearch) {
+        this.saveSearchFilter();
+        this.searchService.toSaveSearch$.next(false);
+      }
+    });
+    this.searchService.values$.subscribe(values => {
+      this.values = values;
+      if (this.values) {
+        this.tagClicked();
+      }
+    });
     this.hits = [];
-    this.createTagCloud('tool');
-    this.createTagCloud('workflow');
     this.curURL = this.router.url;
     this.advancedSearchObject = {
       ANDSplitFilter: '',
@@ -158,12 +152,15 @@ export class SearchComponent implements OnInit {
   parseParams() {
     let useAdvSearch = false;
     const URIParams = this.searchService.createURIParams(this.curURL);
+    if (!URIParams.paramsMap) {
+      return;
+    }
     URIParams.paramsMap.forEach(((value, key) => {
       if (this.friendlyNames.get(key)) {
-          value.forEach(categoryValue => {
-            categoryValue = decodeURIComponent(categoryValue);
-            this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
-          });
+        value.forEach(categoryValue => {
+          categoryValue = decodeURIComponent(categoryValue);
+          this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
+        });
         this.firstInit = false;
       } else if (key === 'search') {
         this.searchTerm = true;
@@ -191,55 +188,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  haveNoHits(object: Object[]): boolean {
-    return this.searchService.haveNoHits(object);
-  }
-
-  createTagCloud(type: string) {
-    let body = bodybuilder().size();
-    body = body.query('match', '_type', type);
-    body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
-    const toolQuery = JSON.stringify(body, null, 1);
-    this.createToolTagCloud(toolQuery, type);
-  }
-
-  createToolTagCloud(toolQuery, type) {
-    this._client.search({
-      index: 'tools',
-      type: 'entry',
-      body: toolQuery
-    }).then(hits => {
-      let weight = 10;
-      let count = 0;
-      hits.aggregations.tagcloud.buckets.forEach(
-        tag => {
-          const theTag = {
-            text: tag.key,
-            weight: weight
-          };
-          if (weight === 10) {
-            /** just for fun...**/
-            theTag['color'] = '#ffaaee';
-          }
-          if (count % 2 !== 0) {
-            weight--;
-          }
-          if (type === 'tool') {
-            if (!this.toolTagCloudData) {
-              this.toolTagCloudData = new Array<CloudData>();
-            }
-            this.toolTagCloudData.push(theTag);
-          } else {
-            if (!this.workflowTagCloudData) {
-              this.workflowTagCloudData = new Array<CloudData>();
-            }
-            this.workflowTagCloudData.push(theTag);
-          }
-          count--;
-        }
-      );
-    });
-  }
   /**===============================================
    *                SetUp Functions
    * ==============================================*/
@@ -286,6 +234,11 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  tagClicked(): void {
+    this.searchTerm = true;
+    this.updateQuery();
+  }
+
   /** This function takes care of the problem of non-verified items containing the set of verified items.
    * this function calls a third elastic query which will get the correct number count of the non-verified items
    * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
@@ -294,14 +247,9 @@ export class SearchComponent implements OnInit {
    *
    * **/
   setupNonVerifiedBucketCount() {
-    let bodyNotVerified = bodybuilder().size(this.query_size);
-    bodyNotVerified = this.appendQuery(bodyNotVerified);
-    const key = 'tags.verified';
-    bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
-    bodyNotVerified = this.appendFilter(bodyNotVerified, null);
-    const builtBodyNotVerified = bodyNotVerified.build();
-    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
-    this._client.search({
+    const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
+      this.advancedSearchObject, this.searchTerm, this.filters);
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: queryBodyNotVerified
@@ -359,7 +307,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  // Saves the current search filter and passes to search searvice for sharing with advanced search
+  // Saves the current search filter and passes to search service for sharing with advanced search
   saveSearchFilter() {
     const searchInfo = {
       filter: this.filters,
@@ -398,24 +346,18 @@ export class SearchComponent implements OnInit {
     // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    let sidebarBody = bodybuilder().size(this.query_size);
-    sidebarBody = this.appendQuery(sidebarBody);
-    sidebarBody = this.appendAggregations(count, sidebarBody);
-    let tableBody = bodybuilder().size(this.query_size);
-    tableBody = this.appendQuery(tableBody);
-    tableBody = this.appendFilter(tableBody, null);
+    const sideBarQuery = this.queryBuilderService.getSidebarQuery(this.query_size, this.values, this.advancedSearchObject,
+      this.searchTerm, this.bucketStubs, this.filters, this.sortModeMap);
+    const tableQuery = this.queryBuilderService.getResultQuery(this.query_size, this.values, this.advancedSearchObject,
+      this.searchTerm, this.filters);
     this.resetEntryOrder();
-    const builtSideBarBody = sidebarBody.build();
-    const builtTableBody = tableBody.build();
-    const sideBarQuery = JSON.stringify(builtSideBarBody);
-    const tableQuery = JSON.stringify(builtTableBody);
     this.setupNonVerifiedBucketCount();
     this.updateSideBar(sideBarQuery);
     this.updateResultsTable(tableQuery);
   }
 
   updateSideBar(value: string) {
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: value
@@ -432,7 +374,7 @@ export class SearchComponent implements OnInit {
    * @memberof SearchComponent
    */
   updateResultsTable(value: string) {
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: value
@@ -446,7 +388,6 @@ export class SearchComponent implements OnInit {
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
-      this.setTabActive();
       if (this.searchTerm && this.hits.length === 0) {
         this.suggestKeyTerm();
       }
@@ -477,167 +418,7 @@ export class SearchComponent implements OnInit {
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.orderedBuckets.clear();
   }
-  /**===============================================
-   *                Append Functions
-   * ==============================================
-   */
-  /**
-   * Append filters to a body builder object in order to add filter functionality to the overall elastic search query
-   * This is used to add to query object as well as each individual aggregation
-   * @param {*} body
-   * @returns the new body builder object with filter applied
-   * @memberof SearchComponent
-   */
-  appendFilter(body: any, aggKey: string): any {
-    this.filters.forEach((value: Set<string>, key: string) => {
-      value.forEach(insideFilter => {
-        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
-          // Return some garbage filter because we've decided to append a filter, there's no turning back
-          // return body;  // <--- this does not work
-          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
-        } else {
-          if (value.size > 1) {
-            body = body.orFilter('term', key, insideFilter);
-          } else {
-            if (key === 'tags.verified' && !insideFilter) {
-              body = body.notFilter('term', key, !insideFilter);
-            } else {
-              body = body.filter('term', key, insideFilter);
-            }
-          }
-        }
-      });
-    });
-    return body;
-  }
 
-  /**
-   * Append the query to a body builder object in order to add query functionality to the overall elastic search query
-   *
-   * @param {*} body the body build object
-   * @returns {*} the new body builder object
-   * @memberof SearchComponent
-   */
-  appendQuery(body: any): any {
-    if (this.values.toString().length > 0) {
-      if (this.advancedSearchObject && !this.advancedSearchObject.toAdvanceSearch) {
-        this.advancedSearchObject.ORFilter = this.values;
-        this.advancedSearchFiles(body);
-        this.advancedSearchObject.ORFilter = '';
-      }
-    } else {
-      body = body.query('match_all', {});
-    }
-    if (this.advancedSearchObject) {
-      if (this.advancedSearchObject.toAdvanceSearch) {
-        if (this.advancedSearchObject.searchMode === 'description') {
-          this.advancedSearchDescription(body);
-        } else if (this.advancedSearchObject.searchMode === 'files') {
-          this.advancedSearchFiles(body);
-        }
-        this.values = '';
-        this.searchTerm = false;
-      }
-    }
-    return body;
-  }
-  advancedSearchDescription(body: any) {
-    if (this.advancedSearchObject.ANDSplitFilter) {
-      const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach(filter => body = body.filter('match_phrase', 'description', filter));
-    }
-    if (this.advancedSearchObject.ANDNoSplitFilter) {
-      body = body.query('match_phrase', 'description', this.advancedSearchObject.ANDNoSplitFilter);
-    }
-    if (this.advancedSearchObject.ORFilter) {
-      const filters = this.advancedSearchObject.ORFilter.split(' ');
-      filters.forEach(filter => {
-        body = body.orFilter('match_phrase', 'description', filter);
-      });
-    }
-    if (this.advancedSearchObject.NOTFilter) {
-      const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      filters.forEach(filter => {
-        body = body.notQuery('match_phrase', 'description', filter);
-      });
-    }
-  }
-
-  /* TODO: Make this better */
-  advancedSearchFiles(body: any) {
-    if (this.advancedSearchObject.ANDSplitFilter) {
-      const filters = this.advancedSearchObject.ANDSplitFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
-    }
-    if (this.advancedSearchObject.ANDNoSplitFilter) {
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter
-          .filter('match_phrase', 'tags.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter))
-        .orFilter('bool', workflowfilter => workflowfilter
-          .filter('match_phrase', 'workflowVersions.sourceFiles.content', this.advancedSearchObject.ANDNoSplitFilter)));
-    }
-    if (this.advancedSearchObject.ORFilter) {
-      const filters = this.advancedSearchObject.ORFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', filter => filter
-        .orFilter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .orFilter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
-    }
-    if (this.advancedSearchObject.NOTFilter) {
-      const filters = this.advancedSearchObject.NOTFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
-        insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', filter => filter
-        .filter('bool', toolfilter => toolfilter = insideFilter_tool)
-        .filter('bool', workflowfilter => workflowfilter = insideFilter_workflow));
-    }
-  }
-
-  /**
-   * Append aggregations to a body builder object in order to add aggregation functionality to the overall elastic search query
-   *
-   * @param {number} count number of filters
-   * @param {*} body the body builder object
-   * @returns {*} the new body builder object
-   * @memberof SearchComponent
-   */
-  appendAggregations(count: number, body: any): any {
-    // go through buckets
-    this.bucketStubs.forEach(key => {
-      const order = this.searchService.parseOrderBy(key, this.sortModeMap);
-      if (count > 0) {
-        body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key).aggregation('terms', key, key, { size: this.shard_size, order });
-        });
-      } else {
-        body = body.agg('terms', key, key, { size: this.shard_size, order });
-      }
-    });
-    return body;
-  }
 
   /**===============================================
    *                Event Functions
@@ -646,7 +427,7 @@ export class SearchComponent implements OnInit {
   onKey() {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = this.values + '.*';
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: {
@@ -678,6 +459,7 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject.toAdvanceSearch = false;
       this.searchTerm = true;
       this._timeout = true;
+      console.log('asdf');
       window.setTimeout(() => {
         if ((!this.values || 0 === this.values.length)) {
           this.searchTerm = false;
@@ -687,9 +469,9 @@ export class SearchComponent implements OnInit {
       }, 500);
     }
   }
-/*TODO: FOR DEMO USE, make this better later...*/
+  /*TODO: FOR DEMO USE, make this better later...*/
   suggestKeyTerm() {
-    this._client.search({
+    ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: {
@@ -703,11 +485,11 @@ export class SearchComponent implements OnInit {
         }
       }
     }).then(hits => {
-       if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-         this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
-       } else {
-         this.suggestTerm = '';
-       }
+      if (hits['suggest']['do_you_mean'][0].options.length > 0) {
+        this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
+      } else {
+        this.suggestTerm = '';
+      }
     });
   }
 
@@ -740,21 +522,11 @@ export class SearchComponent implements OnInit {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
   }
-  tagClicked(clicked: CloudData) {
-    this.searchTerm = true;
-    this.values = clicked.text;
-    this.updateQuery();
-  }
+
   switchExpandAll() {
     this.expandAll = !this.expandAll;
   }
-  clickTagCloudBtn(type: string) {
-    if (type === 'tool') {
-      this.showToolTagCloud = !this.showToolTagCloud;
-    } else {
-      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
-    }
-  }
+
   clickSortMode(category: string, sortMode: boolean) {
     let orderedMap2;
     if (this.sortModeMap.get(category).SortBy === sortMode) {
@@ -803,16 +575,6 @@ export class SearchComponent implements OnInit {
       }
 
       counter++;
-    }
-  }
-
-  setTabActive() {
-    if (this.toolHits.length === 0 && this.workflowHits.length > 0) {
-      this.activeToolBar = false;
-    } else if (this.workflowHits.length === 0 && this.toolHits.length > 0) {
-      this.activeToolBar = true;
-    } else {
-      this.activeToolBar = true;
     }
   }
 }
