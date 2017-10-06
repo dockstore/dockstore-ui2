@@ -33,7 +33,7 @@ export class UserService {
   }
 
   updateUser() {
-    this.configuration.accessToken = this.authService.getToken();
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.usersService.getUser().subscribe(
       (user: User) => this.setUser(user),
       error => {
