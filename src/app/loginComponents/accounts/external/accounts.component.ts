@@ -1,3 +1,4 @@
+import { Token } from './../../../shared/swagger/model/token';
 import { Configuration } from './../../../shared/swagger/configuration';
 import { AuthService } from 'ng2-ui-auth';
 import { UsersService } from './../../../shared/swagger/api/users.service';
@@ -14,38 +15,43 @@ import { TrackLoginService } from '../../../shared/track-login.service';
 
 @Component({
   selector: 'app-accounts-external',
-  templateUrl: './accounts.component.html'
+  templateUrl: './accounts.component.html',
+  styleUrls: ['./accounts.component.css']
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   accountsInfo: Array<any> = [
     {
-      name: 'GitHub',
+      name: 'GitHub Account',
       source: 'github.com',
       bold: 'Required',
-      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.'
+      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
+      show: false
     },
     {
-      name: 'Quay.io',
+      name: 'Quay.io Account',
       source: 'quay.io',
       bold: 'Optional',
-      message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.'
+      message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
+      show: false
     },
     {
-      name: 'Bitbucket',
+      name: 'Bitbucket Account',
       source: 'bitbucket.org',
       bold: 'Optional',
-      message: 'Bitbucket credentials are used for pulling source code from Bitbucket.'
+      message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
+      show: false
     },
     {
-      name: 'GitLab',
+      name: 'GitLab Account',
       source: 'gitlab.com',
       bold: 'Optional',
-      message: 'GitLab credentials are used for pulling source code from GitLab.'
+      message: 'GitLab credentials are used for pulling source code from GitLab.',
+      show: false
     }
   ];
 
-  private tokens;
+  private tokens: Token[];
   private userId;
   private tokensSubscription: ISubscription;
   private deleteSubscription: ISubscription;
@@ -110,7 +116,10 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Delete a token and unlink service in the UI
   unlink(source: string) {
     this.deleteSubscription = this.deleteToken(source)
-      .subscribe(() => this.unlinkToken(source));
+      .subscribe(() => {
+        this.tokenService.updateTokens();
+        this.unlinkToken(source);
+      });
   }
 
   // Show linked services in the UI
@@ -132,8 +141,19 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getTokenFromSource(source: string): string {
+    const tokenFound: Token = this.tokens.find(token => token.tokenSource === source);
+    if (tokenFound) {
+      return tokenFound.content;
+    } else {
+      return null;
+    }
+  }
+
   ngOnInit() {
-    this.tokenService.tokens$.subscribe(tokens => this.setTokens(tokens));
+    this.tokenService.tokens$.subscribe((tokens: Token[]) => {
+      this.setTokens(tokens);
+    });
   }
 
   ngOnDestroy() {

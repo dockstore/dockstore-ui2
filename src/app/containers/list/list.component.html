@@ -12,6 +12,9 @@
       <tbody>
         <tr *ngFor="let tool of toolsTable">
           <td>
+            <span *ngIf="getVerified(tool)">
+                <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok" href={{verifiedLink}}></a>
+            </span>
             <a (click)="sendToolInfo(tool)" [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name +
               (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
           </td>
@@ -19,9 +22,6 @@
             {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
           </td>
           <td>
-            <span  *ngIf="getVerified(tool)">
-                <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"href={{verifiedLink}}></a>
-            </span>
             {{ tool?.author || 'n/a' }}
           </td>
           <td>

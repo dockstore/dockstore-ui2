@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { Configuration } from './../shared/swagger/configuration';
 import { UsersStubService, ConfigurationStub } from './../test/service-stubs';
 import { UsersService } from '../shared/swagger';
@@ -13,7 +14,7 @@ describe('UserService', () => {
                 { provide: AuthService, useClass: AuthStubService },
                 { provide: UsersService, useClass: UsersStubService },
                 { provide: Configuration, useClass: ConfigurationStub }
-            ],
+            ], imports: [RouterTestingModule],
         });
     });
 

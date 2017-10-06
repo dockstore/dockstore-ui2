@@ -6,6 +6,7 @@ import { SearchComponent } from '../search/search.component';
 import { DataTableDirective } from 'angular-datatables';
 import { ListContainersService } from '../containers/list/list.service';
 import { PagenumberService } from '../shared/pagenumber.service';
+import { DockstoreService } from '../shared/dockstore.service';
 
 @Component({
   selector: 'app-listentry',
@@ -23,7 +24,8 @@ export class ListentryComponent implements OnInit {
 
   private entrySubscription: Subscription;
   constructor(private searchService: SearchService,
-              private listContainersService: ListContainersService) { }
+              private listContainersService: ListContainersService,
+              private dockstoreService: DockstoreService) { }
 
   ngOnInit() {
     this.dtOptions = {searching: false};
@@ -67,5 +69,13 @@ export class ListentryComponent implements OnInit {
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  getVerifiedTool(tool) {
+    return this.dockstoreService.getVersionVerified(tool.tags);
+  }
+
+  getVerifiedWorkflow(workflow) {
+    return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
 }

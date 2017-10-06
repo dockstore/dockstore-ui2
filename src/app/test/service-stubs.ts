@@ -1,3 +1,5 @@
+import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
+import { SubBucket } from './../shared/models/SubBucket';
 import { Dockstore } from './../shared/dockstore.model';
 import { Token } from './../shared/swagger/model/token';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
@@ -43,6 +45,24 @@ export class DocsStubService {
     }
 }
 
+
+export class QueryBuilderStubService {
+    getTagCloudQuery(type: string): string {
+        return '';
+    }
+    getSidebarQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
+        bucketStubs: any, filters: any, sortModeMap: any): string {
+        return 'thisissomefakequery';
+    }
+    getResultQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
+        filters: any): string {
+        return 'thisissomefakequery';
+    }
+    getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
+        return 'thisissomefakequery';
+    }
+}
+
 export class GA4GHStubService {
     metadataGet(): Observable<Metadata> {
         const metadata: Metadata = {
@@ -54,7 +74,99 @@ export class GA4GHStubService {
 }
 
 export class SearchStubService {
+    workflowhit$ = Observable.of([]);
+    toolhit$ = Observable.of([]);
     searchInfo$ = Observable.of({});
+    toSaveSearch$ = Observable.of(false);
+    values$ = Observable.of('');
+    joinComma(searchTerm: string): string {
+        return searchTerm.trim().split(' ').join(', ');
+    }
+    haveNoHits(object: Object[]): boolean {
+        if (!object || object.length === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    noResults(searchTerm: string, hits: any) {
+        return false;
+    }
+    hasSearchText(advancedSearchObject: any, searchTerm: string, hits: any) {
+        return true;
+    }
+
+    hasFilters(filters: any) {
+        return true;
+    }
+
+    hasResults(searchTerm: string, hits: any) {
+        return true;
+    }
+
+    // Initialization Functions
+    initializeBucketStubs() {
+        return new Map([
+            ['Entry Type', '_type'],
+            ['Registry', 'registry'],
+            ['Private Access', 'private_access'],
+            ['Verified', 'tags.verified'],
+            ['Author', 'author'],
+            ['Organization', 'namespace'],
+            ['Labels', 'labels.value.keyword'],
+            ['Verified Source', 'tags.verifiedSource'],
+        ]);
+    }
+
+    createPermalinks(searchInfo: any) {
+        return 'thisisafakepermalink';
+    }
+
+    createURIParams(cururl) {
+        const url = cururl.substr('/search'.length + 1);
+        const params = new URLSearchParams(url);
+        return params;
+    }
+    initializeFriendlyNames() {
+        return new Map([
+            ['_type', 'Entry Type'],
+            ['registry', 'Registry'],
+            ['private_access', 'Private Access'],
+            ['tags.verified', 'Verified'],
+            ['author', 'Author'],
+            ['namespace', 'Organization'],
+            ['labels.value.keyword', 'Labels'],
+            ['tags.verifiedSource', 'Verified Source'],
+        ]);
+    }
+
+    initializeEntryOrder() {
+        return new Map([
+            ['_type', new SubBucket],
+            ['author', new SubBucket],
+            ['registry', new SubBucket],
+            ['namespace', new SubBucket],
+            ['labels.value.keyword', new SubBucket],
+            ['private_access', new SubBucket],
+            ['tags.verified', new SubBucket],
+            ['tags.verifiedSource', new SubBucket]
+        ]);
+    }
+
+    initializeFriendlyValueNames() {
+        return new Map([
+            ['tags.verified', new Map([
+                ['1', 'verified'], ['0', 'non-verified']
+            ])],
+            ['private_access', new Map([
+                ['1', 'private'], ['0', 'public']
+            ])],
+            ['registry', new Map([
+                ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
+            ])]
+        ]);
+    }
 }
 
 export class ListContainersStubService {
@@ -121,7 +233,7 @@ export class HttpStubService {
 
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
-    workflow$: BehaviorSubject<any> = new BehaviorSubject({sampleWorkflow1}); // This is the selected workflow
+    workflow$: BehaviorSubject<any> = new BehaviorSubject({ sampleWorkflow1 }); // This is the selected workflow
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
