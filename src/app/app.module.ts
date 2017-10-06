@@ -145,7 +145,6 @@ export class AppModule {
 }
 
 export const apiConfig = new Configuration({
-  accessToken: '',
   apiKeys: {},
   basePath: Dockstore.API_URI
 });
