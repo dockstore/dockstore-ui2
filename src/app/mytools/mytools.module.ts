@@ -1,3 +1,4 @@
+import { RefreshAlertModule } from '../shared/refresh-alert/refresh-alert.module';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CommonModule } from '@angular/common';
@@ -30,6 +31,7 @@ import { RegisterToolComponent } from './../container/register-tool/register-too
     mytoolsRouting,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
+    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot()
   ],

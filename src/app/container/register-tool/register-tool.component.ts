@@ -80,7 +80,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
-    this.stateService.refreshing.subscribe(status => this.refreshing = status);
+    this.stateService.refreshing$.subscribe(status => this.refreshing = status);
     this.registerToolService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 

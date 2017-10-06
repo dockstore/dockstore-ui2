@@ -25,7 +25,7 @@ export class RefreshService {
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
-        this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
+        this.stateService.refreshing$.subscribe(refreshing => this.refreshing = refreshing);
     }
 
     /**
@@ -33,14 +33,14 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshTool() {
-        this.stateService.setRefreshing(true);
+        this.stateService.setRefreshMessage('Refreshing ' + this.tool.path + ' ...');
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
-            this.replaceTool(response);
+            this.containerService.replaceTool(this.tools, response);
             this.containerService.setTool(response);
-            this.stateService.setRefreshing(false);
+            this.stateService.setRefreshMessage(null);
         }, error => {
             this.errorService.setToolRegisterError(error);
-            this.stateService.setRefreshing(false);
+            this.stateService.setRefreshMessage(null);
         });
     }
 
@@ -49,11 +49,14 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshWorkflow() {
-        this.stateService.setRefreshing(true);
+        this.stateService.setRefreshMessage('Refreshing ' + this.workflow.path + ' ...');
         this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, response);
             this.workflowService.setWorkflow(response);
-            this.stateService.setRefreshing(false);
+            this.stateService.setRefreshMessage(null);
+        }, error => {
+            this.errorService.setToolRegisterError(error);
+            this.stateService.setRefreshMessage(null);
         });
     }
 
@@ -64,13 +67,15 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllTools(userId: number) {
-        this.stateService.setRefreshing(true);
+        this.stateService.setRefreshMessage('Refreshing all tools...');
         this.usersService.refresh(userId).subscribe(
             response => {
                 this.containerService.setTools(response);
-                this.stateService.setRefreshing(false);
-            }
-        );
+                this.stateService.setRefreshMessage(null);
+            }, error => {
+                this.errorService.setToolRegisterError(error);
+                this.stateService.setRefreshMessage(null);
+            });
     }
 
 
@@ -80,13 +85,15 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllWorkflows(userId: number) {
-        this.stateService.setRefreshing(true);
+        this.stateService.setRefreshMessage('Refreshing all workflows...');
         this.usersService.refreshWorkflows(userId).subscribe(
             response => {
                 this.workflowService.setWorkflows(response);
-                this.stateService.setRefreshing(false);
-            }
-        );
+                this.stateService.setRefreshMessage(null);
+            }, error => {
+                this.errorService.setToolRegisterError(error);
+                this.stateService.setRefreshMessage(null);
+            });
     }
 
     /**

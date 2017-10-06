@@ -44,7 +44,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       }
     });
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
-    this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
+    this.stateService.refreshing$.subscribe(refreshing => this.refreshing = refreshing);
   }
 
   removeTestParameterFile(index: number) {

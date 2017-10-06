@@ -1,3 +1,4 @@
+import { RefreshAlertModule } from './../shared/refresh-alert/refresh-alert.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-modal/register-workflow-modal.component';
 import { NgModule } from '@angular/core';
@@ -18,7 +19,8 @@ import { HeaderModule } from '../shared/modules/header.module';
 @NgModule({
   declarations: [
     MyWorkflowsComponent,
-    RegisterWorkflowModalComponent
+    RegisterWorkflowModalComponent,
+    RefreshAlertModule
   ],
   imports: [
     CommonModule,
