@@ -9,7 +9,7 @@ export class ErrorService {
         let errorObj = null;
         if (error) {
             errorObj = {
-                message: 'The webservice encountered an error trying to create modify.',
+                message: 'The webservice encountered an error trying to create/modify.',
                 errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
                 error._body
             };

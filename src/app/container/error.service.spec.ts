@@ -14,7 +14,7 @@ describe('ErrorService', () => {
     it('should have multiple docs', inject([ErrorService], (service: ErrorService) => {
         service.setToolRegisterError({'status': 'status', 'statusText': 'statusText', '_body': '_body'});
         const errorObj: any = {
-            message: 'The webservice encountered an error trying to create modify.',
+            message: 'The webservice encountered an error trying to create/modify.',
             errorDetails: '[HTTP ' + 'status' + '] ' + 'statusText' + ': ' +
             '_body'
         };
