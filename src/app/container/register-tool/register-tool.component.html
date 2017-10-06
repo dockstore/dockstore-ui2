@@ -171,7 +171,7 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideModal()">
             Close
           </button>
-          <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerToolForm.form.valid || savingActive || refreshMsesage !== null || isInvalidCustomRegistry() || isInvalidPrivateTool()">
+          <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerToolForm.form.valid || savingActive || refreshMessage !== null || isInvalidCustomRegistry() || isInvalidPrivateTool()">
             Add Tool
           </button>
         </div>

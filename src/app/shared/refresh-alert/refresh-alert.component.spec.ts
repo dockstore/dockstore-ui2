@@ -1,3 +1,5 @@
+import { StateStubService } from '../../test/service-stubs';
+import { StateService } from '../state.service';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,7 +13,8 @@ describe('RefreshAlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RefreshAlertComponent ]
+      declarations: [ RefreshAlertComponent ],
+      providers: [ {provide: StateService, useClass: StateStubService}]
     })
     .compileComponents();
   }));

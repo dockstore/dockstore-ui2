@@ -33,6 +33,9 @@ export class ContainerStubService {
     setTool(tools: DockstoreTool) {
         this.tool$.next(tools);
     }
+    replaceTool(tools: any, newTool: any) {
+        return Observable.of(tools);
+    }
 }
 
 export class FileStubService { }
@@ -487,5 +490,5 @@ export class VersionModalStubService {
 
 export class StateStubService {
     publicPage$ = Observable.of(false);
-    refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 }

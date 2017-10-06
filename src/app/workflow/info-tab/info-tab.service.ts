@@ -26,11 +26,11 @@ export class InfoTabService {
 
     updateAndRefresh(workflow: Workflow) {
         this.workflowsService.updateWorkflow(this.workflow.id, workflow).subscribe(response => {
-            this.stateService.setRefreshing(true);
+            this.stateService.setRefreshMessage('Updating workflow info...');
             this.workflowsService.refresh(this.workflow.id).subscribe(refreshResponse => {
                 this.workflowService.replaceWorkflow(this.workflows, refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
-                this.stateService.setRefreshing(false);
+                this.stateService.setRefreshMessage(null);
             });
         });
     }

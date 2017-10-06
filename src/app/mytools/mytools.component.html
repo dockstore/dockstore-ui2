@@ -2,7 +2,7 @@
   <img src="../assets/images/dockstore/dockstore-tools-blue.png">
   My Tools
   <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()">
+    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()" [disabled]="refreshMessage !== null">
       Refresh All Tools
     </button>
   </div>

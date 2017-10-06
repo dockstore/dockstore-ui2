@@ -34,7 +34,7 @@ export class VersionModalService {
     }
 
     saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles) {
-        this.stateService.setRefreshing(true);
+        this.stateService.setRefreshMessage('Saving new version...');
         const newCWL = newTestParameterFiles.filter(x => !originalTestParameterFilePaths.includes(x));
         if (newCWL && newCWL.length > 0) {
             this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).subscribe();
@@ -44,7 +44,7 @@ export class VersionModalService {
             this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name).subscribe();
         }
         this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
-            response => this.stateService.setRefreshing(false));
+            response => this.stateService.setRefreshMessage(null));
             this.setIsModalShown(false);
     }
 }

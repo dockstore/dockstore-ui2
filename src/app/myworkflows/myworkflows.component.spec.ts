@@ -1,3 +1,4 @@
+import { StateService } from './../shared/state.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
@@ -15,6 +16,7 @@ import {
     ConfigurationStub,
     RefreshStubService,
     RegisterWorkflowModalStubService,
+    StateStubService,
     UsersStubService,
     UserStubService,
     WorkflowStubService,
@@ -38,7 +40,8 @@ describe('MyWorkflowsComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        { provide: UserService, useClass: UserStubService }
+        { provide: UserService, useClass: UserStubService },
+        { provide: StateService, useClass: StateStubService }
       ]
     })
     .compileComponents();

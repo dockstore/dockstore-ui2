@@ -1,7 +1,7 @@
 <app-header>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
   <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllWorkflows()">
+    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllWorkflows()" [disabled]="refreshMessage !== null">
       Refresh All Workflows
     </button>
   </div>
