@@ -8,6 +8,7 @@ echo "${TRAVIS_PULL_REQUEST_SHA}"
 
 if [ ${#RUN_PROD} == "true" ]; then
   ng build --prod
+  npm shrinkwrap
 else
   # Only run main tests if not prod
   ng build

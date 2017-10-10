@@ -45,7 +45,7 @@ before_script:
   - 'sleep 20'
 
 script:
-  - ./scripts/run-prod.sh
+  - ./scripts/run-travis-script.sh
 
 after_success:
   - ./node_modules/codecov/bin/codecov
