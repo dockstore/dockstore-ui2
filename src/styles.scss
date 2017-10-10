@@ -1202,3 +1202,11 @@ td.hljs-ln-code {
 .entry-row {
   height: 52px;
 }
+
+.footer-link:link {
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
