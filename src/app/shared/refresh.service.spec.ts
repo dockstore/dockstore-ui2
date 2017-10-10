@@ -20,7 +20,7 @@ import { UsersService } from './swagger/api/users.service';
 import { WorkflowService } from './workflow.service';
 import { ContainerService } from './container.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
-import { ErrorService } from './../container/error.service';
+import { ErrorService } from './../shared/error.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { ContainersStubService, StateStubService, ErrorStubService, WorkflowsStubService,
     ContainerStubService, WorkflowStubService, UsersStubService } from './../test/service-stubs';
@@ -62,7 +62,7 @@ describe('RefreshService', () => {
                 toolname: 'refreshedToolname'
             };
         service.refreshTool();
-        stateService.refreshing.subscribe(refreshing => {
+        stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         containerService.tool$.subscribe(tool => {
@@ -81,7 +81,7 @@ describe('RefreshService', () => {
                 'workflowVersions': []
             };
         service.refreshWorkflow();
-        stateService.refreshing.subscribe(refreshing => {
+        stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         workflowService.workflow$.subscribe(workflow => {

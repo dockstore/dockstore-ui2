@@ -36,11 +36,11 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   }
 
   refreshOrganization(): void {
-    this.stateService.setRefreshing(true);
+    this.stateService.setRefreshMessage('Refreshing organization...');
     this.usersService.refreshWorkflowsByOrganization(this.userId, this.organization).subscribe(
       (success: Workflow[]) => {
         this.workflowService.setWorkflows(success);
-        this.stateService.setRefreshing(false);
-      }, error => this.stateService.setRefreshing(false));
+        this.stateService.setRefreshMessage(null);
+      }, error => this.stateService.setRefreshMessage(null));
   }
 }

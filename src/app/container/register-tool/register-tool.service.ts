@@ -84,12 +84,12 @@ export class RegisterToolService {
         const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
         this.containersService.registerManual(normalizedToolObj).subscribe(response => {
             this.setToolRegisterError(null);
-            this.stateService.setRefreshing(true);
+            this.stateService.setRefreshMessage('Registering new tool...');
             this.containersService.refresh(response.id).subscribe(refreshResponse => {
                 this.setIsModalShown(false);
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
-                this.stateService.setRefreshing(false);
+                this.stateService.setRefreshMessage(null);
             });
             // Use types instead
         }, error => this.setToolRegisterError(error)

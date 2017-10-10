@@ -17,12 +17,13 @@
 <app-header>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
   <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllWorkflows()">
+    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllWorkflows()" [disabled]="refreshMessage !== null">
       Refresh All Workflows
     </button>
   </div>
 </app-header>
 <div class="container padding-top">
+  <app-alert></app-alert>
   <div class="row" *ngIf="orgWorkflows?.length == 0">
     <div class="col-md-12">
       <div class="alert alert-info" role="alert">
@@ -66,7 +67,7 @@
         </accordion-group>
       </accordion>
       <div>
-        <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showModal()">Register Workflow</button>
+        <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
       </div>
       <app-register-workflow-modal></app-register-workflow-modal>
     </div>

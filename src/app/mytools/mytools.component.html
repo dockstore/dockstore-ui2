@@ -18,12 +18,13 @@
   <img src="../assets/images/dockstore/dockstore-tools-blue.png">
   My Tools
   <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()">
+    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()" [disabled]="refreshMessage !== null">
       Refresh All Tools
     </button>
   </div>
 </app-header>
 <div class="container padding-top">
+  <app-alert></app-alert>
   <!--Msg/Warning Page, this should be a Component-->
   <div class="row" *ngIf="nsContainers?.length == 0">
     <div class="col-md-12">
@@ -76,7 +77,7 @@
         </accordion-group>
       </accordion>
       <button (click)="showRegisterToolModal()" id="register_tool_button" type="button"
-              class="btn btn-primary btn-sm pull-right">
+              class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
               Add Tool
       </button>
 

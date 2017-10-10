@@ -26,15 +26,22 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class StateService {
-    refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     publicPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+
+    /**
+     * This replaces the refreshing$ observable.
+     * A truthy refreshMessage$ indicates that at least one entry is being refreshed
+     * @type {BehaviorSubject<string>}
+     * @memberof StateService
+     */
+    refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     constructor() { }
 
-    setRefreshing(refreshing: boolean) {
-        this.refreshing.next(refreshing);
+    setPublicPage(publicPage: boolean): void {
+        this.publicPage$.next(publicPage);
     }
 
-    setPublicPage(publicPage: boolean) {
-        this.publicPage$.next(publicPage);
+    setRefreshMessage(refreshMessage: string): void {
+        this.refreshMessage$.next(refreshMessage);
     }
 }

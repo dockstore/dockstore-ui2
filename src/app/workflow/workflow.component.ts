@@ -17,7 +17,7 @@
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
-import { ErrorService } from './../container/error.service';
+import { ErrorService } from './../shared/error.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Workflow } from './../shared/swagger/model/workflow';
 import * as WorkflowMode from './../shared/swagger/model/workflow';
@@ -156,7 +156,7 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshing || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
+    return this.refreshMessage !== null  || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
   }
 
   publish() {

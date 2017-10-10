@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -46,6 +47,7 @@ import { mytoolsRouting } from './mytools.routing';
     mytoolsRouting,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
+    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot()
   ],

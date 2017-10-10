@@ -41,7 +41,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   formErrors = formErrors;
   validationMessages = validationMessages;
   validationPatterns = validationPatterns;
-  refreshing: boolean;
+  public refreshMessage: string;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService, private stateService: StateService) {
@@ -60,7 +60,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       }
     });
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
-    this.stateService.refreshing.subscribe(refreshing => this.refreshing = refreshing);
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   removeTestParameterFile(index: number) {

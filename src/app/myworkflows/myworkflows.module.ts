@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { RefreshAlertModule } from './../shared/alert/alert.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -45,6 +46,7 @@ import { myworkflowRouting } from './myworkflows.routing';
     myworkflowRouting,
     ModalModule.forRoot(),
     AccordionModule.forRoot(),
+    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot()
   ]

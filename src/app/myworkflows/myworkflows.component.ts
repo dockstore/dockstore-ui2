@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { StateService } from '../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 
@@ -40,12 +41,12 @@ export class MyWorkflowsComponent implements OnInit {
   workflow: any;
   user: any;
   workflows: any;
+  public refreshMessage: string;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
     private usersService: UsersService, private userService: UserService,
     private workflowService: WorkflowService, private authService: AuthService,
-    private refreshService: RefreshService,
+    private refreshService: RefreshService, private stateService: StateService,
     private registerWorkflowModalService: RegisterWorkflowModalService) {
-
   }
 
   ngOnInit() {
@@ -81,6 +82,7 @@ export class MyWorkflowsComponent implements OnInit {
         this.selectWorkflow(null);
       }
     });
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
   setIsFirstOpen() {
     if (this.orgWorkflows && this.workflow) {

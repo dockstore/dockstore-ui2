@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { StateService } from './../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
@@ -40,10 +41,11 @@ export class MyToolsComponent implements OnInit {
   tools: any;
   user: any;
   tool: any;
+  public refreshMessage: string;
   private registerTool: Tool;
   constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
-    private userService: UserService, private authService: AuthService,
+    private userService: UserService, private authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
     private refreshService: RefreshService,
     private registerToolService: RegisterToolService) { }
@@ -80,6 +82,7 @@ export class MyToolsComponent implements OnInit {
         this.selectContainer(null);
       }
     });
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
   setIsFirstOpen() {

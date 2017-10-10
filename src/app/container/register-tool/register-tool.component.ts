@@ -33,7 +33,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public validationPatterns = validationPatterns;
   public customDockerRegistryPath: string;
   public showCustomDockerRegistryPath: boolean;
-  public refreshing: boolean;
+  public refreshMessage: string;
   public isModalShown: boolean;
 
   registerToolForm: NgForm;
@@ -96,7 +96,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
-    this.stateService.refreshing.subscribe(status => this.refreshing = status);
+    this.stateService.refreshMessage$.subscribe(status => this.refreshMessage = status);
     this.registerToolService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 

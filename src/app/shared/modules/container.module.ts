@@ -15,7 +15,7 @@
  */
 
 import { ToolDescriptorService } from '../../container/descriptors/tool-descriptor.service';
-import { ErrorService } from './../../container/error.service';
+import { ErrorService } from './../../shared/error.service';
 import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
