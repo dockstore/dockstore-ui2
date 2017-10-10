@@ -349,6 +349,11 @@
       "from": "angular2-markdown@1.6.0",
       "resolved": "https://registry.npmjs.org/angular2-markdown/-/angular2-markdown-1.6.0.tgz"
     },
+    "angular2-notifications": {
+      "version": "0.7.8",
+      "from": "angular2-notifications@>=0.7.8 <0.8.0",
+      "resolved": "https://registry.npmjs.org/angular2-notifications/-/angular2-notifications-0.7.8.tgz"
+    },
     "ansi-escapes": {
       "version": "3.0.0",
       "from": "ansi-escapes@>=3.0.0 <4.0.0",
