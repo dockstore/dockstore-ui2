@@ -39,7 +39,7 @@ before_script:
   - pwd
   - wget https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/develop/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
-  - ./script
+  - ./script.sh
   - npm run-script prebuild
   - ng lint
   - psql 'postgres' -U postgres < travisci/db_dump.sql
