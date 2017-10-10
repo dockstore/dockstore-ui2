@@ -1,3 +1,4 @@
+import { RefreshService } from '../../shared/refresh.service';
 import { ErrorService } from '../../shared/error.service';
 import { StateService } from './../../shared/state.service';
 /*
@@ -43,7 +44,8 @@ export class VersionsWorkflowComponent extends Versions {
   }
 
   constructor(dockstoreService: DockstoreService, dateService: DateService, private stateService: StateService,
-    private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService) {
+    private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
+    private refreshService: RefreshService) {
     super(dockstoreService, dateService);
     this.verifiedLink = dateService.getVerifiedLink();
     this.workflowService.workflow$.subscribe(workflow => {
@@ -55,18 +57,15 @@ export class VersionsWorkflowComponent extends Versions {
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
+    const message = 'Default Workflow Version';
     this.workflow.defaultVersion = newDefaultVersion;
     this.stateService.setRefreshMessage('Updating default version...');
     this.workflowsService.updateWorkflow(this.workflowId, this.workflow).subscribe(
       response => {
         this.workflowService.setWorkflow(response);
-        this.stateService.setRefreshMessage(null);
+        this.refreshService.handleSuccess(message);
       },
-    error => {
-      this.stateService.setRefreshMessage(null);
-      this.errorService.setErrorAlert(error);
-    });
-
+      error => this.refreshService.handleError(message, error));
   }
 
   getVerifiedSource(name: string) {
