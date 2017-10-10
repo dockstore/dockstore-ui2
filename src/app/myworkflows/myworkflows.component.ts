@@ -34,7 +34,7 @@ export class MyWorkflowsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.configuration.accessToken = this.authService.getToken();
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {

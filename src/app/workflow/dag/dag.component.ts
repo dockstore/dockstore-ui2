@@ -22,6 +22,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   private element: any;
   public dagResult: any;
   private cy: any;
+  public notFound: boolean;
 
   public expanded: Boolean = false;
   public selectVersion: WorkflowVersion;

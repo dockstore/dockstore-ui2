@@ -797,6 +797,11 @@
       "from": "bootstrap@>=3.3.7 <4.0.0",
       "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz"
     },
+    "bootstrap-social": {
+      "version": "5.1.1",
+      "from": "bootstrap-social@>=5.1.1 <6.0.0",
+      "resolved": "https://registry.npmjs.org/bootstrap-social/-/bootstrap-social-5.1.1.tgz"
+    },
     "brace-expansion": {
       "version": "1.1.8",
       "from": "brace-expansion@>=1.1.7 <2.0.0",

@@ -8,17 +8,15 @@ services:
 jdk:
   - oraclejdk8
 env:
-  - WEBSERVICE_VERSION="1.2.0-beta.0"
+  global:
+    - WEBSERVICE_VERSION="1.2.0-beta.0"
+  matrix:
+    - RUN_PROD="false"
+    - RUN_PROD="true"
 addons:
-  apt:
-    sources:
-    - google-chrome
-    packages:
-    - google-chrome-stable
   firefox: "latest"
   postgresql: "9.4"
   chrome: stable
-  chrome: beta
 
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
@@ -39,7 +37,7 @@ before_script:
   - pwd
   - wget https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/develop/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
-  - ./script
+  - ./script.sh
   - npm run-script prebuild
   - ng lint
   - psql 'postgres' -U postgres < travisci/db_dump.sql
@@ -47,10 +45,7 @@ before_script:
   - 'sleep 20'
 
 script:
-  - ng build # this does syntax checking, unit testing, and jshint
-  - ng serve --silent &
-  - ng test --watch=false --code-coverage
-  - cypress run --record --config defaultCommandTimeout=10000 #test using cypress for integration testing
+  - ./scripts/run-travis-script.sh
 
 after_success:
   - ./node_modules/codecov/bin/codecov
