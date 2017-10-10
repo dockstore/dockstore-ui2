@@ -13,6 +13,7 @@ export class DownloadCLIClientComponent implements OnInit {
   public downloadCli: string;
   public dsToken: any;
   public dsServerURI: any;
+  public isCopied2: boolean;
 
   constructor(private authService: AuthService,
               private gA4GHService: GA4GHService) { }
@@ -20,6 +21,7 @@ export class DownloadCLIClientComponent implements OnInit {
   ngOnInit() {
     this.dsToken = this.authService.getToken();
     this.dsServerURI = Dockstore.API_URI;
+    this.isCopied2 = false;
     let apiVersion = 'unreachable';
     this.gA4GHService.metadataGet().subscribe(
       (resultFromApi: Metadata) => {

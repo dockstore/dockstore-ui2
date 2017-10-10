@@ -343,7 +343,10 @@ export class SearchComponent implements OnInit {
       advancedSearchObject: this.advancedSearchObject,
       searchTerm: this.searchTerm
     };
-    this.permalink = this.searchService.createPermalinks(searchInfo);
+
+    const linkArray = this.searchService.createPermalinks(searchInfo);
+    this.permalink = linkArray[0] + '?' + linkArray[1];
+    this.location.go('search?' + linkArray[1]);
   }
 
   /**===============================================

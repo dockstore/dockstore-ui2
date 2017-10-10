@@ -33,22 +33,22 @@ import { TrackLoginService } from '../shared/track-login.service';
 export abstract class Entry implements OnInit, OnDestroy {
   protected labels: string[];
   protected shareURL: string;
-  protected starGazersClicked = false;
+  public starGazersClicked = false;
   private totalShare = 0;
-  protected title: string;
+  public title: string;
   protected _toolType: string;
   protected isLoggedIn: boolean;
   protected validVersions;
   protected defaultVersion;
   protected published: boolean;
-  protected refreshing: boolean;
+  public refreshing: boolean;
   public labelPattern = validationPatterns.label;
   public labelsEditMode: boolean;
   private loginSubscription: Subscription;
-  protected error;
+  public error;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
-  private publicPage: boolean;
+  public publicPage: boolean;
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,

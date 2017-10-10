@@ -133,15 +133,15 @@
           <div class="alert alert-info">
             <ng-template #popTemplate>
               <div class="row">
-                <div class="col-md-10">
+                <div class="input-group" style="padding:5px;">
                   <input type="text" class="form-control" [(ngModel)]="permalink" value="{{permalink}}" readonly>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
+                      (cbOnSuccess)="isCopied = true">
+                      <span class="glyphicon glyphicon-copy"></span>
+                    </button>
+                  </span>
                 </div>
-                <span>
-                  <button class="btn btn-default" style="margin-right: 5px" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
-                    (cbOnSuccess)="isCopied = true">
-                    <span class="glyphicon glyphicon-copy"></span>
-                  </button>
-                </span>
               </div>
             </ng-template>
             <button type="button" class="refresh-all-button btn btn-primary"
@@ -156,7 +156,7 @@
               <strong>Search: </strong> contains one of <strong>"{{searchService.joinComma(values)}}"</strong>
             </span>
 
-            <span *ngIf="advancedSearchObject?.toAdvanceSearch">
+            <span *ngIf="advancedSearchObject?.toAdvanceSearch && (advancedSearchObject?.ANDSplitFilter || advancedSearchObject?.ANDNoSplitFilter || advancedSearchObject?.ORFilter || advancedSearchObject?.NOTFilter)">
               <strong>Search: </strong>
               <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{searchService.joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
               <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{searchService.joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
@@ -180,7 +180,6 @@
             </span>
           </div>
         </div>
-
         <div class="alert alert-info" *ngIf="hits.length > query_size - 1">
           <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
             We recommend that you narrow your search to find more relevant results.</p>

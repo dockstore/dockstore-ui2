@@ -48,6 +48,8 @@ export class WorkflowComponent extends Entry {
   workflowEditData: any;
   dnastackURL: string;
   public workflow;
+  public missingWarning: boolean;
+  public title: string;
   private workflowSubscription: Subscription;
   private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;

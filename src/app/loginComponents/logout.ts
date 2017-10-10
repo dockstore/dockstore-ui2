@@ -10,7 +10,7 @@ import { LogoutService } from '../shared/logout.service';
 export class Logout implements OnDestroy {
 
   loginStateSubscription: Subscription;
-  protected isLoggedIn: boolean;
+  public isLoggedIn: boolean;
 
   constructor(private trackLoginService: TrackLoginService,
               private logoutService: LogoutService,

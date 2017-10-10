@@ -48,6 +48,7 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  public missingWarning: boolean;
   public tool;
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;

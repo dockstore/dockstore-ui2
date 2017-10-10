@@ -37,6 +37,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   public tool;
   public formErrors = formErrors;
   public validationPatterns = validationPatterns;
+  public trackByIndex;
   editMode = true;
   unsavedVersion: Tag = {
     'name': '',
