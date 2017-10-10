@@ -11,8 +11,8 @@ env:
   global:
     - WEBSERVICE_VERSION="1.2.0-beta.0"
   matrix:
-    - RUN_PROD="false"
-    - RUN_PROD="true"
+    - RUN_PROD=false
+    - RUN_PROD=true
 addons:
   firefox: "latest"
   postgresql: "9.4"
