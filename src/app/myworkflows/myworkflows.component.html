@@ -45,8 +45,8 @@
               </div>
             </div>
           </div>
-          <button type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitURL(orgObj?.organization + '/new_workflow'); showModal()">
-            <span class="glyphicon glyphicon-plus"></span>
+          <app-refresh-workflow-organization class="pull-right" [organization]="orgObj?.organization"></app-refresh-workflow-organization>
+          <button type="button" class="glyphicon glyphicon-plus btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitURL(orgObj?.organization + '/new_workflow'); showModal()">
           </button>
         </accordion-group>
       </accordion>

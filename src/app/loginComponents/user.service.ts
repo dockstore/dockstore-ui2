@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
@@ -22,10 +23,11 @@ export class UserService {
   private userSource = new BehaviorSubject<User>(null);
 
   user$ = this.userSource.asObservable();
-
+  userId$: Observable<number>;
   constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration,
     private router: Router) {
     this.updateUser();
+    this.userId$ = this.userSource.map((user: User) => user.id);
    }
 
   setUser(user) {

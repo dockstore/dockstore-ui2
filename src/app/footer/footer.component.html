@@ -23,6 +23,13 @@
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
+      <li *ngIf="prod">
+          <span>
+            <a [href]="UI1_WEBSITE">
+              Back to classic Dockstore website
+            </a>
+          </span>
+        </li>
     <li>
       <span>
         <a href="https://github.com/ga4gh/dockstore">
