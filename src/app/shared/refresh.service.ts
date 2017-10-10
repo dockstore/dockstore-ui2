@@ -1,3 +1,4 @@
+import { NotificationsService } from 'angular2-notifications/dist';
 /*
  *    Copyright 2017 OICR
  *
@@ -35,7 +36,7 @@ export class RefreshService {
     private workflows;
     constructor(private WorkflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private errorService: ErrorService) {
+        private errorService: ErrorService, private notificationsService: NotificationsService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
@@ -47,15 +48,25 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshTool() {
+        const message = 'Tool';
         this.stateService.setRefreshMessage('Refreshing ' + this.tool.path + ' ...');
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
             this.containerService.replaceTool(this.tools, response);
             this.containerService.setTool(response);
-            this.stateService.setRefreshMessage(null);
-        }, error => {
-            this.errorService.setErrorAlert(error);
-            this.stateService.setRefreshMessage(null);
-        });
+            this.handleSuccess(message);
+        }, error => this.handleError(message, error)
+        );
+    }
+
+    handleSuccess(message: string) {
+        this.stateService.setRefreshMessage(null);
+        this.notificationsService.success('Refresh ' + message + ' Succeeded');
+    }
+
+    handleError(message: string, error: any) {
+        this.errorService.setErrorAlert(error);
+        this.stateService.setRefreshMessage(null);
+        this.notificationsService.error('Refresh ' + message + ' Failed');
     }
 
     /**
@@ -63,15 +74,13 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshWorkflow() {
+        const message = 'Workflow';
         this.stateService.setRefreshMessage('Refreshing ' + this.workflow.path + ' ...');
         this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, response);
             this.workflowService.setWorkflow(response);
-            this.stateService.setRefreshMessage(null);
-        }, error => {
-            this.errorService.setErrorAlert(error);
-            this.stateService.setRefreshMessage(null);
-        });
+            this.handleSuccess(message);
+        }, error => this.handleError(message, error));
     }
 
 
@@ -81,15 +90,13 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllTools(userId: number) {
+        const message = 'All Tool';
         this.stateService.setRefreshMessage('Refreshing all tools...');
         this.usersService.refresh(userId).subscribe(
             response => {
                 this.containerService.setTools(response);
-                this.stateService.setRefreshMessage(null);
-            }, error => {
-                this.errorService.setErrorAlert(error);
-                this.stateService.setRefreshMessage(null);
-            });
+                this.handleSuccess(message);
+            }, error => this.handleError(message, error));
     }
 
 
@@ -99,15 +106,13 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllWorkflows(userId: number) {
+        const message = 'All Workflow';
         this.stateService.setRefreshMessage('Refreshing all workflows...');
         this.usersService.refreshWorkflows(userId).subscribe(
             response => {
                 this.workflowService.setWorkflows(response);
-                this.stateService.setRefreshMessage(null);
-            }, error => {
-                this.errorService.setErrorAlert(error);
-                this.stateService.setRefreshMessage(null);
-            });
+                this.handleSuccess(message);
+            }, error => this.handleError(message, error));
     }
 
     /**
