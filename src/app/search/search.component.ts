@@ -328,9 +328,9 @@ export class SearchComponent implements OnInit {
       searchTerm: this.searchTerm
     };
 
-    var linkArray = this.searchService.createPermalinks(searchInfo);
-    this.permalink = linkArray[0] + "?" + linkArray[1];
-    this.location.go("search?" + linkArray[1]);
+    const linkArray = this.searchService.createPermalinks(searchInfo);
+    this.permalink = linkArray[0] + '?' + linkArray[1];
+    this.location.go('search?' + linkArray[1]);
   }
 
   /**===============================================

@@ -239,10 +239,13 @@ export class SearchService {
 
   // Functions called from HTML
   /**
-  * Returns true if either basic search is set and has results, or advanced search is set (though not just the searchMode, which is set by default)
+  * Returns true if either basic search is set and has results, or advanced search is set
+  * (though not just the searchMode, which is set by default)
   */
   hasSearchText(advancedSearchObject: any, searchTerm: boolean, hits: any) {
-    var advSearchSet = ((advancedSearchObject.toAdvanceSearch) && (advancedSearchObject.ANDSplitFilter || advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter));
+    const advSearchSet = ((advancedSearchObject.toAdvanceSearch) &&
+      (advancedSearchObject.ANDSplitFilter || advancedSearchObject.ANDNoSplitFilter
+        || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter));
     return (this.hasResults(searchTerm, hits) || advSearchSet);
   }
 
