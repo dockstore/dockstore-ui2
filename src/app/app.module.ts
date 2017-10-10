@@ -1,3 +1,4 @@
+import { RefreshOrganizationComponent } from './shared/refresh-organization/refresh-organization.component';
 import { ContainerService } from './shared/container.service';
 import { WorkflowService } from './shared/workflow.service';
 import { Dockstore } from './shared/dockstore.model';
@@ -90,7 +91,8 @@ import { SearchModule } from './search/search.module';
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
-    SetupCompleteComponent
+    SetupCompleteComponent,
+    RefreshOrganizationComponent // Have to add this extended component to appease compiler
 ],
   imports: [
     BrowserModule,
