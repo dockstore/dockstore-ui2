@@ -37,6 +37,9 @@ export class ToolTabComponent implements OnInit {
         this.workflow = workflow;
         if (workflow.workflowVersions) {
           this.selectVersion = this.workflow.workflowVersions.find(x => x.name === this.workflow.defaultVersion);
+          if (!this.selectVersion) {
+            this.selectVersion = this.workflow.workflowVersions[0];
+          }
           this.onChange();
         }
       }
