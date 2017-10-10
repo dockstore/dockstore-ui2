@@ -45,7 +45,7 @@
         <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
       </div>
-      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || refreshMessage !== null" class="btn btn-link push-right" style="padding: 3px 12px!important;"
         (click)="toggleEditWorkflowPath()">
         <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
         {{ workflowPathEditing ? 'Save' : 'Edit' }}
@@ -54,7 +54,7 @@
   </li>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
-    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== 'STUB' && !workflow?.is_published && !refreshing" (click)="restubWorkflow()">
+    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && !workflow?.is_published" (click)="restubWorkflow()" [disabled]="refreshMessage !== null">
       <span class="glyphicon glyphicon-remove"></span> Restub
     </button>
   </li>
