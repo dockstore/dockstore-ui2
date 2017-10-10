@@ -1,3 +1,4 @@
+import { ErrorService } from './../../shared/error.service';
 import { StateService } from './../../shared/state.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
@@ -12,7 +13,8 @@ export class InfoTabService {
     private workflows: Workflow[];
     private workflow: Workflow;
 
-    constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService) {
+    constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
+        private errorService: ErrorService) {
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -30,6 +32,9 @@ export class InfoTabService {
             this.workflowsService.refresh(this.workflow.id).subscribe(refreshResponse => {
                 this.workflowService.replaceWorkflow(this.workflows, refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
+                this.stateService.setRefreshMessage(null);
+            }, error => {
+                this.errorService.setErrorAlert(error);
                 this.stateService.setRefreshMessage(null);
             });
         });

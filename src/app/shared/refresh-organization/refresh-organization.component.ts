@@ -10,17 +10,17 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RefreshOrganizationComponent implements OnInit {
   protected userId: number;
   @Input() protected organization: string;
-  protected refreshing: boolean;
+  protected refreshMessage: string;
   constructor(private userService: UserService, protected stateService: StateService) {
   }
 
   ngOnInit() {
     this.userService.userId$.subscribe(userId => this.userId = userId);
-    this.stateService.refreshing.subscribe((refreshing: boolean) => this.refreshing = refreshing);
+    this.stateService.refreshMessage$.subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
   }
 
   toDisable(): boolean {
-    return this.refreshing;
+    return this.refreshMessage !== null;
   }
 
 }

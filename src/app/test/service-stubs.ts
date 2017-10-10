@@ -193,6 +193,7 @@ export class AuthStubService {
 }
 
 export class ErrorStubService {
+    errorObj$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
 
 }
 

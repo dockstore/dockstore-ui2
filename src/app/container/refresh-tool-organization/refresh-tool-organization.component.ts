@@ -23,12 +23,12 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
   refreshOrganization(): void {
     const splitOrganization: string[] = this.organization.split('/');
     const actualOrganization: string = splitOrganization[1];
-    this.stateService.setRefreshing(true);
+    this.stateService.setRefreshMessage('Refreshing ' + actualOrganization + '...');
     this.usersService.refreshToolsByOrganization(this.userId, actualOrganization).subscribe(
       (success: DockstoreTool[]) => {
         this.containerService.setTools(success);
-        this.stateService.setRefreshing(false);
-      }, error => this.stateService.setRefreshing(false));
+        this.stateService.setRefreshMessage(null);
+      }, error => this.stateService.setRefreshMessage(null));
   }
 
 }

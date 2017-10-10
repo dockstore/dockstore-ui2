@@ -4,7 +4,7 @@ import { UsersService } from './swagger/api/users.service';
 import { WorkflowService } from './workflow.service';
 import { ContainerService } from './container.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
-import { ErrorService } from './../container/error.service';
+import { ErrorService } from './../shared/error.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { ContainersStubService, StateStubService, ErrorStubService, WorkflowsStubService,
     ContainerStubService, WorkflowStubService, UsersStubService } from './../test/service-stubs';

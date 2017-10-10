@@ -1,4 +1,4 @@
-import { ErrorService } from './../container/error.service';
+import { ErrorService } from './../shared/error.service';
 import { Injectable } from '@angular/core';
 
 import { WorkflowsService } from './swagger/api/workflows.service';
@@ -37,7 +37,7 @@ export class RefreshService {
             this.containerService.setTool(response);
             this.stateService.setRefreshMessage(null);
         }, error => {
-            this.errorService.setToolRegisterError(error);
+            this.errorService.setErrorAlert(error);
             this.stateService.setRefreshMessage(null);
         });
     }
@@ -53,7 +53,7 @@ export class RefreshService {
             this.workflowService.setWorkflow(response);
             this.stateService.setRefreshMessage(null);
         }, error => {
-            this.errorService.setToolRegisterError(error);
+            this.errorService.setErrorAlert(error);
             this.stateService.setRefreshMessage(null);
         });
     }
@@ -71,7 +71,7 @@ export class RefreshService {
                 this.containerService.setTools(response);
                 this.stateService.setRefreshMessage(null);
             }, error => {
-                this.errorService.setToolRegisterError(error);
+                this.errorService.setErrorAlert(error);
                 this.stateService.setRefreshMessage(null);
             });
     }
@@ -89,7 +89,7 @@ export class RefreshService {
                 this.workflowService.setWorkflows(response);
                 this.stateService.setRefreshMessage(null);
             }, error => {
-                this.errorService.setToolRegisterError(error);
+                this.errorService.setErrorAlert(error);
                 this.stateService.setRefreshMessage(null);
             });
     }

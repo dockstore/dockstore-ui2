@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '../state.service';
-import { RefreshAlertComponent } from './refresh-alert.component';
+import { AlertComponent } from './alert.component';
 import { NgModule } from '@angular/core';
 
 @NgModule({
     declarations: [
-      RefreshAlertComponent
+      AlertComponent
     ],
     imports: [
         CommonModule,
@@ -15,6 +15,6 @@ import { NgModule } from '@angular/core';
     providers: [
       StateService
     ],
-    exports: [RefreshAlertComponent]
+    exports: [AlertComponent]
   })
   export class RefreshAlertModule {}

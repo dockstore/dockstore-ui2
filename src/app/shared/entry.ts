@@ -1,6 +1,6 @@
 import { validationPatterns } from './validationMessages.model';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { ErrorService } from './../container/error.service';
+import { ErrorService } from './../shared/error.service';
 import { Workflow } from './swagger/model/workflow';
 import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
 import { StateService } from './state.service';
@@ -47,14 +47,14 @@ export abstract class Entry implements OnInit, OnDestroy {
       this.setupPublicEntry(url);
     }
     this.stateService.setPublicPage(this.isPublic());
-    this.errorService.toolError$.subscribe(toolError => this.error = toolError);
+    this.errorService.errorObj$.subscribe(toolError => this.error = toolError);
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
   }
 
   closeError(): void {
-    this.errorService.toolError$.next(null);
+    this.errorService.errorObj$.next(null);
   }
 
   starGazersChange(): void {

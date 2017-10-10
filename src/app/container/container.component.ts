@@ -1,7 +1,7 @@
+import { ErrorService } from './../shared/error.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Subscription } from 'rxjs/Subscription';
 import { ContainersService } from './../shared/swagger/api/containers.service';
-import { ErrorService } from './error.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
