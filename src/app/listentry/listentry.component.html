@@ -54,7 +54,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let hit of hits">
+    <tr *ngFor="let hit of hits" style="height:52px;">
       <td>
         <span *ngIf="getVerifiedWorkflow(hit?._source)">
             <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"></a>

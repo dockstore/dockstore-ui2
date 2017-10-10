@@ -73,7 +73,7 @@ export class SearchService {
         }
       }
     }
-    return url + '?' + params.toString();
+    return [url, params.toString()];
   }
 
   createURIParams(cururl) {
@@ -239,10 +239,11 @@ export class SearchService {
 
   // Functions called from HTML
   /**
-  * Returns true if either basic search is set and has results, or advanced search is set
+  * Returns true if either basic search is set and has results, or advanced search is set (though not just the searchMode, which is set by default)
   */
   hasSearchText(advancedSearchObject: any, searchTerm: boolean, hits: any) {
-    return (this.hasResults(searchTerm, hits) || advancedSearchObject.toAdvanceSearch);
+    var advSearchSet = ((advancedSearchObject.toAdvanceSearch) && (advancedSearchObject.ANDSplitFilter || advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter));
+    return (this.hasResults(searchTerm, hits) || advSearchSet);
   }
 
   /**

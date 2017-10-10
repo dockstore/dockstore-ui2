@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="entry-row" *ngFor="let workflow of workflowsTable">
+        <tr class="entry-row" *ngFor="let workflow of workflowsTable" style="height:52px;">
           <td>
             <span id="verifiedIcon" *ngIf="getVerified(workflow)">
               <a href={{verifiedLink}}>

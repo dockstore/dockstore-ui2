@@ -140,7 +140,7 @@
               <strong>Search: </strong> contains one of <strong>"{{searchService.joinComma(values)}}"</strong>
             </span>
 
-            <span *ngIf="advancedSearchObject?.toAdvanceSearch">
+            <span *ngIf="advancedSearchObject?.toAdvanceSearch && (advancedSearchObject?.ANDSplitFilter || advancedSearchObject?.ANDNoSplitFilter || advancedSearchObject?.ORFilter || advancedSearchObject?.NOTFilter)">
               <strong>Search: </strong>
               <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{searchService.joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
               <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{searchService.joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
