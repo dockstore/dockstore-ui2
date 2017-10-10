@@ -32,6 +32,7 @@
     "angular2-markdown": "1.6.0",
     "bodybuilder": "^2.2.0",
     "bootstrap": "^3.3.7",
+    "bootstrap-social": "^5.1.1",
     "core-js": "^2.4.1",
     "cytoscape": "^3.1.1",
     "cytoscape-dagre": "^1.6.0",
