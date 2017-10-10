@@ -27,11 +27,7 @@ before_install:
   - 'sleep 3' # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
 
 install:
-  - 'npm install -g bower'
-  - 'npm install'
-  - 'bower update'
-  - 'ng version'
-  - 'npm install codecov'
+  - ./scripts/install-travis-script.sh
 
 before_script:
   - pwd

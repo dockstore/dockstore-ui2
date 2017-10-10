@@ -1,5 +1,8 @@
 #!/bin/bash
-set -ev
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o xtrace
 
 echo "${TRAVIS_BRANCH}"
 echo "${TRAVIS_PULL_REQUEST}"
