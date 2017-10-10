@@ -29,8 +29,7 @@ export class TokenService {
         this.updateTokens();
       }
     });
-    this.configuration.accessToken = this.authService.getToken();
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.tokens$.subscribe(tokens => this.tokens = tokens);
   }
 
