@@ -117,15 +117,15 @@
           <div class="alert alert-info">
             <ng-template #popTemplate>
               <div class="row">
-                <div class="col-md-10">
+                <div class="input-group" style="padding:5px;">
                   <input type="text" class="form-control" [(ngModel)]="permalink" value="{{permalink}}" readonly>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
+                      (cbOnSuccess)="isCopied = true">
+                      <span class="glyphicon glyphicon-copy"></span>
+                    </button>
+                  </span>
                 </div>
-                <span>
-                  <button class="btn btn-default" style="margin-right: 5px" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
-                    (cbOnSuccess)="isCopied = true">
-                    <span class="glyphicon glyphicon-copy"></span>
-                  </button>
-                </span>
               </div>
             </ng-template>
             <button type="button" class="refresh-all-button btn btn-primary"
