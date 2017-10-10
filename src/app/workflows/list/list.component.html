@@ -30,7 +30,7 @@
           <td>
             <span id="verifiedIcon" *ngIf="getVerified(workflow)">
               <a href={{verifiedLink}}>
-                <span an class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+                <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
               </a>
             </span>
             <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>

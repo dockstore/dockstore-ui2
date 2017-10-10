@@ -491,7 +491,7 @@ form.form-horizontal {
 button.add-container-ns {
   position: relative;
   top: 5px;
-  right: 13px;
+  margin-right: 5px;
   span.glyphicon {
     left: 1px;
   }
@@ -662,4 +662,8 @@ div.contact-button {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.private-lock {
+  color: #487980;
 }
