@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let tool of toolsTable">
+        <tr class="entry-row" *ngFor="let tool of toolsTable">
           <td>
             <span *ngIf="getVerified(tool)">
                 <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok" href={{verifiedLink}}></a>

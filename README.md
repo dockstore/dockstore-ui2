@@ -111,6 +111,12 @@ Run `npm run-script prebuild` before running or building the project. This comma
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Run `ng serve --host 0.0.0.0` in order to serve your site to other computers on the same network. 
 
+
+## Updating dependencies
+
+Run `npm shrinkwrap`. Note that due to a problem with angular-tag-cloud, you will need to manually edit its dependencies in the file node\_modules/angular-tag-cloud-module/package.json . 
+Change its peer dependency to 4.3.6.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.

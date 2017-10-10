@@ -1,9 +1,17 @@
 li, div a {
   /* set space between list elements */
-  margin: 20px;
+  margin: 10px;
 }
 
 .container-fluid, a {
   background-color: #21335B;
   color: white;
+}
+
+.container-fluid {
+  padding-top:20px;
+}
+
+.container-fluid, ul {
+  list-style: none;
 }

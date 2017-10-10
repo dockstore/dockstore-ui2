@@ -4,7 +4,7 @@ export abstract class DescriptorSelector extends VersionSelector {
 
   protected currentDescriptor;
   protected descriptors: Array<any>;
-  protected nullDescriptors: boolean;
+  public nullDescriptors: boolean;
 
   abstract getDescriptors(version): Array<any>;
   abstract reactToDescriptor(): void;
