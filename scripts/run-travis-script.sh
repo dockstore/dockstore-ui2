@@ -7,6 +7,8 @@ set -o xtrace
 if [ "$RUN_PROD" = true ]; then
   npm run-script prebuild
   ng build --prod
+  # silly hack needed, take out when angular-tag-cloud-module is updated
+  perl -pi -e 's/\^2.4.3/4.3.6/g' node_modules/angular-tag-cloud-module/package.json
   npm shrinkwrap
 else
   # Only run main tests if not prod
