@@ -59,7 +59,7 @@ cd dockstore-ui2
 git checkout develop
 git pull
 
-sudo npm install
+npm install
 ```
 
 Check to make sure Angular CLI has been properly set up
