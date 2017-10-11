@@ -47,7 +47,7 @@ sudo npm install -g bower
 bower -v
 1.8.0
 sudo npm install -g @angular/cli@1.3.1
-bower update
+bower install
 ```
 
 #### NPM

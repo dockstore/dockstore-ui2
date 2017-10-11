@@ -12,7 +12,7 @@ if [ "$RUN_PROD" = true ]; then
 else
   npm install -g bower
   npm install
-  bower update
+  bower install
   ng version
   npm install codecov
 fi
