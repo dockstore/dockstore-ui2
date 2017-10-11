@@ -31,6 +31,7 @@
     "@types/datatables.net": "^1.10.6",
     "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.14",
+    "@types/node": "~6.0.60",
     "angular-datatables": "4.2.0",
     "angular-tag-cloud-module": "^1.4.0",
     "angular2-markdown": "1.6.0",
@@ -56,13 +57,12 @@
     "rxjs": "^5.4.2",
     "ts-md5": "^1.2.0",
     "ts-node": "3.3.0",
-    "typescript": "2.3.4",
+    "typescript": "2.4.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.38",
     "@types/jasminewd2": "~2.0.2",
-    "@types/node": "~6.0.60",
     "codelyzer": "~3.1.1",
     "cypress": "0.20.1",
     "jasmine-core": "~2.6.2",
