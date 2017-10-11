@@ -108,8 +108,7 @@ import { SearchModule } from './search/search.module';
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
-    SetupCompleteComponent,
-    RefreshOrganizationComponent // Have to add this extended component to appease compiler
+    SetupCompleteComponent
 ],
   imports: [
     BrowserAnimationsModule,

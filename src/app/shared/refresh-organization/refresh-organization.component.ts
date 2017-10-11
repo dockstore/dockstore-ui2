@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 /*
  *    Copyright 2017 OICR
  *
@@ -18,11 +19,7 @@ import { StateService } from './../state.service';
 import { UserService } from '../../loginComponents/user.service';
 import { Component, OnInit, Input } from '@angular/core';
 
-@Component({
-  selector: 'app-refresh-organization',
-  templateUrl: './refresh-organization.component.html',
-  styleUrls: ['./refresh-organization.component.css']
-})
+@Injectable()
 export class RefreshOrganizationComponent implements OnInit {
   protected userId: number;
   @Input() protected organization: string;

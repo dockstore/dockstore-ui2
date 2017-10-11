@@ -401,7 +401,7 @@ export class WorkflowsStubService {
 
     manualRegister(workflowRegistry: string, workflowPath: string, defaultWorkflowPath: string, workflowName: string,
         descriptorType: string, extraHttpRequestParams?: any): Observable<Workflow> {
-        return Observable.of({});
+        return Observable.of(sampleWorkflow1);
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {

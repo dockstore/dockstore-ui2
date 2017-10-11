@@ -1,3 +1,4 @@
+import { StarRequest } from './../shared/swagger/model/starRequest';
 /*
  *    Copyright 2017 OICR
  *
@@ -33,9 +34,8 @@ export class StarringService {
     }
   }
   setStar(entryID: number, entryType: string): any {
-    const body = {
-      containerId: entryID,
-      workflowId: entryID
+    const body: StarRequest = {
+      star: true
     };
     if (entryType === 'workflows') {
       return this.workflowsService.starEntry(entryID, body);
