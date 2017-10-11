@@ -58,12 +58,12 @@ export class RefreshService {
         );
     }
 
-    handleSuccess(message: string) {
+    handleSuccess(message: string): void {
         this.stateService.setRefreshMessage(null);
         this.notificationsService.success('Refresh ' + message + ' Succeeded');
     }
 
-    handleError(message: string, error: any) {
+    handleError(message: string, error: any): void {
         this.errorService.setErrorAlert(error);
         this.stateService.setRefreshMessage(null);
         this.notificationsService.error('Refresh ' + message + ' Failed');

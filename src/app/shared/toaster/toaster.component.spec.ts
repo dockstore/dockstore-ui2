@@ -1,3 +1,4 @@
+import { SimpleNotificationsModule } from 'angular2-notifications';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,7 +12,7 @@ describe('ToasterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToasterComponent ]
+      declarations: [ ToasterComponent ], imports: [SimpleNotificationsModule]
     })
     .compileComponents();
   }));
