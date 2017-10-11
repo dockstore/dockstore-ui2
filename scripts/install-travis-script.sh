@@ -7,7 +7,7 @@ set -o xtrace
 if [ "$RUN_PROD" = true ]; then
   npm install -g bower
   npm install --production
-  bower update
+  bower install
   ng version
 else
   npm install -g bower
