@@ -1,3 +1,4 @@
+import { NotificationsService } from 'angular2-notifications/dist';
 /*
  *    Copyright 2017 OICR
  *
@@ -38,7 +39,7 @@ describe('RefreshService', () => {
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
                 { provide: WorkflowService, useClass: WorkflowStubService },
-                { provide: UsersService, useClass: UsersStubService }
+                { provide: UsersService, useClass: UsersStubService }, NotificationsService
             ]
         });
     });

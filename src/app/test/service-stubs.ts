@@ -274,6 +274,11 @@ export class WorkflowStubService {
 
 export class RefreshStubService {
     refreshAllWorkflows() { }
+    handleSuccess(message: string): void {
+    }
+
+    handleError(message: string, error: any): void {
+    }
 }
 
 export class RegisterWorkflowModalStubService {

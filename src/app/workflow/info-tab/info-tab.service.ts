@@ -1,3 +1,4 @@
+import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -30,7 +31,7 @@ export class InfoTabService {
     private workflow: Workflow;
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
-        private errorService: ErrorService) {
+        private errorService: ErrorService, private refreshService: RefreshService) {
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -43,16 +44,14 @@ export class InfoTabService {
     }
 
     updateAndRefresh(workflow: Workflow) {
+        const message = 'Workflow Info';
         this.workflowsService.updateWorkflow(this.workflow.id, workflow).subscribe(response => {
-            this.stateService.setRefreshMessage('Updating workflow info...');
+            this.stateService.setRefreshMessage('Updating ' + message + '...');
             this.workflowsService.refresh(this.workflow.id).subscribe(refreshResponse => {
                 this.workflowService.replaceWorkflow(this.workflows, refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
-                this.stateService.setRefreshMessage(null);
-            }, error => {
-                this.errorService.setErrorAlert(error);
-                this.stateService.setRefreshMessage(null);
-            });
+                this.refreshService.handleSuccess(message);
+            }, error => this.refreshService.handleError(message, error));
         });
     }
 }

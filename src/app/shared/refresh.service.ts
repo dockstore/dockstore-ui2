@@ -1,3 +1,4 @@
+import { NotificationsService } from 'angular2-notifications/dist';
 /*
  *    Copyright 2017 OICR
  *
@@ -35,7 +36,7 @@ export class RefreshService {
     private workflows;
     constructor(private WorkflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private errorService: ErrorService) {
+        private errorService: ErrorService, private notificationsService: NotificationsService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
@@ -46,32 +47,54 @@ export class RefreshService {
      * Handles refreshing of tool and updates the view.
      * @memberof RefreshService
      */
-    refreshTool() {
+    refreshTool(): void {
+        const message = 'Tool';
         this.stateService.setRefreshMessage('Refreshing ' + this.tool.path + ' ...');
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
             this.containerService.replaceTool(this.tools, response);
             this.containerService.setTool(response);
-            this.stateService.setRefreshMessage(null);
-        }, error => {
-            this.errorService.setErrorAlert(error);
-            this.stateService.setRefreshMessage(null);
-        });
+            this.handleSuccess(message);
+        }, error => this.handleError(message, error)
+        );
+    }
+
+    /**
+     * This handles what happens after refresh API call returns successfully
+     *
+     * @param {string} message The custom success message that should be displayed
+     * @memberof RefreshService
+     */
+    handleSuccess(message: string): void {
+        this.stateService.setRefreshMessage(null);
+        this.notificationsService.success('Refresh ' + message + ' Succeeded');
+    }
+
+
+    /**
+     * This handles what happens after refresh API call returns an error
+     *
+     * @param {string} message The custom error message that should be displayed
+     * @param {*} error The error object returned when refresh failed
+     * @memberof RefreshService
+     */
+    handleError(message: string, error: any): void {
+        this.errorService.setErrorAlert(error);
+        this.stateService.setRefreshMessage(null);
+        this.notificationsService.error('Refresh ' + message + ' Failed');
     }
 
     /**
      * Handles refreshing of the workflow and updates the view.
      * @memberof RefreshService
      */
-    refreshWorkflow() {
+    refreshWorkflow(): void {
+        const message = 'Workflow';
         this.stateService.setRefreshMessage('Refreshing ' + this.workflow.path + ' ...');
         this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, response);
             this.workflowService.setWorkflow(response);
-            this.stateService.setRefreshMessage(null);
-        }, error => {
-            this.errorService.setErrorAlert(error);
-            this.stateService.setRefreshMessage(null);
-        });
+            this.handleSuccess(message);
+        }, error => this.handleError(message, error));
     }
 
 
@@ -80,16 +103,14 @@ export class RefreshService {
      * @param {number} userId The user id
      * @memberof RefreshService
      */
-    refreshAllTools(userId: number) {
+    refreshAllTools(userId: number): void {
+        const message = 'All Tool';
         this.stateService.setRefreshMessage('Refreshing all tools...');
         this.usersService.refresh(userId).subscribe(
             response => {
                 this.containerService.setTools(response);
-                this.stateService.setRefreshMessage(null);
-            }, error => {
-                this.errorService.setErrorAlert(error);
-                this.stateService.setRefreshMessage(null);
-            });
+                this.handleSuccess(message);
+            }, error => this.handleError(message, error));
     }
 
 
@@ -98,16 +119,14 @@ export class RefreshService {
      * @param {number} userId The user id
      * @memberof RefreshService
      */
-    refreshAllWorkflows(userId: number) {
+    refreshAllWorkflows(userId: number): void {
+        const message = 'All Workflow';
         this.stateService.setRefreshMessage('Refreshing all workflows...');
         this.usersService.refreshWorkflows(userId).subscribe(
             response => {
                 this.workflowService.setWorkflows(response);
-                this.stateService.setRefreshMessage(null);
-            }, error => {
-                this.errorService.setErrorAlert(error);
-                this.stateService.setRefreshMessage(null);
-            });
+                this.handleSuccess(message);
+            }, error => this.handleError(message, error));
     }
 
     /**
@@ -116,7 +135,7 @@ export class RefreshService {
      * @param {*} tool  The updated tool
      * @memberof RefreshService
      */
-    replaceTool(tool: DockstoreTool) {
+    replaceTool(tool: DockstoreTool): void {
         this.tools = this.tools.filter(obj => obj.id !== tool.id);
         this.tools.push(tool);
         this.containerService.setTools(this.tools);

@@ -1,3 +1,4 @@
+import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -28,7 +29,7 @@ export class InfoTabService {
     private tool;
     private tools;
     constructor(private containersService: ContainersService, private stateService: StateService,
-        private containerService: ContainerService) {
+        private containerService: ContainerService, private refreshService: RefreshService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
@@ -45,13 +46,14 @@ export class InfoTabService {
     }
 
     updateAndRefresh(tool: any) {
+        const message = 'Tool Info';
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
-            this.stateService.setRefreshMessage('Updating tool info...');
+            this.stateService.setRefreshMessage('Updating ' + message + '...');
             this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
                 this.containerService.replaceTool(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
-                this.stateService.setRefreshMessage(null);
-            });
+                this.refreshService.handleSuccess(message);
+            }, error => this.refreshService.handleError(message, error));
         });
     }
 }

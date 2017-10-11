@@ -1,3 +1,5 @@
+import { RefreshService } from '../../shared/refresh.service';
+import { NotificationsService } from 'angular2-notifications/dist';
 /*
  *    Copyright 2017 OICR
  *
@@ -37,7 +39,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService,
+    dateService: DateService, private refreshService: RefreshService,
               private stateService: StateService,
               private containerService: ContainerService) {
     super(dockstoreService, dateService);
@@ -59,8 +61,14 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
+    const message = 'Default Tool Version';
     this.tool.defaultVersion = newDefaultVersion;
-    this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => this.containerService.setTool(response));
+    this.stateService.setRefreshMessage('Refreshing ' + message);
+    this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
+      this.containerService.setTool(response);
+      this.refreshService.handleSuccess(message);
+    }, error => this.refreshService.handleError(message, error)
+  );
   }
 
   getVerifiedSource(name: string) {

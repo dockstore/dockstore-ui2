@@ -32,9 +32,11 @@ export class InfoTabComponent implements OnInit {
   @Input() defaultVersion;
   public validationPatterns = validationPatterns;
   workflow: Workflow;
+  public WorkflowType = Workflow;
   workflowPathEditing: boolean;
   descriptorTypeEditing: boolean;
   isPublic: boolean;
+  public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
   private infoTabService: InfoTabService) { }
 
@@ -43,6 +45,7 @@ export class InfoTabComponent implements OnInit {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   restubWorkflow() {

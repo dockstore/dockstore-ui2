@@ -1,3 +1,6 @@
+import { RefreshService } from '../../shared/refresh.service';
+import { ErrorService } from './../../shared/error.service';
+import { StateService } from './../../shared/state.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -19,7 +22,8 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DateService } from './../../shared/date.service';
-import { DateStubService, DockstoreStubService, WorkflowStubService, WorkflowsStubService } from './../../test/service-stubs';
+import { DateStubService, ErrorStubService, DockstoreStubService, WorkflowStubService, WorkflowsStubService,
+  StateStubService, RefreshStubService } from './../../test/service-stubs';
 import { DockstoreService } from './../../shared/dockstore.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -37,7 +41,10 @@ describe('VersionsWorkflowComponent', () => {
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
         { provide: WorkflowService, useClass: WorkflowStubService},
-        { provide: WorkflowsService, useClass: WorkflowsStubService}
+        { provide: WorkflowsService, useClass: WorkflowsStubService},
+        StateService,
+        { provide: ErrorService, useClass: ErrorStubService },
+        { provide: RefreshService, useClass: RefreshStubService}
       ]
     })
     .compileComponents();

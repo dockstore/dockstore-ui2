@@ -1,3 +1,4 @@
+import { ToasterModule } from './shared/toaster/toaster.module';
 /*
  *    Copyright 2017 OICR
  *
@@ -22,10 +23,10 @@ import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 /* Bootstrap */
@@ -110,7 +111,7 @@ import { SearchModule } from './search/search.module';
     SetupCompleteComponent
 ],
   imports: [
-    BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     DataTablesModule.forRoot(),
@@ -124,6 +125,7 @@ import { SearchModule } from './search/search.module';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
+    ToasterModule,
     FlexLayoutModule,
     StarringModule,
     routing,
