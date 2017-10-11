@@ -22,7 +22,7 @@ before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - 'wget --tries=10 https://github.com/ga4gh/dockstore/releases/download/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar'
+  - 'wget --no-verbose --tries=10 https://github.com/ga4gh/dockstore/releases/download/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar'
   - 'chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar'
   - 'sleep 3' # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
 
@@ -31,7 +31,7 @@ install:
 
 before_script:
   - pwd
-  - wget https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
+  - wget --no-verbose https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/develop/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
   - ./script.sh
   - psql 'postgres' -U postgres < travisci/db_dump.sql
