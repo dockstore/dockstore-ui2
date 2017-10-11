@@ -35,7 +35,6 @@ before_script:
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/develop/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
   - ./script.sh
   - npm run-script prebuild
-  - ng lint
   - psql 'postgres' -U postgres < travisci/db_dump.sql
   - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
   - 'sleep 20'

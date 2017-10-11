@@ -11,6 +11,7 @@ if [ "$RUN_PROD" = true ]; then
 else
   # Only run main tests if not prod
   npm run-script prebuild
+  ng lint
   ng build
   ng serve --silent &
   ng test --watch=false --code-coverage
