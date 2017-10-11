@@ -1,4 +1,4 @@
-import { NotificationsService } from 'angular2-notifications/dist';
+import { NotificationsService } from 'angular2-notifications';
 /*
  *    Copyright 2017 OICR
  *
