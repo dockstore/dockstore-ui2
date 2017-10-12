@@ -45,6 +45,11 @@
       </div>
       <div class="col-md-4 col-sm-6">
         <ul>
+              <li *ngIf="prod">
+            <a [href]="UI1_WEBSITE">
+              Back to classic Dockstore website
+            </a>
+        </li>
           <li>
             <a href="https://github.com/ga4gh/dockstore" class="footer-link">
               <img src="../assets/images/dockstore/github.png">
