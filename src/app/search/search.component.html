@@ -68,7 +68,7 @@
                  [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
             </button>
           </div>
-          <div *ngFor='let subBucket of orderedBuckets.get(key).SelectedItems.keys(); let i = index'>
+          <div *ngFor='let subBucket of getBucketKeys(key); let i = index'>
             <div class="panel-container-label selected-item">
               <div class="container-name-oflw pull-left">
                   <span>
@@ -166,7 +166,7 @@
             <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">AND </span>
             <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">Search: </strong>
 
-            <span *ngFor="let key of filters.keys(); let i = index">
+            <span *ngFor="let key of getFilterKeys(); let i = index">
               the <strong>{{friendlyNames.get(key)}}</strong> is
               <span *ngFor='let subBucket of filters.get(key); let j = index'>
                 <strong>{{searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames)}}</strong>
