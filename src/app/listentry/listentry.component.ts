@@ -37,6 +37,7 @@ export class ListentryComponent implements OnInit {
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   inited = false;
   dtOptions: any;
+  updateResultsTable = false;
 
   private entrySubscription: Subscription;
   constructor(private searchService: SearchService,
@@ -44,6 +45,7 @@ export class ListentryComponent implements OnInit {
               private dockstoreService: DockstoreService) { }
 
   ngOnInit() {
+    this.updateResultsTable = false;
     this.dtOptions = {searching: false};
     if (this.entryType === 'tool') {
       this.entrySubscription = this.searchService.toolhit$.subscribe(
@@ -57,14 +59,21 @@ export class ListentryComponent implements OnInit {
         });
     }
   }
+
+  ngAfterViewInit() {
+    this.updateResultsTable = true;
+  }
+
   setHitSubscribe(hits: any) {
-    if (this.inited) {
-      this.rerender(hits);
-    } else {
-      if (hits) {
-        this.hits = hits;
-        this.dtTrigger.next();
-        this.inited = true;
+    if (this.updateResultsTable) {
+      if (this.inited) {
+        this.rerender(hits);
+      } else {
+        if (hits) {
+          this.hits = hits;
+          this.dtTrigger.next();
+          this.inited = true;
+        }
       }
     }
   }
@@ -84,7 +93,7 @@ export class ListentryComponent implements OnInit {
       this.hits = hits;
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
-    });
+    }).catch(error => console.log(error));
   }
 
   getVerifiedTool(tool) {

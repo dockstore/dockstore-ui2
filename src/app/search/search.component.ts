@@ -154,7 +154,6 @@ export class SearchComponent implements OnInit {
       toAdvanceSearch: false
     };
     this.parseParams();
-    this.updateQuery();
 
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
@@ -478,7 +477,6 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject.toAdvanceSearch = false;
       this.searchTerm = true;
       this._timeout = true;
-      console.log('asdf');
       window.setTimeout(() => {
         if ((!this.values || 0 === this.values.length)) {
           this.searchTerm = false;
