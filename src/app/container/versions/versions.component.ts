@@ -1,3 +1,21 @@
+import { RefreshService } from '../../shared/refresh.service';
+import { NotificationsService } from 'angular2-notifications';
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
@@ -21,7 +39,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService,
+    dateService: DateService, private refreshService: RefreshService,
               private stateService: StateService,
               private containerService: ContainerService) {
     super(dockstoreService, dateService);
@@ -43,8 +61,14 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
+    const message = 'Default Tool Version';
     this.tool.defaultVersion = newDefaultVersion;
-    this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => this.containerService.setTool(response));
+    this.stateService.setRefreshMessage('Refreshing ' + message);
+    this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
+      this.containerService.setTool(response);
+      this.refreshService.handleSuccess(message);
+    }, error => this.refreshService.handleError(message, error)
+  );
   }
 
   getVerifiedSource(name: string) {

@@ -1,20 +1,21 @@
-<div class="row" *ngIf="error || refreshing || missingWarning">
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="row" *ngIf="error || missingWarning">
   <div class="col-md-12" *ngIf="!isToolPublic">
-    <div class="alert alert-danger alert-dismissable" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="error">
-      <button type="button" class="close" data-dismiss="alert" (click)="closeError()">
-        &times;
-      </button>
-      <p>
-        <span class="glyphicon glyphicon-warning-sign"></span>
-        {{error.message}}
-      </p>
-      <p class="error-output">{{error.errorDetails}}</p>
-    </div>
-    <div class="alert alert-info" role="alert" *ngIf="refreshing">
-      <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
-      </span>
-      Please wait, retrieving {{tool?.imgProvider}} tool...
-    </div>
     <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
       <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
         &times;
@@ -29,9 +30,12 @@
   <div class="col-md-7">
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="tool?.versionVerified">
-        <a href= {{tool?.verifiedLinks}}>
+        <a href= {{tool?.verifiedLinks}} class="verified-check">
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
+      </span>
+      <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
+          <span class="glyphicon glyphicon-lock"></span>
       </span>
       {{ tool?.tool_path }}
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
@@ -61,7 +65,7 @@
 
           <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
         </div>
-        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshing">
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
           Refresh
         </button>
       </div>

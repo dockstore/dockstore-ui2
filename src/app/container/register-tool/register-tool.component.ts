@@ -1,3 +1,19 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { StateService } from './../../shared/state.service';
 import { NgForm } from '@angular/forms';
 import { RegisterToolService } from './register-tool.service';
@@ -17,7 +33,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public validationPatterns = validationPatterns;
   public customDockerRegistryPath: string;
   public showCustomDockerRegistryPath: boolean;
-  public refreshing: boolean;
+  public refreshMessage: string;
   public isModalShown: boolean;
 
   registerToolForm: NgForm;
@@ -80,7 +96,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
-    this.stateService.refreshing.subscribe(status => this.refreshing = status);
+    this.stateService.refreshMessage$.subscribe(status => this.refreshMessage = status);
     this.registerToolService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 

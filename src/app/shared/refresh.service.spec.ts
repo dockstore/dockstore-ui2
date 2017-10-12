@@ -1,10 +1,27 @@
+import { NotificationsService } from 'angular2-notifications';
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { Workflow } from './swagger/model/workflow';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowService } from './workflow.service';
 import { ContainerService } from './container.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
-import { ErrorService } from './../container/error.service';
+import { ErrorService } from './../shared/error.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { ContainersStubService, StateStubService, ErrorStubService, WorkflowsStubService,
     ContainerStubService, WorkflowStubService, UsersStubService } from './../test/service-stubs';
@@ -22,7 +39,7 @@ describe('RefreshService', () => {
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
                 { provide: WorkflowService, useClass: WorkflowStubService },
-                { provide: UsersService, useClass: UsersStubService }
+                { provide: UsersService, useClass: UsersStubService }, NotificationsService
             ]
         });
     });
@@ -46,7 +63,7 @@ describe('RefreshService', () => {
                 toolname: 'refreshedToolname'
             };
         service.refreshTool();
-        stateService.refreshing.subscribe(refreshing => {
+        stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         containerService.tool$.subscribe(tool => {
@@ -65,7 +82,7 @@ describe('RefreshService', () => {
                 'workflowVersions': []
             };
         service.refreshWorkflow();
-        stateService.refreshing.subscribe(refreshing => {
+        stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         workflowService.workflow$.subscribe(workflow => {

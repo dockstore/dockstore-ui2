@@ -1,3 +1,19 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { validationPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { StateService } from './../../shared/state.service';
@@ -16,9 +32,11 @@ export class InfoTabComponent implements OnInit {
   @Input() defaultVersion;
   public validationPatterns = validationPatterns;
   workflow: Workflow;
+  public WorkflowType = Workflow;
   workflowPathEditing: boolean;
   descriptorTypeEditing: boolean;
   isPublic: boolean;
+  public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
   private infoTabService: InfoTabService) { }
 
@@ -27,6 +45,7 @@ export class InfoTabComponent implements OnInit {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   restubWorkflow() {

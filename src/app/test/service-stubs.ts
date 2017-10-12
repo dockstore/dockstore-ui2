@@ -1,3 +1,19 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
 import { Dockstore } from './../shared/dockstore.model';
@@ -32,6 +48,9 @@ export class ContainerStubService {
     }
     setTool(tools: DockstoreTool) {
         this.tool$.next(tools);
+    }
+    replaceTool(tools: any, newTool: any) {
+        return Observable.of(tools);
     }
 }
 
@@ -190,6 +209,7 @@ export class AuthStubService {
 }
 
 export class ErrorStubService {
+    errorObj$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
 
 }
 
@@ -254,6 +274,11 @@ export class WorkflowStubService {
 
 export class RefreshStubService {
     refreshAllWorkflows() { }
+    handleSuccess(message: string): void {
+    }
+
+    handleError(message: string, error: any): void {
+    }
 }
 
 export class RegisterWorkflowModalStubService {
@@ -271,6 +296,7 @@ export class LogoutStubService {
 }
 
 export class UserStubService {
+    userId$ = Observable.of(5);
     user$ = Observable.of({});
 }
 
@@ -375,7 +401,7 @@ export class WorkflowsStubService {
 
     manualRegister(workflowRegistry: string, workflowPath: string, defaultWorkflowPath: string, workflowName: string,
         descriptorType: string, extraHttpRequestParams?: any): Observable<Workflow> {
-        return Observable.of({});
+        return Observable.of(sampleWorkflow1);
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
@@ -487,5 +513,5 @@ export class VersionModalStubService {
 
 export class StateStubService {
     publicPage$ = Observable.of(false);
-    refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 }

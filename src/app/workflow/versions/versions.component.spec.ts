@@ -1,9 +1,29 @@
+import { RefreshService } from '../../shared/refresh.service';
+import { ErrorService } from './../../shared/error.service';
+import { StateService } from './../../shared/state.service';
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { updatedWorkflow } from './../../test/mocked-objects';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DateService } from './../../shared/date.service';
-import { DateStubService, DockstoreStubService, WorkflowStubService, WorkflowsStubService } from './../../test/service-stubs';
+import { DateStubService, ErrorStubService, DockstoreStubService, WorkflowStubService, WorkflowsStubService,
+  StateStubService, RefreshStubService } from './../../test/service-stubs';
 import { DockstoreService } from './../../shared/dockstore.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -21,7 +41,10 @@ describe('VersionsWorkflowComponent', () => {
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
         { provide: WorkflowService, useClass: WorkflowStubService},
-        { provide: WorkflowsService, useClass: WorkflowsStubService}
+        { provide: WorkflowsService, useClass: WorkflowsStubService},
+        StateService,
+        { provide: ErrorService, useClass: ErrorStubService },
+        { provide: RefreshService, useClass: RefreshStubService}
       ]
     })
     .compileComponents();

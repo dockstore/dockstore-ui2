@@ -1,13 +1,30 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
 <app-header>
   <img src="../assets/images/dockstore/dockstore-tools-blue.png">
   My Tools
   <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()">
+    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()" [disabled]="refreshMessage !== null">
       Refresh All Tools
     </button>
   </div>
 </app-header>
 <div class="container padding-top">
+  <app-alert></app-alert>
   <!--Msg/Warning Page, this should be a Component-->
   <div class="row" *ngIf="nsContainers?.length == 0">
     <div class="col-md-12">
@@ -51,6 +68,8 @@
                     </div>
               </div>
           </div>
+          <hr class="accordion-hr">
+          <app-refresh-tool-organization class="pull-right" [organization]="nsObj.namespace"></app-refresh-tool-organization>
             <button type="button"
                     class="btn btn-primary btn-xs pull-right add-container-ns"
                     (click)="setModalGitPathAndImgPath(nsObj?.namespace); showRegisterToolModal()">
@@ -59,7 +78,7 @@
         </accordion-group>
       </accordion>
       <button (click)="showRegisterToolModal()" id="register_tool_button" type="button"
-              class="btn btn-primary btn-sm pull-right">
+              class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
               Add Tool
       </button>
 

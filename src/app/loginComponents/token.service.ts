@@ -29,8 +29,7 @@ export class TokenService {
         this.updateTokens();
       }
     });
-    this.configuration.accessToken = this.authService.getToken();
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.tokens$.subscribe(tokens => this.tokens = tokens);
   }
 
@@ -42,7 +41,7 @@ export class TokenService {
     this.usersService.getUserTokens(this.user.id).subscribe(token => this.setTokens(token));
   }
 
-  registerToken(token: string, provider: string) {
+  registerToken(token: string, provider: string): Observable<Token> {
     switch (provider) {
       case 'quay.io':
         return this.tokensService.addQuayToken(token);

@@ -1,3 +1,20 @@
+import { RefreshService } from './../../shared/refresh.service';
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { ContainerService } from './../../shared/container.service';
 import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
@@ -12,7 +29,7 @@ export class InfoTabService {
     private tool;
     private tools;
     constructor(private containersService: ContainersService, private stateService: StateService,
-        private containerService: ContainerService) {
+        private containerService: ContainerService, private refreshService: RefreshService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
@@ -29,13 +46,14 @@ export class InfoTabService {
     }
 
     updateAndRefresh(tool: any) {
+        const message = 'Tool Info';
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
-            this.stateService.setRefreshing(true);
+            this.stateService.setRefreshMessage('Updating ' + message + '...');
             this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
                 this.containerService.replaceTool(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
-                this.stateService.setRefreshing(false);
-            });
+                this.refreshService.handleSuccess(message);
+            }, error => this.refreshService.handleError(message, error));
         });
     }
 }

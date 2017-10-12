@@ -1,3 +1,21 @@
+import { ToasterModule } from './shared/toaster/toaster.module';
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+import { RefreshOrganizationComponent } from './shared/refresh-organization/refresh-organization.component';
 import { ContainerService } from './shared/container.service';
 import { WorkflowService } from './shared/workflow.service';
 import { Dockstore } from './shared/dockstore.model';
@@ -5,10 +23,10 @@ import { Configuration } from './shared/swagger/configuration';
 import { ApiModule } from './shared/swagger/api.module';
 import { StateService } from './shared/state.service';
 /* Angular Modules */
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 /* Bootstrap */
@@ -93,7 +111,7 @@ import { SearchModule } from './search/search.module';
     SetupCompleteComponent
 ],
   imports: [
-    BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     DataTablesModule.forRoot(),
@@ -107,6 +125,7 @@ import { SearchModule } from './search/search.module';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
+    ToasterModule,
     FlexLayoutModule,
     StarringModule,
     routing,
@@ -145,7 +164,6 @@ export class AppModule {
 }
 
 export const apiConfig = new Configuration({
-  accessToken: '',
   apiKeys: {},
   basePath: Dockstore.API_URI
 });

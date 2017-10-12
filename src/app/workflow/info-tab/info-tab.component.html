@@ -1,3 +1,19 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
 <ul class="list-unstyled container-info" *ngIf="workflow">
   <li *ngIf="workflow?.path">
     <strong tooltip="Complete path of workflow, used as a unique identifier">
@@ -29,7 +45,7 @@
         <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
       </div>
-      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || refreshMessage !== null" class="btn btn-link push-right" style="padding: 3px 12px!important;"
         (click)="toggleEditWorkflowPath()">
         <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
         {{ workflowPathEditing ? 'Save' : 'Edit' }}
@@ -38,7 +54,7 @@
   </li>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
-    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== 'STUB' && !workflow?.is_published && !refreshing" (click)="restubWorkflow()">
+    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && !workflow?.is_published" (click)="restubWorkflow()" [disabled]="refreshMessage !== null">
       <span class="glyphicon glyphicon-remove"></span> Restub
     </button>
   </li>

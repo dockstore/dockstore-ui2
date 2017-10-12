@@ -1,3 +1,20 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+import { StateService } from './../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
@@ -24,16 +41,16 @@ export class MyToolsComponent implements OnInit {
   tools: any;
   user: any;
   tool: any;
+  public refreshMessage: string;
   private registerTool: Tool;
   constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
-    private userService: UserService, private authService: AuthService,
+    private userService: UserService, private authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
     private refreshService: RefreshService,
     private registerToolService: RegisterToolService) { }
   ngOnInit() {
-    this.configuration.accessToken = this.authService.getToken();
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.configuration.accessToken;
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {
       this.tool = selectedTool;
@@ -65,6 +82,7 @@ export class MyToolsComponent implements OnInit {
         this.selectContainer(null);
       }
     });
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
   setIsFirstOpen() {

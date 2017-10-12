@@ -1,26 +1,43 @@
-import { RegisterToolService } from './../container/register-tool/register-tool.service';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 
-/* Bootstrap */
+import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-/* Inner Module, Component, Routing, and Service */
+import {
+    RefreshToolOrganizationComponent,
+} from '../container/refresh-tool-organization/refresh-tool-organization.component';
 import { ContainerModule } from '../shared/modules/container.module';
-import { ContainerService } from '../shared/container.service';
 import { HeaderModule } from '../shared/modules/header.module';
+import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
+import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
-import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 
 @NgModule({
   declarations: [
     MyToolsComponent,
-    RegisterToolComponent
+    RegisterToolComponent,
+    RefreshToolOrganizationComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +47,7 @@ import { RegisterToolComponent } from './../container/register-tool/register-too
     mytoolsRouting,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
+    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot()
   ],

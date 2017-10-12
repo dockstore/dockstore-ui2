@@ -1,3 +1,20 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+import { StateService } from '../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 
@@ -24,16 +41,16 @@ export class MyWorkflowsComponent implements OnInit {
   workflow: any;
   user: any;
   workflows: any;
+  public refreshMessage: string;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
     private usersService: UsersService, private userService: UserService,
     private workflowService: WorkflowService, private authService: AuthService,
-    private refreshService: RefreshService,
+    private refreshService: RefreshService, private stateService: StateService,
     private registerWorkflowModalService: RegisterWorkflowModalService) {
-
   }
 
   ngOnInit() {
-    this.configuration.accessToken = this.authService.getToken();
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
@@ -65,6 +82,7 @@ export class MyWorkflowsComponent implements OnInit {
         this.selectWorkflow(null);
       }
     });
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
   setIsFirstOpen() {
     if (this.orgWorkflows && this.workflow) {

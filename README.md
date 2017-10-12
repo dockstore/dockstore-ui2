@@ -47,7 +47,7 @@ sudo npm install -g bower
 bower -v
 1.8.0
 sudo npm install -g @angular/cli@1.3.1
-bower update
+bower install
 ```
 
 #### NPM
@@ -59,7 +59,7 @@ cd dockstore-ui2
 git checkout develop
 git pull
 
-sudo npm install
+npm install
 ```
 
 Check to make sure Angular CLI has been properly set up
@@ -110,6 +110,12 @@ Run `npm run-script prebuild` before running or building the project. This comma
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Run `ng serve --host 0.0.0.0` in order to serve your site to other computers on the same network. 
+
+
+## Updating dependencies
+
+Run `npm shrinkwrap`. Note that due to a problem with angular-tag-cloud, you will need to manually edit its dependencies in the file node\_modules/angular-tag-cloud-module/package.json . 
+Change its peer dependency to 4.3.6.
 
 ## Code scaffolding
 
