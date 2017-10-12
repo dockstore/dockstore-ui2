@@ -119,6 +119,11 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private Location: Location) {
     this.location = Location;
+    // Initialize mappings
+    this.bucketStubs = this.searchService.initializeBucketStubs();
+    this.friendlyNames = this.searchService.initializeFriendlyNames();
+    this.entryOrder = this.searchService.initializeEntryOrder();
+    this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
   }
 
   getKeys(map: Map<any, any>): Array<string> {
@@ -126,11 +131,6 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Initialize mappings
-    this.bucketStubs = this.searchService.initializeBucketStubs();
-    this.friendlyNames = this.searchService.initializeFriendlyNames();
-    this.entryOrder = this.searchService.initializeEntryOrder();
-    this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
     this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -154,7 +154,6 @@ export class SearchComponent implements OnInit {
       toAdvanceSearch: false
     };
     this.parseParams();
-    this.updateQuery();
 
     this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
@@ -478,7 +477,6 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject.toAdvanceSearch = false;
       this.searchTerm = true;
       this._timeout = true;
-      console.log('asdf');
       window.setTimeout(() => {
         if ((!this.values || 0 === this.values.length)) {
           this.searchTerm = false;
@@ -595,5 +593,13 @@ export class SearchComponent implements OnInit {
 
       counter++;
     }
+  }
+
+  getFilterKeys() {
+    return Array.from(this.filters.keys());
+  }
+
+  getBucketKeys(key: string) {
+    return Array.from(this.orderedBuckets.get(key).SelectedItems.keys());
   }
 }

@@ -290,6 +290,13 @@ export class SearchService {
       return count > 0;
   }
 
+  /**
+  * Returns true if any search filters have been applied, false otherwise
+  */
+  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: any) {
+    return this.hasSearchText(advancedSearchObject, searchTerm, hits) || this.hasFilters(filters);
+  }
+
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
   }
