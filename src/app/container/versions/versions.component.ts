@@ -61,9 +61,9 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
-    const message = 'Default Tool Version';
+    const message = 'Updating default tool version';
     this.tool.defaultVersion = newDefaultVersion;
-    this.stateService.setRefreshMessage('Refreshing ' + message);
+    this.stateService.setRefreshMessage(message + '...');
     this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
       this.containerService.setTool(response);
       this.refreshService.handleSuccess(message);

@@ -57,9 +57,9 @@ export class VersionsWorkflowComponent extends Versions {
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
-    const message = 'Default Workflow Version';
+    const message = 'Updating default workflow version';
     this.workflow.defaultVersion = newDefaultVersion;
-    this.stateService.setRefreshMessage('Updating default version...');
+    this.stateService.setRefreshMessage(message + '...');
     this.workflowsService.updateWorkflow(this.workflowId, this.workflow).subscribe(
       response => {
         this.workflowService.setWorkflow(response);
