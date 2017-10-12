@@ -71,18 +71,16 @@ describe('ContainerService', () => {
     }));
 
     it('should get build mode', inject([ContainerService], (service: ContainerService) => {
-        expect(service.getBuildMode('AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS')).toEqual('Fully-Automated');
-        expect(service.getBuildMode('AUTO_DETECT_QUAY_TAGS_WITH_MIXED')).toEqual('Partially-Automated');
-        expect(service.getBuildMode('MANUAL_IMAGE_PATH')).toEqual('Manual');
-        expect(service.getBuildMode('mmmrrrggglll')).toEqual('Unknown');
+        expect(service.getBuildMode(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS)).toEqual('Fully-Automated');
+        expect(service.getBuildMode(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED)).toEqual('Partially-Automated');
+        expect(service.getBuildMode(DockstoreTool.ModeEnum.MANUALIMAGEPATH)).toEqual('Manual');
     }));
 
     it('should get build mode tooltip', inject([ContainerService], (service: ContainerService) => {
-        expect(service.getBuildModeTooltip('AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS'))
+        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS))
             .toEqual('Fully-Automated: All versions are automated builds');
-        expect(service.getBuildModeTooltip('AUTO_DETECT_QUAY_TAGS_WITH_MIXED'))
+        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED))
             .toEqual('Partially-Automated: At least one version is an automated build');
-        expect(service.getBuildModeTooltip('MANUAL_IMAGE_PATH')).toEqual('Manual: No versions are automated builds');
-        expect(service.getBuildModeTooltip('mmmrrrggglll')).toEqual('Unknown: Build information not known');
+        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.MANUALIMAGEPATH)).toEqual('Manual: No versions are automated builds');
     }));
 });
