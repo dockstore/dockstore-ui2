@@ -60,10 +60,10 @@ export class VersionModalService {
      * 3. Modify test parameter files
      * 4. Refresh workflow again
      * TODO: Skip 2 and 3 if there's no test parameter files to modify
-     * 
-     * @param {WorkflowVersion} workflowVersion 
-     * @param {any} originalTestParameterFilePaths 
-     * @param {any} newTestParameterFiles 
+     *
+     * @param {WorkflowVersion} workflowVersion
+     * @param {any} originalTestParameterFilePaths
+     * @param {any} newTestParameterFiles
      * @memberof VersionModalService
      */
     saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles) {
@@ -79,13 +79,14 @@ export class VersionModalService {
                 this.workflowsService.refresh(this.workflowId).subscribe(workflow => {
                     this.refreshService.handleSuccess(message2);
                     this.stateService.setRefreshMessage(message3 + '...');
-                    this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(success => {
-                        this.refreshService.handleSuccess(message3);
-                        this.refreshService.refreshWorkflow();
-                    }, error => {
-                        this.refreshService.handleError(message3, error);
-                        this.refreshService.refreshWorkflow();
-                    });
+                    this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
+                        success => {
+                            this.refreshService.handleSuccess(message3);
+                            this.refreshService.refreshWorkflow();
+                        }, error => {
+                            this.refreshService.handleError(message3, error);
+                            this.refreshService.refreshWorkflow();
+                        });
                 },
                     error => {
                         this.refreshService.handleError(message2, error);
@@ -98,12 +99,12 @@ export class VersionModalService {
 
 
     /**
-     * This modifies the test parameter file paths of a workflow version 
-     * 
-     * @param {WorkflowVersion} workflowVersion 
-     * @param {any} originalTestParameterFilePaths 
-     * @param {any} newTestParameterFiles 
-     * @returns {Observable<any>} 
+     * This modifies the test parameter file paths of a workflow version
+     *
+     * @param {WorkflowVersion} workflowVersion
+     * @param {any} originalTestParameterFilePaths
+     * @param {any} newTestParameterFiles
+     * @returns {Observable<any>}
      * @memberof VersionModalService
      */
     modifyTestParameterFiles(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles): Observable<any> {
