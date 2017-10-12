@@ -684,3 +684,13 @@ div.contact-button {
 .footer-list > li {
   margin:0px !important;
 }
+
+@media (max-width:992px) {
+  .home-list {
+    padding:0px;
+  }
+
+  .twitter-container {
+    margin-top:15px;
+  }
+}

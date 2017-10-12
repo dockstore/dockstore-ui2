@@ -77,7 +77,7 @@
 </div>
 <div class="container mainScreen" #mainScreen>
   <div class="row">
-    <div class="col-md-9 col-sm-12">
+    <div class="col-md-9 col-sm-12 home-list">
         <tabset class="homeComponent" type="tabs">
           <tab id="toolTab" [customClass]="browseToolsTab">
             <ng-template tabHeading>
@@ -97,14 +97,14 @@
           </tab>
         </tabset>
     </div>
-    <div class="col-md-3 col-sm-12 twitter">
-        <a class="twitter-timeline"
-           data-theme="light"
-           data-height="800"
-           href="https://twitter.com/DockstoreOrg">
+    <div class="col-md-3 col-sm-12 twitter twitter-container">
+      <a class="twitter-timeline"
+         data-theme="light"
+         data-height="800"
+         href="https://twitter.com/DockstoreOrg">
           Tweets by DockstoreOrg
         </a>
-        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
   </div>
 </div>
