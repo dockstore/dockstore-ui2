@@ -33,21 +33,17 @@ import { Versions } from '../../shared/versions';
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
-  verifiedLink: string;
-  publicPage: boolean;
-  defaultVersion: string;
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService, private refreshService: RefreshService,
-              private stateService: StateService,
+              protected stateService: StateService,
               private containerService: ContainerService) {
-    super(dockstoreService, dateService);
-    this.verifiedLink = dateService.getVerifiedLink();
+    super(dockstoreService, dateService, stateService);
   }
 
   ngOnInit() {
-    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
+    this.publicPageSubscription();
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
       if (tool) {

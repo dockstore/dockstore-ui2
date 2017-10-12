@@ -1,3 +1,4 @@
+import { StateService } from './state.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -18,33 +19,27 @@ import {Input, OnInit} from '@angular/core';
 
 import { DateService } from './date.service';
 import { DockstoreService } from '../shared/dockstore.service';
-export abstract class Versions implements OnInit {
+export abstract class Versions {
 
   @Input() versions: Array<any>;
   sortColumn: string;
   sortReverse: boolean;
-
+  publicPage: boolean;
+  defaultVersion: string;
+  verifiedLink: string;
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
 
   constructor(protected dockstoreService: DockstoreService,
-              private dateService: DateService) {
+              private dateService: DateService, protected stateService: StateService) {
     this.sortColumn = 'name';
     this.sortReverse = false;
   }
 
-  ngOnInit() {
-    this.dtOptions = {
-      bFilter: false,
-      bPaginate: false,
-      columnDefs: [
-        {
-          orderable: false,
-          targets: this.setNoOrderCols()
-        }
-      ]
-    };
+  publicPageSubscription() {
+    this.verifiedLink = this.dateService.getVerifiedLink();
+    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
   }
 
   clickSortColumn(columnName) {
