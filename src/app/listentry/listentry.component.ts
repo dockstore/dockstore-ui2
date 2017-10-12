@@ -29,7 +29,7 @@ import { DockstoreService } from '../shared/dockstore.service';
   templateUrl: './listentry.component.html',
   styleUrls: ['./listentry.component.css']
 })
-export class ListentryComponent implements OnInit {
+export class ListentryComponent implements OnInit, AfterViewInit {
   @Input() entryType: string;
   @Output() userUpdated = new EventEmitter();
   hits: any;
@@ -61,6 +61,7 @@ export class ListentryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    // Only update the result tables when datatable has loaded
     this.updateResultsTable = true;
   }
 
