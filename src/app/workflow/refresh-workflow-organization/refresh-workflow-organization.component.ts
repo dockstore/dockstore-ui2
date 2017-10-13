@@ -14,13 +14,15 @@
  *    limitations under the License.
  */
 
-import { Workflow } from './../../shared/swagger/model/workflow';
+import { Component } from '@angular/core';
+
+import { UserService } from '../../loginComponents/user.service';
+import { RefreshService } from '../../shared/refresh.service';
 import { RefreshOrganizationComponent } from './../../shared/refresh-organization/refresh-organization.component';
 import { StateService } from './../../shared/state.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { UserService } from '../../loginComponents/user.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Component({
   selector: 'app-refresh-workflow-organization',
@@ -31,16 +33,17 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
 
   constructor(private usersService: UsersService, userService: UserService, private workflowService: WorkflowService,
-    public stateService: StateService) {
+    public stateService: StateService, private refreshService: RefreshService) {
       super(userService, stateService);
   }
 
   refreshOrganization(): void {
-    this.stateService.setRefreshMessage('Refreshing organization...');
+    const message = 'Refreshing ' + this.organization;
+    this.stateService.setRefreshMessage(message + '...');
     this.usersService.refreshWorkflowsByOrganization(this.userId, this.organization).subscribe(
       (success: Workflow[]) => {
         this.workflowService.setWorkflows(success);
-        this.stateService.setRefreshMessage(null);
-      }, error => this.stateService.setRefreshMessage(null));
+        this.refreshService.handleSuccess(message);
+      }, error => this.refreshService.handleError(message, error));
   }
 }
