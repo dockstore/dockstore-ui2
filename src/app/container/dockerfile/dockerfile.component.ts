@@ -56,7 +56,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
     }
   }
   ngAfterViewChecked() {
-    if (this.contentHighlighted && !this.nullContent) {
+    if (this.contentHighlighted && !this.nullContent && this.elementRef.nativeElement.querySelector('.highlight')) {
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
