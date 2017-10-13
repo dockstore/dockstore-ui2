@@ -152,8 +152,6 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
         }
       }
     });
-    } else {
-      console.log('DAG is not truthy');
     }
   }
 
