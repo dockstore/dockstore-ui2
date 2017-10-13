@@ -65,11 +65,8 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
         style: this.style,
         elements: this.dagResult
       });
-    } else {
-      console.log('DAG is not truthy');
-    }
 
-    self.cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+         self.cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
       const node = this;
       const name = this.data('name');
       const tool = this.data('tool');
@@ -155,6 +152,9 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
         }
       }
     });
+    } else {
+      console.log('DAG is not truthy');
+    }
   }
 
   constructor(private dagService: DagService, private workflowService: WorkflowService) {
