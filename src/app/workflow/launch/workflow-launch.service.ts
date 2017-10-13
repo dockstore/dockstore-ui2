@@ -18,12 +18,7 @@ import { LaunchService } from '../../shared/launch.service';
 import { Dockstore } from '../../shared/dockstore.model';
 export class WorkflowLaunchService extends LaunchService {
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
-    let descriptor = '';
-
-    if (currentDescriptor === 'wdl') {
-      descriptor = WorkflowLaunchService.descriptorWdl;
-    }
-    return '$ dockstore workflow convert entry2json --entry' + descriptor + ` ${ path }:${ versionName } > Dockstore.json
+    return `$ dockstore workflow convert entry2json --entry ${ path }:${ versionName } > Dockstore.json
             \n$ vim Dockstore.json`;
   }
 
