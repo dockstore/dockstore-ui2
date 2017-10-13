@@ -40,7 +40,7 @@
   <li *ngIf="workflow?.workflow_path">
     <form #editWorkflowPathForm="ngForm" class="form-inline">
       <div class="form-group">
-        <strong tooltip="Path in Git repository to main descriptor file">Workflow Path: </strong>
+        <strong [tooltip]="tooltip.workflowPath">Workflow Path: </strong>
         <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
         <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />

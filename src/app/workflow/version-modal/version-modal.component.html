@@ -52,7 +52,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input type="text" class="form-control" name="workflow_path" [(ngModel)]="version.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath"
-                required tooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" [readonly]="isPublic"/>
+                required [tooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" [readonly]="isPublic"/>
               <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
             </div>
           </div>

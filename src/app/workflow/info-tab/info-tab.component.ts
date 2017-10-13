@@ -1,3 +1,4 @@
+import { Tooltip } from '../../shared/tooltip';
 /*
  *    Copyright 2017 OICR
  *
@@ -33,6 +34,7 @@ export class InfoTabComponent implements OnInit {
   public validationPatterns = validationPatterns;
   workflow: Workflow;
   public WorkflowType = Workflow;
+  public tooltip = Tooltip;
   workflowPathEditing: boolean;
   descriptorTypeEditing: boolean;
   isPublic: boolean;
