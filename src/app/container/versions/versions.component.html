@@ -103,5 +103,5 @@
   <app-version-modal></app-version-modal>
 </div>
 <div class="row pull-right">
-  <app-add-tag *ngIf="!publicPage"></app-add-tag>
+  <app-add-tag *ngIf="!publicPage && isManualMode()"></app-add-tag>
 </div>

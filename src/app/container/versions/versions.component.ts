@@ -1,5 +1,3 @@
-import { RefreshService } from '../../shared/refresh.service';
-import { NotificationsService } from 'angular2-notifications';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,19 +14,21 @@ import { NotificationsService } from 'angular2-notifications';
  *    limitations under the License.
  */
 
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { ContainerService } from './../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { StateService } from './../../shared/state.service';
+import { RefreshService } from '../../shared/refresh.service';
 import { Versions } from '../../shared/versions';
+import { ContainerService } from './../../shared/container.service';
+import { StateService } from './../../shared/state.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
-  styleUrls: [ './versions.component.css' ]
+  styleUrls: ['./versions.component.css']
 })
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
@@ -37,8 +37,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService, private refreshService: RefreshService,
-              protected stateService: StateService,
-              private containerService: ContainerService) {
+    protected stateService: StateService,
+    private containerService: ContainerService) {
     super(dockstoreService, dateService, stateService);
   }
 
@@ -52,8 +52,16 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     });
   }
 
+  isManualMode() {
+    if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   setNoOrderCols(): Array<number> {
-    return [ 5, 6 ];
+    return [5, 6];
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
@@ -64,7 +72,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       this.containerService.setTool(response);
       this.refreshService.handleSuccess(message);
     }, error => this.refreshService.handleError(message, error)
-  );
+    );
   }
 
   getVerifiedSource(name: string) {
