@@ -56,6 +56,7 @@
               <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
             </div>
           </div>
+          <div *ngIf="!isPublic">
           <div class="form-group form-group-sm" style="clear:both;">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Test Parameter File(s):
@@ -85,6 +86,19 @@
               </div>
             </div>
           </div>
+        </div>
+        <div *ngIf="isPublic">
+          <div class="form-group form-group-sm" style="clear:both;">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              Test Parameter File(s):
+            </label>
+            <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 my-1" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
+              <div class="input-group">
+                <input type="text" class="form-control" name="testParameterFilePaths[{{i}}]" [(ngModel)]="testParameterFilePaths[i]" [disabled]="true" title="Relative path to a WDL Test Parameter File in the Git repository."/>
+              </div>
+            </div>
+          </div>
+        </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
           </div>
           <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">
