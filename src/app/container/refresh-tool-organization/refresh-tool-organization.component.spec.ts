@@ -1,3 +1,4 @@
+import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -21,7 +22,7 @@ import { StateStubService, UserStubService } from '../../test/service-stubs';
 import { UserService } from './../../loginComponents/user.service';
 import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
-import { ContainerStubService, UsersStubService } from './../../test/service-stubs';
+import { ContainerStubService, UsersStubService, RefreshStubService } from './../../test/service-stubs';
 import { RefreshToolOrganizationComponent } from './refresh-tool-organization.component';
 
 /* tslint:disable:no-unused-variable */
@@ -36,7 +37,8 @@ describe('RefreshToolOrganizationComponent', () => {
         { provide: UserService, useClass: UserStubService },
         { provide: StateService, useClass: StateStubService },
         { provide: UsersService, useClass: UsersStubService },
-        { provide: ContainerService, useClass: ContainerStubService }]
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: RefreshService, useClass: RefreshStubService }]
     })
       .compileComponents();
   }));
