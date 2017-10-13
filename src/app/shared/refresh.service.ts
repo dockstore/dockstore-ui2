@@ -48,8 +48,8 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshTool(): void {
-        const message = 'Tool';
-        this.stateService.setRefreshMessage('Refreshing ' + this.tool.path + ' ...');
+        const message = 'Refreshing ' + this.tool.path;
+        this.stateService.setRefreshMessage(message + ' ...');
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
             this.containerService.replaceTool(this.tools, response);
             this.containerService.setTool(response);
@@ -59,20 +59,20 @@ export class RefreshService {
     }
 
     /**
-     * This handles what happens after refresh API call returns successfully
-     *
+     * This handles what happens after an API call returns successfully
+     * TODO: Move function to another service
      * @param {string} message The custom success message that should be displayed
      * @memberof RefreshService
      */
     handleSuccess(message: string): void {
         this.stateService.setRefreshMessage(null);
-        this.notificationsService.success('Refresh ' + message + ' Succeeded');
+        this.notificationsService.success(message + ' succeeded');
     }
 
 
     /**
-     * This handles what happens after refresh API call returns an error
-     *
+     * This handles what happens after an API call returns an error
+     * TODO: Move function to another service
      * @param {string} message The custom error message that should be displayed
      * @param {*} error The error object returned when refresh failed
      * @memberof RefreshService
@@ -80,7 +80,7 @@ export class RefreshService {
     handleError(message: string, error: any): void {
         this.errorService.setErrorAlert(error);
         this.stateService.setRefreshMessage(null);
-        this.notificationsService.error('Refresh ' + message + ' Failed');
+        this.notificationsService.error(message + ' failed');
     }
 
     /**
@@ -88,8 +88,8 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshWorkflow(): void {
-        const message = 'Workflow';
-        this.stateService.setRefreshMessage('Refreshing ' + this.workflow.path + ' ...');
+        const message = 'Refreshing ' +  this.workflow.path;
+        this.stateService.setRefreshMessage(message + ' ...');
         this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, response);
             this.workflowService.setWorkflow(response);
@@ -104,8 +104,8 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllTools(userId: number): void {
-        const message = 'All Tool';
-        this.stateService.setRefreshMessage('Refreshing all tools...');
+        const message = 'Refreshing all tools';
+        this.stateService.setRefreshMessage(message + '...');
         this.usersService.refresh(userId).subscribe(
             response => {
                 this.containerService.setTools(response);
@@ -120,8 +120,8 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllWorkflows(userId: number): void {
-        const message = 'All Workflow';
-        this.stateService.setRefreshMessage('Refreshing all workflows...');
+        const message = 'Refreshing all workflows';
+        this.stateService.setRefreshMessage(message + '...');
         this.usersService.refreshWorkflows(userId).subscribe(
             response => {
                 this.workflowService.setWorkflows(response);

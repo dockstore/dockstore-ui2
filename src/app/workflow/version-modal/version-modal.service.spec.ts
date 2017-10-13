@@ -1,3 +1,5 @@
+import { SimpleNotificationsModule } from 'angular2-notifications/dist';
+import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -19,18 +21,19 @@ import { VersionModalService } from './version-modal.service';
 import { StateService } from './../../shared/state.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
-import { StateStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
+import { StateStubService, WorkflowsStubService, WorkflowStubService, RefreshStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { TestBed, async, inject } from '@angular/core/testing';
 
-describe('Service: paramFiles.service.ts', () => {
+describe('Service: version-modal.service.ts', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [VersionModalService,
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
-                StateService
-            ]
+                StateService,
+                { provide: RefreshService, useClass: RefreshStubService},
+            ], imports: [SimpleNotificationsModule]
         });
     });
     const expectedError: any = {
@@ -65,10 +68,11 @@ describe('Service: paramFiles.service.ts', () => {
         service.setTestParameterFiles([]);
         service.testParameterFiles.subscribe(files => expect(files).toEqual([]));
     }));
-    it('should bel able to save version and clear refreshing state', inject([VersionModalService, StateService],
+    it('should be able to save version and clear refreshing state', inject([VersionModalService, StateService],
         (service: VersionModalService, stateService: StateService) => {
         service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c']);
-        stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toBeFalsy());
+        // Refresh service takes modifying the refreshMessage from the third message
+        stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));
     }));
 
 });

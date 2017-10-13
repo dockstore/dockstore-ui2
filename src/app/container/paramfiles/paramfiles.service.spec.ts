@@ -1,3 +1,4 @@
+import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -17,7 +18,7 @@
 import { Tag } from './../../shared/swagger/model/tag';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { WorkflowsStubService, ContainersStubService } from './../../test/service-stubs';
+import { WorkflowsStubService, ContainersStubService, RefreshStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { ParamfilesService } from './paramfiles.service';
 import { TestBed, async, inject } from '@angular/core/testing';
@@ -26,9 +27,10 @@ describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ParamfilesService,
-    {provide: WorkflowsService, useClass: WorkflowsStubService},
-    {provide: ContainersService, useClass: ContainersStubService}
-]
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: ContainersService, useClass: ContainersStubService },
+        { provide: RefreshService, useClass: RefreshStubService }
+      ]
     });
   });
 
@@ -160,15 +162,15 @@ describe('Service: paramFiles.service.ts', () => {
   }));
   it('should get workflow test parameter files from swagger workflowsService', inject([ParamfilesService], (service: ParamfilesService) => {
     service.getFiles(1, 'workflows', 'develop', 'CWL').subscribe(files => {
-        expect(files).toEqual([]);
+      expect(files).toEqual([]);
     });
   }));
   it('should get tool test parameter files from swagger containersService', inject([ParamfilesService], (service: ParamfilesService) => {
     service.getFiles(1, 'containers', 'develop', 'CWL').subscribe(files => {
-        expect(files).toEqual([]);
+      expect(files).toEqual([]);
     });
   }));
   it('should get descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
-      expect(service.getVersions(versions)).toEqual([tag2, tag3]);
-}));
+    expect(service.getVersions(versions)).toEqual([tag2, tag3]);
+  }));
 });

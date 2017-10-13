@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ToasterComponent implements OnInit {
 
   constructor() { }
-  public options: any = {timeOut: 1000, showProgressBar: false};
+  public options: any = {timeOut: 3000, showProgressBar: false};
 
   ngOnInit() {
   }

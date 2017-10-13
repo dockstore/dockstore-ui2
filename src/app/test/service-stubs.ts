@@ -274,6 +274,8 @@ export class WorkflowStubService {
 
 export class RefreshStubService {
     refreshAllWorkflows() { }
+    refreshWorkflow() {
+    }
     handleSuccess(message: string): void {
     }
 

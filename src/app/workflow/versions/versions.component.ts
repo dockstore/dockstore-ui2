@@ -19,7 +19,7 @@ import { StateService } from './../../shared/state.service';
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 
@@ -32,34 +32,45 @@ import { DockstoreService } from '../../shared/dockstore.service';
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.css']
 })
-export class VersionsWorkflowComponent extends Versions {
+export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
-  verifiedLink: string;
-  defaultVersion: string;
   workflow: any;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService, dateService: DateService, private stateService: StateService,
+  constructor(dockstoreService: DockstoreService, dateService: DateService, protected stateService: StateService,
     private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
     private refreshService: RefreshService) {
-    super(dockstoreService, dateService);
-    this.verifiedLink = dateService.getVerifiedLink();
+    super(dockstoreService, dateService, stateService);
+  }
+
+  ngOnInit() {
+    this.publicPageSubscription();
     this.workflowService.workflow$.subscribe(workflow => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
       }
+      this.dtOptions = {
+        bFilter: false,
+        bPaginate: false,
+        columnDefs: [
+          {
+            orderable: false,
+            targets: this.setNoOrderCols()
+          }
+        ]
+      };
     });
   }
 
   updateDefaultVersion(newDefaultVersion: string) {
-    const message = 'Default Workflow Version';
+    const message = 'Updating default workflow version';
     this.workflow.defaultVersion = newDefaultVersion;
-    this.stateService.setRefreshMessage('Updating default version...');
+    this.stateService.setRefreshMessage(message + '...');
     this.workflowsService.updateWorkflow(this.workflowId, this.workflow).subscribe(
       response => {
         this.workflowService.setWorkflow(response);
