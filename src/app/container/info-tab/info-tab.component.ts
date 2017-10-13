@@ -1,3 +1,4 @@
+import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 /*
  *    Copyright 2017 OICR
  *
@@ -29,7 +30,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
-  tool: any;
+  tool: ExtendedDockstoreTool;
   public validationPatterns = validationPatterns;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;

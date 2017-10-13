@@ -1,3 +1,4 @@
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 /*
  *    Copyright 2017 OICR
  *
@@ -49,7 +50,7 @@ export class ContainerComponent extends Entry {
   containerEditData: any;
   thisisValid = true;
   public missingWarning: boolean;
-  public tool;
+  public tool: ExtendedDockstoreTool;
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
@@ -85,16 +86,16 @@ export class ContainerComponent extends Entry {
   }
 
   setProperties() {
-    let toolRef: any = this.tool;
+    let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
-    toolRef.agoMessage = this.dateService.getAgoMessage(toolRef.lastBuild);
-    toolRef.email = this.dockstoreService.stripMailTo(toolRef.email);
-    toolRef.lastBuildDate = this.dateService.getDateTimeMessage(toolRef.lastBuild);
-    toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(toolRef.lastUpdated);
+    toolRef.agoMessage = this.dateService.getAgoMessage(new Date(this.tool.lastBuild).getTime());
+    toolRef.email = this.dockstoreService.stripMailTo(this.tool.email);
+    toolRef.lastBuildDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
+    toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
     toolRef.verifiedLinks = this.dateService.getVerifiedLink();
@@ -126,14 +127,14 @@ export class ContainerComponent extends Entry {
     this.toolCopyBtnSubscription.unsubscribe();
   }
 
-  protected setUpTool(tool: any) {
+  protected setUpTool(tool: ExtendedDockstoreTool) {
     if (tool) {
       this.tool = tool;
       if (!tool.providerUrl) {
         this.providerService.setUpProvider(tool);
       }
       this.tool = Object.assign(tool, this.tool);
-      const toolRef: any = this.tool;
+      const toolRef: ExtendedDockstoreTool = this.tool;
       toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
       toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
       this.initTool();
