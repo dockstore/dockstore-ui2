@@ -72,6 +72,8 @@
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <hr>
+        <div id='discourse-comments'></div>
       </tab>
       <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
         <button type="sbutton" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">

@@ -22,8 +22,9 @@ import { ContainersService } from './../shared/swagger/api/containers.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Dockstore } from '../shared/dockstore.model';
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -44,7 +45,7 @@ import { TrackLoginService } from '../shared/track-login.service';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Entry {
+export class ContainerComponent extends Entry implements AfterViewInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -71,6 +72,21 @@ export class ContainerComponent extends Entry {
     super(trackLoginService, providerService, router,
       stateService, errorService);
     this._toolType = 'containers';
+
+    // Initialize discourse urls
+    (<any>window).DiscourseEmbed = {
+      discourseUrl: Dockstore.DISCOURSE_URL,
+      discourseEmbedUrl: decodeURIComponent(window.location.href)
+    };
+  }
+
+  // Embed Discourse comments into page
+  ngAfterViewInit() {
+    (function() {
+      const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+      d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+    })();
   }
 
   public getDefaultVersionName(): string {
