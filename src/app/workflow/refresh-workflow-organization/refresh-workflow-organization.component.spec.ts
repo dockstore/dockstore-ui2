@@ -1,3 +1,4 @@
+import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -20,7 +21,13 @@ import { UserService } from './../../loginComponents/user.service';
 import { StateService } from './../../shared/state.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { StateStubService, UsersStubService, UserStubService, WorkflowStubService } from './../../test/service-stubs';
+import {
+    RefreshStubService,
+    StateStubService,
+    UsersStubService,
+    UserStubService,
+    WorkflowStubService,
+} from './../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
 
 /* tslint:disable:no-unused-variable */
@@ -35,7 +42,8 @@ describe('RefreshWorkflowOrganizationComponent', () => {
         { provide: UserService, useClass: UserStubService },
         { provide: StateService, useClass: StateStubService },
         { provide: UsersService, useClass: UsersStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService }]
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: RefreshService, useClass: RefreshStubService }]
     })
     .compileComponents();
   }));

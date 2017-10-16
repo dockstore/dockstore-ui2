@@ -19,4 +19,8 @@ export class AlertComponent implements OnInit {
     this.errorService.errorObj$.subscribe(errorObj => this.errorObj = errorObj);
   }
 
+  clearError() {
+    this.errorService.setErrorAlert(null);
+  }
+
 }

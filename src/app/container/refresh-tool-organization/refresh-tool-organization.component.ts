@@ -14,14 +14,15 @@
  *    limitations under the License.
  */
 
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { ContainerService } from './../../shared/container.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { StateService } from './../../shared/state.service';
+import { RefreshService } from './../../shared/refresh.service';
+import { Component } from '@angular/core';
+
 import { UserService } from './../../loginComponents/user.service';
+import { ContainerService } from './../../shared/container.service';
 import { RefreshOrganizationComponent } from './../../shared/refresh-organization/refresh-organization.component';
-import { Component, OnInit } from '@angular/core';
+import { StateService } from './../../shared/state.service';
+import { UsersService } from './../../shared/swagger/api/users.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-refresh-tool-organization',
@@ -32,19 +33,20 @@ import { Component, OnInit } from '@angular/core';
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
 
   constructor(userService: UserService, public stateService: StateService, private usersService: UsersService,
-    private containerService: ContainerService) {
+    private containerService: ContainerService, private refreshService: RefreshService) {
     super(userService, stateService);
   }
 
   refreshOrganization(): void {
+    const message = 'Refreshing ' + this.organization;
     const splitOrganization: string[] = this.organization.split('/');
     const actualOrganization: string = splitOrganization[1];
-    this.stateService.setRefreshMessage('Refreshing ' + actualOrganization + '...');
+    this.stateService.setRefreshMessage(message + '...');
     this.usersService.refreshToolsByOrganization(this.userId, actualOrganization).subscribe(
       (success: DockstoreTool[]) => {
         this.containerService.setTools(success);
-        this.stateService.setRefreshMessage(null);
-      }, error => this.stateService.setRefreshMessage(null));
+        this.refreshService.handleSuccess(message);
+      }, error => this.refreshService.handleError(message, error));
   }
 
 }
