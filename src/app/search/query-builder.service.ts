@@ -34,6 +34,7 @@ export class QueryBuilderService {
 
     getTagCloudQuery(type: string): string {
         let body = bodybuilder().size();
+        body = this.excludeContent(body);
         body = body.query('match', '_type', type);
         body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
         const toolQuery = JSON.stringify(body, null, 1);
@@ -44,11 +45,18 @@ export class QueryBuilderService {
         bucketStubs: any, filters: any, sortModeMap: any): string {
         const count = this.getNumberOfFilters(filters);
         let sidebarBody = bodybuilder().size(query_size);
+        sidebarBody = this.excludeContent(sidebarBody);
         sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
         sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, sortModeMap);
         const builtSideBarBody = sidebarBody.build();
         const sideBarQuery = JSON.stringify(builtSideBarBody);
         return sideBarQuery;
+    }
+
+    private excludeContent(body: any) {
+      // TODO: it should be possible to exclude tags and workflowVersions too
+      // however, it currently breaks the contents of the datatables for some reason
+      return body.rawOption('_source', {'excludes': ['*.content', '*.sourceFiles', 'description']});
     }
 
     getNumberOfFilters(filters: any) {
@@ -62,6 +70,7 @@ export class QueryBuilderService {
     getResultQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
         filters: any): string {
         let tableBody = bodybuilder().size(query_size);
+        tableBody = this.excludeContent(tableBody);
         tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
         tableBody = this.appendFilter(tableBody, null, filters);
         const builtTableBody = tableBody.build();
@@ -71,6 +80,7 @@ export class QueryBuilderService {
 
     getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
         let bodyNotVerified = bodybuilder().size(query_size);
+        bodyNotVerified = this.excludeContent(bodyNotVerified);
         bodyNotVerified = this.appendQuery(bodyNotVerified, values, advancedSearchObject, searchTerm);
         const key = 'tags.verified';
         bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
