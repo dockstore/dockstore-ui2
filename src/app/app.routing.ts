@@ -1,3 +1,4 @@
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 /*
  *    Copyright 2017 OICR
  *
@@ -44,6 +45,7 @@ const APP_ROUTES: Routes = [
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
   { path: 'auth/:provider', component: AuthComponent },
   { path: 'starred', component: StarredEntriesComponent },
+  { path: 'maintenance', component: MaintenanceComponent },
   { path: '**', redirectTo: '' }
 ];
 
