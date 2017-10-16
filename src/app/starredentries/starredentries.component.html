@@ -12,10 +12,10 @@
   <div *ngIf="starredTools">
     <div class="row">
       <h3>Starred Tools</h3>
-    </div>
-    <div class="alert alert-info" role="alert" *ngIf="starredTools.length == 0">
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      You have no starred tools.
+      <div class="alert alert-info" role="alert" *ngIf="starredTools.length == 0">
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        You have no starred tools.
+      </div>
     </div>
     <div class="columns">
       <div *ngFor="let tool of starredTools">
