@@ -71,9 +71,9 @@ export abstract class DescriptorService {
             const descriptorTypes = new Array();
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
             unique.forEach(element => {
-                if (element === 'DOCKSTORE_CWL') {
+                if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
                     descriptorTypes.push('cwl');
-                } else if (element === 'DOCKSTORE_WDL') {
+                } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
                     descriptorTypes.push('wdl');
                 }
             });
