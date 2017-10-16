@@ -10,4 +10,6 @@ ORIGINAL="const jsonMime: RegExp = new RegExp('(?i)^(application/json|\[^;/ \\\t
 NEW="const jsonMime: RegExp = new RegExp('(application/json|\[^;/ \\\t\]+/\[^;/ \\\t\]+\[+\]json)\[ \\\t\]\*(;\.\*)?$', 'i');"
 for i in src/app/shared/swagger/api/*; do
   sed -i "s~$ORIGINAL~$NEW~g" $i
+  sed -i "s~relative-path~relativePath~g" $i
+  sed -i "s~version-id~versionId~g" $i
 done

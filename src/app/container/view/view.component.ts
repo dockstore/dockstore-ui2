@@ -56,7 +56,7 @@ export class ViewContainerComponent extends View implements OnInit {
   }
 
   isManualTool(): boolean {
-    return this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
+    return this.tool.mode === 'MANUAL_IMAGE_PATH';
   }
 
   ngOnInit() {

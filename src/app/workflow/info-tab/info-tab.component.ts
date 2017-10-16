@@ -32,7 +32,6 @@ export class InfoTabComponent implements OnInit {
   @Input() defaultVersion;
   public validationPatterns = validationPatterns;
   workflow: Workflow;
-  public WorkflowType = Workflow;
   workflowPathEditing: boolean;
   descriptorTypeEditing: boolean;
   isPublic: boolean;

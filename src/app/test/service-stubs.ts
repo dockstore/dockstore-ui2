@@ -409,7 +409,7 @@ export class WorkflowsStubService {
         const refreshedWorkflow: Workflow = {
             'descriptorType': 'cwl',
             'gitUrl': 'refreshedGitUrl',
-            'mode': Workflow.ModeEnum.FULL,
+            'mode': 'FULL',
             'organization': 'refreshedOrganization',
             'repository': 'refreshedRepository',
             'workflow_path': 'refreshedWorkflowPath',
@@ -498,11 +498,11 @@ export class ContainersStubService {
             default_dockerfile_path: 'refreshedDefaultDockerfilePath',
             default_wdl_path: 'refreshedDefaultWDLPath',
             gitUrl: 'refreshedGitUrl',
-            mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
+            mode: 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS',
             name: 'refreshedName',
             namespace: 'refreshedNamespace',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: 'QUAY_IO',
             toolname: 'refreshedToolname'
         };
         return Observable.of(tool);
