@@ -1,5 +1,4 @@
-
-import {DockstoreTool} from './swagger/model/dockstoreTool';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 /*
  *    Copyright 2017 OICR
  *
@@ -64,11 +63,11 @@ export class ContainerService {
 
   getBuildMode(mode: DockstoreTool.ModeEnum) {
     switch (mode) {
-      case 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS':
+      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
         return 'Fully-Automated';
-      case 'AUTO_DETECT_QUAY_TAGS_WITH_MIXED':
+      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
         return 'Partially-Automated';
-      case 'MANUAL_IMAGE_PATH':
+      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
         return 'Manual';
       default:
         return 'Unknown';
@@ -77,11 +76,11 @@ export class ContainerService {
 
   getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
     switch (mode) {
-      case 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS':
+      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
         return 'Fully-Automated: All versions are automated builds';
-      case 'AUTO_DETECT_QUAY_TAGS_WITH_MIXED':
+      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
         return 'Partially-Automated: At least one version is an automated build';
-      case 'MANUAL_IMAGE_PATH':
+      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';

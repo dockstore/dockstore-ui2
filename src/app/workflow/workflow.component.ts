@@ -72,7 +72,7 @@ export class WorkflowComponent extends Entry {
 
   isStub(): boolean {
     if (this.workflow) {
-      return this.workflow.mode === 'STUB';
+      return this.workflow.mode === Workflow.ModeEnum.STUB;
     } else {
       return true;
     }
@@ -134,7 +134,7 @@ export class WorkflowComponent extends Entry {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title)
+      this.workflowsService.getPublishedWorkflowByPath(this.title, this._toolType)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
         }, error => {
@@ -156,7 +156,7 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshMessage !== null  || !this.isValid() || this.workflow.mode === 'STUB';
+    return this.refreshMessage !== null  || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
   }
 
   publish() {

@@ -52,7 +52,7 @@ describe('ContainerService', () => {
             default_dockerfile_path: 'sampleDefaultDockerfilePath',
             default_wdl_path: 'sampleDefaultWDLPath',
             gitUrl: 'sampleGitUrl',
-            mode: 'MANUAL_IMAGE_PATH',
+            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
             name: 'sampleName',
             namespace: 'sampleNamespace',
             private_access: false,
@@ -73,7 +73,7 @@ describe('ContainerService', () => {
     it('should get build mode', inject([ContainerService], (service: ContainerService) => {
         expect(service.getBuildMode(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS)).toEqual('Fully-Automated');
         expect(service.getBuildMode(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED)).toEqual('Partially-Automated');
-        expect(service.getBuildMode('MANUAL_IMAGE_PATH')).toEqual('Manual');
+        expect(service.getBuildMode(DockstoreTool.ModeEnum.MANUALIMAGEPATH)).toEqual('Manual');
     }));
 
     it('should get build mode tooltip', inject([ContainerService], (service: ContainerService) => {
@@ -81,6 +81,6 @@ describe('ContainerService', () => {
             .toEqual('Fully-Automated: All versions are automated builds');
         expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED))
             .toEqual('Partially-Automated: At least one version is an automated build');
-        expect(service.getBuildModeTooltip('MANUAL_IMAGE_PATH')).toEqual('Manual: No versions are automated builds');
+        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.MANUALIMAGEPATH)).toEqual('Manual: No versions are automated builds');
     }));
 });

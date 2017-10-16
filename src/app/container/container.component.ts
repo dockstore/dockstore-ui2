@@ -146,7 +146,7 @@ export class ContainerComponent extends Entry {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.containersService.getPublishedContainerByToolPath(this.title)
+      this.containersService.getPublishedContainerByToolPath(this.title, this._toolType)
         .subscribe(tool => {
           this.containerService.setTool(tool);
         }, error => {

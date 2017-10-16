@@ -220,7 +220,7 @@ export class RegisterToolService {
 
     getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string): DockstoreTool {
         const normToolObj: any = {
-            mode: 'MANUAL_IMAGE_PATH',
+            mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
             name: this.getImagePath(toolObj.imagePath, 'name'),
             toolname: toolObj.toolname,
             namespace: this.getImagePath(toolObj.imagePath, 'namespace'),

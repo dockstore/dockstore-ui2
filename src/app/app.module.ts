@@ -1,6 +1,3 @@
-import { HttpClientModule } from '@angular/common/http';
-import { CustomInterceptor } from './maintenance/http-interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToasterModule } from './shared/toaster/toaster.module';
 /*
  *    Copyright 2017 OICR
@@ -122,7 +119,6 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
-    HttpClientModule,
     ListContainersModule,
     ListWorkflowsModule,
     BsDropdownModule.forRoot(),
@@ -143,7 +139,6 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     ApiModule.forConfig(getApiConfig)
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true},
     AuthService,
     LoginService,
     LogoutService,
