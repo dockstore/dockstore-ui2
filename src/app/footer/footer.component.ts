@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 /*
  *    Copyright 2017 OICR
  *
@@ -44,11 +45,12 @@ export class FooterComponent implements OnInit {
           } else {
             throw new Error('Version undefined');
           }
-        },
-        err => {
-          console.log(err);
+        }, (error: HttpErrorResponse) => {
+          console.log(error);
+          if (error.status === 0 && window.location.pathname !== '/maintenance') {
+            window.location.href = '/maintenance';
+          }
         }
       );
   }
-
 }
