@@ -109,26 +109,30 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   editTag() {
+    const message = 'Updating tag';
+    this.stateService.setRefreshMessage(message + '...');
     const id = this.tool.id;
     const tagName = this.version.name;
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newCWL, null, tagName, 'CWL').subscribe();
+      this.containersService.addTestParameterFiles(id, newCWL, null, tagName, 'CWL').subscribe(response => {},
+        err => this.refreshService.handleError(message, err) );
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingCWL, tagName, 'CWL').subscribe();
+      this.containersService.deleteTestParameterFiles(id, missingCWL, tagName, 'CWL').subscribe(response => {},
+        err => this.refreshService.handleError(message, err) );
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newWDL, null, tagName, 'WDL').subscribe();
+      this.containersService.addTestParameterFiles(id, newWDL, null, tagName, 'WDL').subscribe(response => {},
+        err => this.refreshService.handleError(message, err) );
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingWDL, tagName, 'WDL').subscribe();
+      this.containersService.deleteTestParameterFiles(id, missingWDL, tagName, 'WDL').subscribe(response => {},
+        err => this.refreshService.handleError(message, err) );
     }
-    const message = 'Updating tag';
-    this.stateService.setRefreshMessage(message + '...');
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
       this.tool.tags = response;
       this.containerService.setTool(this.tool);
