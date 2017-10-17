@@ -1,3 +1,4 @@
+import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -62,7 +63,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService,
     private containersService: ContainersService, private containertagsService: ContainertagsService,
-    private stateService: StateService, private dateService: DateService) {
+    private stateService: StateService, private dateService: DateService, private refreshService: RefreshService) {
   }
 
   // Almost all these functions should be moved to a service
@@ -126,9 +127,15 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     if (missingWDL && missingWDL.length > 0) {
       this.containersService.deleteTestParameterFiles(id, missingWDL, tagName, 'WDL').subscribe();
     }
+    const message = 'Updating tag';
+    this.stateService.setRefreshMessage(message + '...');
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
       this.tool.tags = response;
       this.containerService.setTool(this.tool);
+      this.versionModalService.setIsModalShown(false);
+      this.refreshService.handleSuccess(message);
+    }, error => {
+      this.refreshService.handleError(message, error);
       this.versionModalService.setIsModalShown(false);
     });
   }
@@ -210,11 +217,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       this.unsavedVersion = Object.assign({}, this.version);
     });
     this.versionModalService.isModalShown.subscribe(isModalShown => {
-      if (this.tool) {
-        this.isModalShown = isModalShown;
-      } else {
+      if (!this.tool && this.isModalShown) {
         this.versionModalService.setIsModalShown(false);
-      }
+      } else {
+        this.isModalShown = isModalShown; }
     });
     this.versionModalService.mode.subscribe(
       (mode: TagEditorMode) => {
