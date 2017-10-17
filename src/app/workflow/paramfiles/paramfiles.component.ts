@@ -54,7 +54,7 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
   }
 
   ngAfterViewChecked() {
-    if (this.contentHighlighted) {
+    if (this.contentHighlighted && this.elementRef.nativeElement.querySelector('.highlight')) {
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }

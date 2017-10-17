@@ -1,3 +1,4 @@
+import { Tooltip } from '../../shared/tooltip';
 /*
  *    Copyright 2017 OICR
  *
@@ -35,6 +36,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   version: WorkflowVersion;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
+  public tooltip = Tooltip;
   public testParameterFilePaths: string[];
   originalTestParameterFilePaths: string[];
   public testParameterFilePath = '';
