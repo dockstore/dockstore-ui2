@@ -76,7 +76,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     // Embed Discourse comments into page
-    if (this.publicPage){
+    if (this.publicPage) {
       (function() {
         const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
         d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';

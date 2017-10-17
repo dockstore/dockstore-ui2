@@ -87,7 +87,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   }
   // Embed Discourse comments into page
   ngAfterViewInit() {
-    if (this.publicPage){
+    if (this.publicPage) {
       (function() {
         const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
         d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
