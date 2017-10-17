@@ -48,11 +48,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public error;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
-  private publicPage: boolean;
+  public publicPage: boolean;
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
-    public stateService: StateService,
+    private stateService: StateService,
     private errorService: ErrorService) {
   }
 
