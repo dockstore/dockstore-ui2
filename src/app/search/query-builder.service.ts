@@ -34,6 +34,7 @@ export class QueryBuilderService {
 
     getTagCloudQuery(type: string): string {
         let body = bodybuilder().size();
+        body = this.excludeContent(body);
         body = body.query('match', '_type', type);
         body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
         const toolQuery = JSON.stringify(body, null, 1);
@@ -44,6 +45,7 @@ export class QueryBuilderService {
         bucketStubs: any, filters: any, sortModeMap: any): string {
         const count = this.getNumberOfFilters(filters);
         let sidebarBody = bodybuilder().size(query_size);
+        sidebarBody = this.excludeContent(sidebarBody);
         sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
         sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, sortModeMap);
         const builtSideBarBody = sidebarBody.build();
@@ -51,7 +53,27 @@ export class QueryBuilderService {
         return sideBarQuery;
     }
 
-    getNumberOfFilters(filters: any) {
+    private excludeContent(body: any) {
+      return body.rawOption('_source', false);
+    }
+
+    private excludeVerifiedContent(body: any) {
+      // TODO: it should be possible to exclude tags and workflowVersions too
+      // however, it currently breaks the contents of the datatables since verified information is not aggregated by
+      // tool or workflow properly.
+      return body.rawOption('_source', {'excludes': ['*.content', '*.sourceFiles', 'description', 'users',
+        'workflowVersions.dirtyBit',
+        'workflowVersions.hidden',
+        'workflowVersions.last_modified',
+        'workflowVersions.name',
+        'workflowVersions.valid',
+        'workflowVersions.workflow_path',
+        'workflowVersions.workingDirectory',
+        'workflowVersions.reference']});
+    }
+
+
+  getNumberOfFilters(filters: any) {
         let count = 0;
         filters.forEach(filter => {
             count += filter.size;
@@ -62,6 +84,7 @@ export class QueryBuilderService {
     getResultQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
         filters: any): string {
         let tableBody = bodybuilder().size(query_size);
+        tableBody = this.excludeVerifiedContent(tableBody);
         tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
         tableBody = this.appendFilter(tableBody, null, filters);
         const builtTableBody = tableBody.build();
@@ -71,6 +94,7 @@ export class QueryBuilderService {
 
     getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
         let bodyNotVerified = bodybuilder().size(query_size);
+        bodyNotVerified = this.excludeContent(bodyNotVerified);
         bodyNotVerified = this.appendQuery(bodyNotVerified, values, advancedSearchObject, searchTerm);
         const key = 'tags.verified';
         bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
