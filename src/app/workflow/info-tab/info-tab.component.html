@@ -86,6 +86,7 @@
     </div>
   </div>
   <div *ngIf="validVersions">
-    <app-launch [versions]="validVersions" [default]="defaultVersion" [path]="workflow?.path"></app-launch>
+    <app-launch *ngIf="!defaultVersion?.valid" [versions]="validVersions" [default]="validVersions[0]" [path]="workflow?.path"></app-launch>
+    <app-launch *ngIf="defaultVersion?.valid" [versions]="validVersions" [default]="defaultVersion" [path]="workflow?.path"></app-launch>
   </div>
 </div>

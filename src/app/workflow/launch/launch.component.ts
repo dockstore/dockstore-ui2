@@ -38,7 +38,7 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
   constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
     super();
   }
-  getDescriptors(currentVersion): any {
+  getDescriptors(): any {
     return this.workflowDescriptorService.getDescriptors(this.versions, this.default);
   }
   reactToDescriptor(): void {
