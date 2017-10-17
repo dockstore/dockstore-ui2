@@ -69,7 +69,7 @@
         </td>
       </tr>
       <tr *ngFor="let version of versions | orderBy : convertSorting()">
-        <td style="word-break: break-word" >
+        <td class="break">
           <input  class="radio-button-reference" *ngIf="version.name !== 'latest' && (!publicPage || (publicPage && defaultVersion ===version.name)) " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
             [value]="version.name" (click)="updateDefaultVersion(version.name)" [disabled]="publicPage" tooltip="Set as default branch"/> {{ version.name }}
         </td>
