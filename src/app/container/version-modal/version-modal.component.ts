@@ -209,11 +209,17 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);
     });
-    this.versionModalService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.versionModalService.isModalShown.subscribe(isModalShown => {
+      if (this.tool) {
+        this.isModalShown = isModalShown;
+      } else {
+        this.versionModalService.setIsModalShown(false);
+      }
+    });
     this.versionModalService.mode.subscribe(
       (mode: TagEditorMode) => {
         this.mode = mode;
-        if (mode !== null) {
+        if (mode !== null && this.tool) {
           this.setMode(mode);
         }
       }
