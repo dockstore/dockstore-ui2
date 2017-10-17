@@ -52,7 +52,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
-    private stateService: StateService,
+    public stateService: StateService,
     private errorService: ErrorService) {
   }
 

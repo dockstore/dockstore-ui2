@@ -77,8 +77,8 @@
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
-        <hr>
-        <div id='discourse-comments'></div>
+        <hr *ngIf="publicPage">
+        <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="labelsTab" heading="Labels" *ngIf="tool">
         <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
