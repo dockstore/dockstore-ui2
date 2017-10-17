@@ -32,7 +32,7 @@ describe('LaunchService', () => {
     expect(service.getParamsString('a/b', 'latest', 'cwl')).toContain(
       'dockstore workflow convert entry2json --entry a/b:latest > Dockstore.json');
     expect(service.getParamsString('a/b', 'latest', 'wdl')).toContain(
-      'dockstore workflow convert entry2json --entry --descriptor wdl a/b:latest > Dockstore.json');
+      'dockstore workflow convert entry2json --entry a/b:latest > Dockstore.json');
   }));
   it('should getCliString', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service.getCliString('a/b', 'latest', 'cwl')).toContain(
