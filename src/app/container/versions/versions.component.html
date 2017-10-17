@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<div>
+<div class="table-responsive">
   <table class="table versions-grid table-bordered table-condensed table-striped">
     <thead>
       <tr>
@@ -62,15 +62,15 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody >
       <tr *ngIf="versions.length === 0">
         <td colspan="7">
           <div class="text-center">No Records Found</div>
         </td>
       </tr>
       <tr *ngFor="let version of versions | orderBy : convertSorting()">
-        <td>
-          <input class="radio-button-reference" *ngIf="version.name !== 'latest' && (!publicPage || (publicPage && defaultVersion ===version.name)) " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
+        <td style="word-break: break-word" >
+          <input  class="radio-button-reference" *ngIf="version.name !== 'latest' && (!publicPage || (publicPage && defaultVersion ===version.name)) " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
             [value]="version.name" (click)="updateDefaultVersion(version.name)" [disabled]="publicPage" tooltip="Set as default branch"/> {{ version.name }}
         </td>
         <td>
