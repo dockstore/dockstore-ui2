@@ -62,7 +62,6 @@ export class WorkflowComponent extends Entry {
     this._toolType = 'workflows';
 
     // Initialize discourse urls
-    console.log(decodeURIComponent(window.location.href));
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
       discourseEmbedUrl: decodeURIComponent(window.location.href)
