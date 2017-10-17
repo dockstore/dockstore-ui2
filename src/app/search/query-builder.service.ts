@@ -54,12 +54,26 @@ export class QueryBuilderService {
     }
 
     private excludeContent(body: any) {
-      // TODO: it should be possible to exclude tags and workflowVersions too
-      // however, it currently breaks the contents of the datatables for some reason
-      return body.rawOption('_source', {'excludes': ['*.content', '*.sourceFiles', 'description']});
+      return body.rawOption('_source', false);
     }
 
-    getNumberOfFilters(filters: any) {
+    private excludeVerifiedContent(body: any) {
+      // TODO: it should be possible to exclude tags and workflowVersions too
+      // however, it currently breaks the contents of the datatables since verified information is not aggregated by
+      // tool or workflow properly.
+      return body.rawOption('_source', {'excludes': ['*.content', '*.sourceFiles', 'description', 'users',
+        'workflowVersions.dirtyBit',
+        'workflowVersions.hidden',
+        'workflowVersions.last_modified',
+        'workflowVersions.name',
+        'workflowVersions.valid',
+        'workflowVersions.workflow_path',
+        'workflowVersions.workingDirectory',
+        'workflowVersions.reference']});
+    }
+
+
+  getNumberOfFilters(filters: any) {
         let count = 0;
         filters.forEach(filter => {
             count += filter.size;
@@ -70,7 +84,7 @@ export class QueryBuilderService {
     getResultQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
         filters: any): string {
         let tableBody = bodybuilder().size(query_size);
-        tableBody = this.excludeContent(tableBody);
+        tableBody = this.excludeVerifiedContent(tableBody);
         tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
         tableBody = this.appendFilter(tableBody, null, filters);
         const builtTableBody = tableBody.build();
