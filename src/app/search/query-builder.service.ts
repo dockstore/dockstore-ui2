@@ -92,7 +92,8 @@ export class QueryBuilderService {
         return tableQuery;
     }
 
-    getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
+    getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
+        filters: any): string {
         let bodyNotVerified = bodybuilder().size(query_size);
         bodyNotVerified = this.excludeContent(bodyNotVerified);
         bodyNotVerified = this.appendQuery(bodyNotVerified, values, advancedSearchObject, searchTerm);
@@ -101,6 +102,7 @@ export class QueryBuilderService {
         bodyNotVerified = this.appendFilter(bodyNotVerified, null, filters);
         const builtBodyNotVerified = bodyNotVerified.build();
         const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
+        return queryBodyNotVerified;
     }
 
 
