@@ -23,7 +23,7 @@ import { Workflow } from './../shared/swagger/model/workflow';
 import * as WorkflowMode from './../shared/swagger/model/workflow';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
-import { Component, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -43,7 +43,7 @@ import { TrackLoginService } from '../shared/track-login.service';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Entry implements AfterViewInit {
+export class WorkflowComponent extends Entry {
   mode: string;
   workflowEditData: any;
   dnastackURL: string;
@@ -66,15 +66,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       discourseUrl: Dockstore.DISCOURSE_URL,
       discourseEmbedUrl: decodeURIComponent(window.location.href)
     };
-  }
-
-  ngAfterViewInit() {
-    // Embed Discourse comments into page
-    (function() {
-      const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-      d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-    })();
   }
 
   isPublic(): boolean {

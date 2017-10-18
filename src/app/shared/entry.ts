@@ -18,7 +18,7 @@ import { validationPatterns } from './validationMessages.model';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ErrorService } from './../shared/error.service';
 import { Workflow } from './swagger/model/workflow';
-import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { StateService } from './state.service';
 import { Router } from '@angular/router/';
 import { Subscription } from 'rxjs/Subscription';
@@ -30,7 +30,7 @@ import { ContainerService } from '../shared/container.service';
 import { TrackLoginService } from '../shared/track-login.service';
 
 @Injectable()
-export abstract class Entry implements OnInit, OnDestroy {
+export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   protected labels: string[];
   protected shareURL: string;
   public starGazersClicked = false;
@@ -147,5 +147,16 @@ export abstract class Entry implements OnInit, OnDestroy {
       return uri !== decodeURIComponent(uri);
     }
     return null;
+  }
+
+  // Embed Discourse comments into page
+  ngAfterViewInit() {
+    if (this.publicPage) {
+      (function() {
+        const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+        d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+      })();
+    }
   }
 }
