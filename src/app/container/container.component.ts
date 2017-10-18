@@ -56,7 +56,7 @@ export class ContainerComponent extends Entry {
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
   constructor(private dockstoreService: DockstoreService,
-    private dateService: DateService,
+    dateService: DateService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
     private refreshService: RefreshService,
@@ -70,7 +70,7 @@ export class ContainerComponent extends Entry {
     stateService: StateService,
     errorService: ErrorService) {
     super(trackLoginService, providerService, router,
-      stateService, errorService);
+      stateService, errorService, dateService);
     this._toolType = 'containers';
 
     // Initialize discourse urls
@@ -105,7 +105,6 @@ export class ContainerComponent extends Entry {
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
-    toolRef.verifiedLinks = this.dateService.getVerifiedLink();
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }

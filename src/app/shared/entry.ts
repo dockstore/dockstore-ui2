@@ -1,3 +1,4 @@
+import { DateService } from './date.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -53,7 +54,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     public providerService: ProviderService,
     public router: Router,
     private stateService: StateService,
-    private errorService: ErrorService) {
+    private errorService: ErrorService, public dateService: DateService) {
   }
 
   ngOnInit() {
@@ -67,6 +68,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
+  }
+
+  getVerifiedLink(): string {
+    return this.dateService.getVerifiedLink();
   }
 
   closeError(): void {

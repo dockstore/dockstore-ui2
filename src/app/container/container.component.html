@@ -30,7 +30,7 @@
   <div class="col-md-7">
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="tool?.versionVerified">
-        <a href= {{tool?.verifiedLinks}} class="verified-check">
+        <a href= {{getVerifiedLink()}} class="verified-check">
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
