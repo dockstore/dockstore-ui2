@@ -22,10 +22,9 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersComponent } from '../../containers/list/list.component';
-
 import { ListContainersService } from '../../containers/list/list.service';
+import { PrivateIconModule } from '../private-icon/private-icon.module';
 import { HeaderModule } from './header.module';
-import { ContainerService } from '../container.service';
 
 @NgModule({
   declarations: [
@@ -38,6 +37,7 @@ import { ContainerService } from '../container.service';
     ClipboardModule,
     HeaderModule,
     TooltipModule.forRoot(),
+    PrivateIconModule
   ],
   providers: [
     ListContainersService

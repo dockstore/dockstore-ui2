@@ -31,7 +31,7 @@
             <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"></a>
         </span>
         <span *ngIf="(hit?._source).private_access" class="private-lock">
-            <span class="glyphicon glyphicon-lock"></span>
+            <app-private-icon></app-private-icon>
         </span>
         <a (click)="sendToolInfo(hit._source)" [routerLink]="['/containers', hit?._source.tool_path ]">{{ hit?._source.name +
           (hit?._source.toolname ? '/' + hit?._source.toolname : '') }}
