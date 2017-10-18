@@ -42,6 +42,14 @@ export abstract class Versions {
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
   }
 
+  getDefaultTooltip(): string {
+    if (this.publicPage) {
+      return 'Default branch';
+    } else {
+      return 'Set as default branch';
+    }
+  }
+
   clickSortColumn(columnName) {
     if (this.sortColumn === columnName) {
       this.sortReverse = !this.sortReverse;
