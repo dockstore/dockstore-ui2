@@ -8,7 +8,7 @@ The dockstore command-line includes basic tool and workflow launching capability
  
 ### Launch Tools
 
-If you have followed the tutorial, you will have a tool registered on Dockstore. You may want to test it out for your own work. For now you can use the Dockstore command-line interface (CLI) to run several useful commands:
+If you have followed the tutorial, you will have a tool registered on Dockstore. You may want to test it out for your own work. Alternatively, if you followed the quick start, you can use the demo tool shown below. For now you can use the Dockstore command-line interface (CLI) to run several useful commands:
 
 0. create an empty "stub" JSON config file for entries in the Dockstore `dockstore tool convert`
 0. launch a tool locally `dockstore tool launch`

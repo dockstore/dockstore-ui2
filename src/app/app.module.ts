@@ -58,6 +58,7 @@ import { AccountsInternalComponent } from './loginComponents/accounts/internal/a
 import { AuthComponent } from './loginComponents/auth/auth.component';
 
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
+import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
@@ -102,6 +103,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     ToolDetailsComponent,
     LoginComponent,
     OnboardingComponent,
+    QuickStartComponent,
     AccountsComponent,
     AccountsInternalComponent,
     AccountsExternalComponent,
