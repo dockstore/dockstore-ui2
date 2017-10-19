@@ -19,6 +19,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
+import {UserService} from '../loginComponents/user.service';
+import {UserStubService} from '../test/service-stubs';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -29,7 +31,8 @@ describe('HomeComponent', () => {
       declarations: [ HomeComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [ TabsModule.forRoot() ],
-      providers: [ TwitterService ],
+      providers: [ TwitterService,
+        { provide: UserService, useClass: UserStubService }],
     })
     .compileComponents();
   }));
