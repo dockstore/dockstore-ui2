@@ -89,7 +89,6 @@ import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
-import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 import { SearchModule } from './search/search.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 @NgModule({
@@ -111,7 +110,6 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
-    SetupCompleteComponent,
     MaintenanceComponent
 ],
   imports: [
