@@ -208,6 +208,11 @@
       "from": "angular2-notifications@>=0.7.8 <0.8.0",
       "resolved": "https://registry.npmjs.org/angular2-notifications/-/angular2-notifications-0.7.8.tgz"
     },
+    "angulartics2": {
+      "version": "2.4.0",
+      "from": "angulartics2@>=2.4.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/angulartics2/-/angulartics2-2.4.0.tgz"
+    },
     "ansi-escapes": {
       "version": "3.0.0",
       "from": "ansi-escapes@>=3.0.0 <4.0.0",
