@@ -58,6 +58,7 @@ import { AccountsInternalComponent } from './loginComponents/accounts/internal/a
 import { AuthComponent } from './loginComponents/auth/auth.component';
 
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
+import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
@@ -88,7 +89,6 @@ import { StarringModule } from './starring/starring.module';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { ListentryModule } from './listentry/listentry.module';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
-import { SetupCompleteComponent } from './loginComponents/onboarding/setupcomplete/setupcomplete.component';
 import { SearchModule } from './search/search.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 @NgModule({
@@ -102,6 +102,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     ToolDetailsComponent,
     LoginComponent,
     OnboardingComponent,
+    QuickStartComponent,
     AccountsComponent,
     AccountsInternalComponent,
     AccountsExternalComponent,
@@ -109,7 +110,6 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
-    SetupCompleteComponent,
     MaintenanceComponent
 ],
   imports: [

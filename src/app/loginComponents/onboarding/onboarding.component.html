@@ -5,13 +5,19 @@
 <div class="container">
   <div *ngIf="curStep == 1">
     <h3>Step 1: Link External Accounts</h3>
+
+    <markdown>Dockstore is powered by:
+- [Quay.io](https://quay.io/), [Docker Hub](https://hub.docker.com/) and [GitLab](https://gitlab.com/) for storing Docker images
+- [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/), and [GitLab](https://gitlab.com) for storing the build file (`Dockerfile`) and metadata descriptor file (`Dockstore.cwl` or `Dockstore.wdl`) that are used by this site
+
+Since the Dockstore does not permanently store your Docker images, your Dockerfile, or your Dockstore metadata descriptor file, you are free to use all the excellent features of Quay.io/Docker Hub/GitLab and GitHub/Bitbucket/GitLab.  If you are already using these services then you will appreciate the fact that registering your Docker images on Dockstore is extremely easy and requires very little interruption to the way you work already.
+
+For those of you that use [Docker Hub](https://hub.docker.com/) and [GitLab](https://gitlab.com/), extremely popular Docker registries, we are planning on adding enhanced support for features in the near future.  For now, we recommend users of Dockstore sign up for both Quay.io and GitHub/Bitbucket/GitLab accounts to host their Docker images and build/metadata files respectively.  Partial support for Docker Hub and GitLab is available, but it requires manual entry of image and tag data on Dockstore. If you are already building your Docker images on Docker Hub and GitLab automatically it takes just minutes to setup a comparable build on Quay.io.</markdown>
+
     <app-accounts-external></app-accounts-external>
   </div>
   <div *ngIf="curStep == 2">
     <app-downloadcliclient></app-downloadcliclient>
-  </div>
-  <div *ngIf="curStep == 3">
-    <app-setupcomplete></app-setupcomplete>
   </div>
   <nav class="pull-right">
     <ul class="pager">
@@ -19,8 +25,8 @@
         <button class="changePage" (click)="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span>Previous</button>
       </li>
       <li *ngIf="tokenSetComplete">
-        <button class="changePage" (click)="nextStep()" id="next_step" *ngIf="curStep < 3">Next<span class="glyphicon glyphicon-chevron-right"></span></button>
-        <button class="changePage" routerLink="/docs" id="finish_step" *ngIf="curStep >= 3">Finish<span class="glyphicon glyphicon-chevron-right"></span></button>
+        <button class="changePage" (click)="nextStep()" id="next_step" *ngIf="curStep < 2">Next<span class="glyphicon glyphicon-chevron-right"></span></button>
+        <button class="changePage" routerLink="/docs/getting-started-with-docker" id="finish_step" *ngIf="curStep >= 2">Finish<span class="glyphicon glyphicon-chevron-right"></span></button>
       </li>
     </ul>
   </nav>
