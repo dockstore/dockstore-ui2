@@ -96,7 +96,7 @@ export class StarringComponent implements OnInit {
   calculateRate(starredUsers: User[]) {
     if (!this.user) {
       this.rate = false;
-    }
+    } else {
     let matchingUser: User;
     matchingUser = starredUsers.find(user => user.id === this.user.id);
     if (matchingUser) {
@@ -104,6 +104,7 @@ export class StarringComponent implements OnInit {
     } else {
       this.rate = false;
     }
+  }
   }
 
   setStarring() {
