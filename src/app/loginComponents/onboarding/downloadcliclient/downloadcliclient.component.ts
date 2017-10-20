@@ -13,6 +13,7 @@ export class DownloadCLIClientComponent implements OnInit {
   public downloadCli = 'dummy-start-value';
   public dockstoreVersion = 'dummy-start-value';
   public dsToken = 'dummy-token';
+  public cwltoolVersion = '1.0.20170828135420';
   public dsServerURI: any;
   public isCopied2: boolean;
 

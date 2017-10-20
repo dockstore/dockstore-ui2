@@ -40,7 +40,7 @@ mkdir -p ~/.dockstore
 printf "token: {{dsToken}}\nserver-url: {{dsServerURI}}\n" > ~/.dockstore/config</pre>
   </li>
   <li>
-    Alternatively, configure your config file yourself
+    Alternatively, copy this content to your config file directly
     <div class="input-group textarea">
   <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>token: {{dsToken}}
 server-url: {{dsServerURI}}</textarea>
@@ -57,9 +57,7 @@ server-url: {{dsServerURI}}</textarea>
 
 <h4>Part 3</h4>
 <p>If you want to launch CWL tools and workflows, Dockstore relies upon <a
-  href="https://github.com/common-workflow-language/cwltool">cwltool</a> being available on your PATH. You may also need
-  to install <a href="https://pip.pypa.io/en/latest/installing/">pip</a> if it is not already installed.</p>
-<p>You will also need to install Docker if you have not already</p>
+  href="https://github.com/common-workflow-language/cwltool">cwltool</a> being available on your PATH.This will require <a href="https://pip.pypa.io/en/latest/installing/">pip</a> if it is not already installed.</p>
 <p>You can install the version of cwltool that we've tested for use with Dockstore using the following commands:</p>
 <ol>
   <li>
@@ -70,11 +68,14 @@ server-url: {{dsServerURI}}</textarea>
     Run these commands to install cwltool
     <pre>
 pip install setuptools==36.5.0
-pip install cwl-runner cwltool==1.0.20170828135420 schema-salad==2.6.20170806163416 avro==1.8.1 ruamel.yaml==0.14.12 requests==2.18.4</pre>
+pip install cwl-runner cwltool=={{ cwltoolVersion }} schema-salad==2.6.20170806163416 avro==1.8.1 ruamel.yaml==0.14.12 requests==2.18.4</pre>
   </li>
   <li>
     Install Docker following the instructions on <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Docker's
-    website</a>.
+    website</a>. Ensure that you are able to run Docker without using sudo directly with the <a href="https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user">post install instructions</a>.
+    <pre>
+sudo usermod -aG docker $USER
+exec newgrp docker</pre>
   </li>
 </ol>
 
@@ -91,7 +92,7 @@ java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 $ cwltool --version
-/usr/local/bin/cwltool 1.0.20170828135420
+/usr/local/bin/cwltool {{ cwltoolVersion }}
 $ docker run hello-world
 Hello from Docker!
 ...</pre>
