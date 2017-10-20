@@ -94,9 +94,9 @@ $ cwltool --non-strict https://www.dockstore.org:8443/api/ga4gh/v1/tools/quay.io
 
 A similar invocation can be attempted in other CWL-compatible systems. 
 
-## Batch Services 
+You can stop here if you simply want to run tools and workflows locally. Continue onwards to learn more about possible solutions for running tools and workflows in large volumes. 
 
-You 
+## Batch Services 
 
 Dockstore tools and workflows can also be run through a number of online services that we're going to loosely call "commercial batch services." These services share the following characteristics: they spin up the underlying infrastructure and run commands, often in Docker containers, while freeing you from running the batch computing software yourself. While not having any understanding of CWL, these services can be used naively to run tools and workflows, and in a more sophisticated way to implement a CWL-compatible workflow engine.  
 
