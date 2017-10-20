@@ -64,7 +64,10 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     return [5, 6];
   }
 
-  updateDefaultVersion(newDefaultVersion: string) {
+  updateDefaultVersion(newDefaultVersion: string): void {
+    if (this.publicPage) {
+      return;
+    }
     const message = 'Updating default tool version';
     this.tool.defaultVersion = newDefaultVersion;
     this.stateService.setRefreshMessage(message + '...');

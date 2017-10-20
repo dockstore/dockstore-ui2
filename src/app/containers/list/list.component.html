@@ -32,7 +32,7 @@
                 <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok" href={{verifiedLink}}></a>
             </span>
             <span *ngIf="tool.private_access">
-                <span class="glyphicon glyphicon-lock"></span>
+                <app-private-icon></app-private-icon>
             </span>
             <a (click)="sendToolInfo(tool)" [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name +
               (tool?.toolname ? '/' + tool?.toolname : '') }}</a>

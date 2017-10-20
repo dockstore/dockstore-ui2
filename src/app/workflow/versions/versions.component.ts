@@ -67,7 +67,10 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     });
   }
 
-  updateDefaultVersion(newDefaultVersion: string) {
+  updateDefaultVersion(newDefaultVersion: string): void {
+    if (this.publicPage) {
+      return;
+    }
     const message = 'Updating default workflow version';
     this.workflow.defaultVersion = newDefaultVersion;
     this.stateService.setRefreshMessage(message + '...');

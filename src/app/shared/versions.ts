@@ -28,6 +28,8 @@ export abstract class Versions {
   defaultVersion: string;
   verifiedLink: string;
   dtOptions;
+  readonly defaultBranchDescription = 'The default branch uniquely identifies the branch of a tool/workflow. ' +
+  'Determines what is displayed in the Info tab (Description, Launch With, etc)';
 
   abstract setNoOrderCols(): Array<number>;
 
@@ -40,6 +42,14 @@ export abstract class Versions {
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
+  }
+
+  getDefaultTooltip(publicPage: boolean): string {
+    if (publicPage) {
+      return 'Default branch: ' + this.defaultBranchDescription;
+    } else {
+      return 'Set as default branch. ' + this.defaultBranchDescription;
+    }
   }
 
   clickSortColumn(columnName) {
