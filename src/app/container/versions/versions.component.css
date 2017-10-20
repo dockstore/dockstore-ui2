@@ -14,3 +14,7 @@
  *    limitations under the License.
  */
 
+ .break {
+    word-break: break-word
+ }
+
