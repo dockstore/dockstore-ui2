@@ -22,7 +22,6 @@
     <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
     <strong>File:</strong>
     <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-    </div>
   </span>
   <span *ngIf="content" class="input-group-btn code-copy">
 

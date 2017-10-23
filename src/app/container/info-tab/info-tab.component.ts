@@ -51,7 +51,7 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.wdlPathEditing$.subscribe(editing => this.wdlPathEditing = editing);
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
-    this.stateService.publicPage.subscribe(publicPage => this.isPublic = publicPage);
+    this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
   }
 
   toggleEditDockerFile() {
