@@ -51,10 +51,14 @@ export class AuthComponent implements OnInit, OnDestroy {
             return addGitHubToken;
           case 'quay':
             return addQuayToken;
-          case 'bitbucket':
+          case 'bitbucket.org':
             return addBitbucketToken;
-          case 'gitlab':
+          case 'gitlab.com':
             return addGitLabToken;
+          default: {
+            console.log('Unknown provider: ' + provider);
+            return null;
+          }
         }
       });
   }

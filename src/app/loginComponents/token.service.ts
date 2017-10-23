@@ -51,8 +51,11 @@ export class TokenService {
         return this.tokensService.addGithubToken(token);
       case 'gitlab.com':
         return this.tokensService.addGitlabToken(token);
-      default:
+      default: {
+        console.log('Unknown provider: ' + provider);
         return Observable.throw('Unknown provider.');
+      }
+
     }
   }
 
