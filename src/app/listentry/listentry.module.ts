@@ -14,19 +14,22 @@
  *    limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListentryComponent } from './listentry.component';
-import { DataTablesModule } from 'angular-datatables';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DataTablesModule } from 'angular-datatables';
 import { ClipboardModule } from 'ngx-clipboard';
+
+import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
+import { ListentryComponent } from './listentry.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     DataTablesModule.forRoot(),
-    ClipboardModule
+    ClipboardModule,
+    PrivateIconModule
   ],
   declarations: [ListentryComponent],
   exports: [ListentryComponent]

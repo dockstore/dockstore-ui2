@@ -18,9 +18,6 @@ import {Doc} from './doc.model';
 
 export class DocsService {
   private docs: Doc[] = [
-    new Doc('getting-started',
-                      'This tutorial walks through how to create your tool development environment',
-                      'Getting Started'),
     new Doc('getting-started-with-docker',
                       'This tutorial walks through how to create a Docker image',
                       'Getting Started with Docker'),

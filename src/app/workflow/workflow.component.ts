@@ -53,12 +53,12 @@ export class WorkflowComponent extends Entry {
   private workflowSubscription: Subscription;
   private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;
-  constructor(private dockstoreService: DockstoreService, private dateService: DateService, private refreshService: RefreshService,
+  constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService) {
     super(trackLoginService, providerService, router,
-      stateService, errorService);
+      stateService, errorService, dateService);
     this._toolType = 'workflows';
 
     // Initialize discourse urls
@@ -92,7 +92,6 @@ export class WorkflowComponent extends Entry {
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
-    workflowRef.verifiedLinks = this.dateService.getVerifiedLink();
     this.resetWorkflowEditData();
     if (workflowRef.path && workflowRef.descriptorType === 'wdl') {
       const myParams = new URLSearchParams();
