@@ -1,3 +1,4 @@
+import { Provider } from '../../shared/enum/provider.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
@@ -29,32 +30,36 @@ export class AuthComponent implements OnInit, OnDestroy {
   private addToken() {
 
     const addQuayToken = this.activatedRoute.fragment.flatMap(fragment =>
-      this.tokenService.registerToken(this.getQuayToken(fragment), 'quay.io'));
+      this.tokenService.registerToken(this.getQuayToken(fragment), Provider.QUAY));
 
     const queryObservable = this.activatedRoute.queryParams;
 
     const addGitHubToken = queryObservable
-          .flatMap(query => this.tokenService.registerToken(query['code'], 'github.com'));
+          .flatMap(query => this.tokenService.registerToken(query['code'], Provider.GITHUB));
 
     const addGitLabToken = queryObservable
-      .flatMap(query => this.tokenService.registerToken(query['code'], 'gitlab.com'));
+      .flatMap(query => this.tokenService.registerToken(query['code'], Provider.GITLAB));
 
     const addBitbucketToken = queryObservable.flatMap(query =>
-      this.tokenService.registerToken(query['code'], 'bitbucket.org'));
+      this.tokenService.registerToken(query['code'], Provider.BITBUCKET));
 
     return this.activatedRoute.params
       .flatMap(params => {
-        const provider = params['provider'];
+        const provider: Provider = params['provider'];
 
         switch (provider) {
-          case 'github':
+          case Provider.GITHUB:
             return addGitHubToken;
-          case 'quay':
+          case Provider.QUAY:
             return addQuayToken;
-          case 'bitbucket':
+          case Provider.BITBUCKET:
             return addBitbucketToken;
-          case 'gitlab':
+          case Provider.GITLAB:
             return addGitLabToken;
+          default: {
+            console.log('Unknown provider: ' + provider);
+            return null;
+          }
         }
       });
   }
