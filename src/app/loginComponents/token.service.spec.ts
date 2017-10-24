@@ -1,3 +1,4 @@
+import { Provider } from '../shared/enum/provider.enum';
 import { inject, TestBed } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
 
@@ -32,12 +33,10 @@ describe('TokenService', () => {
     }));
 
     it('should register token', inject([TokenService], (service: TokenService) => {
-        service.registerToken('asdf', 'quay.io').subscribe(token => expect(token).toEqual(quayToken));
-        service.registerToken('asdf', 'bitbucket.org').subscribe(token => expect(token).toEqual(bitbucketToken));
-        service.registerToken('asdf', 'gitlab.com').subscribe(token => expect(token).toEqual(gitLabToken));
-        service.registerToken('asdf', 'github.com').subscribe(token => expect(token).toEqual(gitHubToken));
-        service.registerToken('asdf', 'mmmrrrggglll').subscribe(() => fail('expected error'),
-            error => expect(error).toEqual('Unknown provider.'));
+        service.registerToken('asdf', Provider.QUAY).subscribe(token => expect(token).toEqual(quayToken));
+        service.registerToken('asdf', Provider.BITBUCKET).subscribe(token => expect(token).toEqual(bitbucketToken));
+        service.registerToken('asdf', Provider.GITLAB).subscribe(token => expect(token).toEqual(gitLabToken));
+        service.registerToken('asdf', Provider.GITHUB).subscribe(token => expect(token).toEqual(gitHubToken));
     }));
     it('should get token status set', inject([TokenService], (service: TokenService) => {
         const expectedStatusSet = {
