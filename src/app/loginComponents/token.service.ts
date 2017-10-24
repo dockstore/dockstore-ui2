@@ -1,3 +1,4 @@
+import { TokenSource } from '../shared/enum/token-source.enum';
 import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
@@ -79,16 +80,16 @@ export class TokenService {
           case 'dockstore':
             tokenStatusSet.dockstore = true;
             break;
-          case 'github.com':
+          case TokenSource.GITHUB:
             tokenStatusSet.github = true;
             break;
-          case 'bitbucket.org':
+          case TokenSource.BITBUCKET:
             tokenStatusSet.bitbucket = true;
             break;
-          case 'quay.io':
+          case TokenSource.QUAY:
             tokenStatusSet.quayio = true;
             break;
-          case 'gitlab.com':
+          case TokenSource.GITLAB:
             tokenStatusSet.gitlab = true;
             break;
         }
