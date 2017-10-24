@@ -1,3 +1,4 @@
+import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -41,15 +42,15 @@ export class TokenService {
     this.usersService.getUserTokens(this.user.id).subscribe(token => this.setTokens(token));
   }
 
-  registerToken(token: string, provider: string): Observable<Token> {
+  registerToken(token: string, provider: Provider): Observable<Token> {
     switch (provider) {
-      case 'quay.io':
+      case Provider.QUAY:
         return this.tokensService.addQuayToken(token);
-      case 'bitbucket.org':
+      case Provider.BITBUCKET:
         return this.tokensService.addBitbucketToken(token);
-      case 'github.com':
+      case Provider.GITHUB:
         return this.tokensService.addGithubToken(token);
-      case 'gitlab.com':
+      case Provider.GITLAB:
         return this.tokensService.addGitlabToken(token);
       default: {
         console.log('Unknown provider: ' + provider);

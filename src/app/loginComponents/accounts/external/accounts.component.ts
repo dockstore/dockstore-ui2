@@ -1,3 +1,4 @@
+import { Provider } from '../../../shared/enum/provider.enum';
 import { Token } from './../../../shared/swagger/model/token';
 import { Configuration } from './../../../shared/swagger/configuration';
 import { AuthService } from 'ng2-ui-auth';
@@ -23,28 +24,28 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   accountsInfo: Array<any> = [
     {
       name: 'GitHub Account',
-      source: 'github.com',
+      source: Provider.GITHUB,
       bold: 'Required',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false
     },
     {
       name: 'Quay.io Account',
-      source: 'quay.io',
+      source: Provider.QUAY,
       bold: 'Optional',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false
     },
     {
       name: 'Bitbucket Account',
-      source: 'bitbucket.org',
+      source: Provider.BITBUCKET,
       bold: 'Optional',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false
     },
     {
       name: 'GitLab Account',
-      source: 'gitlab.com',
+      source: Provider.GITLAB,
       bold: 'Optional',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false
@@ -80,16 +81,16 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Open a window for the user to login to the appropriate service
   link(source: string) {
     switch (source) {
-      case 'github.com':
+      case Provider.GITHUB:
         this.openWindow(Links.GITHUB);
         break;
-      case 'bitbucket.org':
+      case Provider.BITBUCKET:
         this.openWindow(Links.BITBUCKET);
         break;
-      case 'gitlab.com':
+      case Provider.GITLAB:
         this.openWindow(Links.GITLAB);
         break;
-      case 'quay.io':
+      case Provider.QUAY:
         this.openWindow(Links.QUAY);
         break;
     }
