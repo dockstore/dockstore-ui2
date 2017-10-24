@@ -1,4 +1,3 @@
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { ToasterModule } from './shared/toaster/toaster.module';
 /*
  *    Copyright 2017 OICR
@@ -114,7 +113,6 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     MaintenanceComponent
 ],
   imports: [
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
