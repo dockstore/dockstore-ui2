@@ -1,3 +1,4 @@
+import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { Provider } from '../../../shared/enum/provider.enum';
 import { Token } from './../../../shared/swagger/model/token';
 import { Configuration } from './../../../shared/swagger/configuration';
@@ -24,28 +25,28 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   accountsInfo: Array<any> = [
     {
       name: 'GitHub Account',
-      source: Provider.GITHUB,
+      source: TokenSource.GITHUB,
       bold: 'Required',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false
     },
     {
       name: 'Quay.io Account',
-      source: Provider.QUAY,
+      source: TokenSource.QUAY,
       bold: 'Optional',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false
     },
     {
       name: 'Bitbucket Account',
-      source: Provider.BITBUCKET,
+      source: TokenSource.BITBUCKET,
       bold: 'Optional',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false
     },
     {
       name: 'GitLab Account',
-      source: Provider.GITLAB,
+      source: TokenSource.GITLAB,
       bold: 'Optional',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false
@@ -81,16 +82,16 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Open a window for the user to login to the appropriate service
   link(source: string) {
     switch (source) {
-      case Provider.GITHUB:
+      case TokenSource.GITHUB:
         this.openWindow(Links.GITHUB);
         break;
-      case Provider.BITBUCKET:
+      case TokenSource.BITBUCKET:
         this.openWindow(Links.BITBUCKET);
         break;
-      case Provider.GITLAB:
+      case TokenSource.GITLAB:
         this.openWindow(Links.GITLAB);
         break;
-      case Provider.QUAY:
+      case TokenSource.QUAY:
         this.openWindow(Links.QUAY);
         break;
     }
