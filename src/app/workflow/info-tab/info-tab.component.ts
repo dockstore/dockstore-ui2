@@ -66,4 +66,8 @@ export class InfoTabComponent implements OnInit {
   save() {
     this.infoTabService.updateAndRefresh(this.workflow);
   }
+
+  cancelEditing() {
+    this.infoTabService.cancelEditing();
+  }
 }

@@ -34,8 +34,7 @@ export class InfoTabService {
         private errorService: ErrorService, private refreshService: RefreshService) {
         this.workflowService.workflow$.subscribe(workflow => {
             this.workflow = workflow;
-            this.workflowPathEditing$.next(false);
-            this.descriptorTypeEditing$.next(false);
+            this.cancelEditing();
         });
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -57,5 +56,10 @@ export class InfoTabService {
                 this.refreshService.handleSuccess(message);
             }, error => this.refreshService.handleError(message, error));
         });
+    }
+
+    cancelEditing(): void {
+        this.workflowPathEditing$.next(false);
+        this.descriptorTypeEditing$.next(false);
     }
 }
