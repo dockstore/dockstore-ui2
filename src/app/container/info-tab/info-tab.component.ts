@@ -21,8 +21,6 @@ import { validationPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { ContainerService } from './../../shared/container.service';
 import { Component, OnInit, Input } from '@angular/core';
-// import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-// import { Tool } from './../../shared/swagger/model/tool';
 
 @Component({
   selector: 'app-info-tab',

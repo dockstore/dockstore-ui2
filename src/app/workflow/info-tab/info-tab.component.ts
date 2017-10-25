@@ -47,7 +47,6 @@ export class InfoTabComponent implements OnInit {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.defaultTestFilePathEditing$.subscribe(editing => this.defaultTestFilePathEditing = editing);
-    // this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 

@@ -53,7 +53,7 @@
     </form>
     <form #editTestFilePathForm="ngForm" class="form-inline">
       <div class="form-group">
-        <strong tooltip="Path in Git repository to main descriptor file">Workflow Path: </strong>
+        <strong tooltip="Path in Git repository to main descriptor file">Test File Path: </strong>
         <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
         <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath" placeholder="e.g. /Dockstore.cwl" />

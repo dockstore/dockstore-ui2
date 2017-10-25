@@ -87,7 +87,7 @@
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
           <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
-          <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /Dockerfile" />
+          <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /test.cwl.json" />
         </div>
         <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
           (click)="toggleEditCWLTestPath()">
@@ -103,7 +103,7 @@
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
           <span *ngIf="!wdlTestPathEditing">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
           <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
-            name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /Dockerfile" />
+            name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /test.wdl.json" />
         </div>
         <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
           (click)="toggleEditWDLTestPath()">
