@@ -32,7 +32,6 @@ export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
   public validationPatterns = validationPatterns;
-  workflow: Workflow;
   public WorkflowType = Workflow;
   public tooltip = Tooltip;
   workflowPathEditing: boolean;
@@ -43,11 +42,14 @@ export class InfoTabComponent implements OnInit {
   private infoTabService: InfoTabService) { }
 
   ngOnInit() {
-    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.descriptorTypeEditing$.subscribe(editing => this.descriptorTypeEditing = editing);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+  }
+
+  get workflow(): Workflow {
+    return this.infoTabService.workflow;
   }
 
   restubWorkflow() {
