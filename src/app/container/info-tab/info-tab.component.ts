@@ -30,7 +30,6 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
-  tool: ExtendedDockstoreTool;
   public validationPatterns = validationPatterns;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
@@ -40,11 +39,14 @@ export class InfoTabComponent implements OnInit {
     private containersService: ContainersService) { }
 
   ngOnInit() {
-    this.containerService.tool$.subscribe(tool => this.tool = tool);
     this.infoTabService.dockerFileEditing$.subscribe(editing => this.dockerFileEditing = editing);
     this.infoTabService.cwlPathEditing$.subscribe(editing => this.cwlPathEditing = editing);
     this.infoTabService.wdlPathEditing$.subscribe(editing => this.wdlPathEditing = editing);
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
+  }
+
+  get tool(): ExtendedDockstoreTool {
+    return this.infoTabService.tool;
   }
 
   toggleEditDockerFile() {
