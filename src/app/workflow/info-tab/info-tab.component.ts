@@ -67,7 +67,12 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.updateAndRefresh(this.workflow);
   }
 
-  cancelEditing() {
+ /**
+   * Cancel button function
+   *
+   * @memberof InfoTabComponent
+   */
+  cancelEditing(): void {
     this.infoTabService.cancelEditing();
   }
 }

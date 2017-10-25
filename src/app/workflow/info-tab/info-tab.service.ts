@@ -58,6 +58,11 @@ export class InfoTabService {
         });
     }
 
+    /**
+     * Cancels editing for all editable fields
+     *
+     * @memberof InfoTabService
+     */
     cancelEditing(): void {
         this.workflowPathEditing$.next(false);
         this.descriptorTypeEditing$.next(false);

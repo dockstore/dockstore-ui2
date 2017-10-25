@@ -60,6 +60,11 @@ export class InfoTabService {
         });
     }
 
+    /**
+     * Cancels editing for all editable fields
+     *
+     * @memberof InfoTabService
+     */
     cancelEditing(): void {
         this.dockerFileEditing$.next(false);
         this.cwlPathEditing$.next(false);
