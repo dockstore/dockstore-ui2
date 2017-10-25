@@ -32,7 +32,11 @@ export class InfoTabService {
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService) {
-        this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+        this.workflowService.workflow$.subscribe(workflow => {
+            this.workflow = workflow;
+            this.workflowPathEditing$.next(false);
+            this.descriptorTypeEditing$.next(false);
+        });
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
     setWorkflowPathEditing(editing: boolean) {
