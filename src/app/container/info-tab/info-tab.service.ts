@@ -32,9 +32,7 @@ export class InfoTabService {
         private containerService: ContainerService, private refreshService: RefreshService) {
         this.containerService.tool$.subscribe(tool => {
             this.tool = tool;
-            this.dockerFileEditing$.next(false);
-            this.cwlPathEditing$.next(false);
-            this.wdlPathEditing$.next(false);
+            this.cancelEditing();
         });
         this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
@@ -60,5 +58,11 @@ export class InfoTabService {
                 this.refreshService.handleSuccess(message);
             }, error => this.refreshService.handleError(message, error));
         });
+    }
+
+    cancelEditing(): void {
+        this.dockerFileEditing$.next(false);
+        this.cwlPathEditing$.next(false);
+        this.wdlPathEditing$.next(false);
     }
 }

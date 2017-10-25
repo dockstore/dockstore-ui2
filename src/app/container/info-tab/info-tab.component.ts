@@ -67,4 +67,8 @@ export class InfoTabComponent implements OnInit {
     }
     this.infoTabService.setWDLPathEditing(!this.wdlPathEditing);
   }
+
+  cancelEditing(): void {
+    this.infoTabService.cancelEditing();
+  }
 }
