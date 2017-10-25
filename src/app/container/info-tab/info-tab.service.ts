@@ -30,7 +30,12 @@ export class InfoTabService {
     private tools;
     constructor(private containersService: ContainersService, private stateService: StateService,
         private containerService: ContainerService, private refreshService: RefreshService) {
-        this.containerService.tool$.subscribe(tool => this.tool = tool);
+        this.containerService.tool$.subscribe(tool => {
+            this.tool = tool;
+            this.dockerFileEditing$.next(false);
+            this.cwlPathEditing$.next(false);
+            this.wdlPathEditing$.next(false);
+        });
         this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
     setDockerFileEditing(editing: boolean) {
