@@ -51,7 +51,7 @@
           <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
             <span class="glyphicon glyphicon-remove"></span> Cancel
           </button>
-          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editCWLTestPathForm.valid))"  class="btn btn-link"
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"  class="btn btn-link"
             (click)="toggleEditDockerFile()">
             <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
             {{ dockerFileEditing ? 'Save' : 'Edit' }}
@@ -71,7 +71,7 @@
           <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
             <span class="glyphicon glyphicon-remove"></span> Cancel
           </button>
-          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link"
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))" class="btn btn-link"
             (click)="toggleEditCWLPath()">
             <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
             {{ cwlPathEditing ? 'Save' : 'Edit' }}
@@ -91,7 +91,7 @@
           <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
             <span class="glyphicon glyphicon-remove"></span> Cancel
           </button>
-          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link"
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))" class="btn btn-link"
             (click)="toggleEditWDLPath()">
             <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
             {{ wdlPathEditing ? 'Save' : 'Edit' }}
