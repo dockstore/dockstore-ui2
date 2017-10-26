@@ -31,6 +31,8 @@ describe('ProviderService', () => {
 
     it('should set up provider', inject([ProviderService], (service: ProviderService) => {
         const tool: DockstoreTool = {
+            defaultCWLTestParameterFile: '',
+            defaultWDLTestParameterFile: '',
             default_cwl_path: '',
             default_dockerfile_path: '',
             default_wdl_path: '',

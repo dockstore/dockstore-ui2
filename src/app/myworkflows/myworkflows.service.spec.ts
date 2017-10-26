@@ -21,6 +21,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 describe('MyWorkflowsService', () => {
   const tool1: Workflow = {
+      defaultTestParameterFilePath: '',
       descriptorType: '',
       gitUrl: '',
       mode: Workflow.ModeEnum.FULL,
@@ -29,6 +30,7 @@ describe('MyWorkflowsService', () => {
       workflow_path: ''
   };
   const tool2: Workflow = {
+    defaultTestParameterFilePath: '',
     descriptorType: '',
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
@@ -37,6 +39,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: ''
 };
   const tool3: Workflow = {
+    defaultTestParameterFilePath: '',
     descriptorType: '',
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
@@ -45,6 +48,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: ''
 };
   const tool4: Workflow = {
+    defaultTestParameterFilePath: '',
     descriptorType: '',
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
@@ -53,6 +57,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: ''
 };
   const tool5: Workflow = {
+    defaultTestParameterFilePath: '',
     descriptorType: '',
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
@@ -61,6 +66,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: ''
 };
   const tool6: Workflow = {
+    defaultTestParameterFilePath: '',
     descriptorType: '',
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,

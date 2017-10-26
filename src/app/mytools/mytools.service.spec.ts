@@ -22,6 +22,8 @@ import { MytoolsService } from './mytools.service';
 
 describe('MytoolsService', () => {
   const tool1: DockstoreTool = {
+    'defaultWDLTestParameterFile': '',
+    'defaultCWLTestParameterFile': '',
     'default_cwl_path': '',
     'default_dockerfile_path': '',
     'default_wdl_path': '',
@@ -35,6 +37,8 @@ describe('MytoolsService', () => {
     'tool_path': 'quay.io/cc/aa'
   };
   const tool2: DockstoreTool = {
+    'defaultWDLTestParameterFile': '',
+    'defaultCWLTestParameterFile': '',
     'default_cwl_path': '',
     'default_dockerfile_path': '',
     'default_wdl_path': '',
@@ -48,6 +52,8 @@ describe('MytoolsService', () => {
     'tool_path': 'quay.io/cc/bb'
   };
   const tool3: DockstoreTool = {
+    'defaultWDLTestParameterFile': '',
+    'defaultCWLTestParameterFile': '',
     'default_cwl_path': '',
     'default_dockerfile_path': '',
     'default_wdl_path': '',
@@ -61,6 +67,8 @@ describe('MytoolsService', () => {
     'tool_path': 'quay.io/bb/cc'
   };
   const tool4: DockstoreTool = {
+    'defaultWDLTestParameterFile': '',
+    'defaultCWLTestParameterFile': '',
     'default_cwl_path': '',
     'default_dockerfile_path': '',
     'default_wdl_path': '',
@@ -74,6 +82,8 @@ describe('MytoolsService', () => {
     'tool_path': 'quay.io/bb/dd'
   };
   const tool5: DockstoreTool = {
+    'defaultWDLTestParameterFile': '',
+    'defaultCWLTestParameterFile': '',
     'default_cwl_path': '',
     'default_dockerfile_path': '',
     'default_wdl_path': '',
@@ -87,6 +97,8 @@ describe('MytoolsService', () => {
     'tool_path': 'quay.io/aa/ee'
   };
   const tool6: DockstoreTool = {
+    'defaultWDLTestParameterFile': '',
+    'defaultCWLTestParameterFile': '',
     'default_cwl_path': '',
     'default_dockerfile_path': '',
     'default_wdl_path': '',

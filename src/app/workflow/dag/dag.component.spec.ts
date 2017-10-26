@@ -58,6 +58,7 @@ describe('DagComponent', () => {
       name: 'master',
     };
     component.workflow = {
+      'defaultTestParameterFilePath': '',
       'descriptorType': 'cwl',
       'gitUrl': '',
       'mode': Workflow.ModeEnum.FULL,

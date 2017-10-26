@@ -35,6 +35,8 @@ describe('ImageProviderService', () => {
     }));
     it('should check private only registry', inject([ImageProviderService], (service: ImageProviderService) => {
         const tool: DockstoreTool = {
+            defaultCWLTestParameterFile: '',
+            defaultWDLTestParameterFile: '',
             default_cwl_path: '',
             default_dockerfile_path: '',
             default_wdl_path: '',
@@ -56,6 +58,8 @@ describe('ImageProviderService', () => {
 
     it('should get image provider', inject([ImageProviderService], (service: ImageProviderService) => {
         const tool: DockstoreTool = {
+            defaultCWLTestParameterFile: '',
+            defaultWDLTestParameterFile: '',
             default_cwl_path: '',
             default_dockerfile_path: '',
             default_wdl_path: '',

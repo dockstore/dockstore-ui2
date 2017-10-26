@@ -51,6 +51,8 @@ describe('RefreshService', () => {
     it('should refresh tool', inject([RefreshService, StateService, ContainerService],
         (service: RefreshService, stateService: StateService, containerService: ContainerService) => {
             const refreshedTool: DockstoreTool = {
+                defaultCWLTestParameterFile: '',
+                defaultWDLTestParameterFile: '',
                 default_cwl_path: 'refreshedDefaultCWLPath',
                 default_dockerfile_path: 'refreshedDefaultDockerfilePath',
                 default_wdl_path: 'refreshedDefaultWDLPath',
@@ -73,6 +75,7 @@ describe('RefreshService', () => {
     it('should refresh workflow', inject([RefreshService, StateService, WorkflowService],
         (service: RefreshService, stateService: StateService, workflowService: WorkflowService) => {
             const refreshedWorkflow: Workflow = {
+                'defaultTestParameterFilePath': '',
                 'descriptorType': 'cwl',
                 'gitUrl': 'refreshedGitUrl',
                 'mode': Workflow.ModeEnum.FULL,

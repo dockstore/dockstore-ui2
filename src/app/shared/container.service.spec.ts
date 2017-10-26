@@ -47,6 +47,8 @@ describe('ContainerService', () => {
     it('should replace tool', inject([ContainerService], (service: ContainerService) => {
         const tools: DockstoreTool[] = [sampleTool1, sampleTool2, sampleTool3];
         const newSampleTool1: DockstoreTool = {
+            defaultCWLTestParameterFile: '',
+            defaultWDLTestParameterFile: '',
             id: 1,
             default_cwl_path: 'sampleDefaultCWLPath',
             default_dockerfile_path: 'sampleDefaultDockerfilePath',

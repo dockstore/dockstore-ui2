@@ -34,6 +34,7 @@ describe('WorkflowService', () => {
         const workflows: Workflow[] = [sampleWorkflow1, sampleWorkflow2, sampleWorkflow3];
         service.setWorkflows(workflows);
         const newSampleWorkflow1: Workflow = {
+            'defaultTestParameterFilePath': '',
             id: 1,
             'descriptorType': 'cwl',
             'gitUrl': 'replacedGitUrl',
