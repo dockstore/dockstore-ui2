@@ -31,7 +31,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public formErrors = formErrors;
   public validationPatterns = validationPatterns;
   public workflow: Workflow;
-  public defaultTestParameterFilePath: string;
   public workflowRegisterError;
   public isModalShown: boolean;
   public refreshMessage: string;
@@ -68,7 +67,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow(this.defaultTestParameterFilePath);
+    this.registerWorkflowModalService.registerWorkflow();
   }
 
   showModal() {

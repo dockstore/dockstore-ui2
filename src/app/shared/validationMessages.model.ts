@@ -97,6 +97,13 @@ export const validationMessages = {
     'pattern': 'Invalid Test parameter file format. ' +
     'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
+  'testParameterFilePath': {
+    'required': 'This field cannot be empty.',
+    'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
+    'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
+    'pattern': 'Invalid Test parameter file format. ' +
+    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+  },
   'toolName': {
     'maxlength': 'Tool Name is too long. (Max 256 characters.)',
     'pattern': 'A Tool Name may only consist of alphanumeric characters and internal underscores or hyphens.'

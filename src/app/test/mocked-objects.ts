@@ -24,7 +24,8 @@ export const updatedWorkflow: Workflow = {
     'organization': 'updatedOrganization',
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
-    'workflowVersions': []
+    'workflowVersions': [],
+    'defaultTestParameterFilePath': 'updatedTestParameterPath'
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -35,7 +36,8 @@ export const sampleWorkflow1: Workflow = {
     'organization': 'updatedOrganization',
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
-    'workflowVersions': []
+    'workflowVersions': [],
+    'defaultTestParameterFilePath': 'updatedTestParameterPath'
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -46,7 +48,8 @@ export const sampleWorkflow2: Workflow = {
     'organization': 'updatedOrganization',
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
-    'workflowVersions': []
+    'workflowVersions': [],
+    'defaultTestParameterFilePath': 'updatedTestParameterPath'
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -57,7 +60,8 @@ export const sampleWorkflow3: Workflow = {
     'organization': 'sampleOrganization',
     'repository': 'sampleRepository',
     'workflow_path': 'sampleWorkflowPath',
-    'workflowVersions': []
+    'workflowVersions': [],
+    'defaultTestParameterFilePath': 'updatedTestParameterPath'
 };
 
 export const sampleTool1: DockstoreTool = {
@@ -71,7 +75,9 @@ export const sampleTool1: DockstoreTool = {
     namespace: 'sampleNamespace',
     private_access: false,
     registry: DockstoreTool.RegistryEnum.QUAYIO,
-    toolname: 'sampleToolname'
+    toolname: 'sampleToolname',
+    defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
 };
 
 export const sampleTool2: DockstoreTool = {
@@ -85,7 +91,9 @@ export const sampleTool2: DockstoreTool = {
     namespace: 'sampleNamespace',
     private_access: false,
     registry: DockstoreTool.RegistryEnum.QUAYIO,
-    toolname: 'sampleToolname'
+    toolname: 'sampleToolname',
+    defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
 };
 
 export const sampleTool3: DockstoreTool = {
@@ -99,7 +107,9 @@ export const sampleTool3: DockstoreTool = {
     namespace: 'sampleNamespace',
     private_access: false,
     registry: DockstoreTool.RegistryEnum.QUAYIO,
-    toolname: 'sampleToolname'
+    toolname: 'sampleToolname',
+    defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
 };
 
 export const gitLabToken: Token = {

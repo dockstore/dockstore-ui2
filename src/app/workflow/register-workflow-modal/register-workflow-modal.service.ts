@@ -69,14 +69,15 @@ export class RegisterWorkflowModalService {
         this.setWorkflow(this.actualWorkflow);
     }
 
-    registerWorkflow(testParameterFilePath: string) {
+    registerWorkflow() {
         this.stateService.setRefreshMessage('Registering workflow...');
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
             this.actualWorkflow.workflow_path,
             this.actualWorkflow.workflowName,
-            this.actualWorkflow.descriptorType).subscribe(result => {
+            this.actualWorkflow.descriptorType,
+            this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
