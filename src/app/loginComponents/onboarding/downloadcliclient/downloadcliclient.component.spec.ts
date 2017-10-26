@@ -1,3 +1,4 @@
+import { MarkdownModule } from 'angular2-markdown/markdown';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { AuthService } from 'ng2-ui-auth';
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
@@ -15,7 +16,7 @@ describe('DownloadCLIClientComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DownloadCLIClientComponent,
         RouterLinkStubDirective, RouterOutletStubComponent ],
-      imports: [ClipboardModule],
+      imports: [ClipboardModule, MarkdownModule.forRoot()],
       providers: [ {provide: AuthService, useClass: AuthStubService},
       {provide: GA4GHService, useClass: GA4GHStubService}]
     })
