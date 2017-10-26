@@ -49,7 +49,6 @@ export class InfoTabComponent implements OnInit {
   }
 
   get workflow(): any {
-    // console.log(this.infoTabService.workflow);
     return this.infoTabService.workflow;
   }
 
