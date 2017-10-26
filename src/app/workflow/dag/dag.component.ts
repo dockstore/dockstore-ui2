@@ -164,15 +164,6 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   ngOnInit() {
-    // if (this.defaultVersion) {
-    //   this.dagService.getCurrentDAG(this.id, this.defaultVersion.id).subscribe(result => {
-    //     this.dagResult = result;
-    //     this.refresh = true;
-    //     this.updateMissingTool();
-    //   });
-    // } else {
-    //   this.dagResult = null;
-    // }
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.style = this.dagService.style;
     this.missingTool = false;
