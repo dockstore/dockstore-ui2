@@ -16,6 +16,8 @@
 
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { TwitterService } from '../shared/twitter.service';
+import {UserService} from '../loginComponents/user.service';
+import {User} from '../shared/swagger/model/user';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -24,11 +26,13 @@ import { TwitterService } from '../shared/twitter.service';
 export class HomeComponent implements OnInit, AfterViewInit {
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
-  constructor(private twitterService: TwitterService) {
+  public user: User;
+  constructor(private twitterService: TwitterService, private userService: UserService) {
   }
 
   ngOnInit() {
     (<any>$('.youtube')).colorbox({iframe: true, innerWidth: 640, innerHeight: 390});
+    this.userService.user$.subscribe(user => this.user = user);
   }
   ngAfterViewInit() {
     this.twitterService.runScript();
@@ -37,4 +41,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   goToSearch(searchValue: string) {
     window.location.href = '/search?search=' + searchValue;
   }
+
+
 }

@@ -30,12 +30,12 @@
   <div class="col-md-7">
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="tool?.versionVerified">
-        <a href= {{tool?.verifiedLinks}} class="verified-check">
+        <a href= {{getVerifiedLink()}} class="verified-check">
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
-          <span class="glyphicon glyphicon-lock"></span>
+          <app-private-icon></app-private-icon>
       </span>
       {{ tool?.tool_path }}
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>

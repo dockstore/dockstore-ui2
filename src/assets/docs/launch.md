@@ -4,26 +4,24 @@ This tutorial walks through some of our utilities for quickly launching tools an
 
 ## Dockstore CLI
 
-The dockstore command-line includes basic tool and workflow launching capability built on top of [cwltool](https://github.com/common-workflow-language/cwltool). The Dockstore command-line also includes support for file provisioning via [plugins](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent) which allow for the reading of input files and the upload of output files from remote file systems. Support for http and https is built-in. Support for AWS S3 and [icgc-storage client](onboarding) is provided via plugins installed by default.  
+The dockstore command-line includes basic tool and workflow launching capability built on top of [cwltool](https://github.com/common-workflow-language/cwltool). The Dockstore command-line also includes support for file provisioning via [plugins](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent) which allow for the reading of input files and the upload of output files from remote file systems. Support for http and https is built-in. Support for AWS S3 and [icgc-storage client](onboarding) is provided via plugins that can be easily installed.  
  
 ### Launch Tools
 
-If you have followed the tutorial, you will have a tool registered on Dockstore. You may want to test it out for your own work. For now you can use the Dockstore command-line interface (CLI) to run several useful commands:
+If you have followed the tutorial, you will have a tool registered on Dockstore. You may want to test it out for your own work. Alternatively, if you followed the quick start, you can use the demo tool shown below.
 
-0. create an empty "stub" JSON config file for entries in the Dockstore `dockstore tool convert`
-0. launch a tool locally `dockstore tool launch`
-  0. automatically copy inputs from remote URLs if HTTP, FTP, S3 or other remote URLs are specified
-  0. call the `cwltool` command line to execute your tool using the CWL from the Dockstore and the JSON for inputs/outputs
-  0. if outputs are specified as remote URLs, copy the results to these locations
-0. download tool descriptor files `dockstore tool cwl` and `dockstore tool wdl`
+To do this, we already have everything we need with *two exceptions* -- we need to specify the input and output files, and we need an input file to run!  To do this,  we need to create a
+JSON file containing that information.
 
-Note that launching a CWL tool locally requires the cwltool to be installed. Check [onboarding](onboarding) if you have not already to ensure that your dependencies are correct.
-
-An example of launching a tool, in this case a bamstats sample tool follows:
+Conveniently the required information is actually specified in the CWL description file for this task, so we can automatically generate a template like so:
 
 ```
 # make a runtime JSON template and fill in desired inputs, outputs, and other parameters
 $ dockstore tool convert entry2json --entry quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0 > Dockstore.json
+```
+Edit the resulting file `params.json` and replace the `path` for `bam_input` (which defaults to `/tmp/fill_me_in.txt`)
+
+```
 $ vim Dockstore.json
 # note that the empty JSON config file has been filled with an input file retrieved via http
 $ cat Dockstore.json
@@ -39,11 +37,28 @@ $ cat Dockstore.json
     "class": "File"
   }
 }
-# run it locally with the Dockstore CLI
+```
+
+Note that any BAM file will work as long as it's accessible!
+
+We also have to specify the output by changing the `bamstats_report` path, but here we get to make it anything we want (as long as it's in a valid directory). I suggest `/tmp/bamstats_report.zip`.<sup>1</sup>
+
+```
 $ dockstore tool launch --entry quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0 --json Dockstore.json
 ```
 
 This information is also provided in the "Launch With" section of every tool. 
+
+This command will now:
+* download the CWL description for that task from the dockstore;
+* pull down the docker container for that task;
+* download the BAM data file to the local computer;
+* execute the specified task;
+* place the results in the specified location.
+
+The results should be a zipfile - you can try `unzip -v /tmp/bamstats_report.zip` to see its contents.
+
+<sup>1</sup> Note that you can also get input from and output to locations like AWS S3 and ICGC Storage by using file provisioning plugins documented [here](https://dockstore.org/docs/advanced-features#file-provisioning). Remember to either run `dockstore plugin download` to install default plugins or install your own plugins in this case
 
 ### Launch Workflows
 
@@ -78,6 +93,8 @@ $ cwltool --non-strict https://www.dockstore.org:8443/api/ga4gh/v1/tools/quay.io
 ```
 
 A similar invocation can be attempted in other CWL-compatible systems. 
+
+You can stop here if you simply want to run tools and workflows locally. Continue onwards to learn more about possible solutions for running tools and workflows in large volumes. 
 
 ## Batch Services 
 
@@ -117,3 +134,5 @@ consonance run --tool-dockstore-id quay.io/collaboratory/dockstore-tool-bamstats
 While launching tools and workflows locally is useful for testing, this approach is not useful for processing a large amount of data in a production environment. The next step is to take our Docker images, described by CWL/WDL and run them in an environment that supports those descriptors. For now, we can suggest taking a look at the environments that currently support and are validated with CWL at [https://ci.commonwl.org/](https://ci.commonwl.org/) and for WDL, [Cromwell](https://github.com/broadinstitute/cromwell).
 
 For developers, you may also wish to look at general commercial solutions such as [Google dsub](https://github.com/googlegenomics/task-submission-tools) and [AWS Batch](https://aws.amazon.com/batch/). 
+
+If you wish to learn more about Dockstore from the perspective of a tool or workflow developer, you are also welcome to pick up from [Getting Started With Docker](docs/getting-started-with-docker).

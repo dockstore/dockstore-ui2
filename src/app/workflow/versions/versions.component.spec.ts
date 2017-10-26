@@ -63,6 +63,7 @@ describe('VersionsWorkflowComponent', () => {
   });
   it('should update default version and then set current workflow based on response', () => {
     const workflowVersion: WorkflowVersion = {id: 5, reference: 'stuff', name: 'name'};
+    component.publicPage = false;
     component.updateDefaultVersion('name');
     fixture.detectChanges();
     workflowService.workflow$.subscribe(workflow => expect(workflow).toEqual(updatedWorkflow));

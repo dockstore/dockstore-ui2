@@ -26,13 +26,15 @@
       </a>
     </li>
     <li *ngIf="tool?.providerUrl">
-      <strong tooltip="Git repository for the associated tool descriptors and Dockerfile">GitHub</strong>:
+        <strong tooltip="Source code repository for the associated tool descriptors and Dockerfile">
+            {{ tool?.provider}}
+          </strong>:
       <a [href]="tool?.providerUrl">
         {{ tool?.providerUrl }}
       </a>
     </li>
     <li *ngIf="tool?.imgProviderUrl">
-      <strong tooltip="Docker registry for the associated Docker images">Quay.io</strong>:
+      <strong tooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
       <a [href]="tool?.imgProviderUrl">
         {{ tool?.imgProviderUrl }}
       </a>

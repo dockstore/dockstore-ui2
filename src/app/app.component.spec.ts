@@ -1,3 +1,5 @@
+import { RouterTestingModule } from '@angular/router/testing';
+import { RouterStub } from './test';
 import { ToasterModule } from './shared/toaster/toaster.module';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
 import { TestBed, async } from '@angular/core/testing';
@@ -22,7 +24,7 @@ describe('AppComponent', () => {
         NavbarStubComponent, SponsorsStubComponent, FooterStubComponent,
         RouterLinkStubDirective, RouterOutletStubComponent
       ],
-      imports: [ToasterModule]
+      imports: [RouterTestingModule, ToasterModule]
     }).compileComponents();
   }));
 

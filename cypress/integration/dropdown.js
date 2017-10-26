@@ -67,48 +67,49 @@ describe('Dropdown test', function() {
                 .get('h4').contains('GitLab').contains('Link Account')
         });
 
-        it('Go through steps', function() {
-            // Should start on step 1
-            cy
-                .get('h3').contains('Step 1')
-                .should('be.visible')
-            cy
-                .get('h3').contains('Step 2')
-                .should('not.be.visible')
-            cy
-                .get('h3').contains('Step 3')
-                .should('not.be.visible')
-            cy
-                .get('#next_step')
-                .click()
-
-            // Should now be on step 2
-            cy
-                .get('h3').contains('Step 1')
-                .should('not.be.visible')
-            cy
-                .get('h3').contains('Step 2')
-                .should('be.visible')
-            cy
-                .get('h3').contains('Step 3')
-                .should('not.be.visible')
-            cy
-                .get('#next_step')
-                .click()
-
-            // Should now be on step 3
-            cy
-                .get('h3').contains('Step 1')
-                .should('not.be.visible')
-            cy
-                .get('h3').contains('Step 2')
-                .should('not.be.visible')
-            cy
-                .get('h3').contains('Step 3')
-                .should('be.visible')
-            cy
-                .get('#finish_step')
-                .click()
-        });
+        // TODO: this part of the wizard has been reworked
+        // it('Go through steps', function() {
+        //     // Should start on step 1
+        //     cy
+        //         .get('h3').contains('Step 1')
+        //         .should('be.visible')
+        //     cy
+        //         .get('h3').contains('Step 2')
+        //         .should('not.be.visible')
+        //     cy
+        //         .get('h3').contains('Step 3')
+        //         .should('not.be.visible')
+        //     cy
+        //         .get('#next_step')
+        //         .click()
+        //
+        //     // Should now be on step 2
+        //     cy
+        //         .get('h3').contains('Step 1')
+        //         .should('not.be.visible')
+        //     cy
+        //         .get('h3').contains('Step 2')
+        //         .should('be.visible')
+        //     cy
+        //         .get('h3').contains('Step 3')
+        //         .should('not.be.visible')
+        //     cy
+        //         .get('#next_step')
+        //         .click()
+        //
+        //     // Should now be on step 3
+        //     cy
+        //         .get('h3').contains('Step 1')
+        //         .should('not.be.visible')
+        //     cy
+        //         .get('h3').contains('Step 2')
+        //         .should('not.be.visible')
+        //     cy
+        //         .get('h3').contains('Step 3')
+        //         .should('be.visible')
+        //     cy
+        //         .get('#finish_step')
+        //         .click()
+        // });
     });
 });

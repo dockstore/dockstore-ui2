@@ -26,6 +26,7 @@ import { AccountsComponent } from './loginComponents/accounts/accounts.component
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { SearchComponent } from './search/search.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
+import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
@@ -41,6 +42,7 @@ const APP_ROUTES: Routes = [
   { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard] },
   { path: 'search*', component: SearchComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'quick-start', component: QuickStartComponent },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
   { path: 'auth/:provider', component: AuthComponent },
