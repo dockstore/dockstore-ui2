@@ -23,6 +23,7 @@ export const formErrors = {
   'label': '',
   'cwlTestParameterFilePath': '',
   'wdlTestParameterFilePath': '',
+  'testParameterFilePath': '',
   'toolName': '',
   'email': '',
   'reference': '',
@@ -43,7 +44,10 @@ export const validationPatterns = {
   'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
   'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
-  'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*'
+  'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
+  'cwlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$'
 };
 
 export const validationMessages = {
