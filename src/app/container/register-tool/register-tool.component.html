@@ -15,7 +15,7 @@
   -->
 <div *ngIf="isModalShown">
 <div [config]="{ show: true }" (onHidden)="hideModal()" bsModal #registerToolModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true" (onHide)=hideModal()>
+  role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -169,7 +169,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="registerToolModal.hide()">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideModal()">
             Close
           </button>
           <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerToolForm.form.valid || savingActive || refreshMessage !== null || isInvalidCustomRegistry() || isInvalidPrivateTool()">
