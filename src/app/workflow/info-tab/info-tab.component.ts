@@ -48,7 +48,8 @@ export class InfoTabComponent implements OnInit {
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
-  get workflow(): Workflow {
+  get workflow(): any {
+    // console.log(this.infoTabService.workflow);
     return this.infoTabService.workflow;
   }
 

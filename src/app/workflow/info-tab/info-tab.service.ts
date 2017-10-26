@@ -36,7 +36,7 @@ export class InfoTabService {
      * @type {Workflow}
      * @memberof InfoTabService
      */
-    private originalWorkflow: Workflow;
+    private originalWorkflow: any;
 
 
     /**
@@ -46,7 +46,7 @@ export class InfoTabService {
      * @type {Workflow}
      * @memberof InfoTabService
      */
-    private currentWorkflow: Workflow;
+    private currentWorkflow: any;
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService) {
@@ -79,11 +79,11 @@ export class InfoTabService {
         });
     }
 
-    get workflow(): Workflow {
+    get workflow(): any {
         return this.currentWorkflow;
     }
 
-    set workflow(workflow: Workflow) {
+    set workflow(workflow: any) {
         this.originalWorkflow = workflow;
         this.currentWorkflow = Object.assign({}, workflow);
     }
