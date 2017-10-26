@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
+  
 <ul class="list-unstyled container-info" *ngIf="workflow">
   <li *ngIf="workflow?.path">
     <strong tooltip="Complete path of workflow, used as a unique identifier">
@@ -45,11 +45,16 @@
         <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
       </div>
-      <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || refreshMessage !== null" class="btn btn-link push-right" style="padding: 3px 12px!important;"
-        (click)="toggleEditWorkflowPath()">
-        <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
-        {{ workflowPathEditing ? 'Save' : 'Edit' }}
-      </button>
+      <div class="btn-group pull-right" role="group" aria-label="Basic example">
+        <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+          <span class="glyphicon glyphicon-remove"></span> Cancel
+        </button>
+        <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || refreshMessage !== null" class="btn btn-link"
+          (click)="toggleEditWorkflowPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
+          {{ workflowPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </div>
     </form>
     <form #editTestFilePathForm="ngForm" class="form-inline">
       <div class="form-group">
@@ -67,7 +72,8 @@
   </li>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
-    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && !workflow?.is_published" (click)="restubWorkflow()" [disabled]="refreshMessage !== null">
+    <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && !workflow?.is_published" (click)="restubWorkflow()"
+      [disabled]="refreshMessage !== null">
       <span class="glyphicon glyphicon-remove"></span> Restub
     </button>
   </li>
@@ -92,10 +98,12 @@
       <markdown [data]="workflow?.description"></markdown>
     </div>
     <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
-      <span class = "glyphicon glyphicon-warning-sign"></span>
+      <span class="glyphicon glyphicon-warning-sign"></span>
       <span ng-show="!containerObj.description">
-                No description associated with this workflow. See <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
-              </span>
+        No description associated with this workflow. See
+        <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and
+        <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+      </span>
     </div>
   </div>
   <div *ngIf="validVersions">

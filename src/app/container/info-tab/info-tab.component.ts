@@ -30,7 +30,6 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
-  tool: ExtendedDockstoreTool;
   public validationPatterns = validationPatterns;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
@@ -43,13 +42,16 @@ export class InfoTabComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.containerService.tool$.subscribe(tool => this.tool = tool);
     this.infoTabService.dockerFileEditing$.subscribe(editing => this.dockerFileEditing = editing);
     this.infoTabService.cwlPathEditing$.subscribe(editing => this.cwlPathEditing = editing);
     this.infoTabService.wdlPathEditing$.subscribe(editing => this.wdlPathEditing = editing);
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
+  }
+
+  get tool(): ExtendedDockstoreTool {
+    return this.infoTabService.tool;
   }
 
   toggleEditDockerFile() {
@@ -90,4 +92,12 @@ export class InfoTabComponent implements OnInit {
     return this.dockerFileEditing || this.cwlPathEditing || this.wdlPathEditing || this.cwlTestPathEditing || this.wdlTestPathEditing;
   }
 
+  /**
+   * Cancel button function
+   *
+   * @memberof InfoTabComponent
+   */
+  cancelEditing(): void {
+    this.infoTabService.cancelEditing();
+  }
 }

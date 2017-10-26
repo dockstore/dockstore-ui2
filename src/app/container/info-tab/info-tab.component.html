@@ -26,9 +26,9 @@
       </a>
     </li>
     <li *ngIf="tool?.providerUrl">
-        <strong tooltip="Source code repository for the associated tool descriptors and Dockerfile">
-            {{ tool?.provider}}
-          </strong>:
+      <strong tooltip="Source code repository for the associated tool descriptors and Dockerfile">
+        {{ tool?.provider}}
+      </strong>:
       <a [href]="tool?.providerUrl">
         {{ tool?.providerUrl }}
       </a>
@@ -47,11 +47,16 @@
           <input *ngIf="dockerFileEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" type="text" class="input-default form-control"
             name="contDockerfilePath" [(ngModel)]="tool.default_dockerfile_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
-          (click)="toggleEditDockerFile()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
-          {{ dockerFileEditing ? 'Save' : 'Edit' }}
-        </button>
+        <div class="btn-group push-right" role="group" aria-label="Basic example">
+          <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editCWLTestPathForm.valid))"  class="btn btn-link"
+            (click)="toggleEditDockerFile()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
+            {{ dockerFileEditing ? 'Save' : 'Edit' }}
+          </button>
+        </div>
       </form>
     </li>
     <li *ngIf="tool?.default_cwl_path">
@@ -59,15 +64,20 @@
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
           <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
-          <input *ngIf="cwlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control" name="contCWLPath" [(ngModel)]="tool.default_cwl_path" placeholder="e.g. /Dockerfile" />
+          <input *ngIf="cwlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control"
+            name="contCWLPath" [(ngModel)]="tool.default_cwl_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
-          (click)="toggleEditCWLPath()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
-          {{ cwlPathEditing ? 'Save' : 'Edit' }}
-        </button>
+        <div class="btn-group push-right" role="group" aria-label="Basic example">
+          <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link"
+            (click)="toggleEditCWLPath()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
+            {{ cwlPathEditing ? 'Save' : 'Edit' }}
+          </button>
+        </div>
       </form>
-
     </li>
     <li *ngIf="tool?.default_wdl_path">
       <form #editWDLPathForm="ngForm" class="form-inline">
@@ -77,11 +87,16 @@
           <input *ngIf="wdlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
             name="contWDLPath" [(ngModel)]="tool.default_wdl_path" placeholder="e.g. /Dockerfile" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
-          (click)="toggleEditWDLPath()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
-          {{ wdlPathEditing ? 'Save' : 'Edit' }}
-        </button>
+        <div class="btn-group push-right" role="group" aria-label="Basic example">
+          <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editCWLTestPathForm.valid))" class="btn btn-link"
+            (click)="toggleEditWDLPath()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
+            {{ wdlPathEditing ? 'Save' : 'Edit' }}
+          </button>
+        </div>
       </form>
     </li>
    <li>
@@ -91,7 +106,7 @@
           <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
           <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /test.cwl.json" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right"
           (click)="toggleEditCWLTestPath()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlTestPathEditing, 'glyphicon-save': cwlTestPathEditing }"></span>
           {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
@@ -107,7 +122,7 @@
           <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
             name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /test.wdl.json" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right" style="padding: 3px 12px!important;"
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right"
           (click)="toggleEditWDLTestPath()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlTestPathEditing, 'glyphicon-save': wdlTestPathEditing }"></span>
           {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
@@ -132,10 +147,12 @@
       <markdown [data]="tool?.description"></markdown>
     </div>
     <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
-      <span class = "glyphicon glyphicon-warning-sign"></span>
+      <span class="glyphicon glyphicon-warning-sign"></span>
       <span ng-show="!containerObj.description">
-              No description associated with this tool. See <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
-            </span>
+        No description associated with this tool. See
+        <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and
+        <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+      </span>
     </div>
   </div>
   <div *ngIf="validVersions">

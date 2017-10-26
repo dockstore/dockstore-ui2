@@ -1,3 +1,4 @@
+import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
@@ -28,11 +29,31 @@ export class InfoTabService {
     public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private tool;
     private tools;
+
+    /**
+     * The original tool that should be in sync with the database
+     *
+     * @private
+     * @type {ExtendedDockstoreTool}
+     * @memberof InfoTabService
+     */
+    private originalTool: ExtendedDockstoreTool;
+
+    /**
+     * The tool with info that may have been modified but not saved
+     *
+     * @private
+     * @type {ExtendedDockstoreTool}
+     * @memberof InfoTabService
+     */
+    private currentTool: ExtendedDockstoreTool;
     constructor(private containersService: ContainersService, private stateService: StateService,
         private containerService: ContainerService, private refreshService: RefreshService) {
-        this.containerService.tool$.subscribe(tool => this.tool = tool);
+        this.containerService.tool$.subscribe(tool => {
+            this.tool = tool;
+            this.cancelEditing();
+        });
         this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
     setDockerFileEditing(editing: boolean) {
@@ -63,7 +84,51 @@ export class InfoTabService {
                 this.containerService.replaceTool(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
                 this.refreshService.handleSuccess(message);
-            }, error => this.refreshService.handleError(message, error));
+            }, error => {
+                this.refreshService.handleError(message, error);
+                this.restoreTool();
+            });
         });
+    }
+
+    get tool(): ExtendedDockstoreTool {
+        return this.currentTool;
+    }
+
+    set tool(tool: ExtendedDockstoreTool) {
+        this.originalTool = tool;
+        this.currentTool = Object.assign({}, tool);
+    }
+
+    /**
+     * Cancels editing for all editable fields
+     *
+     * @memberof InfoTabService
+     */
+    cancelEditing(): void {
+        this.dockerFileEditing$.next(false);
+        this.cwlPathEditing$.next(false);
+        this.wdlPathEditing$.next(false);
+        this.wdlTestPathEditing$.next(false);
+        this.cwlTestPathEditing$.next(false);
+        this.restoreTool();
+    }
+
+    /**
+     * Reverts the tool info back to the original
+     *
+     * @memberof InfoTabService
+     */
+    restoreTool(): void {
+        this.tool = this.originalTool;
+    }
+
+    /**
+     * Saves the current workflow into the workflow variable
+     *
+     * @memberof InfoTabService
+     */
+    saveTool(): void {
+        this.tool = this.currentTool;
     }
 }

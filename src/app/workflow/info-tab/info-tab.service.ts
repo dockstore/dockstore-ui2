@@ -28,11 +28,32 @@ export class InfoTabService {
     public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private workflows: Workflow[];
-    private workflow: Workflow;
+
+    /**
+     * The original workflow that should be in sync with the database
+     *
+     * @private
+     * @type {Workflow}
+     * @memberof InfoTabService
+     */
+    private originalWorkflow: Workflow;
+
+
+    /**
+     * The workflow with info that may have been modified but not saved
+     *
+     * @private
+     * @type {Workflow}
+     * @memberof InfoTabService
+     */
+    private currentWorkflow: Workflow;
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService) {
-        this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+        this.workflowService.workflow$.subscribe(workflow => {
+            this.workflow = workflow;
+            this.cancelEditing();
+        });
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
     setWorkflowPathEditing(editing: boolean) {
@@ -45,13 +66,53 @@ export class InfoTabService {
 
     updateAndRefresh(workflow: Workflow) {
         const message = 'Workflow Info';
-        this.workflowsService.updateWorkflow(this.workflow.id, workflow).subscribe(response => {
+        this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
             this.stateService.setRefreshMessage('Updating ' + message + '...');
-            this.workflowsService.refresh(this.workflow.id).subscribe(refreshResponse => {
+            this.workflowsService.refresh(this.originalWorkflow.id).subscribe(refreshResponse => {
                 this.workflowService.replaceWorkflow(this.workflows, refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
                 this.refreshService.handleSuccess(message);
-            }, error => this.refreshService.handleError(message, error));
+            }, error => {
+                this.refreshService.handleError(message, error);
+                this.restoreWorkflow();
+            });
         });
+    }
+
+    get workflow(): Workflow {
+        return this.currentWorkflow;
+    }
+
+    set workflow(workflow: Workflow) {
+        this.originalWorkflow = workflow;
+        this.currentWorkflow = Object.assign({}, workflow);
+    }
+
+    /**
+     * Cancels editing for all editable fields and reverts the workflow back to the original
+     *
+     * @memberof InfoTabService
+     */
+    cancelEditing(): void {
+        this.workflowPathEditing$.next(false);
+        this.restoreWorkflow();
+    }
+
+    /**
+     * Reverts the workflow info back to the original
+     *
+     * @memberof InfoTabService
+     */
+    restoreWorkflow(): void {
+        this.workflow = this.originalWorkflow;
+    }
+
+    /**
+     * Saves the current workflow into the workflow variable
+     *
+     * @memberof InfoTabService
+     */
+    saveWorkflow(): void {
+        this.workflow = this.currentWorkflow;
     }
 }
