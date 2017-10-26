@@ -59,26 +59,20 @@ server-url: {{dsServerURI}}</textarea>
 <p>If you want to launch CWL tools and workflows, Dockstore relies upon <a
   href="https://github.com/common-workflow-language/cwltool">cwltool</a> being available on your PATH.This will require <a href="https://pip.pypa.io/en/latest/installing/">pip</a> if it is not already installed.</p>
 <p>You can install the version of cwltool that we've tested for use with Dockstore using the following commands:</p>
-<ol>
-  <li>
-    Run this to verify that pip has been installed
-    <code>pip --version</code>
-  </li>
-  <li>
-    Run these commands to install cwltool
-    <pre>
+<div Markdown>
+1. Run this to verify that pip has been installed `pip --version`
+2. Run these commands to install cwltool
+```
 pip install setuptools==36.5.0
-pip install cwl-runner cwltool=={{ cwltoolVersion }} schema-salad==2.6.20170806163416 avro==1.8.1 ruamel.yaml==0.14.12 requests==2.18.4</pre>
-  </li>
-  <li>
-    Install Docker following the instructions on <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">Docker's
-    website</a>. Ensure that you are able to run Docker without using sudo directly with the <a href="https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user">post install instructions</a>.
-    <pre>
+pip install cwl-runner cwltool==1.0.20170828135420 schema-salad==2.6.20170806163416 avro==1.8.1 ruamel.yaml==0.14.12 requests==2.18.4
+```
+3. Install Docker following the instructions on [Docker's
+website](https://docs.docker.com/engine/installation/linux/ubuntulinux/). Ensure that you are able to run Docker without using sudo directly with the [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
+```
 sudo usermod -aG docker $USER
-exec newgrp docker</pre>
-  </li>
-</ol>
-
+exec newgrp docker
+```
+</div>
 <h4>Part 4</h4>
 <p></p>
 <ol>
