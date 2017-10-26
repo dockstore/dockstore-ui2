@@ -45,7 +45,7 @@
         <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
           name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
       </div>
-      <div class="btn-group pull-right" role="group" aria-label="Basic example">
+      <div class="btn-group push-right" role="group" aria-label="Basic example">
         <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
           <span class="glyphicon glyphicon-remove"></span> Cancel
         </button>
