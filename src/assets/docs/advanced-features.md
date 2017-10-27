@@ -4,7 +4,7 @@
 
 As a convenience, the dockstore command-line can perform file provisioning for inputs and outputs.
 
-File provisioning for some protocols like http and ftp is built in while other protocols are handled by plugins as documented [here](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent). 
+File provisioning for some protocols like HTTP and FTP is built in while other protocols are handled by plugins as documented [here](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent). 
 
 To illustrate, for this [tool](https://dockstore.org/containers/quay.io/collaboratory/dockstore-tool-bamstats) we provide a couple of parameter files that can be used to parameterize a run of bamstats.
 
@@ -23,7 +23,7 @@ In the following JSON file, this file indicates for a CWL run that the input fil
 }
 ```
 
-The Dockstore command-line allows you to specify that the input file can be at a http(s) location, an ftp location, an AWS S3 location, a [synapse id](http://python-docs.synapse.org/#accessing-data), or an [ICGC storage id](http://docs.icgc.org/cloud/guide/#cloud-guide) in place of that path. For example the following indicates that the input file will be downloaded under http.
+The Dockstore command-line allows you to specify that the input file can be at a HTTP(S) location, an FTP location, an AWS S3 location, a [synapse id](http://python-docs.synapse.org/#accessing-data), or an [ICGC storage id](http://docs.icgc.org/cloud/guide/#cloud-guide) in place of that path. For example the following indicates that the input file will be downloaded under HTTP.
 
 ```
 {
@@ -85,9 +85,9 @@ By default, Dockstore will attempt to download files up to three times. Control 
 
 ## Running CWL-runner with extra tags
 
-When running a CWL tool, you may want to add additional parameters/flags to the cwl-runner command. You can do this by updating your dockstore config file (~/.dockstore/config).
+When running a CWL tool, you may want to add additional parameters/flags to the cwl-runner command. You can do this by updating your dockstore config file (`~/.dockstore/config`).
 
-As an example, adding the following line to your config file will stop cwl-runner from cleaning up, make it run in debug mode, and set the outdir to '/new/outputdir'
+As an example, adding the following line to your config file will stop cwl-runner from cleaning up, make it run in debug mode, and set the outdir to `/new/outputdir`
 
 ```
 cwltool-extra-parameters: --debug, --leave-container, --leave-tmpdir, --outdir /new/outputdir

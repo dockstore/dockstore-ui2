@@ -1,6 +1,6 @@
 # Docker Registries
 
-There are a number of alternative Docker Registries aside from Docker Hub and Quay.io. These registries are a combination of public registries and private registries.
+There are a number of alternative Docker Registries aside from Quay.io, Docker Hub and GitLab. These registries are a combination of public registries and private registries.
 
 ## Public vs Private Docker Registries
 
