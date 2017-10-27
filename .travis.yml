@@ -15,7 +15,7 @@ env:
     - RUN_PROD=true
 addons:
   firefox: "latest"
-  postgresql: "9.4"
+  postgresql: "9.6"
   chrome: stable
 
 before_install:
