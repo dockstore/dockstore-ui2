@@ -15,7 +15,7 @@
   -->
 <div *ngIf="isModalShown">
 <div [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true" (onHide)=hideModal()>
+  role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -104,7 +104,7 @@
           <div class="form-group form-group-sm" style="clear:both;">
             <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
               <div class="input-group">
-                <input type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <input type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" disabled ng-class="editMode ? 'test_parameter_input' : ''" />
                 <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" *ngIf="editMode" (click)="removeTestParameterFile(i, DescriptorType.CWL)">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
