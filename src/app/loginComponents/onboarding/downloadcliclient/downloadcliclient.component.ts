@@ -49,7 +49,7 @@ sudo apt-get update && sudo apt-get install -y oracle-java8-set-default
 \`\`\`
 3. Install the dockstore command-line program and add it to the path
 \`\`\`
-mkdir ~/bin
+mkdir -p ~/bin
 curl -L -o ~/bin/dockstore ${this.downloadCli}
 chmod +x ~/bin/dockstore
 echo 'export PATH=~/bin:$PATH' >> ~/.bashrc
