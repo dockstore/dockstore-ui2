@@ -26,7 +26,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class InfoTabService {
     public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public descriptorTypeEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private workflows: Workflow[];
 
     /**
@@ -36,7 +36,7 @@ export class InfoTabService {
      * @type {Workflow}
      * @memberof InfoTabService
      */
-    private originalWorkflow: Workflow;
+    private originalWorkflow: any;
 
 
     /**
@@ -46,7 +46,7 @@ export class InfoTabService {
      * @type {Workflow}
      * @memberof InfoTabService
      */
-    private currentWorkflow: Workflow;
+    private currentWorkflow: any;
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService) {
@@ -60,8 +60,8 @@ export class InfoTabService {
         this.workflowPathEditing$.next(editing);
     }
 
-    setDescriptorTypeEditing(editing: boolean) {
-        this.descriptorTypeEditing$.next(editing);
+    setDefaultTestFilePathEditing(editing: boolean) {
+        this.defaultTestFilePathEditing$.next(editing);
     }
 
     updateAndRefresh(workflow: Workflow) {
@@ -79,11 +79,11 @@ export class InfoTabService {
         });
     }
 
-    get workflow(): Workflow {
+    get workflow(): any {
         return this.currentWorkflow;
     }
 
-    set workflow(workflow: Workflow) {
+    set workflow(workflow: any) {
         this.originalWorkflow = workflow;
         this.currentWorkflow = Object.assign({}, workflow);
     }
@@ -95,7 +95,6 @@ export class InfoTabService {
      */
     cancelEditing(): void {
         this.workflowPathEditing$.next(false);
-        this.descriptorTypeEditing$.next(false);
         this.restoreWorkflow();
     }
 

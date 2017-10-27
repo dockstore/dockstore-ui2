@@ -413,7 +413,8 @@ export class WorkflowsStubService {
             'organization': 'refreshedOrganization',
             'repository': 'refreshedRepository',
             'workflow_path': 'refreshedWorkflowPath',
-            'workflowVersions': []
+            'workflowVersions': [],
+            'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath'
         };
         return Observable.of(refreshedWorkflow);
     }
@@ -503,7 +504,9 @@ export class ContainersStubService {
             namespace: 'refreshedNamespace',
             private_access: false,
             registry: DockstoreTool.RegistryEnum.QUAYIO,
-            toolname: 'refreshedToolname'
+            toolname: 'refreshedToolname',
+            defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
+            defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
         };
         return Observable.of(tool);
     }

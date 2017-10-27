@@ -60,7 +60,9 @@ describe('RefreshService', () => {
                 namespace: 'refreshedNamespace',
                 private_access: false,
                 registry: DockstoreTool.RegistryEnum.QUAYIO,
-                toolname: 'refreshedToolname'
+                toolname: 'refreshedToolname',
+                defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
+                defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
             };
         service.refreshTool();
         stateService.refreshMessage$.subscribe(refreshing => {
@@ -79,7 +81,8 @@ describe('RefreshService', () => {
                 'organization': 'refreshedOrganization',
                 'repository': 'refreshedRepository',
                 'workflow_path': 'refreshedWorkflowPath',
-                'workflowVersions': []
+                'workflowVersions': [],
+                'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath'
             };
         service.refreshWorkflow();
         stateService.refreshMessage$.subscribe(refreshing => {

@@ -41,7 +41,8 @@ describe('WorkflowService', () => {
             'organization': 'replacedOrganization',
             'repository': 'replacedRepository',
             'workflow_path': 'replacedWorkflowPath',
-            'workflowVersions': []
+            'workflowVersions': [],
+            'defaultTestParameterFilePath': 'replacedDefaultTestParameterFilePath'
         };
         service.replaceWorkflow(workflows, newSampleWorkflow1);
         expect(service.workflows$.getValue()).toEqual([newSampleWorkflow1, sampleWorkflow2, sampleWorkflow3]);

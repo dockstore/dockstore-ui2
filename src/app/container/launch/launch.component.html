@@ -16,10 +16,13 @@
 
 <div *ngIf="versions?.length > 0">
   <span>
-    <label tooltip="Commands to launch workflow from the command line">Launch With</label>
-    <div class="pull-right"><app-select class="text-right" [items]="versions" [default]="default"
-                                        [field]="'name'" (select)="onVersionChange($event)"></app-select>
-    <app-select class="text-right" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select></div>
+    <div class="form-inline">
+      <label tooltip="Commands to launch workflow from the command line">Launch With</label>
+      <div class="pull-right">
+        <app-select class="text-right" [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
+        <app-select class="text-right" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+      </div>
+    </div>
   </span>
 
   <div class="well">

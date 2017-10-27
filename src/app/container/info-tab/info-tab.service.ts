@@ -27,6 +27,8 @@ export class InfoTabService {
     public dockerFileEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public cwlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
 
     /**
@@ -66,6 +68,14 @@ export class InfoTabService {
         this.wdlPathEditing$.next(editing);
     }
 
+    setCWLTestPathEditing(editing: boolean) {
+        this.cwlTestPathEditing$.next(editing);
+    }
+
+    setWDLTestPathEditing(editing: boolean) {
+        this.wdlTestPathEditing$.next(editing);
+    }
+
     updateAndRefresh(tool: any) {
         const message = 'Tool Info';
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
@@ -99,6 +109,8 @@ export class InfoTabService {
         this.dockerFileEditing$.next(false);
         this.cwlPathEditing$.next(false);
         this.wdlPathEditing$.next(false);
+        this.wdlTestPathEditing$.next(false);
+        this.cwlTestPathEditing$.next(false);
         this.restoreTool();
     }
 

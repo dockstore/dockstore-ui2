@@ -23,6 +23,7 @@ export const formErrors = {
   'label': '',
   'cwlTestParameterFilePath': '',
   'wdlTestParameterFilePath': '',
+  'testParameterFilePath': '',
   'toolName': '',
   'email': '',
   'reference': '',
@@ -43,7 +44,10 @@ export const validationPatterns = {
   'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
   'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
-  'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*'
+  'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
+  'cwlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$'
 };
 
 export const validationMessages = {
@@ -91,6 +95,13 @@ export const validationMessages = {
     'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
   'wdlTestParameterFilePath': {
+    'required': 'This field cannot be empty.',
+    'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
+    'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
+    'pattern': 'Invalid Test parameter file format. ' +
+    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+  },
+  'testParameterFilePath': {
     'required': 'This field cannot be empty.',
     'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
     'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',

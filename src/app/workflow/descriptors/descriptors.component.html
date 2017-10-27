@@ -14,13 +14,13 @@
   ~    limitations under the License.
   -->
 
-<div>
-  <span *ngIf="versions?.length > 0">
-    <strong>Workflow Version:</strong>
-    <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
-    <strong>File:</strong>
-    <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-  </span>
+  <div>
+    <span *ngIf="versions?.length > 0">
+      <strong>Workflow Version:</strong>
+      <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
+      <strong>File:</strong>
+      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+    </span>
   <div *ngIf="this.nullDescriptors">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
@@ -29,10 +29,9 @@
   </div>
   <div *ngIf="!this.nullDescriptors" class="code-copy">
     <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content"
-            [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_descriptors_file'}"
-            (cbOnSuccess)="workflowCopyBtnClick('workflow_descriptors_file')">
-      <span class="glyphicon glyphicon-copy"></span>
-    </button>
-    <section *ngIf="content" [innerHTML]="fileService.highlightCode(content)"></section>
-  </div>
+    [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_descriptors_file'}"
+    (cbOnSuccess)="workflowCopyBtnClick('workflow_descriptors_file')">
+    <span class="glyphicon glyphicon-copy"></span>
+  </button>
+  <section *ngIf="content" [innerHTML]="fileService.highlightCode(content)"></section>
 </div>

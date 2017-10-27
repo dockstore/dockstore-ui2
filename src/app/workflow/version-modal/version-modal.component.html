@@ -15,7 +15,7 @@
   -->
 <div *ngIf="isModalShown">
 <div [config]="{ show: true }" (onHidden)="hideModal()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true">
+  role="dialog" aria-hidden="true" (onHide)=hideModal()>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -64,9 +64,9 @@
             <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
               <div class="input-group">
                 <input type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128"
-                  [pattern]="validationPatterns.testFilePath" [tooltip]="tooltip.testParameterFile" placeholder="e.g. /test.wdl.json"
+                  [pattern]="validationPatterns.testFilePath" [tooltip]="tooltip.testParameterFile" placeholder="e.g. /test.json"
                   [disabled]="isPublic" ng-class="editMode ? 'test_parameter_input' : ''" />
-                <button tooltip="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile()"
+                <button tooltip="Add test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile()"
                   [disabled]="testParameterFilePath.length < 1">
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
@@ -80,7 +80,7 @@
             <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
               <div class="input-group">
                 <input type="text" class="form-control" name="testParameterFilePaths[{{i}}]" [(ngModel)]="testParameterFilePaths[i]" readonly [tooltip]="tooltip.testParameterFile"/>
-                <button tooltip="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
+                <button tooltip="Remove test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
               </div>

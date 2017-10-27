@@ -33,7 +33,8 @@ export class RegisterWorkflowModalService {
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
-    constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService,
+    constructor(private workflowsService: WorkflowsService,
+        private workflowService: WorkflowService,
         private stateService: StateService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
@@ -68,14 +69,15 @@ export class RegisterWorkflowModalService {
         this.setWorkflow(this.actualWorkflow);
     }
 
-    registerWorkflow(testParameterFilePath: string) {
+    registerWorkflow() {
         this.stateService.setRefreshMessage('Registering workflow...');
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
             this.actualWorkflow.workflow_path,
             this.actualWorkflow.workflowName,
-            this.actualWorkflow.descriptorType).subscribe(result => {
+            this.actualWorkflow.descriptorType,
+            this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
