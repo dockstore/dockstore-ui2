@@ -29,7 +29,7 @@ export class DocsService {
                        'Getting Started with Dockstore'),
     new Doc('docker_registries',
                       `This page talks about the various Docker registries supported by Dockstore,
-                      and the best practices for using these registries.`,
+                      and the best practices for using these registries`,
                       'Docker Registries') ,
     new Doc('public_private_tools',
                       'This page talks about the difference between public and private Dockstore tools.',
