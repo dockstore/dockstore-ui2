@@ -47,8 +47,6 @@ describe('ContainerService', () => {
     it('should replace tool', inject([ContainerService], (service: ContainerService) => {
         const tools: DockstoreTool[] = [sampleTool1, sampleTool2, sampleTool3];
         const newSampleTool1: DockstoreTool = {
-            defaultCWLTestParameterFile: '',
-            defaultWDLTestParameterFile: '',
             id: 1,
             default_cwl_path: 'sampleDefaultCWLPath',
             default_dockerfile_path: 'sampleDefaultDockerfilePath',
@@ -59,7 +57,9 @@ describe('ContainerService', () => {
             namespace: 'sampleNamespace',
             private_access: false,
             registry: DockstoreTool.RegistryEnum.QUAYIO,
-            toolname: 'sampleToolname'
+            toolname: 'sampleToolname',
+            defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+            defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
         };
         service.replaceTool(tools, newSampleTool1);
         expect(service.tools$.getValue()).toEqual([newSampleTool1, sampleTool2, sampleTool3]);

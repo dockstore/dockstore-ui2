@@ -414,7 +414,7 @@ export class WorkflowsStubService {
             'repository': 'refreshedRepository',
             'workflow_path': 'refreshedWorkflowPath',
             'workflowVersions': [],
-            'defaultTestParameterFilePath': 'refreshedTestParameterPath'
+            'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath'
         };
         return Observable.of(refreshedWorkflow);
     }
