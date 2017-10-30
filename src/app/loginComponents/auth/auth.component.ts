@@ -58,7 +58,7 @@ export class AuthComponent implements OnInit, OnDestroy {
             return addGitLabToken;
           default: {
             console.log('Unknown provider: ' + provider);
-            return null;
+            return Observable.of(null);
           }
         }
       });
@@ -68,7 +68,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     const prevPage = localStorage.getItem('page');
 
     this.tokenSubscription = this.addToken().subscribe(token => {
-      this.tokenService.updateTokens();
+      if (token) {
+        this.tokenService.updateTokens();
+      }
       this.router.navigate([`${ prevPage }`]);
     });
   }
