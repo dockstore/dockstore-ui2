@@ -1,6 +1,6 @@
 # Search
 
-Dockstore now offers facited search, which allows for flexible querying of tools and workflows. Tabs are used to split up the results between tools and workflows. You can search for basic terms/phrases, filter using facets, and also used advanced search queries. Note that using advanced search after setting a basic search will override your basic search, and vice versa.
+Dockstore now offers faceted search, which allows for flexible querying of tools and workflows. Tabs are used to split up the results between tools and workflows. You can search for basic terms/phrases, filter using facets, and also used advanced search queries. Note that using advanced search after setting a basic search will override your basic search, and vice versa.
 
 ## Filtering Your Search
 ### Basic Search

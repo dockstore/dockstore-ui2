@@ -69,8 +69,8 @@ export class DocsService {
       'This page is for users of Azure, specifically Azure Batch',
       'Azure Batch'),
     new Doc('search',
-      'This page is for information on facited search.',
-      'Facited Search')
+      'This page is for information on faceted search.',
+      'Faceted Search')
   ];
 
   getDocs(): Doc[] {
