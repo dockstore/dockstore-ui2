@@ -52,8 +52,20 @@ export class ContainerStubService {
     replaceTool(tools: any, newTool: any) {
         return Observable.of(tools);
     }
+    getBuildMode(mode: DockstoreTool.ModeEnum) {
+        return 'Fully-Automated';
+    }
+    getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
+        return 'Fully-Automated: All versions are automated builds';
+    }
 }
-
+export class ProviderStubService {
+    setUpProvider(tool) {
+        tool.provider = 'a provider';
+        tool.providerUrl = 'a provider url';
+        return tool;
+    }
+}
 export class FileStubService { }
 export class DocsStubService {
     getDocs(): Doc[] {
@@ -336,7 +348,11 @@ export class StarEntryStubService {
 }
 
 export class ImageProviderStubService {
-
+    setUpImageProvider(tool) {
+        tool.imgProvider = 'Quay.io';
+        tool.imgProviderUrl = 'an image provider url';
+        return tool;
+      }
 }
 
 export class DagStubService {
@@ -373,6 +389,23 @@ export class DockstoreStubService {
     getIconClass() {
 
     }
+
+  /* Strip mailto from email field */
+  stripMailTo(email: string) {
+    return 'stripped email';
+  }
+
+  getVersionVerified(versions) {
+    return true;
+  }
+
+  getVerifiedSource(name: string, verifiedSource: any) {
+    return 'a verified source';
+  }
+
+  getVerifiedSources(tool) {
+    return [{version: 'c', verifiedSource: 'tester'}];
+  }
 }
 
 export class DateStubService {
@@ -380,7 +413,10 @@ export class DateStubService {
         return '/docs/faq#what-is-a-verified-tool-or-workflow-';
     }
     getDateTimeMessage() {
-
+        return 'a date time message';
+    }
+    getAgoMessage(timestamp: number) {
+        return 'an ago message';
     }
 }
 
