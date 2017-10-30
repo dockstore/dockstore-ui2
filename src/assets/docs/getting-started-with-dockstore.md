@@ -212,7 +212,7 @@ You can see in the above, the tool (identified with `quay.io/cancercollaboratory
 The `dockstore tool manual_publish` command can be used to manually register a tool on Docker Hub. Its usage is outlined in the publish_manual help menu. This will allow you to register entries that do not follow the qualities above (non-automated builds and Docker Hub images).
 
 ```
-$ dockstore tool manual_publish
+$ dockstore tool manual_publish --help
 
 HELP FOR DOCKSTORE
 ------------------
@@ -231,12 +231,18 @@ Required parameters:
   --git-reference <reference>  Reference to git branch or tag where the CWL and Dockerfile is checked-in
 
 Optional parameters:
-  --dockerfile-path <file>     Path for the dockerfile, defaults to /Dockerfile
-  --cwl-path <file>            Path for the CWL document, defaults to /Dockstore.cwl
-  --wdl-path <file>            Path for the WDL document, defaults to /Dockstore.wdl
-  --toolname <toolname>        Name of the tool, can be omitted, defaults to null
-  --registry <registry>        Docker registry, can be omitted, defaults to registry.hub.docker.com
-  --version-name <version>     Version tag name for Dockerhub containers only, defaults to latest
+  --dockerfile-path <file>                                 Path for the dockerfile, defaults to /Dockerfile
+  --cwl-path <file>                                        Path for the CWL document, defaults to /Dockstore.cwl
+  --wdl-path <file>                                        Path for the WDL document, defaults to /Dockstore.wdl
+  --test-cwl-path <test-cwl-path>                          Path to default test cwl location, defaults to /test.cwl.json
+  --test-wdl-path <test-wdl-path>                          Path to default test wdl location, defaults to /test.wdl.json
+  --toolname <toolname>                                    Name of the tool, can be omitted, defaults to null
+  --registry <registry>                                    Docker registry, can be omitted, defaults to DOCKER_HUB. Run command with no parameters to see available registries.
+  --version-name <version>                                 Version tag name for Dockerhub containers only, defaults to latest.
+  --private <true/false>                                   Is the tool private or not, defaults to false.
+  --tool-maintainer-email <tool maintainer email>          The contact email for the tool maintainer. Required for private repositories.
+  --custom-docker-path <custom docker path>                Custom Docker registry path (ex. registry.hub.docker.com). Only available for certain registries.
+
 
 ------------------
 ```
