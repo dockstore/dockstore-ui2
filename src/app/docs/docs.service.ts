@@ -67,7 +67,10 @@ export class DocsService {
       'AWS Batch'),
     new Doc('azure-batch-tutorial',
       'This page is for users of Azure, specifically Azure Batch',
-      'Azure Batch')
+      'Azure Batch'),
+    new Doc('search',
+      'This page is for information on faceted search.',
+      'Faceted Search')
   ];
 
   getDocs(): Doc[] {
