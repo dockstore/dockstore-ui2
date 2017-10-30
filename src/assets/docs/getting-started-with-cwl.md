@@ -309,8 +309,7 @@ At this point, you can confirm your settings and "Create Trigger" followed by "R
 
 ![Manual Trigger](../assets/images/docs/manual_trigger.png)
 
-<!-- Improve the wording of this line -->
-Build it for `1.25-6_1.1` for this tutorial.  Typically, I build for each release and develop aka latest is built next time I check-in on that branch.
+Manually trigger it with a version name of `1.25-6_1.1` for this tutorial. Normally, I let the build trigger build a new tag for each new release on GitHub. "latest" on Quay.io is built any time I check-in on any branch. This can be useful for development but is discouraged in favour of a tagged version number for formal releases of your tool.
 
 In my example, I should see a `1.25-6_1.1` listed for this Quay.io Docker repository:
 
