@@ -11,6 +11,7 @@ export interface ExtendedDockstoreTool extends DockstoreTool {
     verifiedSources?: any;
     imgProviderUrl?: string;
     // The transformed git url
+    provider?: string;
     providerUrl?: string;
     buildMode?: string;
     buildModeTooltip?: string;

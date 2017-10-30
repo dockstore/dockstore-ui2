@@ -55,6 +55,7 @@ import { RegisterToolService } from './../../container/register-tool/register-to
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { ErrorService } from './../../shared/error.service';
+import { ExtendedToolService } from './../extended-tool.service';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
@@ -113,7 +114,8 @@ import { SelectModule } from './select.module';
     StarringService,
     VersionModalService,
     InfoTabService,
-    ToolDescriptorService
+    ToolDescriptorService,
+    ExtendedToolService
   ],
   exports: [
     ContainerComponent
