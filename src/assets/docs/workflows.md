@@ -24,6 +24,8 @@ The first step is to create a CWL or WDL workflow descriptor for your workflow a
 
 You can also check in test parameter files into the same Git repo. These files are example input JSON (or YAML) files for running the given workflow. It should be easy for a user to run your workflow with the test parameter files in order to see an example of your workflow, so try and store any required files in the same Git repository or somewhere else where the files are likely to be present.
 
+You can set a default test parameter file for a workflow, which defaults to `/test.json`. Whenever a new version is added, Dockstore will look for a file matching the default test parameter in the corresponding Git repository, and add it if it exists. Updating the default test parameter file path for an existing workflow will be propagated to any versions that have not been edited.
+
 <!-- this following markdown link/anchor does not seem to work properly -->
 
 The second step is to log in to the Dockstore. Make sure that you properly link Bitbucket and/or GitLab to your account if you are using workflows hosted on Bitbucket/Gitlab. After successfully linking your GitHub, Bitbucket and GitLab credentials (if applicable), you will be able to refresh your account on Dockstore and list your available repos on GitHub, Bitbucket and GitLab.
