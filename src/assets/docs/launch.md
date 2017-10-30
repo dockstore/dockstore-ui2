@@ -4,7 +4,7 @@ This tutorial walks through some of our utilities for quickly launching tools an
 
 ## Dockstore CLI
 
-The dockstore command-line includes basic tool and workflow launching capability built on top of [cwltool](https://github.com/common-workflow-language/cwltool). The Dockstore command-line also includes support for file provisioning via [plugins](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent) which allow for the reading of input files and the upload of output files from remote file systems. Support for http and https is built-in. Support for AWS S3 and [icgc-storage client](onboarding) is provided via plugins that can be easily installed.  
+The dockstore command-line includes basic tool and workflow launching capability built on top of [cwltool](https://github.com/common-workflow-language/cwltool). The Dockstore command-line also includes support for file provisioning via [plugins](https://github.com/ga4gh/dockstore/tree/develop/dockstore-file-plugin-parent) which allow for the reading of input files and the upload of output files from remote file systems. Support for http and https is built-in. Support for AWS S3 and icgc-storage client is provided via plugins that can be easily installed.  
  
 ### Launch Tools
 
@@ -102,11 +102,11 @@ Dockstore tools and workflows can also be run through a number of online service
 
 ### AWS Batch
 
-[AWS Batch](https://aws.amazon.com/batch/) is built by Amazon Web Services. Look [here](/docs/aws-batch) for a tutorial on how to run a few sample tools via AWS. 
+[AWS Batch](https://aws.amazon.com/batch/) is built by Amazon Web Services. Look [here](/docs/aws-batch-tutorial) for a tutorial on how to run a few sample tools via AWS. 
 
 ### Azure Batch
 
-[Azure Batch](https://azure.microsoft.com/en-us/services/batch/) and the associated [batch-shipyard](https://github.com/Azure/batch-shipyard) is built by Microsoft. Look [here](/docs/azure-batch) for a tutorial on how to run a few sample tools via Azure. 
+[Azure Batch](https://azure.microsoft.com/en-us/services/batch/) and the associated [batch-shipyard](https://github.com/Azure/batch-shipyard) is built by Microsoft. Look [here](/docs/azure-batch-tutorial) for a tutorial on how to run a few sample tools via Azure. 
 
 ### Google Pipelines 
 
@@ -125,7 +125,7 @@ Consonance's strategy is to provision either on-demand VMs or spot priced VMs de
 1. Look at the [Consonance](https://github.com/Consonance/consonance) repo and in particular, the [Docker compose based](https://github.com/Consonance/consonance/tree/develop/container-admin) setup instructions to setup the environment
 2. Once logged into the client
 ```
-consonance run --tool-dockstore-id quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0 --run-descriptor Dockstore.json --flavour <AWS instance-type>
+$ consonance run --tool-dockstore-id quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0 --run-descriptor Dockstore.json --flavour <AWS instance-type>
 ```
 
 
