@@ -302,6 +302,11 @@ export class UserStubService {
     user$ = Observable.of({});
 }
 
+export class TokenStubService {
+    updateTokens(): void {
+    }
+}
+
 export class TokensStubService {
     public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
         return Observable.of(quayToken);
