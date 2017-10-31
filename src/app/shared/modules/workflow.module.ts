@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 
-import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -26,6 +25,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
@@ -55,9 +55,11 @@ import { DagModule } from './../../workflow/dag/dag.module';
 import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
 import { InfoTabService } from './../../workflow/info-tab/info-tab.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
 import { RefreshService } from './../refresh.service';
+import { getTooltipConfig } from './../tooltip';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,7 @@ import { RefreshService } from './../refresh.service';
     ClipboardModule
   ],
   providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
     HighlightJsService,
     DateService,
     FileService,

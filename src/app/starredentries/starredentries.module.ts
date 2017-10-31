@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StarredEntriesComponent } from './starredentries.component';
-import { StargazersModule } from '../stargazers/stargazers.module';
-import { StarentryService } from '../shared/starentry.service';
-import { StarringService } from '../starring/starring.service';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { NgModule } from '@angular/core';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+
 import { HeaderModule } from '../shared/modules/header.module';
+import { StarentryService } from '../shared/starentry.service';
+import { StargazersModule } from '../stargazers/stargazers.module';
 import { StarringModule } from '../starring/starring.module';
+import { StarringService } from '../starring/starring.service';
+import { getTooltipConfig } from './../shared/tooltip';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { StarringModule } from '../starring/starring.module';
     StarringModule
   ],
   providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
     StarentryService,
     StarringService
   ]

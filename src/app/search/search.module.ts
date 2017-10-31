@@ -14,26 +14,30 @@
  *    limitations under the License.
  */
 
-import { QueryBuilderService } from './query-builder.service';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { SearchService } from './search.service';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { HeaderModule } from './../shared/modules/header.module';
-import { TagCloudModule } from 'angular-tag-cloud-module';
-import { FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { SearchComponent } from './search.component';
-import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { ListentryModule } from '../listentry/listentry.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { searchRouting } from './search.routing';
+
+import { ListentryModule } from '../listentry/listentry.module';
+import { HeaderModule } from './../shared/modules/header.module';
+import { getTooltipConfig } from './../shared/tooltip';
+import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
+import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { SearchComponent } from './search.component';
+import { searchRouting } from './search.routing';
+import { SearchService } from './search.service';
+
 @NgModule({
   declarations: [
     AdvancedSearchComponent,
@@ -55,7 +59,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
     ClipboardModule,
     searchRouting
   ],
-  providers: [AdvancedSearchService, SearchService, QueryBuilderService],
+  providers: [AdvancedSearchService, SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
   exports: [SearchComponent]
 
 })

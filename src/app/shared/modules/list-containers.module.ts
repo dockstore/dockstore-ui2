@@ -19,11 +19,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
 import { PrivateIconModule } from '../private-icon/private-icon.module';
+import { getTooltipConfig } from './../tooltip';
 import { HeaderModule } from './header.module';
 
 @NgModule({
@@ -40,7 +42,8 @@ import { HeaderModule } from './header.module';
     PrivateIconModule
   ],
   providers: [
-    ListContainersService
+    ListContainersService,
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
   ],
   exports: [
     ListContainersComponent
