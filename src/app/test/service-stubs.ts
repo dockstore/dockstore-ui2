@@ -406,6 +406,9 @@ export class DockstoreStubService {
   getVerifiedSources(tool) {
     return [{version: 'c', verifiedSource: 'tester'}];
   }
+  getVerifiedWorkflowSources(tool) {
+    return [{version: 'c', verifiedSource: 'tester'}];
+  }
 }
 
 export class DateStubService {
