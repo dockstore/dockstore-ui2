@@ -11,10 +11,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ExtendedToolService {
-    extendedDockstoreTool: Observable<ExtendedDockstoreTool>;
+    extendedDockstoreTool$: Observable<ExtendedDockstoreTool>;
     constructor(private containerService: ContainerService, private providerService: ProviderService,
         private imageProviderService: ImageProviderService, private dateService: DateService, private dockstoreService: DockstoreService) {
-        this.extendedDockstoreTool = this.containerService.tool$.map((tool: DockstoreTool) => this.extendTool(tool));
+        this.extendedDockstoreTool$ = this.containerService.tool$.map((tool: DockstoreTool) => this.extendTool(tool));
     }
     extendTool(tool: DockstoreTool): ExtendedDockstoreTool {
         if (tool) {

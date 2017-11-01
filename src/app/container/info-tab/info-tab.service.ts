@@ -53,7 +53,7 @@ export class InfoTabService {
     constructor(private containersService: ContainersService, private stateService: StateService,
         private containerService: ContainerService, private refreshService: RefreshService,
         private extendedToolService: ExtendedToolService) {
-        this.extendedToolService.extendedDockstoreTool.subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
+        this.extendedToolService.extendedDockstoreTool$.subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
             if (extendedDockstoreTool) {
                 this.tool = extendedDockstoreTool;
                 this.cancelEditing();
