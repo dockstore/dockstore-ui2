@@ -47,7 +47,16 @@ describe('Dropdown test', function() {
                 .get('h4').contains('GitLab').contains('Link Account')
         });
     });
-
+    var everythingOk = function() {
+        cy
+        .get('h4').contains('GitHub').contains('Unlink Account')
+        cy
+        .get('h4').contains('Quay.io').contains('Unlink Account')
+        cy
+        .get('h4').contains('Bitbucket').contains('Link Account')
+        cy
+        .get('h4').contains('GitLab').contains('Link Account')
+    }
     describe('Go to setup page', function() {
         beforeEach(function() {
             // Select dropdown setup
@@ -57,16 +66,28 @@ describe('Dropdown test', function() {
         });
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
-            cy
-                .get('h4').contains('GitHub').contains('Unlink Account')
-            cy
-                .get('h4').contains('Quay.io').contains('Unlink Account')
-            cy
-                .get('h4').contains('Bitbucket').contains('Link Account')
-            cy
-                .get('h4').contains('GitLab').contains('Link Account')
+            everythingOk();
+            cy.visit('http://localhost:4200/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+                expect(resp.status).to.eq('')
+            })
+            everythingOk();
+            cy.visit('http://localhost:4200/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+                expect(resp.status).to.eq('')
+            })
+            everythingOk();
+            cy.visit('http://localhost:4200/auth/potato.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+                expect(resp.status).to.eq('')
+            })
+            everythingOk();
+            cy.visit('http://localhost:4200/auth/github.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+                expect(resp.status).to.eq('')
+            })
+            everythingOk();
+            cy.visit('http://localhost:4200/auth/quay.io?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+                expect(resp.status).to.eq('')
+            })
+            everythingOk();
         });
-
         // TODO: this part of the wizard has been reworked
         // it('Go through steps', function() {
         //     // Should start on step 1
