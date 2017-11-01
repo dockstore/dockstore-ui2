@@ -72,6 +72,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.tokenService.updateTokens();
       }
       this.router.navigate([`${ prevPage }`]);
+    }, error => {
+      this.router.navigate([`${ prevPage }`]);
     });
   }
 
