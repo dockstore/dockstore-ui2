@@ -1,3 +1,4 @@
+import { ExtendedWorkflowService } from '../extended-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -96,6 +97,7 @@ import { RefreshService } from './../refresh.service';
     ClipboardModule
   ],
   providers: [
+    ExtendedWorkflowService,
     HighlightJsService,
     DateService,
     FileService,
