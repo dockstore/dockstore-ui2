@@ -1,3 +1,4 @@
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { ExtendedToolService } from './../../shared/extended-tool.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../../shared/refresh.service';
@@ -80,7 +81,7 @@ export class InfoTabService {
         this.wdlTestPathEditing$.next(editing);
     }
 
-    updateAndRefresh(tool: any) {
+    updateAndRefresh(tool: DockstoreTool) {
         const message = 'Tool Info';
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
             this.stateService.setRefreshMessage('Updating ' + message + '...');
