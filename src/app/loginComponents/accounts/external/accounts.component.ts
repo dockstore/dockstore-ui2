@@ -24,28 +24,28 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   accountsInfo: Array<any> = [
     {
-      name: 'GitHub Account',
+      name: 'GitHub',
       source: TokenSource.GITHUB,
       bold: 'Required',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false
     },
     {
-      name: 'Quay.io Account',
+      name: 'Quay',
       source: TokenSource.QUAY,
       bold: 'Optional',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false
     },
     {
-      name: 'Bitbucket Account',
+      name: 'Bitbucket',
       source: TokenSource.BITBUCKET,
       bold: 'Optional',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false
     },
     {
-      name: 'GitLab Account',
+      name: 'GitLab',
       source: TokenSource.GITLAB,
       bold: 'Optional',
       message: 'GitLab credentials are used for pulling source code from GitLab.',

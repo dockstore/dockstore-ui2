@@ -4,7 +4,7 @@
     <div *ngFor="let row of accountsInfo">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">{{ row.name }}
+          <h4 class="panel-title">{{ row.name }} Account
             <span *ngIf="row.isLinked">
               <span class="label label-success">
                 <span class="glyphicon glyphicon-link"></span>
@@ -24,12 +24,12 @@
                   </span>
                 </span>
               </span>
-              <button class="pull-right btn btn-default btn-sm" (click)="unlink(row.source)">
+              <button [attr.id]="'unlink-' + row.name" class="pull-right btn btn-default btn-sm" (click)="unlink(row.source)">
                 <span class="text-danger glyphicon glyphicon-link"></span>
                 <span class="text-danger">Unlink Account</span>
               </button>
             </span>
-            <button *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-sm" (click)="link(row.source)">
+            <button [attr.id]="'link-' + row.name" *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-sm" (click)="link(row.source)">
               <span class="glyphicon glyphicon-link"></span>
               <span>Link Account</span>
             </button>

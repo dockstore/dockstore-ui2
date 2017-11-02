@@ -37,25 +37,14 @@ describe('Dropdown test', function() {
         });
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
-            cy
-                .get('h4').contains('GitHub').contains('Unlink Account')
-            cy
-                .get('h4').contains('Quay.io').contains('Unlink Account')
-            cy
-                .get('h4').contains('Bitbucket').contains('Link Account')
-            cy
-                .get('h4').contains('GitLab').contains('Link Account')
+            everythingOk();
         });
     });
     var everythingOk = function() {
-        cy
-        .get('h4').contains('GitHub').contains('Unlink Account')
-        cy
-        .get('h4').contains('Quay.io').contains('Unlink Account')
-        cy
-        .get('h4').contains('Bitbucket').contains('Link Account')
-        cy
-        .get('h4').contains('GitLab').contains('Link Account')
+            cy.get('#unlink-GitHub').should('be.visible')
+            cy.get('#unlink-Quay').should('be.visible')
+            cy.get('#link-Bitbucket').should('be.visible')
+            cy.get('#link-GitLab').should('be.visible')
     }
     describe('Go to setup page', function() {
         beforeEach(function() {
