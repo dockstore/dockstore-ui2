@@ -14,17 +14,19 @@
  *    limitations under the License.
  */
 
-import { RefreshAlertModule } from './../shared/alert/alert.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
+import { RefreshAlertModule } from './../shared/alert/alert.module';
+import { getTooltipConfig } from './../shared/tooltip';
 import {
     RefreshWorkflowOrganizationComponent,
 } from './../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
@@ -49,6 +51,9 @@ import { myworkflowRouting } from './myworkflows.routing';
     RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot()
+  ],
+  providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
   ]
 })
 export class MyWorkflowsModule { }

@@ -1,4 +1,3 @@
-import { ToasterModule } from './shared/toaster/toaster.module';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,82 +14,72 @@ import { ToasterModule } from './shared/toaster/toaster.module';
  *    limitations under the License.
  */
 
-import { RefreshOrganizationComponent } from './shared/refresh-organization/refresh-organization.component';
-import { ContainerService } from './shared/container.service';
-import { WorkflowService } from './shared/workflow.service';
-import { Dockstore } from './shared/dockstore.model';
-import { Configuration } from './shared/swagger/configuration';
-import { ApiModule } from './shared/swagger/api.module';
-import { StateService } from './shared/state.service';
-/* Angular Modules */
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { FlexLayoutModule } from '@angular/flex-layout';
-
-/* Bootstrap */
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DataTablesModule } from 'angular-datatables';
+import { MarkdownModule } from 'angular2-markdown';
+import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule} from 'ngx-bootstrap/modal';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-
-/* External Modules */
-import { DataTablesModule } from 'angular-datatables';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { MarkdownModule } from 'angular2-markdown';
-/* External Services */
-import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
-/* Components */
+
 import { AppComponent } from './app.component';
-/* Miscellaneous */
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { FooterComponent } from './footer/footer.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
-
+import { ListentryModule } from './listentry/listentry.module';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
-
+import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SearchModule } from './search/search.module';
+import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
 import { CommunicatorService } from './shared/communicator.service';
+import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
-
-/* Internal Services */
+import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
-import { PagenumberService } from './shared/pagenumber.service';
-import { SearchService } from './search/search.service';
-import { TwitterService } from './shared/twitter.service';
-/* Internal Modules */
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { ProviderService } from './shared/provider.service';
-import { TrackLoginService } from './shared/track-login.service';
-import { SponsorsComponent } from './sponsors/sponsors.component';
-import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { OrderByModule } from './shared/modules/orderby.module';
+import { PagenumberService } from './shared/pagenumber.service';
+import { ProviderService } from './shared/provider.service';
+import { StateService } from './shared/state.service';
+import { ApiModule } from './shared/swagger/api.module';
+import { Configuration } from './shared/swagger/configuration';
+import { ToasterModule } from './shared/toaster/toaster.module';
+import { getTooltipConfig } from './shared/tooltip';
+import { TrackLoginService } from './shared/track-login.service';
+import { TwitterService } from './shared/twitter.service';
+import { WorkflowService } from './shared/workflow.service';
+import { SponsorsComponent } from './sponsors/sponsors.component';
+import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { StargazersModule } from './stargazers/stargazers.module';
-import { ListentryModule } from './listentry/listentry.module';
-import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
-import { SearchModule } from './search/search.module';
-import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { ToolDetailsComponent } from './tool-details/tool-details.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -139,6 +128,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     ApiModule.forConfig(getApiConfig)
   ],
   providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
     AuthService,
     LoginService,
     LogoutService,

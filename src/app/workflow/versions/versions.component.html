@@ -19,7 +19,7 @@
     <thead>
     <tr>
       <th>
-        <label tooltip="Git branches/tags: The selected reference and tag will be used
+        <label placement="top" tooltip="Git branches/tags: The selected reference and tag will be used
                        to populate the info tab including 'launch with'">
           Git Reference
         </label>
@@ -34,7 +34,7 @@
               [ngClass]="getIconClass('workflow_path')"
               (click)="clickSortColumn('workflow_path')">
         </span>
-        <label tooltip="Workflow paths for given version">Workflow Path</label>
+        <label placement="top" tooltip="Workflow paths for given version">Workflow Path</label>
       </th>
 
       <th>
@@ -42,7 +42,7 @@
               [ngClass]="getIconClass('last_modified')"
               (click)="clickSortColumn('last_modified')">
         </span>
-        <label tooltip="Date of last update to Git reference">Date Modified</label>
+        <label placement="top" tooltip="Date of last update to Git reference">Date Modified</label>
       </th>
 
       <th>
@@ -50,19 +50,19 @@
               [ngClass]="getIconClass('valid')"
               (click)="clickSortColumn('valid')">
         </span>
-        <label tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
+        <label placement="top" tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
           Valid
         </label>
       </th>
 
       <th>
-        <label tooltip="A version is verified if it has been verified to work by a person/group">
+        <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
           Verified
         </label>
       </th>
 
       <th>
-        <label tooltip="View more information about the given version">
+        <label placement="top" tooltip="View more information about the given version">
           Actions
         </label>
       </th>

@@ -25,6 +25,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
@@ -55,6 +56,7 @@ import { RegisterToolService } from './../../container/register-tool/register-to
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { ErrorService } from './../../shared/error.service';
+import { getTooltipConfig } from './../../shared/tooltip';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
@@ -101,6 +103,7 @@ import { SelectModule } from './select.module';
     StargazersModule
   ],
   providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
     HighlightJsService,
     ErrorService,
     DateService,
