@@ -15,10 +15,12 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
+import { getTooltipConfig } from './../../shared/tooltip';
 import { DagComponent } from './dag.component';
 
 @NgModule({
@@ -28,6 +30,9 @@ import { DagComponent } from './dag.component';
     TooltipModule
   ],
   declarations: [DagComponent],
-  exports: [DagComponent]
+  exports: [DagComponent],
+  providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
+  ]
 })
 export class DagModule { }

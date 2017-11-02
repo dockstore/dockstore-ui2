@@ -136,7 +136,7 @@ These workflows join the first workflow used to generate this dataset, [BWA-mem]
 * Support for the preliminary GA4GH [tool-registry-schema 1.0](https://github.com/ga4gh/tool-registry-schemas) will allow Dockstore to share and exchange tools with other similar projects around the world
 * Upgraded support for CWL 1.0 (previously draft-3) allows Dockstore to display and launch tools
 * Dockstore launcher (which allows you to run tools locally on one host) supports file provisioning based on [CWL secondary files](http://www.commonwl.org/v1.0/CommandLineTool.html#CommandInputParameter). See [Sanger](https://github.com/ICGC-TCGA-PanCancer/CGP-Somatic-Docker/blob/develop/Dockstore.cwl) for an example
-* Default branch/tag support allows tool developers to pin a particular version of their tool to display to their users
+* Default version support allows tool developers to pin a particular version of their tool to display to their users
 
 
 ## September 13, 2016 - Genome Canada Grant
