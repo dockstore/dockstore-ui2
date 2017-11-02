@@ -17,9 +17,9 @@ export class DownloadCLIClientComponent implements OnInit {
   public cwltoolVersion = '1.0.20170828135420';
   public dsServerURI: any;
   public isCopied2: boolean;
-  public textData1;
-  public textData2;
-  public textData3;
+  public textData1 = '';
+  public textData2 = '';
+  public textData3 = '';
 
   constructor(private authService: AuthService,
     private gA4GHService: GA4GHService) { }
@@ -36,7 +36,12 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
         this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;
+        this.generateMarkdown();
+      }, error => {
+        this.generateMarkdown();
       });
+  }
+  generateMarkdown(): void {
     this.textData1 = `
 ### Setup Command Line Interface
 ------------------------------
@@ -57,7 +62,7 @@ source ~/.bashrc
 \`\`\`
 4. Alternatively, click here to download and configure the cli yourself
 
-      `;
+`;
     this.textData2 = `
 #### Part 2
 1. Create the folder <code>~/.dockstore</code> and create a configuration file \`~/.dockstore/config\`:
@@ -66,7 +71,7 @@ mkdir -p ~/.dockstore
 printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockstore/config
 \`\`\`
 2. Alternatively, copy this content to your config file directly
-    `;
+`;
     this.textData3 = `
 #### Part 3
 If you want to launch CWL tools and workflows, Dockstore relies upon [cwltool](https://github.com/common-workflow-language/cwltool) being available on your PATH.  This will require [pip](https://pip.pypa.io/en/latest/installing/)" if it is not already installed.
@@ -102,6 +107,6 @@ Hello from Docker!
 ...
 \`\`\`
 In addition to the tools mentioned above you can install an editor capable of syntax highlighting Dockerfiles such as [Atom](https://atom.io/).
-      `;
+`;
   }
 }
