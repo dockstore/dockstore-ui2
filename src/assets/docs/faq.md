@@ -117,7 +117,7 @@ This is going to be a moving quality target as tools improve, but you have a too
 Every tool/workflow is recommended to have a default version set by its author.  It indicates to the users which version of the tool/workflow they should use.
 For tools, the default version is uniquely identified by the tag from the Docker image repository.  For workflows, the default version is identified by the Git Reference (which could be a Git tag or a Git branch).  The default version can be set in the 'Versions' tab of a tool/workflow via radio buttons.
 
-Setting the default version affects several elements:
+Setting the default version affects a number of elements including (but not limited to):
 1. It determines what is displayed in the 'Description' section of the 'Info' Tab
 2. It determines what is displayed in the 'Launch With' section of the 'Info' Tab
 3. It is the version of the tool/workflow that is launched by default when users launch a tool/workflow from the Dockstore CLI.  
@@ -127,6 +127,7 @@ Setting the default version affects several elements:
    `$ dockstore tool launch --entry quay.io/cancercollaboratory/dockstore-tool-bedgraph-bigwig --json Dockstore.json`  
 
 4. In the files tab, the default version's files would be displayed first.
+5. The docker pull command reflects the default version
 
 ## Any last tips on using Dockstore?
 
