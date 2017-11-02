@@ -46,9 +46,9 @@ export abstract class Versions {
 
   getDefaultTooltip(publicPage: boolean): string {
     if (publicPage) {
-      return Tooltip.defaultBranchUser;
+      return Tooltip.defaultVersionUser;
     } else {
-      return Tooltip.defaultBranchAuthor;
+      return Tooltip.defaultVersionAuthor;
     }
   }
 
