@@ -1,0 +1,188 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="row" *ngIf="error  || missingWarning">
+  <div class="col-md-12" *ngIf="!isWorkflowPublic">
+    <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
+      <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
+        &times;
+      </button>
+      <span class="glyphicon glyphicon-warning-sign">
+      </span>
+      {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: '}} {{missingContent}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-7">
+    <h3 id="workflow-path">
+      <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
+        <a href= {{getVerifiedLink()}} class="verified-check">
+          <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+        </a>
+      </span>
+      {{ title }}
+      <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
+    </h3>
+    <div *ngIf="workflow">
+      <span class="label label-default container-label" *ngFor="let label of labels">
+        {{label}}
+      </span>
+    </div>
+    <p class="update">
+      Last Modified: {{ workflow?.agoMessage || 'n/a' }}
+    </p>
+    <div *ngIf="starGazersClicked">
+      <app-stargazers></app-stargazers>
+      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+      </button>
+    </div>
+  </div>
+  <div *ngIf="!publicPage">
+    <h3>
+      <div class="pull-right">
+        <div class="btn-group" role="group">
+          <button id="publishButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable()" btnCheckbox>
+            {{workflow?.is_published ? 'Unpublish' : 'Publish'}}
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
+          Refresh
+        </button>
+      </div>
+    </h3>
+  </div>
+</div>
+<div class="row" *ngIf="!starGazersClicked">
+  <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
+    <tabset id="workflow_tabs" justified="true">
+      <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
+        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <hr *ngIf="publicPage">
+        <div *ngIf="publicPage" id='discourse-comments'></div>
+      </tab>
+      <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
+        <button type="sbutton" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
+          <span class="glyphicon glyphicon-edit"></span>Edit
+        </button>
+        <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
+          <li *ngIf="workflow">
+            <strong>Labels:</strong>
+            <span *ngIf="workflow?.labels.length === 0">n/a</span>
+            <span class="label label-default container-label" *ngFor="let label of labels">
+              {{label}}
+            </span>
+          </li>
+        </ul>
+        <form name="editWorkflowForm" class="edit-container form-inline" (ngSubmit)="submitWorkflowEdits()" #labelForm="ngForm" novalidate>
+          <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isWorkflowPublic">
+            <span class="glyphicon glyphicon-floppy-save"></span>Save
+          </button>
+          <div *ngIf="labelsEditMode && !isWorkflowPublic">
+            <div class="form-group">
+              <label>Workflow Labels:</label>
+              <input id="workflowLabels" type="text" class="input-sm form-control" name="workflowLabels" [(ngModel)]="workflowEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+            </div>
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+              <div [hidden]="!name.errors.maxlength">
+                Labels string is too long. (Max 512 characters.)
+              </div>
+              <div [hidden]="!name.errors.pattern">
+                Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
+              </div>
+            </div>
+          </div>
+        </form>
+      </tab>
+      <tab id="versionsTab" [disabled]="isStub()" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
+        <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id">
+        </app-versions-workflow>
+      </tab>
+      <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
+        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
+        </app-files-workflow>
+      </tab>
+      <tab id="toolsTab" [disabled]="isStub()" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')">
+        <app-tool-tab></app-tool-tab>
+      </tab>
+      <tab id="dagTab" [disabled]="isStub()" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
+        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
+      </tab>
+    </tabset>
+  </div>
+  <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic">
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <h3>Source Repositories</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <p>
+            <span *ngIf="workflow.provider">
+              <a [href]="workflow.providerUrl">
+                {{workflow.provider}}
+                <span class="glyphicon glyphicon-new-window"></span>
+              </a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="workflow && dnastackURL">
+      <div class="panel-heading">
+        <h3>Launch with</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <div class="container-launch-with">
+            <div class="button">
+              <p><a href="{{dnastackURL}}"><img src="../../assets/images/docs/dnastack.png"> DNAstack &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="workflow?.versionVerified">
+      <div class="panel-heading">
+        <h3>Verified</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <ul class="list-unstyled container-info">
+            <li *ngFor="let source of workflow?.verifiedSources">
+              <strong>{{source.version}} is verified by: </strong>
+              <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
+                {{source.verifiedSource}}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <h3>Sharing</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-sharing">
+          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
+          </share-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

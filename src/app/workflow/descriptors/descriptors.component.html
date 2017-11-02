@@ -1,0 +1,37 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+  <div>
+    <span *ngIf="versions?.length > 0">
+      <strong>Workflow Version:</strong>
+      <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
+      <strong>File:</strong>
+      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+    </span>
+  <div *ngIf="this.nullDescriptors">
+    <alert type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;A Descriptor File associated with this Docker container could not be found.
+    </alert>
+  </div>
+  <div *ngIf="!this.nullDescriptors" class="code-copy">
+    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content"
+    [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_descriptors_file'}"
+    (cbOnSuccess)="workflowCopyBtnClick('workflow_descriptors_file')">
+    <span class="glyphicon glyphicon-copy"></span>
+  </button>
+  <section *ngIf="content" [innerHTML]="fileService.highlightCode(content)"></section>
+</div>

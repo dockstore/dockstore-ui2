@@ -1,0 +1,53 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+  - '7.9.0'
+services:
+  - postgresql
+jdk:
+  - oraclejdk8
+env:
+  global:
+    - WEBSERVICE_VERSION="1.3.0-rc.0"
+  matrix:
+    - RUN_PROD=false
+    - RUN_PROD=true
+addons:
+  firefox: "latest"
+  postgresql: "9.6"
+  chrome: stable
+
+before_install:
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - 'wget --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar'
+  - 'chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar'
+  - 'sleep 3' # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+
+install:
+  - ./scripts/install-travis-script.sh
+
+before_script:
+  - pwd
+  - wget --no-verbose https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
+  - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
+  - ./script.sh
+  - psql 'postgres' -U postgres < travisci/db_dump.sql
+  - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
+  - 'sleep 20'
+
+script:
+  - ./scripts/run-travis-script.sh
+
+after_success:
+  - ./node_modules/codecov/bin/codecov
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/7f1c48703628e3514bb6
+    on_success: change  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: never     # options: [always|never|change] default: always

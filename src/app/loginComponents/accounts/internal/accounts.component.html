@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-body" *ngIf="user">
+      <div class="col-lg-2 col-md-3 col-sm-4 hidden-xs thumbnail">
+        <img [src]="user?.avatarUrl" height="175">
+      </div>
+      <div class="col-lg-8 col-md-7 col-sm-6">
+        <ul class="list-unstyled">
+          <li>
+            <strong>Username</strong>:
+            <span id="account-username">{{user?.username}}</span>
+          </li>
+          <li>
+            <strong>Administrator</strong>:
+            <span id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</span>
+          </li>
+          <li *ngIf="user?.email">
+            <strong>Email</strong>: {{user?.email}}
+          </li>
+          <li *ngIf="user?.bio">
+            <strong>Bio</strong>: {{user?.bio}}
+          </li>
+          <li *ngIf="user?.company">
+            <strong>Company</strong>: {{user?.company}}
+          </li>
+          <li *ngIf="user?.location">
+            <strong>Location</strong>: {{user?.location}}
+          </li>
+          <li class="form-inline" *ngIf="getDockstoreToken()">
+            <strong>Dockstore Token</strong>:
+            <span class="input-group">
+              <span class="form-control">{{getDockstoreToken()}}</span>
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
+                  <span class="glyphicon glyphicon-copy"></span>
+                </button>
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-1">
+        <button class="btn btn-primary" [disabled]="syncingWithGithub" (click)="syncGitHub()">
+          <span class="glyphicon glyphicon-refresh"></span>
+          Sync with GitHub
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

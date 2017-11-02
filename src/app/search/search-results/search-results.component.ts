@@ -1,0 +1,146 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+import { Component, OnInit } from '@angular/core';
+import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+
+import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
+import { QueryBuilderService } from './../query-builder.service';
+import { SearchService } from './../search.service';
+
+@Component({
+  selector: 'app-search-results',
+  templateUrl: './search-results.component.html',
+  styleUrls: ['./search-results.component.scss']
+})
+export class SearchResultsComponent implements OnInit {
+  public activeToolBar = true;
+  public workflowHits: any;
+  public toolHits: any;
+  public browseToolsTab = 'browseToolsTab';
+  public browseWorkflowsTab = 'browseWorkflowsTab';
+  toolTagCloudData: Array<CloudData>;
+  workflowTagCloudData: Array<CloudData>;
+  showToolTagCloud = false;
+  showWorkflowTagCloud = false;
+  options: CloudOptions = {
+    width: 600,
+    height: 200,
+    overflow: false,
+  };
+  constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService) {
+
+  }
+
+  ngOnInit() {
+    this.searchService.workflowhit$.subscribe(workflowHits => {
+      this.workflowHits = workflowHits;
+      this.setTabActive();
+    });
+    this.searchService.toolhit$.subscribe(toolHits => {
+      this.toolHits = toolHits;
+      this.setTabActive();
+    });
+    this.createTagCloud('tool');
+    this.createTagCloud('workflow');
+  }
+
+  createTagCloud(type: string) {
+    const toolQuery = this.queryBuilderService.getTagCloudQuery(type);
+    this.createToolTagCloud(toolQuery, type);
+  }
+
+  clickTagCloudBtn(type: string) {
+    if (type === 'tool') {
+      this.showToolTagCloud = !this.showToolTagCloud;
+    } else {
+      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
+    }
+  }
+
+  createToolTagCloud(toolQuery, type) {
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: toolQuery
+    }).then(hits => {
+      let weight = 10;
+      let count = 0;
+      hits.aggregations.tagcloud.buckets.forEach(
+        tag => {
+          const theTag = {
+            text: tag.key,
+            weight: weight
+          };
+          if (weight === 10) {
+            /** just for fun...**/
+            theTag['color'] = '#ffaaee';
+          }
+          if (count % 2 !== 0) {
+            weight--;
+          }
+          if (type === 'tool') {
+            if (!this.toolTagCloudData) {
+              this.toolTagCloudData = new Array<CloudData>();
+            }
+            this.toolTagCloudData.push(theTag);
+          } else {
+            if (!this.workflowTagCloudData) {
+              this.workflowTagCloudData = new Array<CloudData>();
+            }
+            this.workflowTagCloudData.push(theTag);
+          }
+          count--;
+        }
+      );
+    });
+  }
+
+  // Tells the search service to tell the search filters to save its data
+  saveSearchFilter() {
+    this.searchService.toSaveSearch$.next(true);
+  }
+
+  tagClicked(clicked: CloudData) {
+    this.searchService.searchTerm$.next(true);
+    this.searchService.values$.next(clicked.text);
+    this.searchService.tagClicked$.next(true);
+  }
+
+  /**
+   * This handles the which tab (tool or workflow) is set to active based on hits.
+   * The default is tool if both have hits
+   *
+   * @memberof SearchResultsComponent
+   */
+  setTabActive(): void {
+    if (!this.toolHits || !this.workflowHits) {
+      this.activeToolBar = true;
+      return;
+    }
+    if (this.toolHits.length === 0 && this.workflowHits.length > 0) {
+      this.activeToolBar = false;
+    } else if (this.workflowHits.length === 0 && this.toolHits.length > 0) {
+      this.activeToolBar = true;
+    } else {
+      this.activeToolBar = true;
+    }
+  }
+
+  haveNoHits(object: Object[]): boolean {
+    return this.searchService.haveNoHits(object);
+  }
+}

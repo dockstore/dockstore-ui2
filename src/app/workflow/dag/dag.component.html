@@ -1,0 +1,53 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+<div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
+  <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
+    <div class="ds-holder">
+      <div class="ds-version-selector" id="dag-version-bar" [ngClass]="{'fullscreen-dropdown': expanded}">
+        <div class="form-inline">
+          <strong>Workflow Version</strong>:
+          <select (change)="ngOnChanges()" class="form-control ds-version input-sm" [(ngModel)]="selectVersion">
+            <option *ngFor="let version of validVersions" [ngValue]="version"> {{version.name}} </option>
+          </select>
+        </div>
+        <a href id="exportLink" (click)="download()" *ngIf="dagResult !== null && !notFound && !missingTool">
+          <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
+          <div class="btn-group pull-right" role="group" style="width:auto">
+            <button id="dag_fullscreen" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
+              <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
+              <span *ngIf="expanded" class="glyphicon glyphicon-resize-small" id="resize-small-button"></span>
+            </button>
+            <button id="dag_reload" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button btn btn-default" tooltip="Reset">
+              <span class="glyphicon glyphicon-screenshot"></span>
+            </button>
+          </div>
+      </div>
+    </div>
+    <div class="alert alert-warning" role="alert" *ngIf="notFound || !dagResult">
+      <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+      <span *ngIf="workflow?.descriptorType === 'wdl'">
+        A Descriptor associated with this workflow could not be found.
+      </span>
+      <span *ngIf="workflow?.descriptorType === 'cwl'">
+        Please ensure that the Descriptor is a valid CWL 1.0 workflow.
+      </span>
+    </div>
+    <div class="alert alert-warning" role="alert" *ngIf="workflow?.descriptorType === 'cwl' && missingTool">
+      <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools are missing from Github repo.
+    </div>
+    <div #cy id="cy" *ngIf="dagResult !== null && !missingTool" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
+  </div>
+</div>

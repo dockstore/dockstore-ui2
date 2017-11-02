@@ -1,0 +1,206 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="row" *ngIf="error || missingWarning">
+  <div class="col-md-12" *ngIf="!isToolPublic">
+    <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
+      <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
+        &times;
+      </button>
+      <span class="glyphicon glyphicon-warning-sign">
+      </span>
+      {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: '}} {{missingContent}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-7">
+    <h3 id="tool-path">
+      <span id="verifiedIcon" *ngIf="tool?.versionVerified">
+        <a href= {{getVerifiedLink()}} class="verified-check">
+          <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+        </a>
+      </span>
+      <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
+          <app-private-icon></app-private-icon>
+      </span>
+      {{ tool?.tool_path }}
+      <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
+    </h3>
+    <div *ngIf="tool">
+      <span class="label label-default container-label" *ngFor="let label of labels">
+        {{label}}
+      </span>
+    </div>
+    <p class="update">
+      Last build: {{ tool?.agoMessage || 'n/a' }}
+    </p>
+    <div *ngIf="starGazersClicked">
+      <app-stargazers></app-stargazers>
+      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+      </button>
+    </div>
+  </div>
+  <div *ngIf="!publicPage">
+    <h3>
+      <div class="pull-right">
+        <div class="btn-group" role="group">
+          <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="!thisisValid" btnCheckbox>
+            {{tool?.is_published ? 'Unpublish' : 'Publish'}}
+          </button>
+
+          <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
+          Refresh
+        </button>
+      </div>
+    </h3>
+  </div>
+</div>
+<div class="row" *ngIf="!starGazersClicked">
+  <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
+    <tabset id="tool_tabs" justified="true">
+      <tab id="infoTab" heading="Info" id="infoTab">
+        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <hr *ngIf="publicPage">
+        <div *ngIf="publicPage" id='discourse-comments'></div>
+      </tab>
+      <tab id="labelsTab" heading="Labels" *ngIf="tool">
+        <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
+          <span class="glyphicon glyphicon-edit"></span>Edit
+        </button>
+        <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
+          <li *ngIf="tool">
+            <strong>Labels:</strong>
+            <span *ngIf="tool?.labels.length === 0">n/a</span>
+            <span class="label label-default container-label" *ngFor="let label of labels">
+              {{label}}
+            </span>
+          </li>
+        </ul>
+        <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
+          <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
+            <span class="glyphicon glyphicon-floppy-save"></span>Save
+          </button>
+          <div *ngIf="labelsEditMode && !isToolPublic">
+            <div class="form-group">
+              <label>Tool Labels:</label>
+              <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+            </div>
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+              <div [hidden]="!name.errors.maxlength">
+                Labels string is too long. (Max 512 characters.)
+              </div>
+              <div [hidden]="!name.errors.pattern">
+                Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
+              </div>
+            </div>
+          </div>
+        </form>
+      </tab>
+      <tab heading="Versions" *ngIf="validVersions">
+        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources">
+        </app-versions-container>
+      </tab>
+      <tab heading="Files" *ngIf="validVersions">
+        <app-files-container [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion">
+        </app-files-container>
+      </tab>
+    </tabset>
+  </div>
+  <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
+    <div class="panel panel-default" *ngIf="tool">
+      <div class="panel-heading">
+        <strong>Docker Pull Command</strong>
+      </div>
+      <div class="panel-body">
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
+                    (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
+              <span class="glyphicon glyphicon-copy"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tool">
+      <div class="panel-heading">
+        <h3>Source Repositories</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <p>
+            Git Repository:
+            <span *ngIf="tool.provider">
+              <a [href]="tool.providerUrl">
+                {{tool.provider}}
+                <span class="glyphicon glyphicon-new-window"></span>
+              </a>
+            </span>
+          </p>
+          <p>
+            Docker Registry:
+            <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
+            <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
+              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl">
+                {{tool?.imgProvider}}
+                <span class="glyphicon glyphicon-new-window"></span>
+              </a>
+              <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
+            </span>
+            <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')" class="pull-right">
+              <a href="{{tool.imgProviderUrl}}">
+                <img src="{{tool.imgProviderUrl}}/status">
+              </a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tool?.versionVerified">
+      <div class="panel-heading">
+        <h3>Verified</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-source-repos">
+          <ul class="list-unstyled container-info">
+            <li *ngFor="let source of tool?.verifiedSources">
+              <strong>{{source.version}} is verified by: </strong>
+              <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
+                {{source.verifiedSource}}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tool">
+      <div class="panel-heading">
+        <h3>Sharing</h3>
+      </div>
+      <div class="panel-body">
+        <div class="container-sharing">
+          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
+          </share-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

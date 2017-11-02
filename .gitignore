@@ -1,0 +1,51 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+/src/app/**/*.js
+!/src/app/shared/angular2-highlight-js/lib/*.js
+src/app/shared/swagger/
+swagger-codegen-cli.jar
+
+# dependencies
+/node_modules
+/bower_components
+
+# IDEs and editors
+/.idea
+.vscode
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.jsbeautifyrc
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+src/app/footer/versions.ts
+cypress/videos
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db

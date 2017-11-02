@@ -1,0 +1,21 @@
+/* Special Fonts */
+@font-face {
+  font-family: Gotham;
+  src: url("../assets/fonts/Gotham-Book.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Gotham;
+  font-weight: bold;
+  src: url("../assets/fonts/Gotham-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Gotham;
+  font-style: italic;
+  src: url("../assets/fonts/Gotham-BookItalic.otf") format("opentype");
+}
+
+* {
+  font-family: 'Gotham';
+}

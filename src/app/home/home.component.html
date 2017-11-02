@@ -1,0 +1,115 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="header">
+  <div class="container">
+    <div class="row header1">
+      <div class="col-md-6 splash">
+        <h1 class="title">Create, Share, Use</h1>
+        <h2 class="title caption">Search Docker Tools and Workflows for the Sciences:</h2>
+        <div class="btn-group">
+          <input #search type="text" placeholder="Enter Keyword..." class="search left fully-rounded search-home form-control"
+          (keyup.enter)="goToSearch(search.value)">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <img id="ship" src="../assets/images/dockstore/ship.png">
+      </div>
+      <div class="col-md-3">
+        <img id="truck" src="../assets/images/dockstore/truck.png">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="header-lower">
+  <div class="container">
+    <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
+    <div class="row header-lower">
+      <div class="col-md-6 col-sm-12">
+        <h4 class="title caption">
+          Dockstore, developed by the <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer Genome
+          Collaboratory</a>, is an open platform used by the <a class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a>
+          for sharing Docker-based tools described with either the <a class="white-link" href="http://www.commonwl.org/" target="_blank">Common
+          Workflow Language (CWL)</a> or the <a class="white-link" href="https://software.broadinstitute.org/wdl/" target="_blank">Workflow
+          Description Language (WDL)</a>.
+        </h4>
+      </div>
+      <div class="col-md-3 col-sm-12 row-center">
+        <a class='btn youtube' href="https://www.youtube.com/embed/RYHUX9jGx24" role="button">
+          <div>
+            <span class="glyphicon glyphicon-play-circle"></span>
+            <span>&nbsp;Video Overview</span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-12 row-center">
+        <div class="row">
+          <div class="button">
+            <p><a routerLink="quick-start">Quick Start &raquo;</a></p>
+          </div>
+          <div *ngIf=!user class="button">
+            <p><a routerLink="login">Sign up to Contribute &raquo;</a></p>
+          </div>
+          <div *ngIf=user class="button">
+            <p><a routerLink="onboarding">Full Tutorial &raquo;</a></p>
+          </div>
+          <div class="button">
+            <p><a routerLink="docs/blog">News and Events &raquo;</a></p>
+          </div>
+          <div class="button" style="margin-bottom: 20px">
+            <p><a href="https://discuss.dockstore.org/">Discuss &raquo;</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mainScreen" #mainScreen>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 home-list">
+        <tabset class="homeComponent" type="tabs">
+          <tab id="toolTab" [customClass]="browseToolsTab">
+            <ng-template tabHeading>
+              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+              Browse Tools
+            </ng-template>
+            <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+            <app-list-containers [previewMode]="true"></app-list-containers>
+          </tab>
+          <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+            <ng-template tabHeading>
+              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+              Browse Workflows
+            </ng-template>
+            <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+            <app-list-workflows [previewMode]="true"></app-list-workflows>
+          </tab>
+        </tabset>
+    </div>
+    <div class="col-md-3 col-sm-12 twitter twitter-container">
+      <a class="twitter-timeline"
+         data-theme="light"
+         data-height="800"
+         href="https://twitter.com/DockstoreOrg">
+          Tweets by DockstoreOrg
+        </a>
+      <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+  </div>
+</div>
+
+<app-home-foot-note></app-home-foot-note>

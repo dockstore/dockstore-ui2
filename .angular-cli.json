@@ -1,0 +1,87 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "dockstore-ui2"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
+        "../bower_components/bootstrap-toc/bootstrap-toc.css",
+        "../node_modules/jquery-colorbox/example1/colorbox.css",
+        "../src/jquery.qtip.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/bootstrap-social/bootstrap-social.css",
+        "styles.css",
+        "styles.scss"
+      ],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.js",
+        "../node_modules/datatables.net/js/jquery.dataTables.js",
+        "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
+        "../bower_components/bootstrap-toc/bootstrap-toc.js",
+        "../node_modules/jquery-colorbox/jquery.colorbox.js",
+        "../node_modules/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js",
+        "../node_modules/cytoscape/dist/cytoscape.min.js",
+        "../node_modules/dagre/dist/dagre.min.js",
+        "../node_modules/cytoscape-dagre/cytoscape-dagre.js",
+        "../node_modules/qtip2/dist/jquery.qtip.js",
+        "../node_modules/cytoscape-qtip/cytoscape-qtip.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "addons": [
+    "../node_modules/font-awesome/fonts/*.+(otf|eot|svg|ttf|woff|woff2)"
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json",
+      "exclude": ["**/node_modules/**", "**/src/app/shared/swagger/**"]
+    },
+    {
+      "project": "src/tsconfig.spec.json",
+      "exclude": ["**/node_modules/**", "**/src/app/shared/swagger/**"]
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": ["**/node_modules/**", "**/src/app/shared/swagger/**"]
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    },
+    "codeCoverage": {
+      "exclude": ["src/app/shared/swagger/**", "src/app/shared/angular2-highlight-js/lib/**", "src/app/test/**"]
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}

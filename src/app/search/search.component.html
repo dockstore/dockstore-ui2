@@ -1,0 +1,191 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<app-header>
+  <span class="glyphicon glyphicon-search"></span>
+  Search
+</app-header>
+<div class="container search-container">
+  <div class="row">
+    <div class="col-md-3 containers-rsb">
+      <button (click) = switchExpandAll() type="button" class="btn btn-info btn-sm sidebar-btn expand">
+        {{ expandAll? 'Collapse all': 'Expand all' }}
+      </button>
+      <accordion>
+        <accordion-group panelClass="containers-accordion" #group [isOpen]="expandAll">
+          <div accordion-heading>
+            Search
+            <span>
+              <i class="pull-right float-xs-right glyphicon"
+                 [ngClass]="group?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
+              </i>
+            </span>
+          </div>
+          <div>
+            <input  tooltip="Find tools and workflows with files that have at least one of these terms"
+                    type="text" list="suggestions" class="search-box form-control" [(ngModel)]="values"
+                    (ngModelChange)="onKey()" placeholder="Enter search term" />
+            <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
+              <div *ngFor="let term of autocompleteTerms">
+                <option [value]="term">
+              </div>
+            </datalist>
+          </div>
+          <button type="button" class="btn btn-success btn-sm center-block advancedSearch-btn" (click)="openAdvancedSearch()">
+            Open Advanced Search
+          </button>
+          <app-advancedsearch></app-advancedsearch>
+        </accordion-group>
+        <accordion-group *ngFor="let key of getKeys(orderedBuckets)" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+          <div accordion-heading>
+            {{friendlyNames.get(key)}}
+            <span>
+              <i class="pull-right float-xs-right glyphicon"
+                 [ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
+              </i>
+            </span>
+          </div>
+          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
+            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+            </button>
+            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+              <i class="float-xs-right glyphicon" aria-hidden="true"
+                 [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+            </button>
+          </div>
+          <div *ngFor='let subBucket of getBucketKeys(key); let i = index'>
+            <div class="panel-container-label selected-item">
+              <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
+                  </span>
+              </div>
+              <div class="pull-right">
+                <p>({{ orderedBuckets.get(key).SelectedItems.get(subBucket) }})</p>
+              </div>
+            </div>
+          </div>
+          <div *ngFor='let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index'>
+            <div class="panel-container-label">
+              <div *ngIf="i < 5">
+                <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
+                  </span>
+                </div>
+                <div class="pull-right">
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
+                </div>
+              </div>
+              <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
+                <div class="container-name-oflw pull-left">
+                  <span>
+                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ subBucket }}
+                  </span>
+                </div>
+                <div class="pull-right">
+                  <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
+            <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
+              <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+              <a>
+              {{ fullyExpandMap.get(key) ? 'Hide' : ( orderedBuckets.get(key).Items.size-5) + ' more'}}
+              </a>
+            </span>
+          </div>
+        </accordion-group>
+      </accordion>
+      <button (click) = resetFilters() type="button" class="btn btn-info btn-sm sidebar-btn reset">
+        Reset Filters
+      </button>
+    </div>
+    <div class="col-md-9 containers-rsb">
+      <div class="hits">
+        <div *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+          Sorry, no matches found for <strong>{{searchService.joinComma(values)}}</strong>.
+          <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
+        </div>
+
+        <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
+          <div class="alert alert-info">
+            <ng-template #popTemplate>
+              <div class="row">
+                <div class="input-group" style="padding:5px;">
+                  <input type="text" class="form-control" [(ngModel)]="permalink" value="{{permalink}}" readonly>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="permalink"
+                      (cbOnSuccess)="isCopied = true">
+                      <span class="glyphicon glyphicon-copy"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </ng-template>
+            <button type="button" class="refresh-all-button btn btn-primary"
+                    [popover]="popTemplate"
+                    popoverTitle="Link to this page"
+                    placement="bottom" [outsideClick]="true">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+              Share
+            </button>
+
+            <span *ngIf="searchService.hasResults(searchTerm, hits)">
+              <strong>Search: </strong> contains one of <strong>"{{searchService.joinComma(values)}}"</strong>
+            </span>
+
+            <span *ngIf="advancedSearchObject?.toAdvanceSearch && (advancedSearchObject?.ANDSplitFilter || advancedSearchObject?.ANDNoSplitFilter || advancedSearchObject?.ORFilter || advancedSearchObject?.NOTFilter)">
+              <strong>Search: </strong>
+              <span *ngIf="advancedSearchObject.ANDSplitFilter">contains all of <strong>"{{searchService.joinComma(advancedSearchObject.ANDSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ANDNoSplitFilter">contains exactly <strong>"{{searchService.joinComma(advancedSearchObject.ANDNoSplitFilter)}}"</strong><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.ORFilter">contains one of <strong>"{{searchService.joinComma(advancedSearchObject.ORFilter)}}"</strong><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span>
+              <span *ngIf="advancedSearchObject.NOTFilter">does not contain <strong>"{{searchService.joinComma(advancedSearchObject.NOTFilter)}}"</strong></span>
+            </span>
+            <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">AND </span>
+            <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">Search: </strong>
+
+            <span *ngFor="let key of getFilterKeys(); let i = index">
+              the <strong>{{friendlyNames.get(key)}}</strong> is
+              <span *ngFor='let subBucket of filters.get(key); let j = index'>
+                <strong>{{searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames)}}</strong>
+                <span *ngIf="j < filters.get(key).size - 1">
+                  OR
+                </span>
+              </span>
+              <span *ngIf="i < filters.size - 1">
+              AND
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="alert alert-info" *ngIf="hits.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)">
+          <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
+            We recommend that you narrow your search to find more relevant results.</p>
+        </div>
+        <app-search-results></app-search-results>
+      </div>
+    </div>
+  </div>
+</div>

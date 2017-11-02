@@ -1,0 +1,162 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div *ngIf="tool">
+  <ul class="list-unstyled container-info">
+    <li *ngIf="tool?.author">
+      <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author }}
+    </li>
+    <li *ngIf="tool?.email">
+      <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
+      <a href="mailto:{{tool?.email}}">
+        {{ tool?.email }}
+      </a>
+    </li>
+    <li *ngIf="tool?.providerUrl">
+      <strong tooltip="Source code repository for the associated tool descriptors and Dockerfile">
+        {{ tool?.provider}}
+      </strong>:
+      <a [href]="tool?.providerUrl">
+        {{ tool?.providerUrl }}
+      </a>
+    </li>
+    <li *ngIf="tool?.imgProviderUrl">
+      <strong tooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
+      <a [href]="tool?.imgProviderUrl">
+        {{ tool?.imgProviderUrl }}
+      </a>
+    </li>
+    <li *ngIf="tool?.default_dockerfile_path">
+      <form #editDockerfileForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
+          <span *ngIf="!dockerFileEditing">{{ tool?.default_dockerfile_path }}</span>
+          <input *ngIf="dockerFileEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" type="text" class="input-default form-control"
+            name="contDockerfilePath" [(ngModel)]="tool.default_dockerfile_path" placeholder="e.g. /Dockerfile" />
+        </div>
+        <div class="btn-group push-right" role="group" aria-label="Basic example">
+          <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"  class="btn btn-link"
+            (click)="toggleEditDockerFile()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
+            {{ dockerFileEditing ? 'Save' : 'Edit' }}
+          </button>
+        </div>
+      </form>
+    </li>
+    <li *ngIf="tool?.default_cwl_path">
+      <form #editCWLPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
+          <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
+          <input *ngIf="cwlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control"
+            name="contCWLPath" [(ngModel)]="tool.default_cwl_path" placeholder="e.g. /Dockerfile" />
+        </div>
+        <div class="btn-group push-right" role="group" aria-label="Basic example">
+          <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))" class="btn btn-link"
+            (click)="toggleEditCWLPath()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
+            {{ cwlPathEditing ? 'Save' : 'Edit' }}
+          </button>
+        </div>
+      </form>
+    </li>
+    <li *ngIf="tool?.default_wdl_path">
+      <form #editWDLPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
+          <span *ngIf="!wdlPathEditing">{{ tool?.default_wdl_path || 'n/a' }}</span>
+          <input *ngIf="wdlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
+            name="contWDLPath" [(ngModel)]="tool.default_wdl_path" placeholder="e.g. /Dockerfile" />
+        </div>
+        <div class="btn-group push-right" role="group" aria-label="Basic example">
+          <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+          <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))" class="btn btn-link"
+            (click)="toggleEditWDLPath()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
+            {{ wdlPathEditing ? 'Save' : 'Edit' }}
+          </button>
+        </div>
+      </form>
+    </li>
+   <li>
+      <form #editCWLTestPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
+          <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
+          <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /test.cwl.json" />
+        </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right"
+          (click)="toggleEditCWLTestPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlTestPathEditing, 'glyphicon-save': cwlTestPathEditing }"></span>
+          {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+
+    </li>
+    <li>
+      <form #editWDLTestPathForm="ngForm" class="form-inline">
+        <div class="form-group">
+          <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
+          <span *ngIf="!wdlTestPathEditing">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
+          <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
+            name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /test.wdl.json" />
+        </div>
+        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right"
+          (click)="toggleEditWDLTestPath()">
+          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlTestPathEditing, 'glyphicon-save': wdlTestPathEditing }"></span>
+          {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
+        </button>
+      </form>
+    </li>
+    <li *ngIf="tool?.buildMode">
+      <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
+    </li>
+    <li *ngIf="tool?.lastBuildDate">
+      <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
+    </li>
+    <li *ngIf="tool?.lastUpdatedDate">
+      <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
+    </li>
+  </ul>
+  <div *ngIf="tool?.description || !isPublic">
+    <label tooltip="Description of tool obtained from tool descriptor">
+      Description
+    </label>
+    <div *ngIf="tool?.description" class="well well-sm">
+      <markdown [data]="tool?.description"></markdown>
+    </div>
+    <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      <span ng-show="!containerObj.description">
+        No description associated with this tool. See
+        <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and
+        <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+      </span>
+    </div>
+  </div>
+  <div *ngIf="validVersions">
+    <app-launch *ngIf="!defaultVersion?.valid" [versions]="validVersions" [default]="validVersions[0]" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
+    <app-launch *ngIf="defaultVersion?.valid" [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
+  </div>
+</div>

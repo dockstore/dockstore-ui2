@@ -1,0 +1,64 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="separation">
+    <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" class="table row-border hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Stars</th>
+          <th>Author</th>
+          <th>Format</th>
+          <th>Project Links</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="entry-row" *ngFor="let workflow of workflowsTable" style="height:52px;">
+          <td>
+            <span id="verifiedIcon" *ngIf="getVerified(workflow)">
+              <a href={{verifiedLink}}>
+                <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+              </a>
+            </span>
+            <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
+          </td>
+          <td>
+            {{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
+          </td>
+          <td>
+            {{ workflow?.author || 'n/a' }}</td>
+          <td>{{ workflow?.descriptorType | uppercase }}</td>
+          <td>
+            <a [href]="workflow.providerUrl">
+              {{ workflow?.provider }}
+            </a>
+          </td>
+        </tr>
+
+      </tbody>
+      <!--Moved outside tbody because it interferes with Angular-Datatables library-->
+      <tr *ngIf="previewMode && workflowsTable.length > 0">
+        <td colspan="5" class="browse-all">
+          <div class="button">
+            <p><a href="/workflows">Browse All Workflows &raquo;</a></p>
+          </div>
+          <div class="button">
+            <p><a href="/search">Search Workflows &raquo;</a></p>
+          </div>
+        </td>
+      </tr>
+    </table>
+</div>

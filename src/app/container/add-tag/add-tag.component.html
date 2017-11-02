@@ -1,0 +1,166 @@
+<!--
+  ~    Copyright 2017 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<button id="addTagButton" type="button" class="btn btn-primary" (click)="addTagModal.show()">
+  Add Tag</button>
+<div class="modal fade" bsModal #addTagModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Version Tag</h4>
+      </div>
+      <form #addTagForm="ngForm" class="form-horizontal" name="addTagForm">
+        <div class="modal-body tagEditor">
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              Version Tag:
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input id="versionTagInput" type="text" class="form-control" name="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag" required title="Docker Image tag name." placeholder="e.g. develop" />
+              <div *ngIf="formErrors.versionTag" class="form-error-messages">
+                {{formErrors.versionTag}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              Git Reference:
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input id="gitReferenceInput" type="text" class="form-control" name="reference" [(ngModel)]="unsavedVersion.reference" maxlength="128" [pattern]="validationPatterns.reference" title="Git branch or tag name." placeholder="e.g. develop" required/>
+              <div *ngIf="formErrors.reference" class="form-error-messages">
+                {{formErrors.reference}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              Dockerfile:
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input type="text" class="form-control" #name="ngModel" id="dockerfilePath" name="dockerfilePath" [(ngModel)]="unsavedVersion.dockerfile_path" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" required title="Relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" [disabled]="!editMode" />
+              <div *ngIf="formErrors.dockerfilePath" class="form-error-messages">
+                {{formErrors.dockerfilePath}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              CWL Descriptor:
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" required title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode" />
+              <div *ngIf="formErrors.cwlPath" class="form-error-messages">
+                {{formErrors.cwlPath}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              WDL Descriptor:
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" required title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
+              <div *ngIf="formErrors.wdlPath" class="form-error-messages">
+                {{formErrors.wdlPath}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm" style="clear:both;">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              CWL Test Parameter File(s):
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
+              <div class="input-group">
+                <input type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <button title="Add CWL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.CWL)" ng-hide="!editMode" [disabled]="model1.invalid || unsavedTestCWLFile.length < 1">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </button>
+              </div>
+              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
+                {{formErrors.cwlTestParameterFilePath}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm" style="clear:both;">
+            <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
+              <div class="input-group">
+                <input type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" [disabled] minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <button title="Remove CWL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.CWL)">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm" style="clear:both;">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              WDL Test Parameter File(s):
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
+              <div class="input-group">
+                <input type="text" #model2="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <button title="Add WDL test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile(DescriptorType.WDL)" ng-hide="!editMode" [disabled]="model2.invalid || unsavedTestWDLFile.length < 1">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </button>
+              </div>
+              <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
+                {{formErrors.wdlTestParameterFilePath}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm" style="clear:both;">
+            <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index;">
+              <div class="input-group">
+                <input type="text" class="form-control" name="unsavedWDLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedWDLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+                <button title="Remove WDL test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" ng-hide="!editMode" (click)="removeTestParameterFile(i, DescriptorType.WDL)">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
+          </div>
+          <div class="form-group form-group-sm" ng-if="editMode">
+            <label class="col-sm-3 control-label">
+              Hidden:
+            </label>
+            <div class="col-sm-9">
+              <label>
+                <input type="checkbox" name="checkbox" [disabled]="!editMode" [(ngModel)]="unsavedVersion.hidden" title="Hide tag from public view." />
+              </label>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              Automated:
+            </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <div class="label-value">
+                {{tool?.automated ? 'Yes' : 'No'}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="addTagModal.hide()">Close</button>
+          <button id="addVersionTagButton" type="button" (click)="addTagModal.hide(); addTag()" class="btn btn-primary" [disabled]="!addTagForm.form.valid">
+            Add Tag
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
