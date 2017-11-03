@@ -1,20 +1,23 @@
 # Getting Started with Dockstore
 
-## Linking GitHub, Bitbucket, GitLab and Quay.io
+## Linking With External Services
 
-If you have not gone through the onboarding wizard yet, first step is to log in to the Dockstore which will link your accounts for GitHub, Bitbucket, GitLab, and Quay.io along with providing you the command line tool we will use for most of the tasks in this tutorial.  Make sure you have your GitHub, Bitbucket, GitLab and/or Quay.io accounts established and follow the onboarding wizard:
-
-https://www.dockstore.org/login
+If you have not gone through the onboarding wizard yet, the first step is to [login](https://www.dockstore.org/login) and link your external accounts. You can also get the command line tool we will use for most of the tasks in this tutorial.  For this tutorial you only need to have your GitHub and Quay.io accounts established. However, Dockstore supports the following external services:
+* GitHub
+* Bitbucket
+* GitLab
+* Quay.io
 
 Your link to GitHub is established on login and you will then be prompted to link your other accounts.
 
 ![Link accounts](../assets/images/docs/linking1.png)
 
-Linking a supported image repository service (e.g. Quay.io) will automatically trigger a synchronization order to retrieve information about the account's tools
+<!-- Currently UI2 does not perform and automatic refresh all tools -->
+<!-- Linking a supported image repository service (e.g. Quay.io) will automatically trigger a synchronization order to retrieve information about the account's tools
 
-![Refresh tools](../assets/images/docs/linking2.png)
+![Refresh tools](../assets/images/docs/linking2.png) -->
 
-Below, GitHub, BitBucket, GitLab and Quay.io accounts have been linked, it is necessary for at least the GitHub account be linked in order to perform regular account activities.
+Below, GitHub, Bitbucket, GitLab and Quay.io accounts have been linked, it is necessary for at least the GitHub account be linked in order to perform regular account activities.
 
 ![Link accounts completed](../assets/images/docs/linking3.png)
 
@@ -28,11 +31,13 @@ Now that you have your `Dockerfile` and `Dockstore.cwl` in GitHub, have setup Qu
 
 ### Quick Registration via the Web UI
 
-In the authenticated Web UI, navigate to 'My Tools' to begin managing Docker images imported through your linked account(s). These pages will allow you to quickly register tools that follow a particularly simple format (look below to manual registration for more complex formats). For quick registration, we look through your quay.io images and see if any are setup as [automated builds](https://docs.quay.io/guides/building.html). Using those to track back to your github, bitbucket, or gitlab accounts, we list all pairs of Docker images with git repositories that contain a `Dockstore.cwl` and a `Dockerfile`. When we discover both of these, we create an unregistered entry in the interface below.
+In the authenticated Web UI, navigate to 'My Tools' to begin managing Docker images imported through your linked account(s). These pages will allow you to quickly register tools that follow a particularly simple format (look below to manual registration for more complex formats). For quick registration, we look through your Quay.io images and see if any are set up as [automated builds](https://docs.quay.io/guides/building.html). Using those to track back to your GitHub, Bitbucket, or GitLab accounts, we list all pairs of Docker images with git repositories that contain a `Dockstore.cwl` and a `Dockerfile`. When we discover both of these, we create an unpublished entry in the interface below.
 
 ![My Tools](../assets/images/docs/register_ui.png)
 
 The left side menu is a list of all image repositories associated with the user, grouped lexicographically by namespace. Each tool is named after the docker location of the associated Docker image, in this example, `quay.io/cancercollaboratory/dockstore-tool-bedgraph-bigwig`. Detailed information and links for each tool are located on the 'Info' tab. The 'Labels' tab allows editing of keywords to be associated with a tool for efficient searching and grouping. Settings such as the path to the Dockerfile and CWL Descriptor can be modified on a per-tag basis in the 'Versions' tab. The Dockerfile, CWL/WDL Descriptor and test parameter files may be viewed in the 'Files' tab, by the Version tag (corresponding to a Git tag/branch).
+
+We also look for `/test.cwl.json` and `/test.wdl.json` in the git repositories on quick registration. These are the default test parameter file locations. Whenever a new version is added, we will check for these default files. You can also change these after quick registration. They will be applied to all versions that have not been edited, as well as any new versions that may appear.
 
 A tool is not visible on the public 'Tools' listing unless it is published. To publish a tool, press the yellow 'Publish' button in the top-right corner.
 
@@ -48,12 +53,12 @@ You can also click on the "Versions" tab and should notice `1.25-6` is present a
 
 ![Publish](../assets/images/docs/versions_toggle.png)
 
-Next, pick a version of your tool that you wish to present to the world by clicking on the radio selector in the Git Reference column. This will determine which version of your CWL/WDL file will be used to find the author, email, and description in the case that it changes between versions. This also allows you to pre-select a version of your tool to present to users in the "Launch With" section, and the Dockerfile and Descriptor tabs.
+Next, pick a version of your tool that you wish to present to the world by clicking on the radio selector in the Git Reference or Version column. This will determine which version of your CWL/WDL file will be used to find the author, email, and description in the case that it changes between versions. This also allows you to pre-select a version of your tool to present to users in the "Launch With" section, and the Dockerfile and Descriptor tabs.
 
 
 #### Manual Registration of Tools
 
-Outside of this tutorial, in certain cases, it is not possible for Dockstore to register every existing tool, especially those with unusual project structures. Most notably, Docker Hub images can not be automatically detected by Dockstore. The second possibility is that you have multiple CWL documents in a GitHub repository associated with multiple images. For those cases, it is necessary to manually register their details to Dockstore.
+Outside of this tutorial, in certain cases, it is not possible for Dockstore to register every existing tool, especially those with unusual project structures. Most notably, Docker Hub and GitLab images can not be automatically detected by Dockstore. The second possibility is that you have multiple CWL documents in a GitHub repository associated with multiple images. For those cases, it is necessary to manually register their details to Dockstore.
 
 Tools can be registered manually from the 'My Tools' page by pressing the 'Add Tool' button at the bottom of the right side bar, or any of the '+' buttons in each accordion namespace group. A modal dialog will appear as below:
 
@@ -209,7 +214,7 @@ You can see in the above, the tool (identified with `quay.io/cancercollaboratory
 The `dockstore tool manual_publish` command can be used to manually register a tool on Docker Hub. Its usage is outlined in the publish_manual help menu. This will allow you to register entries that do not follow the qualities above (non-automated builds and Docker Hub images).
 
 ```
-$ dockstore tool manual_publish
+$ dockstore tool manual_publish --help
 
 HELP FOR DOCKSTORE
 ------------------
@@ -228,12 +233,18 @@ Required parameters:
   --git-reference <reference>  Reference to git branch or tag where the CWL and Dockerfile is checked-in
 
 Optional parameters:
-  --dockerfile-path <file>     Path for the dockerfile, defaults to /Dockerfile
-  --cwl-path <file>            Path for the CWL document, defaults to /Dockstore.cwl
-  --wdl-path <file>            Path for the WDL document, defaults to /Dockstore.wdl
-  --toolname <toolname>        Name of the tool, can be omitted, defaults to null
-  --registry <registry>        Docker registry, can be omitted, defaults to registry.hub.docker.com
-  --version-name <version>     Version tag name for Dockerhub containers only, defaults to latest
+  --dockerfile-path <file>                                 Path for the dockerfile, defaults to /Dockerfile
+  --cwl-path <file>                                        Path for the CWL document, defaults to /Dockstore.cwl
+  --wdl-path <file>                                        Path for the WDL document, defaults to /Dockstore.wdl
+  --test-cwl-path <test-cwl-path>                          Path to default test cwl location, defaults to /test.cwl.json
+  --test-wdl-path <test-wdl-path>                          Path to default test wdl location, defaults to /test.wdl.json
+  --toolname <toolname>                                    Name of the tool, can be omitted, defaults to null
+  --registry <registry>                                    Docker registry, can be omitted, defaults to DOCKER_HUB. Run command with no parameters to see available registries.
+  --version-name <version>                                 Version tag name for Dockerhub containers only, defaults to latest.
+  --private <true/false>                                   Is the tool private or not, defaults to false.
+  --tool-maintainer-email <tool maintainer email>          The contact email for the tool maintainer. Required for private repositories.
+  --custom-docker-path <custom docker path>                Custom Docker registry path (ex. registry.hub.docker.com). Only available for certain registries.
+
 
 ------------------
 ```
@@ -253,4 +264,3 @@ You can find tools on the Dockstore website or also through the `dockstore tool 
 You can follow this basic pattern for each of your Docker-based tools.  Once registered, you can send links to your tools on Dockstore to colleagues and use it as a public platform for sharing your tools.
 
 Read up on how Dockstore uses Docker registries at the [Docker Registries](/docs/docker_registries) page or see our [full list of documentation](/docs).
-

@@ -11,8 +11,8 @@ Dockstore provides a few simple tools to share workflows, similar to how Docksto
 The steps to accomplish this task, at a high level, are:
 
 0. create a new repository on GitHub, Bitbucket or GitLab
-0. describe your workflow as either a [CWL workflow](http://www.commonwl.org/v1.0/UserGuide.html#Writing_Workflows) or a [WDL workflow](https://github.com/broadinstitute/wdl/blob/develop/SPEC.md#workflow-definition)
-0. test your workflow using an environment that supports full CWL workflows or WDL
+0. describe your workflow as either a [CWL workflow](http://www.commonwl.org/user_guide/) or a [WDL workflow](https://github.com/openwdl/wdl/blob/develop/SPEC.md#workflow-definition)
+0. test your workflow using an environment that supports full CWL or WDL workflows
 0. use the release process on GitHub, Bitbucket or GitLab to make distinct release tags, we like the  [HubFlow](https://datasift.github.io/gitflow/) process in our group for managing releases in git
 0. create an entry on Dockstore and then publish it
 
@@ -20,17 +20,19 @@ An extremely simple example is available [here](https://dockstore.org/workflows/
 
 ## Create Workflow Stubs from GitHub, Bitbucket, and GitLab
 
-The first step is to create a CWL or WDL workflow descriptor for your workflow and then check it into GitHub, Bitbucket or GitLab in a repo, we recommend the filename `Dockstore.cwl` at the root of your repository for simplicity but anything else with a consistent extension should work just as well. The details as to how to write a workflow are somewhat beyond the scope of this tutorial but we can recommend the [Introduction to the CWL](http://www.commonwl.org/v1.0/UserGuide.html) and [Getting Started with WDL](https://github.com/broadinstitute/wdl/tree/master#getting-started-with-wdl).
+The first step is to create a CWL or WDL workflow descriptor for your workflow and then check it into GitHub, Bitbucket or GitLab in a repo, we recommend the filename `Dockstore.cwl` at the root of your repository for simplicity but anything else with a consistent extension should work just as well. The details as to how to write a workflow are somewhat beyond the scope of this tutorial but we can recommend the [Introduction to the CWL](http://www.commonwl.org/user_guide/) and [Getting Started with WDL](https://github.com/openwdl/wdl/tree/master#getting-started-with-wdl).
 
 You can also check in test parameter files into the same Git repo. These files are example input JSON (or YAML) files for running the given workflow. It should be easy for a user to run your workflow with the test parameter files in order to see an example of your workflow, so try and store any required files in the same Git repository or somewhere else where the files are likely to be present.
 
+You can set a default test parameter file for a workflow, which defaults to `/test.json`. Whenever a new version is added, Dockstore will look for a file matching the default test parameter in the corresponding Git repository, and add it if it exists. Updating the default test parameter file path for an existing workflow will be propagated to any versions that have not been edited.
+
 <!-- this following markdown link/anchor does not seem to work properly -->
 
-The second step is to log in to the Dockstore. Make sure that you properly [link bitbucket and/or gitlab](docs/getting-started#Linking-services) to your account if you are using workflows hosted on bitbucket/gitlab. After successfully linking your GitHub, Bitbucket and GitLab credentials (if applicable), you will be able to refresh your account on dockstore and list your available repos on GitHub, Bitbucket and GitLab.
+The second step is to log in to the Dockstore. Make sure that you properly link Bitbucket and/or GitLab to your account if you are using workflows hosted on Bitbucket/Gitlab. After successfully linking your GitHub, Bitbucket and GitLab credentials (if applicable), you will be able to refresh your account on Dockstore and list your available repos on GitHub, Bitbucket and GitLab.
 
 ![My Workflows](../assets/images/docs/workflow_ui.png)
 
-The above image shows the general structure of the UI that you should see after visiting "My Workflows." You can hit "Refresh All Workflows" in order to update information on published workflows or create new stubs for repos that you are about to publish. Workflows are a bit different from tools in that we create a stub entry for all your GitHub repos (and bitbucket/gitlab repos). You can then promote these to full entries by publishing and editing them. It is only at this point that the Dockstore will reach out and populate information such as available tags and source files. Workflows are handled differently from Tools in this regard since users may often have many more tags and repos on GitHub than Docker images on Quay.io.
+The above image shows the general structure of the UI that you should see after visiting "My Workflows." You can hit "Refresh All Workflows" in order to update information on published workflows or create new stubs for repos that you are about to publish. Workflows are a bit different from tools in that we create a stub entry for all your GitHub repos (and Bitbucket/GitLab repos). You can then promote these to full entries by refreshing, publishing and editing them. It is only at this point that the Dockstore will reach out and populate information such as available tags and source files. Workflows are handled differently from Tools in this regard since users may often have many more tags and repos on GitHub than Docker images on Quay.io.
 
 ## Register Your Workflow in Dockstore
 
@@ -38,11 +40,11 @@ Now that you have linked your credentials and refreshed, there should be one stu
 
 ### Quick Registration via the Web UI
 
-In the authenticated Web UI, navigate to 'My Workflows' to begin managing workflows imported through your linked account(s). These pages will allow you to quickly register workflows that follow a particularly simple format (look below to manual registration for more complex formats). For quick registration, we look through your GitHub, Bitbucket and GitLab accounts and create a stub for each one. You can publish each repo that you identify as a real workflow in order to get, edit, and display additional information such as available versions.
+In the authenticated Web UI, navigate to 'My Workflows' to begin managing workflows imported through your linked account(s). These pages will allow you to quickly register workflows that follow a particularly simple format (look below to manual registration for more complex formats). For quick registration, we look through your GitHub, Bitbucket and GitLab accounts and create a stub for each one. You can refresh and publish each repo that you identify as a real workflow in order to get, edit, and display additional information such as available versions.
 
 In the above image, the left side menu is a list of all workflow repositories associated with the user, grouped lexicographically by namespace. Words encapsulated in parentheses denotes a custom toolname if provided. Detailed information and links for each Workflow is located on the 'Info' tab. The 'Labels' tab allows editing of keywords to be associated with a workflow for efficient searching and grouping. Settings such as the path to the CWL/WDL descriptor can be modified on a per-tag basis in the 'Versions' tab. The Descriptors and test parameter files may be viewed in the 'Files' tab, by the Version tag (corresponding to a Git tag/branch).
 
-Just like with Tools, a workflow is not visible on the public 'Workflows' listing unless it is published. To publish a container, click the blue 'Publish' button in the top-right corner.
+Just like with Tools, a workflow is not visible on the public 'Workflows' listing unless it is published. To publish a container, click the yellow 'Publish' button in the top-right corner.
 
 #### Manual Registration of Workflows
 
@@ -62,15 +64,15 @@ The fields in the form should correspond to the actual values on GitHub/Bitbucke
 
 ### CLI Client
 
-The `dockstore` command line has several options. When working with workflows, use `dockstore workflow` to get a full list of options. We recommend you first use `dockstore workflow refresh` to ensure the latest GitHub, Bitbucket, GitLab and Quay.io information is indexed properly.
+The `dockstore` command line has several options. When working with workflows, use `dockstore workflow` to get a full list of options. We recommend you first use `dockstore workflow refresh` to ensure the latest GitHub, Bitbucket, and GitLab information is indexed properly.
 
-You can then use `dockstore publish` to see the list of available workflows you can register with Dockstore and then register them. This is for you to publish workflows with the simplest structure. For now, use manual registration if your workflow has a different structure. The key is that workflows you wish to (simply) publish have the following qualities:
+You can then use `dockstore workflow publish` to see the list of available workflows you can register with Dockstore and then register them. This is for you to publish workflows with the simplest structure. For now, use manual registration if your workflow has a different structure. The key is that workflows you wish to (simply) publish have the following qualities:
 
 0. public
 0. at least one valid tag. In order to be valid, a tag has to:
     * have the reference be linked a corresponding `Dockstore.cwl` or `Dockstore.wdl` hosted at the root of the repository
 
-The `dockstore manual_publish` command can be used to manually register a workflow on Docker Hub. Its usage is outlined in the publish_manual help menu. This will allow you to register entries that do not follow the qualities above (non-automated builds and Docker Hub images).
+The `dockstore workflow manual_publish` command can be used to manually register a workflow on GitHub, Bitbucket or GitLab. Its usage is outlined in the manual_publish help menu.
 
 ## Find Other Workflows
 

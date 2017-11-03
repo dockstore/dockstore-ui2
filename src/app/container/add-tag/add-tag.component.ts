@@ -68,8 +68,12 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
         this.unsavedVersion.cwl_path = this.tool.default_cwl_path;
         this.unsavedVersion.wdl_path = this.tool.default_wdl_path;
         this.unsavedVersion.dockerfile_path = this.tool.default_dockerfile_path;
-        this.unsavedTestCWLFile = this.tool.defaultCWLTestParameterFile;
-        this.unsavedTestWDLFile = this.tool.defaultWDLTestParameterFile;
+        if (this.tool.defaultCWLTestParameterFile) {
+          this.unsavedTestCWLFile = this.tool.defaultCWLTestParameterFile;
+        }
+        if (this.tool.defaultWDLTestParameterFile) {
+          this.unsavedTestWDLFile = this.tool.defaultWDLTestParameterFile;
+        }
       }
     });
   }

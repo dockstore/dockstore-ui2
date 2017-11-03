@@ -1,4 +1,3 @@
-import { StateService } from './state.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,10 +14,13 @@ import { StateService } from './state.service';
  *    limitations under the License.
  */
 
-import {Input, OnInit} from '@angular/core';
+import { Input } from '@angular/core';
 
-import { DateService } from './date.service';
 import { DockstoreService } from '../shared/dockstore.service';
+import { DateService } from './date.service';
+import { StateService } from './state.service';
+import { Tooltip } from './tooltip';
+
 export abstract class Versions {
 
   @Input() versions: Array<any>;
@@ -28,13 +30,11 @@ export abstract class Versions {
   defaultVersion: string;
   verifiedLink: string;
   dtOptions;
-  readonly defaultBranchDescription = 'The default branch uniquely identifies the branch of a tool/workflow. ' +
-  'Determines what is displayed in the Info tab (Description, Launch With, etc)';
 
   abstract setNoOrderCols(): Array<number>;
 
   constructor(protected dockstoreService: DockstoreService,
-              private dateService: DateService, protected stateService: StateService) {
+    private dateService: DateService, protected stateService: StateService) {
     this.sortColumn = 'name';
     this.sortReverse = false;
   }
@@ -46,16 +46,16 @@ export abstract class Versions {
 
   getDefaultTooltip(publicPage: boolean): string {
     if (publicPage) {
-      return 'Default branch: ' + this.defaultBranchDescription;
+      return Tooltip.defaultVersionUser;
     } else {
-      return 'Set as default branch. ' + this.defaultBranchDescription;
+      return Tooltip.defaultVersionAuthor;
     }
   }
 
   clickSortColumn(columnName) {
     if (this.sortColumn === columnName) {
       this.sortReverse = !this.sortReverse;
-    } else  {
+    } else {
       this.sortColumn = columnName;
       this.sortReverse = false;
     }

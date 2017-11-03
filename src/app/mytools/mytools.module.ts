@@ -14,22 +14,24 @@
  *    limitations under the License.
  */
 
-import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import {
     RefreshToolOrganizationComponent,
 } from '../container/refresh-tool-organization/refresh-tool-organization.component';
+import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
+import { getTooltipConfig } from './../shared/tooltip';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
 
@@ -52,6 +54,7 @@ import { mytoolsRouting } from './mytools.routing';
     TooltipModule.forRoot()
   ],
   providers: [
+    {provide: TooltipConfig, useFactory: getTooltipConfig},
     RegisterToolService
   ],
 })
