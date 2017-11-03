@@ -9,6 +9,12 @@ import { Observable } from 'rxjs/Observable';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { Injectable } from '@angular/core';
 
+/**
+ * This service contains the ExtendedWorkflow observable.
+ * All components that rely on the extended properties of the Workflow should subscribe to the observable in this service.
+ * @export
+ * @class ExtendedWorkflowService
+ */
 @Injectable()
 export class ExtendedWorkflowService {
     extendedWorkflow$: Observable<ExtendedWorkflow>;
@@ -18,6 +24,13 @@ export class ExtendedWorkflowService {
             this.extendedWorkflow$ = this.workflowService.workflow$.map((workflow: Workflow) => this.extendWorkflow(workflow));
         }
 
+    /**
+     * Converts a Workflow to an Extended Workflow with more properties
+     * UPDATE THIS WHEN NEW EXTENDED PROPERTIES ARE ADDED
+     * @param {Workflow} workflow
+     * @returns {ExtendedWorkflow}
+     * @memberof ExtendedWorkflowService
+     */
     extendWorkflow(workflow: Workflow): ExtendedWorkflow {
         if (workflow) {
             const extendedWorkflow: ExtendedWorkflow = this.providerService.setUpProvider(workflow);
