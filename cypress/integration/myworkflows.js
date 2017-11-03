@@ -7,9 +7,9 @@ describe('Dockstore my workflows', function() {
 
     describe('Should contain extended Workflow properties', function() {
         it('visit another page then come back', function() {
-            cy.get('a').contains('Workflows').click()
-            cy.contains('GitHub')
-            cy.get('a').contains('My Workflows').click()
+          cy.get('a#home-nav-button').click()
+          cy.contains('Browse Tools')
+          cy.get('a#my-workflows-nav-button').click()
 
         });
         it('Should contain the extended properties', function() {

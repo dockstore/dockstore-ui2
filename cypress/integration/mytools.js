@@ -7,9 +7,9 @@ describe('Dockstore my tools', function() {
 
   describe('Should contain extended DockstoreTool properties', function() {
     it('visit another page then come back', function() {
-      cy.get('a').contains('Tools').click()
-      cy.contains('b3')
-      cy.get('a').contains('My Tools').click()
+      cy.get('a#home-nav-button').click()
+      cy.contains('Browse Tools')
+      cy.get('a#my-tools-nav-button').click()
       cy
       .get('accordion')
         .children(':nth-child(2)')
@@ -23,11 +23,7 @@ describe('Dockstore my tools', function() {
         cy.contains('Quay.io')
         cy.contains('quay.io/A2/b1')
         cy.contains('Last Build')
-        cy.contains('Mar. 15 2016 at')
-        cy.contains(':35:29')
         cy.contains('Last Updated')
-        cy.contains('Nov. 28 2016 at')
-        cy.contains(':00:43')
         cy.contains('Build Mode')
         cy.contains('Fully-Automated')
     });
