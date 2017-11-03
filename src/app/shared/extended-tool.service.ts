@@ -9,6 +9,12 @@ import { BehaviorSubject } from 'rxjs/Rx';
 import { ContainerService } from './container.service';
 import { Injectable } from '@angular/core';
 
+/**
+ * This service contains the ExtendedDockstoreTool observable.
+ * All components that rely on the extended properties of the DockstoreTool should subscribe to the observable in this service.
+ * @export
+ * @class ExtendedToolService
+ */
 @Injectable()
 export class ExtendedToolService {
     extendedDockstoreTool$: Observable<ExtendedDockstoreTool>;
@@ -16,20 +22,28 @@ export class ExtendedToolService {
         private imageProviderService: ImageProviderService, private dateService: DateService, private dockstoreService: DockstoreService) {
         this.extendedDockstoreTool$ = this.containerService.tool$.map((tool: DockstoreTool) => this.extendTool(tool));
     }
+
+    /**
+     * Converts a Workflow to an Extended Workflow with more properties
+     * UPDATE THIS WHEN NEW EXTENDED PROPERTIES ARE ADDED
+     * @param {DockstoreTool} tool
+     * @returns {ExtendedDockstoreTool}
+     * @memberof ExtendedToolService
+     */
     extendTool(tool: DockstoreTool): ExtendedDockstoreTool {
         if (tool) {
-            let extendededTool: ExtendedDockstoreTool = this.providerService.setUpProvider(tool);
-              extendededTool = this.providerService.setUpProvider(tool);
-              extendededTool.buildMode = this.containerService.getBuildMode(extendededTool.mode);
-              extendededTool.buildModeTooltip = this.containerService.getBuildModeTooltip(extendededTool.mode);
-              extendededTool = this.imageProviderService.setUpImageProvider(extendededTool);
-              extendededTool.agoMessage = this.dateService.getAgoMessage(new Date(extendededTool.lastBuild).getTime());
-              extendededTool.email = this.dockstoreService.stripMailTo(extendededTool.email);
-              extendededTool.lastBuildDate = this.dateService.getDateTimeMessage(new Date(extendededTool.lastBuild).getTime());
-              extendededTool.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(extendededTool.lastUpdated).getTime());
-              extendededTool.versionVerified = this.dockstoreService.getVersionVerified(extendededTool.tags);
-              extendededTool.verifiedSources = this.dockstoreService.getVerifiedSources(extendededTool);
-            return extendededTool;
+            let extendedTool: ExtendedDockstoreTool = this.providerService.setUpProvider(tool);
+              extendedTool = this.providerService.setUpProvider(tool);
+              extendedTool.buildMode = this.containerService.getBuildMode(extendedTool.mode);
+              extendedTool.buildModeTooltip = this.containerService.getBuildModeTooltip(extendedTool.mode);
+              extendedTool = this.imageProviderService.setUpImageProvider(extendedTool);
+              extendedTool.agoMessage = this.dateService.getAgoMessage(new Date(extendedTool.lastBuild).getTime());
+              extendedTool.email = this.dockstoreService.stripMailTo(extendedTool.email);
+              extendedTool.lastBuildDate = this.dateService.getDateTimeMessage(new Date(extendedTool.lastBuild).getTime());
+              extendedTool.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(extendedTool.lastUpdated).getTime());
+              extendedTool.versionVerified = this.dockstoreService.getVersionVerified(extendedTool.tags);
+              extendedTool.verifiedSources = this.dockstoreService.getVerifiedSources(extendedTool);
+            return extendedTool;
         } else {
             return null;
         }
