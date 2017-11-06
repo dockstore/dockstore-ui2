@@ -47,7 +47,7 @@ export class DownloadCLIClientComponent implements OnInit {
 ------------------------------
 #### Part 1
 1. We recommend Linux (the Dockstore CLI should also work on Mac OS X). The rest of these instructions focus on Ubuntu, although the setup for other distributions should be fairly similar.
-2. The Dockstore CLI uses Java, please install Java if you have not already by adding the Oracle Java repo and then installing Java. Note that if you are installing Java by some other mechanism, you will need to install at least Java 8, Update 101 (1.8.0_101-b13):
+2. The Dockstore CLI uses Java, please install Java if you have not already by adding the Oracle Java repo and then installing Java. Note that if you are installing Java by some other mechanism, you will need to install at least Java 8, Update 101 (1.8.0_101-b13) and we have not tested with Java 9:
 \`\`\`
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update && sudo apt-get install -y oracle-java8-set-default
