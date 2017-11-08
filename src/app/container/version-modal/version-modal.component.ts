@@ -54,6 +54,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public unsavedWDLTestParameterFilePaths: Array<string>;
   public unsavedTestCWLFile = '';
   public unsavedTestWDLFile = '';
+
   public formErrors = formErrors;
   private version: ToolVersion;
   public validationPatterns = validationPatterns;
@@ -113,6 +114,15 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.stateService.setRefreshMessage(message + '...');
     const id = this.tool.id;
     const tagName = this.version.name;
+
+    // Store the unsaved test files if valid and exist
+    if (this.unsavedTestCWLFile.length > 0) {
+      this.addTestParameterFile(DescriptorType.CWL);
+    }
+    if (this.unsavedTestWDLFile.length > 0) {
+      this.addTestParameterFile(DescriptorType.WDL);
+    }
+
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       this.containersService.addTestParameterFiles(id, newCWL, null, tagName, 'CWL').subscribe(response => {},
