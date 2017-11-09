@@ -90,8 +90,8 @@ export class ListContainersComponent extends ToolLister {
     this.containerService.setTool(tool);
   }
 
-  getFilteredDockerPullCmd(path: string): string {
-    return this.listContainersService.getDockerPullCmd(path);
+  getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
+    return this.listContainersService.getDockerPullCmd(path, tagName);
   }
 
   initToolLister(): void {
