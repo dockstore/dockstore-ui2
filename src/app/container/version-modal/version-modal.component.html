@@ -88,7 +88,7 @@
 
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              CWL Test Parameter File(s):
+              CWL Test Parameter File(s):s
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
               <div class="input-group">
@@ -115,6 +115,9 @@
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
                 {{formErrors.cwlTestParameterFilePath}}
               </div>
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
+              <input class="form-control" placeholder="None provided" [disabled]="true"/>
             </div>
           </div>
 
@@ -147,6 +150,9 @@
               <div *ngIf="formErrors.cwdlTestParameterFilePath" class="form-error-messages">
                 {{formErrors.wdlTestParameterFilePath}}
               </div>
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
+              <input class="form-control" placeholder="None provided" [disabled]="true"/>
             </div>
           </div>
 
