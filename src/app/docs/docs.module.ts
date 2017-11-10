@@ -19,17 +19,12 @@ import { CommonModule } from '@angular/common';
 import { MarkdownModule } from 'angular2-markdown';
 import { HeaderModule } from '../shared/modules/header.module';
 import { docsRouting } from './docs.routing';
-import { DocsService } from './docs.service';
 
 import { DocsComponent } from './docs.component';
-import { MainComponent } from './main/main.component';
-import { PageComponent } from './page/page.component';
 
 @NgModule({
   declarations: [
-    DocsComponent,
-    MainComponent,
-    PageComponent
+    DocsComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +32,6 @@ import { PageComponent } from './page/page.component';
     docsRouting,
     HeaderModule
   ],
-  providers: [DocsService]
+  providers: []
 })
 export class DocsModule { }
