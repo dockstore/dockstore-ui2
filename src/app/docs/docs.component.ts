@@ -46,7 +46,7 @@ export class DocsComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
         window.location.href = this.getLink();
-    }, 5000);  //5s
+    }, 5000);
   }
 
   // Generate redirect link based on path
