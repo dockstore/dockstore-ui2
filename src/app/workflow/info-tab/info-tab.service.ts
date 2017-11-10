@@ -1,3 +1,5 @@
+import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
+import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
 import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
@@ -49,8 +51,9 @@ export class InfoTabService {
     private currentWorkflow: any;
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
-        private errorService: ErrorService, private refreshService: RefreshService) {
-        this.workflowService.workflow$.subscribe(workflow => {
+        private errorService: ErrorService, private refreshService: RefreshService,
+        private extendedWorkflowService: ExtendedWorkflowService) {
+        this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
             this.cancelEditing();
         });
@@ -79,11 +82,11 @@ export class InfoTabService {
         });
     }
 
-    get workflow(): any {
+    get workflow(): ExtendedWorkflow {
         return this.currentWorkflow;
     }
 
-    set workflow(workflow: any) {
+    set workflow(workflow: ExtendedWorkflow) {
         this.originalWorkflow = workflow;
         this.currentWorkflow = Object.assign({}, workflow);
     }

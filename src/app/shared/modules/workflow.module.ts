@@ -1,3 +1,4 @@
+import { ExtendedWorkflowService } from '../extended-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -98,6 +99,7 @@ import { getTooltipConfig } from './../tooltip';
     ClipboardModule
   ],
   providers: [
+    ExtendedWorkflowService,
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     HighlightJsService,
     DateService,

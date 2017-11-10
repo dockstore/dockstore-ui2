@@ -1,3 +1,5 @@
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ExtendedToolService } from './../../shared/extended-tool.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../../shared/refresh.service';
 /*
@@ -49,10 +51,13 @@ export class InfoTabService {
      */
     private currentTool: ExtendedDockstoreTool;
     constructor(private containersService: ContainersService, private stateService: StateService,
-        private containerService: ContainerService, private refreshService: RefreshService) {
-        this.containerService.tool$.subscribe(tool => {
-            this.tool = tool;
-            this.cancelEditing();
+        private containerService: ContainerService, private refreshService: RefreshService,
+        private extendedToolService: ExtendedToolService) {
+        this.extendedToolService.extendedDockstoreTool$.subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
+            if (extendedDockstoreTool) {
+                this.tool = extendedDockstoreTool;
+                this.cancelEditing();
+            }
         });
         this.containerService.tools$.subscribe(tools => this.tools = tools);
     }
@@ -76,7 +81,7 @@ export class InfoTabService {
         this.wdlTestPathEditing$.next(editing);
     }
 
-    updateAndRefresh(tool: any) {
+    updateAndRefresh(tool: DockstoreTool) {
         const message = 'Tool Info';
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
             this.stateService.setRefreshMessage('Updating ' + message + '...');
