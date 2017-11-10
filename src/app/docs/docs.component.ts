@@ -37,7 +37,8 @@ export class DocsComponent implements OnInit {
     { existingPath: '/docs/best-practices', newPath: '/docs/publisher-tutorials/best-practices/' },
     { existingPath: '/docs/advanced-features', newPath: '/docs/publisher-tutorials/advanced-features/' },
     { existingPath: '/docs/aws-batch-tutorial', newPath: '/docs/publisher-tutorials/aws-batch/' },
-    { existingPath: '/docs/azure-batch-tutorial', newPath: '/docs/publisher-tutorials/azure-batch/' }
+    { existingPath: '/docs/azure-batch-tutorial', newPath: '/docs/publisher-tutorials/azure-batch/' },
+    { existingPath: '/docs/user-created', newPath: '/docs/extras/user-created' }
   ];
 
   public redirectLink = this.getLink();
