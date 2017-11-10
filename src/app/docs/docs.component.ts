@@ -37,25 +37,29 @@ export class DocsComponent implements OnInit {
     { existingPath: '/docs/best-practices', newPath: '/docs/publisher-tutorials/best-practices/' },
     { existingPath: '/docs/advanced-features', newPath: '/docs/publisher-tutorials/advanced-features/' },
     { existingPath: '/docs/aws-batch-tutorial', newPath: '/docs/publisher-tutorials/aws-batch/' },
-    { existingPath: '/docs/azure-batch-tutorial', newPath: '/docs/publisher-tutorials/azure-batch/' },
-  ]
+    { existingPath: '/docs/azure-batch-tutorial', newPath: '/docs/publisher-tutorials/azure-batch/' }
+  ];
+
   public redirectLink = this.getLink();
   constructor() { }
 
   ngOnInit() {
+    setTimeout(() => {
+        window.location.href = this.getLink();
+    }, 5000);  //5s
   }
 
   // Generate redirect link based on path
   getLink() {
-    var currentPath = window.location.pathname;
-    var redirectBase = 'http://docs.dockstore.org'
-    var redirectPath = '/docs'
+    const currentPath = window.location.pathname;
+    const redirectBase = 'http://docs.dockstore.org';
+    let redirectPath = '/docs';
 
     // Iterate over each docMapping
-    for (let doc of this.docMapping) {
+    for (const doc of this.docMapping) {
       // Remove trailing /
-      var filteredPath = currentPath.replace(/\/$/, "");
-      if (filteredPath == doc.existingPath) {
+      const filteredPath = currentPath.replace(/\/$/, '');
+      if (filteredPath === doc.existingPath) {
         redirectPath = doc.newPath;
         break;
       }
