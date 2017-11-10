@@ -29,7 +29,6 @@ import { Configuration } from './../shared/swagger/configuration';
 import { SearchService } from './../search/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Metadata } from './../shared/swagger/model/metadata';
-import { Doc } from './../docs/doc.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -55,15 +54,6 @@ export class ContainerStubService {
 }
 
 export class FileStubService { }
-export class DocsStubService {
-    getDocs(): Doc[] {
-        return null;
-    }
-    getDoc(slug: string): Doc {
-        return null;
-    }
-}
-
 
 export class QueryBuilderStubService {
     getTagCloudQuery(type: string): string {

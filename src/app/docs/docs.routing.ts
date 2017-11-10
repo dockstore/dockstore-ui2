@@ -17,8 +17,6 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { DocsComponent } from './docs.component';
-import { MainComponent } from './main/main.component';
-import { PageComponent } from './page/page.component';
 
 const DOC_ROUTES: Routes = [
   {
