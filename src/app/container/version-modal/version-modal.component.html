@@ -116,6 +116,9 @@
                 {{formErrors.cwlTestParameterFilePath}}
               </div>
             </div>
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
+              <input class="form-control" placeholder="None provided" [disabled]="true"/>
+            </div>
           </div>
 
           <div class="form-group form-group form-group-sm">
@@ -147,6 +150,9 @@
               <div *ngIf="formErrors.cwdlTestParameterFilePath" class="form-error-messages">
                 {{formErrors.wdlTestParameterFilePath}}
               </div>
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
+              <input class="form-control" placeholder="None provided" [disabled]="true"/>
             </div>
           </div>
 

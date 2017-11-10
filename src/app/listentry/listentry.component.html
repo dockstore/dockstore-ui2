@@ -50,7 +50,7 @@
       </td>
       <td>
         <div class="input-group">
-          <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(hit?._source.path) }}" aria-describedby="clipboard" #inputTarget>
+          <input type="text" class="form-control" value="{{ getFilteredDockerPullCmd(hit?._source.path, hit?._source.defaultVersion) }}" aria-describedby="clipboard" #inputTarget>
           <span class="input-group-btn" id="clipboard">
             <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget">
               <span class="glyphicon glyphicon-copy"></span>
