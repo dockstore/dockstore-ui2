@@ -45,10 +45,6 @@ export class DocsComponent implements OnInit {
   ngOnInit() {
   }
 
-
-  getPath() {
-    return window.location.pathname;
-  }
   // Generate redirect link based on path
   getLink() {
     var currentPath = window.location.pathname;
