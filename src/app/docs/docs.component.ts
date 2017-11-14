@@ -56,16 +56,21 @@ export class DocsComponent implements OnInit {
     const redirectBase = 'http://docs.dockstore.org';
     let redirectPath = '/docs';
 
+    // Remove trailing slash (/)
+    const filteredPath = currentPath.replace(/\/$/, '');
     // Iterate over each docMapping
-    for (const doc of this.docMapping) {
-      // Remove trailing /
-      const filteredPath = currentPath.replace(/\/$/, '');
-      if (filteredPath === doc.existingPath) {
-        redirectPath = doc.newPath;
-        break;
-      }
+    const matchingDoc = (this.docMapping.find(this.findDoc(filteredPath)));
+    if (matchingDoc != null) {
+      redirectPath = matchingDoc.newPath;
     }
     return redirectBase + redirectPath;
+  }
+
+  // Returns a function to test elements of an array against a path
+  findDoc(filteredPath) {
+    return function(element) {
+      return element.existingPath == filteredPath;
+    }
   }
 
   // Return a link with no HTTP(S)://
