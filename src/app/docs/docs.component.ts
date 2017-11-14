@@ -54,10 +54,13 @@ export class DocsComponent implements OnInit {
   getLink() {
     const currentPath = window.location.pathname;
     const redirectBase = 'http://docs.dockstore.org';
+
+    // Fallback path for docs that don't match existing paths
     let redirectPath = '/docs';
 
     // Remove trailing slash (/)
     const filteredPath = currentPath.replace(/\/$/, '');
+
     // Iterate over each docMapping
     const matchingDoc = (this.docMapping.find(this.findDoc(filteredPath)));
     if (matchingDoc != null) {
@@ -69,8 +72,8 @@ export class DocsComponent implements OnInit {
   // Returns a function to test elements of an array against a path
   findDoc(filteredPath) {
     return function(element) {
-      return element.existingPath == filteredPath;
-    }
+      return element.existingPath === filteredPath;
+    };
   }
 
   // Return a link with no HTTP(S)://
