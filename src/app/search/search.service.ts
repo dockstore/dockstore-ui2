@@ -67,7 +67,7 @@ export class SearchService {
   // Given a search info object, will create the permalink for the current search
   createPermalinks(searchInfo) {
     // For local testing, use LOCAL_URI, else use HOSTNAME
-    let url = `${ Dockstore.HOSTNAME }/search`;
+    const url = `${ Dockstore.HOSTNAME }/search`;
     const params = new URLSearchParams();
     const filter = searchInfo.filter;
     filter.forEach(
