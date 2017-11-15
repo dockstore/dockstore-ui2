@@ -17,9 +17,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router/';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-
+import { Dockstore } from './../shared/dockstore.model';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { ProviderService } from '../shared/provider.service';
@@ -37,7 +38,7 @@ import { SearchService } from './search.service';
 export class SearchComponent implements OnInit {
   public advancedSearchObject: AdvancedSearchObject;
   private routeSub: Subscription;
-  public permalink: string;
+  public shortUrl: string;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -117,7 +118,8 @@ export class SearchComponent implements OnInit {
     public searchService: SearchService,
     private advancedSearchService: AdvancedSearchService,
     private router: Router,
-    private Location: Location) {
+    private Location: Location,
+    private http: HttpClient) {
     this.location = Location;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeBucketStubs();
@@ -344,8 +346,8 @@ export class SearchComponent implements OnInit {
     };
 
     const linkArray = this.searchService.createPermalinks(searchInfo);
-    this.permalink = linkArray[0] + '?' + linkArray[1];
     this.location.go('search?' + linkArray[1]);
+    this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 
   /**===============================================
@@ -410,6 +412,18 @@ export class SearchComponent implements OnInit {
         this.suggestKeyTerm();
       }
     });
+  }
+
+  // Given a URL, will attempt to shorten it
+  setShortUrl(url: string) {
+    const googleUrlShortenerBase = 'https://www.googleapis.com/urlshortener/v1/url?key=';
+    const body = {'longUrl': url};
+    const req = this.http.post(googleUrlShortenerBase + Dockstore.GOOGLE_SHORTENER_KEY, body);
+
+    const sub = req.subscribe(
+      data => { this.shortUrl = data['id']; },
+      err => { this.shortUrl = url; }
+    );
   }
 
   /**===============================================
@@ -568,6 +582,7 @@ export class SearchComponent implements OnInit {
     this.orderedBuckets.get(category).Items = orderedMap2;
     this.sortModeMap.get(category).SortBy = sortMode;
   }
+
   /**===============================================
    *                Helper Functions
    * ===============================================

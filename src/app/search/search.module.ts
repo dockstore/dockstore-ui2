@@ -17,6 +17,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -57,7 +58,8 @@ import { SearchService } from './search.service';
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
     ClipboardModule,
-    searchRouting
+    searchRouting,
+    HttpClientModule
   ],
   providers: [AdvancedSearchService, SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
   exports: [SearchComponent]

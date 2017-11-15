@@ -25,6 +25,9 @@ export class Dockstore {
   // Discourse URL MUST end with a slash (/)
   static readonly DISCOURSE_URL = 'http://localhost/';
 
+  // Google Shortener API key (https://developers.google.com/url-shortener/v1/getting_started#APIKey)
+  static readonly GOOGLE_SHORTENER_KEY = 'fill_this_in';
+
   static readonly LOCAL_URI = Dockstore.HOSTNAME + ':' + Dockstore.UI_PORT;
   static readonly API_URI = Dockstore.HOSTNAME + ':' + Dockstore.API_PORT;
   static readonly DNASTACK_IMPORT_URL= 'https://app.dnastack.com/#/app/workflow/import/dockstore';
