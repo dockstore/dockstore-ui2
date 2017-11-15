@@ -36,7 +36,7 @@
             <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow?.path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
           </td>
           <td>
-            {{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
+            {{ workflow?.starredUsers.length }}
           </td>
           <td>
             {{ workflow?.author || 'n/a' }}</td>
