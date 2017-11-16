@@ -28,15 +28,19 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ### Prerequisites
 
 Angular CLI requires Node 6.9.0 or higher, together with NPM 3 or higher.
+Then make sure Angular CLI has been properly set up.
 
 [Install NPM and Node](https://nodejs.org/en/download/package-manager/)
 ```
-curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-sudo apt-get install -y nodejs
-nodejs -v
+$curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+$sudo apt-get install -y nodejs
+$nodejs -v
 v7.10.0
-npm -v
+$npm -v
 4.2.0
+
+$sudo npm install -g @angular/cli@1.3.1		
+```
 
 #### NPM
 
