@@ -9,7 +9,6 @@ Table of Contents
    * [DockstoreUi2](#dockstoreui2)
       * [Set Up Angular CLI](#set-up-angular-cli)
          * [Prerequisites](#prerequisites)
-            * [Bower](#bower)
             * [NPM](#npm)
       * [Project Set Up](#project-set-up)
       * [Development server](#development-server)
@@ -38,17 +37,6 @@ nodejs -v
 v7.10.0
 npm -v
 4.2.0
-```
-#### Bower
-
-Until bootstrap-toc moves to npm or a better table of contents(toc) library comes along in npm, we cannot get rid of bower just yet.
-```
-sudo npm install -g bower
-bower -v
-1.8.0
-sudo npm install -g @angular/cli@1.3.1
-bower install
-```
 
 #### NPM
 
