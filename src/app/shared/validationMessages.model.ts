@@ -41,7 +41,7 @@ export const validationPatterns = {
   'imagePath': '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'toolName': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
   'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
-  'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
+  'versionTag': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
   'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
   'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
