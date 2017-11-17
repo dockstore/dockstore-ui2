@@ -21,7 +21,6 @@
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
-        "../bower_components/bootstrap-toc/bootstrap-toc.css",
         "../node_modules/jquery-colorbox/example1/colorbox.css",
         "../src/jquery.qtip.css",
         "../node_modules/font-awesome/css/font-awesome.css",
@@ -34,7 +33,6 @@
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
-        "../bower_components/bootstrap-toc/bootstrap-toc.js",
         "../node_modules/jquery-colorbox/jquery.colorbox.js",
         "../node_modules/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js",
         "../node_modules/cytoscape/dist/cytoscape.min.js",
