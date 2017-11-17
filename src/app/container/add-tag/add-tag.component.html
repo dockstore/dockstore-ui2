@@ -30,7 +30,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input id="versionTagInput" type="text" class="form-control" name="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag" required title="Docker Image tag name." placeholder="e.g. develop" />
-              <div *ngIf="formErrors.versionTag" class="form-error-messages">
+              <div *ngIf="formErrors.versionTag" class="form-error-messages alert alert-danger">
                 {{formErrors.versionTag}}
               </div>
             </div>
@@ -41,7 +41,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input id="gitReferenceInput" type="text" class="form-control" name="reference" [(ngModel)]="unsavedVersion.reference" maxlength="128" [pattern]="validationPatterns.reference" title="Git branch or tag name." placeholder="e.g. develop" required/>
-              <div *ngIf="formErrors.reference" class="form-error-messages">
+              <div *ngIf="formErrors.reference" class="form-error-messages alert alert-danger">
                 {{formErrors.reference}}
               </div>
             </div>
@@ -52,7 +52,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input type="text" class="form-control" #name="ngModel" id="dockerfilePath" name="dockerfilePath" [(ngModel)]="unsavedVersion.dockerfile_path" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" required title="Relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" [disabled]="!editMode" />
-              <div *ngIf="formErrors.dockerfilePath" class="form-error-messages">
+              <div *ngIf="formErrors.dockerfilePath" class="form-error-messages alert alert-danger">
                 {{formErrors.dockerfilePath}}
               </div>
             </div>
@@ -63,7 +63,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" required title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode" />
-              <div *ngIf="formErrors.cwlPath" class="form-error-messages">
+              <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
                 {{formErrors.cwlPath}}
               </div>
             </div>
@@ -74,7 +74,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" required title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode" />
-              <div *ngIf="formErrors.wdlPath" class="form-error-messages">
+              <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
                 {{formErrors.wdlPath}}
               </div>
             </div>
@@ -90,7 +90,7 @@
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
               </div>
-              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
+              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
                 {{formErrors.cwlTestParameterFilePath}}
               </div>
             </div>
@@ -116,7 +116,7 @@
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
               </div>
-              <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
+              <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages alert alert-danger">
                 {{formErrors.wdlTestParameterFilePath}}
               </div>
             </div>
