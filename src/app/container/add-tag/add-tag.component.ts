@@ -120,6 +120,14 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       this.tool.tags = response;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
+      // Store the unsaved test files if valid and exist
+      if (this.unsavedTestCWLFile.length > 0) {
+        this.addTestParameterFile(DescriptorType.CWL);
+      }
+      if (this.unsavedTestWDLFile.length > 0) {
+        this.addTestParameterFile(DescriptorType.WDL);
+      }
+
       this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, null, tagName, 'CWL').subscribe();
       this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, null, tagName, 'WDL').subscribe();
       this.containerService.setTool(this.tool);
