@@ -67,7 +67,8 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Dockerfile Path is too short. (Min. 3 characters.)',
     'maxlength': 'Dockerfile Path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Dockerfile Path format. Dockerfile Path must begin with \'/\' and end with \'Dockerfile\'. Optionally you can use a string as a prefix or a suffix to \'Dockerfile\', as long as they are separated by a \'.\''
+    'pattern': 'Invalid Dockerfile Path format. Dockerfile Path must begin with \'/\' and end with \'Dockerfile\'. ' +
+                'Optionally you can use a string as a prefix or a suffix to \'Dockerfile\', as long as they are separated by a \'.\'.'
   },
   'gitPath': {
     'required': 'This field cannot be empty.',
