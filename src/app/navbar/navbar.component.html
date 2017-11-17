@@ -20,7 +20,7 @@
             <ul class="nav">
                 <span class="pull-left nav-item">
                     <li>
-                        <a (click)="resetPageNumber()" routerLink="">
+                        <a id="home-nav-button" (click)="resetPageNumber()" routerLink="">
                             <img class="logo" src="../assets/images/dockstore/logo.png">
                         </a>
                     </li>
@@ -93,11 +93,11 @@
                 </span>
                 <span class="pull-right nav-item nav-item-text">
                     <li id="myToolsNav" *ngIf="isLoggedIn">
-                        <a routerLink="/my-tools">
+                        <a id="my-tools-nav-button" routerLink="/my-tools">
                             <img class="site-icons-small" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools</a>
                     </li>
                     <li id="myWorkflowsNav" *ngIf="isLoggedIn">
-                        <a routerLink="/my-workflows">
+                        <a id="my-workflows-nav-button" routerLink="/my-workflows">
                             <img class="site-icons-small" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows</a>
                     </li>
                     <li *ngIf="!isLoggedIn">

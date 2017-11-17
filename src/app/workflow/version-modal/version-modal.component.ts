@@ -83,6 +83,11 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   public saveChanges() {
+    // Store the unsaved test files if valid and exist
+    if (this.testParameterFilePath.length > 0) {
+      this.addTestParameterFile();
+    }
+
     this.versionModalService.saveVersion(this.version, this.originalTestParameterFilePaths, this.testParameterFilePaths);
   }
 

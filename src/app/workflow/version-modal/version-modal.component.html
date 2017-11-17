@@ -56,49 +56,43 @@
               <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
             </div>
           </div>
-          <div *ngIf="!isPublic">
-          <div class="form-group form-group-sm" style="clear:both;">
+          <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Test Parameter File(s):
             </label>
-            <div class="col-sm-9 col-md-9 col-lg-9 test_parameter_div">
+            <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
               <div class="input-group">
-                <input type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128"
-                  [pattern]="validationPatterns.testFilePath" [tooltip]="tooltip.testParameterFile" placeholder="e.g. /test.json"
-                  [disabled]="isPublic" ng-class="editMode ? 'test_parameter_input' : ''" />
-                <button tooltip="Add test parameter file" type="button" class="btn btn-success test_parameter_add_button" (click)="addTestParameterFile()"
-                  [disabled]="testParameterFilePath.length < 1">
-                  <span class="glyphicon glyphicon-plus"></span>
-                </button>
+                <input [ngClass]="{ 'input-right-button' : !isPublic, 'input-no-button' : isPublic }" type="text" class="form-control" name="testParameterFilePaths[{{i}}]" [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a Test Parameter File in the Git repository." placeholder="e.g. /test.json" disabled ng-class="!isPublic ? 'test_parameter_input' : ''"  readonly [tooltip]="tooltip.testParameterFile"/>
+                <span class="input-group-btn">
+                  <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </button>
+                </span>
               </div>
-              <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger">
+            </div>
+
+            <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
+              <div class="input-group full-width">
+                <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
+                  [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json"
+                  [disabled]="isPublic" ng-class="!isPublic ? 'test_parameter_input' : ''"/>
+                <span class="input-group-btn">
+                  <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                  <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0" *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
                 {{formErrors.cwlTestParameterFilePath}}
               </div>
             </div>
-          </div>
-          <div class="form-group form-group-sm">
-            <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 test_parameter_div" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
-              <div class="input-group">
-                <input type="text" class="form-control" name="testParameterFilePaths[{{i}}]" [(ngModel)]="testParameterFilePaths[i]" readonly [tooltip]="tooltip.testParameterFile"/>
-                <button tooltip="Remove test parameter file" type="button" class="btn btn-danger test_parameter_remove_button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
-                  <span class="glyphicon glyphicon-minus"></span>
-                </button>
-              </div>
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
+              <input class="form-control" placeholder="None provided" [disabled]="true"/>
             </div>
           </div>
-        </div>
-        <div *ngIf="isPublic">
-          <div class="form-group form-group-sm" style="clear:both;">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Test Parameter File(s):
-            </label>
-            <div class="col-sm-offset-3 col-sm-9 col-md-9 col-lg-9 my-1" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
-              <div class="input-group">
-                <input type="text" class="form-control" name="testParameterFilePaths[{{i}}]" [(ngModel)]="testParameterFilePaths[i]" readonly [tooltip]="tooltip.testParameterFile"/>
-              </div>
-            </div>
-          </div>
-        </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
           </div>
           <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">

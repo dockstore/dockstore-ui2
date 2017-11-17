@@ -5,6 +5,30 @@ describe('Dockstore my tools', function() {
      cy.visit(String(global.baseUrl) + "/my-tools")
   });
 
+  describe('Should contain extended DockstoreTool properties', function() {
+    it('visit another page then come back', function() {
+      cy.get('a#home-nav-button').click()
+      cy.contains('Browse Tools')
+      cy.get('a#my-tools-nav-button').click()
+      cy
+      .get('accordion')
+        .children(':nth-child(2)')
+        .click()
+        .get('.panel')
+        .children(':nth-child(2)')
+        .contains('a', 'b1')  
+        .click()
+        cy.contains('GitHub')
+        cy.contains('https://github.com/A2/b1')
+        cy.contains('Quay.io')
+        cy.contains('quay.io/A2/b1')
+        cy.contains('Last Build')
+        cy.contains('Last Updated')
+        cy.contains('Build Mode')
+        cy.contains('Fully-Automated')
+    });
+  });
+
   describe('publish a tool', function() {
     it("publish and unpublish", function() {
       cy
@@ -122,5 +146,6 @@ describe('Dockstore my tools', function() {
         // .get('#tool-path')
         // .should('not.contain', 'amazon.ecr.registry/testnamespace/testname')
     });
+
   });
 });
