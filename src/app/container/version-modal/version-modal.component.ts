@@ -265,4 +265,23 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   getDateTimeMessage(timestamp) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
+
+  // Checks if the currently edited test parameter file already exists
+  hasDuplicateTestJson(type) {
+    if (type === 'cwl') {
+      if (this.unsavedCWLTestParameterFilePaths.indexOf(this.unsavedTestCWLFile) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (type === 'wdl') {
+      if (this.unsavedWDLTestParameterFilePaths.indexOf(this.unsavedTestWDLFile) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

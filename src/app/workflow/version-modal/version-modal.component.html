@@ -70,14 +70,14 @@
                 </span>
               </div>
             </div>
-
+            
             <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
               <div class="input-group full-width">
                 <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
                   [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json"
                   [disabled]="isPublic" ng-class="!isPublic ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
-                  <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
+                  <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson()" (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                   <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0" *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
@@ -87,6 +87,9 @@
               </div>
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
                 {{formErrors.cwlTestParameterFilePath}}
+              </div>
+              <div *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
+                Duplicate test json files are not allowed.
               </div>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
