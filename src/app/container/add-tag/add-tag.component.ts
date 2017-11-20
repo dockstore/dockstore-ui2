@@ -171,13 +171,13 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   // TODO: This code is repeated in version-modal.component.ts for tools, move it somewhere common
   hasDuplicateTestJson(type) {
     if (type === 'cwl') {
-      if (this.unsavedCWLTestParameterFilePaths.indexOf(this.unsavedTestCWLFile) > -1) {
+      if (this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
         return true;
       } else {
         return false;
       }
     } else if (type === 'wdl') {
-      if (this.unsavedWDLTestParameterFilePaths.indexOf(this.unsavedTestWDLFile) > -1) {
+      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
         return true;
       } else {
         return false;

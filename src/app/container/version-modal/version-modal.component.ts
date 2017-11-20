@@ -17,6 +17,7 @@ import { RefreshService } from '../../shared/refresh.service';
 
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { DateService } from './../../shared/date.service';
 import { ToolVersion } from './../../shared/swagger/model/toolVersion';
@@ -268,14 +269,14 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   // Checks if the currently edited test parameter file already exists
   hasDuplicateTestJson(type) {
-    if (type === 'cwl') {
-      if (this.unsavedCWLTestParameterFilePaths.indexOf(this.unsavedTestCWLFile) > -1) {
+    if (type === DescriptorType.CWL) {
+      if (this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
         return true;
       } else {
         return false;
       }
-    } else if (type === 'wdl') {
-      if (this.unsavedWDLTestParameterFilePaths.indexOf(this.unsavedTestWDLFile) > -1) {
+    } else if (type === DescriptorType.WDL) {
+      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
         return true;
       } else {
         return false;

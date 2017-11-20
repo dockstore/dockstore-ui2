@@ -104,7 +104,7 @@
               <div class="input-group full-width">
                 <input [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
-                  <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson('cwl')" (click)="addTestParameterFile(DescriptorType.CWL)" *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)">
+                  <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson(DescriptorType.CWL)" (click)="addTestParameterFile(DescriptorType.CWL)" *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                   <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || unsavedTestCWLFile.length == 0" *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)">
@@ -115,7 +115,7 @@
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
                 {{formErrors.cwlTestParameterFilePath}}
               </div>
-              <div *ngIf="hasDuplicateTestJson('cwl')" class="alert alert-danger">
+              <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)" class="alert alert-danger">
                 Duplicate test json files are not allowed.
               </div>
             </div>
@@ -142,7 +142,7 @@
               <div class="input-group full-width">
                 <input [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
-                  <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button"[disabled]="hasDuplicateTestJson('wdl')" (click)="addTestParameterFile(DescriptorType.WDL)" *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)">
+                  <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button"[disabled]="hasDuplicateTestJson(DescriptorType.WDL)" (click)="addTestParameterFile(DescriptorType.WDL)" *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                   <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || unsavedTestWDLFile.length == 0" *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)">
@@ -153,7 +153,7 @@
               <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages alert alert-danger">
                 {{formErrors.wdlTestParameterFilePath}}
               </div>
-              <div *ngIf="hasDuplicateTestJson('wdl')" class="alert alert-danger">
+              <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)" class="alert alert-danger">
                 Duplicate test json files are not allowed.
               </div>
             </div>
@@ -232,7 +232,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" (click)="onHidden()">Close</button>
-          <button type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Edit" [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson('wdl') || hasDuplicateTestJson('cwl')" data-dismiss="modal">
+          <button type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Edit" [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)" data-dismiss="modal">
             Save Changes
           </button>
         </div>
