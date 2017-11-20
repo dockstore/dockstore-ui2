@@ -41,6 +41,7 @@ testem.log
 /typings
 src/app/footer/versions.ts
 cypress/videos
+cypress/screenshots
 
 # e2e
 /e2e/*.js
