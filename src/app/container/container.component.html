@@ -62,8 +62,10 @@
           <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="!thisisValid" btnCheckbox>
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
-
-          <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
+          <button *ngIf="tool?.is_published" type="button" [disabled]="tool?.is_published" class="btn btn-danger">
+            Delete
+          </button>
+          <app-deregister-modal *ngIf="!tool?.is_published"></app-deregister-modal>
         </div>
         <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
           Refresh
