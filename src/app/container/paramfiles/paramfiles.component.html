@@ -15,13 +15,19 @@
   -->
 
 <div>
-  <span *ngIf="versions?.length > 0">
-    <strong>Container Version:</strong>
-    <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
-    <strong>Descriptor Type:</strong>
-    <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
-    <strong>File:</strong>
-    <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+  <span *ngIf="versions?.length > 0" class="row no-margin">
+    <span class="form-group col-sm-4">
+      <strong>Container Version:</strong>
+      <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
+    </span>
+    <span class="form-group col-sm-4">
+      <strong>Descriptor Type:</strong>
+      <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+    </span>
+    <span class="form-group col-sm-4">
+      <strong>File:</strong>
+      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+    </span>
   </span>
 
   <div *ngIf="!content">
