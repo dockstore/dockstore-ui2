@@ -16,6 +16,7 @@
 
 import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Dockstore } from '../../shared/dockstore.model';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
@@ -34,6 +35,7 @@ import { FileService } from '../../shared/file.service';
 export class DescriptorsComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
+  @Input() toolpath: string;
   content: string;
   contentHighlighted: boolean;
   constructor(private containerService: ContainerService,
@@ -73,4 +75,19 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
   }
+
+  getDescriptorPath(descType) : string {
+    if (this.currentFile != null) {
+        const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
+        let descriptor = 'plain-CWL';
+        if (descType === 'wdl') {
+          descriptor = 'plain-WDL';
+        }
+        let customPath = encodeURIComponent(this.toolpath) + '/versions/' + this.currentVersion.name + '/' + descriptor + '/descriptor/' + encodeURIComponent(this.currentFile.path);
+        return basepath + customPath;
+      } else {
+        return null;
+      }
+    }
+
 }

@@ -17,6 +17,7 @@
 import { ContainersService } from '../../shared/swagger';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Dockstore } from '../../shared/dockstore.model';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
@@ -34,6 +35,7 @@ import { FileService } from '../../shared/file.service';
 export class ParamfilesComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
+  @Input() toolpath: string;
   content: string;
   contentHighlighted: boolean;
 
@@ -71,5 +73,26 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
   }
   toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
+  }
+
+  // Downloads a file
+  // TODO: Temporary, need to update test param endpoint to return raw file based on path
+  downloadFile(file, id) : void {
+    let filename = "dockstore.txt";
+    if (file != null) {
+      const splitFileName = (file.path).split('/');
+      filename = splitFileName[splitFileName.length - 1];
+    }
+    const data = "data:text/plain," + encodeURIComponent(file.content);
+
+    $('#' + id).attr('href', data).attr('download', filename);
+  }
+
+  // Get the path of the file
+  getFilePath(file) : string {
+    if (file != null) {
+      return file.path;
+    }
+    return null;
   }
 }

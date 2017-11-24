@@ -38,10 +38,15 @@
   </div>
 
   <div *ngIf="!nullDescriptors" class="code-copy">
-    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'descriptors_file'}"
-            (cbOnSuccess)="toolCopyBtnClick('descriptors_file')">
-      <span class="glyphicon glyphicon-copy"></span>
-    </button>
+    <div class="code-copy-button btn-group">
+      <a download [href]="getDescriptorPath(currentDescriptor)" class="btn btn-default" type="button">
+        <span class="glyphicon glyphicon-download"></span>
+      </a>
+      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'descriptors_file'}"
+              (cbOnSuccess)="toolCopyBtnClick('descriptors_file')" title="Copy to clipboard">
+        <span class="glyphicon glyphicon-copy"></span>
+      </button>
+    </div>
     <section [innerHTML]="fileService.highlightCode(content)"></section>
   </div>
 </div>

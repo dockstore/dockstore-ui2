@@ -17,7 +17,7 @@
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { Dockstore } from '../../shared/dockstore.model';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { WorkflowService } from '../../shared/workflow.service';
@@ -32,6 +32,8 @@ import { FileService } from '../../shared/file.service';
 })
 export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
   @Input() id: number;
+  @Input() toolpath: string;
+
   content: string;
   contentHighlighted: boolean;
   constructor(private highlightJsService: HighlightJsService,
@@ -67,5 +69,20 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   }
   workflowCopyBtnClick(copyBtn): void {
     this.workflowService.setCopyBtn(copyBtn);
+  }
+
+  getDescriptorPath(descType) : string {
+    if (this.currentFile != null) {
+      const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
+      let descriptor = 'plain-CWL';
+      if (descType === 'wdl') {
+        descriptor = 'plain-WDL';
+      }
+      
+      let customPath =  encodeURIComponent('#workflow/' + this.toolpath) + '/versions/' + this.currentVersion.name + '/' + descriptor + '/descriptor/' + encodeURIComponent(this.currentFile.path);
+      return basepath + customPath;
+    } else {
+      return null;
+    }
   }
 }

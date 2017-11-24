@@ -33,11 +33,16 @@
 
   </span>
   <div *ngIf="content" class="code-copy">
-    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content"
-            [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_param_file'}"
-            (cbOnSuccess)="workflowCopyBtnClick('workflow_param_file')">
-      <span class="glyphicon glyphicon-copy"></span>
-    </button>
+    <div class="code-copy-button btn-group">
+      <a href id="downloadLinkParams" (click)="downloadFile(currentFile, 'downloadLinkParams')" class="btn btn-default" type="button" title="{{getFilePath(currentFile)}}">
+        <span class="glyphicon glyphicon-download"></span>
+      </a>
+      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content"
+              [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_param_file'}"
+              (cbOnSuccess)="workflowCopyBtnClick('workflow_param_file')">
+        <span class="glyphicon glyphicon-copy"></span>
+      </button>
+    </div>
     <section [innerHTML]="fileService.highlightCode(content)"></section>
   </div>
   <alert type="warning" *ngIf="!content">

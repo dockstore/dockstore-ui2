@@ -113,7 +113,7 @@
         </app-versions-workflow>
       </tab>
       <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
-        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
+        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [toolpath]="workflow?.path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
         </app-files-workflow>
       </tab>
       <tab id="toolsTab" [disabled]="isStub()" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')">

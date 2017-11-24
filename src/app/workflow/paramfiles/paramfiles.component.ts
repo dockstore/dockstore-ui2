@@ -21,6 +21,7 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
 import { WorkflowService } from '../../shared/workflow.service';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -29,6 +30,7 @@ import { WorkflowService } from '../../shared/workflow.service';
 })
 export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
   @Input() id: number;
+  @Input() toolpath: string;
   content: string;
 
   contentHighlighted: boolean;
@@ -67,5 +69,26 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
   }
   workflowCopyBtnClick(copyBtn): void {
     this.workflowService.setCopyBtn(copyBtn);
+  }
+
+  // Downloads a file
+  // TODO: Temporary, need to update test param endpoint to return raw file based on path
+  downloadFile(file, id) : void {
+    let filename = "dockstore.txt";
+    if (file != null) {
+      const splitFileName = (file.path).split('/');
+      filename = splitFileName[splitFileName.length - 1];
+    }
+    const data = "data:text/plain," + encodeURIComponent(file.content);
+
+    $('#' + id).attr('href', data).attr('download', filename);
+  }
+
+  // Get the path of the file
+  getFilePath(file) : string {
+    if (file != null) {
+      return file.path;
+    }
+    return null;
   }
 }
