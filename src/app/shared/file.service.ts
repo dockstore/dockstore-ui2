@@ -22,6 +22,7 @@ export class FileService {
       return '<pre><code class="yaml highlight">' + code + '</pre></code>';
     }
 
+    // Get the download path of a descriptor
     getDescriptorPath(entrypath, currentVersion, currentFile, descriptor, entrytype) : string {
       if (currentFile != null) {
         const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
