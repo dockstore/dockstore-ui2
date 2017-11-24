@@ -71,12 +71,12 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
     this.workflowService.setCopyBtn(copyBtn);
   }
 
-  getDescriptorPath(entrytype) : string {
+  getDescriptorPath(entrytype): string {
     return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
 
   // Get the path of the file
-  getFilePath(file) : string {
+  getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 }

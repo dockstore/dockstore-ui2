@@ -76,12 +76,12 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
     this.containerService.setCopyBtn(copyBtn);
   }
 
-  getDescriptorPath(descType) : string {
+  getDescriptorPath(descType): string {
     return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'tool');
   }
 
   // Get the path of the file
-  getFilePath(file) : string {
+  getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 

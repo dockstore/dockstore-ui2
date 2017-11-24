@@ -42,7 +42,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
               private containerService: ContainerService, private containersService: ContainersService) {
     super();
     this.nullContent = false;
-    this.filepath = "/Dockerfile";
+    this.filepath = '/Dockerfile';
   }
 
   reactToVersion(): void {
@@ -72,7 +72,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
       });
   }
 
-  getDockerfilePath() : string {
+  getDockerfilePath(): string {
     const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
     const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this.currentVersion.name + '/dockerfile';
     return basepath + customPath;

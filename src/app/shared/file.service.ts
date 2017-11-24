@@ -23,7 +23,7 @@ export class FileService {
     }
 
     // Get the download path of a descriptor
-    getDescriptorPath(entrypath, currentVersion, currentFile, descriptor, entrytype) : string {
+    getDescriptorPath(entrypath, currentVersion, currentFile, descriptor, entrytype): string {
       if (currentFile != null) {
         const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
         let descriptorType = 'plain-CWL';
@@ -35,10 +35,11 @@ export class FileService {
         if (entrytype === 'workflow') {
           entry = encodeURIComponent('#workflow/' + entrypath);
         } else {
-          entry = encodeURIComponent(entrypath)
+          entry = encodeURIComponent(entrypath);
         }
 
-        let customPath =  entry + '/versions/' + currentVersion.name + '/' + descriptorType + '/descriptor/' + encodeURIComponent(currentFile.path);
+        const customPath =  entry + '/versions/' + currentVersion.name + '/'
+          + descriptorType + '/descriptor/' + encodeURIComponent(currentFile.path);
         return basepath + customPath;
       } else {
         return null;
@@ -47,19 +48,19 @@ export class FileService {
 
     // Downloads a file
     // TODO: Temporary, need to update test param endpoint to return raw file based on path
-    downloadFile(file, id) : void {
-      let filename = "dockstore.txt";
+    downloadFile(file, id): void {
+      let filename = 'dockstore.txt';
       if (file != null) {
         const splitFileName = (file.path).split('/');
         filename = splitFileName[splitFileName.length - 1];
       }
-      const data = "data:text/plain," + encodeURIComponent(file.content);
+      const data = 'data:text/plain,' + encodeURIComponent(file.content);
 
       $('#' + id).attr('href', data).attr('download', filename);
     }
 
     // Get the path of the file
-    getFilePath(file) : string {
+    getFilePath(file): string {
       if (file != null) {
         return file.path;
       }

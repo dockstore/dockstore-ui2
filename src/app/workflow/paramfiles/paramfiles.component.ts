@@ -72,12 +72,12 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
   }
 
   // Downloads a file
-  downloadFile(file, id) : void {
+  downloadFile(file, id): void {
     this.fileService.downloadFile(file, id);
   }
 
   // Get the path of the file
-  getFilePath(file) : string {
+  getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 }
