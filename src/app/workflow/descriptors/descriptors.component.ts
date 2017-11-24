@@ -17,7 +17,6 @@
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Dockstore } from '../../shared/dockstore.model';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { WorkflowService } from '../../shared/workflow.service';

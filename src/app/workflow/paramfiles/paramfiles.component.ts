@@ -21,7 +21,6 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
 import { WorkflowService } from '../../shared/workflow.service';
-import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-paramfiles-workflow',
