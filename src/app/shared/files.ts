@@ -20,5 +20,5 @@ export class Files {
   @Input() id: number;
   @Input() versions: Array<any>;
   @Input() default: any;
-  @Input() toolpath: string;
+  @Input() entrypath: string;
 }

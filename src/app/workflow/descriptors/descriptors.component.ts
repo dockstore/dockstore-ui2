@@ -32,7 +32,7 @@ import { FileService } from '../../shared/file.service';
 })
 export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
   @Input() id: number;
-  @Input() toolpath: string;
+  @Input() entrypath: string;
 
   content: string;
   contentHighlighted: boolean;
@@ -71,18 +71,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
     this.workflowService.setCopyBtn(copyBtn);
   }
 
-  getDescriptorPath(descType) : string {
-    if (this.currentFile != null) {
-      const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
-      let descriptor = 'plain-CWL';
-      if (descType === 'wdl') {
-        descriptor = 'plain-WDL';
-      }
-      
-      let customPath =  encodeURIComponent('#workflow/' + this.toolpath) + '/versions/' + this.currentVersion.name + '/' + descriptor + '/descriptor/' + encodeURIComponent(this.currentFile.path);
-      return basepath + customPath;
-    } else {
-      return null;
-    }
+  getDescriptorPath(entrytype) : string {
+    return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
 }

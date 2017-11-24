@@ -35,7 +35,7 @@ import { FileService } from '../../shared/file.service';
 export class ParamfilesComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
-  @Input() toolpath: string;
+  @Input() entrypath: string;
   content: string;
   contentHighlighted: boolean;
 
@@ -76,23 +76,12 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
   }
 
   // Downloads a file
-  // TODO: Temporary, need to update test param endpoint to return raw file based on path
   downloadFile(file, id) : void {
-    let filename = "dockstore.txt";
-    if (file != null) {
-      const splitFileName = (file.path).split('/');
-      filename = splitFileName[splitFileName.length - 1];
-    }
-    const data = "data:text/plain," + encodeURIComponent(file.content);
-
-    $('#' + id).attr('href', data).attr('download', filename);
+    this.fileService.downloadFile(file, id);
   }
 
   // Get the path of the file
   getFilePath(file) : string {
-    if (file != null) {
-      return file.path;
-    }
-    return null;
+    return this.fileService.getFilePath(file);
   }
 }

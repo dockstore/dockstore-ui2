@@ -30,7 +30,7 @@ import { ContainerService } from '../../shared/container.service';
 export class DockerfileComponent extends VersionSelector implements AfterViewChecked {
 
   @Input() id: number;
-  @Input() toolpath: string;
+  @Input() entrypath: string;
   content: string;
   filepath: string;
   nullContent: boolean;
@@ -74,7 +74,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
 
   getDockerfilePath() : string {
     const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
-    const customPath = encodeURIComponent(this.toolpath) + '/versions/' + this.currentVersion.name + '/dockerfile';
+    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this.currentVersion.name + '/dockerfile';
     return basepath + customPath;
   }
 
