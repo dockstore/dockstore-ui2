@@ -120,7 +120,7 @@
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
-        <app-files-container [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion">
+        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion">
         </app-files-container>
       </tab>
     </tabset>

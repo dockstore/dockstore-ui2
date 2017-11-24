@@ -34,6 +34,7 @@ import { FileService } from '../../shared/file.service';
 export class DescriptorsComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
+  @Input() entrypath: string;
   content: string;
   contentHighlighted: boolean;
   constructor(private containerService: ContainerService,
@@ -73,4 +74,14 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
   }
+
+  getDescriptorPath(descType): string {
+    return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'tool');
+  }
+
+  // Get the path of the file
+  getFilePath(file): string {
+    return this.fileService.getFilePath(file);
+  }
+
 }

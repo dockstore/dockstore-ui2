@@ -29,6 +29,7 @@ import { WorkflowService } from '../../shared/workflow.service';
 })
 export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
   @Input() id: number;
+  @Input() entrypath: string;
   content: string;
 
   contentHighlighted: boolean;
@@ -67,5 +68,15 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
   }
   workflowCopyBtnClick(copyBtn): void {
     this.workflowService.setCopyBtn(copyBtn);
+  }
+
+  // Downloads a file
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
+  }
+
+  // Get the path of the file
+  getFilePath(file): string {
+    return this.fileService.getFilePath(file);
   }
 }

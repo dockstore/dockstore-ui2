@@ -17,7 +17,6 @@
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { WorkflowService } from '../../shared/workflow.service';
@@ -32,6 +31,8 @@ import { FileService } from '../../shared/file.service';
 })
 export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
   @Input() id: number;
+  @Input() entrypath: string;
+
   content: string;
   contentHighlighted: boolean;
   constructor(private highlightJsService: HighlightJsService,
@@ -67,5 +68,14 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   }
   workflowCopyBtnClick(copyBtn): void {
     this.workflowService.setCopyBtn(copyBtn);
+  }
+
+  getDescriptorPath(entrytype): string {
+    return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'workflow');
+  }
+
+  // Get the path of the file
+  getFilePath(file): string {
+    return this.fileService.getFilePath(file);
   }
 }

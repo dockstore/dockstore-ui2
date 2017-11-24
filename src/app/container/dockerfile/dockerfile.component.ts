@@ -16,7 +16,7 @@
 
 import { ContainersService } from '../../shared/swagger';
 import {Component, Input, ElementRef, AfterViewChecked, AfterViewInit} from '@angular/core';
-
+import { Dockstore } from '../../shared/dockstore.model';
 import { VersionSelector } from '../../shared/selectors/version-selector';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
@@ -30,7 +30,9 @@ import { ContainerService } from '../../shared/container.service';
 export class DockerfileComponent extends VersionSelector implements AfterViewChecked {
 
   @Input() id: number;
+  @Input() entrypath: string;
   content: string;
+  filepath: string;
   nullContent: boolean;
   contentHighlighted: boolean;
 
@@ -40,6 +42,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
               private containerService: ContainerService, private containersService: ContainersService) {
     super();
     this.nullContent = false;
+    this.filepath = '/Dockerfile';
   }
 
   reactToVersion(): void {
@@ -49,6 +52,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
         .subscribe(file => {
             this.content = file.content;
             this.contentHighlighted = true;
+            this.filepath = file.path;
           }
         );
     } else {
@@ -67,8 +71,11 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
           this.toolCopyBtn = copyBtn;
       });
   }
-  toolCopyBtnClick(copyBtn): void {
-    this.containerService.setCopyBtn(copyBtn);
+
+  getDockerfilePath(): string {
+    const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
+    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this.currentVersion.name + '/dockerfile';
+    return basepath + customPath;
   }
 
 }

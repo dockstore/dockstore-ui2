@@ -206,6 +206,7 @@ ul.nav-tabs {
 }
 
 div.tab-content {
+  border: 1px solid #ddd;
   background-color: #ffffff;
   padding: 8px;
   min-height: 320px;
@@ -439,15 +440,6 @@ select.ds-descriptor {
 
 select.ds-wide-descriptor {
   width: 220px;
-}
-
-
-div.ds-version-selector {
-  display: table-cell;
-}
-
-select.ds-version {
-  width: 120px;
 }
 
 div.well.well-sm {
@@ -719,4 +711,8 @@ div.contact-button {
 .right-button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.no-margin {
+  margin:0px;
 }

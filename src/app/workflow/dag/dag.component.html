@@ -15,25 +15,27 @@
   -->
 <div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
-    <div class="ds-holder">
-      <div class="ds-version-selector" id="dag-version-bar" [ngClass]="{'fullscreen-dropdown': expanded}">
-        <div class="form-inline">
+    <div>
+      <div class="row no-margin" id="dag-version-bar">
+        <div class="form-group col-sm-4">
           <strong>Workflow Version</strong>:
-          <select (change)="ngOnChanges()" class="form-control ds-version input-sm" [(ngModel)]="selectVersion">
+          <select (change)="ngOnChanges()" class="form-control input-sm" [(ngModel)]="selectVersion">
             <option *ngFor="let version of validVersions" [ngValue]="version"> {{version.name}} </option>
           </select>
         </div>
+      </div>
+      <div [ngClass]="{'fullscreen-dropdown': expanded}">
         <a href id="exportLink" (click)="download()" *ngIf="dagResult !== null && !notFound && !missingTool">
-          <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
-          <div class="btn-group pull-right" role="group" style="width:auto">
-            <button id="dag_fullscreen" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
-              <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
-              <span *ngIf="expanded" class="glyphicon glyphicon-resize-small" id="resize-small-button"></span>
-            </button>
-            <button id="dag_reload" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button btn btn-default" tooltip="Reset">
-              <span class="glyphicon glyphicon-screenshot"></span>
-            </button>
-          </div>
+        <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
+        <div class="btn-group pull-right" role="group" style="width:auto">
+          <button id="dag_fullscreen" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
+            <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
+            <span *ngIf="expanded" class="glyphicon glyphicon-resize-small" id="resize-small-button"></span>
+          </button>
+          <button id="dag_reload" *ngIf="dagResult !== null && !notFound && !missingTool" (click)="refreshDocument()" class="dag-button btn btn-default" tooltip="Reset">
+            <span class="glyphicon glyphicon-screenshot"></span>
+          </button>
+        </div>
       </div>
     </div>
     <div class="alert alert-warning" role="alert" *ngIf="notFound || !dagResult">

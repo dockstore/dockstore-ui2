@@ -34,6 +34,7 @@ import { FileService } from '../../shared/file.service';
 export class ParamfilesComponent extends FileSelector implements AfterViewChecked {
 
   @Input() id: number;
+  @Input() entrypath: string;
   content: string;
   contentHighlighted: boolean;
 
@@ -71,5 +72,15 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
   }
   toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
+  }
+
+  // Downloads a file
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
+  }
+
+  // Get the path of the file
+  getFilePath(file): string {
+    return this.fileService.getFilePath(file);
   }
 }
