@@ -25,10 +25,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RegisterWorkflowModalService {
     workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-    friendlyRepositoryKeys = ['GitHub', 'Bitbucket', 'GitLab'];
     descriptorTypes = ['cwl', 'wdl'];
     sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
+    private sourceControlMap = [];
     workflows: any;
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
@@ -39,6 +39,7 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
+        this.workflowsService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -91,5 +92,11 @@ export class RegisterWorkflowModalService {
                 'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
                 error._body)
             );
+    }
+
+    friendlyRepositoryKeys(): Array<string> {
+        if (this.sourceControlMap) {
+            return this.sourceControlMap.map((a) => a.friendlyName);
+        }
     }
 }

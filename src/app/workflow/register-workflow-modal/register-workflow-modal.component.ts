@@ -42,7 +42,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    return this.registerWorkflowModalService.friendlyRepositoryKeys;
+    return this.registerWorkflowModalService.friendlyRepositoryKeys();
   }
 
   getDescriptorTypes(): Array<string> {
