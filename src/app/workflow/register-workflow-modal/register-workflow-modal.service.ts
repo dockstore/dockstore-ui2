@@ -15,6 +15,7 @@
  */
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -35,11 +36,12 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService,
-        private stateService: StateService) {
+        private stateService: StateService,
+        private metadataService: MetadataService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
-        this.workflowsService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
+        this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }

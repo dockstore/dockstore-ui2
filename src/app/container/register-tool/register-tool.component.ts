@@ -45,10 +45,6 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
   }
 
-  repositoryKeys(): Array<string> {
-    return this.registerToolService.repositoryKeys();
-  }
-
   registryKeys(): Array<string> {
     return this.registerToolService.registryKeys();
   }
@@ -67,10 +63,6 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
 
   registerTool() {
     this.registerToolService.registerTool(this.tool, this.customDockerRegistryPath);
-  }
-
-  getUnfriendlyRepositoryName(repository: Repository): string {
-    return this.registerToolService.getFriendlyRepositoryName(repository);
   }
 
   checkForSpecialDockerRegistry() {
