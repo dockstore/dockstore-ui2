@@ -26,7 +26,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RegisterWorkflowModalService {
     workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-    descriptorTypes = ['cwl', 'wdl'];
+    private descriptorLanguageMap = [];
     sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
     private sourceControlMap = [];
@@ -42,6 +42,7 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
+        this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptorLanguageMap = map);
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -100,5 +101,11 @@ export class RegisterWorkflowModalService {
         if (this.sourceControlMap) {
             return this.sourceControlMap.map((a) => a.friendlyName);
         }
+    }
+
+    getDescriptorLanguageKeys() : Array<string> {
+      if (this.descriptorLanguageMap) {
+        return this.descriptorLanguageMap.map((a) => a.enum.toString());
+      }
     }
 }

@@ -46,7 +46,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   getDescriptorTypes(): Array<string> {
-    return this.registerWorkflowModalService.descriptorTypes;
+    return this.registerWorkflowModalService.getDescriptorLanguageKeys();
   }
 
   clearWorkflowRegisterError(): void {

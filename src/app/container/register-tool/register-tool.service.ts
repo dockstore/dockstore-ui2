@@ -46,7 +46,7 @@ export class RegisterToolService {
         private containerService: ContainerService,
         private stateService: StateService,
         private metadataService: MetadataService) {
-        this.containersService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
+        this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.containerService.tool$.subscribe(tool => this.selectedTool = tool);

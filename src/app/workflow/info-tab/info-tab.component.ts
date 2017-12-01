@@ -84,4 +84,8 @@ export class InfoTabComponent implements OnInit {
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
   }
+
+  descriptorLanguages(): Array<string> {
+    return this.infoTabService.getDescriptorLanguageKeys();
+  }
 }
