@@ -103,7 +103,7 @@ export class RegisterWorkflowModalService {
         }
     }
 
-    getDescriptorLanguageKeys() : Array<string> {
+    getDescriptorLanguageKeys(): Array<string> {
       if (this.descriptorLanguageMap) {
         return this.descriptorLanguageMap.map((a) => a.enum.toString());
       }

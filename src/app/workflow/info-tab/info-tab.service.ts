@@ -122,7 +122,7 @@ export class InfoTabService {
         this.workflow = this.currentWorkflow;
     }
 
-    getDescriptorLanguageKeys() : Array<string> {
+    getDescriptorLanguageKeys(): Array<string> {
       if (this.descriptorLanguageMap) {
         return this.descriptorLanguageMap.map((a) => a.enum.toString());
       }

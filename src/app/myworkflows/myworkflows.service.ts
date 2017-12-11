@@ -110,11 +110,11 @@ export class MyWorkflowsService {
   // TODO: This should be connected to the existing enum in the workflow model, however that does
   // not have the friendly names
   getSourceControlFriendlyName(sourceControlEnum: string): string {
-    if (sourceControlEnum == 'GITHUB') {
+    if (sourceControlEnum === 'GITHUB') {
       return 'github.com';
-    } else if (sourceControlEnum == 'GITLAB') {
+    } else if (sourceControlEnum === 'GITLAB') {
       return 'gitlab.com';
-    } else if (sourceControlEnum == 'BITBUCKET') {
+    } else if (sourceControlEnum === 'BITBUCKET') {
       return 'bitbucket.org';
     }
     return null;
