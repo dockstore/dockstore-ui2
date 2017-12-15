@@ -64,7 +64,8 @@ describe('DagComponent', () => {
       'mode': Workflow.ModeEnum.FULL,
       'organization': '',
       'repository': 'l',
-      'workflow_path': ''
+      'workflow_path': '',
+      'sourceControl': Workflow.SourceControlEnum.GITHUB
     };
   //   fixture.detectChanges();
   //   de = fixture.debugElement.query(By.css('#exportLink'));
