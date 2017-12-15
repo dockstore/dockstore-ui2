@@ -277,74 +277,74 @@ export class WorkflowStubService {
 export class MetadataStubService {
     sourceControlList = Observable.of([
       {
-        "friendlyName": "Quay.io",
-        "url": "https://quay.io/repository/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "quay.io"
+        'friendlyName': 'Quay.io',
+        'url': 'https://quay.io/repository/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'quay.io'
       },
       {
-        "friendlyName": "Docker Hub",
-        "url": "https://hub.docker.com/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "registry.hub.docker.com"
+        'friendlyName': 'Docker Hub',
+        'url': 'https://hub.docker.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'registry.hub.docker.com'
       },
       {
-        "friendlyName": "GitLab",
-        "url": "https://gitlab.com/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "registry.gitlab.com"
+        'friendlyName': 'GitLab',
+        'url': 'https://gitlab.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'registry.gitlab.com'
       },
       {
-        "friendlyName": "Amazon ECR",
-        "url": null,
-        "privateOnly": "true",
-        "customDockerPath": "true",
-        "enum": null
+        'friendlyName': 'Amazon ECR',
+        'url': null,
+        'privateOnly': 'true',
+        'customDockerPath': 'true',
+        'enum': null
       }
     ]);
 
     dockerRegistriesList = Observable.of([
       {
-        "friendlyName": "Quay.io",
-        "url": "https://quay.io/repository/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "quay.io"
+        'friendlyName': 'Quay.io',
+        'url': 'https://quay.io/repository/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'quay.io'
       },
       {
-        "friendlyName": "Docker Hub",
-        "url": "https://hub.docker.com/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "registry.hub.docker.com"
+        'friendlyName': 'Docker Hub',
+        'url': 'https://hub.docker.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'registry.hub.docker.com'
       },
       {
-        "friendlyName": "GitLab",
-        "url": "https://gitlab.com/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "registry.gitlab.com"
+        'friendlyName': 'GitLab',
+        'url': 'https://gitlab.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'registry.gitlab.com'
       },
       {
-        "friendlyName": "Amazon ECR",
-        "url": null,
-        "privateOnly": "true",
-        "customDockerPath": "true",
-        "enum": null
+        'friendlyName': 'Amazon ECR',
+        'url': null,
+        'privateOnly': 'true',
+        'customDockerPath': 'true',
+        'enum': null
       }
     ]);
 
     descriptorLanguageList = Observable.of([
       {
-        "value": "CWL",
-        "friendlyName": "Common Workflow Language"
+        'value': 'CWL',
+        'friendlyName': 'Common Workflow Language'
       },
       {
-        "value": "WDL",
-        "friendlyName": "Workflow Description Language"
+        'value': 'WDL',
+        'friendlyName': 'Workflow Description Language'
       }
     ]);
 
