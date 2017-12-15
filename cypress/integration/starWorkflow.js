@@ -2,7 +2,7 @@ describe('Workflow starring', function() {
   require('./helper.js')
 
   beforeEach(function() {
-    cy.visit(String(global.baseUrl) + "/workflows/A/l")
+    cy.visit(String(global.baseUrl) + "/workflows/g/A/l")
   });
 
   describe('Select a Workflow', function() {
@@ -71,7 +71,7 @@ describe('Workflow starring', function() {
         .get('#starCountButton')
         .should('exist')
 
-      cy.visit(String(global.baseUrl) + "/workflows/A/l")
+      cy.visit(String(global.baseUrl) + "/workflows/g/A/l")
 
       cy
         .get('#starringButton')

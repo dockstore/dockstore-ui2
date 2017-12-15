@@ -3,7 +3,7 @@ global.baseUrl = "http://localhost:9000";
 describe('Workflow starring while not logged in', function() {
   beforeEach(function() {
     cy.clearLocalStorage()
-    cy.visit(String(global.baseUrl) + "/workflows/A/l")
+    cy.visit(String(global.baseUrl) + "/workflows/g/A/l")
   });
 
   describe('Select a Workflow', function() {

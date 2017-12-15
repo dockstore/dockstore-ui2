@@ -1426,20 +1426,20 @@ INSERT INTO version_sourcefile VALUES (7, 36);
 -- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO workflow VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'a/a', 'a', NULL);
-INSERT INTO workflow VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/c', 'c', NULL);
-INSERT INTO workflow VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/f', 'f', NULL);
-INSERT INTO workflow VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/k', 'k', NULL);
-INSERT INTO workflow VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/e', 'e', NULL);
-INSERT INTO workflow VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/g', 'g', NULL);
-INSERT INTO workflow VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/j', 'j', NULL);
-INSERT INTO workflow VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/m', 'm', NULL);
-INSERT INTO workflow VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/d', 'd', NULL);
-INSERT INTO workflow VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/i', 'i', NULL);
-INSERT INTO workflow VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/b', 'b', NULL);
-INSERT INTO workflow VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/h', 'h', NULL);
-INSERT INTO workflow VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/a', 'a', NULL);
-INSERT INTO workflow VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'A/l', 'l', NULL);
+INSERT INTO workflow VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'b/a/a', 'a', NULL);
+INSERT INTO workflow VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/c', 'c', NULL);
+INSERT INTO workflow VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/f', 'f', NULL);
+INSERT INTO workflow VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/k', 'k', NULL);
+INSERT INTO workflow VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/e', 'e', NULL);
+INSERT INTO workflow VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/g', 'g', NULL);
+INSERT INTO workflow VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/j', 'j', NULL);
+INSERT INTO workflow VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/m', 'm', NULL);
+INSERT INTO workflow VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/d', 'd', NULL);
+INSERT INTO workflow VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/i', 'i', NULL);
+INSERT INTO workflow VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/b', 'b', NULL);
+INSERT INTO workflow VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/h', 'h', NULL);
+INSERT INTO workflow VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g/A/a', 'a', NULL);
+INSERT INTO workflow VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'g/A/l', 'l', NULL);
 
 
 --
@@ -1717,4 +1717,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
