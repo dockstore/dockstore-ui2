@@ -277,63 +277,51 @@ export class WorkflowStubService {
 export class MetadataStubService {
     sourceControlList = Observable.of([
       {
-        'friendlyName': 'Quay.io',
-        'url': 'https://quay.io/repository/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'quay.io'
+        "value": "github.com",
+        "friendlyName": "GitHub"
       },
       {
-        'friendlyName': 'Docker Hub',
-        'url': 'https://hub.docker.com/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'registry.hub.docker.com'
+        "value": "bitbucket.org",
+        "friendlyName": "BitBucket"
       },
       {
-        'friendlyName': 'GitLab',
-        'url': 'https://gitlab.com/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'registry.gitlab.com'
-      },
-      {
-        'friendlyName': 'Amazon ECR',
-        'url': null,
-        'privateOnly': 'true',
-        'customDockerPath': 'true',
-        'enum': null
+        "value": "gitlab.com",
+        "friendlyName": "GitLab"
       }
     ]);
 
     dockerRegistriesList = Observable.of([
       {
-        'friendlyName': 'Quay.io',
-        'url': 'https://quay.io/repository/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'quay.io'
+        "dockerPath": "quay.io",
+        "friendlyName": "Quay.io",
+        "url": "https://quay.io/repository/",
+        "privateOnly": "false",
+        "customDockerPath": "false",
+        "enum": "QUAY_IO"
       },
       {
-        'friendlyName': 'Docker Hub',
-        'url': 'https://hub.docker.com/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'registry.hub.docker.com'
+        "dockerPath": "registry.hub.docker.com",
+        "friendlyName": "Docker Hub",
+        "url": "https://hub.docker.com/",
+        "privateOnly": "false",
+        "customDockerPath": "false",
+        "enum": "DOCKER_HUB"
       },
       {
-        'friendlyName': 'GitLab',
-        'url': 'https://gitlab.com/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'registry.gitlab.com'
+        "dockerPath": "registry.gitlab.com",
+        "friendlyName": "GitLab",
+        "url": "https://gitlab.com/",
+        "privateOnly": "false",
+        "customDockerPath": "false",
+        "enum": "GITLAB"
       },
       {
-        'friendlyName': 'Amazon ECR',
-        'url': null,
-        'privateOnly': 'true',
-        'customDockerPath': 'true',
-        'enum': null
+        "dockerPath": null,
+        "friendlyName": "Amazon ECR",
+        "url": null,
+        "privateOnly": "true",
+        "customDockerPath": "true",
+        "enum": "AMAZON_ECR"
       }
     ]);
 
