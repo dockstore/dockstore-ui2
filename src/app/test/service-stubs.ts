@@ -277,51 +277,51 @@ export class WorkflowStubService {
 export class MetadataStubService {
     sourceControlList = Observable.of([
       {
-        "value": "github.com",
-        "friendlyName": "GitHub"
+        'value': 'github.com',
+        'friendlyName': 'GitHub'
       },
       {
-        "value": "bitbucket.org",
-        "friendlyName": "BitBucket"
+        'value': 'bitbucket.org',
+        'friendlyName': 'BitBucket'
       },
       {
-        "value": "gitlab.com",
-        "friendlyName": "GitLab"
+        'value': 'gitlab.com',
+        'friendlyName': 'GitLab'
       }
     ]);
 
     dockerRegistriesList = Observable.of([
       {
-        "dockerPath": "quay.io",
-        "friendlyName": "Quay.io",
-        "url": "https://quay.io/repository/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "QUAY_IO"
+        'dockerPath': 'quay.io',
+        'friendlyName': 'Quay.io',
+        'url': 'https://quay.io/repository/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'QUAY_IO'
       },
       {
-        "dockerPath": "registry.hub.docker.com",
-        "friendlyName": "Docker Hub",
-        "url": "https://hub.docker.com/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "DOCKER_HUB"
+        'dockerPath': 'registry.hub.docker.com',
+        'friendlyName': 'Docker Hub',
+        'url': 'https://hub.docker.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'DOCKER_HUB'
       },
       {
-        "dockerPath": "registry.gitlab.com",
-        "friendlyName": "GitLab",
-        "url": "https://gitlab.com/",
-        "privateOnly": "false",
-        "customDockerPath": "false",
-        "enum": "GITLAB"
+        'dockerPath': 'registry.gitlab.com',
+        'friendlyName': 'GitLab',
+        'url': 'https://gitlab.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'GITLAB'
       },
       {
-        "dockerPath": null,
-        "friendlyName": "Amazon ECR",
-        "url": null,
-        "privateOnly": "true",
-        "customDockerPath": "true",
-        "enum": "AMAZON_ECR"
+        'dockerPath': null,
+        'friendlyName': 'Amazon ECR',
+        'url': null,
+        'privateOnly': 'true',
+        'customDockerPath': 'true',
+        'enum': 'AMAZON_ECR'
       }
     ]);
 
