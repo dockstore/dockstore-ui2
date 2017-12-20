@@ -21,7 +21,7 @@ describe('Dockstore workflow search page', function() {
          .first()
          .click()
          .get('#workflow-path')
-         .should('contain', 'A/l')
+         .should('contain', 'github.com/A/l')
      });
    });
 })

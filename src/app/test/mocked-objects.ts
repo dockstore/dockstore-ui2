@@ -25,7 +25,8 @@ export const updatedWorkflow: Workflow = {
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': Workflow.SourceControlEnum.GITHUB
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -37,7 +38,8 @@ export const sampleWorkflow1: Workflow = {
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': Workflow.SourceControlEnum.GITHUB
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -49,7 +51,8 @@ export const sampleWorkflow2: Workflow = {
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': Workflow.SourceControlEnum.GITHUB
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -61,7 +64,8 @@ export const sampleWorkflow3: Workflow = {
     'repository': 'sampleRepository',
     'workflow_path': 'sampleWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': Workflow.SourceControlEnum.GITHUB
 };
 
 export const sampleTool1: DockstoreTool = {

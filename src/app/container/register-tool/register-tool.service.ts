@@ -15,22 +15,23 @@
  */
 
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { StateService } from './../../shared/state.service';
 import { ContainerService } from './../../shared/container.service';
 import { Tool } from './tool';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable, ViewChild } from '@angular/core';
-import { Repository, FriendlyRepositories } from './../../shared/enum/Repository.enum';
+import { Repository } from './../../shared/enum/Repository.enum';
 
 @Injectable()
 export class RegisterToolService {
     toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private repositories = Repository;
-    private friendlyRepositories = FriendlyRepositories;
     public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private dockerRegistryMap = [];
+    private sourceControlMap = [];
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private tools;
     private selectedTool;
@@ -43,8 +44,10 @@ export class RegisterToolService {
             'Quay.io', '', false, '', ''));
     constructor(private containersService: ContainersService,
         private containerService: ContainerService,
-        private stateService: StateService) {
-        this.containersService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
+        private stateService: StateService,
+        private metadataService: MetadataService) {
+        this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
+        this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
@@ -242,11 +245,6 @@ export class RegisterToolService {
         return normToolObj;
     }
 
-    repositoryKeys(): Array<string> {
-        const keys = Object.keys(this.repositories);
-        return keys.slice(keys.length / 2);
-    }
-
     friendlyRegistryKeys(): Array<string> {
         if (this.dockerRegistryMap) {
             return this.dockerRegistryMap.map((a) => a.friendlyName);
@@ -254,20 +252,8 @@ export class RegisterToolService {
     }
 
     friendlyRepositoryKeys(): Array<string> {
-        const keys = Object.keys(this.friendlyRepositories);
-        return keys.slice(keys.length / 2);
-    }
-
-    getFriendlyRepositoryName(repository: Repository): string {
-        switch (repository) {
-            case Repository.GITHUB:
-                return 'Quay.io';
-            case Repository.BITBUCKET:
-                return 'Docker Hub';
-            case Repository.GITLAB:
-                return 'GitLab';
-            default:
-                return '';
+        if (this.sourceControlMap) {
+            return this.sourceControlMap.map((a) => a.friendlyName);
         }
     }
 }

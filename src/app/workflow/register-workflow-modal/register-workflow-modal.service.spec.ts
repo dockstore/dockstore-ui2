@@ -17,8 +17,9 @@
 import { StateService } from './../../shared/state.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { StateStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
+import { StateStubService, WorkflowsStubService, WorkflowStubService, MetadataStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { TestBed, async, inject } from '@angular/core/testing';
 
@@ -28,6 +29,7 @@ describe('Service: paramFiles.service.ts', () => {
             providers: [RegisterWorkflowModalService,
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
+                { provide: MetadataService, useClass: MetadataStubService },
                 StateService
             ]
         });

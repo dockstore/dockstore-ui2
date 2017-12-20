@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-  
+
 <ul class="list-unstyled container-info" *ngIf="workflow">
   <li *ngIf="workflow?.path">
     <strong tooltip="Complete path of workflow, used as a unique identifier">
@@ -81,8 +81,7 @@
     <div *ngIf="!isPublic" class="form-inline">
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
       <select class="form-control input-sm" (change)="save()" [(ngModel)]="workflow.descriptorType">
-        <option value="cwl">cwl</option>
-        <option value="wdl">wdl</option>
+        <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{descriptorLanguage | lowercase}}</option>
       </select>
     </div>
     <div *ngIf="isPublic">

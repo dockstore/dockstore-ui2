@@ -9,7 +9,7 @@ jdk:
   - oraclejdk8
 env:
   global:
-    - WEBSERVICE_VERSION="1.3.0-rc.0"
+    - WEBSERVICE_VERSION="1.4.0-alpha.3"
   matrix:
     - RUN_PROD=false
     - RUN_PROD=true

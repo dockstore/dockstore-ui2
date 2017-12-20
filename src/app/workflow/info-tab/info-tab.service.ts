@@ -24,12 +24,14 @@ import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
 
 @Injectable()
 export class InfoTabService {
     public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private workflows: Workflow[];
+    private descriptorLanguageMap = [];
 
     /**
      * The original workflow that should be in sync with the database
@@ -52,11 +54,12 @@ export class InfoTabService {
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService,
-        private extendedWorkflowService: ExtendedWorkflowService) {
+        private extendedWorkflowService: ExtendedWorkflowService, private metadataService: MetadataService) {
         this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
             this.cancelEditing();
         });
+        this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptorLanguageMap = map);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
     setWorkflowPathEditing(editing: boolean) {
@@ -117,5 +120,11 @@ export class InfoTabService {
      */
     saveWorkflow(): void {
         this.workflow = this.currentWorkflow;
+    }
+
+    getDescriptorLanguageKeys(): Array<string> {
+      if (this.descriptorLanguageMap) {
+        return this.descriptorLanguageMap.map((a) => a.enum.toString());
+      }
     }
 }

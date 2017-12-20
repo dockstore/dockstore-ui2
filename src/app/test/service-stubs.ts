@@ -274,6 +274,81 @@ export class WorkflowStubService {
     replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
 }
 
+export class MetadataStubService {
+    sourceControlList = Observable.of([
+      {
+        'value': 'github.com',
+        'friendlyName': 'GitHub'
+      },
+      {
+        'value': 'bitbucket.org',
+        'friendlyName': 'BitBucket'
+      },
+      {
+        'value': 'gitlab.com',
+        'friendlyName': 'GitLab'
+      }
+    ]);
+
+    dockerRegistriesList = Observable.of([
+      {
+        'dockerPath': 'quay.io',
+        'friendlyName': 'Quay.io',
+        'url': 'https://quay.io/repository/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'QUAY_IO'
+      },
+      {
+        'dockerPath': 'registry.hub.docker.com',
+        'friendlyName': 'Docker Hub',
+        'url': 'https://hub.docker.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'DOCKER_HUB'
+      },
+      {
+        'dockerPath': 'registry.gitlab.com',
+        'friendlyName': 'GitLab',
+        'url': 'https://gitlab.com/',
+        'privateOnly': 'false',
+        'customDockerPath': 'false',
+        'enum': 'GITLAB'
+      },
+      {
+        'dockerPath': null,
+        'friendlyName': 'Amazon ECR',
+        'url': null,
+        'privateOnly': 'true',
+        'customDockerPath': 'true',
+        'enum': 'AMAZON_ECR'
+      }
+    ]);
+
+    descriptorLanguageList = Observable.of([
+      {
+        'value': 'CWL',
+        'friendlyName': 'Common Workflow Language'
+      },
+      {
+        'value': 'WDL',
+        'friendlyName': 'Workflow Description Language'
+      }
+    ]);
+
+    getSourceControlList(thing?: any): Observable<any> {
+      return this.sourceControlList;
+    }
+
+    getDockerRegistries(thing?: any): Observable<any> {
+      return this.dockerRegistriesList;
+    }
+
+    getDescriptorLanguages(thing?: any): Observable<any> {
+      return this.descriptorLanguageList;
+    }
+}
+
 export class RefreshStubService {
     refreshAllWorkflows() { }
     refreshWorkflow() {
@@ -448,7 +523,8 @@ export class WorkflowsStubService {
             'repository': 'refreshedRepository',
             'workflow_path': 'refreshedWorkflowPath',
             'workflowVersions': [],
-            'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath'
+            'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath',
+            'sourceControl': Workflow.SourceControlEnum.GITHUB
         };
         return Observable.of(refreshedWorkflow);
     }

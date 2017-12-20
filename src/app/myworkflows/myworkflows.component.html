@@ -46,7 +46,7 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let orgObj of orgWorkflows" panelClass="containers-accordion" [heading]="orgObj?.organization" [isOpen]="orgObj?.isFirstOpen">
+        <accordion-group *ngFor="let orgObj of orgWorkflows"[heading]="orgObj?.sourceControl + '/' + orgObj?.organization" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen">
           <div *ngFor="let workflowObj of orgObj?.workflows">
             <div class="panel-container-label" [ngClass]="{selected: workflow.id === workflowObj.id}">
               <div class="container-name-oflw pull-left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}">
