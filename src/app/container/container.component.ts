@@ -23,7 +23,7 @@ import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -50,12 +50,14 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  paramVersion: string;
   public missingWarning: boolean;
   public tool: ExtendedDockstoreTool;
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
   public selectedTag = null;
+  public urlTag = null;
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -69,10 +71,14 @@ export class ContainerComponent extends Entry {
     router: Router,
     private containerService: ContainerService,
     stateService: StateService,
-    errorService: ErrorService) {
+    errorService: ErrorService, route: ActivatedRoute) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'containers';
+
+    // Load version from URL
+    route.params.subscribe( params => console.log(params) );
+
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -151,11 +157,26 @@ export class ContainerComponent extends Entry {
   public setupPublicEntry(url: String) {
     if (url.includes('containers')) {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+
+      // Get version from path if it exists
+      const splitTitle = this.title.split(':');
+
+      if (splitTitle.length == 2) {
+        this.urlTag = splitTitle[1];
+        this.title = this.title.replace(':' + this.urlTag ,'');
+      }
+
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title, this._toolType)
         .subscribe(tool => {
           this.containerService.setTool(tool);
+          for (let item of this.tool.tags) {
+            if (item.name === this.urlTag) {
+              this.selectedTag = item;
+              break;
+            }
+          }
         }, error => {
           this.router.navigate(['../']);
         });

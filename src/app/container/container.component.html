@@ -45,6 +45,13 @@
         {{label}}
       </span>
     </div>
+    <div *ngIf="!publicPage" class="input-group">
+      <div class="form-group">
+        <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedTag" (ngModelChange)="onTagChange($event)">
+          <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
+        </select>
+      </div>
+    </div>
 
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
@@ -132,9 +139,9 @@
         <h3>Versions</h3>
       </div>
       <div class="panel-body">
-        <div class="input-group">
+        <div class="input-group col-md-12">
           <div class="form-group">
-            <select class="form-control" *ngIf="tool" name="toolVersions" id="toolVersions" [(ngModel)]="selectedTag" (ngModelChange)="onTagChange($event)">
+            <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedTag" (ngModelChange)="onTagChange($event)">
               <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
             </select>
           </div>
