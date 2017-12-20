@@ -45,6 +45,7 @@
         {{label}}
       </span>
     </div>
+
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
@@ -78,7 +79,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <app-info-tab [selectedTag]="selectedTag"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
@@ -120,7 +121,7 @@
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
-        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion">
+        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedTag]="selectedTag">
         </app-files-container>
       </tab>
     </tabset>
@@ -128,7 +129,22 @@
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
     <div class="panel panel-default" *ngIf="tool">
       <div class="panel-heading">
-        <strong>Docker Pull Command</strong>
+        <h3>Versions</h3>
+      </div>
+      <div class="panel-body">
+        <div class="input-group">
+          <div class="form-group">
+            <select class="form-control" *ngIf="tool" name="toolVersions" id="toolVersions" [(ngModel)]="selectedTag" (ngModelChange)="onTagChange($event)">
+              <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" *ngIf="tool">
+      <div class="panel-heading">
+        <h3>Docker Pull Command</h3>
       </div>
       <div class="panel-body">
         <div class="input-group">

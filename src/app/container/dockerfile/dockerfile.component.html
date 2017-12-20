@@ -15,13 +15,6 @@
   -->
 
 <div>
-  <span *ngIf="versions?.length > 0" class="row no-margin">
-    <span class="form-group col-sm-4">
-      <strong>Tool Version:</strong>
-      <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)">
-      </app-select>
-    </span>
-  </span>
   <div *ngIf="nullContent">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>

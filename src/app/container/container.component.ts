@@ -55,6 +55,7 @@ export class ContainerComponent extends Entry {
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
+  public selectedTag = null;
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -95,7 +96,7 @@ export class ContainerComponent extends Entry {
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.tool.defaultVersion);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedTag);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -238,6 +239,10 @@ export class ContainerComponent extends Entry {
 
   public toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
+  }
+
+  onTagChange(tag): void {
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
   }
 
 }

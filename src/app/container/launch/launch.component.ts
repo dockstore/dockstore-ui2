@@ -21,29 +21,37 @@ import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
 
 import { ToolLaunchService } from './tool-launch.service';
 import { ContainerService } from '../../shared/container.service';
+import { MetadataService } from '../../shared/swagger/api/metadata.service';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchComponent extends DescriptorSelector {
+export class LaunchComponent {
 
   @Input() path;
   @Input() toolname;
+
+  version: any;
+  @Input() set default(value: any) {
+    if (value != null) {
+      this.version = value;
+      this.reactToDescriptor();
+    }
+  };
 
   params: string;
   cli: string;
   cwl: string;
   consonance: string;
   descriptors: Array<any>;
+  currentDescriptor: string;
 
   constructor(private launchService: ToolLaunchService,
-              private toolDescriptorService: ToolDescriptorService) {
-    super();
-  }
-  getDescriptors(currentVersion): any {
-    return this.toolDescriptorService.getDescriptors(this.versions, this.default);
+              private toolDescriptorService: ToolDescriptorService,
+              private metadataService: MetadataService) {
+    this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptors = map);
   }
 
   reactToDescriptor(): void {
@@ -51,7 +59,7 @@ export class LaunchComponent extends DescriptorSelector {
     if (this.toolname) {
       fullToolPath += '/' + this.toolname;
     }
-    this.changeMessages(fullToolPath, this.currentVersion.name);
+    this.changeMessages(fullToolPath, this.version.name);
   }
 
   private changeMessages(toolPath: string, versionName: string) {

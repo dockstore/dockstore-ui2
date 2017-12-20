@@ -35,6 +35,13 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
 
   @Input() id: number;
   @Input() entrypath: string;
+  version: any;
+  @Input() set selectedTag(value: any) {
+    if (value != null) {
+      this.version = value;
+      this.reactToVersion();
+    }
+  };
   content: string;
   contentHighlighted: boolean;
   constructor(private containerService: ContainerService,
@@ -47,11 +54,11 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   }
 
   getDescriptors(version): Array<any> {
-    return this.descriptorsService.getDescriptors(this.versions, this.currentVersion);
+    return this.descriptorsService.getDescriptors(this.versions, this.version);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
+    return this.descriptorsService.getFiles(this.id, this.version.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
@@ -76,7 +83,7 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
   }
 
   getDescriptorPath(descType): string {
-    return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'tool');
+    return this.fileService.getDescriptorPath(this.entrypath, this.version, this.currentFile, this.currentDescriptor, 'tool');
   }
 
   // Get the path of the file

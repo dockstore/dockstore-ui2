@@ -35,7 +35,16 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
 
   @Input() id: number;
   @Input() entrypath: string;
-  content: string;
+  version: any;
+  @Input() set selectedTag(value: any) {
+    if (value != null) {
+      this.version = value;
+      this.content = null;
+      this.contentHighlighted = false;
+      this.reactToVersion();
+    }
+  };
+  content: string = null;
   contentHighlighted: boolean;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
@@ -46,11 +55,11 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this.currentVersion);
+    return this.paramfilesService.getDescriptors(this.version);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'containers', this.currentVersion.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'containers', this.version.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
