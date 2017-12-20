@@ -21,6 +21,7 @@
       <th>Name</th>
       <th>Stars</th>
       <th>Author</th>
+      <th>Format</th>
       <th>Project Links</th>
       <th>Docker Pull</th>
     </tr>
@@ -43,6 +44,9 @@
       </td>
       <td>
         {{ hit?._source.author || 'n/a' }}
+      </td>
+      <td>
+        {{ hit?._source.descriptorType.toString() | uppercase}}
       </td>
       <td>
         <a [href]="hit?._source.providerUrl">

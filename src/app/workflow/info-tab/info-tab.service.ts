@@ -124,7 +124,7 @@ export class InfoTabService {
 
     getDescriptorLanguageKeys(): Array<string> {
       if (this.descriptorLanguageMap) {
-        return this.descriptorLanguageMap.map((a) => a.enum.toString());
+        return this.descriptorLanguageMap.map((a) => a.value.toString());
       }
     }
 }
