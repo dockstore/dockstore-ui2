@@ -53,7 +53,7 @@ describe('DagComponent', () => {
   it('should be able to download', () => {
     // component.refreshDocument();
     // component.download();
-    component.selectVersion = {
+    component.selectedVersion = {
       reference: 'reference',
       name: 'master',
     };

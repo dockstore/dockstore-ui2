@@ -43,7 +43,7 @@
       </span>
     </div>
 
-    <div *ngIf="!publicPage" class="input-group">
+    <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
       <div class="form-group">
         <select name="workflowVersions" class="form-control" [(ngModel)]="selectedVersion">
           <option *ngFor="let workflowVersion of workflow.workflowVersions" [ngValue]="workflowVersion">{{workflowVersion.name}}</option>

@@ -15,19 +15,19 @@
   -->
 
   <div>
-    <span *ngIf="versions?.length > 0" class="row no-margin">
+    <span *ngIf="versions?.length > 0 && _selectedVersion.valid" class="row no-margin">
       <span class="form-group col-sm-4">
         <strong>File:</strong>
         <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
       </span>
     </span>
-  <div *ngIf="this.nullDescriptors">
+  <div *ngIf="this.nullDescriptors || !_selectedVersion.valid">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Descriptor File associated with this Docker container could not be found.
     </alert>
   </div>
-  <div *ngIf="!this.nullDescriptors" class="code-copy">
+  <div *ngIf="!this.nullDescriptors && _selectedVersion.valid" class="code-copy">
     <div class="code-copy-button btn-group">
       <a download [href]="getDescriptorPath(currentDescriptor)" class="btn btn-default" type="button" title="{{getFilePath(currentFile)}}">
         <span class="glyphicon glyphicon-download"></span>
@@ -38,6 +38,6 @@
         <span class="glyphicon glyphicon-copy"></span>
       </button>
     </div>
-    <section *ngIf="content" [innerHTML]="fileService.highlightCode(content)"></section>
+    <section *ngIf="content && _selectedVersion.valid" [innerHTML]="fileService.highlightCode(content)"></section>
   </div>
 </div>
