@@ -122,14 +122,14 @@
         </app-versions-workflow>
       </tab>
       <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
-        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [entrypath]="workflow?.path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion">
+        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [entrypath]="workflow?.path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
         </app-files-workflow>
       </tab>
       <tab id="toolsTab" [disabled]="isStub()" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')">
-        <app-tool-tab></app-tool-tab>
+        <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
       </tab>
       <tab id="dagTab" [disabled]="isStub()" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
-        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-dag>
+        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
       </tab>
     </tabset>
   </div>

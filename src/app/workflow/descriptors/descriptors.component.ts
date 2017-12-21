@@ -32,6 +32,13 @@ import { FileService } from '../../shared/file.service';
 export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
   @Input() id: number;
   @Input() entrypath: string;
+  _selectedVersion: any;
+  @Input() set selectedVersion(value: any) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.reactToVersion();
+    }
+  }
 
   content: string;
   contentHighlighted: boolean;
@@ -43,11 +50,11 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getDescriptors(this.versions, this.currentVersion);
+    return this.workflowDescriptorService.getDescriptors(this.versions, this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.workflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
+    return this.workflowDescriptorService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
@@ -71,7 +78,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
   }
 
   getDescriptorPath(entrytype): string {
-    return this.fileService.getDescriptorPath(this.entrypath, this.currentVersion, this.currentFile, this.currentDescriptor, 'workflow');
+    return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
 
   // Get the path of the file

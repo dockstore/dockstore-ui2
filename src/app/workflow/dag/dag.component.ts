@@ -22,17 +22,24 @@ import { Observable } from 'rxjs/Rx';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
-import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
+export class DagComponent implements OnInit, AfterViewChecked {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
+  _selectedVersion: any;
+  @Input() set selectedVersion(value: any) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.onChange();
+    }
+  }
 
   private currentWorkflowId;
   private element: any;
@@ -41,7 +48,6 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   public notFound: boolean;
 
   public expanded: Boolean = false;
-  public selectVersion: WorkflowVersion;
   @ViewChild('cy') el: ElementRef;
   private style;
   public workflow: Workflow;
@@ -184,7 +190,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   download() {
     if (this.cy) {
       const pngDAG = this.cy.png({ full: true, scale: 2 });
-      const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
+      const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
       $('#exportLink').attr('href', pngDAG).attr('download', name);
     }
   }
@@ -196,17 +202,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   onChange() {
-    this.getDag(this.selectVersion.id);
-  }
-
-  ngOnChanges() {
-    if (this.defaultVersion) {
-      this.selectVersion = this.defaultVersion;
-      this.getDag(this.defaultVersion.id);
-    } else {
-      this.setDagResult(null);
-      this.selectVersion = null;
-    }
+    this.getDag(this._selectedVersion.id);
   }
 
   getDag(versionId: number) {

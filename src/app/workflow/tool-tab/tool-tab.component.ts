@@ -18,7 +18,7 @@ import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-tool-tab',
@@ -27,8 +27,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolTabComponent implements OnInit {
   workflow: Workflow;
-  selectVersion: WorkflowVersion;
   toolsContent: any;
+  _selectedVersion: any;
+  @Input() set selectedVersion(value: any) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.onChange();
+    }
+  }
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService) { }
 
   ngOnInit() {
@@ -36,10 +42,10 @@ export class ToolTabComponent implements OnInit {
       if (workflow) {
         this.workflow = workflow;
         if (workflow.workflowVersions) {
-          this.selectVersion = this.workflow.workflowVersions.find(x => x.name === this.workflow.defaultVersion);
-          if (!this.selectVersion) {
-            this.selectVersion = this.workflow.workflowVersions[0];
-          }
+          // this._selectedVersion = this.workflow.workflowVersions.find(x => x.name === this.workflow.defaultVersion);
+          // if (!this._selectedVersion) {
+          //   this._selectedVersion = this.workflow.workflowVersions[0];
+          // }
           this.onChange();
         }
       }
@@ -47,8 +53,8 @@ export class ToolTabComponent implements OnInit {
   }
 
   onChange() {
-    if (this.selectVersion) {
-      this.workflowsService.getTableToolContent(this.workflow.id, this.selectVersion.id).subscribe(
+    if (this._selectedVersion) {
+      this.workflowsService.getTableToolContent(this.workflow.id, this._selectedVersion.id).subscribe(
         (toolContent) => {
           this.toolsContent = toolContent;
         }, error => this.toolsContent = null);

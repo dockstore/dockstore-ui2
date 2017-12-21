@@ -30,7 +30,16 @@ import { WorkflowService } from '../../shared/workflow.service';
 export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
   @Input() id: number;
   @Input() entrypath: string;
-  content: string;
+  _selectedVersion: any;
+  @Input() set selectedVersion(value: any) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.content = null;
+      this.contentHighlighted = false;
+      this.reactToVersion();
+    }
+  }
+  content: string = null;
 
   contentHighlighted: boolean;
 
@@ -42,11 +51,11 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this.currentVersion);
+    return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'workflows', this.currentVersion.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'workflows', this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
