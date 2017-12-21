@@ -125,6 +125,7 @@ export class WorkflowComponent extends Entry {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;
+          this.selectVersion();
         }
         this.setUpWorkflow(workflow);
       }
@@ -134,6 +135,34 @@ export class WorkflowComponent extends Entry {
         this.workflowCopyBtn = workflowCopyBtn;
       }
     );
+  }
+
+  public selectVersion(): void {
+    let useFirstVersion = true;
+
+    // Determine which tag to select
+    for (const item of this.workflow.workflowVersions) {
+      // If a tag is specified in the URL then use it
+      if (this.urlVersion !== null) {
+        if (item.name === this.urlVersion) {
+          this.selectedVersion = item;
+          useFirstVersion = false;
+          break;
+        }
+      } else if (this.workflow.defaultVersion !== null) {
+        // If the tool has a default version then use it
+        if (item.name === this.workflow.defaultVersion) {
+          this.selectedVersion = item;
+          useFirstVersion = false;
+          break;
+        }
+      }
+    }
+
+    // If no url tag or default version, select first element in the dropdown
+    if (useFirstVersion && this.workflow.workflowVersions.length > 0) {
+      this.selectedVersion = this.workflow.workflowVersions[0];
+    }
   }
 
   public setupPublicEntry(url: String) {
@@ -154,33 +183,7 @@ export class WorkflowComponent extends Entry {
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
 
-          let useFirstVersion = true;
-
-          // Determine which tag to select
-          for (const item of this.workflow.workflowVersions) {
-            // If a tag is specified in the URL then use it
-            if (this.urlVersion !== null) {
-              if (item.name === this.urlVersion) {
-                this.selectedVersion = item;
-                useFirstVersion = false;
-                break;
-              }
-            }
-
-            // If the tool has a default version then use it
-            if (this.workflow.defaultVersion !== null) {
-              if (item.name === this.workflow.defaultVersion) {
-                this.selectedVersion = item;
-                useFirstVersion = false;
-                break;
-              }
-            }
-          }
-
-          // If no url tag or default version, select first element in the dropdown
-          if (useFirstVersion && this.workflow.workflowVersions.length > 0) {
-            this.selectedVersion = this.workflow.workflowVersions[0];
-          }
+          this.selectVersion();
         }, error => {
           this.router.navigate(['../']);
         });

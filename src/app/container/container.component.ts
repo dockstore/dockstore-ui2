@@ -97,7 +97,7 @@ export class ContainerComponent extends Entry {
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedTag);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedTag.name);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -119,7 +119,9 @@ export class ContainerComponent extends Entry {
         this.tool = tool;
         if (tool) {
           this.published = this.tool.is_published;
+          this.selectVersion();
         }
+        // Select version
         this.setUpTool(tool);
       }
     );
@@ -128,6 +130,34 @@ export class ContainerComponent extends Entry {
         this.toolCopyBtn = toolCopyBtn;
       }
     );
+  }
+
+  public selectVersion(): void {
+    let useFirstTag = true;
+
+    // Determine which tag to select
+    for (const item of this.tool.tags) {
+      // If a tag is specified in the URL then use it
+      if (this.urlTag !== null) {
+        if (item.name === this.urlTag) {
+          this.selectedTag = item;
+          useFirstTag = false;
+          break;
+        }
+      } else if (this.tool.defaultVersion !== null) {
+        // If the tool has a default version then use it
+        if (item.name === this.tool.defaultVersion) {
+          this.selectedTag = item;
+          useFirstTag = false;
+          break;
+        }
+      }
+    }
+
+    // If no url tag or default version, select first element in the dropdown
+    if (useFirstTag && this.tool.tags.length > 0) {
+      this.selectedTag = this.tool.tags[0];
+    }
   }
 
   onDestroy(): void {
@@ -166,34 +196,7 @@ export class ContainerComponent extends Entry {
       this.containersService.getPublishedContainerByToolPath(this.title, this._toolType)
         .subscribe(tool => {
           this.containerService.setTool(tool);
-
-          let useFirstTag = true;
-
-          // Determine which tag to select
-          for (const item of this.tool.tags) {
-            // If a tag is specified in the URL then use it
-            if (this.urlTag !== null) {
-              if (item.name === this.urlTag) {
-                this.selectedTag = item;
-                useFirstTag = false;
-                break;
-              }
-            }
-
-            // If the tool has a default version then use it
-            if (this.tool.defaultVersion !== null) {
-              if (item.name === this.tool.defaultVersion) {
-                this.selectedTag = item;
-                useFirstTag = false;
-                break;
-              }
-            }
-          }
-
-          // If no url tag or default version, select first element in the dropdown
-          if (useFirstTag && this.tool.tags.length > 0) {
-            this.selectedTag = this.tool.tags[0];
-          }
+          this.selectVersion();
 
         }, error => {
           this.router.navigate(['../']);

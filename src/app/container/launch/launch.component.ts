@@ -63,7 +63,7 @@ export class LaunchComponent {
     const newDescriptors = [];
 
     // Return empty array if no descriptors present yet
-    if (descriptors === undefined) {
+    if (descriptors === undefined || version === undefined) {
       return newDescriptors;
     }
 
