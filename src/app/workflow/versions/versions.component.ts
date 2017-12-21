@@ -36,15 +36,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
-  workflow: any;
-  setNoOrderCols(): Array<number> {
-    return [4, 5];
-  }
   _selectedVersion: any;
   @Input() set selectedVersion(value: any) {
     if (value != null) {
       this._selectedVersion = value;
     }
+  }
+  workflow: any;
+  setNoOrderCols(): Array<number> {
+    return [4, 5];
   }
 
   constructor(dockstoreService: DockstoreService, dateService: DateService, protected stateService: StateService,
