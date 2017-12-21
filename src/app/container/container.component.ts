@@ -76,10 +76,6 @@ export class ContainerComponent extends Entry {
       stateService, errorService, dateService);
     this._toolType = 'containers';
 
-    // Load version from URL
-    route.params.subscribe( params => console.log(params) );
-
-
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
@@ -171,12 +167,36 @@ export class ContainerComponent extends Entry {
       this.containersService.getPublishedContainerByToolPath(this.title, this._toolType)
         .subscribe(tool => {
           this.containerService.setTool(tool);
+
+          let useFirstTag = true;
+
+          // Determine which tag to select
           for (let item of this.tool.tags) {
-            if (item.name === this.urlTag) {
-              this.selectedTag = item;
-              break;
+            // If a tag is specified in the URL then use it
+            if (this.urlTag !== null) {
+              if (item.name === this.urlTag) {
+                this.selectedTag = item;
+                useFirstTag = false;
+                break;
+              }
             }
+
+            // If the tool has a default version then use it
+            if (this.tool.defaultVersion !== null) {
+              if (item.name === this.tool.defaultVersion) {
+                this.selectedTag = item;
+                useFirstTag = false;
+                break;
+              }
+            }
+
           }
+
+          // If no url tag or default version, select first element in the dropdown
+          if (useFirstTag) {
+            this.selectedTag = this.tool.tags[0];
+          }
+
         }, error => {
           this.router.navigate(['../']);
         });

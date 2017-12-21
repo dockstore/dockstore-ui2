@@ -33,6 +33,12 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
+  versionTag: any;
+  @Input() set selectedTag(value: any) {
+    if (value != null) {
+      this.versionTag = value;
+    }
+  };
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,

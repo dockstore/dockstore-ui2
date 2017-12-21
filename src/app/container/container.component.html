@@ -124,7 +124,7 @@
         </form>
       </tab>
       <tab heading="Versions" *ngIf="validVersions">
-        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources">
+        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedTag]="selectedTag">
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
