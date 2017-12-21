@@ -31,6 +31,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
+  @Input() selectedVersion;
   public validationPatterns = validationPatterns;
   public WorkflowType = Workflow;
   public tooltip = Tooltip;

@@ -27,6 +27,15 @@ import { ContainerService } from '../../shared/container.service';
 })
 export class LaunchWorkflowComponent extends DescriptorSelector {
   @Input() path;
+  @Input() currentDescriptor;
+
+  _selectedVersion: any;
+  @Input() set default(value: any) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.reactToDescriptor();
+    }
+  }
 
   params: string;
   cli: string;
@@ -42,7 +51,7 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
     return this.workflowDescriptorService.getDescriptors(this.versions, this.default);
   }
   reactToDescriptor(): void {
-    this.changeMessages(this.path, this.currentVersion.name);
+    this.changeMessages(this.path, this._selectedVersion.name);
   }
   private changeMessages(workflowPath: string, versionName: string) {
     this.params = this.launchService.getParamsString(workflowPath, versionName, this.currentDescriptor);

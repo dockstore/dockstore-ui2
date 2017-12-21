@@ -42,6 +42,15 @@
         {{label}}
       </span>
     </div>
+
+    <div *ngIf="!publicPage" class="input-group">
+      <div class="form-group">
+        <select name="workflowVersions" class="form-control" [(ngModel)]="selectedVersion">
+          <option *ngFor="let workflowVersion of workflow.workflowVersions" [ngValue]="workflowVersion">{{workflowVersion.name}}</option>
+        </select>
+      </div>
+    </div>
+
     <p class="update">
       Last Modified: {{ workflow?.agoMessage || 'n/a' }}
     </p>
@@ -71,7 +80,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
@@ -109,7 +118,7 @@
         </form>
       </tab>
       <tab id="versionsTab" [disabled]="isStub()" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
-        <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id">
+        <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
         </app-versions-workflow>
       </tab>
       <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
@@ -125,6 +134,20 @@
     </tabset>
   </div>
   <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic">
+    <div class="panel panel-default" *ngIf="workflow">
+      <div class="panel-heading">
+        <h3>Versions</h3>
+      </div>
+      <div class="panel-body">
+        <div class="input-group col-md-12">
+          <div class="form-group">
+            <select name="workflowVersions" class="form-control" [(ngModel)]="selectedVersion">
+              <option *ngFor="let workflowVersion of workflow.workflowVersions" [ngValue]="workflowVersion">{{workflowVersion.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="panel panel-default" *ngIf="workflow">
       <div class="panel-heading">
         <h3>Source Repositories</h3>
