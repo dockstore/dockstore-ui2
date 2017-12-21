@@ -33,12 +33,12 @@ export class LaunchComponent {
   @Input() path;
   @Input() toolname;
 
-  version: any;
+  _selectedTag: any;
   @Input() set default(value: any) {
     if (value != null) {
-      this.version = value;
+      this._selectedTag = value;
       this.reactToDescriptor();
-      this.validDescriptors = this.filterDescriptors(this.descriptors, this.version);
+      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedTag);
     }
   }
 
@@ -55,7 +55,7 @@ export class LaunchComponent {
               private metadataService: MetadataService) {
     this.metadataService.getDescriptorLanguages().subscribe(map => {
       this.descriptors = map;
-      this.validDescriptors = this.filterDescriptors(this.descriptors, this.version);
+      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedTag);
     });
   }
 
@@ -71,7 +71,7 @@ export class LaunchComponent {
     let hasCwl = false;
     let hasWdl = false;
 
-    for (const sourceFile of this.version.sourceFiles) {
+    for (const sourceFile of version.sourceFiles) {
       if (sourceFile.type === 'DOCKSTORE_CWL') {
         hasCwl = true;
       } else if (sourceFile.type === 'DOCKSTORE_WDL') {
@@ -89,7 +89,6 @@ export class LaunchComponent {
     // Preselect first descriptor in the list
     if (newDescriptors && newDescriptors.length > 0) {
       this.currentDescriptor = newDescriptors[0].value;
-      console.log(this.currentDescriptor);
     }
 
     return newDescriptors;
@@ -100,7 +99,7 @@ export class LaunchComponent {
     if (this.toolname) {
       fullToolPath += '/' + this.toolname;
     }
-    this.changeMessages(fullToolPath, this.version.name);
+    this.changeMessages(fullToolPath, this._selectedTag.name);
   }
 
   private changeMessages(toolPath: string, versionName: string) {

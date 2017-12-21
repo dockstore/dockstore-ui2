@@ -31,10 +31,10 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
 
   @Input() id: number;
   @Input() entrypath: string;
-  version: any;
+  _selectedTag: any;
   @Input() set selectedTag(value: any) {
     if (value != null) {
-      this.version = value;
+      this._selectedTag = value;
       this.reactToVersion();
     }
   }
@@ -53,9 +53,9 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
   }
 
   reactToVersion(): void {
-    if (this.version) {
+    if (this._selectedTag) {
       this.nullContent = false;
-      this.containersService.dockerfile(this.id, this.version.name)
+      this.containersService.dockerfile(this.id, this._selectedTag.name)
         .subscribe(file => {
             this.content = file.content;
             this.contentHighlighted = true;
@@ -81,7 +81,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
 
   getDockerfilePath(): string {
     const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
-    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this.version.name + '/dockerfile';
+    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedTag.name + '/dockerfile';
     return basepath + customPath;
   }
 
