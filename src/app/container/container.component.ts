@@ -50,7 +50,6 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
-  paramVersion: string;
   public missingWarning: boolean;
   public tool: ExtendedDockstoreTool;
   private toolSubscription: Subscription;

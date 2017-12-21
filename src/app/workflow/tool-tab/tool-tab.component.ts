@@ -42,10 +42,6 @@ export class ToolTabComponent implements OnInit {
       if (workflow) {
         this.workflow = workflow;
         if (workflow.workflowVersions) {
-          // this._selectedVersion = this.workflow.workflowVersions.find(x => x.name === this.workflow.defaultVersion);
-          // if (!this._selectedVersion) {
-          //   this._selectedVersion = this.workflow.workflowVersions[0];
-          // }
           this.onChange();
         }
       }
@@ -53,7 +49,7 @@ export class ToolTabComponent implements OnInit {
   }
 
   onChange() {
-    if (this._selectedVersion) {
+    if (this._selectedVersion && this.workflow) {
       this.workflowsService.getTableToolContent(this.workflow.id, this._selectedVersion.id).subscribe(
         (toolContent) => {
           this.toolsContent = toolContent;
