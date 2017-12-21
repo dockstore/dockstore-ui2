@@ -37,7 +37,7 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
       this.version = value;
       this.reactToVersion();
     }
-  };
+  }
   content: string;
   filepath: string;
   nullContent: boolean;

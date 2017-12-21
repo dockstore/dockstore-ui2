@@ -43,7 +43,7 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
       this.contentHighlighted = false;
       this.reactToVersion();
     }
-  };
+  }
   content: string = null;
   contentHighlighted: boolean;
 

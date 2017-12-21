@@ -41,7 +41,7 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
       this.version = value;
       this.reactToVersion();
     }
-  };
+  }
   content: string;
   contentHighlighted: boolean;
   constructor(private containerService: ContainerService,

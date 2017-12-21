@@ -38,20 +38,61 @@ export class LaunchComponent {
     if (value != null) {
       this.version = value;
       this.reactToDescriptor();
+      this.validDescriptors = this.filterDescriptors(this.descriptors, this.version);
     }
-  };
+  }
 
   params: string;
   cli: string;
   cwl: string;
   consonance: string;
   descriptors: Array<any>;
+  validDescriptors: Array<any>;
   currentDescriptor: string;
 
   constructor(private launchService: ToolLaunchService,
               private toolDescriptorService: ToolDescriptorService,
               private metadataService: MetadataService) {
-    this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptors = map);
+    this.metadataService.getDescriptorLanguages().subscribe(map => {
+      this.descriptors = map;
+      this.validDescriptors = this.filterDescriptors(this.descriptors, this.version);
+    });
+  }
+
+  filterDescriptors(descriptors: Array<any>, version: any): Array<any> {
+    const newDescriptors = [];
+
+    // Return empty array if no descriptors present yet
+    if (descriptors === undefined) {
+      return newDescriptors;
+    }
+
+    // Determine if the current version has CWL and/or WDL descriptors
+    let hasCwl = false;
+    let hasWdl = false;
+
+    for (const sourceFile of this.version.sourceFiles) {
+      if (sourceFile.type === 'DOCKSTORE_CWL') {
+        hasCwl = true;
+      } else if (sourceFile.type === 'DOCKSTORE_WDL') {
+        hasWdl = true;
+      }
+    }
+
+    // Create a list of valid descriptors
+    for (const descriptor of descriptors) {
+      if ((descriptor.value === 'CWL' && hasCwl) || (descriptor.value === 'WDL' && hasWdl)) {
+        newDescriptors.push(descriptor);
+      }
+    }
+
+    // Preselect first descriptor in the list
+    if (newDescriptors && newDescriptors.length > 0) {
+      this.currentDescriptor = newDescriptors[0].value;
+      console.log(this.currentDescriptor);
+    }
+
+    return newDescriptors;
   }
 
   reactToDescriptor(): void {

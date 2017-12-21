@@ -38,7 +38,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     if (value != null) {
       this.versionTag = value;
     }
-  };
+  }
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,

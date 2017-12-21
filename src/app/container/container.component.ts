@@ -157,9 +157,9 @@ export class ContainerComponent extends Entry {
       // Get version from path if it exists
       const splitTitle = this.title.split(':');
 
-      if (splitTitle.length == 2) {
+      if (splitTitle.length === 2) {
         this.urlTag = splitTitle[1];
-        this.title = this.title.replace(':' + this.urlTag ,'');
+        this.title = this.title.replace(':' + this.urlTag, '');
       }
 
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
@@ -171,7 +171,7 @@ export class ContainerComponent extends Entry {
           let useFirstTag = true;
 
           // Determine which tag to select
-          for (let item of this.tool.tags) {
+          for (const item of this.tool.tags) {
             // If a tag is specified in the URL then use it
             if (this.urlTag !== null) {
               if (item.name === this.urlTag) {
@@ -189,11 +189,10 @@ export class ContainerComponent extends Entry {
                 break;
               }
             }
-
           }
 
           // If no url tag or default version, select first element in the dropdown
-          if (useFirstTag) {
+          if (useFirstTag && this.tool.tags.length > 0) {
             this.selectedTag = this.tool.tags[0];
           }
 
