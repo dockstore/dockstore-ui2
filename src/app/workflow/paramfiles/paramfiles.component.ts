@@ -51,7 +51,7 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this._selectedVersion)
+    return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
