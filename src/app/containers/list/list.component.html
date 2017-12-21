@@ -45,7 +45,7 @@
             {{ tool?.author || 'n/a' }}
           </td>
           <td>
-            {{ tool?.descriptorType.toString() | uppercase}}
+            {{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}
           </td>
           <td>
             <a [href]="tool?.providerUrl">

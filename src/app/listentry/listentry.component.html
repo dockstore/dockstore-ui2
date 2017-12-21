@@ -46,7 +46,7 @@
         {{ hit?._source.author || 'n/a' }}
       </td>
       <td>
-        {{ hit?._source.descriptorType.toString() | uppercase}}
+        {{ hit?._source.descriptorType ? (hit?._source.descriptorType.toString() | uppercase) : ''}}
       </td>
       <td>
         <a [href]="hit?._source.providerUrl">
