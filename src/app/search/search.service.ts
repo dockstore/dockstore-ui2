@@ -204,6 +204,7 @@ export class SearchService {
   initializeBucketStubs() {
     return new Map([
       ['Entry Type', '_type'],
+      ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Private Access', 'private_access'],
       ['Verified', 'tags.verified'],
@@ -217,6 +218,7 @@ export class SearchService {
   initializeFriendlyNames() {
     return new Map([
       ['_type', 'Entry Type'],
+      ['descriptorType', 'Language'],
       ['registry', 'Registry'],
       ['private_access', 'Private Access'],
       ['tags.verified', 'Verified'],
@@ -230,6 +232,7 @@ export class SearchService {
   initializeEntryOrder() {
     return new Map([
       ['_type', new SubBucket],
+      ['descriptorType', new SubBucket],
       ['author', new SubBucket],
       ['registry', new SubBucket],
       ['namespace', new SubBucket],
