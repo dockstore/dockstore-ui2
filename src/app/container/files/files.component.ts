@@ -25,7 +25,7 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
   templateUrl: './files.component.html'
 })
 export class FilesContainerComponent extends Files implements OnInit, OnChanges {
-  @Input() selectedTag;
+  @Input() selectedVersion;
   versionsWithParamfiles: Array<any>;
 
   constructor(private paramfilesService: ParamfilesService) {

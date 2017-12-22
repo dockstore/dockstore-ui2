@@ -21,7 +21,8 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 
 import { WorkflowService } from '../../shared/workflow.service';
 
-import { FileSelector } from '../../shared/selectors/file-selector';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+
 import { FileService } from '../../shared/file.service';
 
 @Component({
@@ -29,15 +30,12 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
+export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
   @Input() id: number;
   @Input() entrypath: string;
   _selectedVersion: any;
   @Input() set selectedVersion(value: any) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToVersion();
-    }
+    this.onVersionChangeDescriptorFile(value);
   }
 
   content: string;
@@ -50,7 +48,7 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getDescriptors(this.versions, this._selectedVersion);
+    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {

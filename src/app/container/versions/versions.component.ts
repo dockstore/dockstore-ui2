@@ -34,7 +34,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   versionTag: any;
-  @Input() set selectedTag(value: any) {
+  @Input() set selectedVersion(value: any) {
     if (value != null) {
       this.versionTag = value;
     }

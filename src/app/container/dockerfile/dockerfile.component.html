@@ -15,13 +15,13 @@
   -->
 
 <div>
-  <div *ngIf="nullContent || !_selectedTag.valid">
+  <div *ngIf="nullContent || !_selectedVersion.valid">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Dockerfile associated with this Docker container could not be found.
     </alert>
   </div>
-  <div *ngIf="!nullContent && _selectedTag.valid" class="code-copy">
+  <div *ngIf="!nullContent && _selectedVersion.valid" class="code-copy">
     <div class="code-copy-button btn-group">
       <a download="{{filepath}}" [href]="getDockerfilePath()" class="btn btn-default" type="button" title="{{filepath}}">
         <span class="glyphicon glyphicon-download"></span>

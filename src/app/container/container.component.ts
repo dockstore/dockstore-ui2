@@ -55,7 +55,7 @@ export class ContainerComponent extends Entry {
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
-  public selectedTag = null;
+  public selectedVersion = null;
   public urlTag = null;
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -97,7 +97,7 @@ export class ContainerComponent extends Entry {
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedTag.name);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedVersion.name);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -140,14 +140,14 @@ export class ContainerComponent extends Entry {
       // If a tag is specified in the URL then use it
       if (this.urlTag !== null) {
         if (item.name === this.urlTag) {
-          this.selectedTag = item;
+          this.selectedVersion = item;
           useFirstTag = false;
           break;
         }
       } else if (this.tool.defaultVersion !== null) {
         // If the tool has a default version then use it
         if (item.name === this.tool.defaultVersion) {
-          this.selectedTag = item;
+          this.selectedVersion = item;
           useFirstTag = false;
           break;
         }
@@ -156,7 +156,7 @@ export class ContainerComponent extends Entry {
 
     // If no url tag or default version, select first element in the dropdown
     if (useFirstTag && this.tool.tags.length > 0) {
-      this.selectedTag = this.tool.tags[0];
+      this.selectedVersion = this.tool.tags[0];
     }
   }
 

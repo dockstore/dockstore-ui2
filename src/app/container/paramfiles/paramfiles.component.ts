@@ -22,8 +22,8 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 
 import { ContainerService } from '../../shared/container.service';
 import { ParamfilesService } from './paramfiles.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
-import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
 
 @Component({
@@ -31,21 +31,13 @@ import { FileService } from '../../shared/file.service';
   templateUrl: './paramfiles.component.html'
 })
 
-export class ParamfilesComponent extends FileSelector implements AfterViewChecked {
+export class ParamfilesComponent extends EntryFileSelector implements AfterViewChecked {
 
   @Input() id: number;
   @Input() entrypath: string;
-  _selectedTag: any;
-  @Input() set selectedTag(value: any) {
-    if (value != null) {
-      this._selectedTag = value;
-      this.content = null;
-      this.contentHighlighted = false;
-      this.reactToVersion();
-    }
+  @Input() set selectedVersion(value: any) {
+    this.onVersionChangeParamFile(value);
   }
-  content: string = null;
-  contentHighlighted: boolean;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private highlightJsService: HighlightJsService,
@@ -55,11 +47,11 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this._selectedTag);
+    return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'containers', this._selectedTag.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'containers', this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {

@@ -47,7 +47,7 @@
     </div>
     <div *ngIf="!publicPage" class="input-group">
       <div class="form-group">
-        <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedTag" (ngModelChange)="onTagChange($event)">
+        <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
           <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
         </select>
       </div>
@@ -86,7 +86,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
-        <app-info-tab [selectedTag]="selectedTag"></app-info-tab>
+        <app-info-tab [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
@@ -124,11 +124,11 @@
         </form>
       </tab>
       <tab heading="Versions" *ngIf="validVersions">
-        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedTag]="selectedTag">
+        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
-        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedTag]="selectedTag">
+        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
         </app-files-container>
       </tab>
     </tabset>
@@ -141,7 +141,7 @@
       <div class="panel-body">
         <div class="input-group col-md-12">
           <div class="form-group">
-            <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedTag" (ngModelChange)="onTagChange($event)">
+            <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
               <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
             </select>
           </div>

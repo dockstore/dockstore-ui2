@@ -18,7 +18,8 @@ import {Component, Input, OnInit, ElementRef, AfterViewChecked} from '@angular/c
 import { Observable } from 'rxjs/Observable';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-import { FileSelector } from '../../shared/selectors/file-selector';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+
 import { FileService } from '../../shared/file.service';
 import { WorkflowService } from '../../shared/workflow.service';
 
@@ -27,21 +28,13 @@ import { WorkflowService } from '../../shared/workflow.service';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.css']
 })
-export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
+export class ParamfilesWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
   @Input() id: number;
   @Input() entrypath: string;
   _selectedVersion: any;
   @Input() set selectedVersion(value: any) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.content = null;
-      this.contentHighlighted = false;
-      this.reactToVersion();
-    }
+    this.onVersionChangeParamFile(value);
   }
-  content: string = null;
-
-  contentHighlighted: boolean;
 
   constructor(private paramfilesService: ParamfilesService,
               private highlightJsService: HighlightJsService,

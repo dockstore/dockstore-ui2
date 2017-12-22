@@ -33,12 +33,12 @@ export class LaunchComponent {
   @Input() path;
   @Input() toolname;
 
-  _selectedTag: any;
+  _selectedVersion: any;
   @Input() set default(value: any) {
     if (value != null) {
-      this._selectedTag = value;
+      this._selectedVersion = value;
       this.reactToDescriptor();
-      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedTag);
+      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     }
   }
 
@@ -55,7 +55,7 @@ export class LaunchComponent {
               private metadataService: MetadataService) {
     this.metadataService.getDescriptorLanguages().subscribe(map => {
       this.descriptors = map;
-      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedTag);
+      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
   }
 
@@ -99,7 +99,7 @@ export class LaunchComponent {
     if (this.toolname) {
       fullToolPath += '/' + this.toolname;
     }
-    this.changeMessages(fullToolPath, this._selectedTag.name);
+    this.changeMessages(fullToolPath, this._selectedVersion.name);
   }
 
   private changeMessages(toolPath: string, versionName: string) {
