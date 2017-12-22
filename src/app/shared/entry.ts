@@ -164,4 +164,36 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       })();
     }
   }
+
+  public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
+    let useFirstTag = true;
+    let urlTagExists = false;
+
+    // Determine which tag to select
+    for (const item of versions) {
+      // If a tag is specified in the URL then use it
+      if (urlVersion !== null) {
+        if (item.name === urlVersion) {
+          selectedVersion = item;
+          useFirstTag = false;
+          urlTagExists = true;
+          break;
+        }
+      }
+      if (defaultVersion !== null && !urlTagExists) {
+        // If the tool has a default version then use it
+        if (item.name === defaultVersion) {
+          selectedVersion = item;
+          useFirstTag = false;
+          break;
+        }
+      }
+    }
+
+    // If no url tag or default version, select first element in the dropdown
+    if (useFirstTag && versions.length > 0) {
+      selectedVersion = versions[0];
+    }
+    return selectedVersion;
+  }
 }
