@@ -75,7 +75,9 @@
       </td>
     </tr>
     <tr *ngFor="let version of versions" [ngClass]="{'info': _selectedVersion != null && version != null && _selectedVersion.id == version.id}">
-      <td><input class="radio-button-reference" *ngIf="version.name !== 'latest' && (!publicPage || (publicPage && defaultVersion ===version.name)) " type="radio" name="defaultVersion"
+      <td>
+        <span *ngIf="publicPage && defaultVersion === version.name" class="label label-primary">Default</span>
+        <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion"
                      [(ngModel)]="defaultVersion" [value]="version.reference" (click)="updateDefaultVersion(version.reference)"
                      [tooltip]="getDefaultTooltip(publicPage)"/>{{ version.reference || 'n/a' }}</td>
       <td>{{ version.workflow_path }}</td>

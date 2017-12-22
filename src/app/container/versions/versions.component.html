@@ -70,7 +70,8 @@
       </tr>
       <tr *ngFor="let version of versions | orderBy : convertSorting()" [ngClass]="{'info': versionTag != null && version != null && versionTag.id == version.id}">
         <td class="break">
-          <input class="radio-button-reference" *ngIf="version.name !== 'latest' && (!publicPage || (publicPage && defaultVersion ===version.name)) " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
+          <span *ngIf="publicPage && defaultVersion ===version.name" class="label label-primary">Default</span>
+          <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
             [value]="version.name" (click)="updateDefaultVersion(version.name)" [tooltip]="getDefaultTooltip(publicPage)"/> {{ version.name }}
         </td>
         <td>
