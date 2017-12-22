@@ -22,9 +22,6 @@ import { Observable } from 'rxjs/Observable';
 export abstract class EntryFileSelector {
   _selectedVersion: any;
 
-  protected workflowCopyBtn: string;
-  protected toolCopyBtn: string;
-
   protected currentDescriptor;
   protected descriptors: Array<any>;
   public nullDescriptors: boolean;
@@ -71,20 +68,16 @@ export abstract class EntryFileSelector {
     this.reactToFile();
   }
 
-  onVersionChangeParamFile(value) {
+  onVersionChange(value) {
     if (value != null) {
       this._selectedVersion = value;
-      this.content = null;
-      this.contentHighlighted = false;
       this.reactToVersion();
     }
   }
 
-  onVersionChangeDescriptorFile(value) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToVersion();
-    }
+  clearContent() {
+    this.content = null;
+    this.contentHighlighted = false;
   }
 
 }

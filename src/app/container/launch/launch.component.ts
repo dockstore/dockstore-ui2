@@ -32,7 +32,7 @@ export class LaunchComponent {
   @Input() toolname;
 
   _selectedVersion: any;
-  @Input() set default(value: any) {
+  @Input() set selectedVersion(value: any) {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToDescriptor();

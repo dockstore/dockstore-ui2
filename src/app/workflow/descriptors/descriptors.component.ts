@@ -35,7 +35,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
   @Input() entrypath: string;
   _selectedVersion: any;
   @Input() set selectedVersion(value: any) {
-    this.onVersionChangeDescriptorFile(value);
+    this.onVersionChange(value);
   }
 
   content: string;
@@ -64,15 +64,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-  copyBtnSubscript(): void {
-    this.workflowService.copyBtn$.subscribe(
-      copyBtn => {
-        this.workflowCopyBtn = copyBtn;
-      });
-  }
-  workflowCopyBtnClick(copyBtn): void {
-    this.workflowService.setCopyBtn(copyBtn);
   }
 
   getDescriptorPath(entrytype): string {

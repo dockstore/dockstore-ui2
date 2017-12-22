@@ -37,7 +37,7 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
   @Input() id: number;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: any) {
-    this.onVersionChangeDescriptorFile(value);
+    this.onVersionChange(value);
   }
 
   constructor(private containerService: ContainerService,
@@ -66,15 +66,6 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-  copyBtnSubscript(): void {
-    this.containerService.copyBtn$.subscribe(
-      copyBtn => {
-        this.toolCopyBtn = copyBtn;
-      });
-  }
-  toolCopyBtnClick(copyBtn): void {
-    this.containerService.setCopyBtn(copyBtn);
   }
 
   getDescriptorPath(descType): string {

@@ -141,7 +141,7 @@
       <div class="panel-body">
         <div class="input-group col-md-12">
           <div class="form-group">
-            <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
+            <select class="form-control select-box" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
               <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
             </select>
           </div>

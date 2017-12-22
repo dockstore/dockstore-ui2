@@ -29,7 +29,7 @@ export class LaunchWorkflowComponent {
   @Input() currentDescriptor;
 
   _selectedVersion: any;
-  @Input() set default(value: any) {
+  @Input() set selectedVersion(value: any) {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToDescriptor();
@@ -46,7 +46,7 @@ export class LaunchWorkflowComponent {
   constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
   }
   getDescriptors(): any {
-    return this.workflowDescriptorService.getDescriptors(this.default);
+    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
   reactToDescriptor(): void {
     this.changeMessages(this.path, this._selectedVersion.name);

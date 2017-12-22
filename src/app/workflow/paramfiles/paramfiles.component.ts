@@ -33,7 +33,8 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
   @Input() entrypath: string;
   _selectedVersion: any;
   @Input() set selectedVersion(value: any) {
-    this.onVersionChangeParamFile(value);
+    this.clearContent();
+    this.onVersionChange(value);
   }
 
   constructor(private paramfilesService: ParamfilesService,
@@ -61,15 +62,6 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-  copyBtnSubscript(): void {
-    this.workflowService.copyBtn$.subscribe(
-      copyBtn => {
-        this.workflowCopyBtn = copyBtn;
-      });
-  }
-  workflowCopyBtnClick(copyBtn): void {
-    this.workflowService.setCopyBtn(copyBtn);
   }
 
   // Downloads a file

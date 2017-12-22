@@ -71,12 +71,6 @@ export class DockerfileComponent implements AfterViewChecked {
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
-  // copyBtnSubscript(): void {
-  //   this.containerService.copyBtn$.subscribe(
-  //     copyBtn => {
-  //         this.toolCopyBtn = copyBtn;
-  //     });
-  // }
 
   getDockerfilePath(): string {
     const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
