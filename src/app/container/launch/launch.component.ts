@@ -17,8 +17,6 @@
 import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
 import { Component, Input } from '@angular/core';
 
-import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
-
 import { ToolLaunchService } from './tool-launch.service';
 import { ContainerService } from '../../shared/container.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';

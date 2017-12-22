@@ -20,8 +20,6 @@ import { Observable } from 'rxjs/Observable';
 * Abstract class to be implemented by components that have select boxes for a given entry and version
 */
 export abstract class EntryFileSelector {
-  @Input() versions;
-
   _selectedVersion: any;
 
   protected workflowCopyBtn: string;

@@ -16,17 +16,17 @@
 
 <tabset [justified]="true">
   <tab heading="Dockerfile">
-    <app-dockerfile [entrypath]="entrypath" [id]="id" [versions]="versions" [selectedVersion]="selectedVersion">
+    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
     </app-dockerfile>
   </tab>
 
   <tab heading="Descriptor Files">
-    <app-descriptors-container [entrypath]="entrypath" [id]="id" [versions]="versions" [selectedVersion]="selectedVersion">
+    <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
     </app-descriptors-container>
   </tab>
 
   <tab heading="Test Parameter Files">
-    <app-paramfiles-container [entrypath]="entrypath" [id]="id" [versions]="versionsWithParamfiles" [selectedVersion]="selectedVersion">
+    <app-paramfiles-container [entrypath]="entrypath" [id]="id"  [selectedVersion]="selectedVersion">
     </app-paramfiles-container>
   </tab>
 

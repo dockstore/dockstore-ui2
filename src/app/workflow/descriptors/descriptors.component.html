@@ -15,7 +15,7 @@
   -->
 
   <div>
-    <span *ngIf="versions?.length > 0 && _selectedVersion.valid" class="row no-margin">
+    <span *ngIf="_selectedVersion.valid" class="row no-margin">
       <span class="form-group col-sm-4">
         <strong>File:</strong>
         <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
