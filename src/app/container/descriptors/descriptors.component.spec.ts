@@ -56,8 +56,6 @@ describe('DescriptorsComponent', () => {
     fixture = TestBed.createComponent(DescriptorsComponent);
     component = fixture.componentInstance;
     component.id = 5;
-    component.versions = null;
-    component.default = null;
     fixture.detectChanges();
   });
 
