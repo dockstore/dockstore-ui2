@@ -202,7 +202,9 @@ export class DagComponent implements OnInit, AfterViewChecked {
   }
 
   onChange() {
-    this.getDag(this._selectedVersion.id);
+    if (this._selectedVersion) {
+      this.getDag(this._selectedVersion.id);
+    }
   }
 
   getDag(versionId: number) {
