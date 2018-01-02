@@ -125,7 +125,8 @@ export class WorkflowComponent extends Entry {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;
-          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion, this.selectedVersion);
+          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
+            this.workflow.defaultVersion, this.selectedVersion);
         }
         this.setUpWorkflow(workflow);
       }
@@ -155,7 +156,8 @@ export class WorkflowComponent extends Entry {
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
 
-          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion, this.selectedVersion);
+          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
+            this.workflow.defaultVersion, this.selectedVersion);
         }, error => {
           this.router.navigate(['../']);
         });
