@@ -22,21 +22,24 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 
 import { ContainerService } from '../../shared/container.service';
 import { ParamfilesService } from './paramfiles.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
-import { FileSelector } from '../../shared/selectors/file-selector';
 import { FileService } from '../../shared/file.service';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-paramfiles-container',
   templateUrl: './paramfiles.component.html'
 })
 
-export class ParamfilesComponent extends FileSelector implements AfterViewChecked {
+export class ParamfilesComponent extends EntryFileSelector implements AfterViewChecked {
 
   @Input() id: number;
   @Input() entrypath: string;
-  content: string;
-  contentHighlighted: boolean;
+  @Input() set selectedVersion(value: Tag) {
+    this.clearContent();
+    this.onVersionChange(value);
+  }
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private highlightJsService: HighlightJsService,
@@ -46,11 +49,11 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this.currentVersion);
+    return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'containers', this.currentVersion.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'containers', this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
@@ -63,15 +66,6 @@ export class ParamfilesComponent extends FileSelector implements AfterViewChecke
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-  copyBtnSubscript(): void {
-    this.containerService.copyBtn$.subscribe(
-      copyBtn => {
-        this.toolCopyBtn = copyBtn;
-      });
-  }
-  toolCopyBtnClick(copyBtn): void {
-    this.containerService.setCopyBtn(copyBtn);
   }
 
   // Downloads a file

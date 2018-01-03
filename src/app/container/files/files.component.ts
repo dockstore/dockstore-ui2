@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-import { Component, OnInit, OnChanges} from '@angular/core';
+import { Component, OnInit, OnChanges, Input} from '@angular/core';
 
 import { Files } from '../../shared/files';
-
+import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 
 @Component({
@@ -25,7 +25,7 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
   templateUrl: './files.component.html'
 })
 export class FilesContainerComponent extends Files implements OnInit, OnChanges {
-
+  @Input() selectedVersion: Tag;
   versionsWithParamfiles: Array<any>;
 
   constructor(private paramfilesService: ParamfilesService) {

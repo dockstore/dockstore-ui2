@@ -45,6 +45,14 @@
         {{label}}
       </span>
     </div>
+    <div *ngIf="!publicPage" class="input-group">
+      <div class="form-group">
+        <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
+          <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
+        </select>
+      </div>
+    </div>
+
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
@@ -78,7 +86,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" justified="true">
       <tab id="infoTab" heading="Info" id="infoTab">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+        <app-info-tab [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
@@ -116,11 +124,11 @@
         </form>
       </tab>
       <tab heading="Versions" *ngIf="validVersions">
-        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources">
+        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
-        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion">
+        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
         </app-files-container>
       </tab>
     </tabset>
@@ -128,7 +136,22 @@
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
     <div class="panel panel-default" *ngIf="tool">
       <div class="panel-heading">
-        <strong>Docker Pull Command</strong>
+        <h3>Versions</h3>
+      </div>
+      <div class="panel-body">
+        <div class="input-group col-md-12">
+          <div class="form-group">
+            <select class="form-control select-box" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
+              <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" *ngIf="tool">
+      <div class="panel-heading">
+        <h3>Docker Pull Command</h3>
       </div>
       <div class="panel-body">
         <div class="input-group">

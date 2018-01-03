@@ -92,3 +92,7 @@ div > pre, markdown pre code {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
 }
+
+.select-box {
+  border-radius: 3px !important;
+}

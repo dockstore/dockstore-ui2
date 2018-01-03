@@ -15,11 +15,7 @@
   -->
 
 <div>
-  <span *ngIf="versions?.length > 0" class="row no-margin">
-    <span class="form-group col-sm-4">
-      <strong>Tool Version:</strong>
-      <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
-    </span>
+  <span *ngIf="content != null && _selectedVersion?.valid" class="row no-margin">
     <span class="form-group col-sm-4">
       <strong>Descriptor Type:</strong>
       <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
@@ -30,13 +26,13 @@
     </span>
   </span>
 
-  <div *ngIf="!content">
+  <div *ngIf="!content ||  !_selectedVersion?.valid">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
     </alert>
   </div>
-  <div *ngIf="content" class="code-copy">
+  <div *ngIf="content && _selectedVersion?.valid" class="code-copy">
     <div class="code-copy-button btn-group">
       <a href id="downloadLinkParams" (click)="downloadFile(currentFile, 'downloadLinkParams')" class="btn btn-default" type="button" title="{{getFilePath(currentFile)}}">
         <span class="glyphicon glyphicon-download"></span>
