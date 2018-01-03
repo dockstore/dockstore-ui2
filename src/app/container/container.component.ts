@@ -23,7 +23,7 @@ import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
 
 import { CommunicatorService } from '../shared/communicator.service';
@@ -39,6 +39,8 @@ import { ContainerService } from '../shared/container.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
+import { Tag } from '../shared/swagger/model/tag';
+
 
 
 @Component({
@@ -70,7 +72,7 @@ export class ContainerComponent extends Entry {
     router: Router,
     private containerService: ContainerService,
     stateService: StateService,
-    errorService: ErrorService, route: ActivatedRoute) {
+    errorService: ErrorService) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'containers';
@@ -255,7 +257,7 @@ export class ContainerComponent extends Entry {
     this.containerService.setCopyBtn(copyBtn);
   }
 
-  onTagChange(tag): void {
+  onTagChange(tag: Tag): void {
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
   }
 
