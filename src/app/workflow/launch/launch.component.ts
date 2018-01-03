@@ -16,17 +16,26 @@
 
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { Component, Input } from '@angular/core';
-import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ContainerService } from '../../shared/container.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchWorkflowComponent extends DescriptorSelector {
+export class LaunchWorkflowComponent {
   @Input() path;
+  @Input() currentDescriptor;
+
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.reactToDescriptor();
+    }
+  }
 
   params: string;
   cli: string;
@@ -36,13 +45,12 @@ export class LaunchWorkflowComponent extends DescriptorSelector {
   descriptors: Array<any>;
 
   constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
-    super();
   }
   getDescriptors(): any {
-    return this.workflowDescriptorService.getDescriptors(this.versions, this.default);
+    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
   reactToDescriptor(): void {
-    this.changeMessages(this.path, this.currentVersion.name);
+    this.changeMessages(this.path, this._selectedVersion.name);
   }
   private changeMessages(workflowPath: string, versionName: string) {
     this.params = this.launchService.getParamsString(workflowPath, versionName, this.currentDescriptor);

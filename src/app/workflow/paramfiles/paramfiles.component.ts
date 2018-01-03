@@ -18,21 +18,24 @@ import {Component, Input, OnInit, ElementRef, AfterViewChecked} from '@angular/c
 import { Observable } from 'rxjs/Observable';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-import { FileSelector } from '../../shared/selectors/file-selector';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+
 import { FileService } from '../../shared/file.service';
 import { WorkflowService } from '../../shared/workflow.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-paramfiles-workflow',
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.css']
 })
-export class ParamfilesWorkflowComponent extends FileSelector implements AfterViewChecked {
+export class ParamfilesWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
   @Input() id: number;
   @Input() entrypath: string;
-  content: string;
-
-  contentHighlighted: boolean;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    this.clearContent();
+    this.onVersionChange(value);
+  }
 
   constructor(private paramfilesService: ParamfilesService,
               private highlightJsService: HighlightJsService,
@@ -42,11 +45,11 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this.currentVersion);
+    return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'workflows', this.currentVersion.name, this.currentDescriptor);
+    return this.paramfilesService.getFiles(this.id, 'workflows', this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
@@ -59,15 +62,6 @@ export class ParamfilesWorkflowComponent extends FileSelector implements AfterVi
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-  copyBtnSubscript(): void {
-    this.workflowService.copyBtn$.subscribe(
-      copyBtn => {
-        this.workflowCopyBtn = copyBtn;
-      });
-  }
-  workflowCopyBtnClick(copyBtn): void {
-    this.workflowService.setCopyBtn(copyBtn);
   }
 
   // Downloads a file

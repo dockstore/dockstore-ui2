@@ -61,12 +61,11 @@ export abstract class DescriptorService {
     /**
      * Gets the descriptor types (cwl and or wdl) that the version has a sourcefile of
      *
-     * @param {any} versions all version of the workflow/tool (currently not used be left in here just in case)
      * @param {any} version the current selected version of the workflow or tool
      * @returns an array that may contain 'cwl' or 'wdl'
      * @memberof DescriptorService
      */
-    getDescriptors(versions, version) {
+    getDescriptors(version) {
         if (version) {
             const descriptorTypes = new Array();
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));

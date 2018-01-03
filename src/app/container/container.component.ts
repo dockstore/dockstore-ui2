@@ -39,6 +39,8 @@ import { ContainerService } from '../shared/container.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
+import { Tag } from '../shared/swagger/model/tag';
+
 
 
 @Component({
@@ -55,6 +57,8 @@ export class ContainerComponent extends Entry {
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
+  public selectedVersion = null;
+  public urlTag = null;
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -95,7 +99,7 @@ export class ContainerComponent extends Entry {
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.tool.defaultVersion);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedVersion.name);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -117,7 +121,9 @@ export class ContainerComponent extends Entry {
         this.tool = tool;
         if (tool) {
           this.published = this.tool.is_published;
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
         }
+        // Select version
         this.setUpTool(tool);
       }
     );
@@ -150,11 +156,22 @@ export class ContainerComponent extends Entry {
   public setupPublicEntry(url: String) {
     if (url.includes('containers')) {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+
+      // Get version from path if it exists
+      const splitTitle = this.title.split(':');
+
+      if (splitTitle.length === 2) {
+        this.urlTag = splitTitle[1];
+        this.title = this.title.replace(':' + this.urlTag, '');
+      }
+
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title, this._toolType)
         .subscribe(tool => {
           this.containerService.setTool(tool);
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+
         }, error => {
           this.router.navigate(['../']);
         });
@@ -238,6 +255,10 @@ export class ContainerComponent extends Entry {
 
   public toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
+  }
+
+  onTagChange(tag: Tag): void {
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
   }
 
 }

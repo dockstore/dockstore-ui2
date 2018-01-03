@@ -28,8 +28,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./info-tab.component.css']
 })
 export class InfoTabComponent implements OnInit {
-  @Input() validVersions;
-  @Input() defaultVersion;
+  @Input() selectedVersion;
   public validationPatterns = validationPatterns;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;

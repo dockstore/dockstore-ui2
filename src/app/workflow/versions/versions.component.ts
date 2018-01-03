@@ -25,6 +25,7 @@ import { DateService } from '../../shared/date.service';
 
 import { Versions } from '../../shared/versions';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 
 @Component({
@@ -36,6 +37,12 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    if (value != null) {
+      this._selectedVersion = value;
+    }
+  }
   workflow: any;
   setNoOrderCols(): Array<number> {
     return [4, 5];

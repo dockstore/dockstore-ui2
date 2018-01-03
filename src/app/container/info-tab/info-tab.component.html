@@ -155,8 +155,7 @@
       </span>
     </div>
   </div>
-  <div *ngIf="validVersions">
-    <app-launch *ngIf="!defaultVersion?.valid" [versions]="validVersions" [default]="validVersions[0]" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
-    <app-launch *ngIf="defaultVersion?.valid" [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
+  <div>
+    <app-launch [selectedVersion]="selectedVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
   </div>
 </div>

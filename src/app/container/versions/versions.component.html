@@ -70,9 +70,10 @@
           <div class="text-center">No Records Found</div>
         </td>
       </tr>
-      <tr *ngFor="let version of versions | orderBy : convertSorting()">
+      <tr *ngFor="let version of versions | orderBy : convertSorting()" [ngClass]="{'info': versionTag != null && version != null && versionTag.id == version.id}">
         <td class="break">
-          <input class="radio-button-reference" *ngIf="version.name !== 'latest' && (!publicPage || (publicPage && defaultVersion ===version.name)) " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
+          <span *ngIf="publicPage && defaultVersion ===version.name" class="label label-primary">Default</span>
+          <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
             [value]="version.name" (click)="updateDefaultVersion(version.name)" [tooltip]="getDefaultTooltip(publicPage)"/> {{ version.name }}
         </td>
         <td>
@@ -80,9 +81,8 @@
         <td>
           <div>
             {{ version.cwl_path }}
-            <hr> {{ version.wdl_path }}
-            <hr> {{ version.dockerfile_path }}
-            <hr>
+            {{ version.wdl_path }}
+            {{ version.dockerfile_path }}
           </div>
         </td>
         <td>{{ getDateTimeString(version.last_modified) }}</td>

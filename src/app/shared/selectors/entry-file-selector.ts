@@ -13,18 +13,45 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { DescriptorSelector } from './descriptor-selector';
+/**
+* Abstract class to be implemented by components that have select boxes for a given entry and version
+*/
+export abstract class EntryFileSelector {
+  _selectedVersion: any;
 
-export abstract class FileSelector extends DescriptorSelector {
+  protected currentDescriptor;
+  protected descriptors: Array<any>;
+  public nullDescriptors: boolean;
 
   protected currentFile;
   protected files: Array<any>;
 
+  content: string = null;
+  contentHighlighted: boolean;
+
+  abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
   abstract reactToFile(): void;
+
+  reactToVersion(): void {
+    this.descriptors = this.getDescriptors(this._selectedVersion);
+    if (this.descriptors) {
+      this.nullDescriptors = false;
+      if (this.descriptors.length) {
+        this.onDescriptorChange(this.descriptors[0]);
+      }
+    } else {
+      this.nullDescriptors = true;
+    }
+  }
+
+  onDescriptorChange(descriptor) {
+    this.currentDescriptor = descriptor;
+    this.reactToDescriptor();
+  }
 
   reactToDescriptor() {
     this.getFiles(this.currentDescriptor)
@@ -39,6 +66,18 @@ export abstract class FileSelector extends DescriptorSelector {
   onFileChange(file) {
     this.currentFile = file;
     this.reactToFile();
+  }
+
+  onVersionChange(value) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.reactToVersion();
+    }
+  }
+
+  clearContent() {
+    this.content = null;
+    this.contentHighlighted = false;
   }
 
 }

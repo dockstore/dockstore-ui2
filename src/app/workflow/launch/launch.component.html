@@ -14,11 +14,9 @@
   ~    limitations under the License.
   -->
 
-<div *ngIf="versions?.length > 0">
+<div *ngIf="_selectedVersion">
   <div class="form-inline">
     <label tooltip="Commands to launch workflow from the command line">Launch With</label>
-    <div class="pull-right"><app-select class="text-right" [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
-    </div>
   </div>
 
   <div class="well">
