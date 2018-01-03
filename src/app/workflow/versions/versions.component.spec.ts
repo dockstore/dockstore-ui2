@@ -27,6 +27,7 @@ import { DateStubService, ErrorStubService, DockstoreStubService, WorkflowStubSe
 import { DockstoreService } from './../../shared/dockstore.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { OrderBy } from '../../shared/orderBy';
 
 import { VersionsWorkflowComponent } from './versions.component';
 
@@ -36,7 +37,7 @@ describe('VersionsWorkflowComponent', () => {
   let workflowService: WorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionsWorkflowComponent ],
+      declarations: [ VersionsWorkflowComponent, OrderBy ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
