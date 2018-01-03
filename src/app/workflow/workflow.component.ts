@@ -24,7 +24,7 @@ import * as WorkflowMode from './../shared/swagger/model/workflow';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
 import { URLSearchParams } from '@angular/http';
@@ -58,7 +58,7 @@ export class WorkflowComponent extends Entry {
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
-    stateService: StateService, errorService: ErrorService, route: ActivatedRoute) {
+    stateService: StateService, errorService: ErrorService) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'workflows';
