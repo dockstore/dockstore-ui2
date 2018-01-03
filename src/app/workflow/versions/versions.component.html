@@ -56,6 +56,10 @@
       </th>
 
       <th>
+        <span class="glyphicon pull-right"
+              [ngClass]="getIconClass('verified')"
+              (click)="clickSortColumn('verified')">
+        </span>
         <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
           Verified
         </label>
@@ -74,7 +78,7 @@
         <div class="text-center">No Records Found</div>
       </td>
     </tr>
-    <tr *ngFor="let version of versions" [ngClass]="{'info': _selectedVersion != null && version != null && _selectedVersion.id == version.id}">
+    <tr *ngFor="let version of versions | orderBy : convertSorting()" [ngClass]="{'info': _selectedVersion != null && version != null && _selectedVersion.id == version.id}">
       <td>
         <span *ngIf="publicPage && defaultVersion === version.name" class="label label-primary">Default</span>
         <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion"

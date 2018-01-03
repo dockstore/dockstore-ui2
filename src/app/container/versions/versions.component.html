@@ -54,6 +54,8 @@
           <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
             Verified
           </label>
+          <span class="glyphicon pull-right" [ngClass]="getIconClass('verified')" (click)="clickSortColumn('verified')">
+          </span>
         </th>
         <th>
           <label placement="top" tooltip="View more information about the given version">
