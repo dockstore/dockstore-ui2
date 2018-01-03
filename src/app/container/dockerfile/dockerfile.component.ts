@@ -22,6 +22,7 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { FileService } from '../../shared/file.service';
 import { ContainerService } from '../../shared/container.service';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-dockerfile',
@@ -31,8 +32,8 @@ export class DockerfileComponent implements AfterViewChecked {
 
   @Input() id: number;
   @Input() entrypath: string;
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  _selectedVersion: Tag;
+  @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToVersion();

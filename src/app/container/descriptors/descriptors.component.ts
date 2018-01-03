@@ -25,6 +25,7 @@ import { ToolDescriptorService } from './tool-descriptor.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -36,7 +37,7 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
 
   @Input() id: number;
   @Input() entrypath: string;
-  @Input() set selectedVersion(value: any) {
+  @Input() set selectedVersion(value: Tag) {
     this.onVersionChange(value);
   }
 

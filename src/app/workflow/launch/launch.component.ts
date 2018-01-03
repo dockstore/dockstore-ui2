@@ -18,6 +18,7 @@ import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.
 import { Component, Input } from '@angular/core';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ContainerService } from '../../shared/container.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-launch',
@@ -28,8 +29,8 @@ export class LaunchWorkflowComponent {
   @Input() path;
   @Input() currentDescriptor;
 
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToDescriptor();

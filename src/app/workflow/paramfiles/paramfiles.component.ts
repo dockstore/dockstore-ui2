@@ -22,6 +22,7 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
 import { WorkflowService } from '../../shared/workflow.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -31,8 +32,7 @@ import { WorkflowService } from '../../shared/workflow.service';
 export class ParamfilesWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
   @Input() id: number;
   @Input() entrypath: string;
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  @Input() set selectedVersion(value: WorkflowVersion) {
     this.clearContent();
     this.onVersionChange(value);
   }

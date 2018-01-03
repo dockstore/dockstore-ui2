@@ -19,6 +19,7 @@ import { Files } from '../../shared/files';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import {Subscription} from 'rxjs/Subscription';
 import { WorkflowService } from '../../shared/workflow.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-files-workflow',
@@ -26,7 +27,7 @@ import { WorkflowService } from '../../shared/workflow.service';
   styleUrls: ['./files.component.css']
 })
 export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
-  @Input() selectedVersion;
+  @Input() selectedVersion: WorkflowVersion;
   versionsWithParamfiles: Array<any>;
   constructor(private paramfilesService: ParamfilesService) {
     super();

@@ -33,8 +33,8 @@ export class DagComponent implements OnInit, AfterViewChecked {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
       this.onChange();

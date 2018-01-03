@@ -24,6 +24,7 @@ import { WorkflowService } from '../../shared/workflow.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -33,8 +34,7 @@ import { FileService } from '../../shared/file.service';
 export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
   @Input() id: number;
   @Input() entrypath: string;
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
   }
 

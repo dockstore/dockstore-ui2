@@ -24,6 +24,7 @@ import { ContainerService } from './../../shared/container.service';
 import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-versions-container',
@@ -33,8 +34,8 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
-  versionTag: any;
-  @Input() set selectedVersion(value: any) {
+  versionTag: Tag;
+  @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this.versionTag = value;
     }

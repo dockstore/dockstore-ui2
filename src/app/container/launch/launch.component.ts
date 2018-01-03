@@ -20,6 +20,8 @@ import { Component, Input } from '@angular/core';
 import { ToolLaunchService } from './tool-launch.service';
 import { ContainerService } from '../../shared/container.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { Tag } from './../../shared/swagger/model/tag';
+import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
 
 @Component({
   selector: 'app-launch',
@@ -31,8 +33,8 @@ export class LaunchComponent {
   @Input() path;
   @Input() toolname;
 
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  _selectedVersion: Tag;
+  @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToDescriptor();
@@ -44,8 +46,8 @@ export class LaunchComponent {
   cli: string;
   cwl: string;
   consonance: string;
-  descriptors: Array<any>;
-  validDescriptors: Array<any>;
+  descriptors: Array<DescriptorLanguageBean>;
+  validDescriptors: Array<DescriptorLanguageBean>;
   currentDescriptor: string;
 
   constructor(private launchService: ToolLaunchService,
@@ -57,7 +59,8 @@ export class LaunchComponent {
     });
   }
 
-  filterDescriptors(descriptors: Array<any>, version: any): Array<any> {
+  // Returns an array of descriptors that are valid for the given tool version
+  filterDescriptors(descriptors: Array<DescriptorLanguageBean>, version: Tag): Array<DescriptorLanguageBean> {
     const newDescriptors = [];
 
     // Return empty array if no descriptors present yet
@@ -70,9 +73,9 @@ export class LaunchComponent {
     let hasWdl = false;
 
     for (const sourceFile of version.sourceFiles) {
-      if (sourceFile.type === 'DOCKSTORE_CWL') {
+      if (sourceFile.type.toString() === 'DOCKSTORE_CWL') {
         hasCwl = true;
-      } else if (sourceFile.type === 'DOCKSTORE_WDL') {
+      } else if (sourceFile.type.toString() === 'DOCKSTORE_WDL') {
         hasWdl = true;
       }
     }

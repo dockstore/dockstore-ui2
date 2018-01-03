@@ -22,6 +22,7 @@ import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { Component, OnInit, Input } from '@angular/core';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-info-tab',
@@ -31,7 +32,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
-  @Input() selectedVersion;
+  @Input() selectedVersion: WorkflowVersion;
   public validationPatterns = validationPatterns;
   public WorkflowType = Workflow;
   public tooltip = Tooltip;

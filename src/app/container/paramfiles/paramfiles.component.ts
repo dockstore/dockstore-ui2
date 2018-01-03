@@ -25,6 +25,7 @@ import { ParamfilesService } from './paramfiles.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -35,7 +36,7 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
 
   @Input() id: number;
   @Input() entrypath: string;
-  @Input() set selectedVersion(value: any) {
+  @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
   }
