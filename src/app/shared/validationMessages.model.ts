@@ -55,7 +55,7 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Descriptor Path is too short. (Min. 3 characters.)',
     'maxlength': 'Descriptor Path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Descriptor Path format. Descriptor Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', or\'*.yaml\'.'
+    'pattern': 'Invalid Descriptor Path format. Descriptor Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', or \'*.yaml\'.'
   },
   'wdlPath': {
     'required': 'This field cannot be empty.',
@@ -120,12 +120,12 @@ export const validationMessages = {
     'minlength': 'Git reference is too short. (Min. 3 characters.)',
     'maxlength': 'Git reference is too long. (Max 128 characters.)',
     'pattern': 'Invalid Git Reference format. ' +
-    'An Git Reference path may only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
+    'A Git Reference path may only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
   },
   'versionTag': {
     'required': 'This field cannot be empty.',
-    'maxlength': 'Tag Name is too long. (Max 128 characters.)',
-    'pattern': 'A Tag Name may only consist of alphanumeric characters and internal hyphens, periods and underscores.'
+    'maxlength': 'Version Tag is too long. (Max 128 characters.)',
+    'pattern': 'A Version Tag may only consist of alphanumeric characters, internal hyphens, periods and underscores.'
   },
   'workflow_path': {
     'required': 'This field cannot be empty.',
