@@ -27,10 +27,22 @@ export abstract class LaunchService {
         return `$ consonance run --tool-dockstore-id ${path}:${versionName} ` +
             '--run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
     }
-    getAltCwlString1(path: string, versionName: string) {
+
+    /**
+     * This creates the Dockstore-supported cwltool launch command
+     * @param path The GA4GH Tool's path
+     * @param versionName The ToolVersion's name
+     */
+    getDockstoreSupportedCwlLaunchString(path: string, versionName: string) {
         return `$ cwltool --non-strict ${path}:${versionName} Dockstore.json`;
     }
-    getAltCwlString2(path: string, versionName: string) {
+
+    /**
+     * This creates the Dockstore-supported cwltool make-template command
+     * @param path The GA4GH Tool's path
+     * @param versionName The ToolVersion's name
+     */
+    getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string) {
         return `$ cwltool --make-template ${path}:${versionName} > input.yaml`;
     }
 }

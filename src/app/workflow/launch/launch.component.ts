@@ -40,8 +40,8 @@ export class LaunchWorkflowComponent {
   params: string;
   cli: string;
   cwl: string;
-  altCwl1: string;
-  altCwl2: string;
+  dockstoreSupportedCwlLaunch: string;
+  dockstoreSupportedCwlMakeTemplate: string;
   consonance: string;
 
   descriptors: Array<any>;
@@ -58,8 +58,8 @@ export class LaunchWorkflowComponent {
     this.params = this.launchService.getParamsString(workflowPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(workflowPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName);
-    this.altCwl1 = this.launchService.getAltCwlString1(workflowPath, versionName);
-    this.altCwl2 = this.launchService.getAltCwlString2(workflowPath, versionName);
+    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
+    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
   }
 }
