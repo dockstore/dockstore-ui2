@@ -28,10 +28,10 @@
       Run locally with the Dockstore CLI
       <pre>{{ cli }}</pre>
     </div>
-    <div *ngIf="currentDescriptor === 'cwl'">
-      <div class="well well-sm" tooltip="Commands for launching tools through CWLtool: the CWL reference implementation.
-      cwltool can run a tool directly when all inputs and outputs are available on the local filesystem.">
-        Alternatively, cwltool can run a workflow directly when all inputs and outputs are available on the local filesystem
+    <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
+      <div class="well well-sm" tooltip="Commands for launching tools through cwl-runner: the CWL reference implementation.
+      cwl-runner can run a tool directly when all inputs and outputs are available on the local filesystem.">
+        Alternatively, cwl-runner can run a workflow directly when all inputs and outputs are available on the local filesystem
         <pre>{{ cwl }}</pre>
       </div>
     </div>
