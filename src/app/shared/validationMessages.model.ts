@@ -76,8 +76,7 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Source Code Repository Path is too short. (Min. 3 characters.)',
     'maxlength': 'Source Code Repository Path is too long. (Max 128 characters.)',
-    'pattern': 'The namespace and name of the Git repository, separated by a \'/\'. ' +
-    'Currently, only GitHub, Bitbucket and GitLab are supported third-party platforms.'
+    'pattern': 'The namespace and name of the Git repository, separated by a \'/\'. '
   },
   'imagePath': {
     'required': 'This field cannot be empty.',
