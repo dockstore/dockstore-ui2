@@ -77,6 +77,8 @@ describe('Service: paramFiles.service.ts', () => {
         }));
     it('should have not error on getDescriptorLanguageKeys()',
         inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
-            service.getDescriptorLanguageKeys();
+            const descriptorLanguageKeys: Array<String> = service.getDescriptorLanguageKeys();
+            expect(descriptorLanguageKeys.includes('CWL'));
+            expect(descriptorLanguageKeys.includes('WDL'));
         }));
 });
