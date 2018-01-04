@@ -41,7 +41,7 @@ export const validationPatterns = {
   'imagePath': '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'toolName': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
   'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
-  'versionTag': '^[a-zA-Z0-9]+([-_\.][a-zA-Z0-9]+)*$',
+  'versionTag': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
   'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
   'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
@@ -67,7 +67,8 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Dockerfile Path is too short. (Min. 3 characters.)',
     'maxlength': 'Dockerfile Path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Dockerfile Path format. Dockerfile Path must begin with \'/\' and end with \'/Dockerfile\'.'
+    'pattern': 'Invalid Dockerfile Path format. Dockerfile Path must begin with \'/\' and end with \'Dockerfile\'. ' +
+                'Optionally you can use a string as a prefix or a suffix to \'Dockerfile\', as long as they are separated by a \'.\'.'
   },
   'gitPath': {
     'required': 'This field cannot be empty.',

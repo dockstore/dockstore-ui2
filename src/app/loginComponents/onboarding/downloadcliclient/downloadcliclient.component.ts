@@ -74,7 +74,7 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 `;
     this.textData3 = `
 #### Part 3
-If you want to launch CWL tools and workflows, Dockstore relies upon [cwltool](https://github.com/common-workflow-language/cwltool) being available on your PATH.  This will require [pip](https://pip.pypa.io/en/latest/installing/)" if it is not already installed.
+If you want to launch CWL tools and workflows, Dockstore relies upon [cwltool](https://github.com/common-workflow-language/cwltool) being available on your PATH.  This will require [pip](https://pip.pypa.io/en/latest/installing/) if it is not already installed.
 
 You can install the version of cwltool that we've tested for use with Dockstore using the following commands:
 1. Run this to verify that pip has been installed \`pip --version\`
