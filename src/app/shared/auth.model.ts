@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
 import { CustomConfig } from 'ng2-ui-auth';
 
 import { Dockstore } from '../shared/dockstore.model';
@@ -24,7 +23,8 @@ export class AuthConfig extends CustomConfig {
   providers = {
     github: {
       url: Dockstore.API_URI + '/auth/tokens/github',
-      clientId: Dockstore.GITHUB_CLIENT_ID
+      clientId: Dockstore.GITHUB_CLIENT_ID,
+      scope: Dockstore.GITHUB_SCOPE
     }
   };
 }
