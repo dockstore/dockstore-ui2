@@ -48,7 +48,11 @@ describe('LaunchService', () => {
             .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor Dockstore.json');
     }));
     it('should getConsonanceString', inject([ToolLaunchService], (service: ToolLaunchService) => {
-        expect(service.getConsonanceString('a/b', 'latest')).toContain(
-            'consonance run --tool-dockstore-id a/b:latest --run-descriptor Dockstore.json --flavour <AWS instance-type>');
+        expect(service.getAltCwlString1('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
+            'cwltool --non-strict quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 Dockstore.json');
+    }));
+    it('should getAlternateStrings', inject([ToolLaunchService], (service: ToolLaunchService) => {
+        expect(service.getAltCwlString2('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
+            'cwltool --make-template quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 > input.yaml');
     }));
 });
