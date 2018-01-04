@@ -124,4 +124,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     }
   }
   // Validation ends here
+
+  // Checks if the currently edited test parameter file already exists
+  hasDuplicateTestJson() {
+    if (this.testParameterFilePaths.includes(this.testParameterFilePath)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

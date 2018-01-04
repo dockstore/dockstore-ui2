@@ -120,6 +120,14 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       this.tool.tags = response;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
+      // Store the unsaved test files if valid and exist
+      if (this.unsavedTestCWLFile.length > 0) {
+        this.addTestParameterFile(DescriptorType.CWL);
+      }
+      if (this.unsavedTestWDLFile.length > 0) {
+        this.addTestParameterFile(DescriptorType.WDL);
+      }
+
       this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, null, tagName, 'CWL').subscribe();
       this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, null, tagName, 'WDL').subscribe();
       this.containerService.setTool(this.tool);
@@ -159,4 +167,23 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     }
   }
   // Validation ends here
+  // Checks if the currently edited test parameter file already exists
+  // TODO: This code is repeated in version-modal.component.ts for tools, move it somewhere common
+  hasDuplicateTestJson(type) {
+    if (type === 'cwl') {
+      if (this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (type === 'wdl') {
+      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }
