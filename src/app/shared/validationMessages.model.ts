@@ -29,7 +29,8 @@ export const formErrors = {
   'reference': '',
   'versionTag': '',
   'workflow_path': '',
-  'workflowName': ''
+  'workflowName': '',
+  'customDockerRegistryPath': ''
 };
 
 export const validationPatterns = {
@@ -47,7 +48,9 @@ export const validationPatterns = {
   'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   'cwlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
-  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$'
+  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
+  'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$'
 };
 
 export const validationMessages = {
@@ -81,11 +84,11 @@ export const validationMessages = {
     'minlength': 'Image Path is too short. (Min. 3 characters.)',
     'maxlength': 'Image Path is too long. (Max 128 characters.)',
     'pattern': 'The namespace and name of the image repository, separated by a \'/\'. ' +
-    'Use \'_\' for an empty namespace. Currently, only Quay.io and Docker Hub are supported third-party platforms.'
+    'Use \'_\' for an empty namespace.'
   },
   'label': {
     'maxlength': 'Labels string is too long. (Max 512 characters.)',
-    'pattern': 'Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.'
+    'pattern': 'Labels are comma-delimited, and may only consist of alphanumerical characters and internal hyphens.'
   },
   'cwlTestParameterFilePath': {
     'required': 'This field cannot be empty.',
@@ -110,7 +113,7 @@ export const validationMessages = {
   },
   'toolName': {
     'maxlength': 'Tool Name is too long. (Max 256 characters.)',
-    'pattern': 'A Tool Name may only consist of alphanumeric characters and internal underscores or hyphens.'
+    'pattern': 'A Tool Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
   },
   'email': {
     'maxlength': 'Email is too long. (Max 256 characters.)'
@@ -125,7 +128,7 @@ export const validationMessages = {
   'versionTag': {
     'required': 'This field cannot be empty.',
     'maxlength': 'Version Tag is too long. (Max 128 characters.)',
-    'pattern': 'A Version Tag may only consist of alphanumeric characters, internal hyphens, periods and underscores.'
+    'pattern': 'A Version Tag may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
   },
   'workflow_path': {
     'required': 'This field cannot be empty.',
@@ -136,6 +139,10 @@ export const validationMessages = {
   },
   'workflowName': {
     'maxlength': 'Workflow Name is too long. (Max 256 characters.)',
-    'pattern': 'A Workflow Name may only consist of alphanumeric characters and internal underscores or hyphens.'
+    'pattern': 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
+  },
+  'customDockerRegistryPath': {
+    'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
+    'pattern': 'A custom docker registry path may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
   }
 };
