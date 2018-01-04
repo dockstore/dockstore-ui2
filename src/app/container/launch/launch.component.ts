@@ -45,6 +45,8 @@ export class LaunchComponent {
   params: string;
   cli: string;
   cwl: string;
+  altCwl1: string;
+  altCwl2: string;
   consonance: string;
   descriptors: Array<DescriptorLanguageBean>;
   validDescriptors: Array<DescriptorLanguageBean>;
@@ -107,6 +109,8 @@ export class LaunchComponent {
     this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(toolPath, versionName);
+    this.altCwl1 = this.launchService.getAltCwlString1(toolPath, versionName);
+    this.altCwl2 = this.launchService.getAltCwlString2(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
   }
 

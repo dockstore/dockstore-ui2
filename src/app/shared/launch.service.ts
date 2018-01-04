@@ -27,4 +27,10 @@ export abstract class LaunchService {
         return `$ consonance run --tool-dockstore-id ${path}:${versionName} ` +
             '--run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
     }
+    getAltCwlString1(path: string, versionName: string) {
+        return `$ cwltool --non-strict ${path}:${versionName} Dockstore.json`;
+    }
+    getAltCwlString2(path: string, versionName: string) {
+        return `$ cwltool --make-template ${path}:${versionName} > input.yaml`;
+    }
 }
