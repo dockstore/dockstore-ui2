@@ -142,6 +142,7 @@ export const validationMessages = {
   },
   'customDockerRegistryPath': {
     'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
-    'pattern': 'A custom docker registry path may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
+    'pattern': 'A custom docker registry path may only consist of ' +
+    'alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
   }
 };
