@@ -41,7 +41,9 @@ describe('LaunchService', () => {
 
   it('should getCWLString', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service.getCwlString('a/b', 'c'))
-      .toContain('cwltool --non-strict');
+      .toContain('cwl-runner');
+    expect(service.getCwlString('a/b', 'c'))
+      .not.toContain('non-strict');
     expect(service.getCwlString('a/b', 'c'))
       .toContain('api/ga4gh/v1/tools/%23workflow%2Fa%2Fb/versions/c/plain-CWL/descriptor Dockstore.json');
   }));
