@@ -49,4 +49,6 @@ export class Dockstore {
   static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
   static readonly GITLAB_CLIENT_ID = 'fill_this_in';
   static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
+
+  static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 }

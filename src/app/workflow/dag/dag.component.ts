@@ -1,14 +1,14 @@
 /*
  *    Copyright 2017 OICR
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    Licensed under the Apache License, Version 2.0 (the 'License');
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
  *
  *        http://www.apache.org/licenses/LICENSE-2.0
  *
  *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    distributed under the License is distributed on an 'AS IS' BASIS,
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
@@ -34,6 +34,7 @@ export class DagComponent implements OnInit, AfterViewChecked {
   @Input() defaultVersion: any;
   @Input() id: number;
   _selectedVersion: WorkflowVersion;
+  @Input() theWorkflow: any;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
@@ -54,9 +55,21 @@ export class DagComponent implements OnInit, AfterViewChecked {
   private tooltip: string;
   public missingTool;
   private refresh = false;
+
+  public dagType: 'classic' | 'cwlviewer' = 'classic';
+  public enableCwlViewer = false;
+  public refreshCounter = 1;
+  public cwlViewerError: boolean;
+
   setDagResult(dagResult: any) {
     this.dagResult = dagResult;
   }
+
+  reset() {
+    this.refreshCounter++;
+    this.refreshDocument();
+  }
+
   refreshDocument() {
     const self = this;
     if (this.dagResult) {
@@ -190,7 +203,6 @@ export class DagComponent implements OnInit, AfterViewChecked {
   download() {
     if (this.cy) {
       const pngDAG = this.cy.png({ full: true, scale: 2 });
-      const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
       $('#exportLink').attr('href', pngDAG).attr('download', name);
     }
   }
