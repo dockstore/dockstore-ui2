@@ -188,7 +188,7 @@ export class ContainerComponent extends Entry {
       this.containersService.publish(this.tool.id, request).subscribe(
         response => this.tool.is_published = response.is_published, err => {
           this.published = !this.published;
-          this.refreshService.handleError('Publish error', err);
+          this.refreshService.handleError('publish error', err);
         });
     }
   }
