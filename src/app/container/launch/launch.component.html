@@ -38,10 +38,11 @@
       <pre>{{ cli }}</pre>
     </div>
     <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
-      <div class="well well-sm" tooltip="Commands for launching tools through cwl-runner: the CWL reference implementation.
-      cwl-runner can run a tool directly when all inputs and outputs are available on the local filesystem.">
-        <a href="https://github.com/common-workflow-language/cwltool">Run locally with cwl-runner</a>
+      <div class="well well-sm" tooltip="Commands for launching tools through cwl-runner when all inputs and outputs are available on the local filesystem.">
+        <a href="https://github.com/common-workflow-language/cwltool">Run locally with cwl-runner (you can use '--non-strict' when the executor is cwltool)</a>
         <pre>{{ cwl }}</pre>
+        </div>
+        <div class="well well-sm" tooltip="Commands for launching tools through CWLtool: the CWL reference implementation.">
         Alternatively, cwltool can run a tool off of dockstore.org when all inputs and outputs are available on the local filesystem or via HTTP(S):
         <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
         cwltool can also be used to create the input template:
