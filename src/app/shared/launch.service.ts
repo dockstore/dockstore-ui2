@@ -34,7 +34,7 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getDockstoreSupportedCwlLaunchString(path: string, versionName: string) {
-        return `$ cwltool --non-strict ${path}:${versionName} Dockstore.json`;
+        return `$ cwltool ${path}:${versionName} Dockstore.json`;
     }
 
     /**

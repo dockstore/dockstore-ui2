@@ -51,7 +51,7 @@ describe('LaunchService', () => {
     }));
     it('should getConsonanceString', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service.getDockstoreSupportedCwlLaunchString('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
-            'cwltool --non-strict quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 Dockstore.json');
+            'cwltool quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 Dockstore.json');
     }));
     it('should getAlternateStrings', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service.getDockstoreSupportedCwlMakeTemplateString('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
