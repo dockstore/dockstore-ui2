@@ -51,7 +51,9 @@ export class LaunchComponent {
   descriptors: Array<DescriptorLanguageBean>;
   validDescriptors: Array<DescriptorLanguageBean>;
   currentDescriptor: string;
-
+  cwlrunnerDescription = this.launchService.cwlrunnerDescription;
+  cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
+  cwltoolTooltip = this.launchService.cwltoolTooltip;
   constructor(private launchService: ToolLaunchService,
               private toolDescriptorService: ToolDescriptorService,
               private metadataService: MetadataService) {

@@ -19,6 +19,13 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export abstract class LaunchService {
     protected static readonly descriptorWdl = ' --descriptor wdl';
+    public readonly cwlrunnerDescription =
+    'Run locally with cwl-runner when all inputs and outputs are available on the local filesystem';
+    public readonly nonStrict =
+    'You can use \'--non-strict\' when the executor is cwltool for lenient validation (ignore unrecognized fields)';
+    public readonly cwlrunnerTooltip = 'Commands for launching tools/workflows through cwl-runner. ' + this.nonStrict;
+    public readonly cwltoolTooltip = 'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' +
+    this.nonStrict;
     constructor() { }
     abstract getParamsString(path: string, versionName: string, currentDescriptor: string);
     abstract getCliString(path: string, versionName: string, currentDescriptor: string);

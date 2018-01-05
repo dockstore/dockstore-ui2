@@ -43,9 +43,10 @@ export class LaunchWorkflowComponent {
   dockstoreSupportedCwlLaunch: string;
   dockstoreSupportedCwlMakeTemplate: string;
   consonance: string;
-
   descriptors: Array<any>;
-
+  cwlrunnerDescription = this.launchService.cwlrunnerDescription;
+  cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
+  cwltoolTooltip = this.launchService.cwltoolTooltip;
   constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
   }
   getDescriptors(): any {
