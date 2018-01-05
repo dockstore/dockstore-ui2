@@ -16,6 +16,6 @@ else
   ng lint
   ng build --progress false
   ng serve --silent &
-  ng test --watch=false --code-coverage
+  ng test --watch=false --code-coverage --browsers ChromeHeadless
   cypress run --record --config defaultCommandTimeout=10000
 fi
