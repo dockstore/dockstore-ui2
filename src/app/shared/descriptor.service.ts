@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { SourceFile } from './swagger/model/sourceFile';
+import { SourceFile } from './swagger';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
@@ -32,6 +32,9 @@ export abstract class DescriptorService {
             observable = this.getCwlFiles(id, versionName);
         } else if (descriptor === 'wdl') {
             observable = this.getWdlFiles(id, versionName);
+        } else if (descriptor === 'nextflow') {
+          // TODO here on Monday
+          observable = this.getWdlFiles(id, versionName);
         }
         return observable.map(filesArray => {
             const files = [];
@@ -67,13 +70,15 @@ export abstract class DescriptorService {
      */
     getDescriptors(version) {
         if (version) {
-            const descriptorTypes = new Array();
+            const descriptorTypes = [];
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
             unique.forEach(element => {
                 if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
                     descriptorTypes.push('cwl');
                 } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
                     descriptorTypes.push('wdl');
+                } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
+                    descriptorTypes.push('nextflow');
                 }
             });
             return descriptorTypes;

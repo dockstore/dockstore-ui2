@@ -25,6 +25,7 @@ constructor(private workflowsService: WorkflowsService) {
   }
 
   protected getCwl(id: number, versionName: string) {
+      this.workflowsService.getPublishedWorkflow(id)
       return this.workflowsService.cwl(id, versionName);
   }
 

@@ -44,7 +44,7 @@ export const validationPatterns = {
   'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   'versionTag': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
-  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
+  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml|config)',
   'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   'cwlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
