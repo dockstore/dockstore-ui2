@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
-import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
-import { GA4GHStubService } from './../test/service-stubs';
+import { GA4GHV2Service } from '../shared/swagger/api/gA4GHV2.service';
+import { GA4GHStubService } from '../test/service-stubs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FooterComponent } from './footer.component';
@@ -27,7 +27,7 @@ describe('FooterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FooterComponent ],
-      providers: [ {provide: GA4GHService, useClass: GA4GHStubService}]
+      providers: [ {provide: GA4GHV2Service, useClass: GA4GHStubService}]
     })
     .compileComponents();
   }));

@@ -15,12 +15,12 @@ import { HttpErrorResponse } from '@angular/common/http';
  *    limitations under the License.
  */
 
-import { Dockstore } from './../shared/dockstore.model';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { Dockstore } from '../shared/dockstore.model';
+import {Metadata, MetadataV2} from '../shared/swagger';
 import { Component, OnInit } from '@angular/core';
 
 import { versions } from './versions';
-import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
+import { GA4GHV2Service } from '../shared/swagger/api/gA4GHV2.service';
 
 @Component({
   selector: 'app-footer',
@@ -33,12 +33,12 @@ export class FooterComponent implements OnInit {
   public prod = true;
   public UI1_WEBSITE = Dockstore.HOSTNAME + ':' + '9000';
 
-  constructor(private gA4GHService: GA4GHService) { }
+  constructor(private gA4GHService: GA4GHV2Service) { }
 
   ngOnInit() {
     this.gA4GHService.metadataGet()
       .subscribe(
-        (metadata: Metadata) => {
+        (metadata: MetadataV2) => {
           if (metadata.hasOwnProperty('version')) {
             this.version = metadata['version'];
             this.tag = versions.tag;

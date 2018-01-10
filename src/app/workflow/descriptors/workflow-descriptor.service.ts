@@ -25,7 +25,7 @@ constructor(private workflowsService: WorkflowsService) {
   }
 
   protected getCwl(id: number, versionName: string) {
-      this.workflowsService.getPublishedWorkflow(id)
+      this.workflowsService.getPublishedWorkflow(id);
       return this.workflowsService.cwl(id, versionName);
   }
 
@@ -39,5 +39,13 @@ constructor(private workflowsService: WorkflowsService) {
 
   protected getSecondaryWdl(id: number, versionName: string) {
       return this.workflowsService.secondaryWdl(id, versionName);
+  }
+
+  protected getSecondaryNextFlow(id: number, versionName: string) {
+      return this.workflowsService.secondaryNextflow(id, versionName);
+  }
+
+  protected getNextFlow(id: number, versionName: string) {
+      return this.workflowsService.nextflow(id, versionName);
   }
 }

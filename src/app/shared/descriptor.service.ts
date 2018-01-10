@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import { SourceFile } from './swagger';
-import { Observable } from 'rxjs/Observable';
-import { Injectable } from '@angular/core';
+import {SourceFile} from './swagger';
+import {Observable} from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export abstract class DescriptorService {
@@ -26,6 +26,8 @@ export abstract class DescriptorService {
     protected abstract getWdl(id: number, versionName: string);
     protected abstract getSecondaryCwl(id: number, versionName: string);
     protected abstract getCwl(id: number, versionName: string);
+    protected abstract getSecondaryNextFlow(id: number, versionName: string);
+    protected abstract getNextFlow(id: number, versionName: string);
     getFiles(id: number, versionName: string, descriptor: string) {
         let observable;
         if (descriptor === 'cwl') {
@@ -33,8 +35,7 @@ export abstract class DescriptorService {
         } else if (descriptor === 'wdl') {
             observable = this.getWdlFiles(id, versionName);
         } else if (descriptor === 'nextflow') {
-          // TODO here on Monday
-          observable = this.getWdlFiles(id, versionName);
+            observable = this.getNextflowFiles(id, versionName);
         }
         return observable.map(filesArray => {
             const files = [];
@@ -58,6 +59,13 @@ export abstract class DescriptorService {
             this.getWdl(id, versionName),
             this.getSecondaryWdl(id, versionName)
         );
+    }
+
+    private getNextflowFiles(id: number, versionName: string) {
+      return Observable.zip(
+        this.getNextFlow(id, versionName),
+        this.getSecondaryNextFlow(id, versionName)
+      );
     }
 
 
