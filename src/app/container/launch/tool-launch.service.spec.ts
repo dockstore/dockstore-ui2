@@ -41,14 +41,20 @@ describe('LaunchService', () => {
 
     it('should getCWLString', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service.getCwlString('quay.io/a/b', 'c'))
-            .toContain('cwltool --non-strict');
+            .toContain('cwl-runner');
+        expect(service.getCwlString('quay.io/a/b', 'c'))
+            .not.toContain('non-strict');
         expect(service.getCwlString('quay.io/a/b', 'c'))
             .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb/versions/c/plain-CWL/descriptor Dockstore.json');
         expect(service.getCwlString('quay.io/a/b/d', 'c'))
             .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor Dockstore.json');
     }));
     it('should getConsonanceString', inject([ToolLaunchService], (service: ToolLaunchService) => {
-        expect(service.getConsonanceString('a/b', 'latest')).toContain(
-            'consonance run --tool-dockstore-id a/b:latest --run-descriptor Dockstore.json --flavour <AWS instance-type>');
+        expect(service.getDockstoreSupportedCwlLaunchString('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
+            'cwltool quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 Dockstore.json');
+    }));
+    it('should getAlternateStrings', inject([ToolLaunchService], (service: ToolLaunchService) => {
+        expect(service.getDockstoreSupportedCwlMakeTemplateString('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
+            'cwltool --make-template quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 > input.yaml');
     }));
 });

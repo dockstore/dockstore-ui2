@@ -23,6 +23,8 @@
           to populate the Info tab including 'Launch With'">
             Version
           </label>
+          <a *ngIf="!publicPage" href="http://docs.dockstore.org/faq/#what-is-a-default-version-of-a-tool-or-workflow"
+             target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('name')" (click)="clickSortColumn('name')">
           </span>
         </th>
