@@ -45,11 +45,15 @@ export class LaunchComponent {
   params: string;
   cli: string;
   cwl: string;
+  dockstoreSupportedCwlLaunch: string;
+  dockstoreSupportedCwlMakeTemplate: string;
   consonance: string;
   descriptors: Array<DescriptorLanguageBean>;
   validDescriptors: Array<DescriptorLanguageBean>;
   currentDescriptor: string;
-
+  cwlrunnerDescription = this.launchService.cwlrunnerDescription;
+  cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
+  cwltoolTooltip = this.launchService.cwltoolTooltip;
   constructor(private launchService: ToolLaunchService,
               private toolDescriptorService: ToolDescriptorService,
               private metadataService: MetadataService) {
@@ -107,6 +111,8 @@ export class LaunchComponent {
     this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(toolPath, versionName);
+    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(toolPath, versionName);
+    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
   }
 

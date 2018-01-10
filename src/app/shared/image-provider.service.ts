@@ -81,7 +81,6 @@ export class ImageProviderService {
     this.containersService.getDockerRegistries()
     .subscribe(registryList => {
       this.dockerRegistryList = registryList;
-      console.log('finally gotten');
       localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
     });
   }

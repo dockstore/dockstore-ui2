@@ -10,6 +10,7 @@ jdk:
 env:
   global:
     - WEBSERVICE_VERSION="1.4.0-alpha.5"
+
   matrix:
     - RUN_PROD=false
     - RUN_PROD=true
