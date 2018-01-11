@@ -16,7 +16,6 @@
 
 import { Workflow } from './../shared/swagger/model/workflow';
 import { MyWorkflowsService } from './myworkflows.service';
-import { Tool } from './../shared/swagger/model/tool';
 import { TestBed, inject } from '@angular/core/testing';
 
 describe('MyWorkflowsService', () => {
