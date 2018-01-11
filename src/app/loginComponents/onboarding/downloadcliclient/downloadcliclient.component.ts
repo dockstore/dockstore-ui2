@@ -1,5 +1,4 @@
 // tslint:disable:max-line-length
-import { Metadata } from './../../../shared/swagger/model/metadata';
 import { GA4GHV2Service } from './../../../shared/swagger/api/gA4GHV2.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';

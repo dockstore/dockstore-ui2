@@ -15,7 +15,6 @@
  */
 
 import { DockstoreTool } from '../shared/swagger';
-import { Tool } from './../shared/swagger/model/tool';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { MytoolsService } from './mytools.service';
