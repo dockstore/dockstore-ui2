@@ -88,7 +88,7 @@ export class GA4GHStubService {
     metadataGet(): Observable<Metadata> {
         const metadata: Metadata = {
             version: '3',
-            apiversion: '3',
+            api_version: '3',
         };
         return Observable.of(metadata);
     }
