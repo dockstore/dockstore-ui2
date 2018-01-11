@@ -1,5 +1,5 @@
 import { MarkdownModule } from 'angular2-markdown/markdown';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
+import { GA4GHV2Service } from './../../../shared/swagger/api/gA4GHV2.service';
 import { AuthService } from 'ng2-ui-auth';
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
@@ -18,7 +18,7 @@ describe('DownloadCLIClientComponent', () => {
         RouterLinkStubDirective, RouterOutletStubComponent ],
       imports: [ClipboardModule, MarkdownModule.forRoot()],
       providers: [ {provide: AuthService, useClass: AuthStubService},
-      {provide: GA4GHService, useClass: GA4GHStubService}]
+      {provide: GA4GHV2Service, useClass: GA4GHStubService}]
     })
     .compileComponents();
   }));

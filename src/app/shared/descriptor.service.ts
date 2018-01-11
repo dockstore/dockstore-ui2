@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import { SourceFile } from './swagger/model/sourceFile';
-import { Observable } from 'rxjs/Observable';
-import { Injectable } from '@angular/core';
+import {SourceFile} from './swagger';
+import {Observable} from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export abstract class DescriptorService {
@@ -26,12 +26,16 @@ export abstract class DescriptorService {
     protected abstract getWdl(id: number, versionName: string);
     protected abstract getSecondaryCwl(id: number, versionName: string);
     protected abstract getCwl(id: number, versionName: string);
+    protected abstract getSecondaryNextFlow(id: number, versionName: string);
+    protected abstract getNextFlow(id: number, versionName: string);
     getFiles(id: number, versionName: string, descriptor: string) {
         let observable;
         if (descriptor === 'cwl') {
             observable = this.getCwlFiles(id, versionName);
         } else if (descriptor === 'wdl') {
             observable = this.getWdlFiles(id, versionName);
+        } else if (descriptor === 'nextflow') {
+            observable = this.getNextflowFiles(id, versionName);
         }
         return observable.map(filesArray => {
             const files = [];
@@ -57,6 +61,13 @@ export abstract class DescriptorService {
         );
     }
 
+    private getNextflowFiles(id: number, versionName: string) {
+      return Observable.zip(
+        this.getNextFlow(id, versionName),
+        this.getSecondaryNextFlow(id, versionName)
+      );
+    }
+
 
     /**
      * Gets the descriptor types (cwl and or wdl) that the version has a sourcefile of
@@ -67,13 +78,15 @@ export abstract class DescriptorService {
      */
     getDescriptors(version) {
         if (version) {
-            const descriptorTypes = new Array();
+            const descriptorTypes = [];
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
             unique.forEach(element => {
                 if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
                     descriptorTypes.push('cwl');
                 } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
                     descriptorTypes.push('wdl');
+                } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
+                    descriptorTypes.push('nextflow');
                 }
             });
             return descriptorTypes;

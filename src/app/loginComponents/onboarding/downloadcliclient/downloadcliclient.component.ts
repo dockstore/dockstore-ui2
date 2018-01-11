@@ -1,9 +1,9 @@
 // tslint:disable:max-line-length
-import { Metadata } from './../../../shared/swagger/model/metadata';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
+import { GA4GHV2Service } from './../../../shared/swagger/api/gA4GHV2.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
+import {MetadataV2} from '../../../shared/swagger';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -22,7 +22,7 @@ export class DownloadCLIClientComponent implements OnInit {
   public textData3 = '';
 
   constructor(private authService: AuthService,
-    private gA4GHService: GA4GHService) { }
+    private gA4GHService: GA4GHV2Service) { }
 
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -32,7 +32,7 @@ export class DownloadCLIClientComponent implements OnInit {
     this.isCopied2 = false;
     let apiVersion = 'unreachable';
     this.gA4GHService.metadataGet().subscribe(
-      (resultFromApi: Metadata) => {
+      (resultFromApi: MetadataV2) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
         this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;

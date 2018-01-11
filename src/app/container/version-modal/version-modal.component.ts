@@ -20,7 +20,7 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
 import { DateService } from './../../shared/date.service';
-import { ToolVersion } from './../../shared/swagger/model/toolVersion';
+import { ToolVersionV2 } from './../../shared/swagger/model/toolVersionV2';
 import { VersionModalService } from './version-modal.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
@@ -57,7 +57,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public unsavedTestWDLFile = '';
 
   public formErrors = formErrors;
-  private version: ToolVersion;
+  private version: ToolVersionV2;
   public validationPatterns = validationPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
