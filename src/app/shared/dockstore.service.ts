@@ -104,4 +104,12 @@ export class DockstoreService {
       return 'glyphicon-sort';
     }
   }
+
+  getRequestAccessEmail(tool_maintainer_email: string, email: string) {
+    if (!tool_maintainer_email) {
+      return this.stripMailTo(tool_maintainer_email);
+    } else {
+      return this.stripMailTo(email);
+    }
+  }
 }

@@ -96,6 +96,53 @@ export class ContainerComponent extends Entry {
     this.containerService.setCopyBtn(null);
   }
 
+  /**
+   * Compose the href for the Request Access button or Contact Author button
+   * @param privateTool true for Request Access button, false for Contact Author button
+   */
+  public composeEmail(privateTool: boolean): string {
+    let email: string;
+    let subject: string;
+    let body: string;
+    if (privateTool) {
+      email = this.getRequestEmailMailTo();
+      subject = this.getRequestEmailSubject();
+      body = this.getRequestEmailBody();
+    } else {
+      email = this.getInquiryEmailMailTo();
+      subject = this.getInquiryEmailSubject();
+      body = this.getInquiryEmailBody();
+    }
+    return `mailto:${email}?subject=${subject}&body=${body}`;
+  }
+
+  // Request Access button
+  private getRequestEmailMailTo(): string {
+    return this.dockstoreService.getRequestAccessEmail(this.tool.tool_maintainer_email, this.tool.email);
+  }
+
+  private getRequestEmailSubject(): string {
+    return encodeURI(`Dockstore Request for Access to ${this.tool.path}`);
+  }
+
+  private getRequestEmailBody(): string {
+    return encodeURI(`I would like to request access to your Docker image ${this.tool.path}. ` +
+    `My user name on ${this.tool.registry} is <username>`);
+  }
+
+  // Contact Author button
+  private getInquiryEmailMailTo(): string {
+    return this.tool.email;
+  }
+
+  private getInquiryEmailSubject(): string {
+    return encodeURI(`Dockstore ${this.tool.path} inquiry`);
+  }
+
+  private getInquiryEmailBody(): string {
+    return '';
+  }
+
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
