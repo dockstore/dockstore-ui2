@@ -1,3 +1,4 @@
+import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -148,7 +149,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     SearchService,
     PagenumberService,
     TwitterService,
-    ContainerService
+    ContainerService,
+    GA4GHService
   ],
   bootstrap: [ AppComponent ]
 })
