@@ -40,13 +40,13 @@ describe('LaunchService', () => {
     }));
 
     it('should getCWLString', inject([ToolLaunchService], (service: ToolLaunchService) => {
-        expect(service.getCwlString('quay.io/a/b', 'c'))
+        expect(service.getCwlString('quay.io/a/b', 'c', ''))
             .toContain('cwl-runner');
-        expect(service.getCwlString('quay.io/a/b', 'c'))
+        expect(service.getCwlString('quay.io/a/b', 'c', ''))
             .not.toContain('non-strict');
-        expect(service.getCwlString('quay.io/a/b', 'c'))
+        expect(service.getCwlString('quay.io/a/b', 'c', ''))
             .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb/versions/c/plain-CWL/descriptor Dockstore.json');
-        expect(service.getCwlString('quay.io/a/b/d', 'c'))
+        expect(service.getCwlString('quay.io/a/b/d', 'c', ''))
             .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor Dockstore.json');
     }));
     it('should getConsonanceString', inject([ToolLaunchService], (service: ToolLaunchService) => {

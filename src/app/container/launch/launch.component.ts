@@ -110,7 +110,7 @@ export class LaunchComponent {
   private changeMessages(toolPath: string, versionName: string) {
     this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
-    this.cwl = this.launchService.getCwlString(toolPath, versionName);
+    this.cwl = this.launchService.getCwlString(toolPath, versionName, '');
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(toolPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
