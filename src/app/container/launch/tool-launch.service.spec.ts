@@ -18,7 +18,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { ToolLaunchService } from './tool-launch.service';
 
-describe('LaunchService', () => {
+describe('ToolLaunchService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [ToolLaunchService]
@@ -40,14 +40,14 @@ describe('LaunchService', () => {
     }));
 
     it('should getCWLString', inject([ToolLaunchService], (service: ToolLaunchService) => {
-        expect(service.getCwlString('quay.io/a/b', 'c', ''))
+        expect(service.getCwlString('quay.io/a/b', 'c', '%2Fpotato'))
             .toContain('cwl-runner');
-        expect(service.getCwlString('quay.io/a/b', 'c', ''))
+        expect(service.getCwlString('quay.io/a/b', 'c', '%2Fpotato'))
             .not.toContain('non-strict');
-        expect(service.getCwlString('quay.io/a/b', 'c', ''))
-            .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb/versions/c/plain-CWL/descriptor Dockstore.json');
-        expect(service.getCwlString('quay.io/a/b/d', 'c', ''))
-            .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor Dockstore.json');
+        expect(service.getCwlString('quay.io/a/b', 'c', '%2Fpotato'))
+            .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json');
+        expect(service.getCwlString('quay.io/a/b/d', 'c', '%2Fpotato'))
+            .toContain('api/ga4gh/v1/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json');
     }));
     it('should getConsonanceString', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service.getDockstoreSupportedCwlLaunchString('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
