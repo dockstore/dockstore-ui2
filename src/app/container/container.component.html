@@ -13,7 +13,6 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div class="row" *ngIf="error || missingWarning">
   <div class="col-md-12" *ngIf="!isToolPublic">
     <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
@@ -35,7 +34,7 @@
         </a>
       </span>
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
-          <app-private-icon></app-private-icon>
+        <app-private-icon></app-private-icon>
       </span>
       {{ tool?.tool_path }}
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
@@ -52,7 +51,6 @@
         </select>
       </div>
     </div>
-
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
     </p>
@@ -67,7 +65,8 @@
     <h3>
       <div class="pull-right">
         <div class="btn-group" role="group">
-          <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="!thisisValid" btnCheckbox>
+          <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published"
+            [disabled]="!thisisValid" btnCheckbox>
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
           <button *ngIf="tool?.is_published" type="button" [disabled]="tool?.is_published" class="btn btn-danger">
@@ -78,6 +77,24 @@
         <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
           Refresh
         </button>
+      </div>
+    </h3>
+  </div>
+  <div class="col-md-4">
+    <h3 class="pull-right">
+      <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
+        <p>
+          <a [href]="requestAccessHREF">
+            Request Access
+          </a>
+        </p>
+      </div>
+      <div class="button contact-button" *ngIf="publicPage && tool?.email && !tool?.private_access">
+        <p>
+          <a [href]="contactAuthorHREF">
+            Contact Author
+          </a>
+        </p>
       </div>
     </h3>
   </div>
@@ -110,7 +127,8 @@
           <div *ngIf="labelsEditMode && !isToolPublic">
             <div class="form-group">
               <label>Tool Labels:</label>
-              <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+              <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
+                [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
             </div>
             <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
               <div [hidden]="!name.errors.maxlength">
@@ -148,7 +166,6 @@
         </div>
       </div>
     </div>
-
     <div class="panel panel-default" *ngIf="tool">
       <div class="panel-heading">
         <h3>Docker Pull Command</h3>
@@ -158,7 +175,7 @@
           <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
           <span class="input-group-btn">
             <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
-                    (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
+              (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
               <span class="glyphicon glyphicon-copy"></span>
             </button>
           </span>
@@ -222,7 +239,8 @@
       </div>
       <div class="panel-body">
         <div class="container-sharing">
-          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
+          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true"
+            (count)="sumCounts($event)">
           </share-buttons>
         </div>
       </div>
