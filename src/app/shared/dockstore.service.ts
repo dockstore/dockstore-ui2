@@ -106,7 +106,7 @@ export class DockstoreService {
   }
 
   getRequestAccessEmail(tool_maintainer_email: string, email: string) {
-    if (!tool_maintainer_email) {
+    if (tool_maintainer_email) {
       return this.stripMailTo(tool_maintainer_email);
     } else {
       return this.stripMailTo(email);

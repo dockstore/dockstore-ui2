@@ -84,14 +84,14 @@
     <h3 class="pull-right">
       <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
         <p>
-          <a [href]="composeEmail(true)">
+          <a [href]="requestAccessHREF">
             Request Access
           </a>
         </p>
       </div>
-      <div class="button contact-button" *ngIf="publicPage && tool?.email !== null && !tool?.private_access">
+      <div class="button contact-button" *ngIf="publicPage && tool?.email && !tool?.private_access">
         <p>
-          <a [href]="composeEmail(false)">
+          <a [href]="contactAuthorHREF">
             Contact Author
           </a>
         </p>
