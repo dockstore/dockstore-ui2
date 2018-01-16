@@ -17,7 +17,6 @@ import { StateService } from './../../shared/state.service';
  *    limitations under the License.
  */
 
-import { updatedWorkflow } from './../../test/mocked-objects';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -67,7 +66,9 @@ describe('VersionsWorkflowComponent', () => {
     component.publicPage = false;
     component.updateDefaultVersion('name');
     fixture.detectChanges();
-    workflowService.workflow$.subscribe(workflow => expect(workflow).toEqual(updatedWorkflow));
+    workflowService.workflow$.subscribe(workflow => {
+      expect(workflow).toEqual(jasmine.objectContaining({defaultVersion: 'name'}));
+  });
   });
 
   it('should get verified source', () => {
