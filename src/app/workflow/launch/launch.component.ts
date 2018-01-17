@@ -58,7 +58,7 @@ export class LaunchWorkflowComponent {
   private changeMessages(workflowPath: string, versionName: string) {
     this.params = this.launchService.getParamsString(workflowPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(workflowPath, versionName, this.currentDescriptor);
-    this.cwl = this.launchService.getCwlString(workflowPath, versionName);
+    this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
