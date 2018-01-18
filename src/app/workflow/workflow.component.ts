@@ -86,6 +86,10 @@ export class WorkflowComponent extends Entry {
     }
   }
 
+  getPath(workflow: Workflow): string {
+    return this.workflowService.getPath(workflow);
+  }
+
   setProperties() {
     const workflowRef: any = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
@@ -95,9 +99,9 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
-    if (workflowRef.path && workflowRef.descriptorType === 'wdl') {
+    if (this.getPath(workflowRef) && workflowRef.descriptorType === 'wdl') {
       const myParams = new URLSearchParams();
-      myParams.set('path', workflowRef.path);
+      myParams.set('path', this.getPath(workflowRef));
       myParams.set('descriptorType', workflowRef.descriptorType);
       this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
     }
@@ -114,7 +118,7 @@ export class WorkflowComponent extends Entry {
         this.providerService.setUpProvider(workflow);
       }
       this.workflow = Object.assign(workflow, this.workflow);
-      this.title = this.workflow.path;
+      this.title = this.getPath(this.workflow);
       this.initTool();
     }
   }

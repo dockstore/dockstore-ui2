@@ -26,6 +26,7 @@ import { PagenumberService } from '../../shared/pagenumber.service';
 import { WorkflowService } from '../../shared/workflow.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { PageInfo } from '../../shared/models/PageInfo';
+import { Workflow } from '../../shared/swagger/model/workflow';
 
 @Component({
   selector: 'app-list-workflows',
@@ -57,6 +58,10 @@ export class ListWorkflowsComponent extends ToolLister {
               private pagenumberService: PagenumberService,
               listService: ListService, providerService: ProviderService) {
     super(listService, providerService, 'workflows');
+  }
+
+  getPath(workflow: Workflow): string {
+    return this.workflowService.getPath(workflow);
   }
 
   sendWorkflowInfo(workflow) {

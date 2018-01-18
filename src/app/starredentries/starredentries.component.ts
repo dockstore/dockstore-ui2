@@ -6,6 +6,9 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { UserService } from '../loginComponents/user.service';
 import {Subscription} from 'rxjs/Subscription';
 import { StarentryService } from '../shared/starentry.service';
+import { Workflow } from '../shared/swagger/model/workflow';
+import { WorkflowService } from '../shared/workflow.service';
+
 @Component({
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
@@ -22,7 +25,9 @@ export class StarredEntriesComponent implements OnInit {
               private userService: UserService,
               private imageProviderService: ImageProviderService,
               private providerService: ProviderService,
-              private starentryService: StarentryService, private usersService: UsersService) { }
+              private starentryService: StarentryService,
+              private usersService: UsersService,
+              private workflowService: WorkflowService) { }
 
   ngOnInit() {
     this.entrySubscription = this.starentryService.starEntry$.subscribe(
@@ -70,5 +75,9 @@ export class StarredEntriesComponent implements OnInit {
 
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
+  }
+
+  getPath(workflow: Workflow): string {
+    return this.workflowService.getPath(workflow);
   }
 }

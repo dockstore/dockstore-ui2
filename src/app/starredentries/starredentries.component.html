@@ -62,7 +62,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="entry-heading">
-                  <a href="/workflows/{{workflow?.path}}"
+                  <a href="/workflows/{{getPath(workflow)}}"
                      tooltip="{{workflow?.repository + (workflow?.workflowName ? ' (' + workflow?.workflowName + ')' : '')}}">
                     {{workflow?.repository + (workflow?.workflowName ? ' (' + workflow?.workflowName + ')' : '')}}
                   </a>
