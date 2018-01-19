@@ -83,8 +83,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     this.stateService.setRefreshMessage(message + '...');
     this.workflowsService.updateWorkflow(this.workflowId, this.workflow).subscribe(
       response => {
-        this.workflowService.setWorkflow(response);
         this.refreshService.handleSuccess(message);
+        this.refreshService.refreshWorkflow();
       },
       error => this.refreshService.handleError(message, error));
   }

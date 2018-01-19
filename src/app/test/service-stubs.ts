@@ -255,7 +255,7 @@ export class HttpStubService {
 
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
-    workflow$: BehaviorSubject<any> = new BehaviorSubject({ sampleWorkflow1 }); // This is the selected workflow
+    workflow$: BehaviorSubject<any> = new BehaviorSubject({ }); // This is the selected workflow
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
