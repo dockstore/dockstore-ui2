@@ -15,10 +15,12 @@
  */
 
 import { Injectable } from '@angular/core';
+import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
+import { ContainerService } from '../shared/container.service';
 
 @Injectable()
 export class MytoolsService {
-  constructor() {
+  constructor(private containerService: ContainerService) {
   }
 
   getNSIndex(nsContainers: any[], namespace: string): number {
@@ -81,7 +83,7 @@ export class MytoolsService {
   sortNSContainers(tools: any[], username: string): any {
     const nsContainers = [];
     for (let i = 0; i < tools.length; i++) {
-      const prefix = tools[i].tool_path.split('/', 2).join('/');
+      const prefix = this.getPath(tools[i]).split('/', 2).join('/');
       let pos = this.getNSIndex(nsContainers, prefix);
       if (pos < 0) {
         nsContainers.push({
@@ -106,5 +108,9 @@ export class MytoolsService {
 
     /* Return Namespaces w/ Nested Containers */
     return this.sortNamespaces(nsContainers, username);
+  }
+
+  getPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
   }
 }

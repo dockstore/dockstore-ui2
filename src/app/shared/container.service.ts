@@ -84,7 +84,36 @@ export class ContainerService {
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';
-    }
+
   }
+
+}
+
+getRegistryPath(registryEnumName: DockstoreTool.RegistryEnum, tool: DockstoreTool) {
+  if (registryEnumName == DockstoreTool.RegistryEnum.QUAYIO) {
+    return "quay.io";
+  } else if (registryEnumName == DockstoreTool.RegistryEnum.DOCKERHUB) {
+    return "registry.hub.docker.com";
+  } else if (registryEnumName == DockstoreTool.RegistryEnum.GITLAB) {
+    return "gitlab.com";
+  } else if (registryEnumName == DockstoreTool.RegistryEnum.AMAZONECR) {
+    return tool.customDockerRegistryPath;
+  } else {
+    return null;
+  }
+}
+
+public getPath(tool: DockstoreTool): string {
+  if (tool != null && tool != undefined) {
+    let toolPath = this.getRegistryPath(tool.registry, tool) + '/' + tool.namespace + '/' + tool.name;
+    if (tool.toolname !== '' && tool.toolname !== undefined) {
+      toolPath += '/' + tool.toolname;
+    }
+
+    return toolPath;
+  } else {
+    return null;
+  }
+}
 
 }

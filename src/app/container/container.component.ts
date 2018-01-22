@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
+import { DockstoreTool } from '../shared/swagger/model/dockstoreTool'
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -100,10 +101,14 @@ export class ContainerComponent extends Entry {
     this.containerService.setCopyBtn(null);
   }
 
+  getPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
+  }
+
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.selectedVersion.name);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.getPath(this.tool), this.selectedVersion.name);
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -267,7 +272,7 @@ export class ContainerComponent extends Entry {
   }
 
   onTagChange(tag: Tag): void {
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.getPath(this.tool), tag.name);
   }
 
 }

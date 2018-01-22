@@ -285,4 +285,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       return false;
     }
   }
+
+  getPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
+  }
 }

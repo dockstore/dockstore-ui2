@@ -8,6 +8,8 @@ import {Subscription} from 'rxjs/Subscription';
 import { StarentryService } from '../shared/starentry.service';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowService } from '../shared/workflow.service';
+import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
+import { ContainerService } from '../shared/container.service';
 
 @Component({
   selector: 'app-starredentries',
@@ -27,7 +29,8 @@ export class StarredEntriesComponent implements OnInit {
               private providerService: ProviderService,
               private starentryService: StarentryService,
               private usersService: UsersService,
-              private workflowService: WorkflowService) { }
+              private workflowService: WorkflowService,
+              private containerService: ContainerService) { }
 
   ngOnInit() {
     this.entrySubscription = this.starentryService.starEntry$.subscribe(
@@ -77,7 +80,11 @@ export class StarredEntriesComponent implements OnInit {
     this.starGazersClicked = !this.starGazersClicked;
   }
 
-  getPath(workflow: Workflow): string {
+  getWorkflowPath(workflow: Workflow): string {
     return this.workflowService.getPath(workflow);
+  }
+
+  getToolPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
   }
 }

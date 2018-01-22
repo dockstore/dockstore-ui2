@@ -24,7 +24,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="entry-heading">
-                  <a href="/containers/{{tool.tool_path}}"
+                  <a href="/containers/{{getToolPath(tool)}}"
                      tooltip="{{tool.name + (tool?.toolname ? '/' + tool?.toolname : '')}}">
                     {{tool.name + (tool?.toolname ? '/' + tool?.toolname : '')}}
                   </a>
@@ -62,7 +62,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="entry-heading">
-                  <a href="/workflows/{{getPath(workflow)}}"
+                  <a href="/workflows/{{getWorkflowPath(workflow)}}"
                      tooltip="{{workflow?.repository + (workflow?.workflowName ? ' (' + workflow?.workflowName + ')' : '')}}">
                     {{workflow?.repository + (workflow?.workflowName ? ' (' + workflow?.workflowName + ')' : '')}}
                   </a>

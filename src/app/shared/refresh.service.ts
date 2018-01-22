@@ -43,12 +43,16 @@ export class RefreshService {
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
 
+    getPathTool(tool: DockstoreTool): string {
+      return this.containerService.getPath(tool);
+    }
+
     /**
      * Handles refreshing of tool and updates the view.
      * @memberof RefreshService
      */
     refreshTool(): void {
-        const message = 'Refreshing ' + this.tool.path;
+        const message = 'Refreshing ' + this.getPathTool(this.tool);
         this.stateService.setRefreshMessage(message + ' ...');
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
             this.containerService.replaceTool(this.tools, response);
@@ -83,12 +87,16 @@ export class RefreshService {
         this.notificationsService.error(message + ' failed');
     }
 
+    getPathWorkflow(workflow: Workflow): string {
+      return this.workflowService.getPath(workflow);
+    }
+
     /**
      * Handles refreshing of the workflow and updates the view.
      * @memberof RefreshService
      */
     refreshWorkflow(): void {
-        const message = 'Refreshing ' +  this.workflow.path;
+        const message = 'Refreshing ' +  this.getPathWorkflow(this.workflow);
         this.stateService.setRefreshMessage(message + ' ...');
         this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, response);

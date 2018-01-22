@@ -23,6 +23,8 @@ import { DataTableDirective } from 'angular-datatables';
 import { ListContainersService } from '../containers/list/list.service';
 import { PagenumberService } from '../shared/pagenumber.service';
 import { DockstoreService } from '../shared/dockstore.service';
+import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
+import { ContainerService } from '../shared/container.service';
 
 @Component({
   selector: 'app-listentry',
@@ -42,7 +44,8 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   private entrySubscription: Subscription;
   constructor(private searchService: SearchService,
               private listContainersService: ListContainersService,
-              private dockstoreService: DockstoreService) { }
+              private dockstoreService: DockstoreService,
+              private containerService: ContainerService) { }
 
   ngOnInit() {
     this.updateResultsTable = false;
@@ -103,5 +106,9 @@ export class ListentryComponent implements OnInit, AfterViewInit {
 
   getVerifiedWorkflow(workflow) {
     return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
+  }
+
+  getPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
   }
 }

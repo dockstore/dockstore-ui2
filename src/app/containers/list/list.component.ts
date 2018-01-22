@@ -28,6 +28,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { ToolLister } from '../../shared/tool-lister';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { PageInfo } from '../../shared/models/PageInfo';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 
 import { ListContainersService } from './list.service';
@@ -129,6 +130,10 @@ export class ListContainersComponent extends ToolLister {
 
   getVerified(tool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
+  }
+
+  getPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
   }
 
 }

@@ -17,6 +17,9 @@
 import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
+import { ContainerService } from './container.service';
+import { DockstoreTool } from './swagger/model/dockstoreTool'
+
 
 @Injectable()
 export class ImageProviderService {
@@ -25,11 +28,16 @@ export class ImageProviderService {
 
   private dockerRegistryList: Array<any>;
 
-  constructor(private containersService: ContainersService) {
+  constructor(private containersService: ContainersService,
+    private containerService: ContainerService) {
     this.dockerRegistryList = JSON.parse(localStorage.getItem('dockerRegistryList'));
     if (!this.dockerRegistryList) {
       this.getDockerRegistryList();
     }
+  }
+
+  getPath(tool: DockstoreTool): string {
+    return this.containerService.getPath(tool);
   }
 
   setUpImageProvider(tool) {
@@ -37,7 +45,7 @@ export class ImageProviderService {
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(this.getPath(tool), registry);
     }
     return tool;
   }
