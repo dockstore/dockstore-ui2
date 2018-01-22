@@ -59,19 +59,19 @@ export class WorkflowService {
   }
 
   getSourceControlPath(sourceControlEnumName: Workflow.SourceControlEnum) {
-    if (sourceControlEnumName == Workflow.SourceControlEnum.GITHUB) {
-      return "github.com";
-    } else if (sourceControlEnumName == Workflow.SourceControlEnum.BITBUCKET) {
-      return "bitbucket.org";
-    } else if (sourceControlEnumName == Workflow.SourceControlEnum.GITLAB) {
-      return "gitlab.com";
+    if (sourceControlEnumName === Workflow.SourceControlEnum.GITHUB) {
+      return 'github.com';
+    } else if (sourceControlEnumName === Workflow.SourceControlEnum.BITBUCKET) {
+      return 'bitbucket.org';
+    } else if (sourceControlEnumName === Workflow.SourceControlEnum.GITLAB) {
+      return 'gitlab.com';
     } else {
       return null;
     }
   }
 
   public getPath(workflow: Workflow): string {
-    if (workflow != null && workflow != undefined) {
+    if (workflow !== null && workflow !== undefined) {
       let workflowPath = this.getSourceControlPath(workflow.sourceControl) + '/' + workflow.organization + '/' + workflow.repository;
       if (workflow.workflowName !== null && workflow.workflowName !== undefined) {
         workflowPath += '/' + workflow.workflowName;

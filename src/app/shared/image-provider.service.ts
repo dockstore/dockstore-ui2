@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
 import { ContainerService } from './container.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool'
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 
 @Injectable()

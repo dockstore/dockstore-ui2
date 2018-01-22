@@ -90,13 +90,13 @@ export class ContainerService {
 }
 
 getRegistryPath(registryEnumName: DockstoreTool.RegistryEnum, tool: DockstoreTool) {
-  if (registryEnumName == DockstoreTool.RegistryEnum.QUAYIO) {
-    return "quay.io";
-  } else if (registryEnumName == DockstoreTool.RegistryEnum.DOCKERHUB) {
-    return "registry.hub.docker.com";
-  } else if (registryEnumName == DockstoreTool.RegistryEnum.GITLAB) {
-    return "gitlab.com";
-  } else if (registryEnumName == DockstoreTool.RegistryEnum.AMAZONECR) {
+  if (registryEnumName === DockstoreTool.RegistryEnum.QUAYIO) {
+    return 'quay.io';
+  } else if (registryEnumName === DockstoreTool.RegistryEnum.DOCKERHUB) {
+    return 'registry.hub.docker.com';
+  } else if (registryEnumName === DockstoreTool.RegistryEnum.GITLAB) {
+    return 'gitlab.com';
+  } else if (registryEnumName === DockstoreTool.RegistryEnum.AMAZONECR) {
     return tool.customDockerRegistryPath;
   } else {
     return null;
@@ -104,7 +104,7 @@ getRegistryPath(registryEnumName: DockstoreTool.RegistryEnum, tool: DockstoreToo
 }
 
 public getPath(tool: DockstoreTool): string {
-  if (tool != null && tool != undefined) {
+  if (tool != null && tool !== undefined) {
     let toolPath = this.getRegistryPath(tool.registry, tool) + '/' + tool.namespace + '/' + tool.name;
     if (tool.toolname !== '' && tool.toolname !== undefined) {
       toolPath += '/' + tool.toolname;
