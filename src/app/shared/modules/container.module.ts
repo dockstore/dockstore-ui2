@@ -1,3 +1,4 @@
+import { EmailService } from '../../container/email.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -107,6 +108,7 @@ import { SelectModule } from './select.module';
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     HighlightJsService,
     ErrorService,
+    EmailService,
     DateService,
     FileService,
     ToolLaunchService,
