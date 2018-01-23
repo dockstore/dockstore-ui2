@@ -31,9 +31,8 @@ install:
 
 before_script:
   - pwd
-  - wget --no-verbose https://artifacts.oicr.on.ca/artifactory/collab-release/io/swagger/swagger-codegen-cli/2.3.0-SNAPSHOT/swagger-codegen-cli-2.3.0-20170927.194112-1.jar -O swagger-codegen-cli.jar
+  - wget --no-verbose http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.3.1/swagger-codegen-cli-2.3.1.jar -O swagger-codegen-cli.jar
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
-  - ./script.sh
   - psql 'postgres' -U postgres < travisci/db_dump.sql
   - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
   - 'sleep 20'
