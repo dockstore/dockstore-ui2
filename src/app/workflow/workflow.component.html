@@ -34,7 +34,7 @@
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
-      {{ title }}
+      {{ title }}:{{ selectedVersion.name }}
       <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="workflow">

@@ -36,7 +36,7 @@
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ tool?.tool_path }}
+      {{ tool?.tool_path }}:{{ selectedVersion.name }}
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
