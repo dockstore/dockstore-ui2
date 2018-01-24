@@ -37,6 +37,8 @@ import { Entry } from '../shared/entry';
 import { ContainerService } from '../shared/container.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+
 
 @Component({
   selector: 'app-workflow',
@@ -256,5 +258,9 @@ export class WorkflowComponent extends Entry {
 
   refresh() {
     this.refreshService.refreshWorkflow();
+  }
+
+  onSelectedVersionChange(version: WorkflowVersion) : void {
+    this.selectedVersion = version;
   }
 }

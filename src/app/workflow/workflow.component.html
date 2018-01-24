@@ -34,7 +34,7 @@
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
-      {{ title }}:{{ selectedVersion.name }}
+      {{ title }}:{{ selectedVersion?.name }}
       <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="workflow">
@@ -118,7 +118,7 @@
         </form>
       </tab>
       <tab id="versionsTab" [disabled]="isStub()" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
-        <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
+        <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
         </app-versions-workflow>
       </tab>
       <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">

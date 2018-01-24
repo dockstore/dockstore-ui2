@@ -36,7 +36,7 @@
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ tool?.tool_path }}:{{ selectedVersion.name }}
+      {{ tool?.tool_path }}:{{ selectedVersion?.name }}
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
@@ -142,7 +142,7 @@
         </form>
       </tab>
       <tab heading="Versions" *ngIf="validVersions">
-        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
+        <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
