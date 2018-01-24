@@ -270,7 +270,7 @@ export class ContainerComponent extends Entry {
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
   }
 
-  onSelectedVersionChange(tag: Tag) : void {
+  onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
     this.onTagChange(tag);
   }

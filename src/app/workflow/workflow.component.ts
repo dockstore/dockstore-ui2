@@ -260,7 +260,7 @@ export class WorkflowComponent extends Entry {
     this.refreshService.refreshWorkflow();
   }
 
-  onSelectedVersionChange(version: WorkflowVersion) : void {
+  onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
   }
 }
