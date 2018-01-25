@@ -34,8 +34,8 @@
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
-      {{ title }}:{{ selectedVersion?.name }}
-      <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
+      {{ title }}:<span class="ds-green"> {{ selectedVersion?.name }}</span>
+
     </h3>
     <div *ngIf="workflow">
       <span class="label label-default container-label" *ngFor="let label of labels">
@@ -60,6 +60,9 @@
         <i class="glyphicon glyphicon-chevron-left"></i>Back to details
       </button>
     </div>
+  </div>
+  <div class="col-md-5">
+    <app-starring class="pull-right starring-button" *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
   </div>
   <div *ngIf="!publicPage">
     <h3>

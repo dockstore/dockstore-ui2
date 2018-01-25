@@ -36,8 +36,7 @@
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ tool?.tool_path }}:{{ selectedVersion?.name }}
-      <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
+      {{ tool?.tool_path }}:<span class="ds-green"> {{ selectedVersion?.name }}</span>
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">
@@ -61,6 +60,9 @@
       </button>
     </div>
   </div>
+  <div class="col-md-5">
+    <app-starring class="pull-right starring-button" *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
+  </div>
   <div *ngIf="!publicPage">
     <h3>
       <div class="pull-right">
@@ -80,7 +82,7 @@
       </div>
     </h3>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-5">
     <h3 class="pull-right">
       <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
         <p>
