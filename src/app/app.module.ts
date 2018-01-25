@@ -126,7 +126,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ListentryModule,
     MarkdownModule.forRoot(),
     SearchModule,
-    ApiModule.forConfig(getApiConfig)
+    ApiModule.forRoot(getApiConfig)
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
