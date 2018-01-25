@@ -275,10 +275,10 @@ export class ContainerComponent extends Entry {
     this.onTagChange(tag);
   }
 
-  getSortedVersions(versions: Array<Tag>):Array<Tag> {
+  getSortedVersions(versions: Array<Tag>): Array<Tag> {
     // Get top six versions and have default at front
     let sortedVersions: Array<Tag> = [];
-    let finalVersions: Array<Tag> = [];
+    const finalVersions: Array<Tag> = [];
     let counter = 0;
 
     // Sort versions by last_modified date
@@ -288,7 +288,7 @@ export class ContainerComponent extends Entry {
     finalVersions.push(this.defaultVersion);
 
     // Grab the top 5 versions, ignoring the default version
-    for (let version of sortedVersions) {
+    for (const version of sortedVersions) {
       if (version !== this.defaultVersion) {
         finalVersions.push(version);
       }
