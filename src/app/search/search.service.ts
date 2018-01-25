@@ -78,7 +78,7 @@ export class SearchService {
       }
     );
 
-    if (searchInfo.searchTerm && !searchInfo.advancedSearchObject.toAdvanceSearch) {
+    if (searchInfo.searchTerm && (!searchInfo.advancedSearchObject || !searchInfo.advancedSearchObject.toAdvanceSearch)) {
       params.append('search', searchInfo.searchValues);
     } else {
       const advSearchKeys = Object.keys(searchInfo.advancedSearchObject);
@@ -263,9 +263,14 @@ export class SearchService {
   * (though not just the searchMode, which is set by default)
   */
   hasSearchText(advancedSearchObject: any, searchTerm: boolean, hits: any) {
-    const advSearchSet = ((advancedSearchObject.toAdvanceSearch) &&
-      (advancedSearchObject.ANDSplitFilter || advancedSearchObject.ANDNoSplitFilter
-        || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter));
+    let advSearchSet;
+    if (!advancedSearchObject) {
+      advSearchSet = false;
+    } else {
+      advSearchSet = ((advancedSearchObject.toAdvanceSearch) &&
+        (advancedSearchObject.ANDSplitFilter || advancedSearchObject.ANDNoSplitFilter
+          || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter));
+    }
     return (this.hasResults(searchTerm, hits) || advSearchSet);
   }
 
