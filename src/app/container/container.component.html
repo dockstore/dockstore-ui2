@@ -62,6 +62,22 @@
   </div>
   <div class="col-md-5">
     <app-starring class="pull-right starring-button" *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
+    <h3 class="pull-right">
+      <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
+        <p>
+          <a [href]="requestAccessHREF">
+            Request Access
+          </a>
+        </p>
+      </div>
+      <div class="button contact-button" *ngIf="publicPage && tool?.email && !tool?.private_access">
+        <p>
+          <a [href]="contactAuthorHREF">
+            Contact Author
+          </a>
+        </p>
+      </div>
+    </h3>
   </div>
   <div *ngIf="!publicPage">
     <h3>
@@ -79,24 +95,6 @@
         <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
           Refresh
         </button>
-      </div>
-    </h3>
-  </div>
-  <div class="col-md-5">
-    <h3 class="pull-right">
-      <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
-        <p>
-          <a [href]="requestAccessHREF">
-            Request Access
-          </a>
-        </p>
-      </div>
-      <div class="button contact-button" *ngIf="publicPage && tool?.email && !tool?.private_access">
-        <p>
-          <a [href]="contactAuthorHREF">
-            Contact Author
-          </a>
-        </p>
       </div>
     </h3>
   </div>
