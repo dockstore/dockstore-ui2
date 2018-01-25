@@ -33,7 +33,7 @@
                 <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
               </a>
             </span>
-            <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', getPath(workflow) ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
+            <a (click)="sendWorkflowInfo(workflow)" [routerLink]="['/workflows', workflow.full_workflow_path ]">{{ workflow?.repository + (workflow.workflowName ? ' (' + workflow.workflowName + ')' : '') }}</a>
           </td>
           <td>
             {{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}

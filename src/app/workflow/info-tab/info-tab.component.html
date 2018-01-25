@@ -15,10 +15,10 @@
   -->
 
 <ul class="list-unstyled container-info" *ngIf="workflow">
-  <li *ngIf="getPath(workflow)">
+  <li *ngIf="workflow.full_workflow_path">
     <strong tooltip="Complete path of workflow, used as a unique identifier">
       Path
-    </strong>: {{ getPath(workflow) }}
+    </strong>: {{ workflow.full_workflow_path }}
   </li>
   <li *ngIf="workflow?.provider && workflow?.providerUrl">
     <strong tooltip="Git repository for the associated descriptors">
@@ -105,5 +105,5 @@
       </span>
     </div>
   </div>
-  <app-launch [selectedVersion]="selectedVersion" [path]="getPath(workflow)" [currentDescriptor]="workflow?.descriptorType"></app-launch>
+  <app-launch [selectedVersion]="selectedVersion" [path]="workflow.full_workflow_path" [currentDescriptor]="workflow?.descriptorType"></app-launch>
 </div>

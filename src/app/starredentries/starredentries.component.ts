@@ -79,12 +79,4 @@ export class StarredEntriesComponent implements OnInit {
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
   }
-
-  getWorkflowPath(workflow: Workflow): string {
-    return this.workflowService.getPath(workflow);
-  }
-
-  getToolPath(tool: DockstoreTool): string {
-    return this.containerService.getPath(tool);
-  }
 }

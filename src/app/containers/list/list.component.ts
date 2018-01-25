@@ -131,9 +131,4 @@ export class ListContainersComponent extends ToolLister {
   getVerified(tool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
-
-  getPath(tool: DockstoreTool): string {
-    return this.containerService.getPath(tool);
-  }
-
 }

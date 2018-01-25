@@ -90,8 +90,4 @@ export class InfoTabComponent implements OnInit {
   descriptorLanguages(): Array<string> {
     return this.infoTabService.getDescriptorLanguageKeys();
   }
-
-  getPath(workflow: Workflow): string {
-    return this.workflowService.getPath(workflow);
-  }
 }

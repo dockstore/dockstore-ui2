@@ -36,8 +36,9 @@
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ getPath(tool) }}
+      {{tool.tool_path}}
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
+
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">
@@ -146,7 +147,7 @@
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
-        <app-files-container [entrypath]="getPath(tool)" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
         </app-files-container>
       </tab>
     </tabset>

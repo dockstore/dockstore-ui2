@@ -24,8 +24,8 @@ constructor(private dockstoreService: DockstoreService, private containerService
    */
   public composeRequestAccessEmail(tool: ExtendedDockstoreTool): string {
     const email = this.getRequestEmailMailTo(tool.tool_maintainer_email, tool.email);
-    const subject = this.getRequestEmailSubject(this.getPath(tool));
-    const body = this.getRequestEmailBody(this.getPath(tool), tool.imgProvider);
+    const subject = this.getRequestEmailSubject(tool.tool_path);
+    const body = this.getRequestEmailBody(tool.tool_path, tool.imgProvider);
     return this.composeEmail(email, subject, body);
   }
 
@@ -35,7 +35,7 @@ constructor(private dockstoreService: DockstoreService, private containerService
    */
   public composeContactAuthorEmail(tool: ExtendedDockstoreTool): string {
     const email = this.getInquiryEmailMailTo(tool.email);
-    const subject = this.getInquiryEmailSubject(this.getPath(tool));
+    const subject = this.getInquiryEmailSubject(tool.tool_path);
     const body = this.getInquiryEmailBody();
     return this.composeEmail(email, subject, body);
   }
@@ -92,9 +92,5 @@ constructor(private dockstoreService: DockstoreService, private containerService
    */
   private getInquiryEmailBody(): string {
     return '';
-  }
-
-  getPath(tool: DockstoreTool): string {
-    return this.containerService.getPath(tool);
   }
 }

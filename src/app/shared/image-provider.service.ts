@@ -36,16 +36,12 @@ export class ImageProviderService {
     }
   }
 
-  getPath(tool: DockstoreTool): string {
-    return this.containerService.getPath(tool);
-  }
-
   setUpImageProvider(tool) {
     const registry = this.getImageProvider(tool.registry);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(this.getPath(tool), registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
     }
     return tool;
   }

@@ -107,8 +107,4 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   getVerifiedWorkflow(workflow) {
     return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
-
-  getPath(tool: DockstoreTool): string {
-    return this.containerService.getPath(tool);
-  }
 }

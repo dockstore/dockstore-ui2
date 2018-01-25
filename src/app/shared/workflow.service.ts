@@ -69,17 +69,4 @@ export class WorkflowService {
       return null;
     }
   }
-
-  public getPath(workflow: Workflow): string {
-    if (workflow !== null && workflow !== undefined) {
-      let workflowPath = this.getSourceControlPath(workflow.sourceControl) + '/' + workflow.organization + '/' + workflow.repository;
-      if (workflow.workflowName !== null && workflow.workflowName !== undefined) {
-        workflowPath += '/' + workflow.workflowName;
-      }
-
-      return workflowPath;
-    } else {
-      return null;
-    }
-  }
 }
