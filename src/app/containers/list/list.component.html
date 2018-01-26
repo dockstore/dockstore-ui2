@@ -35,7 +35,7 @@
             <span *ngIf="tool.private_access">
                 <app-private-icon></app-private-icon>
             </span>
-            <a (click)="sendToolInfo(tool)" [routerLink]="['/containers', tool?.tool_path ]">{{ tool?.name +
+            <a (click)="sendToolInfo(tool)" [routerLink]="('/containers/' + tool?.tool_path)">{{ tool?.name +
               (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
           </td>
           <td>

@@ -2,6 +2,7 @@ describe('Dockstore Tool Details', function() {
     require('./helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
+        cy.visit(String(global.baseUrl) + "/containers/quay.io%20A2%20a")
         cy
             .get('tab')
             .should('have.length', 7)
