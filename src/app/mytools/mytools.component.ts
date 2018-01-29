@@ -1,8 +1,3 @@
-import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
-import { Links } from './../loginComponents/accounts/external/links.model';
-import { TokenSource } from './../shared/enum/token-source.enum';
-import { Token } from './../shared/swagger/model/token';
-import { TokenService } from './../loginComponents/token.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -19,7 +14,6 @@ import { TokenService } from './../loginComponents/token.service';
  *    limitations under the License.
  */
 
-import { StateService } from './../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
@@ -29,7 +23,11 @@ import { ContainerService } from '../shared/container.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { Tool } from './../container/register-tool/tool';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
+import { TokenSource } from './../shared/enum/token-source.enum';
 import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { MytoolsService } from './mytools.service';
@@ -56,6 +54,7 @@ export class MyToolsComponent implements OnInit {
     private refreshService: RefreshService, private accountsService: AccountsService,
     private registerToolService: RegisterToolService, private tokenService: TokenService) { }
   ngOnInit() {
+    localStorage.setItem('page', '/my-tools');
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {
