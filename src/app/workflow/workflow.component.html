@@ -144,15 +144,16 @@
       <div class="panel-body">
         <div>
           <span *ngFor="let sortedVersion of getSortedVersions(workflow.workflowVersions, defaultVersion);">
-            <p>
+            <p class="top-down-padding no-margin">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
                   <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
                 </a>
               </span>
               <a (click)="selectedVersion = sortedVersion">{{sortedVersion.name}}</a>
-              <small>{{sortedVersion.last_modified}}{{sortedVersion.last_modified | date}} {{sortedVersion.verified}}</small>
+              <small>{{sortedVersion.last_modified | date}}</small>
             </p>
+            <hr class="no-margin">
           </span>
           <a (click)="selectTab(2)">See all versions</a>
         </div>
