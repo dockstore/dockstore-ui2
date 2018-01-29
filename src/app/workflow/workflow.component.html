@@ -81,7 +81,7 @@
 </div>
 <div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
-    <tabset id="workflow_tabs" justified="true">
+    <tabset #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
@@ -154,7 +154,7 @@
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
           </span>
-          <a>See all versions</a>
+          <a (click)="selectTab(2)">See all versions</a>
         </div>
       </div>
     </div>

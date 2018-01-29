@@ -19,10 +19,11 @@ import { validationPatterns } from './validationMessages.model';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ErrorService } from './../shared/error.service';
 import { Workflow } from './swagger/model/workflow';
-import { Injectable, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { StateService } from './state.service';
 import { Router } from '@angular/router/';
 import { Subscription } from 'rxjs/Subscription';
+import { TabsetComponent } from 'ngx-bootstrap';
 
 import { CommunicatorService } from './communicator.service';
 import { ProviderService } from './provider.service';
@@ -32,6 +33,7 @@ import { TrackLoginService } from '../shared/track-login.service';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('entryTabs') entryTabs: TabsetComponent;
   protected labels: string[];
   protected shareURL: string;
   public starGazersClicked = false;
@@ -195,5 +197,25 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       selectedVersion = versions[0];
     }
     return selectedVersion;
+  }
+
+  selectTab(tab_id: number) {
+    this.entryTabs.tabs[tab_id].active = true;
+  }
+
+  entryVersionSorting(a: any, b: any): number {
+    if (a.last_modified > b.last_modified) {
+      return -1;
+    } else if (a.last_modified < b.last_modified) {
+      return 1;
+    } else {
+      if (a.verified && !b.verified) {
+        return -1;
+      } else if (!a.verified && b.verified) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
   }
 }

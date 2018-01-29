@@ -264,6 +264,9 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
   }
 
+  // Sorts a list of versions by last modified date and verified, returning a subset of the versions
+  // If a default version is set, it will appear at the top
+  // If not, will set to latest
   getSortedVersions(versions: Array<WorkflowVersion>): Array<WorkflowVersion> {
     // For now no sorting, as versions do not have date modified information
     return versions;

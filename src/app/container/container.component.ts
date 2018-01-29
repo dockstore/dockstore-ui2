@@ -23,9 +23,10 @@ import { ContainersService } from './../shared/swagger/api/containers.service';
 import { StateService } from './../shared/state.service';
 import { RefreshService } from './../shared/refresh.service';
 import { FormsModule } from '@angular/forms';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
+import { TabsetComponent } from 'ngx-bootstrap';
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -275,14 +276,17 @@ export class ContainerComponent extends Entry {
     this.onTagChange(tag);
   }
 
+  // Sorts a list of tags by last modified date and verified, returning a subset of the tags
+  // If a default tag is set, it will appear at the top
+  // If not, will set to latest
   getSortedVersions(versions: Array<Tag>): Array<Tag> {
     // Get top six versions and have default at front
     let sortedVersions: Array<Tag> = [];
     const finalVersions: Array<Tag> = [];
     let counter = 0;
 
-    // Sort versions by last_modified date
-    sortedVersions = versions.sort((a, b) => a.last_modified > b.last_modified ? -1 : a.last_modified < b.last_modified ? 1 : 0);
+    // Sort versions by last_modified date and then verified
+    sortedVersions = versions.sort((a, b) => this.entryVersionSorting(a, b));
 
     // The default version will appear first
     finalVersions.push(this.defaultVersion);

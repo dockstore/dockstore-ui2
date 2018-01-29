@@ -101,7 +101,7 @@
 </div>
 <div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
-    <tabset id="tool_tabs" justified="true">
+    <tabset #entryTabs justified="true">
       <tab id="infoTab" heading="Info">
         <app-info-tab [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
@@ -169,7 +169,7 @@
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
           </span>
-          <a>See all tags</a>
+          <a (click)="selectTab(2)">See all tags</a>
         </div>
       </div>
     </div>
