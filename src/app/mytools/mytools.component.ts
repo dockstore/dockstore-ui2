@@ -1,3 +1,8 @@
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { Links } from './../loginComponents/accounts/external/links.model';
+import { TokenSource } from './../shared/enum/token-source.enum';
+import { Token } from './../shared/swagger/model/token';
+import { TokenService } from './../loginComponents/token.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -41,14 +46,15 @@ export class MyToolsComponent implements OnInit {
   tools: any;
   user: any;
   tool: any;
+  public hasGitHubToken = true;
   public refreshMessage: string;
   private registerTool: Tool;
   constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, private authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
-    private refreshService: RefreshService,
-    private registerToolService: RegisterToolService) { }
+    private refreshService: RefreshService, private accountsService: AccountsService,
+    private registerToolService: RegisterToolService, private tokenService: TokenService) { }
   ngOnInit() {
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.containerService.setTool(null);
@@ -57,6 +63,7 @@ export class MyToolsComponent implements OnInit {
       this.communicatorService.setTool(selectedTool);
       this.setIsFirstOpen();
     });
+    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
@@ -85,6 +92,11 @@ export class MyToolsComponent implements OnInit {
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
+
+  link() {
+      this.accountsService.link(TokenSource.GITHUB);
+  }
+
   setIsFirstOpen() {
     if (this.nsContainers && this.tool) {
       for (const nsObj of this.nsContainers) {
