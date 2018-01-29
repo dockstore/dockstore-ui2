@@ -40,7 +40,6 @@ export class ListentryComponent implements OnInit, AfterViewInit, OnDestroy {
   dtOptions: any;
   updateResultsTable = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  private entrySubscription: Subscription;
   constructor(private searchService: SearchService,
     private listContainersService: ListContainersService,
     private dockstoreService: DockstoreService) { }
@@ -49,12 +48,12 @@ export class ListentryComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateResultsTable = false;
     this.dtOptions = { searching: false };
     if (this.entryType === 'tool') {
-      this.entrySubscription = this.searchService.toolhit$.takeUntil(this.ngUnsubscribe).subscribe(
+      this.searchService.toolhit$.takeUntil(this.ngUnsubscribe).subscribe(
         hits => {
           this.setHitSubscribe(hits);
         });
     } else if (this.entryType === 'workflow') {
-      this.entrySubscription = this.searchService.workflowhit$.takeUntil(this.ngUnsubscribe).subscribe(
+      this.searchService.workflowhit$.takeUntil(this.ngUnsubscribe).subscribe(
         hits => {
           this.setHitSubscribe(hits);
         });
