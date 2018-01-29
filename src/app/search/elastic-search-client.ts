@@ -20,5 +20,5 @@ import { Client } from 'elasticsearch';
 export const ELASTIC_SEARCH_CLIENT = new Client({
     host: Dockstore.API_URI + '/api/ga4gh/v2/extended',
     apiVersion: '5.x',
-    log: 'debug'
+    log: 'warning'
   });
