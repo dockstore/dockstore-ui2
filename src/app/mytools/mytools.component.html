@@ -40,11 +40,11 @@
             Press the 'Add Tool' button to manually add a tool.
           </li>
         </ul>
-        <div *ngIf="!hasGitHubToken" class="panel-body">
-          <a class="btn btn-block btn-social btn-github" (click)="link()">
-            <span class="fa fa-github"></span> Sign in with GitHub
-          </a>
-        </div>
+        <div *ngIf="!hasGitHubToken">
+            <a class="btn btn-block btn-social btn-github" (click)="link()">
+              <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
+            </a>
+          </div>
       </div>
     </div>
   </div>
