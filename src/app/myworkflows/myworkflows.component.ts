@@ -1,6 +1,3 @@
-import { TokenSource } from './../shared/enum/token-source.enum';
-import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
-import { TokenService } from './../loginComponents/token.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -17,14 +14,17 @@ import { TokenService } from './../loginComponents/token.service';
  *    limitations under the License.
  */
 
-import { StateService } from '../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
+import { StateService } from '../shared/state.service';
 import { WorkflowService } from '../shared/workflow.service';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
 import { UserService } from './../loginComponents/user.service';
+import { TokenSource } from './../shared/enum/token-source.enum';
 import { RefreshService } from './../shared/refresh.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
@@ -58,6 +58,7 @@ export class MyWorkflowsComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.setItem('page', '/my-workflows');
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.workflowService.setWorkflow(null);
