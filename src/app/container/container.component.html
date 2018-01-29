@@ -158,7 +158,7 @@
       </div>
       <div class="panel-body">
         <div>
-          <span *ngFor="let sortedVersion of getSortedVersions(tool.tags);">
+          <span *ngFor="let sortedVersion of getSortedVersions(tool.tags, defaultVersion);">
             <p>
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">

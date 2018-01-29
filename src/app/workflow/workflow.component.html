@@ -143,7 +143,7 @@
       </div>
       <div class="panel-body">
         <div>
-          <span *ngFor="let sortedVersion of getSortedVersions(workflow.workflowVersions);">
+          <span *ngFor="let sortedVersion of getSortedVersions(workflow.workflowVersions, defaultVersion);">
             <p>
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
@@ -151,7 +151,7 @@
                 </a>
               </span>
               <a (click)="selectedVersion = sortedVersion">{{sortedVersion.name}}</a>
-              <small>{{sortedVersion.last_modified | date}}</small>
+              <small>{{sortedVersion.last_modified}}{{sortedVersion.last_modified | date}} {{sortedVersion.verified}}</small>
             </p>
           </span>
           <a (click)="selectTab(2)">See all versions</a>

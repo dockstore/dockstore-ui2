@@ -218,4 +218,33 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+
+  // Sorts a list of versions by last modified date and verified, returning a subset of the versions
+  // If a default version is set, it will appear at the top
+  // If not, will set to latest
+  getSortedVersions(versions: Array<any>, defaultVersion: any): Array<any> {
+    // Get top six versions and have default at front
+    let sortedVersions: Array<any> = [];
+    const finalVersions: Array<any> = [];
+    let counter = 0;
+
+    // Sort versions by last_modified date and then verified
+    sortedVersions = versions.sort((a, b) => this.entryVersionSorting(a, b));
+
+    // The default version will appear first
+    finalVersions.push(defaultVersion);
+
+    // Grab the top 5 versions, ignoring the default version
+    for (const version of sortedVersions) {
+      if (version !== defaultVersion) {
+        finalVersions.push(version);
+      }
+      if (counter === 5) {
+        break;
+      }
+      counter++;
+    }
+
+    return finalVersions;
+  }
 }
