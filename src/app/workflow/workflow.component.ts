@@ -263,4 +263,9 @@ export class WorkflowComponent extends Entry {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
   }
+
+  getSortedVersions(versions: Array<WorkflowVersion>): Array<WorkflowVersion> {
+    // For now no sorting, as versions do not have date modified information
+    return versions;
+  }
 }

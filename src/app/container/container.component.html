@@ -160,7 +160,7 @@
         <div>
           <span *ngFor="let sortedVersion of getSortedVersions(tool.tags);">
             <p>
-              <span id="verifiedIcon" *ngIf="version?.verified">
+              <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
                   <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
                 </a>

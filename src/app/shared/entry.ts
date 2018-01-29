@@ -168,7 +168,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
     let useFirstTag = true;
     let urlTagExists = false;
-
+    selectedVersion = null;
     // Determine which tag to select
     for (const item of versions) {
       // If a tag is specified in the URL then use it
