@@ -39,6 +39,11 @@
             Press the 'Register Workflow' button to manually add a workflow.
           </li>
         </ul>
+        <div *ngIf="!hasGitHubToken" class="panel-body">
+          <a class="btn btn-block btn-social btn-github" (click)="link()">
+            <span class="fa fa-github"></span> Sign in with GitHub
+          </a>
+        </div>
       </div>
     </div>
   </div>

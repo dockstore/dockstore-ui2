@@ -1,3 +1,6 @@
+import { TokenSource } from './../shared/enum/token-source.enum';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -36,6 +39,7 @@ import { MyWorkflowsService } from './myworkflows.service';
     DockstoreService]
 })
 export class MyWorkflowsComponent implements OnInit {
+  hasGitHubToken = true;
   orgWorkflows = [];
   oneAtATime = true;
   workflow: any;
@@ -43,14 +47,19 @@ export class MyWorkflowsComponent implements OnInit {
   workflows: any;
   public refreshMessage: string;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-    private usersService: UsersService, private userService: UserService,
-    private workflowService: WorkflowService, private authService: AuthService,
+    private usersService: UsersService, private userService: UserService, private tokenService: TokenService,
+    private workflowService: WorkflowService, private authService: AuthService, private accountsService: AccountsService,
     private refreshService: RefreshService, private stateService: StateService,
     private registerWorkflowModalService: RegisterWorkflowModalService) {
   }
 
+  link() {
+    this.accountsService.link(TokenSource.GITHUB);
+  }
+
   ngOnInit() {
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
