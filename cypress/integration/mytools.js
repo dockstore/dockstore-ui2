@@ -16,7 +16,7 @@ describe('Dockstore my tools', function() {
         .click()
         .get('.panel')
         .children(':nth-child(2)')
-        .contains('a', 'b1')  
+        .contains('a', 'b1')
         .click()
         cy.contains('GitHub')
         cy.contains('https://github.com/A2/b1')
@@ -97,7 +97,7 @@ describe('Dockstore my tools', function() {
         .should('contain', 'amazon.ecr.registry/testnamespace/testname')
 
       cy
-        .contains('Versions')
+        .get('#versionTab')
         .click()
 
       cy

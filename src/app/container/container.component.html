@@ -141,7 +141,7 @@
           </div>
         </form>
       </tab>
-      <tab heading="Versions" *ngIf="validVersions">
+      <tab id="versionTab" heading="Versions" *ngIf="validVersions">
         <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
         </app-versions-container>
       </tab>
