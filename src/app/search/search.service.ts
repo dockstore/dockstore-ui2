@@ -209,11 +209,12 @@ export class SearchService {
       ['Private Access', 'private_access'],
       ['Verified', 'tags.verified'],
       ['Author', 'author'],
-      ['Organization', 'namespace'],
+      ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
       ['Verified Source', 'tags.verifiedSource'],
       ['Verified 2', 'workflowVersions.verified'],
-      ['Verified Source 2', 'workflowVersions.verifiedSource.keyword']
+      ['Verified Source 2', 'workflowVersions.verifiedSource.keyword'],
+      ['Organization', 'organization']
     ]);
   }
 
@@ -225,7 +226,7 @@ export class SearchService {
   initializeToolBucketStubs() {
     return new Map([
       ['Registry', 'registry'],
-      ['Organization', 'namespace'],
+      ['Namespace', 'namespace'],
       ['Private Access', 'private_access'],
       ['Verified', 'tags.verified'],
       ['Verified Source', 'tags.verifiedSource'],
@@ -238,14 +239,15 @@ export class SearchService {
       ['_type', 'Entry Type'],
       ['descriptorType', 'Language'],
       ['registry', 'Registry'],
-      ['private_access', 'Private Access'],
+      ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
       ['tags.verified', 'Tool: Verified'],
       ['author', 'Author'],
-      ['namespace', 'Organization'],
+      ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['tags.verifiedSource', 'Tool: Verified Source'],
       ['workflowVersions.verified', 'Workflow: Verified'],
-      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source']
+      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
+      ['organization', 'Workflow: Organization']
     ]);
   }
 
@@ -256,6 +258,7 @@ export class SearchService {
       ['author', new SubBucket],
       ['registry', new SubBucket],
       ['namespace', new SubBucket],
+      ['organization', new SubBucket],
       ['labels.value.keyword', new SubBucket],
       ['private_access', new SubBucket],
       ['tags.verified', new SubBucket],
