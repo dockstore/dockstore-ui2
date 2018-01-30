@@ -97,7 +97,7 @@ describe('Dockstore my tools', function() {
         .should('contain', 'amazon.ecr.registry/testnamespace/testname')
 
       cy
-        .get('#versionTab')
+        .contains('Versions')
         .click()
 
       cy
