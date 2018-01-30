@@ -1,3 +1,5 @@
+import { ExpandService } from './expand.service';
+import { Observable } from 'rxjs/Observable';
 /*
  *    Copyright 2017 OICR
  *
@@ -63,9 +65,8 @@ export class SearchComponent implements OnInit {
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public query_size = 201;
-  expandAll = true;
   searchTerm = false;
-
+  expandAll$: Observable<boolean>;
   autocompleteTerms: Array<string> = new Array<string>();
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -115,7 +116,7 @@ export class SearchComponent implements OnInit {
    * @param providerService
    */
   constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
-    public searchService: SearchService,
+    public searchService: SearchService, private expandService: ExpandService,
     private advancedSearchService: AdvancedSearchService,
     private router: Router,
     private Location: Location,
@@ -133,6 +134,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.expandAll$ = this.expandService.expandAll$;
     this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -552,10 +554,6 @@ export class SearchComponent implements OnInit {
   clickExpand(key: string) {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
-  }
-
-  switchExpandAll() {
-    this.expandAll = !this.expandAll;
   }
 
   clickSortMode(category: string, sortMode: boolean) {

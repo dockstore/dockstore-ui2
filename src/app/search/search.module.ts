@@ -1,3 +1,5 @@
+import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collapse.component';
+import { ExpandService } from './expand.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -42,6 +44,7 @@ import { SearchService } from './search.service';
 @NgModule({
   declarations: [
     AdvancedSearchComponent,
+    ExpandCollapseComponent,
     SearchComponent,
     SearchResultsComponent
 ],
@@ -61,7 +64,8 @@ import { SearchService } from './search.service';
     searchRouting,
     HttpClientModule
   ],
-  providers: [AdvancedSearchService, SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
+  providers: [AdvancedSearchService, ExpandService,
+    SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
   exports: [SearchComponent]
 
 })
