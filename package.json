@@ -32,7 +32,7 @@
     "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.14",
     "@types/node": "^6.0.60",
-    "angular-datatables": "^4.2.0",
+    "angular-datatables": "^4.4.1",
     "angular-tag-cloud-module": "^1.4.0",
     "angular2-markdown": "^1.6.0",
     "angular2-notifications": "^0.7.8",
