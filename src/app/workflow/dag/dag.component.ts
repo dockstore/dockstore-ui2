@@ -18,7 +18,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 declare var cytoscape: any;
 declare var window: any;
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';

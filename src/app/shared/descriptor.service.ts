@@ -16,6 +16,7 @@
 
 import {SourceFile} from './swagger';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/zip';
 import {Injectable} from '@angular/core';
 
 @Injectable()
