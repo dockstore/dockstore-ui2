@@ -108,7 +108,7 @@
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="labelsTab" heading="Labels" *ngIf="tool">
-        <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
+        <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
         <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
