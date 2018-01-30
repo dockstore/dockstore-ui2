@@ -17,8 +17,6 @@
 import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
-import { ContainerService } from './container.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 
 @Injectable()
@@ -28,8 +26,7 @@ export class ImageProviderService {
 
   private dockerRegistryList: Array<any>;
 
-  constructor(private containersService: ContainersService,
-    private containerService: ContainerService) {
+  constructor(private containersService: ContainersService) {
     this.dockerRegistryList = JSON.parse(localStorage.getItem('dockerRegistryList'));
     if (!this.dockerRegistryList) {
       this.getDockerRegistryList();

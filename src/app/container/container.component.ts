@@ -26,7 +26,6 @@ import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
-import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';

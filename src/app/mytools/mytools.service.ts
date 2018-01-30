@@ -15,12 +15,10 @@
  */
 
 import { Injectable } from '@angular/core';
-import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
-import { ContainerService } from '../shared/container.service';
 
 @Injectable()
 export class MytoolsService {
-  constructor(private containerService: ContainerService) {
+  constructor() {
   }
 
   getNSIndex(nsContainers: any[], namespace: string): number {

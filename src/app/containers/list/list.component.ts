@@ -28,7 +28,6 @@ import { ProviderService } from '../../shared/provider.service';
 import { ToolLister } from '../../shared/tool-lister';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { PageInfo } from '../../shared/models/PageInfo';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 
 import { ListContainersService } from './list.service';

@@ -58,6 +58,9 @@ export class WorkflowService {
     this.copyBtnSource.next(copyBtn);
   }
 
+  /**
+   * Given a source control enum, determines the source control path
+   */
   getSourceControlPath(sourceControlEnumName: Workflow.SourceControlEnum) {
     if (sourceControlEnumName === Workflow.SourceControlEnum.GITHUB) {
       return 'github.com';

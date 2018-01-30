@@ -26,7 +26,6 @@ import { PagenumberService } from '../../shared/pagenumber.service';
 import { WorkflowService } from '../../shared/workflow.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { PageInfo } from '../../shared/models/PageInfo';
-import { Workflow } from '../../shared/swagger/model/workflow';
 
 @Component({
   selector: 'app-list-workflows',

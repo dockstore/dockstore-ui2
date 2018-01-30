@@ -89,6 +89,9 @@ export class ContainerService {
 
 }
 
+/**
+ * Determines the registry path of a tool, given the registry enum
+ */
 getRegistryPath(registryEnumName: DockstoreTool.RegistryEnum, tool: DockstoreTool) {
   if (registryEnumName === DockstoreTool.RegistryEnum.QUAYIO) {
     return 'quay.io';

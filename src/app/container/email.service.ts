@@ -2,12 +2,11 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
 import { DockstoreService } from './../shared/dockstore.service';
 import { Injectable } from '@angular/core';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { ContainerService } from './../shared/container.service';
 
 @Injectable()
 export class EmailService {
 
-constructor(private dockstoreService: DockstoreService, private containerService: ContainerService) { }
+constructor(private dockstoreService: DockstoreService) { }
   /**
    * Compose the href for an email
    * @param email The mailto address
