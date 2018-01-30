@@ -24,7 +24,7 @@ export class ParamFilesService {
   constructor(private containersService: ContainersService) { }
 
   getContainerTestParamFiles(toolId: number, tagName?: string, descriptorType?: string) {
-    return this.containersService.getTestParameterFiles(toolId, tagName, descriptorType);
+    return this.containersService.getTestParameterFiles(toolId, descriptorType, tagName);
   }
 
   getTagsWithParam(toolId: number, validTags) {
