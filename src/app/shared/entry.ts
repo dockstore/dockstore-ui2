@@ -199,10 +199,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     return selectedVersion;
   }
 
-  selectTab(tab_id: number) {
-    this.entryTabs.tabs[tab_id].active = true;
+  // Selects a tab of index tabIndex
+  selectTab(tabIndex: number) {
+    this.entryTabs.tabs[tabIndex].active = true;
   }
 
+  // Sorts two entries by last modified, and then verified
   entryVersionSorting(a: any, b: any): number {
     if (a.last_modified > b.last_modified) {
       return -1;

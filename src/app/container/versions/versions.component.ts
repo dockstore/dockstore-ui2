@@ -90,6 +90,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 
+  // Updates the version and emits an event for the parent component
   setVersion(version: Tag) {
     this.versionTag = version;
     this.selectedVersionChange.emit(this.versionTag);
