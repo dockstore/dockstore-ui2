@@ -121,7 +121,7 @@ export class SearchComponent implements OnInit {
     private locationService: Location,
     private http: HttpClient) {
     // Initialize mappings
-    this.bucketStubs = this.searchService.initializeBucketStubs();
+    this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
