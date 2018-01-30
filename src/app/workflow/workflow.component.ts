@@ -66,11 +66,11 @@ export class WorkflowComponent extends Entry {
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService,
-    private Location: Location) {
+    private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'workflows';
-    this.location = Location;
+    this.location = locationService;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {

@@ -15,9 +15,10 @@
  */
 
 import { SearchService } from './../search/search.service';
-import { AfterViewInit, Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { AfterViewInit, Component, Input, OnInit, ViewChild,  Output, EventEmitter} from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/takeUntil';
 import { SearchComponent } from '../search/search.component';
 import { DataTableDirective } from 'angular-datatables';
 import { ListContainersService } from '../containers/list/list.service';
