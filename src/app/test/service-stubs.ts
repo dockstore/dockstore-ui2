@@ -127,7 +127,7 @@ export class SearchStubService {
     }
 
     // Initialization Functions
-    initializeBucketStubs() {
+    initializeCommonBucketStubs() {
         return new Map([
             ['Entry Type', '_type'],
             ['Registry', 'registry'],

@@ -201,7 +201,7 @@ export class SearchService {
   }
 
   // Initialization Functions
-  initializeBucketStubs() {
+  initializeCommonBucketStubs() {
     return new Map([
       ['Entry Type', '_type'],
       ['Language', 'descriptorType'],
@@ -212,8 +212,26 @@ export class SearchService {
       ['Organization', 'namespace'],
       ['Labels', 'labels.value.keyword'],
       ['Verified Source', 'tags.verifiedSource'],
+      ['Verified 2', 'workflowVersions.verified'],
+      ['Verified Source 2', 'workflowVersions.verifiedSource.keyword']
     ]);
   }
+
+  initializeWorkflowBucketStubs() {
+    return new Map([
+    ]);
+  }
+
+  initializeToolBucketStubs() {
+    return new Map([
+      ['Registry', 'registry'],
+      ['Organization', 'namespace'],
+      ['Private Access', 'private_access'],
+      ['Verified', 'tags.verified'],
+      ['Verified Source', 'tags.verifiedSource'],
+    ]);
+  }
+
 
   initializeFriendlyNames() {
     return new Map([
@@ -221,11 +239,13 @@ export class SearchService {
       ['descriptorType', 'Language'],
       ['registry', 'Registry'],
       ['private_access', 'Private Access'],
-      ['tags.verified', 'Verified'],
+      ['tags.verified', 'Tool: Verified'],
       ['author', 'Author'],
       ['namespace', 'Organization'],
       ['labels.value.keyword', 'Labels'],
-      ['tags.verifiedSource', 'Verified Source'],
+      ['tags.verifiedSource', 'Tool: Verified Source'],
+      ['workflowVersions.verified', 'Workflow: Verified'],
+      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source']
     ]);
   }
 
@@ -239,15 +259,20 @@ export class SearchService {
       ['labels.value.keyword', new SubBucket],
       ['private_access', new SubBucket],
       ['tags.verified', new SubBucket],
-      ['tags.verifiedSource', new SubBucket]
+      ['tags.verifiedSource', new SubBucket],
+      ['workflowVersions.verified', new SubBucket],
+      ['workflowVersions.verifiedSource.keyword', new SubBucket]
     ]);
   }
 
   initializeFriendlyValueNames() {
     return new Map([
-     ['tags.verified', new Map([
+     ['workflowVersions.verified', new Map([
        ['1', 'verified'], ['0', 'non-verified']
      ])],
+     ['tags.verified', new Map([
+      ['1', 'verified'], ['0', 'non-verified']
+    ])],
      ['private_access', new Map([
        ['1', 'private'], ['0', 'public']
      ])],
