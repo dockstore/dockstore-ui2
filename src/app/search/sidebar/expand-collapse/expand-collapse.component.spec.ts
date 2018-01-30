@@ -1,3 +1,4 @@
+import { ExpandService } from './../../expand.service';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,7 +12,8 @@ describe('ExpandCollapseComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExpandCollapseComponent ]
+      declarations: [ ExpandCollapseComponent ],
+      providers: [ExpandService],
     })
     .compileComponents();
   }));
