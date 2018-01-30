@@ -15,13 +15,14 @@
  */
 
 import { SearchService } from './../search/search.service';
-import { AfterViewInit, Component, Input, OnInit, ViewChild,  Output, EventEmitter} from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { SearchComponent } from '../search/search.component';
 import { DataTableDirective } from 'angular-datatables';
 import { ListContainersService } from '../containers/list/list.service';
 import { PagenumberService } from '../shared/pagenumber.service';
+import { OnDestroy } from '@angular/core';
 import { DockstoreService } from '../shared/dockstore.service';
 
 @Component({
@@ -29,7 +30,7 @@ import { DockstoreService } from '../shared/dockstore.service';
   templateUrl: './listentry.component.html',
   styleUrls: ['./listentry.component.css']
 })
-export class ListentryComponent implements OnInit, AfterViewInit {
+export class ListentryComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() entryType: string;
   @Output() userUpdated = new EventEmitter();
   hits: any;
@@ -38,22 +39,21 @@ export class ListentryComponent implements OnInit, AfterViewInit {
   inited = false;
   dtOptions: any;
   updateResultsTable = false;
-
-  private entrySubscription: Subscription;
+  private ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private searchService: SearchService,
-              private listContainersService: ListContainersService,
-              private dockstoreService: DockstoreService) { }
+    private listContainersService: ListContainersService,
+    private dockstoreService: DockstoreService) { }
 
   ngOnInit() {
     this.updateResultsTable = false;
-    this.dtOptions = {searching: false};
+    this.dtOptions = { searching: false };
     if (this.entryType === 'tool') {
-      this.entrySubscription = this.searchService.toolhit$.subscribe(
+      this.searchService.toolhit$.takeUntil(this.ngUnsubscribe).subscribe(
         hits => {
           this.setHitSubscribe(hits);
         });
     } else if (this.entryType === 'workflow') {
-      this.entrySubscription = this.searchService.workflowhit$.subscribe(
+      this.searchService.workflowhit$.takeUntil(this.ngUnsubscribe).subscribe(
         hits => {
           this.setHitSubscribe(hits);
         });
@@ -77,6 +77,11 @@ export class ListentryComponent implements OnInit, AfterViewInit {
         }
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
