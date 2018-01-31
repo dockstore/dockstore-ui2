@@ -218,22 +218,6 @@ export class SearchService {
     ]);
   }
 
-  initializeWorkflowBucketStubs() {
-    return new Map([
-    ]);
-  }
-
-  initializeToolBucketStubs() {
-    return new Map([
-      ['Registry', 'registry'],
-      ['Namespace', 'namespace'],
-      ['Private Access', 'private_access'],
-      ['Verified', 'tags.verified'],
-      ['Verified Source', 'tags.verifiedSource'],
-    ]);
-  }
-
-
   initializeFriendlyNames() {
     return new Map([
       ['_type', 'Entry Type'],
