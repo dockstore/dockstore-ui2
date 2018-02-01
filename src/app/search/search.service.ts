@@ -207,13 +207,13 @@ export class SearchService {
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Private Access', 'private_access'],
-      ['Verified', 'tags.verified'],
+      ['VerifiedTool', 'tags.verified'],
       ['Author', 'author'],
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['Verified Source', 'tags.verifiedSource'],
-      ['Verified 2', 'workflowVersions.verified'],
-      ['Verified Source 2', 'workflowVersions.verifiedSource.keyword'],
+      ['VerifiedSourceTool', 'tags.verifiedSource'],
+      ['VerifiedWorkflow', 'workflowVersions.verified'],
+      ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
       ['Organization', 'organization']
     ]);
   }
