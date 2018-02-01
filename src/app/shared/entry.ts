@@ -31,6 +31,9 @@ import { ProviderService } from './provider.service';
 import { ContainerService } from '../shared/container.service';
 import { TrackLoginService } from '../shared/track-login.service';
 
+import { Tag } from '../shared/swagger/model/tag';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('entryTabs') entryTabs: TabsetComponent;
@@ -209,19 +212,19 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Sorts two entries by last modified, and then verified
-   * @param {any} a - version a
-   * @param {any} b - version b
+   * @param {Tag|WorkflowVersion} a - version a
+   * @param {Tag|WorkflowVersion} b - version b
    * @returns {number} - indicates order
    */
-  entryVersionSorting(a: any, b: any): number {
-    if (a.last_modified > b.last_modified) {
+  entryVersionSorting(a: Tag|WorkflowVersion, b: Tag|WorkflowVersion): number {
+    if (a.verified && !b.verified) {
       return -1;
-    } else if (a.last_modified < b.last_modified) {
+    } else if (!a.verified && b.verified) {
       return 1;
     } else {
-      if (a.verified && !b.verified) {
+      if (a.last_modified > b.last_modified) {
         return -1;
-      } else if (!a.verified && b.verified) {
+      } else if (a.last_modified < b.last_modified) {
         return 1;
       } else {
         return 0;
@@ -230,29 +233,36 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Sorts a list of versions by last modified date and then verified, returning a subset of the versions (at most 6)
-   * @param {Array<any>} versions - Array of versions
-   * @param {any} defaultVersion - Default version of the entry
+   * Sorts a list of versions by verified and then last_modified, returning a subset of the versions (at most 6)
+   * @param {Array<Tag|WorkflowVersion>} versions - Array of versions
+   * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
    */
-  getSortedVersions(versions: Array<any>, defaultVersion: any): Array<any> {
-    // Get top six versions and have default at front
-    let sortedVersions: Array<any> = [];
-    let counter = 0;
+  getSortedVersions(versions: Array<Tag|WorkflowVersion>, defaultVersion: Tag|WorkflowVersion): Array<Tag|WorkflowVersion> {
+    let sortedVersions: Array<Tag|WorkflowVersion> = [];
 
-    // Sort versions by last_modified date and then verified
+    // Sort versions by verified date and then last_modified
     sortedVersions = versions.sort((a, b) => this.entryVersionSorting(a, b));
 
-    const recentVersions: Array<any> = sortedVersions.slice(0,6);
+    // Get the top 6 versions
+    const recentVersions: Array<Tag|WorkflowVersion> = sortedVersions.slice(0,6);
     const index = recentVersions.indexOf(defaultVersion);
 
-    if (index == -1) {
-      recentVersions.splice(-1, 1);
-    } else {
-      recentVersions.splice(index, 1);
-    }
+    // Deal with default version if it exists
+    if (defaultVersion) {
+      if (index == -1) {
+        // Remove extra version if necessary
+        if (recentVersions.length > 5) {
+          recentVersions.splice(-1, 1);
+        }
+      } else {
+        // Remove existing default version if exists
+        recentVersions.splice(index, 1);
+      }
 
-    recentVersions.unshift(defaultVersion);
+      // Push default version to the top
+      recentVersions.unshift(defaultVersion);
+    }
 
     return recentVersions;
   }

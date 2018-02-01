@@ -38,6 +38,7 @@ import { ContainerService } from '../shared/container.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { Tag } from '../shared/swagger/model/tag';
 
 
 @Component({
@@ -57,7 +58,7 @@ export class WorkflowComponent extends Entry {
   private workflowCopyBtn: string;
   public selectedVersion = null;
   public urlVersion = null;
-  public sortedVersions: Array<WorkflowVersion> = [];
+  public sortedVersions: Array<Tag|WorkflowVersion> = [];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
