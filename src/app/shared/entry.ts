@@ -233,7 +233,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Sorts a list of versions by verified and then last_modified, returning a subset of the versions (at most 6)
+   * Sorts a list of versions by verified and then last_modified, returning a subset of the versions (1 default + 5 other versions max)
    * @param {Array<Tag|WorkflowVersion>} versions - Array of versions
    * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
@@ -245,12 +245,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     sortedVersions = versions.sort((a, b) => this.entryVersionSorting(a, b));
 
     // Get the top 6 versions
-    const recentVersions: Array<Tag|WorkflowVersion> = sortedVersions.slice(0,6);
+    const recentVersions: Array<Tag|WorkflowVersion> = sortedVersions.slice(0, 6);
     const index = recentVersions.indexOf(defaultVersion);
 
     // Deal with default version if it exists
     if (defaultVersion) {
-      if (index == -1) {
+      if (index === -1) {
         // Remove extra version if necessary
         if (recentVersions.length > 5) {
           recentVersions.splice(-1, 1);
