@@ -18,7 +18,6 @@ import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
 
-
 @Injectable()
 export class ImageProviderService {
 
