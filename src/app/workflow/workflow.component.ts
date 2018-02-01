@@ -57,6 +57,8 @@ export class WorkflowComponent extends Entry {
   private workflowCopyBtn: string;
   public selectedVersion = null;
   public urlVersion = null;
+  public sortedVersions: Array<WorkflowVersion> = [];
+
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
@@ -118,6 +120,7 @@ export class WorkflowComponent extends Entry {
       this.workflow = Object.assign(workflow, this.workflow);
       this.title = this.workflow.path;
       this.initTool();
+      this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
     }
   }
 
@@ -260,6 +263,11 @@ export class WorkflowComponent extends Entry {
     this.refreshService.refreshWorkflow();
   }
 
+  /**
+   * Called when the selected version is changed
+   * @param {WorkflowVersion} version - New version
+   * @return {void}
+   */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
   }

@@ -62,6 +62,7 @@ export class ContainerComponent extends Entry {
   public toolCopyBtn: string;
   public selectedVersion = null;
   public urlTag = null;
+  public sortedVersions: Array<Tag> = [];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -156,6 +157,7 @@ export class ContainerComponent extends Entry {
       this.initTool();
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
+      this.sortedVersions = this.getSortedVersions(this.tool.tags, this.defaultVersion);
     }
   }
 
@@ -270,6 +272,12 @@ export class ContainerComponent extends Entry {
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
   }
 
+
+  /**
+   * Called when the selected version is changed
+   * @param {Tag} tag - New tag
+   * @return {void}
+   */
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
     this.onTagChange(tag);

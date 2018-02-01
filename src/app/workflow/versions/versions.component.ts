@@ -94,8 +94,12 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 
-  // Updates the version and emits an event for the parent component
-  setVersion(version: WorkflowVersion) {
+  /**
+   * Updates the version and emits an event for the parent component
+   * @param {WorkflowVersion} version - version to make the selected version
+   * @returns {void}
+   */
+  setVersion(version: WorkflowVersion): void {
     this._selectedVersion = version;
     this.selectedVersionChange.emit(this._selectedVersion);
   }

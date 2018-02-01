@@ -198,12 +198,21 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     return selectedVersion;
   }
 
-  // Selects a tab of index tabIndex
-  selectTab(tabIndex: number) {
+  /**
+   * Selects a tab of index tabIndex
+   * @param {number} tabIndex - index of tab to select
+   * @returns {void}
+   */
+  selectTab(tabIndex: number): void {
     this.entryTabs.tabs[tabIndex].active = true;
   }
 
-  // Sorts two entries by last modified, and then verified
+  /**
+   * Sorts two entries by last modified, and then verified
+   * @param {any} a - version a
+   * @param {any} b - version b
+   * @returns {number} - indicates order
+   */
   entryVersionSorting(a: any, b: any): number {
     if (a.last_modified > b.last_modified) {
       return -1;
@@ -220,32 +229,31 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // Sorts a list of versions by last modified date and verified, returning a subset of the versions
-  // If a default version is set, it will appear at the top
-  // If not, will set to latest
+  /**
+   * Sorts a list of versions by last modified date and then verified, returning a subset of the versions (at most 6)
+   * @param {Array<any>} versions - Array of versions
+   * @param {any} defaultVersion - Default version of the entry
+   * @returns {Array<any>} Sorted array of versions
+   */
   getSortedVersions(versions: Array<any>, defaultVersion: any): Array<any> {
     // Get top six versions and have default at front
     let sortedVersions: Array<any> = [];
-    const finalVersions: Array<any> = [];
     let counter = 0;
 
     // Sort versions by last_modified date and then verified
     sortedVersions = versions.sort((a, b) => this.entryVersionSorting(a, b));
 
-    // The default version will appear first
-    finalVersions.push(defaultVersion);
+    const recentVersions: Array<any> = sortedVersions.slice(0,6);
+    const index = recentVersions.indexOf(defaultVersion);
 
-    // Grab the top 5 versions, ignoring the default version
-    for (const version of sortedVersions) {
-      if (version !== defaultVersion) {
-        finalVersions.push(version);
-      }
-      if (counter === 5) {
-        break;
-      }
-      counter++;
+    if (index == -1) {
+      recentVersions.splice(-1, 1);
+    } else {
+      recentVersions.splice(index, 1);
     }
 
-    return finalVersions;
+    recentVersions.unshift(defaultVersion);
+
+    return recentVersions;
   }
 }
