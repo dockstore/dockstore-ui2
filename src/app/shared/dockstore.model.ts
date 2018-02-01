@@ -36,7 +36,7 @@ export class Dockstore {
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 
   static readonly GITHUB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITHUB;
-  static readonly GITHUB_SCOPE = 'read:org,user,user:email';
+  static readonly GITHUB_SCOPE = 'read:org,user:email';
 
   static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
   static readonly QUAYIO_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.QUAY;
