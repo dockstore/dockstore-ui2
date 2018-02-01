@@ -1,4 +1,4 @@
-/*
+/*!
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,13 @@
  *    limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-
-import { ContainersService } from '../shared/swagger';
-
-@Injectable()
-export class ParamFilesService {
-
-  constructor(private containersService: ContainersService) { }
-
-  getContainerTestParamFiles(toolId: number, tagName?: string, descriptorType?: string) {
-    return this.containersService.getTestParameterFiles(toolId, descriptorType, tagName);
-  }
-
-  getTagsWithParam(toolId: number, validTags) {
-    for (const tag of validTags) {
-       this.getContainerTestParamFiles(toolId, tag.name).subscribe();
+.sidebar-btn {
+    width: 100%;
+    background-color: #51aad8;
+    &.expand {
+        margin-bottom: 10px;
     }
-  }
+    &.reset {
+        margin-top: 10px;
+    }
 }
