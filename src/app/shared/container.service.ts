@@ -102,7 +102,7 @@ getRegistryPath(registryEnumName: DockstoreTool.RegistryEnum, tool: DockstoreToo
   } else if (registryEnumName === DockstoreTool.RegistryEnum.GITLAB) {
     return 'gitlab.com';
   } else if (registryEnumName === DockstoreTool.RegistryEnum.AMAZONECR) {
-    return tool.customdockerregistrypath;
+    return tool.custom_docker_registry_path;
   } else {
     return null;
   }
