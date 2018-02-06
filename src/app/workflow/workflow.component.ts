@@ -275,7 +275,7 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
-    const currentWorkflowPath = (this.router.url).split(":")[0];
-    this.location.go(currentWorkflowPath + ":" + this.selectedVersion.name);
+    const currentWorkflowPath = (this.router.url).split(':')[0];
+    this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
   }
 }

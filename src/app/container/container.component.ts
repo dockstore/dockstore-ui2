@@ -284,8 +284,8 @@ export class ContainerComponent extends Entry {
    */
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
-    const currentToolPath = (this.router.url).split(":")[0];
-    this.location.go(currentToolPath + ":" + this.selectedVersion.name);
+    const currentToolPath = (this.router.url).split(':')[0];
+    this.location.go(currentToolPath + ':' + this.selectedVersion.name);
     this.onTagChange(tag);
   }
 
