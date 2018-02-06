@@ -28,6 +28,7 @@ import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
 import { URLSearchParams } from '@angular/http';
+import { Location } from '@angular/common';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
@@ -50,6 +51,7 @@ export class WorkflowComponent extends Entry {
   mode: string;
   workflowEditData: any;
   dnastackURL: string;
+  location: Location;
   public workflow;
   public missingWarning: boolean;
   public title: string;
@@ -63,10 +65,12 @@ export class WorkflowComponent extends Entry {
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
-    stateService: StateService, errorService: ErrorService) {
+    stateService: StateService, errorService: ErrorService,
+    private Location: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'workflows';
+    this.location = Location;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -271,5 +275,7 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
+    const currentWorkflowPath = (this.router.url).split(":")[0];
+    this.location.go(currentWorkflowPath + ":" + this.selectedVersion.name);
   }
 }

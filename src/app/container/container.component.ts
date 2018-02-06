@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
+import { Location } from '@angular/common';
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -53,6 +54,7 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  location: Location;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
@@ -77,10 +79,12 @@ export class ContainerComponent extends Entry {
     router: Router,
     private containerService: ContainerService,
     stateService: StateService,
-    errorService: ErrorService) {
+    errorService: ErrorService,
+    private Location: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'containers';
+    this.location = Location;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -280,6 +284,8 @@ export class ContainerComponent extends Entry {
    */
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
+    const currentToolPath = (this.router.url).split(":")[0];
+    this.location.go(currentToolPath + ":" + this.selectedVersion.name);
     this.onTagChange(tag);
   }
 
