@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -40,6 +40,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       this.versionTag = value;
     }
   }
+  @Output() selectedVersionChange = new EventEmitter<Tag>();
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
@@ -87,5 +88,11 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   getVerifiedSource(name: string) {
     this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
+  }
+
+  // Updates the version and emits an event for the parent component
+  setVersion(version: Tag) {
+    this.versionTag = version;
+    this.selectedVersionChange.emit(this.versionTag);
   }
 }

@@ -60,6 +60,11 @@
           </span>
         </th>
         <th>
+          <label placement="top" tooltip="Link to DOI entry for the given version">
+            DOI
+          </label>
+        </th>
+        <th>
           <label placement="top" tooltip="View more information about the given version">
             Actions
           </label>
@@ -68,7 +73,7 @@
     </thead>
     <tbody >
       <tr *ngIf="versions.length === 0">
-        <td colspan="7">
+        <td colspan="8">
           <div class="text-center">No Records Found</div>
         </td>
       </tr>
@@ -76,7 +81,8 @@
         <td class="break">
           <span *ngIf="publicPage && defaultVersion ===version.name" class="label label-primary">Default</span>
           <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
-            [value]="version.name" (click)="updateDefaultVersion(version.name)" [tooltip]="getDefaultTooltip(publicPage)"/> {{ version.name }}
+            [value]="version.name" (click)="updateDefaultVersion(version.name)" [tooltip]="getDefaultTooltip(publicPage)"/>
+          <a (click)="setVersion(version)">{{version?.name}}</a>
         </td>
         <td>
           {{ version.reference || 'n/a' }}</td>
@@ -97,6 +103,9 @@
             <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
           </a>
           <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
+        </td>
+        <td>
+          <a href="https://zenodo.org/record/">Placeholder</a>
         </td>
         <td class="tag-actions">
           <app-view-container [version]="version"></app-view-container>

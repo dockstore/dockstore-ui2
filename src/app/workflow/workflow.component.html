@@ -34,8 +34,8 @@
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
-      {{ title }}
-      <app-starring *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
+      {{ title }}<span *ngIf="!isStub()">:<span class="ds-green">{{ selectedVersion?.name }}</span></span>
+
     </h3>
     <div *ngIf="workflow">
       <span class="label label-default container-label" *ngFor="let label of labels">
@@ -61,6 +61,9 @@
       </button>
     </div>
   </div>
+  <div class="col-md-5">
+    <app-starring class="pull-right starring-button" *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
+  </div>
   <div *ngIf="!publicPage">
     <h3>
       <div class="pull-right">
@@ -78,14 +81,14 @@
 </div>
 <div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
-    <tabset id="workflow_tabs" justified="true">
+    <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
-        <button type="sbutton" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
+        <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
         <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
@@ -118,7 +121,7 @@
         </form>
       </tab>
       <tab id="versionsTab" [disabled]="isStub()" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
-        <app-versions-workflow [versions]="workflow?.workflowVersions" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
+        <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
         </app-versions-workflow>
       </tab>
       <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
@@ -136,15 +139,23 @@
   <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic">
     <div class="panel panel-default" *ngIf="workflow">
       <div class="panel-heading">
-        <h3>Versions</h3>
+        <h3>Recent Versions</h3>
       </div>
       <div class="panel-body">
-        <div class="input-group col-md-12">
-          <div class="form-group">
-            <select name="workflowVersions" class="form-control select-box" [(ngModel)]="selectedVersion">
-              <option *ngFor="let workflowVersion of workflow.workflowVersions" [ngValue]="workflowVersion">{{workflowVersion.name}}</option>
-            </select>
-          </div>
+        <div>
+          <span *ngFor="let sortedVersion of sortedVersions">
+            <p class="top-down-padding no-margin">
+              <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
+                <a href= {{getVerifiedLink()}} class="verified-check">
+                  <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+                </a>
+              </span>
+              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}}</a>
+              <small>{{sortedVersion.last_modified | date}}</small>
+            </p>
+            <hr class="no-margin">
+          </span>
+          <a (click)="selectTab(2)">See all versions</a>
         </div>
       </div>
     </div>
@@ -204,6 +215,16 @@
         <div class="container-sharing">
           <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
           </share-buttons>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>DOI</h3>
+      </div>
+      <div class="panel-body">
+        <div class="input-group">
+
         </div>
       </div>
     </div>

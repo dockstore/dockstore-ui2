@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
+import { Location } from '@angular/common';
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -41,7 +42,7 @@ import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
 import { Tag } from '../shared/swagger/model/tag';
-
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  location: Location;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
@@ -62,6 +64,7 @@ export class ContainerComponent extends Entry {
   public toolCopyBtn: string;
   public selectedVersion = null;
   public urlTag = null;
+  public sortedVersions: Array<Tag|WorkflowVersion> = [];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -76,10 +79,12 @@ export class ContainerComponent extends Entry {
     router: Router,
     private containerService: ContainerService,
     stateService: StateService,
-    errorService: ErrorService) {
+    errorService: ErrorService,
+    private Location: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'containers';
+    this.location = Location;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -156,6 +161,7 @@ export class ContainerComponent extends Entry {
       this.initTool();
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
+      this.sortedVersions = this.getSortedVersions(this.tool.tags, this.defaultVersion);
     }
   }
 
@@ -268,6 +274,19 @@ export class ContainerComponent extends Entry {
 
   onTagChange(tag: Tag): void {
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, tag.name);
+  }
+
+
+  /**
+   * Called when the selected version is changed
+   * @param {Tag} tag - New tag
+   * @return {void}
+   */
+  onSelectedVersionChange(tag: Tag): void {
+    this.selectedVersion = tag;
+    const currentToolPath = (this.router.url).split(':')[0];
+    this.location.go(currentToolPath + ':' + this.selectedVersion.name);
+    this.onTagChange(tag);
   }
 
 }

@@ -19,7 +19,7 @@ import { StateService } from './../../shared/state.service';
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 
@@ -43,6 +43,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
       this._selectedVersion = value;
     }
   }
+  @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
   workflow: any;
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -91,5 +92,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
 
   getVerifiedSource(name: string) {
     return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
+  }
+
+  /**
+   * Updates the version and emits an event for the parent component
+   * @param {WorkflowVersion} version - version to make the selected version
+   * @returns {void}
+   */
+  setVersion(version: WorkflowVersion): void {
+    this._selectedVersion = version;
+    this.selectedVersionChange.emit(this._selectedVersion);
   }
 }
