@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 
-import { StateService } from './../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
@@ -24,7 +23,11 @@ import { ContainerService } from '../shared/container.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { Tool } from './../container/register-tool/tool';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
+import { TokenSource } from './../shared/enum/token-source.enum';
 import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { MytoolsService } from './mytools.service';
@@ -41,15 +44,17 @@ export class MyToolsComponent implements OnInit {
   tools: any;
   user: any;
   tool: any;
+  public hasGitHubToken = true;
   public refreshMessage: string;
   private registerTool: Tool;
   constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, private authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
-    private refreshService: RefreshService,
-    private registerToolService: RegisterToolService) { }
+    private refreshService: RefreshService, private accountsService: AccountsService,
+    private registerToolService: RegisterToolService, private tokenService: TokenService) { }
   ngOnInit() {
+    localStorage.setItem('page', '/my-tools');
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(selectedTool => {
@@ -57,6 +62,7 @@ export class MyToolsComponent implements OnInit {
       this.communicatorService.setTool(selectedTool);
       this.setIsFirstOpen();
     });
+    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
@@ -85,6 +91,11 @@ export class MyToolsComponent implements OnInit {
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
+
+  link() {
+      this.accountsService.link(TokenSource.GITHUB);
+  }
+
   setIsFirstOpen() {
     if (this.nsContainers && this.tool) {
       for (const nsObj of this.nsContainers) {

@@ -27,7 +27,7 @@ export class ErrorService {
             errorObj = {
                 message: 'The webservice encountered an error trying to create/modify.',
                 errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error._body
+                error.error
             };
         }
         this.errorObj$.next(errorObj);

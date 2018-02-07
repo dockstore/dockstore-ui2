@@ -76,7 +76,7 @@ export class RegisterToolService {
                 'tool, please ensure that the tool attributes are ' +
                 'valid and the same image has not already been registered.',
                 errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error._body
+                error.error
             };
         }
         this.toolRegisterError.next(errorObj);

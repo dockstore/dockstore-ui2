@@ -1,3 +1,4 @@
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -55,7 +56,7 @@ import { mytoolsRouting } from './mytools.routing';
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
-    RegisterToolService
+    RegisterToolService, AccountsService
   ],
 })
 export class MyToolsModule {}

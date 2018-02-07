@@ -360,6 +360,12 @@ export class RefreshStubService {
     }
 }
 
+export class AccountsStubService {
+    link(thing: string ) {
+
+    }
+}
+
 export class RegisterWorkflowModalStubService {
     setIsModalShown() {
 
@@ -380,6 +386,7 @@ export class UserStubService {
 }
 
 export class TokenStubService {
+    hasGitHubToken$ = Observable.of(false);
     updateTokens(): void {
     }
 }
