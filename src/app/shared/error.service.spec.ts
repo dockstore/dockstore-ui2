@@ -28,11 +28,11 @@ describe('ErrorService', () => {
         expect(service).toBeTruthy();
     }));
     it('should have multiple docs', inject([ErrorService], (service: ErrorService) => {
-        service.setErrorAlert({'status': 'status', 'statusText': 'statusText', '_body': '_body'});
+        service.setErrorAlert({'status': 'status', 'statusText': 'statusText', 'error': 'error'});
         const errorObj: any = {
             message: 'The webservice encountered an error trying to create/modify.',
             errorDetails: '[HTTP ' + 'status' + '] ' + 'statusText' + ': ' +
-            '_body'
+            'error'
         };
         expect(service.errorObj$.getValue()).toEqual(errorObj);
     }));
