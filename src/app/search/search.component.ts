@@ -270,7 +270,7 @@ export class SearchComponent implements OnInit {
    * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
    *
    * **/
-  setupNonVerifiedBucketCount() {
+  setupNonVerifiedBucketCount(sideBarQuery: string) {
     const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
       this.advancedSearchObject, this.searchTerm, this.filters);
     ELASTIC_SEARCH_CLIENT.search({
@@ -279,7 +279,11 @@ export class SearchComponent implements OnInit {
       body: queryBodyNotVerified
     }).then(nonVerifiedHits => {
       this.nonVerifiedCount = nonVerifiedHits.hits.total;
-    });
+      this.updateSideBar(sideBarQuery);
+    }).catch(error => console.log(error));
+  }
+
+  setupVerifiedBucketCount(sideBarQuery: string) {
     const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(this.query_size, this.values,
       this.advancedSearchObject, this.searchTerm, this.filters);
     ELASTIC_SEARCH_CLIENT.search({
@@ -288,7 +292,8 @@ export class SearchComponent implements OnInit {
       body: queryBodyVerified
     }).then(verifiedHits => {
       this.verifiedCount = verifiedHits.hits.total;
-    });
+      this.setupNonVerifiedBucketCount(sideBarQuery);
+    }).catch(error => console.log(error));
   }
 
   setupOrderBuckets() {
@@ -387,8 +392,7 @@ export class SearchComponent implements OnInit {
     const tableQuery = this.queryBuilderService.getResultQuery(this.query_size, this.values, this.advancedSearchObject,
       this.searchTerm, this.filters);
     this.resetEntryOrder();
-    this.setupNonVerifiedBucketCount();
-    this.updateSideBar(sideBarQuery);
+    this.setupVerifiedBucketCount(sideBarQuery);
     this.updateResultsTable(tableQuery);
   }
 
