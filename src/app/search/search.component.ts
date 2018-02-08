@@ -96,6 +96,7 @@ export class SearchComponent implements OnInit {
   private entryOrder: Map<string, SubBucket>;
   private friendlyValueNames: Map<string, Map<string, string>>;
   private nonverifiedcount: number;
+  private nonVerifiedCountWorkflow: number;
 
   private advancedSearchOptions = [
     'ANDSplitFilter',
@@ -232,6 +233,9 @@ export class SearchComponent implements OnInit {
       if (key === 'tags.verified' && !bucket.key) {
         doc_count = this.nonverifiedcount;
       }
+      if (key === 'workflowVersions.verified' && !bucket.key) {
+        doc_count = this.nonVerifiedCountWorkflow;
+      }
       if (doc_count > 0) {
         if (!this.checkboxMap.get(key)) {
           this.checkboxMap.set(key, new Map<string, boolean>());
@@ -267,13 +271,22 @@ export class SearchComponent implements OnInit {
    * **/
   setupNonVerifiedBucketCount() {
     const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
-      this.advancedSearchObject, this.searchTerm, this.filters);
+      this.advancedSearchObject, this.searchTerm, this.filters, 'tags.verified');
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: queryBodyNotVerified
     }).then(nonVerifiedHits => {
       this.nonverifiedcount = nonVerifiedHits.hits.total;
+    });
+    const queryBodyNotVerifiedWorkflow = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
+      this.advancedSearchObject, this.searchTerm, this.filters, 'workflowVersions.verified');
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: queryBodyNotVerifiedWorkflow
+    }).then(nonVerifiedHits => {
+      this.nonVerifiedCountWorkflow = nonVerifiedHits.hits.total;
     });
   }
 

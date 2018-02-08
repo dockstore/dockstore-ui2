@@ -93,11 +93,10 @@ export class QueryBuilderService {
     }
 
     getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean,
-        filters: any): string {
+        filters: any, key: string): string {
         let bodyNotVerified = bodybuilder().size(query_size);
         bodyNotVerified = this.excludeContent(bodyNotVerified);
         bodyNotVerified = this.appendQuery(bodyNotVerified, values, advancedSearchObject, searchTerm);
-        const key = 'tags.verified';
         bodyNotVerified = bodyNotVerified.filter('term', key, false).notFilter('term', key, true);
         bodyNotVerified = this.appendFilter(bodyNotVerified, null, filters);
         const builtBodyNotVerified = bodyNotVerified.build();
@@ -128,8 +127,14 @@ export class QueryBuilderService {
                     if (value.size > 1) {
                         body = body.orFilter('term', key, insideFilter);
                     } else {
-                        if (key === 'tags.verified' && !insideFilter) {
-                            body = body.notFilter('term', key, !insideFilter);
+                        if (key === 'tags.verified' && insideFilter === '0') {
+                            body = body.notFilter('term', key, '1');
+                            body = body.notFilter('term', 'workflowVersions.verified', '0');
+                            body = body.notFilter('term', 'workflowVersions.verified', '1');
+                        } else if (key === 'workflowVersions.verified' && insideFilter === '0') {
+                            body = body.notFilter('term', key, '1');
+                            body = body.notFilter('term', 'tags.verified', '0');
+                            body = body.notFilter('term', 'tags.verified', '1');
                         } else {
                             body = body.filter('term', key, insideFilter);
                         }
