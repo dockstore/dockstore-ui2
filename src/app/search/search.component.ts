@@ -95,8 +95,8 @@ export class SearchComponent implements OnInit {
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
   private friendlyValueNames: Map<string, Map<string, string>>;
-  private nonverifiedcount: number;
-  private nonVerifiedCountWorkflow: number;
+  private nonVerifiedCount: number;
+  private verifiedCount: number;
 
   private advancedSearchOptions = [
     'ANDSplitFilter',
@@ -230,11 +230,12 @@ export class SearchComponent implements OnInit {
         }
       }
       let doc_count = bucket.doc_count;
-      if (key === 'tags.verified' && !bucket.key) {
-        doc_count = this.nonverifiedcount;
-      }
-      if (key === 'workflowVersions.verified' && !bucket.key) {
-        doc_count = this.nonVerifiedCountWorkflow;
+      if (key === 'tags.verified') {
+        if (bucket.key) {
+          doc_count = this.verifiedCount;
+        } else {
+          doc_count = this.nonVerifiedCount;
+        }
       }
       if (doc_count > 0) {
         if (!this.checkboxMap.get(key)) {
@@ -271,22 +272,22 @@ export class SearchComponent implements OnInit {
    * **/
   setupNonVerifiedBucketCount() {
     const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
-      this.advancedSearchObject, this.searchTerm, this.filters, 'tags.verified');
+      this.advancedSearchObject, this.searchTerm, this.filters);
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: queryBodyNotVerified
     }).then(nonVerifiedHits => {
-      this.nonverifiedcount = nonVerifiedHits.hits.total;
+      this.nonVerifiedCount = nonVerifiedHits.hits.total;
     });
-    const queryBodyNotVerifiedWorkflow = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
-      this.advancedSearchObject, this.searchTerm, this.filters, 'workflowVersions.verified');
+    const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(this.query_size, this.values,
+      this.advancedSearchObject, this.searchTerm, this.filters);
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: queryBodyNotVerifiedWorkflow
-    }).then(nonVerifiedHits => {
-      this.nonVerifiedCountWorkflow = nonVerifiedHits.hits.total;
+      body: queryBodyVerified
+    }).then(verifiedHits => {
+      this.verifiedCount = verifiedHits.hits.total;
     });
   }
 

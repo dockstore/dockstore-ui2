@@ -212,7 +212,6 @@ export class SearchService {
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
       ['VerifiedSourceTool', 'tags.verifiedSource'],
-      ['VerifiedWorkflow', 'workflowVersions.verified'],
       ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
       ['Organization', 'organization']
     ]);
@@ -224,12 +223,11 @@ export class SearchService {
       ['descriptorType', 'Language'],
       ['registry', 'Registry'],
       ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
-      ['tags.verified', 'Tool: Verified'],
+      ['tags.verified', 'Verified'],
       ['author', 'Author'],
       ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['tags.verifiedSource', 'Tool: Verified Source'],
-      ['workflowVersions.verified', 'Workflow: Verified'],
       ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
       ['organization', 'Workflow: Organization']
     ]);
@@ -247,7 +245,6 @@ export class SearchService {
       ['private_access', new SubBucket],
       ['tags.verified', new SubBucket],
       ['tags.verifiedSource', new SubBucket],
-      ['workflowVersions.verified', new SubBucket],
       ['workflowVersions.verifiedSource.keyword', new SubBucket]
     ]);
   }
