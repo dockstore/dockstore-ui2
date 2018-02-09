@@ -223,13 +223,17 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  private updateDockerPullCommand() {
+    if (this.tool && this.version) {
+      this.dockerPullCommand = this.listContainersService.getDockerPullCmd(this.tool.path, this.version.name);
+    }
+  }
+
   ngOnInit() {
     this.versionModalService.version.subscribe(version => {
       this.version = version;
-      if (this.tool && this.version) {
-        this.dockerPullCommand = this.listContainersService.getDockerPullCmd(this.tool.path, this.version.name);
-      }
       this.unsavedVersion = Object.assign({}, this.version);
+      this.updateDockerPullCommand();
     });
     this.versionModalService.isModalShown.subscribe(isModalShown => {
       if (!this.tool && this.isModalShown) {
@@ -248,6 +252,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
+      this.updateDockerPullCommand();
     });
     this.versionModalService.unsavedTestCWLFile.subscribe(
       (file: string) => {
