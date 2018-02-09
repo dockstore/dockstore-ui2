@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ProviderService } from './provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ContainerService } from './container.service';
 import { Injectable } from '@angular/core';
 

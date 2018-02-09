@@ -58,7 +58,6 @@ export class SearchComponent implements OnInit {
   private shard_size = 10000;
   public suggestTerm = '';
   private firstInit = true;
-  location: Location;
 
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
@@ -118,9 +117,8 @@ export class SearchComponent implements OnInit {
     public searchService: SearchService,
     private advancedSearchService: AdvancedSearchService,
     private router: Router,
-    private Location: Location,
+    private locationService: Location,
     private http: HttpClient) {
-    this.location = Location;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -346,7 +344,7 @@ export class SearchComponent implements OnInit {
     };
 
     const linkArray = this.searchService.createPermalinks(searchInfo);
-    this.location.go('search?' + linkArray[1]);
+    this.locationService.go('search?' + linkArray[1]);
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 

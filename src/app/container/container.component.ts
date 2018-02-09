@@ -80,11 +80,11 @@ export class ContainerComponent extends Entry {
     private containerService: ContainerService,
     stateService: StateService,
     errorService: ErrorService,
-    private Location: Location) {
+    private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'containers';
-    this.location = Location;
+    this.location = locationService;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
