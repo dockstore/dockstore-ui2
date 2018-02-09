@@ -55,6 +55,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public unsavedWDLTestParameterFilePaths: Array<string>;
   public unsavedTestCWLFile = '';
   public unsavedTestWDLFile = '';
+  public dockerPullCommand = '';
 
   public formErrors = formErrors;
   private version: ToolVersion;
@@ -222,13 +223,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
-    return this.listContainersService.getDockerPullCmd(path, tagName);
-  }
-
   ngOnInit() {
     this.versionModalService.version.subscribe(version => {
       this.version = version;
+      if (this.tool && this.version) {
+        this.dockerPullCommand = this.listContainersService.getDockerPullCmd(this.tool.path, this.version.name);
+      }
       this.unsavedVersion = Object.assign({}, this.version);
     });
     this.versionModalService.isModalShown.subscribe(isModalShown => {
