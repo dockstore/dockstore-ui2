@@ -11,7 +11,7 @@ import { ContainersService } from '../../shared/swagger';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { DateService } from './../../shared/date.service';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { realTag, realTool } from './../../test/mocked-objects';
+import { sampleTool1, sampleTag } from './../../test/mocked-objects';
 import {
     ContainersStubService,
     ContainerStubService,
@@ -58,8 +58,12 @@ describe('VersionModalComponent', () => {
   });
   it('should have the correct docker pull command', () => {
     // Inject the real tool and real tag
-    component.tool = realTool;
-    component.version = realTag;
+    const fakeTool = sampleTool1;
+    fakeTool.path = 'quay.io\/wtsicgp\/dockstore-cgpmap';
+    component.tool = fakeTool;
+    const fakeTag = sampleTag;
+    fakeTag.name = '3.0.0-rc8';
+    component.version = fakeTag;
     // Manually trigger the update
     component.updateDockerPullCommand();
     // Let it detect changes
