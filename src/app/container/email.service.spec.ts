@@ -19,6 +19,8 @@ describe('Service: Email', () => {
   tool.email = 'fake@email.ca';
   tool.registry = DockstoreTool.RegistryEnum.DOCKERHUB;
   tool.imgProvider = 'Docker Hub';
+  tool.namespace = 'postgres';
+  tool.name = 'postgres';
 
   it('should get the right request access email href', inject([EmailService], (service: EmailService) => {
     expect(service).toBeTruthy();

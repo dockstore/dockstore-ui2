@@ -65,8 +65,8 @@ describe('ImageProviderService', () => {
             default_wdl_path: '',
             gitUrl: 'https://github.com/mr-c/khmer',
             mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
-            name: '',
-            namespace: '',
+            name: 'dockstore-tool-bamstats',
+            namespace: 'dockstore-testing',
             private_access: false,
             registry: DockstoreTool.RegistryEnum.QUAYIO,
             toolname: ''
