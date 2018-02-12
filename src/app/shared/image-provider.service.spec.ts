@@ -69,8 +69,7 @@ describe('ImageProviderService', () => {
             namespace: '',
             private_access: false,
             registry: DockstoreTool.RegistryEnum.QUAYIO,
-            toolname: '',
-            path: 'quay.io/dockstore-testing/dockstore-tool-bamstats'
+            toolname: ''
         };
         expect(service.setUpImageProvider(tool).imgProvider).toEqual('Quay.io');
         const tool2: any = tool;
@@ -82,7 +81,6 @@ describe('ImageProviderService', () => {
         tool.registry = DockstoreTool.RegistryEnum.GITLAB;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
             'https://gitlab.com/dockstore-testing/dockstore-tool-bamstats/container_registry');
-        tool.path = null;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toBeFalsy();
     }));
 });

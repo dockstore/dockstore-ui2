@@ -130,5 +130,4 @@ export class ListContainersComponent extends ToolLister {
   getVerified(tool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
-
 }

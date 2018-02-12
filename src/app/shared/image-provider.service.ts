@@ -37,7 +37,7 @@ export class ImageProviderService {
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
     }
     return tool;
   }
