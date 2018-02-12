@@ -39,6 +39,7 @@ import { ListentryModule } from './listentry/listentry.module';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
+import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
@@ -126,9 +127,10 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ListentryModule,
     MarkdownModule.forRoot(),
     SearchModule,
-    ApiModule.forConfig(getApiConfig)
+    ApiModule.forRoot(getApiConfig)
   ],
   providers: [
+    AccountsService,
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     AuthService,
     LoginService,

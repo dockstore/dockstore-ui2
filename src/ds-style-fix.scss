@@ -507,6 +507,7 @@ div.contact-button {
   a {
     color: #ffffff;
   }
+  margin-right: 5px;
 }
 
 /* Media Queries - Lower Resolutions (width < 1200px) */
@@ -715,4 +716,13 @@ div.contact-button {
 
 .no-margin {
   margin:0px;
+}
+
+.ds-green {
+  color: #487980 !important;
+}
+
+.top-down-padding {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }

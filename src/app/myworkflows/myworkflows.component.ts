@@ -14,14 +14,17 @@
  *    limitations under the License.
  */
 
-import { StateService } from '../shared/state.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
+import { StateService } from '../shared/state.service';
 import { WorkflowService } from '../shared/workflow.service';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
 import { UserService } from './../loginComponents/user.service';
+import { TokenSource } from './../shared/enum/token-source.enum';
 import { RefreshService } from './../shared/refresh.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
@@ -36,6 +39,7 @@ import { MyWorkflowsService } from './myworkflows.service';
     DockstoreService]
 })
 export class MyWorkflowsComponent implements OnInit {
+  hasGitHubToken = true;
   orgWorkflows = [];
   oneAtATime = true;
   workflow: any;
@@ -43,14 +47,20 @@ export class MyWorkflowsComponent implements OnInit {
   workflows: any;
   public refreshMessage: string;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-    private usersService: UsersService, private userService: UserService,
-    private workflowService: WorkflowService, private authService: AuthService,
+    private usersService: UsersService, private userService: UserService, private tokenService: TokenService,
+    private workflowService: WorkflowService, private authService: AuthService, private accountsService: AccountsService,
     private refreshService: RefreshService, private stateService: StateService,
     private registerWorkflowModalService: RegisterWorkflowModalService) {
   }
 
+  link() {
+    this.accountsService.link(TokenSource.GITHUB);
+  }
+
   ngOnInit() {
+    localStorage.setItem('page', '/my-workflows');
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {

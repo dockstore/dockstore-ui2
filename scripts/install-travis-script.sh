@@ -9,6 +9,7 @@ if [ "$RUN_PROD" = true ]; then
   ng version
 else
   npm install
+  git diff --exit-code
   ng version
   npm install codecov
 fi

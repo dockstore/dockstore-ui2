@@ -41,4 +41,8 @@ describe('SearchService', () => {
         expect(service.haveNoHits([])).toEqual(true);
         expect(service.haveNoHits([{'asdf': 'asdf'}])).toEqual(false);
     }));
+
+    it('should not crash on null advancedSearchObject', inject([SearchService], (service: SearchService) => {
+        expect(service.hasSearchText(null, null, null)).toEqual(false);
+    }));
 });

@@ -93,7 +93,7 @@ export class RegisterWorkflowModalService {
             }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                 'workflow, please ensure that the workflow attributes are ' +
                 'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error._body)
+                error.error)
             );
     }
 
