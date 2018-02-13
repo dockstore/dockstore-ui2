@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 
-import { ToolVersion } from './../../shared/swagger/model/toolVersion';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
+
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { Tag } from '../../shared/swagger';
 
 @Injectable()
 export class VersionModalService {
@@ -26,7 +27,7 @@ export class VersionModalService {
     unsavedTestCWLFile: Subject<string> = new BehaviorSubject<string>('');
     unsavedTestWDLFile: Subject<string> = new BehaviorSubject<string>('');
     isModalShown: Subject<boolean> = new BehaviorSubject<boolean>(false);
-    version: Subject<ToolVersion> = new BehaviorSubject<ToolVersion>(null);
+    version: Subject<Tag> = new BehaviorSubject<Tag>(null);
     public setCurrentMode(mode: TagEditorMode): void {
         this.mode.next(mode);
     }
@@ -35,7 +36,7 @@ export class VersionModalService {
         this.isModalShown.next(isModalShown);
     }
 
-    public setVersion(version: ToolVersion) {
+    public setVersion(version: Tag) {
         this.version.next(version);
     }
 

@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.10
--- Dumped by pg_dump version 9.5.10
+-- Dumped from database version 9.6.7
+-- Dumped by pg_dump version 9.6.7
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -468,35 +469,35 @@ CREATE TABLE workflowversion (
 ALTER TABLE workflowversion OWNER TO postgres;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: enduser id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser ALTER COLUMN id SET DEFAULT nextval('enduser_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: label id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label ALTER COLUMN id SET DEFAULT nextval('label_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sourcefile id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile ALTER COLUMN id SET DEFAULT nextval('sourcefile_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: token id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token ALTER COLUMN id SET DEFAULT nextval('token_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: usergroup id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup ALTER COLUMN id SET DEFAULT nextval('usergroup_id_seq'::regclass);
@@ -506,7 +507,7 @@ ALTER TABLE ONLY usergroup ALTER COLUMN id SET DEFAULT nextval('usergroup_id_seq
 -- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('container_id_seq', 51, true);
+SELECT pg_catalog.setval('container_id_seq', 101, true);
 
 
 --
@@ -590,7 +591,7 @@ INSERT INTO enduser (id, avatarurl, bio, company, email, isadmin, location, user
 -- Name: enduser_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('enduser_id_seq', 1, true);
+SELECT pg_catalog.setval('enduser_id_seq', 2, true);
 
 
 --
@@ -1400,13 +1401,294 @@ RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/testDir/Dockerfile', 'DOCKERFILE');
+INSERT INTO sourcefile (id, content, path, type) VALUES (39, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+
+id: "cgpmap"
+
+label: "CGP BWA-mem mapping flow"
+
+cwlVersion: v1.0
+
+#doc:
+#  $include: includes/doc.yml
+
+doc: |
+  ![build_status](https://quay.io/repository/wtsicgp/dockstore-cgpmap/status)
+  A Docker container for PCAP-core. See the [dockstore-cgpmap](https://github.com/cancerit/dockstore-cgpmap) website for more information.
+
+  Parameters for a CWL definition are generally described in a json file, but parameters can be provided on the command line.
+
+  To see the parameters descriptions please run: cwltool --tool-help path_to.cwl
+
+#requirements:
+#  - $mixin: mixins/requirements.yml
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: "quay.io/wtsicgp/dockstore-cgpmap:3.0.0-rc8"
+
+#hints:
+#  - $mixin: mixins/hints.yml
+
+hints:
+  - class: ResourceRequirement
+    coresMin: 1 # works but long, 8 recommended
+    ramMin: 15000 # good for WGS human ~30-60x
+    outdirMin: 5000000 # unlikely any BAM processing would be possible in less
+
+inputs:
+  reference:
+    type: File
+    doc: "The core reference (fa, fai, dict) as tar.gz"
+    inputBinding:
+      prefix: -reference
+      position: 1
+      separate: true
+
+  bwa_idx:
+    type: File
+    doc: "The BWA indexes in tar.gz"
+    inputBinding:
+      prefix: -bwa_idx
+      position: 2
+      separate: true
+
+  sample:
+    type: string
+    doc: "Sample name to be included in output [B|CR]AM header, also used to name final file"
+    inputBinding:
+      prefix: -sample
+      position: 3
+      separate: true
+
+  scramble:
+    type: string?
+    doc: "Options to pass to scramble when generating CRAM output, see scramble docs"
+    default: ''''
+    inputBinding:
+      prefix: -scramble
+      position: 4
+      separate: true
+      shellQuote: true
+
+  bwa:
+    type: string?
+    default: '' -Y -K 100000000''
+    doc: "Mapping and output parameters to pass to BWA-mem, see BWA docs, default '' -Y -K 100000000''"
+    inputBinding:
+      prefix: -bwa
+      position: 5
+      separate: true
+      shellQuote: true
+
+  groupinfo:
+    type: File?
+    doc: "Readgroup metadata file for FASTQ inputs"
+    inputBinding:
+      prefix: -groupinfo
+      position: 6
+      separate: true
+
+  mmqc:
+    type: boolean
+    doc: "Apply mismatch QC to reads following duplicate marking."
+    inputBinding:
+      prefix: -qc
+      position: 7
+
+  mmqcfrac:
+    type: float?
+    default: 0.05
+    doc: "Mismatch fraction to set as max before failing a read [0.05]"
+    inputBinding:
+      prefix: -qcf
+      position: 8
+      separate: true
+
+  bams_in:
+    type:
+    - ''null''
+    - type: array
+      items: File
+    doc: "Can be BAM, CRAM, fastq (paired or interleaved), BAM/CRAM can be mixed together but not FASTQ."
+    inputBinding:
+      position: 9
+
+outputs:
+  out_cram:
+    type: File
+    outputBinding:
+      glob: $(inputs.sample).cram
+    secondaryFiles:
+      - .crai
+      - .bas
+      - .md5
+      - .met
+      - .maptime
+
+baseCommand: ["/opt/wtsi-cgp/bin/ds-cgpmap.pl", "-cram"]
+
+$schemas:
+  - http://schema.org/docs/schema_org_rdfa.html
+
+$namespaces:
+  s: http://schema.org/
+
+s:codeRepository: https://github.com/cancerit/dockstore-biobambam2
+s:license: https://spdx.org/licenses/GPL-3.0
+
+s:author:
+  - class: s:Person
+    s:identifier: https://orcid.org/0000-0002-5634-1539
+    s:email: mailto:keiranmraine@gmail.com
+    s:name: Keiran Raine
+
+dct:creator:
+  "@id": "keiranmraine@gmail.com"
+  foaf:name: Keiran Raine
+  foaf:mbox: "keiranmraine@gmail.com"
+', '/cwls/cgpmap-cramOut.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (40, 'FROM  ubuntu:16.04 as builder
+
+USER  root
+
+RUN apt-get -yq update
+RUN apt-get install -yq --no-install-recommends\
+  apt-transport-https\
+  locales\
+  curl\
+  ca-certificates\
+  libperlio-gzip-perl\
+  make\
+  bzip2\
+  gcc\
+  psmisc\
+  time\
+  zlib1g-dev\
+  libbz2-dev\
+  liblzma-dev\
+  libcurl4-gnutls-dev\
+  libncurses5-dev
+
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+
+ENV OPT /opt/wtsi-cgp
+ENV PATH $OPT/bin:$PATH
+ENV PERL5LIB $OPT/lib/perl5
+ENV LD_LIBRARY_PATH $OPT/lib
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+RUN mkdir -p $OPT/bin
+
+ADD build/opt-build.sh build/
+RUN bash build/opt-build.sh $OPT
+
+FROM  ubuntu:16.04
+
+MAINTAINER  keiranmraine@gmail.com
+
+LABEL vendor="Cancer Genome Project, Wellcome Trust Sanger Institute"
+LABEL uk.ac.sanger.cgp.description="PCAP-core for dockstore.org"
+LABEL uk.ac.sanger.cgp.version="3.0.0-rc8"
+
+RUN apt-get -yq update
+RUN apt-get install -yq --no-install-recommends\
+  apt-transport-https\
+  locales\
+  curl\
+  ca-certificates\
+  libperlio-gzip-perl\
+  bzip2\
+  psmisc\
+  time\
+  zlib1g\
+  liblzma5\
+  libncurses5
+
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+
+ENV OPT /opt/wtsi-cgp
+ENV PATH $OPT/bin:$PATH
+ENV PERL5LIB $OPT/lib/perl5
+ENV LD_LIBRARY_PATH $OPT/lib
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+RUN mkdir -p $OPT
+COPY --from=builder $OPT $OPT
+
+ADD scripts/mapping.sh $OPT/bin/mapping.sh
+ADD scripts/ds-cgpmap.pl $OPT/bin/ds-cgpmap.pl
+RUN chmod a+x $OPT/bin/mapping.sh $OPT/bin/ds-cgpmap.pl
+
+## USER CONFIGURATION
+RUN adduser --disabled-password --gecos '''' ubuntu && chsh -s /bin/bash && mkdir -p /home/ubuntu
+
+USER    ubuntu
+WORKDIR /home/ubuntu
+
+CMD ["/bin/bash"]
+', '/Dockerfile', 'DOCKERFILE');
+INSERT INTO sourcefile (id, content, path, type) VALUES (41, '{
+  "reference": {
+    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/core_ref_GRCh37d5.tar.gz",
+    "class": "File"
+  },
+  "bwa_idx": {
+    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/bwa_idx_GRCh37d5.tar.gz",
+    "class": "File"
+  },
+  "bams_in": [
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10658_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10659_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10660_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10661_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10662_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10663_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10664_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10665_i.fq.gz"},
+  ],
+  "groupinfo": {
+    "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_fq.yaml",
+    "class": "File"
+  },
+  "sample": "test",
+  "scramble": "''-e''",
+  "mmqc": false,
+  "mmqcfrag": 0.05,
+  "out_cram": {
+    "path": "/tmp/mapped.cram",
+    "class": "File",
+    "secondaryFiles": [
+      ".crai",
+      ".bas",
+      ".md5",
+      ".met",
+      ".maptime"
+    ]
+  }
+}
+', '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON');
 
 
 --
 -- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('sourcefile_id_seq', 36, true);
+SELECT pg_catalog.setval('sourcefile_id_seq', 41, true);
 
 
 --
@@ -1430,13 +1712,14 @@ INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, ver
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (52, false, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, false, NULL, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl');
 
 
 --
 -- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('tag_id_seq', 51, true);
+SELECT pg_catalog.setval('tag_id_seq', 101, true);
 
 
 --
@@ -1452,7 +1735,7 @@ INSERT INTO token (id, content, refreshtoken, tokensource, userid, username) VAL
 -- Name: token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('token_id_seq', 4, true);
+SELECT pg_catalog.setval('token_id_seq', 10, true);
 
 
 --
@@ -1464,6 +1747,7 @@ INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispubl
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', 'quay.io/A2/a', false, 'QUAY_IO', '', '');
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', 'quay.io/A2/b3', false, 'QUAY_IO', '', '');
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', 'quay.io/A2/b2', false, 'QUAY_IO', '', '');
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', 'quay.io/garyluu/dockstore-cgpmap', false, 'QUAY_IO', '', 'cgpmap-cramOut');
 
 
 --
@@ -1481,6 +1765,7 @@ INSERT INTO tool_tag (toolid, tagid) VALUES (4, 8);
 INSERT INTO tool_tag (toolid, tagid) VALUES (4, 9);
 INSERT INTO tool_tag (toolid, tagid) VALUES (5, 10);
 INSERT INTO tool_tag (toolid, tagid) VALUES (5, 11);
+INSERT INTO tool_tag (toolid, tagid) VALUES (52, 52);
 
 
 --
@@ -1506,6 +1791,7 @@ INSERT INTO user_entry (userid, entryid) VALUES (1, 17);
 INSERT INTO user_entry (userid, entryid) VALUES (1, 18);
 INSERT INTO user_entry (userid, entryid) VALUES (1, 19);
 INSERT INTO user_entry (userid, entryid) VALUES (1, 20);
+INSERT INTO user_entry (userid, entryid) VALUES (2, 52);
 
 
 --
@@ -1559,6 +1845,9 @@ INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 29);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 31);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (6, 35);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 39);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 40);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 41);
 
 
 --
@@ -1596,7 +1885,7 @@ INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference
 
 
 --
--- Name: enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1604,7 +1893,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1612,7 +1901,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
@@ -1620,7 +1909,7 @@ ALTER TABLE ONLY entry_label
 
 
 --
--- Name: label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1628,7 +1917,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY databasechangeloglock
@@ -1636,7 +1925,7 @@ ALTER TABLE ONLY databasechangeloglock
 
 
 --
--- Name: sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sourcefile sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile
@@ -1644,7 +1933,7 @@ ALTER TABLE ONLY sourcefile
 
 
 --
--- Name: starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: starred starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY starred
@@ -1652,7 +1941,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tag
@@ -1660,7 +1949,7 @@ ALTER TABLE ONLY tag
 
 
 --
--- Name: token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token
@@ -1668,7 +1957,7 @@ ALTER TABLE ONLY token
 
 
 --
--- Name: tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -1676,7 +1965,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1684,7 +1973,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1692,7 +1981,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1700,7 +1989,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1708,7 +1997,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1716,7 +2005,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1724,7 +2013,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -1732,7 +2021,15 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY workflow
+    ADD CONSTRAINT uknlbos7i98icbaql5cyt5bhhy2 UNIQUE (sourcecontrol, organization, repository, workflowname);
+
+
+--
+-- Name: user_entry user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY user_entry
@@ -1740,7 +2037,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup
@@ -1748,7 +2045,7 @@ ALTER TABLE ONLY usergroup
 
 
 --
--- Name: version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1756,7 +2053,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -1764,7 +2061,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1772,7 +2069,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflowversion workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflowversion
@@ -1808,7 +2105,7 @@ CREATE UNIQUE INDEX partial_workflow_name ON workflow USING btree (sourcecontrol
 
 
 --
--- Name: fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: starred fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY starred
@@ -1816,7 +2113,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: fkhdtovkjeuj2u4adc073nh02w; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_entry fkhdtovkjeuj2u4adc073nh02w; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY user_entry
@@ -1824,7 +2121,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1832,7 +2129,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1840,7 +2137,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1848,7 +2145,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1856,7 +2153,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1864,7 +2161,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1872,7 +2169,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1880,21 +2177,11 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
     ADD CONSTRAINT fks71c9mk0f98015eqgtyvs0ewp FOREIGN KEY (labelid) REFERENCES label(id);
-
-
---
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --

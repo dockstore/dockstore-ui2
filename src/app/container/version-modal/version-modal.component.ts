@@ -1,4 +1,3 @@
-import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,24 +14,23 @@ import { RefreshService } from '../../shared/refresh.service';
  *    limitations under the License.
  */
 
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { DateService } from './../../shared/date.service';
-import { ToolVersion } from './../../shared/swagger/model/toolVersion';
-import { VersionModalService } from './version-modal.service';
-import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
-import { NgForm, Validators } from '@angular/forms';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { ContainerService } from './../../shared/container.service';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
-import { ListContainersService } from './../../containers/list/list.service';
-import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { StateService } from './../../shared/state.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { validationMessages, validationPatterns, formErrors } from '../../shared/validationMessages.model';
-import { View } from '../../shared/view';
+import { RefreshService } from '../../shared/refresh.service';
+import { formErrors, validationMessages, validationPatterns } from '../../shared/validationMessages.model';
+import { ListContainersService } from './../../containers/list/list.service';
+import { ContainerService } from './../../shared/container.service';
+import { DateService } from './../../shared/date.service';
+import { StateService } from './../../shared/state.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { Tag } from './../../shared/swagger/model/tag';
+import { ParamfilesService } from './../paramfiles/paramfiles.service';
+import { VersionModalService } from './version-modal.service';
 
 @Component({
   selector: 'app-version-modal',
@@ -55,9 +53,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public unsavedWDLTestParameterFilePaths: Array<string>;
   public unsavedTestCWLFile = '';
   public unsavedTestWDLFile = '';
+  public dockerPullCommand = '';
 
   public formErrors = formErrors;
-  private version: ToolVersion;
+  public version: Tag;
   public validationPatterns = validationPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
@@ -222,14 +221,20 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
-    return this.listContainersService.getDockerPullCmd(path, tagName);
+  /**
+   * This updates the docker pull command in the template
+   */
+  public updateDockerPullCommand(): void {
+    if (this.tool && this.version) {
+      this.dockerPullCommand = this.listContainersService.getDockerPullCmd(this.tool.path, this.version.name);
+    }
   }
 
   ngOnInit() {
     this.versionModalService.version.subscribe(version => {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);
+      this.updateDockerPullCommand();
     });
     this.versionModalService.isModalShown.subscribe(isModalShown => {
       if (!this.tool && this.isModalShown) {
@@ -248,6 +253,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
+      this.updateDockerPullCommand();
     });
     this.versionModalService.unsavedTestCWLFile.subscribe(
       (file: string) => {

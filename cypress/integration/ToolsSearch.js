@@ -21,11 +21,11 @@ describe('Dockstore tool search page', function() {
       .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
     });
     
-    it('Should have three tools and no hidden row', function() {
+    it('Should have 4 tools', function() {
       cy
         .get('tbody')
         .children('tr')
-        .should('have.length', 3)
+        .should('have.length', 4)
     });
 
     it('Select dockstore-tool-imports', function() {
