@@ -82,6 +82,10 @@ export class QueryBuilderStubService {
     getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
         return 'thisissomefakequery';
     }
+
+    getVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
+        return 'thisissomefakequery';
+    }
 }
 
 export class GA4GHStubService {
@@ -127,7 +131,7 @@ export class SearchStubService {
     }
 
     // Initialization Functions
-    initializeBucketStubs() {
+    initializeCommonBucketStubs() {
         return new Map([
             ['Entry Type', '_type'],
             ['Registry', 'registry'],

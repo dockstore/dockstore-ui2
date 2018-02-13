@@ -1,3 +1,4 @@
+import { ExpandService } from './expand.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -44,7 +45,8 @@ describe('SearchComponent', () => {
         {provide: SearchService, useClass: SearchStubService},
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         ProviderService,
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService}
+        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService},
+        ExpandService
       ]
     })
     .compileComponents();

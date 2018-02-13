@@ -21,11 +21,10 @@
 <div class="container search-container">
   <div class="row">
     <div class="col-md-3 containers-rsb">
-      <button (click) = switchExpandAll() type="button" class="btn btn-info btn-sm sidebar-btn expand">
-        {{ expandAll? 'Collapse all': 'Expand all' }}
-      </button>
       <accordion>
-        <accordion-group panelClass="containers-accordion" #group [isOpen]="expandAll">
+        <app-expand-collapse></app-expand-collapse>
+        <!-- Common search facets -->
+        <accordion-group panelClass="containers-accordion" #group [isOpen]="expandAll$ | async">
           <div accordion-heading>
             Search
             <span>
@@ -49,7 +48,8 @@
           </button>
           <app-advancedsearch></app-advancedsearch>
         </accordion-group>
-        <accordion-group *ngFor="let key of getKeys(orderedBuckets)" #bucket panelClass="containers-accordion" [isOpen]="expandAll">
+        <!-- This is all the search facets -->
+        <accordion-group *ngFor="let key of getKeys(orderedBuckets)" #bucket panelClass="containers-accordion" [isOpen]="expandAll$ | async">
           <div accordion-heading>
             {{friendlyNames.get(key)}}
             <span>
