@@ -585,7 +585,6 @@ INSERT INTO databasechangeloglock (id, locked, lockgranted, lockedby) VALUES (1,
 --
 
 INSERT INTO enduser (id, avatarurl, bio, company, email, isadmin, location, username) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A');
-INSERT INTO enduser (id, avatarurl, bio, company, email, isadmin, location, username) VALUES (2, 'https://avatars3.githubusercontent.com/u/24548904?v=4', NULL, 'OICR', 'garylau.work@gmail.com', false, NULL, 'garyluu');
 
 
 --
