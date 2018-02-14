@@ -6,11 +6,11 @@ describe('Dockstore tool search page', function() {
   });
 
   describe('Select a tool', function() {
-    it('Should have three tools and no hidden row)', function() {
+    it('Should have 4 tools', function() {
       cy
         .get('tbody')
         .children('tr')
-        .should('have.length', 3)
+        .should('have.length', 4)
     });
 
     it('Select dockstore-tool-imports', function() {
