@@ -82,6 +82,10 @@ export class QueryBuilderStubService {
     getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
         return 'thisissomefakequery';
     }
+
+    getVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
+        return 'thisissomefakequery';
+    }
 }
 
 export class GA4GHStubService {
@@ -127,7 +131,7 @@ export class SearchStubService {
     }
 
     // Initialization Functions
-    initializeBucketStubs() {
+    initializeCommonBucketStubs() {
         return new Map([
             ['Entry Type', '_type'],
             ['Registry', 'registry'],
@@ -255,7 +259,7 @@ export class HttpStubService {
 
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
-    workflow$: BehaviorSubject<any> = new BehaviorSubject({ }); // This is the selected workflow
+    workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
@@ -276,76 +280,76 @@ export class WorkflowStubService {
 
 export class MetadataStubService {
     sourceControlList = Observable.of([
-      {
-        'value': 'github.com',
-        'friendlyName': 'GitHub'
-      },
-      {
-        'value': 'bitbucket.org',
-        'friendlyName': 'BitBucket'
-      },
-      {
-        'value': 'gitlab.com',
-        'friendlyName': 'GitLab'
-      }
+        {
+            'value': 'github.com',
+            'friendlyName': 'GitHub'
+        },
+        {
+            'value': 'bitbucket.org',
+            'friendlyName': 'BitBucket'
+        },
+        {
+            'value': 'gitlab.com',
+            'friendlyName': 'GitLab'
+        }
     ]);
 
     dockerRegistriesList = Observable.of([
-      {
-        'dockerPath': 'quay.io',
-        'friendlyName': 'Quay.io',
-        'url': 'https://quay.io/repository/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'QUAY_IO'
-      },
-      {
-        'dockerPath': 'registry.hub.docker.com',
-        'friendlyName': 'Docker Hub',
-        'url': 'https://hub.docker.com/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'DOCKER_HUB'
-      },
-      {
-        'dockerPath': 'registry.gitlab.com',
-        'friendlyName': 'GitLab',
-        'url': 'https://gitlab.com/',
-        'privateOnly': 'false',
-        'customDockerPath': 'false',
-        'enum': 'GITLAB'
-      },
-      {
-        'dockerPath': null,
-        'friendlyName': 'Amazon ECR',
-        'url': null,
-        'privateOnly': 'true',
-        'customDockerPath': 'true',
-        'enum': 'AMAZON_ECR'
-      }
+        {
+            'dockerPath': 'quay.io',
+            'friendlyName': 'Quay.io',
+            'url': 'https://quay.io/repository/',
+            'privateOnly': 'false',
+            'customDockerPath': 'false',
+            'enum': 'QUAY_IO'
+        },
+        {
+            'dockerPath': 'registry.hub.docker.com',
+            'friendlyName': 'Docker Hub',
+            'url': 'https://hub.docker.com/',
+            'privateOnly': 'false',
+            'customDockerPath': 'false',
+            'enum': 'DOCKER_HUB'
+        },
+        {
+            'dockerPath': 'registry.gitlab.com',
+            'friendlyName': 'GitLab',
+            'url': 'https://gitlab.com/',
+            'privateOnly': 'false',
+            'customDockerPath': 'false',
+            'enum': 'GITLAB'
+        },
+        {
+            'dockerPath': null,
+            'friendlyName': 'Amazon ECR',
+            'url': null,
+            'privateOnly': 'true',
+            'customDockerPath': 'true',
+            'enum': 'AMAZON_ECR'
+        }
     ]);
 
     descriptorLanguageList = Observable.of([
-      {
-        'value': 'CWL',
-        'friendlyName': 'Common Workflow Language'
-      },
-      {
-        'value': 'WDL',
-        'friendlyName': 'Workflow Description Language'
-      }
+        {
+            'value': 'CWL',
+            'friendlyName': 'Common Workflow Language'
+        },
+        {
+            'value': 'WDL',
+            'friendlyName': 'Workflow Description Language'
+        }
     ]);
 
     getSourceControlList(thing?: any): Observable<any> {
-      return this.sourceControlList;
+        return this.sourceControlList;
     }
 
     getDockerRegistries(thing?: any): Observable<any> {
-      return this.dockerRegistriesList;
+        return this.dockerRegistriesList;
     }
 
     getDescriptorLanguages(thing?: any): Observable<any> {
-      return this.descriptorLanguageList;
+        return this.descriptorLanguageList;
     }
 }
 
@@ -361,7 +365,7 @@ export class RefreshStubService {
 }
 
 export class AccountsStubService {
-    link(thing: string ) {
+    link(thing: string) {
 
     }
 }
@@ -429,7 +433,7 @@ export class ImageProviderStubService {
         tool.imgProvider = 'Quay.io';
         tool.imgProviderUrl = 'an image provider url';
         return tool;
-      }
+    }
 }
 
 export class DagStubService {
@@ -462,30 +466,34 @@ export class ParamFilesStubService {
     }
 }
 
+export class ContainertagsStubService {
+
+}
+
 export class DockstoreStubService {
     getIconClass() {
 
     }
 
-  /* Strip mailto from email field */
-  stripMailTo(email: string) {
-    return 'stripped email';
-  }
+    /* Strip mailto from email field */
+    stripMailTo(email: string) {
+        return 'stripped email';
+    }
 
-  getVersionVerified(versions) {
-    return true;
-  }
+    getVersionVerified(versions) {
+        return true;
+    }
 
-  getVerifiedSource(name: string, verifiedSource: any) {
-    return 'a verified source';
-  }
+    getVerifiedSource(name: string, verifiedSource: any) {
+        return 'a verified source';
+    }
 
-  getVerifiedSources(tool) {
-    return [{version: 'c', verifiedSource: 'tester'}];
-  }
-  getVerifiedWorkflowSources(tool) {
-    return [{version: 'c', verifiedSource: 'tester'}];
-  }
+    getVerifiedSources(tool) {
+        return [{ version: 'c', verifiedSource: 'tester' }];
+    }
+    getVerifiedWorkflowSources(tool) {
+        return [{ version: 'c', verifiedSource: 'tester' }];
+    }
 }
 
 export class DateStubService {

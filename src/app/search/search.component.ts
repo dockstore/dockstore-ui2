@@ -1,3 +1,5 @@
+import { ExpandService } from './expand.service';
+import { Observable } from 'rxjs/Observable';
 /*
  *    Copyright 2017 OICR
  *
@@ -62,9 +64,8 @@ export class SearchComponent implements OnInit {
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public query_size = 201;
-  expandAll = true;
   searchTerm = false;
-
+  expandAll$: Observable<boolean>;
   autocompleteTerms: Array<string> = new Array<string>();
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -93,7 +94,8 @@ export class SearchComponent implements OnInit {
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
   private friendlyValueNames: Map<string, Map<string, string>>;
-  private nonverifiedcount: number;
+  private nonVerifiedCount: number;
+  private verifiedCount: number;
 
   private advancedSearchOptions = [
     'ANDSplitFilter',
@@ -114,13 +116,13 @@ export class SearchComponent implements OnInit {
    * @param providerService
    */
   constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
-    public searchService: SearchService,
+    public searchService: SearchService, private expandService: ExpandService,
     private advancedSearchService: AdvancedSearchService,
     private router: Router,
     private locationService: Location,
     private http: HttpClient) {
     // Initialize mappings
-    this.bucketStubs = this.searchService.initializeBucketStubs();
+    this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
@@ -131,6 +133,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.expandAll$ = this.expandService.expandAll$;
     this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -225,8 +228,12 @@ export class SearchComponent implements OnInit {
         }
       }
       let doc_count = bucket.doc_count;
-      if (key === 'tags.verified' && !bucket.key) {
-        doc_count = this.nonverifiedcount;
+      if (key === 'tags.verified') {
+        if (bucket.key) {
+          doc_count = this.verifiedCount;
+        } else {
+          doc_count = this.nonVerifiedCount;
+        }
       }
       if (doc_count > 0) {
         if (!this.checkboxMap.get(key)) {
@@ -261,7 +268,7 @@ export class SearchComponent implements OnInit {
    * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
    *
    * **/
-  setupNonVerifiedBucketCount() {
+  setupNonVerifiedBucketCount(sideBarQuery: string) {
     const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
       this.advancedSearchObject, this.searchTerm, this.filters);
     ELASTIC_SEARCH_CLIENT.search({
@@ -269,8 +276,22 @@ export class SearchComponent implements OnInit {
       type: 'entry',
       body: queryBodyNotVerified
     }).then(nonVerifiedHits => {
-      this.nonverifiedcount = nonVerifiedHits.hits.total;
-    });
+      this.nonVerifiedCount = nonVerifiedHits.hits.total;
+      this.updateSideBar(sideBarQuery);
+    }).catch(error => console.log(error));
+  }
+
+  setupVerifiedBucketCount(sideBarQuery: string) {
+    const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(this.query_size, this.values,
+      this.advancedSearchObject, this.searchTerm, this.filters);
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: queryBodyVerified
+    }).then(verifiedHits => {
+      this.verifiedCount = verifiedHits.hits.total;
+      this.setupNonVerifiedBucketCount(sideBarQuery);
+    }).catch(error => console.log(error));
   }
 
   setupOrderBuckets() {
@@ -369,8 +390,7 @@ export class SearchComponent implements OnInit {
     const tableQuery = this.queryBuilderService.getResultQuery(this.query_size, this.values, this.advancedSearchObject,
       this.searchTerm, this.filters);
     this.resetEntryOrder();
-    this.setupNonVerifiedBucketCount();
-    this.updateSideBar(sideBarQuery);
+    this.setupVerifiedBucketCount(sideBarQuery);
     this.updateResultsTable(tableQuery);
   }
 
@@ -550,10 +570,6 @@ export class SearchComponent implements OnInit {
   clickExpand(key: string) {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
-  }
-
-  switchExpandAll() {
-    this.expandAll = !this.expandAll;
   }
 
   clickSortMode(category: string, sortMode: boolean) {

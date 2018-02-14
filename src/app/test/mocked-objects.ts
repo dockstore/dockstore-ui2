@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 
-import { Token } from './../shared/swagger/model/token';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { SourceFile } from './../shared/swagger/model/sourceFile';
+import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
+
 export const updatedWorkflow: Workflow = {
     'descriptorType': 'cwl',
     'gitUrl': 'updatedGitUrl',
@@ -150,4 +152,10 @@ export const quayToken: Token = {
     'username': 'garyluu',
     'refreshToken': null,
     'userId': 2,
+};
+
+export const sampleTag = {
+    'reference': 'sampleReference',
+    'image_id': 'sampleImageId',
+    'name': 'sampleName'
 };

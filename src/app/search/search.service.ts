@@ -201,17 +201,19 @@ export class SearchService {
   }
 
   // Initialization Functions
-  initializeBucketStubs() {
+  initializeCommonBucketStubs() {
     return new Map([
       ['Entry Type', '_type'],
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Private Access', 'private_access'],
-      ['Verified', 'tags.verified'],
+      ['VerifiedTool', 'tags.verified'],
       ['Author', 'author'],
-      ['Organization', 'namespace'],
+      ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['Verified Source', 'tags.verifiedSource'],
+      ['VerifiedSourceTool', 'tags.verifiedSource'],
+      ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
+      ['Organization', 'organization']
     ]);
   }
 
@@ -220,12 +222,14 @@ export class SearchService {
       ['_type', 'Entry Type'],
       ['descriptorType', 'Language'],
       ['registry', 'Registry'],
-      ['private_access', 'Private Access'],
+      ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
       ['tags.verified', 'Verified'],
       ['author', 'Author'],
-      ['namespace', 'Organization'],
+      ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
-      ['tags.verifiedSource', 'Verified Source'],
+      ['tags.verifiedSource', 'Tool: Verified Source'],
+      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
+      ['organization', 'Workflow: Organization']
     ]);
   }
 
@@ -236,18 +240,23 @@ export class SearchService {
       ['author', new SubBucket],
       ['registry', new SubBucket],
       ['namespace', new SubBucket],
+      ['organization', new SubBucket],
       ['labels.value.keyword', new SubBucket],
       ['private_access', new SubBucket],
       ['tags.verified', new SubBucket],
-      ['tags.verifiedSource', new SubBucket]
+      ['tags.verifiedSource', new SubBucket],
+      ['workflowVersions.verifiedSource.keyword', new SubBucket]
     ]);
   }
 
   initializeFriendlyValueNames() {
     return new Map([
-     ['tags.verified', new Map([
+     ['workflowVersions.verified', new Map([
        ['1', 'verified'], ['0', 'non-verified']
      ])],
+     ['tags.verified', new Map([
+      ['1', 'verified'], ['0', 'non-verified']
+    ])],
      ['private_access', new Map([
        ['1', 'private'], ['0', 'public']
      ])],
