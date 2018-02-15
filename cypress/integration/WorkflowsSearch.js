@@ -10,7 +10,8 @@ describe('Dockstore workflow search page', function() {
       .children('tr')
       .find('a')
       .contains('l')
-      .should('have.attr', 'href', '/workflows/github.com%20A%20l')
+      .should('have.attr', 'href', '/workflows/github.com/A/l')
+      .should('not.have.attr', 'href', '/workflows/github.com%20A%20l')
     });
      it('Should have one workflow (and a hidden row)', function() {
        cy
