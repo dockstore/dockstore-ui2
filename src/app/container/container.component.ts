@@ -108,7 +108,11 @@ export class ContainerComponent extends Entry {
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.tool_path, this.selectedVersion.name);
+    if (this.selectedVersion === null) {
+      this.dockerPullCmd = null;
+    } else {
+      this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.tool_path, this.selectedVersion.name);
+    }
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -130,7 +134,11 @@ export class ContainerComponent extends Entry {
         this.tool = tool;
         if (tool) {
           this.published = this.tool.is_published;
-          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+          if (this.tool.tags.length == 0) {
+            this.selectedVersion = null;
+          } else {
+            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+          }
         }
         // Select version
         this.setUpTool(tool);

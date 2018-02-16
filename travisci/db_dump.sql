@@ -14,14 +14,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -1753,13 +1753,12 @@ SELECT pg_catalog.setval('token_id_seq', 10, true);
 --
 -- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', false, 'QUAY_IO', '', '', NULL);
+qINSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', false, 'QUAY_IO', '', '', NULL);
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', false, 'QUAY_IO', '', '', NULL);
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', false, 'QUAY_IO', '', '', NULL);
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', false, 'QUAY_IO', '', '', NULL);
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', false, 'QUAY_IO', '', 'cgpmap-cramOut', NULL);
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'AMAZON_ECR', 'test@email.com', '', 'quay.io');
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'AMAZON_ECR', 'test@email.com', '', 'test.dkr.ecr.test.amazonaws.com');
 
 
 --
@@ -2201,4 +2200,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-

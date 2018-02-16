@@ -15,7 +15,7 @@
   -->
 
 <div>
-  <span *ngIf="_selectedVersion?.valid" class="row no-margin">
+  <span *ngIf="_selectedVersion?.valid && !nullDescriptors" class="row no-margin">
     <span class="form-group col-sm-4">
       <strong>Descriptor Type:</strong>
       <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>

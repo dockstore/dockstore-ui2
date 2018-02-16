@@ -36,7 +36,7 @@
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ tool?.tool_path }}:<span class="ds-green">{{ selectedVersion?.name }}</span>
+      {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
@@ -44,9 +44,9 @@
         {{label}}
       </span>
     </div>
-    <div *ngIf="!publicPage" class="input-group">
+    <div *ngIf="!publicPage && tool?.tags.length > 0" class="input-group">
       <div class="form-group">
-        <select class="form-control" *ngIf="tool" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
+        <select class="form-control" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
           <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
         </select>
       </div>
@@ -184,7 +184,7 @@
                   <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
                 </a>
               </span>
-              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}}</a>
+              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}}</a>
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
             <hr class="no-margin">

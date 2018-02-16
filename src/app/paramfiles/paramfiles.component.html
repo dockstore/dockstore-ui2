@@ -15,7 +15,7 @@
   -->
 
 <div class="container separation">
-  <div *ngIf="tagsMap.size">
+  <div *ngIf="tagsMap.size && !nullDescriptors">
     <div class="form-inline">
     <strong>Tool Version:</strong>
     <app-select [items]="tagNames" (select)="onVersionChange($event)"></app-select>
@@ -26,7 +26,7 @@
     <section [innerHTML]="content" highlight-js-content=".highlight"></section>
     </div>
   </div>
-  <div *ngIf="!tagsMap.size">
+  <div *ngIf="!tagsMap.size || nullDescriptors">
     <div class="alert alert-info" role="alert">
       There are no test parameters files associated with this container.
     </div>
