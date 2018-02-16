@@ -134,7 +134,7 @@ export class ContainerComponent extends Entry {
         this.tool = tool;
         if (tool) {
           this.published = this.tool.is_published;
-          if (this.tool.tags.length == 0) {
+          if (this.tool.tags.length === 0) {
             this.selectedVersion = null;
           } else {
             this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
