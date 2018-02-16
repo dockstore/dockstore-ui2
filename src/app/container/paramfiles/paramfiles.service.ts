@@ -32,7 +32,7 @@ export class ParamfilesService {
     if (type === 'workflows') {
       return this.workflowsService.getTestParameterFiles(id, versionName);
     } else {
-      return this.containersService.getTestParameterFiles(id, versionName, descriptor);
+      return this.containersService.getTestParameterFiles(id, descriptor,versionName);
     }
   }
 
