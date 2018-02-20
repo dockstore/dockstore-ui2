@@ -585,6 +585,7 @@ INSERT INTO databasechangeloglock (id, locked, lockgranted, lockedby) VALUES (1,
 --
 
 INSERT INTO enduser (id, avatarurl, bio, company, email, isadmin, location, username) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A');
+INSERT INTO enduser (id, isadmin, username, avatarurl, bio, company, email, location) VALUES (2, false, 'potato', '', NULL, '', '', NULL);
 
 
 --
