@@ -1,4 +1,3 @@
-import { ExtendedWorkflowService } from '../extended-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -25,8 +24,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
@@ -46,6 +44,7 @@ import { VersionsWorkflowComponent } from '../../workflow/versions/versions.comp
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { DateService } from '../date.service';
+import { ExtendedWorkflowService } from '../extended-workflow.service';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -59,6 +58,7 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
+import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 
@@ -96,7 +96,8 @@ import { getTooltipConfig } from './../tooltip';
     FormsModule,
     DagModule,
     StargazersModule,
-    ClipboardModule
+    ClipboardModule,
+    EntryModule
   ],
   providers: [
     ExtendedWorkflowService,

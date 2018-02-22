@@ -121,7 +121,8 @@ export class ContainerComponent extends Entry {
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
-    toolRef.checker_workflow_path = this.checkerWorkflowService.getCheckWorkflowPath(toolRef.id);
+    // TODO: Change toolRef.id to toolRef.checker_id once it's available
+    this.checkerWorkflowService.getCheckerWorkflowPath(toolRef.id);
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }

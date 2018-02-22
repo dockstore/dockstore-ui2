@@ -1,18 +1,22 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
 
-import { WorkflowsStubService } from './../test/service-stubs';
-import { CheckerWorkflowService } from './checkerWorkflow.service';
+import { CheckerWorkflowService } from './checker-workflow.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
 
 describe('Service: CheckerWorkflow', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [CheckerWorkflowService,
-      {provide: WorkflowsService, useClass: WorkflowsStubService}]
+  let service: CheckerWorkflowService;
+
+  it('should ...', () => {
+    const fakeWorkflowsService = new WorkflowsService(null, null, null);
+    const stubWorkflow = {
+      path: 'potato'
+    };
+    const spy = spyOn(fakeWorkflowsService, 'getPublishedWorkflow').and.returnValue(Observable.of(stubWorkflow));
+    service = new CheckerWorkflowService(fakeWorkflowsService);
+    expect(service).toBeTruthy();
+    service.getCheckerWorkflowPath(1);
+    service.checkerWorkflowPath$.subscribe(path => {
+      expect(path).toBe('/workflows/potato');
     });
   });
-
-  it('should ...', inject([CheckerWorkflowService], (service: CheckerWorkflowService) => {
-    expect(service).toBeTruthy();
-  }));
 });

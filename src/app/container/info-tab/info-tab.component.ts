@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 /*
  *    Copyright 2017 OICR
@@ -37,7 +39,6 @@ export class InfoTabComponent implements OnInit {
   cwlTestPathEditing: boolean;
   wdlTestPathEditing: boolean;
   isPublic: boolean;
-  checkerWorkflowTooltip = checkerWorkflowTooltip;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) {
     }

@@ -1,21 +1,41 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { WorkflowsService } from './swagger/api/workflows.service';
 import { Workflow } from './swagger/model/workflow';
 
 @Injectable()
 export class CheckerWorkflowService {
+    // The checker workflow's path
+    checkerWorkflowPath$ = new BehaviorSubject<string>('');
     constructor(private workflowsService: WorkflowsService) { }
 
-    getCheckWorkflowPath(id: number) {
+    /**
+     * Updates the checkerWorkflowPath$ observable to contain the path of the workflow
+     * @param id The workflow id of the checker workflow
+     */
+    getCheckerWorkflowPath(id: number): void {
         if (id) {
-            this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
-                return workflow.path;
+            // TODO: Convert this from subscribe to map and convert checkerWorkflowPath$ from BehaviorSubject to Observable
+            this.workflowsService.getPublishedWorkflow(id).subscribe((workflow: Workflow) => {
+                this.checkerWorkflowPath$.next(this.getURLFromWorkflowPath(workflow.path));
             }, error => {
-                return null;
+                this.clearCheckWorkflowPath();
             });
         } else {
-            return null;
+            this.clearCheckWorkflowPath();
         }
+    }
+
+    private clearCheckWorkflowPath(): void {
+        this.checkerWorkflowPath$.next('');
+    }
+
+    /**
+     * Generates the URI of a workflow based on its path
+     * @param path The workflow's path
+     */
+    private getURLFromWorkflowPath(path: string): string {
+        return '/workflows/' + path;
     }
 }

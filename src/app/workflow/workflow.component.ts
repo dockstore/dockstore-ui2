@@ -107,7 +107,8 @@ export class WorkflowComponent extends Entry {
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
-    workflowRef.checker_workflow_path = this.checkerWorkflowService.getCheckWorkflowPath(workflowRef.id);
+    // TODO: Change workflowRef.id to workflowRef.checker_id once it's available
+    this.checkerWorkflowService.getCheckerWorkflowPath(workflowRef.id);
     this.resetWorkflowEditData();
     if (workflowRef.path && workflowRef.descriptorType === 'wdl') {
       const myParams = new URLSearchParams();

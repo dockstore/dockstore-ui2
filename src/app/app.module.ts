@@ -1,3 +1,4 @@
+import { CheckerWorkflowService } from './shared/checker-workflow.service';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 /*
  *    Copyright 2017 OICR
@@ -152,7 +153,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     PagenumberService,
     TwitterService,
     ContainerService,
-    GA4GHService
+    GA4GHService,
+    CheckerWorkflowService
   ],
   bootstrap: [ AppComponent ]
 })

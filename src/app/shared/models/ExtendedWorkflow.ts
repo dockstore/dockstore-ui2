@@ -8,5 +8,4 @@ export interface ExtendedWorkflow extends Workflow {
     // The transformed git url
     provider?: string;
     providerUrl?: string;
-    checker_workflow_path?: string;
 }
