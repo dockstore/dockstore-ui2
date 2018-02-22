@@ -36,7 +36,7 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 
 import { Entry } from '../shared/entry';
-
+import { CheckerWorkflowService } from './../shared/checker-workflow.service';
 import { ContainerService } from '../shared/container.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
@@ -65,7 +65,7 @@ export class ContainerComponent extends Entry {
   public selectedVersion = null;
   public urlTag = null;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
-  constructor(private dockstoreService: DockstoreService,
+  constructor(private dockstoreService: DockstoreService, private checkerWorkflowService: CheckerWorkflowService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
@@ -105,6 +105,9 @@ export class ContainerComponent extends Entry {
     this.containerService.setCopyBtn(null);
   }
 
+  /**
+   * Populate the extra ExtendedDockstoreTool properties
+   */
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
@@ -118,6 +121,7 @@ export class ContainerComponent extends Entry {
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
+    toolRef.checker_workflow_path = this.checkerWorkflowService.getCheckWorkflowPath(toolRef.id);
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }

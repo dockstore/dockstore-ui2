@@ -29,7 +29,8 @@ import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
 import { URLSearchParams } from '@angular/http';
 import { Location } from '@angular/common';
-
+import { CheckerWorkflowService } from './../shared/checker-workflow.service';
+import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
 import { WorkflowService } from '../shared/workflow.service';
@@ -64,7 +65,7 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService,
+    router: Router, private workflowService: WorkflowService, private checkerWorkflowService: CheckerWorkflowService,
     stateService: StateService, errorService: ErrorService,
     private locationService: Location) {
     super(trackLoginService, providerService, router,
@@ -95,14 +96,18 @@ export class WorkflowComponent extends Entry {
     }
   }
 
+  /**
+   * Populate the extra ExtendedWorkflow properties
+   */
   setProperties() {
-    const workflowRef: any = this.workflow;
+    const workflowRef: ExtendedWorkflow = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
+    workflowRef.checker_workflow_path = this.checkerWorkflowService.getCheckWorkflowPath(workflowRef.id);
     this.resetWorkflowEditData();
     if (workflowRef.path && workflowRef.descriptorType === 'wdl') {
       const myParams = new URLSearchParams();
