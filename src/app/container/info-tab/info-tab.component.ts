@@ -21,6 +21,7 @@ import { validationPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { ContainerService } from './../../shared/container.service';
 import { Component, OnInit, Input } from '@angular/core';
+import { checkerWorkflowTooltip } from './../../shared/info-tab-constants';
 
 @Component({
   selector: 'app-info-tab',
@@ -36,6 +37,7 @@ export class InfoTabComponent implements OnInit {
   cwlTestPathEditing: boolean;
   wdlTestPathEditing: boolean;
   isPublic: boolean;
+  checkerWorkflowTooltip = checkerWorkflowTooltip;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) {
     }

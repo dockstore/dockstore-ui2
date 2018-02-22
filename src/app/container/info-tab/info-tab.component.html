@@ -129,6 +129,9 @@
         </button>
       </form>
     </li>
+    <li *ngIf="tool?.checker_workflow_path">
+      <strong tooltip="{{checkerWorkflowTooltip}}">Checker Workflow Path</strong>: {{ tool?.checker_workflow_path }}
+    </li>
     <li *ngIf="tool?.buildMode">
       <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
