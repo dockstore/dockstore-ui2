@@ -84,7 +84,28 @@ export class ContainerService {
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';
-    }
+
   }
+
+}
+
+/**
+ * Determines the registry path of a tool, given the registry enum
+ * @param {DockstoreTool.RegistryEnum} registryEnumName - registry enum name for a tool
+ * @param {DockstoreTool} tool - tool that we are looking at
+ */
+getRegistryPath(registryEnumName: DockstoreTool.RegistryEnum, tool: DockstoreTool) {
+  if (registryEnumName === DockstoreTool.RegistryEnum.QUAYIO) {
+    return 'quay.io';
+  } else if (registryEnumName === DockstoreTool.RegistryEnum.DOCKERHUB) {
+    return 'registry.hub.docker.com';
+  } else if (registryEnumName === DockstoreTool.RegistryEnum.GITLAB) {
+    return 'gitlab.com';
+  } else if (registryEnumName === DockstoreTool.RegistryEnum.AMAZONECR) {
+    return tool.custom_docker_registry_path;
+  } else {
+    return null;
+  }
+}
 
 }

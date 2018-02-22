@@ -237,7 +237,8 @@ export class RegisterToolService {
             is_published: false,
             private_access: toolObj.private_access,
             tool_maintainer_email: toolObj.tool_maintainer_email,
-            path: this.createPath(toolObj, customDockerRegistryPath)
+            path: this.createPath(toolObj, customDockerRegistryPath),
+            custom_docker_registry_path: customDockerRegistryPath
         };
         if (normToolObj.toolname === normToolObj.name || normToolObj.toolname === '') {
             delete normToolObj.toolname;

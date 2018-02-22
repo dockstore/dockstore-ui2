@@ -22,8 +22,8 @@ constructor(private dockstoreService: DockstoreService) { }
    */
   public composeRequestAccessEmail(tool: ExtendedDockstoreTool): string {
     const email = this.getRequestEmailMailTo(tool.tool_maintainer_email, tool.email);
-    const subject = this.getRequestEmailSubject(tool.path);
-    const body = this.getRequestEmailBody(tool.path, tool.imgProvider);
+    const subject = this.getRequestEmailSubject(tool.tool_path);
+    const body = this.getRequestEmailBody(tool.tool_path, tool.imgProvider);
     return this.composeEmail(email, subject, body);
   }
 
@@ -33,7 +33,7 @@ constructor(private dockstoreService: DockstoreService) { }
    */
   public composeContactAuthorEmail(tool: ExtendedDockstoreTool): string {
     const email = this.getInquiryEmailMailTo(tool.email);
-    const subject = this.getInquiryEmailSubject(tool.path);
+    const subject = this.getInquiryEmailSubject(tool.tool_path);
     const body = this.getInquiryEmailBody();
     return this.composeEmail(email, subject, body);
   }

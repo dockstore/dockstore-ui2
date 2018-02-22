@@ -37,7 +37,7 @@ export class ImageProviderService {
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry, tool.custom_docker_registry_path);
     }
     return tool;
   }
@@ -53,7 +53,7 @@ export class ImageProviderService {
     }
   }
 
-  private getImageProviderUrl(path: string, registry) {
+  private getImageProviderUrl(path: string, registry, customDockerRegistryPath: string) {
     if (path) {
       const imageRegExp = /^(.*)\/(.*)\/(.*)\/?$/i;
       const match = imageRegExp.exec(path);
@@ -67,6 +67,10 @@ export class ImageProviderService {
           url += ((match[2] !== '_') ? 'r/' : '');
         } else if (containerRegistry === 'GITLAB') {
           suffix = '/container_registry';
+        }
+
+        if (containerRegistry === 'AMAZON_ECR') {
+          url = customDockerRegistryPath + '/';
         }
 
         url += match[2] + '/' + match[3] + suffix;

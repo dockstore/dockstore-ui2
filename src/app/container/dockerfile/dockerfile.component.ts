@@ -34,10 +34,8 @@ export class DockerfileComponent implements AfterViewChecked {
   @Input() entrypath: string;
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToVersion();
-    }
+    this._selectedVersion = value;
+    this.reactToVersion();
   }
   content: string;
   filepath: string;
@@ -64,6 +62,7 @@ export class DockerfileComponent implements AfterViewChecked {
         );
     } else {
       this.nullContent = true;
+      this.content = null;
     }
   }
   ngAfterViewChecked() {

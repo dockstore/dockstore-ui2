@@ -2,12 +2,11 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.7
--- Dumped by pg_dump version 9.6.7
+-- Dumped from database version 9.5.11
+-- Dumped by pg_dump version 9.5.11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -15,14 +14,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -248,7 +247,9 @@ CREATE TABLE tag (
     dockerfilepath text NOT NULL,
     imageid character varying(255),
     size bigint,
-    wdlpath text DEFAULT '/Dockstore.wdl'::text NOT NULL
+    wdlpath text DEFAULT '/Dockstore.wdl'::text NOT NULL,
+    doistatus text DEFAULT 'NOT_REQUESTED'::text NOT NULL,
+    doiurl character varying(255)
 );
 
 
@@ -328,11 +329,11 @@ CREATE TABLE tool (
     mode text DEFAULT 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS'::text NOT NULL,
     name character varying(255) NOT NULL,
     namespace character varying(255),
-    path character varying(255),
     privateaccess boolean DEFAULT false,
     registry character varying(255) NOT NULL,
     toolmaintaineremail character varying(255),
-    toolname text NOT NULL
+    toolname text NOT NULL,
+    customdockerregistrypath text
 );
 
 
@@ -426,7 +427,6 @@ CREATE TABLE workflow (
     descriptortype character varying(255) NOT NULL,
     mode text DEFAULT 'STUB'::text NOT NULL,
     organization character varying(255) NOT NULL,
-    path character varying(255),
     repository character varying(255) NOT NULL,
     workflowname text,
     sourcecontrol text NOT NULL,
@@ -462,42 +462,44 @@ CREATE TABLE workflowversion (
     valid boolean,
     verified boolean DEFAULT false,
     verifiedsource character varying(255),
-    workflowpath text NOT NULL
+    workflowpath text NOT NULL,
+    doistatus text DEFAULT 'NOT_REQUESTED'::text NOT NULL,
+    doiurl character varying(255)
 );
 
 
 ALTER TABLE workflowversion OWNER TO postgres;
 
 --
--- Name: enduser id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser ALTER COLUMN id SET DEFAULT nextval('enduser_id_seq'::regclass);
 
 
 --
--- Name: label id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label ALTER COLUMN id SET DEFAULT nextval('label_id_seq'::regclass);
 
 
 --
--- Name: sourcefile id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile ALTER COLUMN id SET DEFAULT nextval('sourcefile_id_seq'::regclass);
 
 
 --
--- Name: token id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token ALTER COLUMN id SET DEFAULT nextval('token_id_seq'::regclass);
 
 
 --
--- Name: usergroup id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup ALTER COLUMN id SET DEFAULT nextval('usergroup_id_seq'::regclass);
@@ -571,6 +573,16 @@ INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('custom_tag_sequence2', 'dyuen', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.672744', 55, 'EXECUTED', '7:d6953fc6a3408ee815050f0dd762cf03', 'sql', '', NULL, '3.5.3', NULL, NULL, '5775259574');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflowWorkflownameConvertEmptyStringToNull', 'gluu', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:38:55.122412', 1, 'EXECUTED', '7:fefcc071200d5dadf0907bd192dc88da', 'update tableName=workflow', '', NULL, '3.5.3', NULL, NULL, '5775135109');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowWorkflownameNotEmptyConstraint', 'gluu', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:38:55.137851', 2, 'EXECUTED', '7:3e6ef47c3241d3027c8198dad0ce3260', 'sql', '', NULL, '3.5.3', NULL, NULL, '5775135109');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCustomDockerRegistryPath', 'agduncan', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.014385', 56, 'EXECUTED', '7:be0c4b6e5be6b34bef2459aa61a6fbd6', 'addColumn tableName=tool', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('updateAmazonCustomDockerRegistryPath', 'agduncan', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.043835', 57, 'EXECUTED', '7:abfaad1c15020be7c1ac1d07408034db', 'sql', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropWorkflowPath', 'agduncan', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.070145', 58, 'EXECUTED', '7:319cd9e44b15d6760d6cc5acad01f4cc', 'dropColumn columnName=path, tableName=workflow', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropToolPath', 'agduncan', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.095693', 59, 'EXECUTED', '7:a1a29cd690ef5ef4c75cc3a23312f0b8', 'dropColumn columnName=path, tableName=tool', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-1', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.204314', 60, 'EXECUTED', '7:d8d8a4d446e1c3a4fe0bb622eb141221', 'addColumn tableName=tag', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-2', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.302286', 61, 'EXECUTED', '7:9dd05a2ade4a535bd3a3911950a2b084', 'addColumn tableName=workflowversion', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-3', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.325685', 62, 'EXECUTED', '7:59ac9ed5e01b10c07ef316723271fd01', 'addColumn tableName=tag', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-4', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.349088', 63, 'EXECUTED', '7:c4107502953ffeb230d9470f04e20c1e', 'addColumn tableName=workflowversion', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516220040864-6', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.373742', 64, 'EXECUTED', '7:c2e8572dacac26a58d8290df8a9bb15b', 'addNotNullConstraint columnName=doistatus, tableName=tag', '', NULL, '3.5.3', NULL, NULL, '8640795994');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516220040864-7', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-14 15:39:56.398913', 65, 'EXECUTED', '7:b0138c55c539c1421b9e5791a228dff3', 'addNotNullConstraint columnName=doistatus, tableName=workflowversion', '', NULL, '3.5.3', NULL, NULL, '8640795994');
 
 
 --
@@ -1702,18 +1714,18 @@ SELECT pg_catalog.setval('sourcefile_id_seq', 41, true);
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (1, false, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (2, false, false, '2016-02-16 17:06:55', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (52, false, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, false, NULL, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (1, false, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (2, false, false, '2016-02-16 17:06:55', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl) VALUES (52, false, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, false, NULL, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl', 'NOT_REQUESTED', NULL);
 
 
 --
@@ -1742,13 +1754,12 @@ SELECT pg_catalog.setval('token_id_seq', 10, true);
 --
 -- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', 'quay.io/A/a', true, 'AMAZON_ECR', 'test@email.com', '');
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', 'quay.io/A2/b1', false, 'QUAY_IO', '', '');
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', 'quay.io/A2/a', false, 'QUAY_IO', '', '');
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', 'quay.io/A2/b3', false, 'QUAY_IO', '', '');
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', 'quay.io/A2/b2', false, 'QUAY_IO', '', '');
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, path, privateaccess, registry, toolmaintaineremail, toolname) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', 'quay.io/garyluu/dockstore-cgpmap', false, 'QUAY_IO', '', 'cgpmap-cramOut');
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', false, 'QUAY_IO', '', '', NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', false, 'QUAY_IO', '', '', NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', false, 'QUAY_IO', '', '', NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', false, 'QUAY_IO', '', '', NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', false, 'QUAY_IO', '', 'cgpmap-cramOut', NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, customdockerregistrypath) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'AMAZON_ECR', 'test@email.com', '', 'amazon.dkr.ecr.test.amazonaws.com');
 
 
 --
@@ -1855,20 +1866,20 @@ INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 41);
 -- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'bitbucket.org/a/a', 'a', NULL, 'BITBUCKET');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/c', 'c', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/f', 'f', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/k', 'k', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/e', 'e', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/g', 'g', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/j', 'j', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/m', 'm', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/d', 'd', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/i', 'i', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/b', 'b', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/h', 'h', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'github.com/A/a', 'a', NULL, 'GITHUB');
-INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, sourcecontrol) VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', NULL, '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'github.com/A/l', 'l', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'a', NULL, 'BITBUCKET');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'c', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'f', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'k', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'e', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'j', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'm', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'd', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'i', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'b', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'h', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'a', NULL, 'GITHUB');
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol) VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', NULL, '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'l', NULL, 'GITHUB');
 
 
 --
@@ -1882,11 +1893,11 @@ INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11,
 -- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl');
+INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL);
 
 
 --
--- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1894,7 +1905,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: endusergroup endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1902,7 +1913,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
@@ -1910,7 +1921,7 @@ ALTER TABLE ONLY entry_label
 
 
 --
--- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1918,7 +1929,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY databasechangeloglock
@@ -1926,7 +1937,7 @@ ALTER TABLE ONLY databasechangeloglock
 
 
 --
--- Name: sourcefile sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile
@@ -1934,7 +1945,7 @@ ALTER TABLE ONLY sourcefile
 
 
 --
--- Name: starred starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY starred
@@ -1942,7 +1953,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tag
@@ -1950,7 +1961,7 @@ ALTER TABLE ONLY tag
 
 
 --
--- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token
@@ -1958,7 +1969,7 @@ ALTER TABLE ONLY token
 
 
 --
--- Name: tool tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -1966,7 +1977,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: tool_tag tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1974,7 +1985,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: enduser uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1982,7 +1993,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: label uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1990,7 +2001,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: version_sourcefile uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1998,7 +2009,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow_workflowversion uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2006,7 +2017,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: tool_tag uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2014,7 +2025,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: tool ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -2022,7 +2033,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: workflow uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -2030,7 +2041,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: user_entry user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY user_entry
@@ -2038,7 +2049,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup
@@ -2046,7 +2057,7 @@ ALTER TABLE ONLY usergroup
 
 
 --
--- Name: version_sourcefile version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2054,7 +2065,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -2062,7 +2073,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: workflow_workflowversion workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2070,7 +2081,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: workflowversion workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflowversion
@@ -2106,7 +2117,7 @@ CREATE UNIQUE INDEX partial_workflow_name ON workflow USING btree (sourcecontrol
 
 
 --
--- Name: starred fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY starred
@@ -2114,15 +2125,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: user_entry fkhdtovkjeuj2u4adc073nh02w; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY user_entry
-    ADD CONSTRAINT fkhdtovkjeuj2u4adc073nh02w FOREIGN KEY (userid) REFERENCES enduser(id);
-
-
---
--- Name: workflow_workflowversion fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2130,7 +2133,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: tool_tag fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2138,7 +2141,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: tool_tag fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2146,7 +2149,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: workflow_workflowversion fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2154,7 +2157,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: endusergroup fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -2162,7 +2165,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: version_sourcefile fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2170,7 +2173,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: endusergroup fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -2178,7 +2181,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
@@ -2186,6 +2189,15 @@ ALTER TABLE ONLY entry_label
 
 
 --
--- PostgreSQL database dump complete
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
 
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--

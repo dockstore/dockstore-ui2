@@ -38,6 +38,7 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
   @Input() id: number;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
+    this.clearContent();
     this.onVersionChange(value);
   }
 

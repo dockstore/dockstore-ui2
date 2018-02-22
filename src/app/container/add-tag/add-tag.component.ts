@@ -116,7 +116,6 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
 
   addTag() {
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
-      console.log(response);
       this.tool.tags = response;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
@@ -128,8 +127,8 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
         this.addTestParameterFile(DescriptorType.WDL);
       }
 
-      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, null, tagName, 'CWL').subscribe();
-      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, null, tagName, 'WDL').subscribe();
+      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', null, tagName).subscribe();
+      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', null, tagName).subscribe();
       this.containerService.setTool(this.tool);
     }, error => console.log(error));
   }

@@ -156,6 +156,6 @@
     </div>
   </div>
   <div>
-    <app-launch [selectedVersion]="selectedVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
+    <app-launch *ngIf="tool.tags.length > 0" [selectedVersion]="selectedVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
   </div>
 </div>

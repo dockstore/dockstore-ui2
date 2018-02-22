@@ -69,10 +69,8 @@ export abstract class EntryFileSelector {
   }
 
   onVersionChange(value) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToVersion();
-    }
+    this._selectedVersion = value;
+    this.reactToVersion();
   }
 
   clearContent() {

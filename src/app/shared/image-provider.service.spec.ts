@@ -42,6 +42,7 @@ describe('ImageProviderService', () => {
             default_wdl_path: '',
             gitUrl: 'https://github.com/mr-c/khmer',
             mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
+            tool_path: 'quay.io/dockstore-testing/dockstore-tool-bamstats',
             name: '',
             namespace: '',
             private_access: false,
@@ -65,12 +66,12 @@ describe('ImageProviderService', () => {
             default_wdl_path: '',
             gitUrl: 'https://github.com/mr-c/khmer',
             mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
+            tool_path: 'quay.io/dockstore-testing/dockstore-tool-bamstats',
             name: '',
             namespace: '',
             private_access: false,
             registry: DockstoreTool.RegistryEnum.QUAYIO,
-            toolname: '',
-            path: 'quay.io/dockstore-testing/dockstore-tool-bamstats'
+            toolname: null
         };
         expect(service.setUpImageProvider(tool).imgProvider).toEqual('Quay.io');
         const tool2: any = tool;
@@ -82,7 +83,5 @@ describe('ImageProviderService', () => {
         tool.registry = DockstoreTool.RegistryEnum.GITLAB;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
             'https://gitlab.com/dockstore-testing/dockstore-tool-bamstats/container_registry');
-        tool.path = null;
-        expect(service.setUpImageProvider(tool).imgProviderUrl).toBeFalsy();
     }));
 });
