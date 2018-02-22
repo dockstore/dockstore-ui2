@@ -16,7 +16,7 @@ describe('Service: CheckerWorkflow', () => {
     expect(service).toBeTruthy();
     service.getCheckerWorkflowPath(1);
     service.checkerWorkflowPath$.subscribe(path => {
-      expect(path).toBe('/workflows/potato');
+      expect(path).toBe('potato');
     });
   });
 });

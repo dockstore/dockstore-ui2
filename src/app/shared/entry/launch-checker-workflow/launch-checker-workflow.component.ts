@@ -1,8 +1,6 @@
-import { updatedWorkflow } from './../../../test/mocked-objects';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { Workflow } from './../../swagger/model/workflow';
-import { WorkflowService } from './../../workflow.service';
 import { Component, OnInit } from '@angular/core';
+
+import { CheckerWorkflowService } from './../../checker-workflow.service';
 
 @Component({
   selector: 'app-launch-checker-workflow',
@@ -20,7 +18,7 @@ export class LaunchCheckerWorkflowComponent implements OnInit {
       this.workflowPath = workflowPath;
       this.updateCommand();
     });
-    this.checkerWorkflowService.checkerWorkflowVersion$.subscribe((versionName: string) => {
+    this.checkerWorkflowService.checkerWorkflowVersionName$.subscribe((versionName: string) => {
       this.versionName = versionName;
       this.updateCommand();
     });

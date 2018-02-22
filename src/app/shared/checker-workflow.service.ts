@@ -8,7 +8,7 @@ import { Workflow } from './swagger/model/workflow';
 export class CheckerWorkflowService {
     // The checker workflow's path
     checkerWorkflowPath$ = new BehaviorSubject<string>('');
-    checkerWorkflowVersion$ = new BehaviorSubject<string>('');
+    checkerWorkflowVersionName$ = new BehaviorSubject<string>('');
     constructor(private workflowsService: WorkflowsService) { }
 
     /**

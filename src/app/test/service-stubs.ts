@@ -424,6 +424,11 @@ export class StarringStubService {
     }
 }
 
+export class CheckerWorkflowStubService {
+    checkerWorkflowPath$ = Observable.of({});
+    checkerWorkflowVersionName$ = Observable.of({});
+}
+
 export class StarEntryStubService {
     starEntry$ = Observable.of({});
 }

@@ -1,8 +1,7 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
+import { CheckerWorkflowStubService } from './../../../test/service-stubs';
+import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow.component';
 
 describe('LaunchCheckerWorkflowComponent', () => {
@@ -11,9 +10,10 @@ describe('LaunchCheckerWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LaunchCheckerWorkflowComponent ]
+      declarations: [LaunchCheckerWorkflowComponent],
+      providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

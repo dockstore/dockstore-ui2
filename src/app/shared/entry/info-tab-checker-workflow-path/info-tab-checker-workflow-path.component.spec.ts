@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { Observable } from 'rxjs/Observable';
 
+import { CheckerWorkflowStubService } from './../../../test/service-stubs';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
 
@@ -9,9 +9,6 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;
   let fixture: ComponentFixture<InfoTabCheckerWorkflowPathComponent>;
 
-  class CheckerWorkflowStubService {
-    checkerWorkflowPath$ = Observable.of({});
-  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TooltipModule.forRoot()],

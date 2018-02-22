@@ -115,7 +115,7 @@ export class LaunchComponent {
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(toolPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
-    this.checkerWorkflowService.checkerWorkflowVersion$.next(versionName);
+    this.checkerWorkflowService.checkerWorkflowVersionName$.next(versionName);
   }
 
 }
