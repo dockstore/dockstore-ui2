@@ -8,6 +8,7 @@ import { Workflow } from './swagger/model/workflow';
 export class CheckerWorkflowService {
     // The checker workflow's path
     checkerWorkflowPath$ = new BehaviorSubject<string>('');
+    checkerWorkflowVersion$ = new BehaviorSubject<string>('');
     constructor(private workflowsService: WorkflowsService) { }
 
     /**
@@ -18,7 +19,7 @@ export class CheckerWorkflowService {
         if (id) {
             // TODO: Convert this from subscribe to map and convert checkerWorkflowPath$ from BehaviorSubject to Observable
             this.workflowsService.getPublishedWorkflow(id).subscribe((workflow: Workflow) => {
-                this.checkerWorkflowPath$.next(this.getURLFromWorkflowPath(workflow.path));
+                this.checkerWorkflowPath$.next(workflow.path);
             }, error => {
                 this.clearCheckWorkflowPath();
             });
@@ -29,13 +30,5 @@ export class CheckerWorkflowService {
 
     private clearCheckWorkflowPath(): void {
         this.checkerWorkflowPath$.next('');
-    }
-
-    /**
-     * Generates the URI of a workflow based on its path
-     * @param path The workflow's path
-     */
-    private getURLFromWorkflowPath(path: string): string {
-        return '/workflows/' + path;
     }
 }

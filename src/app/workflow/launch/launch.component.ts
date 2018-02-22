@@ -1,3 +1,4 @@
+import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -47,7 +48,8 @@ export class LaunchWorkflowComponent {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
-  constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
+  constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService,
+    private checkerWorkflowService: CheckerWorkflowService) {
   }
   getDescriptors(): any {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
@@ -62,5 +64,6 @@ export class LaunchWorkflowComponent {
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
+    this.checkerWorkflowService.checkerWorkflowVersion$.next(versionName);
   }
 }
