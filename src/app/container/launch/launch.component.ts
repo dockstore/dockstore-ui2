@@ -1,4 +1,3 @@
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,14 +14,14 @@ import { CheckerWorkflowService } from './../../shared/checker-workflow.service'
  *    limitations under the License.
  */
 
-import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
 import { Component, Input } from '@angular/core';
 
-import { ToolLaunchService } from './tool-launch.service';
-import { ContainerService } from '../../shared/container.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
-import { Tag } from './../../shared/swagger/model/tag';
+import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
+import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
+import { Tag } from './../../shared/swagger/model/tag';
+import { ToolLaunchService } from './tool-launch.service';
 
 @Component({
   selector: 'app-launch',

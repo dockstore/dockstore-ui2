@@ -1,4 +1,3 @@
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,14 +14,15 @@ import { CheckerWorkflowService } from './../../shared/checker-workflow.service'
  *    limitations under the License.
  */
 
-import { DescriptorService } from '../../shared/descriptor.service';
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
-import { ContainerStubService, DescriptorsStubService, CheckerWorkflowStubService } from './../../test/service-stubs';
-import { ContainerService } from './../../shared/container.service';
-import { WorkflowLaunchService } from './workflow-launch.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
+import { ContainerService } from './../../shared/container.service';
+import { CheckerWorkflowStubService, ContainerStubService, DescriptorsStubService } from './../../test/service-stubs';
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
+import { WorkflowLaunchService } from './workflow-launch.service';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;

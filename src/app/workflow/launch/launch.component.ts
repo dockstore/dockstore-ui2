@@ -1,4 +1,3 @@
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,11 +14,12 @@ import { CheckerWorkflowService } from './../../shared/checker-workflow.service'
  *    limitations under the License.
  */
 
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { Component, Input } from '@angular/core';
+
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
-import { ContainerService } from '../../shared/container.service';
+import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 
 @Component({
   selector: 'app-launch',

@@ -1,5 +1,5 @@
 <li *ngIf="checkerWorkflowPath | async">
-  <strong tooltip="{{checkerWorkflowTooltip}}">Checker Workflow Path</strong>: <a [href]="checkerWorkflowPath | async">
+  <strong tooltip="{{checkerWorkflowPathTooltip}}">Checker Workflow Path</strong>: <a [href]="checkerWorkflowPath | async">
     {{ '/workflows/' + (checkerWorkflowPath | async) }}
   </a>
 </li>

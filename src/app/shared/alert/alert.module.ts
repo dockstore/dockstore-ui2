@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 @NgModule({
     declarations: [
       AlertComponent
-],
+    ],
     imports: [
         CommonModule,
         FormsModule

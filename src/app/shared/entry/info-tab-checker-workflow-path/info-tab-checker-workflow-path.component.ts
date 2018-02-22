@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { checkerWorkflowTooltip } from './../../info-tab-constants';
+import { checkerWorkflowPathTooltip } from './../../info-tab-constants';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
@@ -11,7 +11,7 @@ import { checkerWorkflowTooltip } from './../../info-tab-constants';
 })
 export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   checkerWorkflowPath: Observable<string>;
-  checkerWorkflowTooltip = checkerWorkflowTooltip;
+  checkerWorkflowPathTooltip = checkerWorkflowPathTooltip;
   constructor(private checkerWorkflowService: CheckerWorkflowService) { }
 
   ngOnInit() {

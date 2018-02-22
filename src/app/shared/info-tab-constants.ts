@@ -1,1 +1,1 @@
-export const checkerWorkflowTooltip = 'Tooltip placeholder';
+export const checkerWorkflowPathTooltip = 'checkerWorkflowPathTooltip placeholder';

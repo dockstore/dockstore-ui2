@@ -1,6 +1,3 @@
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
-import { Observable } from 'rxjs/Observable';
-import { checkerWorkflowTooltip } from './../../shared/info-tab-constants';
 import { Tooltip } from '../../shared/tooltip';
 /*
  *    Copyright 2017 OICR

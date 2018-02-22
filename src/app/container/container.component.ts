@@ -1,5 +1,3 @@
-import { EmailService } from './email.service';
-import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,34 +14,31 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
  *    limitations under the License.
  */
 
-import { ErrorService } from './../shared/error.service';
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
-import { Subscription } from 'rxjs/Subscription';
-import { ContainersService } from './../shared/swagger/api/containers.service';
-import { StateService } from './../shared/state.service';
-import { RefreshService } from './../shared/refresh.service';
-import { FormsModule } from '@angular/forms';
-import { Component, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Dockstore } from '../shared/dockstore.model';
 import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
+import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
+import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
-
+import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-
-import { Entry } from '../shared/entry';
-import { CheckerWorkflowService } from './../shared/checker-workflow.service';
-import { ContainerService } from '../shared/container.service';
-import { ListContainersService } from '../containers/list/list.service';
-import { validationPatterns } from '../shared/validationMessages.model';
-import { TrackLoginService } from '../shared/track-login.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
-
+import { TrackLoginService } from '../shared/track-login.service';
+import { CheckerWorkflowService } from './../shared/checker-workflow.service';
+import { ErrorService } from './../shared/error.service';
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
+import { ContainersService } from './../shared/swagger/api/containers.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { EmailService } from './email.service';
 
 @Component({
   selector: 'app-container',
