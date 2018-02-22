@@ -16,4 +16,5 @@ export interface ExtendedDockstoreTool extends DockstoreTool {
     providerUrl?: string;
     buildMode?: string;
     buildModeTooltip?: string;
+    checker_workflow_path?: string;
 }
