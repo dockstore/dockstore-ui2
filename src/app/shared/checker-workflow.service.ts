@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 import { StateService } from './state.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
@@ -8,10 +9,18 @@ import { Workflow } from './swagger/model/workflow';
 @Injectable()
 export class CheckerWorkflowService {
     // The checker workflow's path
-    checkerWorkflowPath$ = new BehaviorSubject<string>('');
+    checkerWorkflowPath$: Observable<string>;
+    checkerWorkflow$ = new BehaviorSubject<Workflow>(null);
     publicPage: boolean;
     constructor(private workflowsService: WorkflowsService, private stateService: StateService) {
         this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
+        this.checkerWorkflowPath$ = this.checkerWorkflow$.map((workflow: Workflow) => {
+            if (workflow) {
+                return workflow.path;
+            } else {
+                return null;
+            }
+        });
     }
 
     /**
@@ -22,24 +31,14 @@ export class CheckerWorkflowService {
         if (id) {
             if (this.publicPage) {
                 this.workflowsService.getPublishedWorkflow(id).subscribe((workflow: Workflow) => {
-                    this.checkerWorkflowPath$.next(workflow.path);
-                }, error => {
-                    this.clearCheckWorkflowPath();
+                    this.checkerWorkflow$.next(workflow);
                 });
             } else {
                 // TODO: Convert this from subscribe to map and convert checkerWorkflowPath$ from BehaviorSubject to Observable
                 this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
-                    this.checkerWorkflowPath$.next(workflow.path);
-                }, error => {
-                    this.clearCheckWorkflowPath();
+                    this.checkerWorkflow$.next(workflow);
                 });
             }
-        } else {
-            this.clearCheckWorkflowPath();
         }
-    }
-
-    private clearCheckWorkflowPath(): void {
-        this.checkerWorkflowPath$.next('');
     }
 }
