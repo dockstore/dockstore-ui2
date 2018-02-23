@@ -12,10 +12,10 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TooltipModule.forRoot()],
-      providers: [{provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService}],
-      declarations: [ InfoTabCheckerWorkflowPathComponent ]
+      providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
+      declarations: [InfoTabCheckerWorkflowPathComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

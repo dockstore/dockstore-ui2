@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, Input } from '@angular/core';
 
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 
@@ -43,13 +41,13 @@ export class LaunchWorkflowComponent {
   cwl: string;
   dockstoreSupportedCwlLaunch: string;
   dockstoreSupportedCwlMakeTemplate: string;
+  checkEntryCommand: string;
   consonance: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
-  constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService,
-    private checkerWorkflowService: CheckerWorkflowService) {
+  constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
   }
   getDescriptors(): any {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
@@ -63,7 +61,7 @@ export class LaunchWorkflowComponent {
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
+    this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
-    this.checkerWorkflowService.checkerWorkflowVersionName$.next(versionName);
   }
 }

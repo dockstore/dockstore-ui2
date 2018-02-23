@@ -429,6 +429,10 @@ export class CheckerWorkflowStubService {
     checkerWorkflowVersionName$ = Observable.of({});
 }
 
+export class LaunchCheckerWorkflowStubService {
+    command = 'potato';
+}
+
 export class StarEntryStubService {
     starEntry$ = Observable.of({});
 }

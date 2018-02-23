@@ -1,4 +1,4 @@
-<div *ngIf="command" class="well well-sm" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+<div *ngIf="checkerWorkflowPath$ | async" class="well well-sm" tooltip="Commands for checking the checker workflow of this tool/workflow through Dockstore CLI">
   Run a checker workflow with:
   <pre>{{ command }}</pre>
 </div>

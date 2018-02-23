@@ -9,7 +9,6 @@ import { Workflow } from './swagger/model/workflow';
 export class CheckerWorkflowService {
     // The checker workflow's path
     checkerWorkflowPath$ = new BehaviorSubject<string>('');
-    checkerWorkflowVersionName$ = new BehaviorSubject<string>('');
     publicPage: boolean;
     constructor(private workflowsService: WorkflowsService, private stateService: StateService) {
         this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
@@ -22,14 +21,14 @@ export class CheckerWorkflowService {
     getCheckerWorkflowPath(id: number): void {
         if (id) {
             if (this.publicPage) {
-                this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
+                this.workflowsService.getPublishedWorkflow(id).subscribe((workflow: Workflow) => {
                     this.checkerWorkflowPath$.next(workflow.path);
                 }, error => {
                     this.clearCheckWorkflowPath();
                 });
             } else {
                 // TODO: Convert this from subscribe to map and convert checkerWorkflowPath$ from BehaviorSubject to Observable
-                this.workflowsService.getPublishedWorkflow(id).subscribe((workflow: Workflow) => {
+                this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
                     this.checkerWorkflowPath$.next(workflow.path);
                 }, error => {
                     this.clearCheckWorkflowPath();

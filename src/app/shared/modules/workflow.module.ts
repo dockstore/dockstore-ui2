@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -101,7 +100,7 @@ import { getTooltipConfig } from './../tooltip';
   ],
   providers: [
     ExtendedWorkflowService,
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     HighlightJsService,
     DateService,
     FileService,

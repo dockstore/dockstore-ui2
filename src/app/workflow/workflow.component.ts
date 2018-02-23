@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
@@ -57,7 +56,7 @@ export class WorkflowComponent extends Entry {
   private workflowCopyBtn: string;
   public selectedVersion = null;
   public urlVersion = null;
-  public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public sortedVersions: Array<Tag | WorkflowVersion> = [];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -189,7 +188,7 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshMessage !== null  || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
+    return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
   }
 
   publish() {

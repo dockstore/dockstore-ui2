@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -30,13 +29,13 @@ describe('LaunchWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LaunchWorkflowComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ WorkflowLaunchService, {provide: ContainerService, useClass: ContainerStubService},
-      { provide: WorkflowDescriptorService, useClass: DescriptorsStubService},
-      {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService}]
+      declarations: [LaunchWorkflowComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [WorkflowLaunchService, { provide: ContainerService, useClass: ContainerStubService },
+        { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
+        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

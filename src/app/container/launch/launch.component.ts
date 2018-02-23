@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, Input } from '@angular/core';
 
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
 import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
@@ -47,6 +45,7 @@ export class LaunchComponent {
   cwl: string;
   dockstoreSupportedCwlLaunch: string;
   dockstoreSupportedCwlMakeTemplate: string;
+  checkEntryCommand: string;
   consonance: string;
   descriptors: Array<DescriptorLanguageBean>;
   validDescriptors: Array<DescriptorLanguageBean>;
@@ -54,9 +53,9 @@ export class LaunchComponent {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
-  constructor(private launchService: ToolLaunchService, private checkerWorkflowService: CheckerWorkflowService,
-              private toolDescriptorService: ToolDescriptorService,
-              private metadataService: MetadataService) {
+  constructor(private launchService: ToolLaunchService,
+    private toolDescriptorService: ToolDescriptorService,
+    private metadataService: MetadataService) {
     this.metadataService.getDescriptorLanguages().subscribe(map => {
       this.descriptors = map;
       this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
@@ -113,8 +112,8 @@ export class LaunchComponent {
     this.cwl = this.launchService.getCwlString(toolPath, versionName, encodeURIComponent(this._selectedVersion.cwl_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(toolPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(toolPath, versionName);
+    this.checkEntryCommand = this.launchService.getCheckToolString(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
-    this.checkerWorkflowService.checkerWorkflowVersionName$.next(versionName);
   }
 
 }
