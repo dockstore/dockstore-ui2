@@ -33,11 +33,11 @@ export class ImageProviderService {
   }
 
   setUpImageProvider(tool) {
-    const registry = this.getImageProvider(tool.registry);
+    const registry = this.getImageProvider(tool.registry_provider);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry, tool.custom_docker_registry_path);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
     }
     return tool;
   }
@@ -53,13 +53,15 @@ export class ImageProviderService {
     }
   }
 
-  private getImageProviderUrl(path: string, registry, customDockerRegistryPath: string) {
+  private getImageProviderUrl(path: string, registry) {
     if (path) {
       const imageRegExp = /^(.*)\/(.*)\/(.*)\/?$/i;
       const match = imageRegExp.exec(path);
+      console.log("path:" + path);
 
       if (match) {
         let url = registry.url;
+        console.log("url:" + url);
         let suffix = '';
         const containerRegistry = registry.enum;
 
@@ -70,7 +72,7 @@ export class ImageProviderService {
         }
 
         if (containerRegistry === 'AMAZON_ECR') {
-          url = customDockerRegistryPath + '/';
+          url = match[1] + '/';
         }
 
         url += match[2] + '/' + match[3] + suffix;

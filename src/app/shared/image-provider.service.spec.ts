@@ -46,14 +46,17 @@ describe('ImageProviderService', () => {
             name: '',
             namespace: '',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: 'quay.io',
+            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
             toolname: ''
         };
         expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
         const tool2 = tool;
-        tool2.registry = DockstoreTool.RegistryEnum.AMAZONECR;
+        tool2.registry = 'amazon.dkr.ecr.test.amazonaws.com';
+        tool2.registry_provider = DockstoreTool.RegistryProviderEnum.AMAZONECR;
         expect(service.checkPrivateOnlyRegistry(tool)).toBeTruthy();
         tool2.registry = null;
+        tool2.registry_provider = null;
         expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
     }));
 
@@ -70,17 +73,21 @@ describe('ImageProviderService', () => {
             name: '',
             namespace: '',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: 'quay.io',
+            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
             toolname: null
         };
         expect(service.setUpImageProvider(tool).imgProvider).toEqual('Quay.io');
         const tool2: any = tool;
         tool2.registry = 'asdf';
+        tool2.registry_provider = null;
         expect(service.setUpImageProvider(tool).imgProvider).toBeFalsy();
-        tool.registry = DockstoreTool.RegistryEnum.DOCKERHUB;
+        tool.registry = 'registry.hub.docker.com';
+        tool.registry_provider = DockstoreTool.RegistryProviderEnum.DOCKERHUB;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
             'https://hub.docker.com/r/dockstore-testing/dockstore-tool-bamstats');
-        tool.registry = DockstoreTool.RegistryEnum.GITLAB;
+        tool.registry = 'gitlab.com';
+        tool.registry_provider = DockstoreTool.RegistryProviderEnum.GITLAB;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
             'https://gitlab.com/dockstore-testing/dockstore-tool-bamstats/container_registry');
     }));

@@ -61,13 +61,9 @@ export class WorkflowService {
   /**
    * Given a source control enum, determines the source control path
    */
-  getSourceControlPath(sourceControlEnumName: Workflow.SourceControlEnum) {
-    if (sourceControlEnumName === Workflow.SourceControlEnum.GITHUB) {
-      return 'github.com';
-    } else if (sourceControlEnumName === Workflow.SourceControlEnum.BITBUCKET) {
-      return 'bitbucket.org';
-    } else if (sourceControlEnumName === Workflow.SourceControlEnum.GITLAB) {
-      return 'gitlab.com';
+  getSourceControlPath(sourceControlEnumName: Workflow.SourceControlProviderEnum, workflow: Workflow) {
+    if (sourceControlEnumName === Workflow.SourceControlProviderEnum.GITHUB || sourceControlEnumName === Workflow.SourceControlProviderEnum.BITBUCKET || sourceControlEnumName === Workflow.SourceControlProviderEnum.GITLAB) {
+      return workflow.sourceControl;
     } else {
       return null;
     }
