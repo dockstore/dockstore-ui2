@@ -57,11 +57,9 @@ export class ImageProviderService {
     if (path) {
       const imageRegExp = /^(.*)\/(.*)\/(.*)\/?$/i;
       const match = imageRegExp.exec(path);
-      console.log("path:" + path);
 
       if (match) {
         let url = registry.url;
-        console.log("url:" + url);
         let suffix = '';
         const containerRegistry = registry.enum;
 
