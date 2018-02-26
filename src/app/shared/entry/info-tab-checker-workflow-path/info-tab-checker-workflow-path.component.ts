@@ -10,9 +10,11 @@ import { CheckerWorkflowService } from './../../checker-workflow.service';
 })
 export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   checkerWorkflowPath: Observable<string>;
+  checkerWorkflowDefaultWorkflowPath: Observable<string>;
   constructor(private checkerWorkflowService: CheckerWorkflowService) { }
 
   ngOnInit() {
     this.checkerWorkflowPath = this.checkerWorkflowService.checkerWorkflowPath$;
+    this.checkerWorkflowDefaultWorkflowPath = this.checkerWorkflowService.checkerWorkflowDefaultWorkflowPath$;
   }
 }

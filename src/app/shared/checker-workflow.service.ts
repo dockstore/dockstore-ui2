@@ -10,6 +10,7 @@ import { Workflow } from './swagger/model/workflow';
 export class CheckerWorkflowService {
     // The checker workflow's path
     checkerWorkflowPath$: Observable<string>;
+    checkerWorkflowDefaultWorkflowPath$: Observable<string>;
     checkerWorkflow$ = new BehaviorSubject<Workflow>(null);
     publicPage: boolean;
     constructor(private workflowsService: WorkflowsService, private stateService: StateService) {
@@ -17,6 +18,13 @@ export class CheckerWorkflowService {
         this.checkerWorkflowPath$ = this.checkerWorkflow$.map((workflow: Workflow) => {
             if (workflow) {
                 return workflow.path;
+            } else {
+                return null;
+            }
+        });
+        this.checkerWorkflowDefaultWorkflowPath$ = this.checkerWorkflow$.map((workflow: Workflow) => {
+            if (workflow) {
+                return workflow.workflow_path;
             } else {
                 return null;
             }
