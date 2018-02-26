@@ -96,13 +96,13 @@ export class CwlViewerService {
    * @param {string} workflow_path
    * @returns {string}
    */
-  cwlViewerEndpoint(providerUrl: string, reference: string, workflow_path: string) {
+  cwlViewerEndpoint(providerUrl: string, reference: string, workflow_path: string): string {
     return Dockstore.CWL_VISUALIZER_URI + '/workflows?url='
       + encodeURIComponent(providerUrl + '/blob/' + reference
         + workflow_path);
   }
 
-  private pollJobQueue(queueUrl: string) {
+  private pollJobQueue(queueUrl: string): Observable<CwlViewerDescriptor> {
     const pollFrequencyMs = 250;
     const maxPolls = 30000 / pollFrequencyMs; // Poll for a maximum of 30 seconds
     return Observable.interval(pollFrequencyMs)

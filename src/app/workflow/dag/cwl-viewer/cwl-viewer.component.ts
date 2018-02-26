@@ -17,6 +17,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
+import { ExtendedWorkflow } from "../../../shared/models/ExtendedWorkflow";
 
 @Component({
   selector: 'app-cwl-viewer',
@@ -27,10 +28,10 @@ import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 
 export class CwlViewerComponent implements OnInit {
 
-  @Input() workflow: any;
+  @Input() workflow: ExtendedWorkflow;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
-      this._selectedVersion = value;
+      this.version = value;
       this.onChange();
     }
   }
@@ -44,7 +45,7 @@ export class CwlViewerComponent implements OnInit {
   public cwlViewerDescriptor: CwlViewerDescriptor;
   public loading = false;
 
-  private _selectedVersion;
+  private version;
 
   constructor(private cwlViewerService: CwlViewerService) {
   }
@@ -58,11 +59,11 @@ export class CwlViewerComponent implements OnInit {
   }
 
   onChange() {
-    if (this._selectedVersion) {
+    if (this.version) {
       this.loading = true;
       this.cwlViewerDescriptor = null;
-      this.cwlViewerService.getVisualizationUrls(this.workflow.providerUrl, this._selectedVersion.reference,
-        this._selectedVersion.workflow_path)
+      this.cwlViewerService.getVisualizationUrls(this.workflow.providerUrl, this.version.reference,
+        this.version.workflow_path)
         .subscribe(
           cwlViewerDescriptor => {
             this.cwlViewerDescriptor = cwlViewerDescriptor;

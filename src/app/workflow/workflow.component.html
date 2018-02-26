@@ -132,7 +132,7 @@
         <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
       </tab>
       <tab id="dagTab" [disabled]="isStub()" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
-        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [theWorkflow]="workflow"></app-dag>
+        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
       </tab>
     </tabset>
   </div>

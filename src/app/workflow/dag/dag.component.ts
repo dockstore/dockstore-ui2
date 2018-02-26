@@ -203,6 +203,7 @@ export class DagComponent implements OnInit, AfterViewChecked {
   download() {
     if (this.cy) {
       const pngDAG = this.cy.png({ full: true, scale: 2 });
+      const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
       $('#exportLink').attr('href', pngDAG).attr('download', name);
     }
   }

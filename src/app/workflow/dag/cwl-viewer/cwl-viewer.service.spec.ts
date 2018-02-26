@@ -3,7 +3,7 @@ import { CwlViewerService } from './cwl-viewer.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Dockstore } from '../../../shared/dockstore.model';
 
-describe('Service: commonwl', () => {
+describe('Service: CWLViewer', () => {
 
   let cwlViewerService: CwlViewerService;
   let httpMock: HttpTestingController;
