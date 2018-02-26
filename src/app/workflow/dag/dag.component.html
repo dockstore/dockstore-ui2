@@ -16,16 +16,26 @@
 <div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div [ngClass]="{'fullscreen-dropdown': expanded}" *ngIf="dagResult && !notFound && !missingTool">
-      <a href id="exportLink" (click)="download()">
-      <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
-      <div class="btn-group pull-right" role="group" style="width:auto">
-        <button id="dag_fullscreen" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
-          <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
-          <span *ngIf="expanded" class="glyphicon glyphicon-resize-small" id="resize-small-button"></span>
-        </button>
-        <button id="dag_reload" (click)="refreshDocument()" class="dag-button btn btn-default" tooltip="Reset">
-          <span class="glyphicon glyphicon-screenshot"></span>
-        </button>
+      <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl'" style="line-height: 20px;">
+        <label class="radio-inline">
+          <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer">Common Workflow Language Viewer
+        </label>
+      </div>
+      <div>
+        <a *ngIf="dagType === 'classic'" href id="exportLink" (click)="download()">
+          <span *ngIf="dagType === 'classic'" class="glyphicon glyphicon-export"></span>Export to PNG</a>
+        <div class="btn-group pull-right" role="group" style="width:auto">
+          <button id="dag_fullscreen" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
+            <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
+            <span  *ngIf="expanded" class="glyphicon glyphicon-resize-small" id="resize-small-button"></span>
+          </button>
+          <button id="dag_reload" (click)="reset()" class="dag-button btn btn-default" tooltip="Reset">
+            <span class="glyphicon glyphicon-screenshot"></span>
+          </button>
+        </div>
       </div>
     </div>
     <div class="alert alert-warning" role="alert" *ngIf="notFound || !dagResult">
@@ -37,9 +47,17 @@
         Please ensure that the Descriptor is a valid CWL 1.0 workflow.
       </span>
     </div>
+
     <div class="alert alert-warning" role="alert" *ngIf="workflow?.descriptorType === 'cwl' && missingTool">
       <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools are missing from Github repo.
     </div>
-    <div #cy id="cy" *ngIf="dagResult !== null && !missingTool" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
+
+
+    <app-cwl-viewer *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl'" [hidden]="dagType !== 'cwlviewer'"
+                    [workflow]="workflow" [selectedVersion]="_selectedVersion" [refresh]="refreshCounter" [expanded]="expanded">
+
+    </app-cwl-viewer>
+
+    <div #cy id="cy" *ngIf="dagResult !== null && !missingTool" [hidden]="dagType !== 'classic'" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
   </div>
 </div>

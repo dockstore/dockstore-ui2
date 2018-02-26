@@ -22,6 +22,7 @@ import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { DagComponent } from './dag.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 /* tslint:disable:no-unused-variable */
 declare var cytoscape: any;
@@ -33,9 +34,11 @@ describe('DagComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DagComponent ],
+      imports: [ HttpClientTestingModule ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [ {provide: WorkflowsService, useClass: WorkflowsStubService },
-        {provide: WorkflowService, useClass: WorkflowStubService}]
+        {provide: WorkflowService, useClass: WorkflowStubService},
+      ]
     })
     .compileComponents();
   }));
