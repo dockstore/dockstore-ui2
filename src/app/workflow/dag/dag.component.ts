@@ -34,7 +34,6 @@ export class DagComponent implements OnInit, AfterViewChecked {
   @Input() defaultVersion: any;
   @Input() id: number;
   _selectedVersion: WorkflowVersion;
-  @Input() theWorkflow: any;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
@@ -59,7 +58,6 @@ export class DagComponent implements OnInit, AfterViewChecked {
   public dagType: 'classic' | 'cwlviewer' = 'classic';
   public enableCwlViewer = false;
   public refreshCounter = 1;
-  public cwlViewerError: boolean;
 
   setDagResult(dagResult: any) {
     this.dagResult = dagResult;
