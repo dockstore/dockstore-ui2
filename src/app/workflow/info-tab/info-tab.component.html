@@ -37,7 +37,7 @@
       {{ workflow?.email }}
     </a>
   </li>
-  <li *ngIf="workflow?.workflow_path">
+  <li *ngIf="workflow?.workflow_path || !isPublic">
     <form #editWorkflowPathForm="ngForm" class="form-inline">
       <div class="form-group">
         <strong [tooltip]="tooltip.workflowPath">Workflow Path: </strong>
