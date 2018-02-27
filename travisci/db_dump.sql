@@ -2,22 +2,27 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.6.7
+-- Dumped by pg_dump version 9.6.7
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -26,7 +31,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
--- Name: container_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: container_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE container_id_seq
@@ -37,27 +42,32 @@ CREATE SEQUENCE container_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.container_id_seq OWNER TO postgres;
+ALTER TABLE container_id_seq OWNER TO postgres;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: enduser; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: enduser; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE enduser (
     id bigint NOT NULL,
     isadmin boolean,
-    username character varying(255) NOT NULL
+    username character varying(255) NOT NULL,
+    avatarurl character varying(255),
+    bio character varying(255),
+    company character varying(255),
+    email character varying(255),
+    location character varying(255)
 );
 
 
-ALTER TABLE public.enduser OWNER TO postgres;
+ALTER TABLE enduser OWNER TO postgres;
 
 --
--- Name: enduser_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: enduser_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE enduser_id_seq
@@ -68,17 +78,17 @@ CREATE SEQUENCE enduser_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.enduser_id_seq OWNER TO postgres;
+ALTER TABLE enduser_id_seq OWNER TO postgres;
 
 --
--- Name: enduser_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
+-- Name: enduser_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE enduser_id_seq OWNED BY enduser.id;
 
 
 --
--- Name: endusergroup; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: endusergroup; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE endusergroup (
@@ -87,10 +97,10 @@ CREATE TABLE endusergroup (
 );
 
 
-ALTER TABLE public.endusergroup OWNER TO postgres;
+ALTER TABLE endusergroup OWNER TO postgres;
 
 --
--- Name: entry_label; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: entry_label; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE entry_label (
@@ -99,10 +109,10 @@ CREATE TABLE entry_label (
 );
 
 
-ALTER TABLE public.entry_label OWNER TO postgres;
+ALTER TABLE entry_label OWNER TO postgres;
 
 --
--- Name: label; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: label; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE label (
@@ -111,10 +121,10 @@ CREATE TABLE label (
 );
 
 
-ALTER TABLE public.label OWNER TO postgres;
+ALTER TABLE label OWNER TO postgres;
 
 --
--- Name: label_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: label_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE label_id_seq
@@ -125,17 +135,17 @@ CREATE SEQUENCE label_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.label_id_seq OWNER TO postgres;
+ALTER TABLE label_id_seq OWNER TO postgres;
 
 --
--- Name: label_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
+-- Name: label_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE label_id_seq OWNED BY label.id;
 
 
 --
--- Name: sourcefile; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: sourcefile; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE sourcefile (
@@ -146,10 +156,10 @@ CREATE TABLE sourcefile (
 );
 
 
-ALTER TABLE public.sourcefile OWNER TO postgres;
+ALTER TABLE sourcefile OWNER TO postgres;
 
 --
--- Name: sourcefile_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: sourcefile_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE sourcefile_id_seq
@@ -160,17 +170,29 @@ CREATE SEQUENCE sourcefile_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.sourcefile_id_seq OWNER TO postgres;
+ALTER TABLE sourcefile_id_seq OWNER TO postgres;
 
 --
--- Name: sourcefile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
+-- Name: sourcefile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE sourcefile_id_seq OWNED BY sourcefile.id;
 
 
 --
--- Name: tag; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: starred; Type: TABLE; Schema: public; Owner: dockstore
+--
+
+CREATE TABLE starred (
+    userid bigint NOT NULL,
+    entryid bigint NOT NULL
+);
+
+
+ALTER TABLE starred OWNER TO dockstore;
+
+--
+-- Name: tag; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tag (
@@ -192,10 +214,10 @@ CREATE TABLE tag (
 );
 
 
-ALTER TABLE public.tag OWNER TO postgres;
+ALTER TABLE tag OWNER TO postgres;
 
 --
--- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE tag_id_seq
@@ -206,10 +228,10 @@ CREATE SEQUENCE tag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tag_id_seq OWNER TO postgres;
+ALTER TABLE tag_id_seq OWNER TO postgres;
 
 --
--- Name: token; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: token; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE token (
@@ -222,10 +244,10 @@ CREATE TABLE token (
 );
 
 
-ALTER TABLE public.token OWNER TO postgres;
+ALTER TABLE token OWNER TO postgres;
 
 --
--- Name: token_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: token_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE token_id_seq
@@ -236,17 +258,17 @@ CREATE SEQUENCE token_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.token_id_seq OWNER TO postgres;
+ALTER TABLE token_id_seq OWNER TO postgres;
 
 --
--- Name: token_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
+-- Name: token_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE token_id_seq OWNED BY token.id;
 
 
 --
--- Name: tool; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: tool; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tool (
@@ -270,14 +292,16 @@ CREATE TABLE tool (
     registry character varying(255) NOT NULL,
     toolname character varying(255) NOT NULL,
     toolmaintaineremail character varying(255),
-    privateaccess boolean
+    privateaccess boolean,
+    defaulttestcwlparameterfile text,
+    defaulttestwdlparameterfile text
 );
 
 
-ALTER TABLE public.tool OWNER TO postgres;
+ALTER TABLE tool OWNER TO postgres;
 
 --
--- Name: tool_tag; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: tool_tag; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tool_tag (
@@ -286,10 +310,10 @@ CREATE TABLE tool_tag (
 );
 
 
-ALTER TABLE public.tool_tag OWNER TO postgres;
+ALTER TABLE tool_tag OWNER TO postgres;
 
 --
--- Name: user_entry; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: user_entry; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE user_entry (
@@ -298,10 +322,10 @@ CREATE TABLE user_entry (
 );
 
 
-ALTER TABLE public.user_entry OWNER TO postgres;
+ALTER TABLE user_entry OWNER TO postgres;
 
 --
--- Name: usergroup; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: usergroup; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE usergroup (
@@ -310,10 +334,10 @@ CREATE TABLE usergroup (
 );
 
 
-ALTER TABLE public.usergroup OWNER TO postgres;
+ALTER TABLE usergroup OWNER TO postgres;
 
 --
--- Name: usergroup_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
+-- Name: usergroup_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE usergroup_id_seq
@@ -324,17 +348,17 @@ CREATE SEQUENCE usergroup_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.usergroup_id_seq OWNER TO postgres;
+ALTER TABLE usergroup_id_seq OWNER TO postgres;
 
 --
--- Name: usergroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
+-- Name: usergroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE usergroup_id_seq OWNED BY usergroup.id;
 
 
 --
--- Name: version_sourcefile; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: version_sourcefile; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE version_sourcefile (
@@ -343,10 +367,10 @@ CREATE TABLE version_sourcefile (
 );
 
 
-ALTER TABLE public.version_sourcefile OWNER TO postgres;
+ALTER TABLE version_sourcefile OWNER TO postgres;
 
 --
--- Name: workflow; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflow; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE workflow (
@@ -365,14 +389,15 @@ CREATE TABLE workflow (
     organization character varying(255) NOT NULL,
     path character varying(255),
     repository character varying(255) NOT NULL,
-    workflowname text
+    workflowname text,
+    defaulttestparameterfilepath text
 );
 
 
-ALTER TABLE public.workflow OWNER TO postgres;
+ALTER TABLE workflow OWNER TO postgres;
 
 --
--- Name: workflow_workflowversion; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflow_workflowversion; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE workflow_workflowversion (
@@ -381,10 +406,10 @@ CREATE TABLE workflow_workflowversion (
 );
 
 
-ALTER TABLE public.workflow_workflowversion OWNER TO postgres;
+ALTER TABLE workflow_workflowversion OWNER TO postgres;
 
 --
--- Name: workflowversion; Type: TABLE; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflowversion; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE workflowversion (
@@ -401,102 +426,103 @@ CREATE TABLE workflowversion (
 );
 
 
-ALTER TABLE public.workflowversion OWNER TO postgres;
+ALTER TABLE workflowversion OWNER TO postgres;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: dockstore
+-- Name: enduser id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser ALTER COLUMN id SET DEFAULT nextval('enduser_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: dockstore
+-- Name: label id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label ALTER COLUMN id SET DEFAULT nextval('label_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: dockstore
+-- Name: sourcefile id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile ALTER COLUMN id SET DEFAULT nextval('sourcefile_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: dockstore
+-- Name: token id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token ALTER COLUMN id SET DEFAULT nextval('token_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: dockstore
+-- Name: usergroup id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup ALTER COLUMN id SET DEFAULT nextval('usergroup_id_seq'::regclass);
 
 
 --
--- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
+-- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('container_id_seq', 51, true);
-
-
---
--- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO enduser VALUES (1, false, 'user_A');
+SELECT pg_catalog.setval('container_id_seq', 101, true);
 
 
 --
--- Name: enduser_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
+-- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('enduser_id_seq', 1, true);
-
-
---
--- Data for Name: endusergroup; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
+INSERT INTO enduser (id, isadmin, username, avatarurl, bio, company, email, location) VALUES (1, false, 'user_A', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO enduser (id, isadmin, username, avatarurl, bio, company, email, location) VALUES (2, false, 'potato', '', NULL, '', '', NULL);
 
 
 --
--- Data for Name: entry_label; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Name: enduser_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('enduser_id_seq', 2, true);
+
+
+--
+-- Data for Name: endusergroup; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Data for Name: label; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Data for Name: entry_label; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Name: label_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
+-- Data for Name: label; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Name: label_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('label_id_seq', 1, false);
 
 
 --
--- Data for Name: sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Data for Name: sourcefile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO sourcefile VALUES (1, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (2, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (1, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (2, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (3, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (4, 'task hello {
+INSERT INTO sourcefile (id, content, path, type) VALUES (3, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (4, 'task hello {
   String name
 
   command {
@@ -511,14 +537,14 @@ workflow test {
   call hello
 }
 ', '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO sourcefile VALUES (5, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (5, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (6, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (7, 'task hello {
+INSERT INTO sourcefile (id, content, path, type) VALUES (6, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (7, 'task hello {
   String name
 
   command {
@@ -533,27 +559,27 @@ workflow test {
   call hello
 }
 ', '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO sourcefile VALUES (8, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (8, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (9, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (10, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (9, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (10, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (11, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (12, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (11, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (12, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (13, 'task hello {
+INSERT INTO sourcefile (id, content, path, type) VALUES (13, 'task hello {
   String name
 
   command {
@@ -568,13 +594,13 @@ workflow test {
   call hello
 }
 ', '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO sourcefile VALUES (14, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (14, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (15, 'task hello {
+INSERT INTO sourcefile (id, content, path, type) VALUES (15, 'task hello {
   String name
 
   command {
@@ -589,13 +615,13 @@ workflow test {
   call hello
 }
 ', '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO sourcefile VALUES (16, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (16, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (17, 'class: s:SoftwareSourceCode
+INSERT INTO sourcefile (id, content, path, type) VALUES (17, 'class: s:SoftwareSourceCode
 s:name: "alea"
 s:about: >
   ALEA is a computational toolbox for allele-specific (AS) epigenomics analysis, which incorporates allelic variation data within existing
@@ -633,12 +659,12 @@ s:author:
     s:name: "Department of Medical Genetics, Life Sciences Institute, The University of British Columbia, Vancouver, British Columbia, V6T 1Z3, Canada"
 
 ', 'alea-metadata.yaml', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (18, 'class: EnvVarRequirement
+INSERT INTO sourcefile (id, content, path, type) VALUES (18, 'class: EnvVarRequirement
 envDef:
   - envName: "PATH"
     envValue: "/usr/local/bin/:/usr/bin:/bin"
 ', 'envvar-global.yml', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (19, 'class: DockerRequirement
+INSERT INTO sourcefile (id, content, path, type) VALUES (19, 'class: DockerRequirement
 dockerPull: scidap/alea:v1.2.2
 #dockerImageId: scidap/alea:v1.2.2 #not yet ready
 dockerFile: |
@@ -782,7 +808,7 @@ dockerFile: |
       sed -i.bak s/^AL_USE_CONCATENATED_GENOME/#AL_USE_CONCATENATED_GENOME/g alea.config && \
       rm -f alea.config.bak
 ', 'alea-docker.yml', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (28, 'cwlVersion: v1.0
+INSERT INTO sourcefile (id, content, path, type) VALUES (28, 'cwlVersion: v1.0
 class: Workflow
 inputs:
   inp: File
@@ -814,7 +840,7 @@ steps:
       pattern: "hello"
     out: [outfile]
 ', '/1st-workflow.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (29, '#!/usr/bin/env cwl-runner
+INSERT INTO sourcefile (id, content, path, type) VALUES (29, '#!/usr/bin/env cwl-runner
 class: CommandLineTool
 cwlVersion: v1.0
 
@@ -832,7 +858,7 @@ outputs:
 
 baseCommand: grep
 ', 'grep.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (30, '#!/usr/bin/env cwl-runner
+INSERT INTO sourcefile (id, content, path, type) VALUES (30, '#!/usr/bin/env cwl-runner
 class: CommandLineTool
 cwlVersion: v1.0
 
@@ -847,7 +873,7 @@ outputs:
 
 baseCommand: [wc, -l]
 ', 'wc.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (20, '#!/usr/bin/env cwl-runner
+INSERT INTO sourcefile (id, content, path, type) VALUES (20, '#!/usr/bin/env cwl-runner
 
 cwlVersion: "cwl:draft-3"
 
@@ -920,9 +946,9 @@ s:author:
     - class: s:Organization
       s:name: "Barski Lab"
 ', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (21, 'FROM ubuntu:12.04
+INSERT INTO sourcefile (id, content, path, type) VALUES (21, 'FROM ubuntu:12.04
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (22, 'class: s:SoftwareSourceCode
+INSERT INTO sourcefile (id, content, path, type) VALUES (22, 'class: s:SoftwareSourceCode
 s:name: "alea"
 s:about: >
   ALEA is a computational toolbox for allele-specific (AS) epigenomics analysis, which incorporates allelic variation data within existing
@@ -960,12 +986,12 @@ s:author:
     s:name: "Department of Medical Genetics, Life Sciences Institute, The University of British Columbia, Vancouver, British Columbia, V6T 1Z3, Canada"
 
 ', 'alea-metadata.yaml', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (23, 'class: EnvVarRequirement
+INSERT INTO sourcefile (id, content, path, type) VALUES (23, 'class: EnvVarRequirement
 envDef:
   - envName: "PATH"
     envValue: "/usr/local/bin/:/usr/bin:/bin"
 ', 'envvar-global.yml', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (24, 'class: DockerRequirement
+INSERT INTO sourcefile (id, content, path, type) VALUES (24, 'class: DockerRequirement
 dockerPull: scidap/alea:v1.2.2
 #dockerImageId: scidap/alea:v1.2.2 #not yet ready
 dockerFile: |
@@ -1109,7 +1135,7 @@ dockerFile: |
       sed -i.bak s/^AL_USE_CONCATENATED_GENOME/#AL_USE_CONCATENATED_GENOME/g alea.config && \
       rm -f alea.config.bak
 ', 'alea-docker.yml', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (25, '#!/usr/bin/env cwl-runner
+INSERT INTO sourcefile (id, content, path, type) VALUES (25, '#!/usr/bin/env cwl-runner
 
 cwlVersion: "cwl:draft-3"
 
@@ -1182,9 +1208,9 @@ s:author:
     - class: s:Organization
       s:name: "Barski Lab"
 ', '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (26, 'FROM ubuntu:12.04
+INSERT INTO sourcefile (id, content, path, type) VALUES (26, 'FROM ubuntu:12.04
 ', '/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (27, 'class: Workflow
+INSERT INTO sourcefile (id, content, path, type) VALUES (27, 'class: Workflow
 cwlVersion: v1.0
 
 requirements:
@@ -1216,7 +1242,7 @@ steps:
       infiles: grep/outfile
 out: [outfile]
 ', 'grep-and-count.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (31, 'cwlVersion: v1.0
+INSERT INTO sourcefile (id, content, path, type) VALUES (31, 'cwlVersion: v1.0
 class: CommandLineTool
 label: Example trivial wrapper for Java 7 compiler
 baseCommand: javac
@@ -1236,7 +1262,7 @@ outputs:
     outputBinding:
 glob: "*.class"
 ', 'arguments.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (32, 'cwlVersion: v1.0
+INSERT INTO sourcefile (id, content, path, type) VALUES (32, 'cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: [tar, xf]
 inputs:
@@ -1254,210 +1280,503 @@ outputs:
     outputBinding:
 glob: $(inputs.extractfile)
 ', 'tar-param.cwl', 'DOCKSTORE_CWL');
-INSERT INTO sourcefile VALUES (35, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (35, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/testDir/Dockerfile', 'DOCKERFILE');
-INSERT INTO sourcefile VALUES (36, 'FROM docker/whalesay:latest
+INSERT INTO sourcefile (id, content, path, type) VALUES (36, 'FROM docker/whalesay:latest
 
 RUN apt-get -y update && apt-get install -y fortunes
 
 CMD /usr/games/fortune -a | cowsay
 ', '/testDir/Dockerfile', 'DOCKERFILE');
+INSERT INTO sourcefile (id, content, path, type) VALUES (42, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+
+id: "cgpmap"
+
+label: "CGP BWA-mem mapping flow"
+
+cwlVersion: v1.0
+
+#doc:
+#  $include: includes/doc.yml
+
+doc: |
+  ![build_status](https://quay.io/repository/wtsicgp/dockstore-cgpmap/status)
+  A Docker container for PCAP-core. See the [dockstore-cgpmap](https://github.com/cancerit/dockstore-cgpmap) website for more information.
+
+  Parameters for a CWL definition are generally described in a json file, but parameters can be provided on the command line.
+
+  To see the parameters descriptions please run: cwltool --tool-help path_to.cwl
+
+#requirements:
+#  - $mixin: mixins/requirements.yml
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: "quay.io/wtsicgp/dockstore-cgpmap:3.0.0-rc8"
+
+#hints:
+#  - $mixin: mixins/hints.yml
+
+hints:
+  - class: ResourceRequirement
+    coresMin: 1 # works but long, 8 recommended
+    ramMin: 15000 # good for WGS human ~30-60x
+    outdirMin: 5000000 # unlikely any BAM processing would be possible in less
+
+inputs:
+  reference:
+    type: File
+    doc: "The core reference (fa, fai, dict) as tar.gz"
+    inputBinding:
+      prefix: -reference
+      position: 1
+      separate: true
+
+  bwa_idx:
+    type: File
+    doc: "The BWA indexes in tar.gz"
+    inputBinding:
+      prefix: -bwa_idx
+      position: 2
+      separate: true
+
+  sample:
+    type: string
+    doc: "Sample name to be included in output [B|CR]AM header, also used to name final file"
+    inputBinding:
+      prefix: -sample
+      position: 3
+      separate: true
+
+  scramble:
+    type: string?
+    doc: "Options to pass to scramble when generating CRAM output, see scramble docs"
+    default: ''''
+    inputBinding:
+      prefix: -scramble
+      position: 4
+      separate: true
+      shellQuote: true
+
+  bwa:
+    type: string?
+    default: '' -Y -K 100000000''
+    doc: "Mapping and output parameters to pass to BWA-mem, see BWA docs, default '' -Y -K 100000000''"
+    inputBinding:
+      prefix: -bwa
+      position: 5
+      separate: true
+      shellQuote: true
+
+  groupinfo:
+    type: File?
+    doc: "Readgroup metadata file for FASTQ inputs"
+    inputBinding:
+      prefix: -groupinfo
+      position: 6
+      separate: true
+
+  mmqc:
+    type: boolean
+    doc: "Apply mismatch QC to reads following duplicate marking."
+    inputBinding:
+      prefix: -qc
+      position: 7
+
+  mmqcfrac:
+    type: float?
+    default: 0.05
+    doc: "Mismatch fraction to set as max before failing a read [0.05]"
+    inputBinding:
+      prefix: -qcf
+      position: 8
+      separate: true
+
+  bams_in:
+    type:
+    - ''null''
+    - type: array
+      items: File
+    doc: "Can be BAM, CRAM, fastq (paired or interleaved), BAM/CRAM can be mixed together but not FASTQ."
+    inputBinding:
+      position: 9
+
+outputs:
+  out_cram:
+    type: File
+    outputBinding:
+      glob: $(inputs.sample).cram
+    secondaryFiles:
+      - .crai
+      - .bas
+      - .md5
+      - .met
+      - .maptime
+
+baseCommand: ["/opt/wtsi-cgp/bin/ds-cgpmap.pl", "-cram"]
+
+$schemas:
+  - http://schema.org/docs/schema_org_rdfa.html
+
+$namespaces:
+  s: http://schema.org/
+
+s:codeRepository: https://github.com/cancerit/dockstore-biobambam2
+s:license: https://spdx.org/licenses/GPL-3.0
+
+s:author:
+  - class: s:Person
+    s:identifier: https://orcid.org/0000-0002-5634-1539
+    s:email: mailto:keiranmraine@gmail.com
+    s:name: Keiran Raine
+
+dct:creator:
+  "@id": "keiranmraine@gmail.com"
+  foaf:name: Keiran Raine
+  foaf:mbox: "keiranmraine@gmail.com"
+', '/cwls/cgpmap-cramOut.cwl', 'DOCKSTORE_CWL');
+INSERT INTO sourcefile (id, content, path, type) VALUES (43, 'FROM  ubuntu:16.04 as builder
+
+USER  root
+
+RUN apt-get -yq update
+RUN apt-get install -yq --no-install-recommends\
+  apt-transport-https\
+  locales\
+  curl\
+  ca-certificates\
+  libperlio-gzip-perl\
+  make\
+  bzip2\
+  gcc\
+  psmisc\
+  time\
+  zlib1g-dev\
+  libbz2-dev\
+  liblzma-dev\
+  libcurl4-gnutls-dev\
+  libncurses5-dev
+
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+
+ENV OPT /opt/wtsi-cgp
+ENV PATH $OPT/bin:$PATH
+ENV PERL5LIB $OPT/lib/perl5
+ENV LD_LIBRARY_PATH $OPT/lib
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+RUN mkdir -p $OPT/bin
+
+ADD build/opt-build.sh build/
+RUN bash build/opt-build.sh $OPT
+
+FROM  ubuntu:16.04
+
+MAINTAINER  keiranmraine@gmail.com
+
+LABEL vendor="Cancer Genome Project, Wellcome Trust Sanger Institute"
+LABEL uk.ac.sanger.cgp.description="PCAP-core for dockstore.org"
+LABEL uk.ac.sanger.cgp.version="3.0.0-rc8"
+
+RUN apt-get -yq update
+RUN apt-get install -yq --no-install-recommends\
+  apt-transport-https\
+  locales\
+  curl\
+  ca-certificates\
+  libperlio-gzip-perl\
+  bzip2\
+  psmisc\
+  time\
+  zlib1g\
+  liblzma5\
+  libncurses5
+
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+
+ENV OPT /opt/wtsi-cgp
+ENV PATH $OPT/bin:$PATH
+ENV PERL5LIB $OPT/lib/perl5
+ENV LD_LIBRARY_PATH $OPT/lib
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+RUN mkdir -p $OPT
+COPY --from=builder $OPT $OPT
+
+ADD scripts/mapping.sh $OPT/bin/mapping.sh
+ADD scripts/ds-cgpmap.pl $OPT/bin/ds-cgpmap.pl
+RUN chmod a+x $OPT/bin/mapping.sh $OPT/bin/ds-cgpmap.pl
+
+## USER CONFIGURATION
+RUN adduser --disabled-password --gecos '''' ubuntu && chsh -s /bin/bash && mkdir -p /home/ubuntu
+
+USER    ubuntu
+WORKDIR /home/ubuntu
+
+CMD ["/bin/bash"]
+', '/Dockerfile', 'DOCKERFILE');
+INSERT INTO sourcefile (id, content, path, type) VALUES (44, '{
+  "reference": {
+    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/core_ref_GRCh37d5.tar.gz",
+    "class": "File"
+  },
+  "bwa_idx": {
+    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/bwa_idx_GRCh37d5.tar.gz",
+    "class": "File"
+  },
+  "bams_in": [
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10658_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10659_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10660_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10661_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10662_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10663_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10664_i.fq.gz"},
+    {"class": "File",
+     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10665_i.fq.gz"},
+  ],
+  "groupinfo": {
+    "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_fq.yaml",
+    "class": "File"
+  },
+  "sample": "test",
+  "scramble": "''-e''",
+  "mmqc": false,
+  "mmqcfrag": 0.05,
+  "out_cram": {
+    "path": "/tmp/mapped.cram",
+    "class": "File",
+    "secondaryFiles": [
+      ".crai",
+      ".bas",
+      ".md5",
+      ".met",
+      ".maptime"
+    ]
+  }
+}
+', '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON');
 
 
 --
--- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
+-- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('sourcefile_id_seq', 36, true);
-
-
---
--- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO tag VALUES (1, false, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl');
-INSERT INTO tag VALUES (2, false, false, '2016-02-16 17:06:55', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl');
-INSERT INTO tag VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl');
-INSERT INTO tag VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl');
-INSERT INTO tag VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl');
-INSERT INTO tag VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl');
-INSERT INTO tag VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl');
-INSERT INTO tag VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
-INSERT INTO tag VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
-INSERT INTO tag VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
-INSERT INTO tag VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
+SELECT pg_catalog.setval('sourcefile_id_seq', 44, true);
 
 
 --
--- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
---
-
-SELECT pg_catalog.setval('tag_id_seq', 51, true);
-
-
---
--- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO token VALUES (1, 'imamafakedockstoretoken', NULL, 'dockstore', 1, 'user_A');
-INSERT INTO token VALUES (2, 'imamafakegithubtoken', NULL, 'github.com', 1, 'user_A');
-INSERT INTO token VALUES (4, 'imamafakequaytoken', NULL, 'quay.io', 1, 'user_A');
---INSERT INTO token VALUES (3, 'imamafakebitbuckettoken', 'imamafakebitbuckettokenhelper', 'bitbucket.org', 1, 'user_A');
-
-
---
--- Name: token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
---
-
-SELECT pg_catalog.setval('token_id_seq', 4, true);
-
-
---
--- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO tool VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', 'quay.io/A/a', 'AMAZON_ECR', '', 'test@email.com', true);
-INSERT INTO tool VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', 'quay.io/A2/b1', 'QUAY_IO', '', '', false);
-INSERT INTO tool VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', 'quay.io/A2/a', 'QUAY_IO', '', '', false);
-INSERT INTO tool VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', 'quay.io/A2/b3', 'QUAY_IO', '', '', false);
-INSERT INTO tool VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', 'quay.io/A2/b2', 'QUAY_IO', '', '', false);
-
-
---
--- Data for Name: tool_tag; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO tool_tag VALUES (1, 1);
-INSERT INTO tool_tag VALUES (1, 2);
-INSERT INTO tool_tag VALUES (1, 3);
-INSERT INTO tool_tag VALUES (2, 4);
-INSERT INTO tool_tag VALUES (2, 5);
-INSERT INTO tool_tag VALUES (3, 6);
-INSERT INTO tool_tag VALUES (3, 7);
-INSERT INTO tool_tag VALUES (4, 8);
-INSERT INTO tool_tag VALUES (4, 9);
-INSERT INTO tool_tag VALUES (5, 10);
-INSERT INTO tool_tag VALUES (5, 11);
-
-
---
--- Data for Name: user_entry; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO user_entry VALUES (1, 1);
-INSERT INTO user_entry VALUES (1, 2);
-INSERT INTO user_entry VALUES (1, 3);
-INSERT INTO user_entry VALUES (1, 4);
-INSERT INTO user_entry VALUES (1, 5);
-INSERT INTO user_entry VALUES (1, 6);
-INSERT INTO user_entry VALUES (1, 7);
-INSERT INTO user_entry VALUES (1, 8);
-INSERT INTO user_entry VALUES (1, 9);
-INSERT INTO user_entry VALUES (1, 10);
-INSERT INTO user_entry VALUES (1, 11);
-INSERT INTO user_entry VALUES (1, 12);
-INSERT INTO user_entry VALUES (1, 13);
-INSERT INTO user_entry VALUES (1, 14);
-INSERT INTO user_entry VALUES (1, 16);
-INSERT INTO user_entry VALUES (1, 17);
-INSERT INTO user_entry VALUES (1, 18);
-INSERT INTO user_entry VALUES (1, 19);
-INSERT INTO user_entry VALUES (1, 20);
-
-
---
--- Data for Name: usergroup; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Data for Name: starred; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
 
 --
--- Name: usergroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
+-- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (1, false, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (2, false, false, '2016-02-16 17:06:55', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath) VALUES (52, false, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, false, NULL, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl');
+
+
+--
+-- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tag_id_seq', 101, true);
+
+
+--
+-- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO token (id, content, refreshtoken, tokensource, userid, username) VALUES (1, 'imamafakedockstoretoken', NULL, 'dockstore', 1, 'user_A');
+INSERT INTO token (id, content, refreshtoken, tokensource, userid, username) VALUES (2, 'imamafakegithubtoken', NULL, 'github.com', 1, 'user_A');
+INSERT INTO token (id, content, refreshtoken, tokensource, userid, username) VALUES (4, 'imamafakequaytoken', NULL, 'quay.io', 1, 'user_A');
+
+
+--
+-- Name: token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('token_id_seq', 7, true);
+
+
+--
+-- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaultwdlpath, lastbuild, mode, name, namespace, path, registry, toolname, toolmaintaineremail, privateaccess, defaulttestcwlparameterfile, defaulttestwdlparameterfile) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', 'quay.io/A/a', 'AMAZON_ECR', '', 'test@email.com', true, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaultwdlpath, lastbuild, mode, name, namespace, path, registry, toolname, toolmaintaineremail, privateaccess, defaulttestcwlparameterfile, defaulttestwdlparameterfile) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', 'quay.io/A2/b1', 'QUAY_IO', '', '', false, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaultwdlpath, lastbuild, mode, name, namespace, path, registry, toolname, toolmaintaineremail, privateaccess, defaulttestcwlparameterfile, defaulttestwdlparameterfile) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', 'quay.io/A2/a', 'QUAY_IO', '', '', false, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaultwdlpath, lastbuild, mode, name, namespace, path, registry, toolname, toolmaintaineremail, privateaccess, defaulttestcwlparameterfile, defaulttestwdlparameterfile) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', 'quay.io/A2/b3', 'QUAY_IO', '', '', false, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaultwdlpath, lastbuild, mode, name, namespace, path, registry, toolname, toolmaintaineremail, privateaccess, defaulttestcwlparameterfile, defaulttestwdlparameterfile) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', 'quay.io/A2/b2', 'QUAY_IO', '', '', false, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaultwdlpath, lastbuild, mode, name, namespace, path, registry, toolname, toolmaintaineremail, privateaccess, defaulttestcwlparameterfile, defaulttestwdlparameterfile) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-13 15:53:16.04', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', 'quay.io/garyluu/dockstore-cgpmap', 'QUAY_IO', 'cgpmap-cramOut', '', false, '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json');
+
+
+--
+-- Data for Name: tool_tag; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO tool_tag (toolid, tagid) VALUES (1, 1);
+INSERT INTO tool_tag (toolid, tagid) VALUES (1, 2);
+INSERT INTO tool_tag (toolid, tagid) VALUES (1, 3);
+INSERT INTO tool_tag (toolid, tagid) VALUES (2, 4);
+INSERT INTO tool_tag (toolid, tagid) VALUES (2, 5);
+INSERT INTO tool_tag (toolid, tagid) VALUES (3, 6);
+INSERT INTO tool_tag (toolid, tagid) VALUES (3, 7);
+INSERT INTO tool_tag (toolid, tagid) VALUES (4, 8);
+INSERT INTO tool_tag (toolid, tagid) VALUES (4, 9);
+INSERT INTO tool_tag (toolid, tagid) VALUES (5, 10);
+INSERT INTO tool_tag (toolid, tagid) VALUES (5, 11);
+INSERT INTO tool_tag (toolid, tagid) VALUES (52, 52);
+
+
+--
+-- Data for Name: user_entry; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO user_entry (userid, entryid) VALUES (1, 1);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 2);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 3);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 4);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 5);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 6);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 7);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 8);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 9);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 10);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 11);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 12);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 13);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 14);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 16);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 17);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 18);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 19);
+INSERT INTO user_entry (userid, entryid) VALUES (1, 20);
+INSERT INTO user_entry (userid, entryid) VALUES (2, 52);
+
+
+--
+-- Data for Name: usergroup; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Name: usergroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('usergroup_id_seq', 1, false);
 
 
 --
--- Data for Name: version_sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Data for Name: version_sourcefile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO version_sourcefile VALUES (1, 2);
-INSERT INTO version_sourcefile VALUES (1, 1);
-INSERT INTO version_sourcefile VALUES (2, 4);
-INSERT INTO version_sourcefile VALUES (2, 3);
-INSERT INTO version_sourcefile VALUES (2, 5);
-INSERT INTO version_sourcefile VALUES (3, 8);
-INSERT INTO version_sourcefile VALUES (3, 6);
-INSERT INTO version_sourcefile VALUES (3, 7);
-INSERT INTO version_sourcefile VALUES (4, 10);
-INSERT INTO version_sourcefile VALUES (4, 9);
-INSERT INTO version_sourcefile VALUES (5, 12);
-INSERT INTO version_sourcefile VALUES (5, 11);
-INSERT INTO version_sourcefile VALUES (8, 13);
-INSERT INTO version_sourcefile VALUES (8, 14);
-INSERT INTO version_sourcefile VALUES (9, 16);
-INSERT INTO version_sourcefile VALUES (9, 15);
-INSERT INTO version_sourcefile VALUES (10, 17);
-INSERT INTO version_sourcefile VALUES (10, 19);
-INSERT INTO version_sourcefile VALUES (10, 20);
-INSERT INTO version_sourcefile VALUES (10, 18);
-INSERT INTO version_sourcefile VALUES (10, 21);
-INSERT INTO version_sourcefile VALUES (11, 26);
-INSERT INTO version_sourcefile VALUES (11, 23);
-INSERT INTO version_sourcefile VALUES (11, 22);
-INSERT INTO version_sourcefile VALUES (11, 24);
-INSERT INTO version_sourcefile VALUES (11, 25);
-INSERT INTO version_sourcefile VALUES (13, 27);
-INSERT INTO version_sourcefile VALUES (13, 28);
-INSERT INTO version_sourcefile VALUES (13, 30);
-INSERT INTO version_sourcefile VALUES (13, 32);
-INSERT INTO version_sourcefile VALUES (13, 29);
-INSERT INTO version_sourcefile VALUES (13, 31);
-INSERT INTO version_sourcefile VALUES (6, 35);
-INSERT INTO version_sourcefile VALUES (7, 36);
-
-
---
--- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: dockstore
---
-
-INSERT INTO workflow VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'a/a', 'a', NULL);
-INSERT INTO workflow VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/c', 'c', NULL);
-INSERT INTO workflow VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/f', 'f', NULL);
-INSERT INTO workflow VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/k', 'k', NULL);
-INSERT INTO workflow VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/e', 'e', NULL);
-INSERT INTO workflow VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/g', 'g', NULL);
-INSERT INTO workflow VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/j', 'j', NULL);
-INSERT INTO workflow VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/m', 'm', NULL);
-INSERT INTO workflow VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/d', 'd', NULL);
-INSERT INTO workflow VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/i', 'i', NULL);
-INSERT INTO workflow VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/b', 'b', NULL);
-INSERT INTO workflow VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/h', 'h', NULL);
-INSERT INTO workflow VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/a', 'a', NULL);
-INSERT INTO workflow VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'A/l', 'l', NULL);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (1, 2);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (1, 1);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (2, 4);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (2, 3);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (2, 5);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (3, 8);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (3, 6);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (3, 7);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (4, 10);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (4, 9);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (5, 12);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (5, 11);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (8, 13);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (8, 14);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (9, 16);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (9, 15);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (10, 17);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (10, 19);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (10, 20);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (10, 18);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (10, 21);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (11, 26);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (11, 23);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (11, 22);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (11, 24);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (11, 25);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 27);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 28);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 30);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 32);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 29);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 31);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (6, 35);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 44);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 43);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 42);
 
 
 --
--- Data for Name: workflow_workflowversion; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO workflow_workflowversion VALUES (11, 13);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'a/a', 'a', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/c', 'c', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/f', 'f', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/k', 'k', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/e', 'e', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/g', 'g', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/j', 'j', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/m', 'm', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/d', 'd', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/i', 'i', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/b', 'b', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/h', 'h', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'A/a', 'a', NULL, NULL);
+INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultworkflowpath, descriptortype, mode, organization, path, repository, workflowname, defaulttestparameterfilepath) VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'A/l', 'l', NULL, NULL);
 
 
 --
--- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: dockstore
+-- Data for Name: workflow_workflowversion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO workflowversion VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl');
+INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 13);
 
 
 --
--- Name: enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl');
+
+
+--
+-- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1465,7 +1784,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: endusergroup endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1473,7 +1792,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: entry_label entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
@@ -1481,7 +1800,7 @@ ALTER TABLE ONLY entry_label
 
 
 --
--- Name: label_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1489,7 +1808,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: sourcefile sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile
@@ -1497,7 +1816,15 @@ ALTER TABLE ONLY sourcefile
 
 
 --
--- Name: tag_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: starred starred_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY starred
+    ADD CONSTRAINT starred_pkey PRIMARY KEY (entryid, userid);
+
+
+--
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tag
@@ -1505,7 +1832,7 @@ ALTER TABLE ONLY tag
 
 
 --
--- Name: token_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token
@@ -1513,7 +1840,7 @@ ALTER TABLE ONLY token
 
 
 --
--- Name: tool_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: tool tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -1521,7 +1848,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: tool_tag tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1529,7 +1856,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: enduser uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1537,7 +1864,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: label uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1545,7 +1872,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: version_sourcefile uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1553,7 +1880,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflow_workflowversion uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1561,7 +1888,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: tool_tag uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1569,7 +1896,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: tool ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -1577,7 +1904,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: ukkprrtg54h6rjca5l1navospm8; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflow ukkprrtg54h6rjca5l1navospm8; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -1585,7 +1912,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: user_entry user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY user_entry
@@ -1593,7 +1920,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup
@@ -1601,7 +1928,7 @@ ALTER TABLE ONLY usergroup
 
 
 --
--- Name: version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: version_sourcefile version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1609,7 +1936,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflow workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -1617,7 +1944,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflow_workflowversion workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1625,7 +1952,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore; Tablespace:
+-- Name: workflowversion workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflowversion
@@ -1633,7 +1960,43 @@ ALTER TABLE ONLY workflowversion
 
 
 --
--- Name: fkhdtovkjeuj2u4adc073nh02w; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: full_tool_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX full_tool_name ON tool USING btree (registry, namespace, name, toolname) WHERE (toolname IS NOT NULL);
+
+
+--
+-- Name: full_workflow_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX full_workflow_name ON workflow USING btree (organization, repository, workflowname) WHERE (workflowname IS NOT NULL);
+
+
+--
+-- Name: partial_tool_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX partial_tool_name ON tool USING btree (registry, namespace, name) WHERE (toolname IS NULL);
+
+
+--
+-- Name: partial_workflow_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX partial_workflow_name ON workflow USING btree (organization, repository) WHERE (workflowname IS NULL);
+
+
+--
+-- Name: starred fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY starred
+    ADD CONSTRAINT fkdcfqiy0arvxmmh5e68ix75gwo FOREIGN KEY (userid) REFERENCES enduser(id);
+
+
+--
+-- Name: user_entry fkhdtovkjeuj2u4adc073nh02w; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY user_entry
@@ -1641,7 +2004,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: workflow_workflowversion fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1649,7 +2012,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: tool_tag fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1657,7 +2020,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: tool_tag fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -1665,7 +2028,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: workflow_workflowversion fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -1673,7 +2036,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: endusergroup fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1681,7 +2044,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: version_sourcefile fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -1689,7 +2052,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: endusergroup fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1697,21 +2060,11 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+-- Name: entry_label fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
     ADD CONSTRAINT fks71c9mk0f98015eqgtyvs0ewp FOREIGN KEY (labelid) REFERENCES label(id);
-
-
---
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --

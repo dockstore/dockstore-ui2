@@ -1,3 +1,4 @@
+import { EmailService } from './email.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 /*
  *    Copyright 2017 OICR
@@ -50,6 +51,8 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  public requestAccessHREF: string;
+  public contactAuthorHREF: string;
   public missingWarning: boolean;
   public tool: ExtendedDockstoreTool;
   private toolSubscription: Subscription;
@@ -62,6 +65,7 @@ export class ContainerComponent extends Entry {
     private refreshService: RefreshService,
     private updateContainer: ContainerService,
     private containersService: ContainersService,
+    private emailService: EmailService,
     trackLoginService: TrackLoginService,
     communicatorService: CommunicatorService,
     providerService: ProviderService,
@@ -144,6 +148,8 @@ export class ContainerComponent extends Entry {
       toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
       toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
       this.initTool();
+      this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
+      this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
     }
   }
 
