@@ -89,17 +89,4 @@ export class ContainerService {
 
 }
 
-/**
- * Determines the registry path of a tool, given the registry enum
- * @param {DockstoreTool.RegistryProviderEnum} registryEnumName - registry enum name for a tool
- * @param {DockstoreTool} tool - tool that we are looking at
- */
-getRegistryPath(registryEnumName: DockstoreTool.RegistryProviderEnum, tool: DockstoreTool) {
-  if (registryEnumName === DockstoreTool.RegistryProviderEnum.QUAYIO || registryEnumName === DockstoreTool.RegistryProviderEnum.DOCKERHUB || registryEnumName === DockstoreTool.RegistryProviderEnum.GITLAB || registryEnumName === DockstoreTool.RegistryProviderEnum.AMAZONECR) {
-    return tool.registry;
-  } else {
-    return null;
-  }
-}
-
 }
