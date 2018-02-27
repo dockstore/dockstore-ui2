@@ -31,7 +31,7 @@ describe('MytoolsService', () => {
     'name': 'aa',
     'namespace': 'cc',
     'private_access': false,
-    'registry': DockstoreTool.RegistryEnum.QUAYIO,
+    'registry': DockstoreTool.RegistryProviderEnum.QUAYIO,
     'toolname': '',
     'tool_path': 'quay.io/cc/aa'
   };
@@ -46,7 +46,7 @@ describe('MytoolsService', () => {
     'name': 'bb',
     'namespace': 'cc',
     'private_access': false,
-    'registry': DockstoreTool.RegistryEnum.QUAYIO,
+    'registry': DockstoreTool.RegistryProviderEnum.QUAYIO,
     'toolname': '',
     'tool_path': 'quay.io/cc/bb'
   };
@@ -61,7 +61,7 @@ describe('MytoolsService', () => {
     'name': 'cc',
     'namespace': 'bb',
     'private_access': false,
-    'registry': DockstoreTool.RegistryEnum.QUAYIO,
+    'registry': DockstoreTool.RegistryProviderEnum.QUAYIO,
     'toolname': '',
     'tool_path': 'quay.io/bb/cc'
   };
@@ -76,7 +76,7 @@ describe('MytoolsService', () => {
     'name': 'dd',
     'namespace': 'bb',
     'private_access': false,
-    'registry': DockstoreTool.RegistryEnum.QUAYIO,
+    'registry': DockstoreTool.RegistryProviderEnum.QUAYIO,
     'toolname': '',
     'tool_path': 'quay.io/bb/dd'
   };
@@ -91,7 +91,7 @@ describe('MytoolsService', () => {
     'name': 'ee',
     'namespace': 'aa',
     'private_access': false,
-    'registry': DockstoreTool.RegistryEnum.QUAYIO,
+    'registry': DockstoreTool.RegistryProviderEnum.QUAYIO,
     'toolname': '',
     'tool_path': 'quay.io/aa/ee'
   };
@@ -106,7 +106,7 @@ describe('MytoolsService', () => {
     'name': 'ee',
     'namespace': 'aa',
     'private_access': false,
-    'registry': DockstoreTool.RegistryEnum.QUAYIO,
+    'registry': DockstoreTool.RegistryProviderEnum.QUAYIO,
     'toolname': '1',
     'tool_path': 'quay.io/aa/ee'
   };
