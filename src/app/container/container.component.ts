@@ -30,7 +30,6 @@ import { ProviderService } from '../shared/provider.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
-import { CheckerWorkflowService } from './../shared/checker-workflow.service';
 import { ErrorService } from './../shared/error.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../shared/refresh.service';
@@ -59,7 +58,7 @@ export class ContainerComponent extends Entry {
   public selectedVersion = null;
   public urlTag = null;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
-  constructor(private dockstoreService: DockstoreService, private checkerWorkflowService: CheckerWorkflowService,
+  constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
@@ -119,8 +118,6 @@ export class ContainerComponent extends Entry {
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
-    // TODO: Change toolRef.id to toolRef.checker_id once it's available
-    this.checkerWorkflowService.getCheckerWorkflowPath(toolRef.id);
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }

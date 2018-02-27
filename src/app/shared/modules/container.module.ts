@@ -46,7 +46,6 @@ import { StarringService } from '../../starring/starring.service';
 import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
-import { WorkflowService } from '../workflow.service';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -115,7 +114,6 @@ import { SelectModule } from './select.module';
     ParamfilesService,
     RefreshService,
     RegisterToolService,
-    WorkflowService,
     StarringService,
     VersionModalService,
     InfoTabService,

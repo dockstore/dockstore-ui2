@@ -1,5 +1,4 @@
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +13,32 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 @Injectable()
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
   tool$ = new BehaviorSubject<any>(null); // This is the selected tool
+  toolCheckerId$: Observable<number>;
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
-  constructor() { }
+  constructor() {
+    this.toolCheckerId$ = this.tool$.map((tool: DockstoreTool) => {
+      if (tool) {
+        // Change this to tool.checker_id once it's available
+        return tool.id;
+      } else {
+        return null;
+      }
+    });
+  }
   setTool(tool: any) {
     this.tool$.next(tool);
   }

@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
@@ -152,7 +151,6 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     SearchService,
     PagenumberService,
     TwitterService,
-    ContainerService,
     GA4GHService,
     CheckerWorkflowService
   ],

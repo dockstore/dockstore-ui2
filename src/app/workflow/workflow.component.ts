@@ -28,7 +28,6 @@ import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowService } from '../shared/workflow.service';
-import { CheckerWorkflowService } from './../shared/checker-workflow.service';
 import { ErrorService } from './../shared/error.service';
 import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
 import { RefreshService } from './../shared/refresh.service';
@@ -36,7 +35,6 @@ import { StateService } from './../shared/state.service';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
-import * as WorkflowMode from './../shared/swagger/model/workflow';
 
 @Component({
   selector: 'app-workflow',
@@ -60,7 +58,7 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService, private checkerWorkflowService: CheckerWorkflowService,
+    router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService,
     private locationService: Location) {
     super(trackLoginService, providerService, router,
@@ -102,8 +100,6 @@ export class WorkflowComponent extends Entry {
     workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
-    // TODO: Change workflowRef.id to workflowRef.checker_id once it's available
-    this.checkerWorkflowService.getCheckerWorkflowPath(workflowRef.id);
     this.resetWorkflowEditData();
     if (workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl') {
       const myParams = new URLSearchParams();
@@ -188,7 +184,7 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
+    return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB;
   }
 
   publish() {

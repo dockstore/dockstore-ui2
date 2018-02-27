@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { CheckerWorkflowStubService } from './../../../test/service-stubs';
@@ -11,7 +12,7 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TooltipModule.forRoot()],
+      imports: [TooltipModule.forRoot(), FormsModule],
       providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
       declarations: [InfoTabCheckerWorkflowPathComponent]
     })

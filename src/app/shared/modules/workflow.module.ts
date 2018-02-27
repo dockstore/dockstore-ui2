@@ -30,7 +30,6 @@ import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
-import { WorkflowService } from '../../shared/workflow.service';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
@@ -107,13 +106,11 @@ import { getTooltipConfig } from './../tooltip';
     WorkflowLaunchService,
     ErrorService,
     ParamfilesService,
-    WorkflowService,
     WorkflowDescriptorService,
     InfoTabService,
     RefreshService,
     RegisterWorkflowModalService,
-    VersionModalService,
-    WorkflowService
+    VersionModalService
   ],
   exports: [
     WorkflowComponent

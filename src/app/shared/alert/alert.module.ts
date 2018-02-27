@@ -12,9 +12,6 @@ import { NgModule } from '@angular/core';
         CommonModule,
         FormsModule
     ],
-    providers: [
-      StateService
-    ],
     exports: [AlertComponent]
   })
   export class RefreshAlertModule {}
