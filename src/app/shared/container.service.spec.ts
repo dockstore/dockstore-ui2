@@ -56,7 +56,7 @@ describe('ContainerService', () => {
             name: 'sampleName',
             namespace: 'sampleNamespace',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: DockstoreTool.RegistryProviderEnum.QUAYIO,
             toolname: 'sampleToolname',
             defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
             defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'

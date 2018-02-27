@@ -136,7 +136,7 @@
               Docker Registry Path:
             </label>
             <div class="col-sm-9">
-              <input id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. registry.hub.docker.com" [disabled]="!showCustomDockerRegistryPath" [pattern]="validationPatterns.alphanumericInternalUHP"/>
+              <input id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [disabled]="!showCustomDockerRegistryPath" [pattern]="validationPatterns.customDockerRegistryPath"/>
               <div *ngIf="formErrors.customDockerRegistryPath" class="alert alert-danger"> {{ formErrors.customDockerRegistryPath}} </div>
             </div>
           </div>

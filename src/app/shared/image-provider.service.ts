@@ -33,11 +33,11 @@ export class ImageProviderService {
   }
 
   setUpImageProvider(tool) {
-    const registry = this.getImageProvider(tool.registry);
+    const registry = this.getImageProvider(tool.registry_provider);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry, tool.custom_docker_registry_path);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
     }
     return tool;
   }
@@ -53,7 +53,7 @@ export class ImageProviderService {
     }
   }
 
-  private getImageProviderUrl(path: string, registry, customDockerRegistryPath: string) {
+  private getImageProviderUrl(path: string, registry) {
     if (path) {
       const imageRegExp = /^(.*)\/(.*)\/(.*)\/?$/i;
       const match = imageRegExp.exec(path);
@@ -70,7 +70,7 @@ export class ImageProviderService {
         }
 
         if (containerRegistry === 'AMAZON_ECR') {
-          url = customDockerRegistryPath + '/';
+          url = match[1] + '/';
         }
 
         url += match[2] + '/' + match[3] + suffix;
@@ -94,7 +94,7 @@ export class ImageProviderService {
     if (!this.dockerRegistryList) {
       console.log('This should not be necessary');
       this.containersService.getDockerRegistries().subscribe(registryList => {
-        const dockerReg = registryList.find(x => x._enum === tool.registry);
+        const dockerReg = registryList.find(x => x._enum === tool.registry_provider);
         if (dockerReg) {
           return dockerReg.privateOnly === 'true';
         } else {
@@ -102,7 +102,7 @@ export class ImageProviderService {
         }
       });
     } else {
-    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
+    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry_provider);
     if (dockerReg) {
       return dockerReg.privateOnly === 'true';
     } else {
