@@ -44,9 +44,10 @@ export class ParamfilesService {
         const type = file.type;
         if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl')) {
           descriptorsWithParamfiles.push('cwl');
-
         } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl')) {
           descriptorsWithParamfiles.push('wdl');
+        } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes('nextflow')) {
+          descriptorsWithParamfiles.push('nextflow');
         }
       }
     }
