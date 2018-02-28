@@ -9,10 +9,7 @@
         name="workflowPath" [(ngModel)]="checkerWorkflowDefaultWorkflowPath" placeholder="e.g. /Dockstore.cwl" />
     </div>
     <div *ngIf="!(isPublic$ | async)" class="btn-group push-right" role="group">
-      <button *ngIf="!(hasChecker$ | async) && !editing" type="button" class="btn btn-link" (click)="add()">
-        <span class="glyphicon glyphicon-plus"></span> Add Checker Workflow
-      </button>
-      <div *ngIf="(hasChecker$ | async)">
+      <div>
         <button *ngIf="editing" type="button" class="btn btn-link" (click)="cancel()">
           <span class="glyphicon glyphicon-remove"></span> Cancel
         </button>

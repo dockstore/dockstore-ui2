@@ -55,11 +55,4 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   save(): void {
     this.checkerWorkflowService.save(this.checkerWorkflowDefaultWorkflowPath);
   }
-
-  /**
-   * Add Checker Workflow button
-   */
-  add(): void {
-    this.checkerWorkflowService.add();
-  }
 }

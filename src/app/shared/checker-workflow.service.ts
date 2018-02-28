@@ -78,18 +78,10 @@ export class CheckerWorkflowService {
     }
 
     /**
-     * Update the checker workflow's default workflow path
+     * Update the checker workflow's default workflow path, adds it if it previously didn't exist
      */
     public save(path: string): void {
         // Placeholder for endpoint that modifies the checker workflow's default workflow path
         console.log('saving');
-    }
-
-    /**
-     * Add a new checker workflow to the tool/workflow
-     */
-    public add(): void {
-        // Placeholder for endpoint that adds a checker workflow to this tool/workflow
-        console.log('adding');
     }
 }
