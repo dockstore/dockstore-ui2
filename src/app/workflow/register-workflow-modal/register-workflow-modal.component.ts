@@ -14,13 +14,13 @@
  *    limitations under the License.
  */
 
-import { StateService } from './../../shared/state.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
+import { StateService } from '../../shared/state.service';
+import { Workflow } from '../../shared/swagger';
 import { NgForm } from '@angular/forms';
-import { formErrors, validationDescriptorPatterns, validationMessages, exampleDescriptorPatterns } from './../../shared/validationMessages.model';
+import { formErrors, validationDescriptorPatterns } from '../../shared/validationMessages.model';
+import { validationMessages, exampleDescriptorPatterns } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-register-workflow-modal',
