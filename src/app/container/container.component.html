@@ -37,7 +37,6 @@
         <app-private-icon></app-private-icon>
       </span>
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
-      <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">
@@ -96,24 +95,6 @@
         <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
           Refresh
         </button>
-      </div>
-    </h3>
-  </div>
-  <div class="col-md-5">
-    <h3 class="pull-right">
-      <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
-        <p>
-          <a [href]="requestAccessHREF">
-            Request Access
-          </a>
-        </p>
-      </div>
-      <div class="button contact-button" *ngIf="publicPage && tool?.email && !tool?.private_access">
-        <p>
-          <a [href]="contactAuthorHREF">
-            Contact Author
-          </a>
-        </p>
       </div>
     </h3>
   </div>

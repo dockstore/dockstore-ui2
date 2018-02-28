@@ -162,6 +162,9 @@ export class SearchService {
    * @param filter
    */
   handleFilters(category: string, categoryValue: string, filters: any) {
+    if (typeof(categoryValue) === 'number') {
+      categoryValue = String(categoryValue);
+    }
     if (filters.has(category) && filters.get(category).has(categoryValue)) {
       filters.get(category).delete(categoryValue);
       // wipe out the category if empty
