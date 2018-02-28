@@ -37,7 +37,6 @@
         <app-private-icon></app-private-icon>
       </span>
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
-      <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">
