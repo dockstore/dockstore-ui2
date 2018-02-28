@@ -15,7 +15,7 @@ import { DateService } from './date.service';
  *    limitations under the License.
  */
 
-import { validationPatterns } from './validationMessages.model';
+import { validationDescriptorPatterns } from './validationMessages.model';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ErrorService } from './../shared/error.service';
 import { Workflow } from './swagger/model/workflow';
@@ -48,7 +48,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   protected defaultVersion;
   protected published: boolean;
   protected refreshMessage: string;
-  public labelPattern = validationPatterns.label;
+  public labelPattern = validationDescriptorPatterns.label;
   public labelsEditMode: boolean;
   private loginSubscription: Subscription;
   public error;

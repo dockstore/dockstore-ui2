@@ -18,7 +18,7 @@ import { StateService } from './../../shared/state.service';
 import { NgForm } from '@angular/forms';
 import { RegisterToolService } from './register-tool.service';
 import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
-import { validationMessages, formErrors, validationPatterns } from '../../shared/validationMessages.model';
+import { validationMessages, formErrors, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { Repository } from './../../shared/enum/Repository.enum';
 
 @Component({
@@ -30,7 +30,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public toolRegisterError: boolean;
   public tool: any;
   public formErrors = formErrors;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
   public customDockerRegistryPath: string;
   public showCustomDockerRegistryPath: boolean;
   public refreshMessage: string;

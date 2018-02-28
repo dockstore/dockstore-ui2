@@ -17,7 +17,7 @@ import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTo
 
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { StateService } from './../../shared/state.service';
-import { validationPatterns } from './../../shared/validationMessages.model';
+import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { ContainerService } from './../../shared/container.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -29,7 +29,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class InfoTabComponent implements OnInit {
   @Input() selectedVersion;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;

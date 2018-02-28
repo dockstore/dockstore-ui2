@@ -39,7 +39,7 @@ import { Entry } from '../shared/entry';
 
 import { ContainerService } from '../shared/container.service';
 import { ListContainersService } from '../containers/list/list.service';
-import { validationPatterns } from '../shared/validationMessages.model';
+import { validationDescriptorPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';

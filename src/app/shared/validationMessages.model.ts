@@ -33,13 +33,13 @@ export const formErrors = {
   'customDockerRegistryPath': ''
 };
 
-export const examplePatterns = {
+export const exampleDescriptorPatterns = {
   'cwl': 'e.g. /Dockstore.cwl',
   'wdl': 'e.g. /Dockstore.wdl',
   'nextflow': 'e.g. /nextflow.config'
 };
 
-export const validationPatterns = {
+export const validationDescriptorPatterns = {
   'gitPath': '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'cwlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)',
   'wdlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$',

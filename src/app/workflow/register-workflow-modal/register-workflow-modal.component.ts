@@ -17,7 +17,7 @@
 import { StateService } from './../../shared/state.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { NgForm } from '@angular/forms';
-import { formErrors, validationPatterns, validationMessages, examplePatterns } from './../../shared/validationMessages.model';
+import { formErrors, validationDescriptorPatterns, validationMessages, exampleDescriptorPatterns } from './../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -29,8 +29,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
-  public validationPatterns = validationPatterns;
-  public examplePatterns = examplePatterns;
+  public validationPatterns = validationDescriptorPatterns;
+  public examplePatterns = exampleDescriptorPatterns;
   public workflow: Workflow;
   public workflowRegisterError;
   public isModalShown: boolean;

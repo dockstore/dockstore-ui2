@@ -22,7 +22,7 @@ import { NgForm } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
+import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 
 @Component({
@@ -36,7 +36,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   public DescriptorType = DescriptorType;
   public tool;
   public formErrors = formErrors;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
   public trackByIndex;
   editMode = true;
   unsavedVersion: Tag = {
