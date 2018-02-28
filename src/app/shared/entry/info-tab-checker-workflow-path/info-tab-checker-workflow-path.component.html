@@ -5,7 +5,7 @@
       <a *ngIf="!editing" [href]="'/workflows/' + (checkerWorkflowPath$ | async)">
         {{ (checkerWorkflowDefaultWorkflowPath) }}
       </a>
-      <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
+      <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
         name="workflowPath" [(ngModel)]="checkerWorkflowDefaultWorkflowPath" placeholder="e.g. /Dockstore.cwl" />
     </div>
     <div *ngIf="!(isPublic$ | async)" class="btn-group push-right" role="group">

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { validationPatterns } from './../../validationMessages.model';
+import { validationDescriptorPatterns } from './../../validationMessages.model';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
@@ -15,7 +15,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   checkerWorkflowDefaultWorkflowPath: string;
   isPublic$: Observable<boolean>;
   editing = false;
-  validationPatterns = validationPatterns;
+  validationDescriptorPatterns = validationDescriptorPatterns;
   savedCheckerWorkflowDefaultWorkflowPath: string;
   hasChecker$: Observable<boolean>;
   constructor(private checkerWorkflowService: CheckerWorkflowService) { }
