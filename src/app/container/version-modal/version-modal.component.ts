@@ -20,7 +20,7 @@ import { NgForm } from '@angular/forms';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { RefreshService } from '../../shared/refresh.service';
-import { formErrors, validationMessages, validationPatterns } from '../../shared/validationMessages.model';
+import { formErrors, validationMessages, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { ListContainersService } from './../../containers/list/list.service';
 import { ContainerService } from './../../shared/container.service';
 import { DateService } from './../../shared/date.service';
@@ -57,7 +57,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   public formErrors = formErrors;
   public version: Tag;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
 

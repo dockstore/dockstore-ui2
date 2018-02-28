@@ -46,6 +46,9 @@
       <span *ngIf="workflow?.descriptorType === 'cwl'">
         Please ensure that the Descriptor is a valid CWL 1.0 workflow.
       </span>
+      <span *ngIf="workflow?.descriptorType === 'nextflow'">
+        Sorry, DAG display is not implemented for Nextflow yet.
+      </span>
     </div>
 
     <div class="alert alert-warning" role="alert" *ngIf="workflow?.descriptorType === 'cwl' && missingTool">
