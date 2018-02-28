@@ -15,7 +15,7 @@ import { Tooltip } from '../../shared/tooltip';
  *    limitations under the License.
  */
 
-import { validationPatterns } from './../../shared/validationMessages.model';
+import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { StateService } from './../../shared/state.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
@@ -33,7 +33,7 @@ export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
   @Input() selectedVersion: WorkflowVersion;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
   public WorkflowType = Workflow;
   public tooltip = Tooltip;
   workflowPathEditing: boolean;

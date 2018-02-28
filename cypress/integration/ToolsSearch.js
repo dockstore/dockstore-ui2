@@ -20,7 +20,7 @@ describe('Dockstore tool search page', function() {
       .should('have.attr', 'href', '/containers/quay.io/A2/b3')
       .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
     });
-    
+
     it('Should have 4 tools', function() {
       cy
         .get('tbody')

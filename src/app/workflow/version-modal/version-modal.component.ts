@@ -23,7 +23,7 @@ import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { DateService } from './../../shared/date.service';
 import { VersionModalService } from './version-modal.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
+import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 
 @Component({
   selector: 'app-version-modal',
@@ -42,7 +42,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public testParameterFilePath = '';
   formErrors = formErrors;
   validationMessages = validationMessages;
-  validationPatterns = validationPatterns;
+  validationPatterns = validationDescriptorPatterns;
   public refreshMessage: string;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 

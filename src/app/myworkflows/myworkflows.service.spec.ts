@@ -27,7 +27,8 @@ describe('MyWorkflowsService', () => {
       organization: 'cc',
       repository: 'aa',
       workflow_path: '',
-      sourceControl: Workflow.SourceControlEnum.GITHUB
+      sourceControl: 'github.com',
+      source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
   };
   const tool2: Workflow = {
     defaultTestParameterFilePath: '',
@@ -37,7 +38,8 @@ describe('MyWorkflowsService', () => {
     organization: 'cc',
     repository: 'bb',
     workflow_path: '',
-    sourceControl: Workflow.SourceControlEnum.GITHUB
+    sourceControl: 'github.com',
+    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool3: Workflow = {
     defaultTestParameterFilePath: '',
@@ -47,7 +49,8 @@ describe('MyWorkflowsService', () => {
     organization: 'bb',
     repository: 'cc',
     workflow_path: '',
-    sourceControl: Workflow.SourceControlEnum.GITHUB
+    sourceControl: 'github.com',
+    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool4: Workflow = {
     defaultTestParameterFilePath: '',
@@ -57,7 +60,8 @@ describe('MyWorkflowsService', () => {
     organization: 'bb',
     repository: 'dd',
     workflow_path: '',
-    sourceControl: Workflow.SourceControlEnum.GITHUB
+    sourceControl: 'github.com',
+    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool5: Workflow = {
     defaultTestParameterFilePath: '',
@@ -67,7 +71,8 @@ describe('MyWorkflowsService', () => {
     organization: 'aa',
     repository: 'ee',
     workflow_path: '',
-    sourceControl: Workflow.SourceControlEnum.GITHUB
+    sourceControl: 'github.com',
+    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool6: Workflow = {
     defaultTestParameterFilePath: '',
@@ -77,7 +82,8 @@ describe('MyWorkflowsService', () => {
     organization: 'aa',
     repository: 'ee',
     workflow_path: '1',
-    sourceControl: Workflow.SourceControlEnum.GITHUB
+    sourceControl: 'github.com',
+    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
   const expectedResult1 = {'containers': [(tool5), (tool6)], 'isFirstOpen': false, 'namespace': 'quay.io/aa'};

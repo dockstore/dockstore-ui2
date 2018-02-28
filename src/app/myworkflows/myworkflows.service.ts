@@ -82,7 +82,7 @@ export class MyWorkflowsService {
       if (pos < 0) {
         orgWorkflows.push({
           organization: workflows[i].organization,
-          sourceControl: this.getSourceControlFriendlyName(workflows[i].sourceControl),
+          sourceControl: workflows[i].sourceControl,
           workflows: [],
           isFirstOpen: false
         });

@@ -33,7 +33,13 @@ export const formErrors = {
   'customDockerRegistryPath': ''
 };
 
-export const validationPatterns = {
+export const exampleDescriptorPatterns = {
+  'cwl': 'e.g. /Dockstore.cwl',
+  'wdl': 'e.g. /Dockstore.wdl',
+  'nextflow': 'e.g. /nextflow.config'
+};
+
+export const validationDescriptorPatterns = {
   'gitPath': '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'cwlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)',
   'wdlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$',
@@ -50,7 +56,8 @@ export const validationPatterns = {
   'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
-  'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$'
+  'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
+  'customDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com'
 };
 
 export const validationMessages = {
@@ -143,7 +150,6 @@ export const validationMessages = {
   },
   'customDockerRegistryPath': {
     'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
-    'pattern': 'A custom docker registry path may only consist of ' +
-    'alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
+    'pattern': 'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.'
   }
 };

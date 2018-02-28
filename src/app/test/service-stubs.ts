@@ -548,7 +548,8 @@ export class WorkflowsStubService {
             'workflow_path': 'refreshedWorkflowPath',
             'workflowVersions': [],
             'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath',
-            'sourceControl': Workflow.SourceControlEnum.GITHUB
+            'sourceControl': 'github.com',
+            'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
         };
         return Observable.of(refreshedWorkflow);
     }
@@ -637,7 +638,8 @@ export class ContainersStubService {
             name: 'refreshedName',
             namespace: 'refreshedNamespace',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: 'quay.io',
+            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
             toolname: 'refreshedToolname',
             defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
             defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'

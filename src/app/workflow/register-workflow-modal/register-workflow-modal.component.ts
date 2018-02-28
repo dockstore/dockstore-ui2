@@ -14,13 +14,13 @@
  *    limitations under the License.
  */
 
-import { StateService } from './../../shared/state.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
+import { StateService } from '../../shared/state.service';
+import { Workflow } from '../../shared/swagger';
 import { NgForm } from '@angular/forms';
-import { formErrors, validationPatterns, validationMessages } from './../../shared/validationMessages.model';
+import { formErrors, validationDescriptorPatterns } from '../../shared/validationMessages.model';
+import { validationMessages, exampleDescriptorPatterns } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-register-workflow-modal',
@@ -29,7 +29,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
+  public examplePatterns = exampleDescriptorPatterns;
   public workflow: Workflow;
   public workflowRegisterError;
   public isModalShown: boolean;

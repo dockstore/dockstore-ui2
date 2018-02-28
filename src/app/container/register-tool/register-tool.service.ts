@@ -207,14 +207,18 @@ export class RegisterToolService {
         return foundEnum;
     }
 
-    getToolRegistry(irProvider): string {
-        let foundEnum;
+    getToolRegistry(irProvider, customDockerRegistryPath): string {
+        let foundPath;
         this.dockerRegistryMap.forEach(element => {
             if (irProvider === element.friendlyName) {
-                foundEnum = element.enum;
+                if (irProvider === 'Amazon ECR') {
+                  foundPath = customDockerRegistryPath;
+                } else {
+                  foundPath = element.dockerPath;
+                }
             }
         });
-        return foundEnum;
+        return foundPath;
     }
 
     registryKeys(): Array<string> {
@@ -227,7 +231,7 @@ export class RegisterToolService {
             name: this.getImagePath(toolObj.imagePath, 'name'),
             toolname: toolObj.toolname,
             namespace: this.getImagePath(toolObj.imagePath, 'namespace'),
-            registry: this.getToolRegistry(toolObj.irProvider),
+            registry: this.getToolRegistry(toolObj.irProvider, customDockerRegistryPath),
             gitUrl: this.getGitUrl(toolObj.gitPath, toolObj.scrProvider),
             default_dockerfile_path: toolObj.default_dockerfile_path,
             default_cwl_path: toolObj.default_cwl_path,
@@ -236,8 +240,7 @@ export class RegisterToolService {
             defaultWDLTestParameterFile: toolObj.default_wdl_test_parameter_file,
             is_published: false,
             private_access: toolObj.private_access,
-            tool_maintainer_email: toolObj.tool_maintainer_email,
-            path: this.createPath(toolObj, customDockerRegistryPath)
+            tool_maintainer_email: toolObj.tool_maintainer_email
         };
         if (normToolObj.toolname === normToolObj.name || normToolObj.toolname === '') {
             delete normToolObj.toolname;

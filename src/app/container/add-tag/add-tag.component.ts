@@ -22,7 +22,7 @@ import { NgForm } from '@angular/forms';
 
 import { ContainerService } from './../../shared/container.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { formErrors, validationMessages, validationPatterns } from './../../shared/validationMessages.model';
+import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 
 @Component({
@@ -36,7 +36,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   public DescriptorType = DescriptorType;
   public tool;
   public formErrors = formErrors;
-  public validationPatterns = validationPatterns;
+  public validationPatterns = validationDescriptorPatterns;
   public trackByIndex;
   editMode = true;
   unsavedVersion: Tag = {
@@ -116,7 +116,6 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
 
   addTag() {
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
-      console.log(response);
       this.tool.tags = response;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
@@ -128,8 +127,8 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
         this.addTestParameterFile(DescriptorType.WDL);
       }
 
-      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, null, tagName, 'CWL').subscribe();
-      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, null, tagName, 'WDL').subscribe();
+      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', null, tagName).subscribe();
+      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', null, tagName).subscribe();
       this.containerService.setTool(this.tool);
     }, error => console.log(error));
   }
