@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dockstore } from '../shared/dockstore.model';
+import { Location } from '@angular/common';
 
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
@@ -40,6 +41,8 @@ import { ContainerService } from '../shared/container.service';
 import { ListContainersService } from '../containers/list/list.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
+import { Tag } from '../shared/swagger/model/tag';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 
 
 @Component({
@@ -51,6 +54,7 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  location: Location;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
@@ -58,6 +62,9 @@ export class ContainerComponent extends Entry {
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
+  public selectedVersion = null;
+  public urlTag = null;
+  public sortedVersions: Array<Tag|WorkflowVersion> = [];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
@@ -72,10 +79,12 @@ export class ContainerComponent extends Entry {
     router: Router,
     private containerService: ContainerService,
     stateService: StateService,
-    errorService: ErrorService) {
+    errorService: ErrorService,
+    private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'containers';
+    this.location = locationService;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -99,7 +108,11 @@ export class ContainerComponent extends Entry {
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
-    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.path, this.tool.defaultVersion);
+    if (this.selectedVersion === null) {
+      this.dockerPullCmd = null;
+    } else {
+      this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.tool_path, this.selectedVersion.name);
+    }
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
@@ -121,7 +134,13 @@ export class ContainerComponent extends Entry {
         this.tool = tool;
         if (tool) {
           this.published = this.tool.is_published;
+          if (this.tool.tags.length === 0) {
+            this.selectedVersion = null;
+          } else {
+            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+          }
         }
+        // Select version
         this.setUpTool(tool);
       }
     );
@@ -150,17 +169,29 @@ export class ContainerComponent extends Entry {
       this.initTool();
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
+      this.sortedVersions = this.getSortedVersions(this.tool.tags, this.defaultVersion);
     }
   }
 
   public setupPublicEntry(url: String) {
     if (url.includes('containers')) {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+
+      // Get version from path if it exists
+      const splitTitle = this.title.split(':');
+
+      if (splitTitle.length === 2) {
+        this.urlTag = splitTitle[1];
+        this.title = this.title.replace(':' + this.urlTag, '');
+      }
+
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.containersService.getPublishedContainerByToolPath(this.title, this._toolType)
+      this.containersService.getPublishedContainerByToolPath(this.title)
         .subscribe(tool => {
           this.containerService.setTool(tool);
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+
         }, error => {
           this.router.navigate(['../']);
         });
@@ -175,7 +206,10 @@ export class ContainerComponent extends Entry {
         publish: this.published
       };
       this.containersService.publish(this.tool.id, request).subscribe(
-        response => this.tool.is_published = response.is_published, err => this.published = !this.published);
+        response => this.tool.is_published = response.is_published, err => {
+          this.published = !this.published;
+          this.refreshService.handleError('publish error', err);
+        });
     }
   }
 
@@ -244,6 +278,23 @@ export class ContainerComponent extends Entry {
 
   public toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
+  }
+
+  onTagChange(tag: Tag): void {
+    this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.tool_path, tag.name);
+  }
+
+
+  /**
+   * Called when the selected version is changed
+   * @param {Tag} tag - New tag
+   * @return {void}
+   */
+  onSelectedVersionChange(tag: Tag): void {
+    this.selectedVersion = tag;
+    const currentToolPath = (this.router.url).split(':')[0];
+    this.location.go(currentToolPath + ':' + this.selectedVersion.name);
+    this.onTagChange(tag);
   }
 
 }

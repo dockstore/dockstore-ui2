@@ -41,7 +41,7 @@ describe('ProviderService', () => {
             name: '',
             namespace: '',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: DockstoreTool.RegistryProviderEnum.QUAYIO,
             toolname: ''
         };
         expect(service.setUpProvider(tool).providerUrl).toBeFalsy();

@@ -19,12 +19,37 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export abstract class LaunchService {
     protected static readonly descriptorWdl = ' --descriptor wdl';
+    public readonly cwlrunnerDescription =
+    'Run locally with cwl-runner when all inputs and outputs are available on the local filesystem';
+    public readonly nonStrict =
+    'You can use \'--non-strict\' when the executor is cwltool for lenient validation (ignore unrecognized fields)';
+    public readonly cwlrunnerTooltip = 'Commands for launching tools/workflows through cwl-runner. ' + this.nonStrict;
+    public readonly cwltoolTooltip = 'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' +
+    this.nonStrict;
     constructor() { }
     abstract getParamsString(path: string, versionName: string, currentDescriptor: string);
     abstract getCliString(path: string, versionName: string, currentDescriptor: string);
-    abstract getCwlString(path: string, versionName: string);
+    abstract getCwlString(path: string, versionName: string, mainDescriptor: string);
     getConsonanceString(path: string, versionName: string) {
         return `$ consonance run --tool-dockstore-id ${path}:${versionName} ` +
             '--run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
+    }
+
+    /**
+     * This creates the Dockstore-supported cwltool launch command
+     * @param path The GA4GH Tool's path
+     * @param versionName The ToolVersion's name
+     */
+    getDockstoreSupportedCwlLaunchString(path: string, versionName: string) {
+        return `$ cwltool ${path}:${versionName} Dockstore.json`;
+    }
+
+    /**
+     * This creates the Dockstore-supported cwltool make-template command
+     * @param path The GA4GH Tool's path
+     * @param versionName The ToolVersion's name
+     */
+    getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string) {
+        return `$ cwltool --make-template ${path}:${versionName} > input.yaml`;
     }
 }

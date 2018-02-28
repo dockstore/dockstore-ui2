@@ -84,7 +84,9 @@ export class ContainerService {
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';
-    }
+
   }
+
+}
 
 }

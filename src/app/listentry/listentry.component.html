@@ -19,7 +19,9 @@
     <thead>
     <tr>
       <th>Name</th>
+      <th>Stars</th>
       <th>Author</th>
+      <th>Format</th>
       <th>Project Links</th>
       <th>Docker Pull</th>
     </tr>
@@ -38,7 +40,13 @@
         </a>
       </td>
       <td>
+        {{ !hit?._source.starredUsers ? '' : hit?._source.starredUsers.length}}
+      </td>
+      <td>
         {{ hit?._source.author || 'n/a' }}
+      </td>
+      <td>
+        {{ hit?._source.descriptorType ? (hit?._source.descriptorType.toString() | uppercase) : ''}}
       </td>
       <td>
         <a [href]="hit?._source.providerUrl">
@@ -67,6 +75,7 @@
     <thead>
     <tr>
       <th>Name</th>
+      <th>Stars</th>
       <th>Author</th>
       <th>Format</th>
       <th>Project Links</th>
@@ -81,6 +90,9 @@
         <a (click)="sendToolInfo(hit?._source)" [routerLink]="['/workflows', hit?._source.path ]">
           {{ hit?._source.repository + (hit?._source.workflowName ? ' (' + hit?._source.workflowName + ')' : '') }}
         </a>
+      </td>
+      <td>
+        {{ !hit?._source.starredUsers ? '' : hit?._source.starredUsers.length}}
       </td>
       <td>
         {{ hit?._source.author || 'n/a' }}

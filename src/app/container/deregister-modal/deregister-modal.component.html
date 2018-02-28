@@ -14,14 +14,14 @@
   ~    limitations under the License.
   -->
 
-<button id="deregisterButton" type="button" class="btn btn-danger" (click)="staticModal.show()">
-  Deregister
+<button id="deregisterButton" type="button" class="btn btn-danger right-button" (click)="staticModal.show()">
+  Delete
 </button>
 <div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">Are you sure you wish to deregister this tool?</div>
+        <div class="modal-title">Are you sure you wish to delete this tool?</div>
       </div>
       <div class="modal-body">
         <p>All information associated with this tool will be deleted.</p>
@@ -29,7 +29,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="staticModal.hide()">Close</button>
         <button id="deregisterConfirmButton" type="button" class="btn btn-danger" (click)="deregister(); staticModal.hide()" >
-          Deregister
+          Delete
         </button>
       </div>
     </div>

@@ -29,7 +29,6 @@ import { Configuration } from './../shared/swagger/configuration';
 import { SearchService } from './../search/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Metadata } from './../shared/swagger/model/metadata';
-import { Doc } from './../docs/doc.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -67,15 +66,6 @@ export class ProviderStubService {
     }
 }
 export class FileStubService { }
-export class DocsStubService {
-    getDocs(): Doc[] {
-        return null;
-    }
-    getDoc(slug: string): Doc {
-        return null;
-    }
-}
-
 
 export class QueryBuilderStubService {
     getTagCloudQuery(type: string): string {
@@ -92,13 +82,17 @@ export class QueryBuilderStubService {
     getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
         return 'thisissomefakequery';
     }
+
+    getVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
+        return 'thisissomefakequery';
+    }
 }
 
 export class GA4GHStubService {
     metadataGet(): Observable<Metadata> {
         const metadata: Metadata = {
             version: '3',
-            apiversion: '3',
+            api_version: '3',
         };
         return Observable.of(metadata);
     }
@@ -137,7 +131,7 @@ export class SearchStubService {
     }
 
     // Initialization Functions
-    initializeBucketStubs() {
+    initializeCommonBucketStubs() {
         return new Map([
             ['Entry Type', '_type'],
             ['Registry', 'registry'],
@@ -396,6 +390,7 @@ export class UserStubService {
 }
 
 export class TokenStubService {
+    hasGitHubToken$ = Observable.of(false);
     updateTokens(): void {
     }
 }
@@ -543,7 +538,9 @@ export class WorkflowsStubService {
             'repository': 'refreshedRepository',
             'workflow_path': 'refreshedWorkflowPath',
             'workflowVersions': [],
-            'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath'
+            'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath',
+            'sourceControl': 'github.com',
+            'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
         };
         return Observable.of(refreshedWorkflow);
     }
@@ -632,7 +629,8 @@ export class ContainersStubService {
             name: 'refreshedName',
             namespace: 'refreshedNamespace',
             private_access: false,
-            registry: DockstoreTool.RegistryEnum.QUAYIO,
+            registry: 'quay.io',
+            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
             toolname: 'refreshedToolname',
             defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
             defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'

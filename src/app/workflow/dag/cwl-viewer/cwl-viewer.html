@@ -1,0 +1,16 @@
+<div [ngClass]="{'fullscreen-element large-dag': expanded}" class="cwl-viewer" >
+  <div *ngIf="cwlViewerError" class="alert alert-warning">
+    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+    <span>The Common Workflow Language Viewer was unable to process the CWL. Note that the viewer only supports
+      branches and does not support tags.</span>
+  </div>
+  <div>
+    <span *ngIf="!cwlViewerError">See on <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <span class="glyphicon glyphicon-new-window"></span></a></span>
+  </div>
+  <div class="mini-dag image" [ngClass]="{'fullscreen-element large-dag': expanded}">
+    <div *ngIf="loading" class="text-center viewer-loading">
+      <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ></span>
+    </div>
+    <img [hidden]="!cwlViewerDescriptor" [style.width.%]="cwlViewerPercentageZoom" [style.height.%]="cwlViewerPercentageZoom" [src]="cwlViewerDescriptor?.svgUrl" (wheel)="onWheel($event)">
+  </div>
+</div>

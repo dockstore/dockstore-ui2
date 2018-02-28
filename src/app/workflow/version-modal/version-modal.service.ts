@@ -23,6 +23,7 @@ import { WorkflowService } from './../../shared/workflow.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/concatMap';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 

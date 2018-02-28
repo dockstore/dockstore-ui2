@@ -25,6 +25,9 @@ export class Dockstore {
   // Discourse URL MUST end with a slash (/)
   static readonly DISCOURSE_URL = 'http://localhost/';
 
+  // Google Shortener API key (https://developers.google.com/url-shortener/v1/getting_started#APIKey)
+  static readonly GOOGLE_SHORTENER_KEY = 'fill_this_in';
+
   static readonly LOCAL_URI = Dockstore.HOSTNAME + ':' + Dockstore.UI_PORT;
   static readonly API_URI = Dockstore.HOSTNAME + ':' + Dockstore.API_PORT;
   static readonly DNASTACK_IMPORT_URL= 'https://app.dnastack.com/#/app/workflow/import/dockstore';
@@ -33,7 +36,7 @@ export class Dockstore {
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 
   static readonly GITHUB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITHUB;
-  static readonly GITHUB_SCOPE = 'read:org,user,user:email';
+  static readonly GITHUB_SCOPE = 'read:org,user:email';
 
   static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
   static readonly QUAYIO_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.QUAY;
@@ -46,4 +49,6 @@ export class Dockstore {
   static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
   static readonly GITLAB_CLIENT_ID = 'fill_this_in';
   static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
+
+  static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 }

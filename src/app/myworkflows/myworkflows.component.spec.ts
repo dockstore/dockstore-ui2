@@ -1,3 +1,5 @@
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -28,11 +30,13 @@ import { WorkflowService } from './../shared/workflow.service';
 import { sampleWorkflow1, sampleWorkflow2, sampleWorkflow3 } from './../test/mocked-objects';
 import { RouterOutletStubComponent } from './../test/router-stubs';
 import {
+    AccountsStubService,
     AuthStubService,
     ConfigurationStub,
     RefreshStubService,
     RegisterWorkflowModalStubService,
     StateStubService,
+    TokenStubService,
     UsersStubService,
     UserStubService,
     WorkflowStubService,
@@ -57,7 +61,9 @@ describe('MyWorkflowsComponent', () => {
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
         { provide: UserService, useClass: UserStubService },
-        { provide: StateService, useClass: StateStubService }
+        { provide: StateService, useClass: StateStubService },
+        { provide: TokenService, useClass: TokenStubService },
+        { provide: AccountsService, useClass: AccountsStubService }
       ]
     })
     .compileComponents();

@@ -16,21 +16,29 @@
 
 import { ContainersService } from '../../shared/swagger';
 import {Component, Input, ElementRef, AfterViewChecked, AfterViewInit} from '@angular/core';
-
-import { VersionSelector } from '../../shared/selectors/version-selector';
+import { Dockstore } from '../../shared/dockstore.model';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { FileService } from '../../shared/file.service';
 import { ContainerService } from '../../shared/container.service';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
 })
-export class DockerfileComponent extends VersionSelector implements AfterViewChecked {
+export class DockerfileComponent implements AfterViewChecked {
 
   @Input() id: number;
+  @Input() entrypath: string;
+  _selectedVersion: Tag;
+  @Input() set selectedVersion(value: Tag) {
+    this._selectedVersion = value;
+    this.reactToVersion();
+  }
   content: string;
+  filepath: string;
   nullContent: boolean;
   contentHighlighted: boolean;
 
@@ -38,21 +46,23 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
               public fileService: FileService,
               private elementRef: ElementRef,
               private containerService: ContainerService, private containersService: ContainersService) {
-    super();
     this.nullContent = false;
+    this.filepath = '/Dockerfile';
   }
 
   reactToVersion(): void {
-    if (this.currentVersion) {
+    if (this._selectedVersion) {
       this.nullContent = false;
-      this.containersService.dockerfile(this.id, this.currentVersion.name)
+      this.containersService.dockerfile(this.id, this._selectedVersion.name)
         .subscribe(file => {
             this.content = file.content;
             this.contentHighlighted = true;
+            this.filepath = file.path;
           }
         );
     } else {
       this.nullContent = true;
+      this.content = null;
     }
   }
   ngAfterViewChecked() {
@@ -61,14 +71,11 @@ export class DockerfileComponent extends VersionSelector implements AfterViewChe
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
-  copyBtnSubscript(): void {
-    this.containerService.copyBtn$.subscribe(
-      copyBtn => {
-          this.toolCopyBtn = copyBtn;
-      });
-  }
-  toolCopyBtnClick(copyBtn): void {
-    this.containerService.setCopyBtn(copyBtn);
+
+  getDockerfilePath(): string {
+    const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
+    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedVersion.name + '/dockerfile';
+    return basepath + customPath;
   }
 
 }

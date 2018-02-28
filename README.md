@@ -9,7 +9,6 @@ Table of Contents
    * [DockstoreUi2](#dockstoreui2)
       * [Set Up Angular CLI](#set-up-angular-cli)
          * [Prerequisites](#prerequisites)
-            * [Bower](#bower)
             * [NPM](#npm)
       * [Project Set Up](#project-set-up)
       * [Development server](#development-server)
@@ -29,25 +28,18 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ### Prerequisites
 
 Angular CLI requires Node 6.9.0 or higher, together with NPM 3 or higher.
+Then make sure Angular CLI has been properly set up.
 
 [Install NPM and Node](https://nodejs.org/en/download/package-manager/)
 ```
-curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-sudo apt-get install -y nodejs
-nodejs -v
+$curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+$sudo apt-get install -y nodejs
+$nodejs -v
 v7.10.0
-npm -v
+$npm -v
 4.2.0
-```
-#### Bower
 
-Until bootstrap-toc moves to npm or a better table of contents(toc) library comes along in npm, we cannot get rid of bower just yet.
-```
-sudo npm install -g bower
-bower -v
-1.8.0
-sudo npm install -g @angular/cli@1.3.1
-bower install
+$sudo npm install -g @angular/cli@1.3.1		
 ```
 
 #### NPM

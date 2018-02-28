@@ -33,11 +33,11 @@ export class ImageProviderService {
   }
 
   setUpImageProvider(tool) {
-    const registry = this.getImageProvider(tool.registry);
+    const registry = this.getImageProvider(tool.registry_provider);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
     }
     return tool;
   }
@@ -48,7 +48,7 @@ export class ImageProviderService {
     } else {
       console.log('This should not be necessary');
       this.containersService.getDockerRegistries().subscribe(registryList => {
-        return registryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
+        return registryList.find(dockerRegistry => dockerRegistry._enum === imageProvider);
       });
     }
   }
@@ -69,6 +69,10 @@ export class ImageProviderService {
           suffix = '/container_registry';
         }
 
+        if (containerRegistry === 'AMAZON_ECR') {
+          url = match[1] + '/';
+        }
+
         url += match[2] + '/' + match[3] + suffix;
         return url;
       }
@@ -81,7 +85,6 @@ export class ImageProviderService {
     this.containersService.getDockerRegistries()
     .subscribe(registryList => {
       this.dockerRegistryList = registryList;
-      console.log('finally gotten');
       localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
     });
   }
@@ -91,7 +94,7 @@ export class ImageProviderService {
     if (!this.dockerRegistryList) {
       console.log('This should not be necessary');
       this.containersService.getDockerRegistries().subscribe(registryList => {
-        const dockerReg = registryList.find(x => x.enum === tool.registry);
+        const dockerReg = registryList.find(x => x._enum === tool.registry_provider);
         if (dockerReg) {
           return dockerReg.privateOnly === 'true';
         } else {
@@ -99,7 +102,7 @@ export class ImageProviderService {
         }
       });
     } else {
-    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
+    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry_provider);
     if (dockerReg) {
       return dockerReg.privateOnly === 'true';
     } else {

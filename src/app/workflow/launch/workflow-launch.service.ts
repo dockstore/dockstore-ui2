@@ -26,8 +26,8 @@ export class WorkflowLaunchService extends LaunchService {
     return `$ dockstore workflow launch --entry ${ path }:${ versionName } --json Dockstore.json`;
   }
 
-  getCwlString(path: string, versionName: string) {
-    return `$ cwltool --non-strict ${ Dockstore.API_URI }/api/ga4gh/v1/tools/${ encodeURIComponent('#workflow/' + path) }` +
-      `/versions/${ encodeURIComponent(versionName) }/plain-CWL/descriptor Dockstore.json`;
+  getCwlString(path: string, versionName: string, mainDescriptor: string) {
+    return `$ cwl-runner ${ Dockstore.API_URI }/api/ga4gh/v1/tools/${ encodeURIComponent('#workflow/' + path) }` +
+      `/versions/${ encodeURIComponent(versionName) }/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 }

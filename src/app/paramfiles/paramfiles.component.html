@@ -17,7 +17,7 @@
 <div class="container separation">
   <div *ngIf="tagsMap.size">
     <div class="form-inline">
-    <strong>Container Version:</strong>
+    <strong>Tool Version:</strong>
     <app-select [items]="tagNames" (select)="onVersionChange($event)"></app-select>
     <strong>Descriptor:</strong>
     <app-select [items]="descriptorTypes" (select)="onDescriptorChange($event)"></app-select>

@@ -1,3 +1,4 @@
+import { AccountsService } from './accounts.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { Provider } from '../../../shared/enum/provider.enum';
 import { Token } from './../../../shared/swagger/model/token';
@@ -6,7 +7,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { Links } from './links.model';
@@ -61,7 +62,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
-    private authService: AuthService, private configuration: Configuration) {
+    private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService) {
     this.routeSubscription = this.trackLoginService.isLoggedIn$.subscribe(
       state => {
         if (!state) {
@@ -69,32 +70,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-
-  private stripSpace(url: string): string {
-    return url.replace(/\s/g, '');
-  }
-
-  private openWindow(url: string): void {
-    window.location.href = this.stripSpace(url);
-  }
-
-  // Open a window for the user to login to the appropriate service
-  link(source: string) {
-    switch (source) {
-      case TokenSource.GITHUB:
-        this.openWindow(Links.GITHUB);
-        break;
-      case TokenSource.BITBUCKET:
-        this.openWindow(Links.BITBUCKET);
-        break;
-      case TokenSource.GITLAB:
-        this.openWindow(Links.GITLAB);
-        break;
-      case TokenSource.QUAY:
-        this.openWindow(Links.QUAY);
-        break;
-    }
   }
 
   // Delete token by id
@@ -113,6 +88,10 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         account.isLinked = false;
       }
     }
+  }
+
+  link(source: string): void {
+    this.accountsService.link(source);
   }
 
   // Delete a token and unlink service in the UI

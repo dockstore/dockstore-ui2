@@ -15,22 +15,22 @@
   -->
 
 <div>
-  <span *ngIf="versions?.length > 0">
-    <strong>Container Version</strong>
-    <app-select [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)">
-    </app-select>
-  </span>
-  <div *ngIf="nullContent">
+  <div *ngIf="nullContent || !_selectedVersion?.valid">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Dockerfile associated with this Docker container could not be found.
     </alert>
   </div>
-  <div *ngIf="!nullContent" class="code-copy">
-    <button class="btn btn-default code-copy-button" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'dockerfile'}"
-            (cbOnSuccess)="toolCopyBtnClick('dockerfile')">
-      <span class="glyphicon glyphicon-copy"></span>
-    </button>
+  <div *ngIf="!nullContent && _selectedVersion?.valid" class="code-copy">
+    <div class="code-copy-button btn-group">
+      <a download="{{filepath}}" [href]="getDockerfilePath()" class="btn btn-default" type="button" title="{{filepath}}">
+        <span class="glyphicon glyphicon-download"></span>
+      </a>
+      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'dockerfile'}"
+              (cbOnSuccess)="toolCopyBtnClick('dockerfile')" title="Copy to clipboard">
+        <span class="glyphicon glyphicon-copy"></span>
+      </button>
+    </div>
     <section [innerHTML]="fileService.highlightCode(content)"></section>
   </div>
 </div>

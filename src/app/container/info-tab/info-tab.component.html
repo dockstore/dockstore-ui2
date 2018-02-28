@@ -39,7 +39,7 @@
         {{ tool?.imgProviderUrl }}
       </a>
     </li>
-    <li *ngIf="tool?.default_dockerfile_path">
+    <li *ngIf="tool?.default_dockerfile_path || !isPublic">
       <form #editDockerfileForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
@@ -59,7 +59,7 @@
         </div>
       </form>
     </li>
-    <li *ngIf="tool?.default_cwl_path">
+    <li *ngIf="tool?.default_cwl_path || !isPublic">
       <form #editCWLPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
@@ -79,7 +79,7 @@
         </div>
       </form>
     </li>
-    <li *ngIf="tool?.default_wdl_path">
+    <li *ngIf="tool?.default_wdl_path || !isPublic">
       <form #editWDLPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
@@ -155,8 +155,7 @@
       </span>
     </div>
   </div>
-  <div *ngIf="validVersions">
-    <app-launch *ngIf="!defaultVersion?.valid" [versions]="validVersions" [default]="validVersions[0]" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
-    <app-launch *ngIf="defaultVersion?.valid" [versions]="validVersions" [default]="defaultVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
+  <div>
+    <app-launch *ngIf="tool.tags.length > 0" [selectedVersion]="selectedVersion" [path]="tool?.path" [toolname]="tool?.toolname"></app-launch>
   </div>
 </div>

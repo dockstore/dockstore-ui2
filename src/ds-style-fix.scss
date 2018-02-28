@@ -206,6 +206,7 @@ ul.nav-tabs {
 }
 
 div.tab-content {
+  border: 1px solid #ddd;
   background-color: #ffffff;
   padding: 8px;
   min-height: 320px;
@@ -441,15 +442,6 @@ select.ds-wide-descriptor {
   width: 220px;
 }
 
-
-div.ds-version-selector {
-  display: table-cell;
-}
-
-select.ds-version {
-  width: 120px;
-}
-
 div.well.well-sm {
   margin-bottom: 0;
 }
@@ -515,6 +507,7 @@ div.contact-button {
   a {
     color: #ffffff;
   }
+  margin-right: 5px;
 }
 
 /* Media Queries - Lower Resolutions (width < 1200px) */
@@ -714,4 +707,22 @@ div.contact-button {
 
 .full-width {
   width: 100%;
+}
+
+.right-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.no-margin {
+  margin:0px;
+}
+
+.ds-green {
+  color: #487980 !important;
+}
+
+.top-down-padding {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }

@@ -14,11 +14,6 @@
  *    limitations under the License.
  */
 
-$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
-// bower:scss
-// Also removing this due to issues
-//@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
-// endbower
 @import "ds-style-fix.scss";
 
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
@@ -1041,6 +1036,10 @@ div.tabs>div:target>div,
   top: 20px;
   right: 20px;
   position: absolute;
+}
+
+.code-copy-button > a {
+  border: 1px solid transparent !important;
 }
 
 .ellipsis-lines {

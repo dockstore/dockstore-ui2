@@ -57,4 +57,5 @@ export class WorkflowService {
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }
+
 }

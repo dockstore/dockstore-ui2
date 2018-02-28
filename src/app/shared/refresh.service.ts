@@ -34,7 +34,7 @@ export class RefreshService {
     private tools;
     private workflow: Workflow;
     private workflows;
-    constructor(private WorkflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
+    constructor(private workflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
         private errorService: ErrorService, private notificationsService: NotificationsService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
@@ -48,7 +48,7 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshTool(): void {
-        const message = 'Refreshing ' + this.tool.path;
+        const message = 'Refreshing ' + this.tool.tool_path;
         this.stateService.setRefreshMessage(message + ' ...');
         this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
             this.containerService.replaceTool(this.tools, response);
@@ -88,9 +88,9 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshWorkflow(): void {
-        const message = 'Refreshing ' +  this.workflow.path;
+        const message = 'Refreshing ' +  this.workflow.full_workflow_path;
         this.stateService.setRefreshMessage(message + ' ...');
-        this.WorkflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
+        this.workflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, response);
             this.workflowService.setWorkflow(response);
             this.handleSuccess(message);

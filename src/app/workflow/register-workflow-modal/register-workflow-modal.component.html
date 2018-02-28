@@ -76,8 +76,8 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li *ngFor="let descriptorType of getDescriptorTypes()">
-                      <a class="dropdown-item" (click)="workflow.descriptorType = descriptorType">
-                        {{descriptorType}}
+                      <a class="dropdown-item" (click)="workflow.descriptorType = descriptorType.toLowerCase()">
+                        {{descriptorType | lowercase}}
                       </a>
                     </li>
                   </ul>

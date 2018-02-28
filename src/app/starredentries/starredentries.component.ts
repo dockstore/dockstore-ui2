@@ -6,6 +6,7 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { UserService } from '../loginComponents/user.service';
 import {Subscription} from 'rxjs/Subscription';
 import { StarentryService } from '../shared/starentry.service';
+
 @Component({
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
@@ -22,7 +23,8 @@ export class StarredEntriesComponent implements OnInit {
               private userService: UserService,
               private imageProviderService: ImageProviderService,
               private providerService: ProviderService,
-              private starentryService: StarentryService, private usersService: UsersService) { }
+              private starentryService: StarentryService,
+              private usersService: UsersService) { }
 
   ngOnInit() {
     this.entrySubscription = this.starentryService.starEntry$.subscribe(

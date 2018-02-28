@@ -23,6 +23,7 @@ export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);
   tokens: Token[];
   user: User;
+  hasGitHubToken$ = this.tokens$.map(tokens => this.hasGitHubTokenFunction(tokens));
   constructor(private usersService: UsersService, private userService: UserService,
     private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {
@@ -33,6 +34,18 @@ export class TokenService {
     });
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.tokens$.subscribe(tokens => this.tokens = tokens);
+  }
+
+  hasGitHubTokenFunction(tokens: Token[]) {
+    if (!tokens) {
+      return false;
+    }
+    const githubToken = tokens.find(token => token.tokenSource === 'github.com');
+    if (githubToken) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   setTokens(tokens: Token[]) {

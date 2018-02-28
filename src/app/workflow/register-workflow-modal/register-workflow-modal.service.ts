@@ -15,6 +15,7 @@
  */
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -25,20 +26,23 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RegisterWorkflowModalService {
     workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-    friendlyRepositoryKeys = ['GitHub', 'Bitbucket', 'GitLab'];
-    descriptorTypes = ['cwl', 'wdl'];
+    private descriptorLanguageMap = [];
     sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
+    private sourceControlMap = [];
     workflows: any;
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService,
-        private stateService: StateService) {
+        private stateService: StateService,
+        private metadataService: MetadataService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
+        this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
+        this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptorLanguageMap = map);
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -89,7 +93,19 @@ export class RegisterWorkflowModalService {
             }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                 'workflow, please ensure that the workflow attributes are ' +
                 'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error._body)
+                error.error)
             );
+    }
+
+    friendlyRepositoryKeys(): Array<string> {
+        if (this.sourceControlMap) {
+            return this.sourceControlMap.map((a) => a.friendlyName);
+        }
+    }
+
+    getDescriptorLanguageKeys(): Array<string> {
+      if (this.descriptorLanguageMap) {
+        return this.descriptorLanguageMap.map((a) => a.value);
+      }
     }
 }

@@ -36,13 +36,20 @@
       <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ tool?.tool_path }}
+      {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
       <app-starring *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     </h3>
     <div *ngIf="tool">
       <span class="label label-default container-label" *ngFor="let label of labels">
         {{label}}
       </span>
+    </div>
+    <div *ngIf="!publicPage && tool?.tags.length > 0" class="input-group">
+      <div class="form-group">
+        <select class="form-control" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
+          <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
+        </select>
+      </div>
     </div>
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}
@@ -54,24 +61,8 @@
       </button>
     </div>
   </div>
-  <div *ngIf="!publicPage">
-    <h3>
-      <div class="pull-right">
-        <div class="btn-group" role="group">
-          <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published"
-            [disabled]="!thisisValid" btnCheckbox>
-            {{tool?.is_published ? 'Unpublish' : 'Publish'}}
-          </button>
-
-          <app-deregister-modal *ngIf="tool?.mode === 'MANUAL_IMAGE_PATH'"></app-deregister-modal>
-        </div>
-        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
-          Refresh
-        </button>
-      </div>
-    </h3>
-  </div>
-  <div class="col-md-4">
+  <div class="col-md-5">
+    <app-starring class="pull-right starring-button" *ngIf="isToolPublic" (change)="starGazersChange()"></app-starring>
     <h3 class="pull-right">
       <div class="button contact-button" *ngIf="publicPage && tool?.private_access">
         <p>
@@ -89,17 +80,36 @@
       </div>
     </h3>
   </div>
+  <div *ngIf="!publicPage">
+    <h3>
+      <div class="pull-right">
+        <div class="btn-group" role="group">
+          <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published"
+            [disabled]="!thisisValid" btnCheckbox>
+            {{tool?.is_published ? 'Unpublish' : 'Publish'}}
+          </button>
+          <button *ngIf="tool?.is_published" type="button" [disabled]="tool?.is_published" class="btn btn-danger">
+            Delete
+          </button>
+          <app-deregister-modal *ngIf="!tool?.is_published"></app-deregister-modal>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null">
+          Refresh
+        </button>
+      </div>
+    </h3>
+  </div>
 </div>
 <div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
-    <tabset id="tool_tabs" justified="true">
-      <tab id="infoTab" heading="Info" id="infoTab">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion"></app-info-tab>
+    <tabset id="tool_tabs" #entryTabs justified="true">
+      <tab id="infoTab" heading="Info">
+        <app-info-tab [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="labelsTab" heading="Labels" *ngIf="tool">
-        <button type="sbutton" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
+        <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
         <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
@@ -132,12 +142,12 @@
           </div>
         </form>
       </tab>
-      <tab heading="Versions" *ngIf="validVersions">
-        <app-versions-container [versions]="tool?.tags" id="versionsTab" [verifiedSource]="tool?.verifiedSources">
+      <tab id="versionTab" heading="Versions" *ngIf="validVersions">
+        <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
         </app-versions-container>
       </tab>
       <tab heading="Files" *ngIf="validVersions">
-        <app-files-container [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion">
+        <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
         </app-files-container>
       </tab>
     </tabset>
@@ -145,7 +155,29 @@
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
     <div class="panel panel-default" *ngIf="tool">
       <div class="panel-heading">
-        <strong>Docker Pull Command</strong>
+        <h3>Recent Versions</h3>
+      </div>
+      <div class="panel-body">
+        <div>
+          <span *ngFor="let sortedVersion of sortedVersions">
+            <p class="top-down-padding no-margin">
+              <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
+                <a href= {{getVerifiedLink()}} class="verified-check">
+                  <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+                </a>
+              </span>
+              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}}</a>
+              <small>{{sortedVersion.last_modified | date}}</small>
+            </p>
+            <hr class="no-margin">
+          </span>
+          <a (click)="selectTab(2)">See all tags</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="tool">
+      <div class="panel-heading">
+        <h3>Docker Pull Command</h3>
       </div>
       <div class="panel-body">
         <div class="input-group">
@@ -219,6 +251,16 @@
           <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true"
             (count)="sumCounts($event)">
           </share-buttons>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>DOI</h3>
+      </div>
+      <div class="panel-body">
+        <div class="input-group">
+
         </div>
       </div>
     </div>

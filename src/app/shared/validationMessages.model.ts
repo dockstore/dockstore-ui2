@@ -29,7 +29,8 @@ export const formErrors = {
   'reference': '',
   'versionTag': '',
   'workflow_path': '',
-  'workflowName': ''
+  'workflowName': '',
+  'customDockerRegistryPath': ''
 };
 
 export const validationPatterns = {
@@ -43,11 +44,14 @@ export const validationPatterns = {
   'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   'versionTag': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
   'reference': '[\\w-]+((/|.)[\\w-]+)*',
-  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml)',
+  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml|config)',
   'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   'cwlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
-  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$'
+  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
+  'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
+  'customDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com'
 };
 
 export const validationMessages = {
@@ -55,7 +59,7 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Descriptor Path is too short. (Min. 3 characters.)',
     'maxlength': 'Descriptor Path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Descriptor Path format. Descriptor Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', or\'*.yaml\'.'
+    'pattern': 'Invalid Descriptor Path format. Descriptor Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', or \'*.yaml\'.'
   },
   'wdlPath': {
     'required': 'This field cannot be empty.',
@@ -74,19 +78,18 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Source Code Repository Path is too short. (Min. 3 characters.)',
     'maxlength': 'Source Code Repository Path is too long. (Max 128 characters.)',
-    'pattern': 'The namespace and name of the Git repository, separated by a \'/\'. ' +
-    'Currently, only GitHub, Bitbucket and GitLab are supported third-party platforms.'
+    'pattern': 'The namespace and name of the Git repository, separated by a \'/\'. '
   },
   'imagePath': {
     'required': 'This field cannot be empty.',
     'minlength': 'Image Path is too short. (Min. 3 characters.)',
     'maxlength': 'Image Path is too long. (Max 128 characters.)',
     'pattern': 'The namespace and name of the image repository, separated by a \'/\'. ' +
-    'Use \'_\' for an empty namespace. Currently, only Quay.io and Docker Hub are supported third-party platforms.'
+    'Use \'_\' for an empty namespace.'
   },
   'label': {
     'maxlength': 'Labels string is too long. (Max 512 characters.)',
-    'pattern': 'Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.'
+    'pattern': 'Labels are comma-delimited, and may only consist of alphanumerical characters and internal hyphens.'
   },
   'cwlTestParameterFilePath': {
     'required': 'This field cannot be empty.',
@@ -111,7 +114,7 @@ export const validationMessages = {
   },
   'toolName': {
     'maxlength': 'Tool Name is too long. (Max 256 characters.)',
-    'pattern': 'A Tool Name may only consist of alphanumeric characters and internal underscores or hyphens.'
+    'pattern': 'A Tool Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
   },
   'email': {
     'maxlength': 'Email is too long. (Max 256 characters.)'
@@ -121,12 +124,12 @@ export const validationMessages = {
     'minlength': 'Git reference is too short. (Min. 3 characters.)',
     'maxlength': 'Git reference is too long. (Max 128 characters.)',
     'pattern': 'Invalid Git Reference format. ' +
-    'An Git Reference path may only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
+    'A Git Reference path may only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
   },
   'versionTag': {
     'required': 'This field cannot be empty.',
-    'maxlength': 'Tag Name is too long. (Max 128 characters.)',
-    'pattern': 'A Tag Name may only consist of alphanumeric characters and internal hyphens, periods and underscores.'
+    'maxlength': 'Version Tag is too long. (Max 128 characters.)',
+    'pattern': 'A Version Tag may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
   },
   'workflow_path': {
     'required': 'This field cannot be empty.',
@@ -137,6 +140,10 @@ export const validationMessages = {
   },
   'workflowName': {
     'maxlength': 'Workflow Name is too long. (Max 256 characters.)',
-    'pattern': 'A Workflow Name may only consist of alphanumeric characters and internal underscores or hyphens.'
+    'pattern': 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
+  },
+  'customDockerRegistryPath': {
+    'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
+    'pattern': 'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.'
   }
 };

@@ -17,7 +17,6 @@ import { StateService } from './../../shared/state.service';
  *    limitations under the License.
  */
 
-import { updatedWorkflow } from './../../test/mocked-objects';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -27,6 +26,7 @@ import { DateStubService, ErrorStubService, DockstoreStubService, WorkflowStubSe
 import { DockstoreService } from './../../shared/dockstore.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { OrderBy } from '../../shared/orderBy';
 
 import { VersionsWorkflowComponent } from './versions.component';
 
@@ -36,7 +36,7 @@ describe('VersionsWorkflowComponent', () => {
   let workflowService: WorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionsWorkflowComponent ],
+      declarations: [ VersionsWorkflowComponent, OrderBy ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
@@ -66,7 +66,9 @@ describe('VersionsWorkflowComponent', () => {
     component.publicPage = false;
     component.updateDefaultVersion('name');
     fixture.detectChanges();
-    workflowService.workflow$.subscribe(workflow => expect(workflow).toEqual(updatedWorkflow));
+    workflowService.workflow$.subscribe(workflow => {
+      expect(workflow).toEqual(jasmine.objectContaining({defaultVersion: 'name'}));
+  });
   });
 
   it('should get verified source', () => {

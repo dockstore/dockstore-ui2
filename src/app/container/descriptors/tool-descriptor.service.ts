@@ -40,4 +40,14 @@ export class ToolDescriptorService extends DescriptorService {
   protected getSecondaryWdl(id: number, versionName: string) {
       return this.containersService.secondaryWdl(id, versionName);
   }
+
+  protected getSecondaryNextFlow(id: number, versionName: string) {
+    // not implemented yet, may not be applicable
+      return '';
+  }
+
+  protected getNextFlow(id: number, versionName: string) {
+    // not implemented yet, may not be applicable
+      return '';
+  }
 }

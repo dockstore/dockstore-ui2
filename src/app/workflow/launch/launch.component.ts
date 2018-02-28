@@ -16,38 +16,51 @@
 
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { Component, Input } from '@angular/core';
-import { DescriptorSelector } from '../../shared/selectors/descriptor-selector';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ContainerService } from '../../shared/container.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchWorkflowComponent extends DescriptorSelector {
+export class LaunchWorkflowComponent {
   @Input() path;
+  @Input() currentDescriptor;
+
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.reactToDescriptor();
+    }
+  }
 
   params: string;
   cli: string;
   cwl: string;
+  dockstoreSupportedCwlLaunch: string;
+  dockstoreSupportedCwlMakeTemplate: string;
   consonance: string;
-
   descriptors: Array<any>;
-
+  cwlrunnerDescription = this.launchService.cwlrunnerDescription;
+  cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
+  cwltoolTooltip = this.launchService.cwltoolTooltip;
   constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
-    super();
   }
   getDescriptors(): any {
-    return this.workflowDescriptorService.getDescriptors(this.versions, this.default);
+    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
   reactToDescriptor(): void {
-    this.changeMessages(this.path, this.currentVersion.name);
+    this.changeMessages(this.path, this._selectedVersion.name);
   }
   private changeMessages(workflowPath: string, versionName: string) {
     this.params = this.launchService.getParamsString(workflowPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(workflowPath, versionName, this.currentDescriptor);
-    this.cwl = this.launchService.getCwlString(workflowPath, versionName);
+    this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
+    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
+    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
   }
 }

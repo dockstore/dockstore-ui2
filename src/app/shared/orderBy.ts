@@ -39,7 +39,14 @@ export class OrderBy implements PipeTransform {
       b = 0;
     }
 
-    if ((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))) {
+    if (typeof(a) === 'boolean' || typeof(b) === 'boolean') {
+      if (a && !b) {
+        return 1;
+      }
+      if (!a && b) {
+        return -1;
+      }
+    } else if ((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))) {
       // Isn't a number so lowercase the string to properly compare
       if (a.toLowerCase() < b.toLowerCase()) {
         return -1;

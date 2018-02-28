@@ -1,14 +1,14 @@
 /*
  *    Copyright 2017 OICR
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    Licensed under the Apache License, Version 2.0 (the 'License');
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
  *
  *        http://www.apache.org/licenses/LICENSE-2.0
  *
  *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    distributed under the License is distributed on an 'AS IS' BASIS,
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
@@ -18,21 +18,28 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 declare var cytoscape: any;
 declare var window: any;
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { CommunicatorService } from './../../shared/communicator.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
-import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
+export class DagComponent implements OnInit, AfterViewChecked {
   @Input() validVersions: any;
   @Input() defaultVersion: any;
   @Input() id: number;
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    if (value != null) {
+      this._selectedVersion = value;
+      this.onChange();
+    }
+  }
 
   private currentWorkflowId;
   private element: any;
@@ -41,16 +48,26 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   public notFound: boolean;
 
   public expanded: Boolean = false;
-  public selectVersion: WorkflowVersion;
   @ViewChild('cy') el: ElementRef;
   private style;
   public workflow: Workflow;
   private tooltip: string;
   public missingTool;
   private refresh = false;
+
+  public dagType: 'classic' | 'cwlviewer' = 'classic';
+  public enableCwlViewer = false;
+  public refreshCounter = 1;
+
   setDagResult(dagResult: any) {
     this.dagResult = dagResult;
   }
+
+  reset() {
+    this.refreshCounter++;
+    this.refreshDocument();
+  }
+
   refreshDocument() {
     const self = this;
     if (this.dagResult) {
@@ -184,7 +201,7 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   download() {
     if (this.cy) {
       const pngDAG = this.cy.png({ full: true, scale: 2 });
-      const name = this.workflow.repository + '_' + this.selectVersion.name + '.png';
+      const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
       $('#exportLink').attr('href', pngDAG).attr('download', name);
     }
   }
@@ -196,16 +213,8 @@ export class DagComponent implements OnInit, AfterViewChecked, OnChanges {
   }
 
   onChange() {
-    this.getDag(this.selectVersion.id);
-  }
-
-  ngOnChanges() {
-    if (this.defaultVersion) {
-      this.selectVersion = this.defaultVersion;
-      this.getDag(this.defaultVersion.id);
-    } else {
-      this.setDagResult(null);
-      this.selectVersion = null;
+    if (this._selectedVersion) {
+      this.getDag(this._selectedVersion.id);
     }
   }
 

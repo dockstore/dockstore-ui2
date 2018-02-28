@@ -27,7 +27,9 @@ export const updatedWorkflow: Workflow = {
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': 'github.com',
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -39,7 +41,9 @@ export const sampleWorkflow1: Workflow = {
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': 'github.com',
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -51,7 +55,9 @@ export const sampleWorkflow2: Workflow = {
     'repository': 'updatedRepository',
     'workflow_path': 'updatedWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': 'github.com',
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -63,7 +69,9 @@ export const sampleWorkflow3: Workflow = {
     'repository': 'sampleRepository',
     'workflow_path': 'sampleWorkflowPath',
     'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath'
+    'defaultTestParameterFilePath': 'updatedTestParameterPath',
+    'sourceControl': 'github.com',
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleTool1: DockstoreTool = {
@@ -76,7 +84,8 @@ export const sampleTool1: DockstoreTool = {
     name: 'sampleName',
     namespace: 'sampleNamespace',
     private_access: false,
-    registry: DockstoreTool.RegistryEnum.QUAYIO,
+    registry: 'quay.io',
+    registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
@@ -92,7 +101,8 @@ export const sampleTool2: DockstoreTool = {
     name: 'sampleName',
     namespace: 'sampleNamespace',
     private_access: false,
-    registry: DockstoreTool.RegistryEnum.QUAYIO,
+    registry: 'quay.io',
+    registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
@@ -108,7 +118,8 @@ export const sampleTool3: DockstoreTool = {
     name: 'sampleName',
     namespace: 'sampleNamespace',
     private_access: false,
-    registry: DockstoreTool.RegistryEnum.QUAYIO,
+    registry: 'quay.io',
+    registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'

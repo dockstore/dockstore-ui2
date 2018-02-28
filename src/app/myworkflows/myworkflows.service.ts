@@ -15,6 +15,7 @@
  */
 
 import {Injectable} from '@angular/core';
+import { Workflow } from './../shared/swagger/model/workflow';
 
 @Injectable()
 export class MyWorkflowsService {
@@ -81,6 +82,7 @@ export class MyWorkflowsService {
       if (pos < 0) {
         orgWorkflows.push({
           organization: workflows[i].organization,
+          sourceControl: workflows[i].sourceControl,
           workflows: [],
           isFirstOpen: false
         });
@@ -103,5 +105,18 @@ export class MyWorkflowsService {
     /* Return Namespaces w/ Nested Containers */
     return this.sortNamespaces(orgWorkflows, username);
   }
-}
 
+  // Given enum name, returns the friendly name
+  // TODO: This should be connected to the existing enum in the workflow model, however that does
+  // not have the friendly names
+  getSourceControlFriendlyName(sourceControlEnum: string): string {
+    if (sourceControlEnum === 'GITHUB') {
+      return 'github.com';
+    } else if (sourceControlEnum === 'GITLAB') {
+      return 'gitlab.com';
+    } else if (sourceControlEnum === 'BITBUCKET') {
+      return 'bitbucket.org';
+    }
+    return null;
+  }
+}

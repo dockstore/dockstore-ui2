@@ -22,8 +22,10 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 import { ContainerService } from '../../shared/container.service';
 import { ToolDescriptorService } from './tool-descriptor.service';
 
-import { FileSelector } from '../../shared/selectors/file-selector';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+
 import { FileService } from '../../shared/file.service';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -31,26 +33,29 @@ import { FileService } from '../../shared/file.service';
   providers: [ToolDescriptorService]
 })
 
-export class DescriptorsComponent extends FileSelector implements AfterViewChecked {
+export class DescriptorsComponent extends EntryFileSelector implements AfterViewChecked {
 
   @Input() id: number;
-  content: string;
-  contentHighlighted: boolean;
+  @Input() entrypath: string;
+  @Input() set selectedVersion(value: Tag) {
+    this.clearContent();
+    this.onVersionChange(value);
+  }
+
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
-              private elementRef: ElementRef
-  ) {
+              private elementRef: ElementRef) {
     super();
   }
 
   getDescriptors(version): Array<any> {
-    return this.descriptorsService.getDescriptors(this.versions, this.currentVersion);
+    return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
+    return this.descriptorsService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
@@ -64,13 +69,14 @@ export class DescriptorsComponent extends FileSelector implements AfterViewCheck
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
-  copyBtnSubscript(): void {
-    this.containerService.copyBtn$.subscribe(
-      copyBtn => {
-        this.toolCopyBtn = copyBtn;
-      });
+
+  getDescriptorPath(descType): string {
+    return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'tool');
   }
-  toolCopyBtnClick(copyBtn): void {
-    this.containerService.setCopyBtn(copyBtn);
+
+  // Get the path of the file
+  getFilePath(file): string {
+    return this.fileService.getFilePath(file);
   }
+
 }

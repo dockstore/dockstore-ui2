@@ -17,21 +17,27 @@
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { WorkflowService } from '../../shared/workflow.service';
 
-import { FileSelector } from '../../shared/selectors/file-selector';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+
 import { FileService } from '../../shared/file.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-descriptors-workflow',
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends FileSelector implements AfterViewChecked, OnInit {
+export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
   @Input() id: number;
+  @Input() entrypath: string;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    this.onVersionChange(value);
+  }
+
   content: string;
   contentHighlighted: boolean;
   constructor(private highlightJsService: HighlightJsService,
@@ -42,11 +48,11 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
     super();
   }
   getDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getDescriptors(this.versions, this.currentVersion);
+    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.workflowDescriptorService.getFiles(this.id, this.currentVersion.name, this.currentDescriptor);
+    return this.workflowDescriptorService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
@@ -59,13 +65,13 @@ export class DescriptorsWorkflowComponent extends FileSelector implements AfterV
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
-  copyBtnSubscript(): void {
-    this.workflowService.copyBtn$.subscribe(
-      copyBtn => {
-        this.workflowCopyBtn = copyBtn;
-      });
+
+  getDescriptorPath(entrytype): string {
+    return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
-  workflowCopyBtnClick(copyBtn): void {
-    this.workflowService.setCopyBtn(copyBtn);
+
+  // Get the path of the file
+  getFilePath(file): string {
+    return this.fileService.getFilePath(file);
   }
 }

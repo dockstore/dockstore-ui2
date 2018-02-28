@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -24,6 +24,7 @@ import { ContainerService } from './../../shared/container.service';
 import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { Tag } from '../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-versions-container',
@@ -33,6 +34,13 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
+  versionTag: Tag;
+  @Input() set selectedVersion(value: Tag) {
+    if (value != null) {
+      this.versionTag = value;
+    }
+  }
+  @Output() selectedVersionChange = new EventEmitter<Tag>();
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
@@ -72,13 +80,19 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     this.tool.defaultVersion = newDefaultVersion;
     this.stateService.setRefreshMessage(message + '...');
     this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
-      this.containerService.setTool(response);
       this.refreshService.handleSuccess(message);
+      this.refreshService.refreshTool();
     }, error => this.refreshService.handleError(message, error)
     );
   }
 
   getVerifiedSource(name: string) {
     this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
+  }
+
+  // Updates the version and emits an event for the parent component
+  setVersion(version: Tag) {
+    this.versionTag = version;
+    this.selectedVersionChange.emit(this.versionTag);
   }
 }

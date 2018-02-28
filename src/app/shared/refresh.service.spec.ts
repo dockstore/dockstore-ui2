@@ -59,7 +59,8 @@ describe('RefreshService', () => {
                 name: 'refreshedName',
                 namespace: 'refreshedNamespace',
                 private_access: false,
-                registry: DockstoreTool.RegistryEnum.QUAYIO,
+                registry: 'quay.io',
+                registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
                 toolname: 'refreshedToolname',
                 defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
                 defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
@@ -82,7 +83,9 @@ describe('RefreshService', () => {
                 'repository': 'refreshedRepository',
                 'workflow_path': 'refreshedWorkflowPath',
                 'workflowVersions': [],
-                'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath'
+                'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath',
+                'sourceControl': 'github.com',
+                'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
             };
         service.refreshWorkflow();
         stateService.refreshMessage$.subscribe(refreshing => {

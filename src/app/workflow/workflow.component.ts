@@ -28,6 +28,7 @@ import { Router } from '@angular/router';
 import { CommunicatorService } from '../shared/communicator.service';
 import { DateService } from '../shared/date.service';
 import { URLSearchParams } from '@angular/http';
+import { Location } from '@angular/common';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { ProviderService } from '../shared/provider.service';
@@ -37,6 +38,9 @@ import { Entry } from '../shared/entry';
 import { ContainerService } from '../shared/container.service';
 import { validationPatterns } from '../shared/validationMessages.model';
 import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { Tag } from '../shared/swagger/model/tag';
+
 
 @Component({
   selector: 'app-workflow',
@@ -47,19 +51,26 @@ export class WorkflowComponent extends Entry {
   mode: string;
   workflowEditData: any;
   dnastackURL: string;
+  location: Location;
   public workflow;
   public missingWarning: boolean;
   public title: string;
   private workflowSubscription: Subscription;
   private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;
+  public selectedVersion = null;
+  public urlVersion = null;
+  public sortedVersions: Array<Tag|WorkflowVersion> = [];
+
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
-    stateService: StateService, errorService: ErrorService) {
+    stateService: StateService, errorService: ErrorService,
+    private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService);
     this._toolType = 'workflows';
+    this.location = locationService;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -93,9 +104,9 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
-    if (workflowRef.path && workflowRef.descriptorType === 'wdl') {
+    if (workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl') {
       const myParams = new URLSearchParams();
-      myParams.set('path', workflowRef.path);
+      myParams.set('path', workflowRef.full_workflow_path);
       myParams.set('descriptorType', workflowRef.descriptorType);
       this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
     }
@@ -112,8 +123,9 @@ export class WorkflowComponent extends Entry {
         this.providerService.setUpProvider(workflow);
       }
       this.workflow = Object.assign(workflow, this.workflow);
-      this.title = this.workflow.path;
+      this.title = this.workflow.full_workflow_path;
       this.initTool();
+      this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
     }
   }
 
@@ -123,6 +135,8 @@ export class WorkflowComponent extends Entry {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;
+          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
+            this.workflow.defaultVersion, this.selectedVersion);
         }
         this.setUpWorkflow(workflow);
       }
@@ -137,11 +151,23 @@ export class WorkflowComponent extends Entry {
   public setupPublicEntry(url: String) {
     if (url.includes('workflows')) {
       this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
+
+      // Get version from path if it exists
+      const splitTitle = this.title.split(':');
+
+      if (splitTitle.length === 2) {
+        this.urlVersion = splitTitle[1];
+        this.title = this.title.replace(':' + this.urlVersion, '');
+      }
+
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title, this._toolType)
+      this.workflowsService.getPublishedWorkflowByPath(this.title)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
+
+          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
+            this.workflow.defaultVersion, this.selectedVersion);
         }, error => {
           this.router.navigate(['../']);
         });
@@ -172,7 +198,10 @@ export class WorkflowComponent extends Entry {
         publish: this.published
       };
       this.workflowsService.publish(this.workflow.id, request).subscribe(
-        response => this.workflow.is_published = response.is_published, err => this.published = !this.published);
+        response => this.workflow.is_published = response.is_published, err => {
+          this.published = !this.published;
+          this.refreshService.handleError('publish error', err);
+        });
     }
   }
 
@@ -237,5 +266,16 @@ export class WorkflowComponent extends Entry {
 
   refresh() {
     this.refreshService.refreshWorkflow();
+  }
+
+  /**
+   * Called when the selected version is changed
+   * @param {WorkflowVersion} version - New version
+   * @return {void}
+   */
+  onSelectedVersionChange(version: WorkflowVersion): void {
+    this.selectedVersion = version;
+    const currentWorkflowPath = (this.router.url).split(':')[0];
+    this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
   }
 }

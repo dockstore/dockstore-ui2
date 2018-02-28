@@ -13,14 +13,10 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
-<div *ngIf="versions?.length > 0">
+<div *ngIf="_selectedVersion">
   <div class="form-inline">
     <label tooltip="Commands to launch workflow from the command line">Launch With</label>
-    <div class="pull-right"><app-select class="text-right" [items]="versions" [default]="default" [field]="'name'" (select)="onVersionChange($event)"></app-select>
-    </div>
   </div>
-
   <div class="well">
     <div class="well well-sm" tooltip="Commands for creating a runtime JSON template">
       Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
@@ -30,11 +26,15 @@
       Run locally with the Dockstore CLI
       <pre>{{ cli }}</pre>
     </div>
-    <div *ngIf="currentDescriptor === 'cwl'">
-      <div class="well well-sm" tooltip="Commands for launching tools through CWLtool: the CWL reference implementation.
-      cwltool can run a tool directly when all inputs and outputs are available on the local filesystem.">
-        Alternatively, cwltool can run a workflow directly when all inputs and outputs are available on the local filesystem
+    <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
+      <div class="well well-sm" [tooltip]="cwlrunnerTooltip">
+        {{cwlrunnerDescription}}
         <pre>{{ cwl }}</pre>
+      </div>
+      <div class="well well-sm" [tooltip]="cwltoolTooltip">
+        Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
+        <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
+        <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
       </div>
     </div>
   </div>

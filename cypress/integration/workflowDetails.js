@@ -2,11 +2,12 @@
 describe('Dockstore Workflow Details', function() {
   require('./helper.js')
 	beforeEach(function () {
-     cy.visit(String(global.baseUrl) + "/workflows/A/l")
+     cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l")
+     cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
      cy
       .get('tab')
       .should('have.length', 6)
-     
+
   });
 
 	it('should not show Edit Button', function() {
