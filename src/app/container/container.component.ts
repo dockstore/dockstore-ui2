@@ -1,6 +1,4 @@
-import { EmailService } from './email.service';
-import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +13,31 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ErrorService } from './../shared/error.service';
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
-import { Subscription } from 'rxjs/Subscription';
-import { ContainersService } from './../shared/swagger/api/containers.service';
-import { StateService } from './../shared/state.service';
-import { RefreshService } from './../shared/refresh.service';
-import { FormsModule } from '@angular/forms';
-import { Component, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Dockstore } from '../shared/dockstore.model';
 import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
+import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
+import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
-
+import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-
-import { Entry } from '../shared/entry';
-
-import { ContainerService } from '../shared/container.service';
-import { ListContainersService } from '../containers/list/list.service';
-import { validationDescriptorPatterns } from '../shared/validationMessages.model';
-import { TrackLoginService } from '../shared/track-login.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { TrackLoginService } from '../shared/track-login.service';
+import { ErrorService } from './../shared/error.service';
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
+import { ContainersService } from './../shared/swagger/api/containers.service';
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { EmailService } from './email.service';
 
 
 @Component({
@@ -188,14 +183,21 @@ export class ContainerComponent extends Entry {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title)
-        .subscribe(tool => {
-          this.containerService.setTool(tool);
-          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
-
-        }, error => {
-          this.router.navigate(['../']);
+        .subscribe((tool: DockstoreTool) => {
+          this.setTool(tool);
+        }, noAuthError => {
+          this.containersService.getContainerByToolPath(this.title).subscribe((tool: DockstoreTool) => {
+            this.setTool(tool);
+          }, withAuthError => {
+            this.router.navigate(['../']);
+          });
         });
     }
+  }
+
+  private setTool(tool: DockstoreTool) {
+    this.containerService.setTool(tool);
+    this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
   }
 
   publish() {
