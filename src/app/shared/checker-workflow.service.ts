@@ -1,3 +1,4 @@
+import { RegisterCheckerWorkflowService } from './entry/register-checker-workflow/register-checker-workflow.service';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/distinctUntilChanged';

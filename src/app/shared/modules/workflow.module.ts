@@ -104,7 +104,6 @@ import { getTooltipConfig } from './../tooltip';
     DateService,
     FileService,
     WorkflowLaunchService,
-    ErrorService,
     ParamfilesService,
     WorkflowDescriptorService,
     InfoTabService,

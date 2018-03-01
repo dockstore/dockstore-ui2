@@ -1,3 +1,6 @@
+import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
+import { ErrorService } from './shared/error.service';
+import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -147,12 +150,15 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
+    RegisterCheckerWorkflowService,
     StateService,
     SearchService,
     PagenumberService,
     TwitterService,
     GA4GHService,
-    CheckerWorkflowService
+    CheckerWorkflowService,
+    ErrorService,
+    DescriptorLanguageService
   ],
   bootstrap: [ AppComponent ]
 })

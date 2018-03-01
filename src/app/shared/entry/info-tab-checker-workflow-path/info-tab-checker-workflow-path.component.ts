@@ -1,3 +1,4 @@
+import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,7 +19,8 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   validationDescriptorPatterns = validationDescriptorPatterns;
   savedCheckerWorkflowDefaultWorkflowPath: string;
   hasChecker$: Observable<boolean>;
-  constructor(private checkerWorkflowService: CheckerWorkflowService) { }
+  constructor(private checkerWorkflowService: CheckerWorkflowService,
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService) { }
 
   ngOnInit(): void {
     this.checkerWorkflowPath$ = this.checkerWorkflowService.checkerWorkflowPath$;
@@ -47,6 +49,17 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
     if (!this.editing) {
       this.save();
     }
+  }
+  add(): void {
+    this.registerCheckerWorkflowService.add();
+  }
+
+  edit(): void {
+    this.registerCheckerWorkflowService.edit();
+  }
+
+  delete(): void {
+   this.registerCheckerWorkflowService.delete();
   }
 
   /**

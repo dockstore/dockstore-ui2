@@ -106,7 +106,6 @@ import { SelectModule } from './select.module';
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     HighlightJsService,
-    ErrorService,
     EmailService,
     DateService,
     FileService,

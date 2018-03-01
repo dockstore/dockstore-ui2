@@ -59,6 +59,9 @@ export class ContainerService {
    * @memberof ContainerService
    */
   replaceTool(tools: any, newTool) {
+    if (this.tools$.getValue()) {
+      tools = this.tools$.getValue();
+    }
     const oldTool = tools.find(x => x.id === newTool.id);
     const index = tools.indexOf(oldTool);
     tools[index] = newTool;
@@ -95,9 +98,7 @@ export class ContainerService {
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';
-
+    }
   }
-
-}
 
 }

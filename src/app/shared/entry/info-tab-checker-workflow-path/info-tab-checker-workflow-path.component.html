@@ -1,23 +1,26 @@
 <li>
   <form *ngIf="(checkerWorkflowPath$ | async) || !(isPublic$ | async)" #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group">
-      <strong tooltip="Checker workflow's default workflow path">Checker Workflow Path</strong>:
-      <a *ngIf="!editing" [href]="'/workflows/' + (checkerWorkflowPath$ | async)">
+      <strong tooltip="Checker workflow's default workflow path">Checker Workflow</strong>:
+      <!-- <a *ngIf="!editing" [href]="'/workflows/' + (checkerWorkflowPath$ | async)">
         {{ (checkerWorkflowDefaultWorkflowPath) }}
-      </a>
-      <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
-        name="workflowPath" [(ngModel)]="checkerWorkflowDefaultWorkflowPath" placeholder="e.g. /Dockstore.cwl" />
+      </a> -->
+      <!-- <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
+        name="workflowPath" [(ngModel)]="checkerWorkflowDefaultWorkflowPath" placeholder="e.g. /Dockstore.cwl" /> -->
     </div>
-    <div *ngIf="!(isPublic$ | async)" class="btn-group push-right" role="group">
+    <div *ngIf="!(isPublic$ | async)" class="btn-group" role="group">
       <div>
-        <button *ngIf="editing" type="button" class="btn btn-link" (click)="cancel()">
-          <span class="glyphicon glyphicon-remove"></span> Cancel
+        <button *ngIf="!(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="add()">
+          <span class="glyphicon glyphicon-plus"></span> Add
         </button>
-        <button type="button" [disabled]="editing && !editCheckerWorkflowPathForm.valid" class="btn btn-link" (click)="toggleEditWorkflowPath()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !editing, 'glyphicon-save': editing }"></span>
-          {{ editing ? 'Save' : 'Edit' }}
+        <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="edit()">
+          <span class="glyphicon glyphicon-edit"></span> Edit
+        </button>
+        <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="delete()">
+          <span class="glyphicon glyphicon-remove"></span> Delete
         </button>
       </div>
     </div>
   </form>
 </li>
+<app-register-checker-workflow></app-register-checker-workflow>
