@@ -424,6 +424,12 @@ export class StarringStubService {
     }
 }
 
+export class UrlResolverStubService {
+    getEntryPathFromURL() {
+        return 'quay.io/garyluu/dockstore-tool-md5sum';
+    }
+}
+
 export class StarEntryStubService {
     starEntry$ = Observable.of({});
 }
