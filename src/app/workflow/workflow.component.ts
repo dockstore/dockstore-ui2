@@ -35,6 +35,7 @@ import { StateService } from './../shared/state.service';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
+import { UrlResolverService } from './../shared/url-resolver.service';
 
 @Component({
   selector: 'app-workflow',
@@ -59,10 +60,10 @@ export class WorkflowComponent extends Entry {
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
-    stateService: StateService, errorService: ErrorService,
+    stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
     private locationService: Location) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService);
+      stateService, errorService, dateService, urlResolverService);
     this._toolType = 'workflows';
     this.location = locationService;
 
@@ -147,15 +148,7 @@ export class WorkflowComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('workflows')) {
-      this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
-
-      // Get version from path if it exists
-      const splitTitle = this.title.split(':');
-
-      if (splitTitle.length === 2) {
-        this.urlVersion = splitTitle[1];
-        this.title = this.title.replace(':' + this.urlVersion, '');
-      }
+      this.title = this.getEntryPathFromURL();
 
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.

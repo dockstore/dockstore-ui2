@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 
@@ -25,9 +24,11 @@ import { AccountsService } from './../loginComponents/accounts/external/accounts
 import { TokenService } from './../loginComponents/token.service';
 import { UserService } from './../loginComponents/user.service';
 import { TokenSource } from './../shared/enum/token-source.enum';
+import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
 import { RefreshService } from './../shared/refresh.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
+import { UrlResolverService } from './../shared/url-resolver.service';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './myworkflows.service';
 
@@ -50,7 +51,7 @@ export class MyWorkflowsComponent implements OnInit {
     private usersService: UsersService, private userService: UserService, private tokenService: TokenService,
     private workflowService: WorkflowService, private authService: AuthService, private accountsService: AccountsService,
     private refreshService: RefreshService, private stateService: StateService,
-    private registerWorkflowModalService: RegisterWorkflowModalService) {
+    private registerWorkflowModalService: RegisterWorkflowModalService, private urlResolverService: UrlResolverService) {
   }
 
   link() {
@@ -86,14 +87,32 @@ export class MyWorkflowsComponent implements OnInit {
     this.workflowService.nsWorkflows$.subscribe(nsWorkflows => {
       this.orgWorkflows = nsWorkflows;
       if (this.orgWorkflows && this.orgWorkflows.length > 0) {
+        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
         const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
-        this.selectWorkflow(theFirstWorkflow);
+        if (foundWorkflow) {
+          this.selectWorkflow(foundWorkflow);
+        } else {
+          this.selectWorkflow(theFirstWorkflow);
+        }
       } else {
         this.selectWorkflow(null);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
+
+  private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
+    let matchingWorkflow: ExtendedWorkflow;
+    orgWorkflows.forEach((orgWorkflow)  => {
+      orgWorkflow.workflows.forEach(workflow => {
+        if (workflow.path === path) {
+          matchingWorkflow = workflow;
+        }
+      });
+    });
+    return matchingWorkflow;
+  }
+
   setIsFirstOpen() {
     if (this.orgWorkflows && this.workflow) {
       for (const orgObj of this.orgWorkflows) {

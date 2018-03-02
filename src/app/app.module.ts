@@ -78,6 +78,7 @@ import { ToasterModule } from './shared/toaster/toaster.module';
 import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
+import { UrlResolverService } from './shared/url-resolver.service';
 import { WorkflowService } from './shared/workflow.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
@@ -159,6 +160,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     CheckerWorkflowService,
     ErrorService,
     DescriptorLanguageService
+    UrlResolverService
   ],
   bootstrap: [ AppComponent ]
 })

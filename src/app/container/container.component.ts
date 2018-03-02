@@ -36,6 +36,7 @@ import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
 
 @Component({
@@ -60,6 +61,7 @@ export class ContainerComponent extends Entry {
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
+    urlResolverService: UrlResolverService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
     private refreshService: RefreshService,
@@ -75,7 +77,7 @@ export class ContainerComponent extends Entry {
     errorService: ErrorService,
     private locationService: Location) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService);
+      stateService, errorService, dateService, urlResolverService);
     this._toolType = 'containers';
     this.location = locationService;
 
@@ -171,16 +173,7 @@ export class ContainerComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('containers')) {
-      this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
-
-      // Get version from path if it exists
-      const splitTitle = this.title.split(':');
-
-      if (splitTitle.length === 2) {
-        this.urlTag = splitTitle[1];
-        this.title = this.title.replace(':' + this.urlTag, '');
-      }
-
+      this.title = this.getEntryPathFromURL();
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title)
