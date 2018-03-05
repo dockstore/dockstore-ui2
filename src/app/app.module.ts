@@ -159,7 +159,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     GA4GHService,
     CheckerWorkflowService,
     ErrorService,
-    DescriptorLanguageService
+    DescriptorLanguageService,
     UrlResolverService
   ],
   bootstrap: [ AppComponent ]

@@ -8,18 +8,18 @@
       <!-- <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
         name="workflowPath" [(ngModel)]="checkerWorkflowDefaultWorkflowPath" placeholder="e.g. /Dockstore.cwl" /> -->
     </div>
-    <div *ngIf="!(isPublic$ | async)" class="btn-group" role="group">
-      <div>
+    <div class="btn-group" role="group">
+      <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="view()">
+        <span class="glyphicon glyphicon-eye-open"></span> View
+      </button>
+      <span *ngIf="!(isPublic$ | async)">
         <button *ngIf="!(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="add()">
           <span class="glyphicon glyphicon-plus"></span> Add
-        </button>
-        <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="view()">
-          <span class="glyphicon glyphicon-eye-open"></span> View
         </button>
         <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="delete()">
           <span class="glyphicon glyphicon-remove"></span> Delete
         </button>
-      </div>
+      </span>
     </div>
   </form>
 </li>

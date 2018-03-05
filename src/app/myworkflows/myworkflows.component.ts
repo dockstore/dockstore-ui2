@@ -1,3 +1,7 @@
+import { Location } from '@angular/common';
+import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+import { NavigationEnd } from '@angular/router/';
+import { Router } from '@angular/router';
 /**
  *    Copyright 2017 OICR
  *
@@ -47,104 +51,9 @@ export class MyWorkflowsComponent implements OnInit {
   user: any;
   workflows: any;
   public refreshMessage: string;
-  constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-    private usersService: UsersService, private userService: UserService, private tokenService: TokenService,
-    private workflowService: WorkflowService, private authService: AuthService, private accountsService: AccountsService,
-    private refreshService: RefreshService, private stateService: StateService,
-    private registerWorkflowModalService: RegisterWorkflowModalService, private urlResolverService: UrlResolverService) {
-  }
-
-  link() {
-    this.accountsService.link(TokenSource.GITHUB);
+  constructor() {
   }
 
   ngOnInit() {
-    localStorage.setItem('page', '/my-workflows');
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
-    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
-    this.workflowService.setWorkflow(null);
-    this.workflowService.workflow$.subscribe(
-      workflow => {
-        this.workflow = workflow;
-        this.setIsFirstOpen();
-      }
-    );
-    this.userService.user$.subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.usersService.userWorkflows(user.id).subscribe(workflows => {
-          this.workflowService.setWorkflows(workflows);
-        });
-      }
-    });
-    this.workflowService.workflows$.subscribe(workflows => {
-      this.workflows = workflows;
-      if (this.user) {
-        const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
-        this.workflowService.setNsWorkflows(sortedWorkflows);
-      }
-    });
-    this.workflowService.nsWorkflows$.subscribe(nsWorkflows => {
-      this.orgWorkflows = nsWorkflows;
-      if (this.orgWorkflows && this.orgWorkflows.length > 0) {
-        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
-        const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
-        if (foundWorkflow) {
-          this.selectWorkflow(foundWorkflow);
-        } else {
-          this.selectWorkflow(theFirstWorkflow);
-        }
-      } else {
-        this.selectWorkflow(null);
-      }
-    });
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-  }
-
-  private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
-    let matchingWorkflow: ExtendedWorkflow;
-    orgWorkflows.forEach((orgWorkflow)  => {
-      orgWorkflow.workflows.forEach(workflow => {
-        if (workflow.path === path) {
-          matchingWorkflow = workflow;
-        }
-      });
-    });
-    return matchingWorkflow;
-  }
-
-  setIsFirstOpen() {
-    if (this.orgWorkflows && this.workflow) {
-      for (const orgObj of this.orgWorkflows) {
-        if (this.containSelectedWorkflow(orgObj)) {
-          orgObj.isFirstOpen = true;
-          break;
-        }
-      }
-    }
-  }
-  containSelectedWorkflow(orgObj) {
-    const workflows: Array<any> = orgObj.workflows;
-    if (workflows.find(workflow => workflow.id === this.workflow.id)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  selectWorkflow(workflow) {
-    this.workflow = workflow;
-    this.workflowService.setWorkflow(workflow);
-  }
-
-  setModalGitURL(gitURL: string) {
-    this.registerWorkflowModalService.setWorkflowRepository(gitURL);
-  }
-
-  showModal() {
-    this.registerWorkflowModalService.setIsModalShown(true);
-  }
-
-  refreshAllWorkflows(): any {
-    this.refreshService.refreshAllWorkflows(this.user.id);
   }
 }

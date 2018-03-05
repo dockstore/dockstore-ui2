@@ -1,10 +1,9 @@
-import { Router } from '@angular/router';
-import { RegisterCheckerWorkflowService } from './entry/register-checker-workflow/register-checker-workflow.service';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
@@ -36,6 +35,8 @@ export class CheckerWorkflowService {
     private publicPage: boolean;
     // The current checkerWorkflowPath
     private checkerWorkflowPath: string;
+    // The current checker workflow
+    private checkerWorkflow: Workflow;
     constructor(private workflowsService: WorkflowsService, private stateService: StateService, private workflowService: WorkflowService,
         private containerService: ContainerService, private router: Router) {
         this.publicPage$ = this.stateService.publicPage$;
@@ -45,6 +46,7 @@ export class CheckerWorkflowService {
         this.checkerWorkflowID$ = Observable.merge(this.toolCheckerId$, this.workflowCheckerId$).distinctUntilChanged();
         this.checkerWorkflowPath$ = this.checkerWorkflow$.map((workflow: Workflow) => {
             if (workflow) {
+                this.checkerWorkflow = workflow;
                 return workflow.path;
             } else {
                 return null;
@@ -73,11 +75,11 @@ export class CheckerWorkflowService {
             if (id) {
                 // TODO: Figure out a cleaner way to do this if statement observable thing
                 if (publicPage) {
-                    this.workflowsService.getPublishedWorkflow(id).subscribe((workflow: Workflow) => {
+                    this.workflowsService.getPublishedWorkflow(228).subscribe((workflow: Workflow) => {
                         this.checkerWorkflow$.next(workflow);
                     }, error => this.checkerWorkflow$.next(null));
                 } else {
-                    this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
+                    this.workflowsService.getWorkflow(228).subscribe((workflow: Workflow) => {
                         this.checkerWorkflow$.next(workflow);
                     }, error => this.checkerWorkflow$.next(null));
                 }
@@ -100,8 +102,7 @@ export class CheckerWorkflowService {
         if (this.publicPage) {
             this.router.navigateByUrl('/workflows/' + this.checkerWorkflowPath);
         } else {
-            console.log('/my-workflows/' + this.checkerWorkflowPath);
-            this.router.navigateByUrl('/my-workflows/' + this.checkerWorkflowPath);
+            this.router.navigateByUrl('/my-workflows/' + this.checkerWorkflow.full_workflow_path);
         }
     }
 }

@@ -1,3 +1,4 @@
+import { MyWorkflowsService } from './myworkflows.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -15,6 +16,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 
 import { RefreshService } from '../shared/refresh.service';
@@ -43,17 +45,19 @@ import {
   WorkflowStubService,
 } from './../test/service-stubs';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowsComponent } from './myworkflows.component';
+import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 
-describe('MyWorkflowsComponent', () => {
-  let component: MyWorkflowsComponent;
-  let fixture: ComponentFixture<MyWorkflowsComponent>;
+
+describe('MyWorkflowComponent', () => {
+  let component: MyWorkflowComponent;
+  let fixture: ComponentFixture<MyWorkflowComponent>;
   let registerWorkflowModalService: RegisterWorkflowModalService;
   let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyWorkflowsComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+      declarations: [ MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
+      imports: [RouterTestingModule],
       providers: [
         { provide: Configuration, useClass: ConfigurationStub },
         { provide: UsersService, useClass: UsersStubService },
@@ -65,14 +69,14 @@ describe('MyWorkflowsComponent', () => {
         { provide: StateService, useClass: StateStubService },
         { provide: TokenService, useClass: TokenStubService },
         { provide: AccountsService, useClass: AccountsStubService },
-        { provide: UrlResolverService, useClass: UrlResolverStubService }
+        { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyWorkflowsComponent);
+    fixture = TestBed.createComponent(MyWorkflowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);

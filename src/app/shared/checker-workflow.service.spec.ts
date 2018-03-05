@@ -22,10 +22,11 @@ describe('Service: CheckerWorkflow', () => {
 
   it('should be able to get the checker workflow when not logged in', () => {
     const spy = spyOn(fakeWorkflowsService, 'getPublishedWorkflow').and.returnValue(Observable.of(stubPublishedWorkflow));
-    service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService, fakeContainerService);
+    service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService,
+      fakeContainerService, null);
     expect(service).toBeTruthy();
     fakeStateService.publicPage$.next(true);
-    fakeWorkflowService.setWorkflow({id: 1});
+    fakeWorkflowService.setWorkflow({ id: 1 });
     const sub1: Subscription = service.checkerWorkflowPath$.subscribe(path => {
       expect(path).toBe('potato');
     });
@@ -34,10 +35,10 @@ describe('Service: CheckerWorkflow', () => {
   it('should be able to get the checker workflow when logged in', () => {
     const spy = spyOn(fakeWorkflowsService, 'getWorkflow').and.returnValue(Observable.of(stubUnpublishedWorkflow));
     const spy2 = spyOn(fakeWorkflowsService, 'getPublishedWorkflow').and.returnValue(Observable.of(stubPublishedWorkflow));
-    service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService, fakeContainerService);
+    service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService, fakeContainerService, null);
     fakeStateService.publicPage$.next(false);
     expect(service).toBeTruthy();
-    fakeWorkflowService.setWorkflow({id: 1});
+    fakeWorkflowService.setWorkflow({ id: 1 });
     const sub1: Subscription = service.checkerWorkflowPath$.subscribe(path => {
       expect(path).toBe('chicken');
     });
