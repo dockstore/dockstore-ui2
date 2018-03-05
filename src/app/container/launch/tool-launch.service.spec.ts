@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { ToolLaunchService } from './tool-launch.service';
 
@@ -57,4 +56,10 @@ describe('ToolLaunchService', () => {
         expect(service.getDockstoreSupportedCwlMakeTemplateString('quay.io/briandoconnor/dockstore-tool-bamstats', '1.25-11')).toContain(
             'cwltool --make-template quay.io/briandoconnor/dockstore-tool-bamstats:1.25-11 > input.yaml');
     }));
+    it('should get the right check tool command', inject([ToolLaunchService], (service: ToolLaunchService) => {
+        expect(service).toBeTruthy();
+        expect(service.getCheckToolString('potato', null)).toBe('$ dockstore tool check --entry potato checkparam.json');
+        expect(service.getCheckToolString('potato', 'stew')).toBe('$ dockstore tool check --entry potato:stew checkparam.json');
+        expect(service.getCheckToolString(null, null)).toBe('');
+      }));
 });

@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { LaunchService } from '../../shared/launch.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { LaunchService } from '../../shared/launch.service';
+import { EntryType } from './../../shared/enum/entryType.enum';
+
 export class WorkflowLaunchService extends LaunchService {
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
     return `$ dockstore workflow convert entry2json --entry ${ path }:${ versionName } > Dockstore.json
@@ -29,5 +30,9 @@ export class WorkflowLaunchService extends LaunchService {
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
     return `$ cwl-runner ${ Dockstore.API_URI }/api/ga4gh/v1/tools/${ encodeURIComponent('#workflow/' + path) }` +
       `/versions/${ encodeURIComponent(versionName) }/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+  }
+
+  getCheckWorkflowString(path: string, versionName: string): string {
+    return this.getCheckEntry(path, versionName, EntryType.WORKFLOW);
   }
 }

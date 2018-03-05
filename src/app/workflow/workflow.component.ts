@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,34 +13,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
-import { ErrorService } from './../shared/error.service';
+
+import { DateService } from '../shared/date.service';
 import { Dockstore } from '../shared/dockstore.model';
-import { Workflow } from './../shared/swagger/model/workflow';
-import * as WorkflowMode from './../shared/swagger/model/workflow';
+import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
+import { ProviderService } from '../shared/provider.service';
+import { Tag } from '../shared/swagger/model/tag';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowService } from '../shared/workflow.service';
+import { ErrorService } from './../shared/error.service';
+import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommunicatorService } from '../shared/communicator.service';
-import { DateService } from '../shared/date.service';
-import { URLSearchParams } from '@angular/http';
-import { Location } from '@angular/common';
-
-import { DockstoreService } from '../shared/dockstore.service';
-import { ProviderService } from '../shared/provider.service';
-import { WorkflowService } from '../shared/workflow.service';
-import { Entry } from '../shared/entry';
-
-import { ContainerService } from '../shared/container.service';
-import { validationDescriptorPatterns } from '../shared/validationMessages.model';
-import { TrackLoginService } from '../shared/track-login.service';
-import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
-import { Tag } from '../shared/swagger/model/tag';
-
+import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { Workflow } from './../shared/swagger/model/workflow';
 
 @Component({
   selector: 'app-workflow',
@@ -60,7 +54,7 @@ export class WorkflowComponent extends Entry {
   private workflowCopyBtn: string;
   public selectedVersion = null;
   public urlVersion = null;
-  public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public sortedVersions: Array<Tag | WorkflowVersion> = [];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -95,8 +89,11 @@ export class WorkflowComponent extends Entry {
     }
   }
 
+  /**
+   * Populate the extra ExtendedWorkflow properties
+   */
   setProperties() {
-    const workflowRef: any = this.workflow;
+    const workflowRef: ExtendedWorkflow = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
@@ -187,7 +184,7 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshMessage !== null  || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
+    return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB;
   }
 
   publish() {

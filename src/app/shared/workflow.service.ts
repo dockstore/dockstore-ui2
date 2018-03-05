@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,22 +13,32 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 import { Workflow } from './swagger/model/workflow';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Injectable } from '@angular/core';
 
-import { Dockstore } from './dockstore.model';
 @Injectable()
 export class WorkflowService {
   private workflowSource = new BehaviorSubject<any>(null);
   // Observable streams
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
+  workflowCheckerId$: Observable<number>;
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor() {}
+  constructor() {
+    this.workflowCheckerId$ = this.workflow$.map((workflow: Workflow) => {
+      if (workflow) {
+          // Change this to workflow.checker_id once it's available
+          return workflow.id;
+      } else {
+          return null;
+      }
+  });
+  }
   setWorkflow(workflow: any) {
     this.workflowSource.next(workflow);
   }

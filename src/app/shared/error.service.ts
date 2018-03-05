@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 /*
  *    Copyright 2017 OICR
  *
@@ -21,7 +22,7 @@ import { Injectable } from '@angular/core';
 export class ErrorService {
     errorObj$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     constructor() { }
-    setErrorAlert(error: any) {
+    setErrorAlert(error: HttpErrorResponse) {
         let errorObj = null;
         if (error) {
             errorObj = {

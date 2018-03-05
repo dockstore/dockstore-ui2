@@ -424,6 +424,28 @@ export class StarringStubService {
     }
 }
 
+export class CheckerWorkflowStubService {
+    checkerWorkflow$ = Observable.of(null);
+    checkerWorkflowPath$ = Observable.of({});
+    checkerWorkflowDefaultWorkflowPath$ = Observable.of('checkerWorkflowDefaultWorkflowPath');
+    checkerWorkflowVersionName$ = Observable.of({});
+}
+
+export class DescriptorLanguageStubService {
+    descriptorLanguages$ = Observable.of(['cwl', 'wdl', 'nextflow']);
+}
+
+export class RegisterCheckerWorkflowStubService {
+    errorObj$ = Observable.of(null);
+    public isModalShown$ = new BehaviorSubject<boolean>(false);
+    public refreshMessage$ = new BehaviorSubject<string>(null);
+    public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
+}
+
+export class LaunchCheckerWorkflowStubService {
+    command = 'potato';
+}
+
 export class StarEntryStubService {
     starEntry$ = Observable.of({});
 }

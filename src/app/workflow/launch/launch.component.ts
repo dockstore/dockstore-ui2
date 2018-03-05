@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { Component, Input } from '@angular/core';
+
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
-import { ContainerService } from '../../shared/container.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 
 @Component({
   selector: 'app-launch',
@@ -42,6 +41,7 @@ export class LaunchWorkflowComponent {
   cwl: string;
   dockstoreSupportedCwlLaunch: string;
   dockstoreSupportedCwlMakeTemplate: string;
+  checkEntryCommand: string;
   consonance: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
@@ -61,6 +61,7 @@ export class LaunchWorkflowComponent {
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
+    this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
   }
 }

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 /*
  *    Copyright 2017 OICR
  *
@@ -68,7 +69,8 @@ export class RegisterToolService {
         this.isModalShown.next(isModalShown);
     }
 
-    setToolRegisterError(error: any) {
+    setToolRegisterError(error: HttpErrorResponse) {
+        console.log(error);
         let errorObj = null;
         if (error) {
             errorObj = {
