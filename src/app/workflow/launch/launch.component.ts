@@ -14,11 +14,9 @@
  *    limitations under the License.
  */
 
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { Component, Input } from '@angular/core';
-import { WorkflowLaunchService } from '../launch/workflow-launch.service';
-import { ContainerService } from '../../shared/container.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowLaunchService } from './workflow-launch.service';
+import { WorkflowVersion } from '../../shared/swagger';
 
 @Component({
   selector: 'app-launch',
@@ -50,10 +48,7 @@ export class LaunchWorkflowComponent {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
-  constructor(private launchService: WorkflowLaunchService, private workflowDescriptorService: WorkflowDescriptorService) {
-  }
-  getDescriptors(): any {
-    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
+  constructor(private launchService: WorkflowLaunchService) {
   }
   reactToDescriptor(): void {
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name);
