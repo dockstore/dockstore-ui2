@@ -54,8 +54,8 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
     this.registerCheckerWorkflowService.add();
   }
 
-  edit(): void {
-    this.registerCheckerWorkflowService.edit();
+  view(): void {
+    this.checkerWorkflowService.goToCheckerWorkflow();
   }
 
   delete(): void {

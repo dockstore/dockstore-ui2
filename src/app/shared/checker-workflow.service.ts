@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { RegisterCheckerWorkflowService } from './entry/register-checker-workflow/register-checker-workflow.service';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/merge';
@@ -31,9 +32,14 @@ export class CheckerWorkflowService {
     private workflowCheckerId$: Observable<number>;
     // Last tool's id that was looked at
     private toolCheckerId$: Observable<number>;
+    // The current public page status
+    private publicPage: boolean;
+    // The current checkerWorkflowPath
+    private checkerWorkflowPath: string;
     constructor(private workflowsService: WorkflowsService, private stateService: StateService, private workflowService: WorkflowService,
-        private containerService: ContainerService) {
+        private containerService: ContainerService, private router: Router) {
         this.publicPage$ = this.stateService.publicPage$;
+        this.stateService.publicPage$.subscribe((publicPage: boolean) => this.publicPage = publicPage);
         this.toolCheckerId$ = this.containerService.toolCheckerId$;
         this.workflowCheckerId$ = this.workflowService.workflowCheckerId$;
         this.checkerWorkflowID$ = Observable.merge(this.toolCheckerId$, this.workflowCheckerId$).distinctUntilChanged();
@@ -44,6 +50,7 @@ export class CheckerWorkflowService {
                 return null;
             }
         });
+        this.checkerWorkflowPath$.subscribe((checkerWorkflowPath: string) => this.checkerWorkflowPath = checkerWorkflowPath);
         this.checkerWorkflowDefaultWorkflowPath$ = this.checkerWorkflow$.map((workflow: Workflow) => {
             if (workflow) {
                 return workflow.workflow_path;
@@ -84,5 +91,17 @@ export class CheckerWorkflowService {
     public save(path: string): void {
         // Placeholder for endpoint that modifies the checker workflow's default workflow path
         console.log('saving');
+    }
+
+    /**
+     * Go to checker workflow
+     */
+    public goToCheckerWorkflow(): void {
+        if (this.publicPage) {
+            this.router.navigateByUrl('/workflows/' + this.checkerWorkflowPath);
+        } else {
+            console.log('/my-workflows/' + this.checkerWorkflowPath);
+            this.router.navigateByUrl('/my-workflows/' + this.checkerWorkflowPath);
+        }
     }
 }

@@ -28,12 +28,6 @@ export class RegisterCheckerWorkflowService {
         // Placeholder for endpoint
     }
 
-    edit(): void {
-        this.mode$.next('edit');
-        this.showModal();
-        // Placeholder for endpoint
-    }
-
     delete(): void {
         // Placeholder for endpoint
     }

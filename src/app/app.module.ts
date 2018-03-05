@@ -1,6 +1,3 @@
-import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
-import { ErrorService } from './shared/error.service';
-import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -61,6 +58,9 @@ import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
 import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
+import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
+import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
+import { ErrorService } from './shared/error.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
