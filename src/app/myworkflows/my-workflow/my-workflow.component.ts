@@ -49,7 +49,6 @@ export class MyWorkflowComponent implements OnInit {
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.router.events.subscribe(event => {
-      console.log(event);
       if (event instanceof NavigationEnd) {
         const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
         this.selectWorkflow(foundWorkflow);
@@ -96,7 +95,7 @@ export class MyWorkflowComponent implements OnInit {
 
   private goToWorkflow(workflow: ExtendedWorkflow): void {
     this.workflowService.setWorkflow(workflow);
-    this.location.go('/my-workflows/' + workflow.full_workflow_path);
+    this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
   }
 
   private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
