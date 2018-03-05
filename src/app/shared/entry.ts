@@ -1,5 +1,4 @@
-import { DateService } from './date.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,25 +13,20 @@ import { DateService } from './date.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { validationDescriptorPatterns } from './validationMessages.model';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { ErrorService } from './../shared/error.service';
-import { Workflow } from './swagger/model/workflow';
-import { Injectable, Input, OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { StateService } from './state.service';
+import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router/';
-import { Subscription } from 'rxjs/Subscription';
 import { TabsetComponent } from 'ngx-bootstrap';
-
-import { CommunicatorService } from './communicator.service';
-import { ProviderService } from './provider.service';
-
-import { ContainerService } from '../shared/container.service';
-import { TrackLoginService } from '../shared/track-login.service';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { TrackLoginService } from '../shared/track-login.service';
+import { ErrorService } from './../shared/error.service';
+import { DateService } from './date.service';
+import { ProviderService } from './provider.service';
+import { StateService } from './state.service';
+import { UrlResolverService } from './url-resolver.service';
+import { validationDescriptorPatterns } from './validationMessages.model';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -59,7 +53,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     public providerService: ProviderService,
     public router: Router,
     private stateService: StateService,
-    private errorService: ErrorService, public dateService: DateService) {
+    private errorService: ErrorService, public dateService: DateService, public urlResolverService: UrlResolverService) {
   }
 
   ngOnInit() {
@@ -138,27 +132,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public encodedString(url: string): string {
-    if (!this.isEncoded(url)) {
-      return encodeURIComponent(url);
-    }
-    return url;
-  }
-
-  public decodedString(url: string): string {
-    if (this.isEncoded(url)) {
-      return decodeURIComponent(url);
-    }
-    return url;
-  }
-
-  private isEncoded(uri: string): boolean {
-    if (uri) {
-      return uri !== decodeURIComponent(uri);
-    }
-    return null;
-  }
-
   // Embed Discourse comments into page
   ngAfterViewInit() {
     if (this.publicPage) {
@@ -199,6 +172,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       selectedVersion = versions[0];
     }
     return selectedVersion;
+  }
+
+  public getEntryPathFromURL(): string {
+    return this.urlResolverService.getEntryPathFromUrl();
   }
 
   /**

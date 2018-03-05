@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,34 +13,29 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
-import { ErrorService } from './../shared/error.service';
+
+import { DateService } from '../shared/date.service';
 import { Dockstore } from '../shared/dockstore.model';
-import { Workflow } from './../shared/swagger/model/workflow';
-import * as WorkflowMode from './../shared/swagger/model/workflow';
+import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
+import { ProviderService } from '../shared/provider.service';
+import { Tag } from '../shared/swagger/model/tag';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowService } from '../shared/workflow.service';
+import { ErrorService } from './../shared/error.service';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommunicatorService } from '../shared/communicator.service';
-import { DateService } from '../shared/date.service';
-import { URLSearchParams } from '@angular/http';
-import { Location } from '@angular/common';
-
-import { DockstoreService } from '../shared/dockstore.service';
-import { ProviderService } from '../shared/provider.service';
-import { WorkflowService } from '../shared/workflow.service';
-import { Entry } from '../shared/entry';
-
-import { ContainerService } from '../shared/container.service';
-import { validationDescriptorPatterns } from '../shared/validationMessages.model';
-import { TrackLoginService } from '../shared/track-login.service';
-import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
-import { Tag } from '../shared/swagger/model/tag';
-
+import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import * as WorkflowMode from './../shared/swagger/model/workflow';
+import { Workflow } from './../shared/swagger/model/workflow';
+import { UrlResolverService } from './../shared/url-resolver.service';
 
 @Component({
   selector: 'app-workflow',
@@ -65,10 +60,10 @@ export class WorkflowComponent extends Entry {
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
-    stateService: StateService, errorService: ErrorService,
+    stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
     private locationService: Location) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService);
+      stateService, errorService, dateService, urlResolverService);
     this._toolType = 'workflows';
     this.location = locationService;
 
@@ -150,15 +145,7 @@ export class WorkflowComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('workflows')) {
-      this.title = this.decodedString(url.replace(`/${this._toolType}/`, ''));
-
-      // Get version from path if it exists
-      const splitTitle = this.title.split(':');
-
-      if (splitTitle.length === 2) {
-        this.urlVersion = splitTitle[1];
-        this.title = this.title.replace(':' + this.urlVersion, '');
-      }
+      this.title = this.getEntryPathFromURL();
 
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.

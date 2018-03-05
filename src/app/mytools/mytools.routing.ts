@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { RouterModule, Routes } from '@angular/router';
 
 import { MyToolsComponent } from './mytools.component';
 
 const MYTOOLS_ROUTES: Routes = [
   {
-    path: '', component: MyToolsComponent
+    path: '', component: MyToolsComponent, children: [
+      { path: '', component: MyToolsComponent},
+      { path: '**', component: MyToolsComponent}
+    ]
   }
 ];
 export const mytoolsRouting = RouterModule.forChild(MYTOOLS_ROUTES);

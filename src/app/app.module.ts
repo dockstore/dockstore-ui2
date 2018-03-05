@@ -1,5 +1,4 @@
-import { GA4GHService } from './shared/swagger/api/gA4GH.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@ import { GA4GHService } from './shared/swagger/api/gA4GH.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
@@ -39,8 +37,8 @@ import { ListentryModule } from './listentry/listentry.module';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
-import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
+import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
@@ -70,11 +68,13 @@ import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
+import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
 import { ToasterModule } from './shared/toaster/toaster.module';
 import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
+import { UrlResolverService } from './shared/url-resolver.service';
 import { WorkflowService } from './shared/workflow.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
@@ -152,7 +152,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     PagenumberService,
     TwitterService,
     ContainerService,
-    GA4GHService
+    GA4GHService,
+    UrlResolverService
   ],
   bootstrap: [ AppComponent ]
 })
