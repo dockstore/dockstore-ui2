@@ -1,4 +1,3 @@
-import { MyWorkflowsService } from './myworkflows.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -46,6 +45,7 @@ import {
 } from './../test/service-stubs';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
+import { MyWorkflowsService } from './myworkflows.service';
 
 
 describe('MyWorkflowComponent', () => {

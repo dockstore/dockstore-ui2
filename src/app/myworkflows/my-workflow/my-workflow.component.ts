@@ -1,3 +1,5 @@
+import { DockstoreService } from './../../shared/dockstore.service';
+import { ProviderService } from './../../shared/provider.service';
 import { Location } from '@angular/common';
 import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
 import { TokenSource } from './../../shared/enum/token-source.enum';
@@ -19,7 +21,9 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
-  styleUrls: ['./my-workflow.component.scss']
+  styleUrls: ['./my-workflow.component.scss'],
+  providers: [MyWorkflowsService, ProviderService,
+    DockstoreService]
 })
 export class MyWorkflowComponent implements OnInit {
   hasGitHubToken = true;

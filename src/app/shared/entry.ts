@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router/';
+import { NavigationEnd, Router } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 
