@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { LaunchService } from './../../shared/launch.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { EntryType } from './../../shared/enum/entryType.enum';
+import { LaunchService } from './../../shared/launch.service';
+
 export class ToolLaunchService extends LaunchService {
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
     let descriptor = '';
@@ -42,5 +43,9 @@ export class ToolLaunchService extends LaunchService {
     return '$ cwl-runner ' +
       `${Dockstore.API_URI}/api/ga4gh/v1/tools/${encodeURIComponent(path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+  }
+
+  getCheckToolString(path: string, versionName: string): string {
+    return this.getCheckEntry(path, versionName, EntryType.TOOL);
   }
 }

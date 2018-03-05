@@ -1,5 +1,4 @@
-import { EmailService } from '../../container/email.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@ import { EmailService } from '../../container/email.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -25,8 +23,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
@@ -34,6 +31,7 @@ import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { ToolDescriptorService } from '../../container/descriptors/tool-descriptor.service';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
+import { EmailService } from '../../container/email.service';
 import { FilesContainerComponent } from '../../container/files/files.component';
 import { LaunchComponent } from '../../container/launch/launch.component';
 import { ToolLaunchService } from '../../container/launch/tool-launch.service';
@@ -57,8 +55,9 @@ import { RegisterToolService } from './../../container/register-tool/register-to
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { ErrorService } from './../../shared/error.service';
-import { ExtendedToolService } from './../extended-tool.service';
 import { getTooltipConfig } from './../../shared/tooltip';
+import { EntryModule } from './../entry/entry.module';
+import { ExtendedToolService } from './../extended-tool.service';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
@@ -102,7 +101,8 @@ import { SelectModule } from './select.module';
     PrivateIconModule,
     StarringModule,
     ModalModule,
-    StargazersModule
+    StargazersModule,
+    EntryModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

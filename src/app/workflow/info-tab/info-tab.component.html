@@ -70,6 +70,7 @@
       </button>
     </form>
   </li>
+  <app-info-tab-checker-workflow-path></app-info-tab-checker-workflow-path>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && !workflow?.is_published" (click)="restubWorkflow()"

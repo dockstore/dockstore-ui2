@@ -424,6 +424,15 @@ export class StarringStubService {
     }
 }
 
+export class CheckerWorkflowStubService {
+    checkerWorkflowPath$ = Observable.of({});
+    checkerWorkflowVersionName$ = Observable.of({});
+}
+
+export class LaunchCheckerWorkflowStubService {
+    command = 'potato';
+}
+
 export class StarEntryStubService {
     starEntry$ = Observable.of({});
 }

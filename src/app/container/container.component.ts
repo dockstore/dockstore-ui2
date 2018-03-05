@@ -1,6 +1,4 @@
-import { EmailService } from './email.service';
-import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,35 +13,31 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ErrorService } from './../shared/error.service';
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
-import { Subscription } from 'rxjs/Subscription';
-import { ContainersService } from './../shared/swagger/api/containers.service';
-import { StateService } from './../shared/state.service';
-import { RefreshService } from './../shared/refresh.service';
-import { FormsModule } from '@angular/forms';
-import { Component, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Dockstore } from '../shared/dockstore.model';
 import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
+import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
+import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
-
+import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-
-import { Entry } from '../shared/entry';
-
-import { ContainerService } from '../shared/container.service';
-import { ListContainersService } from '../containers/list/list.service';
-import { validationDescriptorPatterns } from '../shared/validationMessages.model';
-import { TrackLoginService } from '../shared/track-login.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
-
+import { TrackLoginService } from '../shared/track-login.service';
+import { CheckerWorkflowService } from './../shared/checker-workflow.service';
+import { ErrorService } from './../shared/error.service';
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
+import { ContainersService } from './../shared/swagger/api/containers.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { EmailService } from './email.service';
 
 @Component({
   selector: 'app-container',
@@ -65,7 +59,7 @@ export class ContainerComponent extends Entry {
   public selectedVersion = null;
   public urlTag = null;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
-  constructor(private dockstoreService: DockstoreService,
+  constructor(private dockstoreService: DockstoreService, private checkerWorkflowService: CheckerWorkflowService,
     dateService: DateService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
@@ -105,6 +99,9 @@ export class ContainerComponent extends Entry {
     this.containerService.setCopyBtn(null);
   }
 
+  /**
+   * Populate the extra ExtendedDockstoreTool properties
+   */
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
     this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
@@ -122,6 +119,8 @@ export class ContainerComponent extends Entry {
     toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
     toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
     toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
+    // TODO: Change toolRef.id to toolRef.checker_id once it's available
+    this.checkerWorkflowService.getCheckerWorkflowPath(toolRef.id);
     if (!toolRef.imgProviderUrl) {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }

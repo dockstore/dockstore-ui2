@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { WorkflowLaunchService } from './workflow-launch.service';
 
@@ -50,5 +49,11 @@ describe('WorkflowLaunchService', () => {
   it('should getConsonanceString', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service.getConsonanceString('a/b', 'latest')).toContain(
       'consonance run --tool-dockstore-id a/b:latest --run-descriptor Dockstore.json --flavour <AWS instance-type>');
+  }));
+  it('should get the right check workflow command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
+    expect(service).toBeTruthy();
+    expect(service.getCheckWorkflowString('potato', null)).toBe('$ dockstore workflow check --entry potato checkparam.json');
+    expect(service.getCheckWorkflowString('potato', 'stew')).toBe('$ dockstore workflow check --entry potato:stew checkparam.json');
+    expect(service.getCheckWorkflowString(null, null)).toBe('');
   }));
 });
