@@ -18,13 +18,21 @@
     <label tooltip="Commands to launch workflow from the command line">Launch With</label>
   </div>
   <div class="well">
-    <div *ngIf="(currentDescriptor | lowercase) === 'cwl' || (currentDescriptor | lowercase) === 'wdl'" class="well well-sm" tooltip="Commands for creating a runtime JSON template">
+    <div class="well well-sm" tooltip="Commands for creating a runtime JSON template">
       Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
       <pre>{{ params }}</pre>
+      or grab one that the workflow author has provided (if applicable)
+      <pre>{{ wgetTestJsonDescription }}</pre>
     </div>
     <div class="well well-sm" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
       Run locally with the Dockstore CLI
       <pre>{{ cli }}</pre>
+    </div>
+    <div *ngIf="(currentDescriptor | lowercase) === 'nextflow'">
+      <div class="well well-sm" tooltip="Nextflow can conveniently run a workflow off of source control">
+        Run with nextflow
+        <pre>{{ nextflowNativeLaunchDescription }}</pre>
+      </div>
     </div>
     <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
       <div class="well well-sm" [tooltip]="cwlrunnerTooltip">
