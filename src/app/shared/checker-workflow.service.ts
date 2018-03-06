@@ -69,7 +69,7 @@ export class CheckerWorkflowService {
             }
         });
 
-        Observable.combineLatest(this.checkerWorkflowID$, this.publicPage$).distinctUntilChanged().subscribe((value) => {
+        Observable.zip(this.checkerWorkflowID$, this.publicPage$).distinctUntilChanged().subscribe((value) => {
             const id = value[0];
             const publicPage = value[1];
             if (id) {
