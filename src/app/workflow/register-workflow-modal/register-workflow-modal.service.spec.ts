@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,24 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
 
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { StateService } from './../../shared/state.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { StateStubService, WorkflowsStubService, WorkflowStubService, MetadataStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { TestBed, async, inject } from '@angular/core/testing';
+import { WorkflowService } from './../../shared/workflow.service';
+import {
+    DescriptorLanguageStubService,
+    MetadataStubService,
+    WorkflowsStubService,
+    WorkflowStubService,
+} from './../../test/service-stubs';
+import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 
-describe('Service: paramFiles.service.ts', () => {
+describe('Service: RegisterWorkflowModal', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [RegisterWorkflowModalService,
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: MetadataService, useClass: MetadataStubService },
-                StateService
+                StateService,
+                { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }
             ]
         });
     });

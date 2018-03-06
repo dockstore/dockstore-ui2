@@ -1,8 +1,4 @@
-import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
-import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
-import { RefreshService } from '../../shared/refresh.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,22 +13,25 @@ import { RefreshService } from '../../shared/refresh.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ErrorService } from './../../shared/error.service';
-import { StateService } from './../../shared/state.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { RefreshService } from '../../shared/refresh.service';
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
+import { ErrorService } from './../../shared/error.service';
+import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
+import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
+import { StateService } from './../../shared/state.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class InfoTabService {
     public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private workflows: Workflow[];
-    private descriptorLanguageMap = [];
+    public descriptorLanguageMap = [];
 
     /**
      * The original workflow that should be in sync with the database
@@ -55,7 +54,7 @@ export class InfoTabService {
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService,
-        private extendedWorkflowService: ExtendedWorkflowService, private metadataService: MetadataService,
+        private extendedWorkflowService: ExtendedWorkflowService,
         private descriptorLanguageService: DescriptorLanguageService) {
         this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
@@ -122,11 +121,5 @@ export class InfoTabService {
      */
     saveWorkflow(): void {
         this.workflow = this.currentWorkflow;
-    }
-
-    getDescriptorLanguageKeys(): Array<string> {
-      if (this.descriptorLanguageMap) {
-        return this.descriptorLanguageMap.map((a) => a.value.toString());
-      }
     }
 }

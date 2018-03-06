@@ -70,7 +70,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
   }
 
   registerCheckerWorkflow(): void {
-    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, this.syncTestJson);
+    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, this.descriptorType);
   }
 
   clearError(): void {

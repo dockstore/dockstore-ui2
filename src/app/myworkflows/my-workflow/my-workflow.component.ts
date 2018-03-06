@@ -102,7 +102,7 @@ export class MyWorkflowComponent implements OnInit {
     let matchingWorkflow: ExtendedWorkflow;
     orgWorkflows.forEach((orgWorkflow)  => {
       orgWorkflow.workflows.forEach(workflow => {
-        if (workflow.path === path) {
+        if (workflow.full_workflow_path === path) {
           matchingWorkflow = workflow;
         }
       });

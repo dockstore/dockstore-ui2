@@ -24,6 +24,8 @@ export class WorkflowService {
   private workflowSource = new BehaviorSubject<any>(null);
   // Observable streams
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
+  workflowId$: Observable<number>;
+  parentId$: Observable<number>;
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
   workflowCheckerId$: Observable<number>;
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
@@ -31,13 +33,28 @@ export class WorkflowService {
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor() {
     this.workflowCheckerId$ = this.workflow$.map((workflow: Workflow) => {
-      if (workflow) {
+      if (workflow && workflow.checker_id) {
           // Change this to workflow.checker_id once it's available
-          return workflow.id;
+          return workflow.checker_id.id;
       } else {
           return null;
       }
-  });
+    });
+    this.parentId$ = this.workflow$.map((workflow: Workflow) => {
+      if (workflow) {
+          // Change this to workflow.parent_id once it's available
+          return workflow.parent_id;
+      } else {
+          return null;
+      }
+    });
+    this.workflowId$ = this.workflow$.map((workflow: Workflow) => {
+      if (workflow) {
+        return workflow.id;
+      } else {
+        return null;
+      }
+    });
   }
   setWorkflow(workflow: any) {
     this.workflowSource.next(workflow);
@@ -48,6 +65,25 @@ export class WorkflowService {
   }
 
   /**
+   * Upsert the new workflow into the current list of workflows (depends on the workflow id)
+   * @param workflow Workflow to be upserted
+   */
+  upsertWorkflowToWorkflow(workflow: Workflow) {
+    const workflows = this.workflows$.getValue();
+    if (!workflow || !workflows) {
+      return;
+    }
+    const oldWorkflow = workflows.find(x => x.id === workflow.id);
+    if (oldWorkflow) {
+      const index = workflows.indexOf(oldWorkflow);
+      workflows[index] = workflow;
+    } else {
+      workflows.push(workflow);
+    }
+    this.setWorkflows(workflows);
+  }
+
+  /**
    * This function replaces the workflow inside of workflows with an updated workflow
    *
    * @param {*} workflows the current set of workflows
@@ -55,6 +91,7 @@ export class WorkflowService {
    * @memberof WorkflowService
    */
   replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) {
+    workflows = this.workflows$.getValue();
     const oldTool = workflows.find(x => x.id === newWorkflow.id);
     const index = workflows.indexOf(oldTool);
     workflows[index] = newWorkflow;

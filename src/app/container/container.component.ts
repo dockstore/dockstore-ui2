@@ -172,7 +172,7 @@ export class ContainerComponent extends Entry {
   }
 
   public setupPublicEntry(url: String) {
-    if (url.includes('containers')) {
+    if (url.includes('containers') || url.includes('tools')) {
       this.title = this.getEntryPathFromURL();
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.

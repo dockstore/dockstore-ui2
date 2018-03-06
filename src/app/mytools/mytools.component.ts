@@ -107,8 +107,8 @@ export class MyToolsComponent implements OnInit {
   private findToolFromPath(path: string, nsContainers: any[]): ExtendedDockstoreTool {
     let matchingWorkflow: ExtendedDockstoreTool;
     nsContainers.forEach((nsContainer)  => {
-      nsContainer.containers.forEach(container => {
-        if (container.path === path) {
+      nsContainer.containers.forEach((container: ExtendedDockstoreTool) => {
+        if (container.tool_path === path) {
           matchingWorkflow = container;
         }
       });

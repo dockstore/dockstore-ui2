@@ -39,7 +39,7 @@
               </label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" name="testParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.testParameterFilePath"
-                  required tooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" />
+                  required tooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /test.json" />
                 <div *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </div>
               </div>
             </div>

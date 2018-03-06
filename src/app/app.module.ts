@@ -1,3 +1,4 @@
+import { RefreshService } from './shared/refresh.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -152,6 +153,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,
+    RefreshService,
     StateService,
     SearchService,
     PagenumberService,

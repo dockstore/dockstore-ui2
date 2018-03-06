@@ -1,3 +1,4 @@
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 /**
  *    Copyright 2017 OICR
  *
@@ -24,15 +25,27 @@ export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
   tool$ = new BehaviorSubject<any>(null); // This is the selected tool
+  toolId$: Observable<number>;
   toolCheckerId$: Observable<number>;
+  parentId$: Observable<number>;
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
   constructor() {
     this.toolCheckerId$ = this.tool$.map((tool: DockstoreTool) => {
-      if (tool) {
+      if (tool && tool.checker_id) {
         // Change this to tool.checker_id once it's available
+        return tool.checker_id.id;
+      } else {
+        return null;
+      }
+    });
+    this.parentId$ = this.tool$.map((tool: DockstoreTool) => {
+      return null;
+    });
+    this.toolId$ = this.tool$.map((tool: ExtendedDockstoreTool) => {
+      if (tool) {
         return tool.id;
       } else {
         return null;

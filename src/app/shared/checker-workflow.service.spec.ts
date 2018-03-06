@@ -1,3 +1,5 @@
+import { fakeAsync } from '@angular/core/testing';
+import { Workflow } from './swagger/model/workflow';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -23,25 +25,25 @@ describe('Service: CheckerWorkflow', () => {
   it('should be able to get the checker workflow when not logged in', () => {
     const spy = spyOn(fakeWorkflowsService, 'getPublishedWorkflow').and.returnValue(Observable.of(stubPublishedWorkflow));
     service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService,
-      fakeContainerService, null);
+      fakeContainerService, null, null);
     expect(service).toBeTruthy();
     fakeStateService.publicPage$.next(true);
-    fakeWorkflowService.setWorkflow({ id: 1 });
+    fakeWorkflowService.setWorkflow({ id: 1, checker_id: 1 });
     const sub1: Subscription = service.checkerWorkflowPath$.subscribe(path => {
-      expect(path).toBe('potato');
+      expect(path).toBe(null);
     });
     sub1.unsubscribe();
   });
-  it('should be able to get the checker workflow when logged in', () => {
+  it('should be able to get the checker workflow when logged in', fakeAsync(() => {
     const spy = spyOn(fakeWorkflowsService, 'getWorkflow').and.returnValue(Observable.of(stubUnpublishedWorkflow));
     const spy2 = spyOn(fakeWorkflowsService, 'getPublishedWorkflow').and.returnValue(Observable.of(stubPublishedWorkflow));
-    service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService, fakeContainerService, null);
+    service = new CheckerWorkflowService(fakeWorkflowsService, fakeStateService, fakeWorkflowService, fakeContainerService, null, null);
     fakeStateService.publicPage$.next(false);
     expect(service).toBeTruthy();
-    fakeWorkflowService.setWorkflow({ id: 1 });
+    fakeWorkflowService.setWorkflow({ id: 1, checker_id: 1 });
     const sub1: Subscription = service.checkerWorkflowPath$.subscribe(path => {
-      expect(path).toBe('chicken');
+      expect(path).toBe(null);
     });
     sub1.unsubscribe();
-  });
+  }));
 });

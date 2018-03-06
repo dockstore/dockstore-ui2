@@ -1,8 +1,8 @@
 <li>
-  <form *ngIf="(checkerWorkflowPath$ | async) || !(isPublic$ | async)" #editCheckerWorkflowPathForm="ngForm" class="form-inline">
-    <div class="form-group">
-      <strong tooltip="Checker workflow's default workflow path">Checker Workflow</strong>:
-      <!-- <a *ngIf="!editing" [href]="'/workflows/' + (checkerWorkflowPath$ | async)">
+  <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
+    <div *ngIf="(checkerWorkflowPath$ | async) || !(isPublic$ | async)" class="form-group">
+      <strong tooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
+        <!-- <a *ngIf="!editing" [href]="'/workflows/' + (checkerWorkflowPath$ | async)">
         {{ (checkerWorkflowDefaultWorkflowPath) }}
       </a> -->
       <!-- <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
@@ -21,6 +21,14 @@
         </button>
       </span>
     </div>
+    <div *ngIf="(hasParentEntry$ | async)" class="form-group">
+        <strong tooltip="The parent entry of this checker workflow">Parent Workflow</strong>:
+      </div>
+      <div *ngIf="(hasParentEntry$ | async)" class="btn-group" role="group">
+        <button type="button" class="btn btn-link" (click)="viewParentWorkflow()">
+          <span class="glyphicon glyphicon-eye-open"></span> View
+        </button>
+      </div>
   </form>
 </li>
-<app-register-checker-workflow></app-register-checker-workflow>
+<app-register-checker-workflow *ngIf="!(isPublic$ |async)"></app-register-checker-workflow>

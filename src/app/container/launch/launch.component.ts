@@ -1,4 +1,3 @@
-import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -16,8 +15,8 @@ import { DescriptorLanguageService } from './../../shared/entry/descriptor-langu
  */
 import { Component, Input } from '@angular/core';
 
-import { MetadataService } from '../../shared/swagger/api/metadata.service';
 import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';

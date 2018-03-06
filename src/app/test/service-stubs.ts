@@ -34,6 +34,7 @@ export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
     copyBtn$ = this.copyBtnSource.asObservable();
     tool$: BehaviorSubject<any> = new BehaviorSubject({});
+    toolId$ = Observable.of(1);
     tools$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     getDescriptors() {
         return null;
@@ -260,6 +261,7 @@ export class HttpStubService {
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
     workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
+    workflowId$ = Observable.of(1);
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
