@@ -1,3 +1,4 @@
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -55,8 +56,8 @@ export class LaunchComponent {
   cwltoolTooltip = this.launchService.cwltoolTooltip;
   constructor(private launchService: ToolLaunchService,
     private toolDescriptorService: ToolDescriptorService,
-    private metadataService: MetadataService) {
-    this.metadataService.getDescriptorLanguages().subscribe(map => {
+    private descriptorLanguageService: DescriptorLanguageService) {
+    this.descriptorLanguageService.descriptorLanguagesBean$.subscribe(map => {
       this.descriptors = map;
       this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });

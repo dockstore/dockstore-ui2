@@ -1,3 +1,4 @@
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
 import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
 import { RefreshService } from '../../shared/refresh.service';
@@ -54,12 +55,13 @@ export class InfoTabService {
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
         private errorService: ErrorService, private refreshService: RefreshService,
-        private extendedWorkflowService: ExtendedWorkflowService, private metadataService: MetadataService) {
+        private extendedWorkflowService: ExtendedWorkflowService, private metadataService: MetadataService,
+        private descriptorLanguageService: DescriptorLanguageService) {
         this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
             this.cancelEditing();
         });
-        this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptorLanguageMap = map);
+        this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
     setWorkflowPathEditing(editing: boolean) {

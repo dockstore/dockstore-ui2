@@ -8,9 +8,10 @@ import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBea
 export class DescriptorLanguageService {
 
     descriptorLanguages$: Observable<Array<string>>;
-
+    descriptorLanguagesBean$: Observable<DescriptorLanguageBean[]>;
     constructor(private metadataService: MetadataService) {
-        this.descriptorLanguages$ = this.metadataService.getDescriptorLanguages().map(descriptorLanguageMap => {
+        this.descriptorLanguagesBean$ = this.metadataService.getDescriptorLanguages();
+        this.descriptorLanguages$ = this.descriptorLanguagesBean$.map(descriptorLanguageMap => {
             if (descriptorLanguageMap) {
                 return descriptorLanguageMap.map((descriptorLanguage) => descriptorLanguage.value.toString());
             }

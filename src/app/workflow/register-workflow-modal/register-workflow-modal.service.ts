@@ -1,3 +1,4 @@
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -36,13 +37,13 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService,
-        private stateService: StateService,
+        private stateService: StateService, private descriptorLanguageService: DescriptorLanguageService,
         private metadataService: MetadataService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
-        this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptorLanguageMap = map);
+        this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
