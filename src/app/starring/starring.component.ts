@@ -53,24 +53,11 @@ export class StarringComponent implements OnInit {
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     // get tool from the observer
-    if (!this.workflow && !this.tool) {
-      this.setupSubscription();
-    } else {
-      // get the tool from the input, used by the starred Page
+    if (this.workflow || this.tool) {
+      // get the tool from the input, used by the starred Page and entry components
       this.setupInputEntry();
     }
     this.userService.user$.subscribe(user => this.user = user);
-  }
-
-  setupSubscription() {
-    this.workflowSubscription = this.workflowService.workflow$.subscribe(
-      workflow => {
-        this.setupWorkflow(workflow);
-      });
-    this.toolSubscription = this.containerService.tool$.subscribe(
-      tool => {
-        this.setupTool(tool);
-      });
   }
 
   setupInputEntry() {

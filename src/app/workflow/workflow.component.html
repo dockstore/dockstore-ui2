@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="col-md-5">
-    <app-starring class="pull-right starring-button" *ngIf="isWorkflowPublic" (change)="starGazersChange()"></app-starring>
+    <app-starring [workflow]="workflow" class="pull-right starring-button" *ngIf="isWorkflowPublic && workflow" (change)="starGazersChange()"></app-starring>
   </div>
   <div *ngIf="!publicPage">
     <h3>
