@@ -54,9 +54,9 @@
         <accordion-group *ngFor="let orgObj of orgWorkflows"[heading]="orgObj?.sourceControl + '/' + orgObj?.organization" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen">
           <div *ngFor="let workflowObj of orgObj?.workflows">
             <div class="panel-container-label" [ngClass]="{selected: workflow.id === workflowObj.id}">
-              <div class="container-name-oflw pull-left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}">
+              <div class="container-name-oflw pull-left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}">
                 <a style="cursor: pointer;" (click)="selectWorkflow(workflowObj)">
-                  {{workflowObj?.repository + (workflowObj?.workflowName ? ' (' + workflowObj?.workflowName + ')' : '')}}
+                  {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
                 </a>
               </div>
               <div class="pull-right">
