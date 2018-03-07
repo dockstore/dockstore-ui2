@@ -188,7 +188,9 @@ export class WorkflowComponent extends Entry {
         publish: this.published
       };
       this.workflowsService.publish(this.workflow.id, request).subscribe(
-        response => this.workflow.is_published = response.is_published, err => {
+        (response: Workflow) => {
+          this.workflowService.upsertWorkflowToWorkflow(response);
+        }, err => {
           this.published = !this.published;
           this.refreshService.handleError('publish error', err);
         });
