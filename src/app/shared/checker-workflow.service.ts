@@ -87,7 +87,7 @@ export class CheckerWorkflowService {
             } else {
                 return null;
             }
-        }).distinctUntilChanged();
+        });
         // The filters are needed by in my-tools, the workflow service exists and it emits after the tool service which overrides it
         this.parentId$ = this.entry$.map((entry: Entry) => {
             if (entry.hasOwnProperty('is_checker')) {
