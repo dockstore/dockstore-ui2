@@ -88,7 +88,7 @@
             <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"></a>
         </span>
         <a (click)="sendToolInfo(hit?._source)" [routerLink]="['/workflows', hit?._source.path ]">
-          {{ hit?._source.repository + (hit?._source.workflowName ? ' (' + hit?._source.workflowName + ')' : '') }}
+          {{ hit?._source.repository + (hit?._source.workflowName ? '/' + hit?._source.workflowName : '') }}
         </a>
       </td>
       <td>
