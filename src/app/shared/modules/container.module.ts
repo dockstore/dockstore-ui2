@@ -53,7 +53,6 @@ import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { RegisterToolService } from './../../container/register-tool/register-tool.service';
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
-import { ErrorService } from './../../shared/error.service';
 import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
 import { ExtendedToolService } from './../extended-tool.service';

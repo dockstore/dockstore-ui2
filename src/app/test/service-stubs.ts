@@ -427,6 +427,7 @@ export class StarringStubService {
 }
 
 export class CheckerWorkflowStubService {
+    entry$ = Observable.of({id: 1});
     checkerWorkflow$ = Observable.of(null);
     checkerWorkflowPath$ = Observable.of({});
     checkerWorkflowDefaultWorkflowPath$ = Observable.of('checkerWorkflowDefaultWorkflowPath');

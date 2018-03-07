@@ -1,4 +1,3 @@
-import { RefreshService } from './shared/refresh.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -71,6 +70,7 @@ import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
+import { RefreshService } from './shared/refresh.service';
 import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';

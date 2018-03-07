@@ -1,8 +1,4 @@
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { ExtendedToolService } from './../../shared/extended-tool.service';
-import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
-import { RefreshService } from './../../shared/refresh.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +13,16 @@ import { RefreshService } from './../../shared/refresh.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { ContainerService } from './../../shared/container.service';
+import { ExtendedToolService } from './../../shared/extended-tool.service';
+import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from './../../shared/refresh.service';
 import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Injectable, OnInit } from '@angular/core';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 
 @Injectable()
 export class InfoTabService {

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { ErrorService } from './../../error.service';
-import { DescriptorLanguageBean } from './../../swagger/model/descriptorLanguageBean';
 import { Workflow } from './../../swagger/model/workflow';
 import { formErrors, validationDescriptorPatterns, validationMessages } from './../../validationMessages.model';
 import { DescriptorLanguageService } from './../descriptor-language.service';

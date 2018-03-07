@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { User } from './../shared/swagger/model/user';
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import { UserService } from '../loginComponents/user.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkflowService } from '../shared/workflow.service';
+
+import { UserService } from '../loginComponents/user.service';
 import { ContainerService } from '../shared/container.service';
-import { TrackLoginService } from '../shared/track-login.service';
-import { StarringService } from './starring.service';
 import { StarentryService } from '../shared/starentry.service';
+import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowService } from '../shared/workflow.service';
+import { User } from './../shared/swagger/model/user';
+import { StarringService } from './starring.service';
 
 @Component({
   selector: 'app-starring',

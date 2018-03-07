@@ -13,30 +13,15 @@ import { RegisterCheckerWorkflowService } from './../register-checker-workflow/r
   styleUrls: ['./info-tab-checker-workflow-path.component.scss']
 })
 export class InfoTabCheckerWorkflowPathComponent implements OnInit {
-  checkerWorkflowPath$: Observable<string>;
-  checkerWorkflowDefaultWorkflowPath$: Observable<string>;
-  checkerWorkflowDefaultWorkflowPath: string;
-  parentWorkflowPath$: Observable<string>;
   isPublic$: Observable<boolean>;
-  editing = false;
-  validationDescriptorPatterns = validationDescriptorPatterns;
-  savedCheckerWorkflowDefaultWorkflowPath: string;
-  hasChecker$: Observable<boolean>;
-  parentEntry$: Observable<Entry>;
   hasParentEntry$: Observable<boolean>;
+  checkerWorkflow$: Observable<Workflow>;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService) { }
 
   ngOnInit(): void {
-    this.checkerWorkflowPath$ = this.checkerWorkflowService.checkerWorkflowPath$;
-    this.parentWorkflowPath$ = this.checkerWorkflowService.parentWorkflowPath$;
-    this.parentEntry$ = this.checkerWorkflowService.parentEntry$;
+    this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
     this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
-    this.hasChecker$ = this.checkerWorkflowService.hasChecker$;
-    this.checkerWorkflowDefaultWorkflowPath$ = this.checkerWorkflowService.checkerWorkflowDefaultWorkflowPath$;
-    this.checkerWorkflowService.checkerWorkflowDefaultWorkflowPath$.subscribe((checkerWorkflowDefaultWorkflowPath: string) => {
-      this.savedCheckerWorkflowDefaultWorkflowPath = checkerWorkflowDefaultWorkflowPath;
-    });
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
   }
 

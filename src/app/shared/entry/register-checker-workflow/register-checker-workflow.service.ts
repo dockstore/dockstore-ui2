@@ -1,16 +1,15 @@
-import { Workflow } from './../../swagger/model/workflow';
-import { RefreshService } from './../../refresh.service';
-import { Entry } from './../../swagger/model/entry';
-import { WorkflowService } from './../../workflow.service';
-import { ContainerService } from './../../container.service';
-import { WorkflowsService } from './../../swagger/api/workflows.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
+import { ContainerService } from './../../container.service';
 import { ErrorService } from './../../error.service';
+import { RefreshService } from './../../refresh.service';
 import { StateService } from './../../state.service';
+import { WorkflowsService } from './../../swagger/api/workflows.service';
+import { Entry } from './../../swagger/model/entry';
+import { Workflow } from './../../swagger/model/workflow';
+import { WorkflowService } from './../../workflow.service';
 
 @Injectable()
 export class RegisterCheckerWorkflowService {

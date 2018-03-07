@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input, OnInit } from '@angular/core';
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
-import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-tool-tab',

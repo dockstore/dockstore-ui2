@@ -1,5 +1,4 @@
-import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,15 @@ import { DescriptorLanguageService } from './../../shared/entry/descriptor-langu
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { StateService } from './../../shared/state.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
+import { StateService } from './../../shared/state.service';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {

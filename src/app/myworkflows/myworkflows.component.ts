@@ -1,5 +1,3 @@
-import { Component, OnInit } from '@angular/core';
-
 /**
  *    Copyright 2017 OICR
  *
@@ -15,6 +13,8 @@ import { Component, OnInit } from '@angular/core';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-myworkflows',
   templateUrl: './myworkflows.component.html',

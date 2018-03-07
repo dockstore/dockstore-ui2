@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,17 @@ import { HttpErrorResponse } from '@angular/common/http';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { StateService } from './../../shared/state.service';
-import { ContainerService } from './../../shared/container.service';
-import { Tool } from './tool';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Injectable, ViewChild } from '@angular/core';
+
+import { ContainerService } from './../../shared/container.service';
 import { Repository } from './../../shared/enum/Repository.enum';
+import { StateService } from './../../shared/state.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { Tool } from './tool';
 
 @Injectable()
 export class RegisterToolService {
@@ -70,7 +70,6 @@ export class RegisterToolService {
     }
 
     setToolRegisterError(error: HttpErrorResponse) {
-        console.log(error);
         let errorObj = null;
         if (error) {
             errorObj = {

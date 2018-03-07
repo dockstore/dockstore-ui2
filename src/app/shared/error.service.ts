@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,9 @@ import { HttpErrorResponse } from '@angular/common/http';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ErrorService {

@@ -1,22 +1,23 @@
-import { DockstoreService } from './../../shared/dockstore.service';
-import { ProviderService } from './../../shared/provider.service';
 import { Location } from '@angular/common';
-import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
-import { TokenSource } from './../../shared/enum/token-source.enum';
-import { UrlResolverService } from './../../shared/url-resolver.service';
-import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { RefreshService } from './../../shared/refresh.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { StateService } from './../../shared/state.service';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { Router, NavigationEnd } from '@angular/router/';
+
 import { AccountsService } from './../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from './../../loginComponents/token.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
 import { UserService } from './../../loginComponents/user.service';
+import { DockstoreService } from './../../shared/dockstore.service';
+import { TokenSource } from './../../shared/enum/token-source.enum';
+import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
+import { ProviderService } from './../../shared/provider.service';
+import { RefreshService } from './../../shared/refresh.service';
+import { StateService } from './../../shared/state.service';
+import { UsersService } from './../../shared/swagger/api/users.service';
 import { Configuration } from './../../shared/swagger/configuration';
+import { UrlResolverService } from './../../shared/url-resolver.service';
+import { WorkflowService } from './../../shared/workflow.service';
+import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-my-workflow',

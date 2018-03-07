@@ -1,34 +1,37 @@
-<li>
+<li *ngIf="(checkerWorkflow$ | async) || (!(isPublic$ | async) && !(hasParentEntry$ | async))">
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
-    <div *ngIf="(checkerWorkflowPath$ | async) || !(isPublic$ | async)" class="form-group">
+    <div class="form-group">
       <strong tooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
-        <!-- <a *ngIf="!editing" [href]="'/workflows/' + (checkerWorkflowPath$ | async)">
-        {{ (checkerWorkflowDefaultWorkflowPath) }}
-      </a> -->
-      <!-- <input *ngIf="editing" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
-        name="workflowPath" [(ngModel)]="checkerWorkflowDefaultWorkflowPath" placeholder="e.g. /Dockstore.cwl" /> -->
     </div>
     <div class="btn-group" role="group">
-      <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="view()">
+      <button id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link" (click)="view()">
         <span class="glyphicon glyphicon-eye-open"></span> View
       </button>
       <span *ngIf="!(isPublic$ | async)">
-        <button *ngIf="!(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="add()">
+        <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="!(checkerWorkflow$ | async) && !(hasParentEntry$ | async)" type="button" class="btn btn-link" (click)="add()">
           <span class="glyphicon glyphicon-plus"></span> Add
         </button>
-        <button *ngIf="(checkerWorkflowPath$ | async)" type="button" class="btn btn-link" (click)="delete()">
+        <button *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link" (click)="delete()">
           <span class="glyphicon glyphicon-remove"></span> Delete
         </button>
       </span>
     </div>
-    <div *ngIf="(hasParentEntry$ | async)" class="form-group">
-        <strong tooltip="The parent entry of this checker workflow">Parent Workflow</strong>:
+  </form>
+  <app-register-checker-workflow *ngIf="!(isPublic$ |async) && !(checkerWorkflowPath$ | async)"></app-register-checker-workflow>
+</li>
+<li *ngIf="(hasParentEntry$ | async)">
+  <form class="form-inline">
+    <div>
+      <div class="form-group">
+        <strong tooltip="The parent entry of this checker workflow">Parent Entry</strong>:
       </div>
-      <div *ngIf="(hasParentEntry$ | async)" class="btn-group" role="group">
-        <button type="button" class="btn btn-link" (click)="viewParentWorkflow()">
-          <span class="glyphicon glyphicon-eye-open"></span> View
-        </button>
-      </div>
+      <span>
+        <div class="btn-group" role="group">
+          <button id=viewParentEntryButton type="button" class="btn btn-link" (click)="viewParentWorkflow()">
+            <span class="glyphicon glyphicon-eye-open"></span> View
+          </button>
+        </div>
+      </span>
+    </div>
   </form>
 </li>
-<app-register-checker-workflow *ngIf="!(isPublic$ |async)"></app-register-checker-workflow>

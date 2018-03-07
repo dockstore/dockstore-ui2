@@ -24,30 +24,12 @@ export class WorkflowService {
   private workflowSource = new BehaviorSubject<any>(null);
   // Observable streams
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
-  workflowId$: Observable<number>;
-  parentId$: Observable<number>;
+  workflowId$: Observable<number>
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
-  workflowCheckerId$: Observable<number>;
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor() {
-    this.workflowCheckerId$ = this.workflow$.map((workflow: Workflow) => {
-      if (workflow && workflow.checker_id) {
-          // Change this to workflow.checker_id once it's available
-          return workflow.checker_id.id;
-      } else {
-          return null;
-      }
-    });
-    this.parentId$ = this.workflow$.map((workflow: Workflow) => {
-      if (workflow) {
-          // Change this to workflow.parent_id once it's available
-          return workflow.parent_id;
-      } else {
-          return null;
-      }
-    });
     this.workflowId$ = this.workflow$.map((workflow: Workflow) => {
       if (workflow) {
         return workflow.id;

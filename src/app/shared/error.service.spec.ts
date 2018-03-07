@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,10 @@ import { HttpErrorResponse } from '@angular/common/http';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { ErrorService } from './error.service';
-import { TestBed, inject } from '@angular/core/testing';
 
 describe('ErrorService', () => {
     beforeEach(() => {
