@@ -93,10 +93,10 @@ export class MyWorkflowsService {
     /* Sort Workflows in Each Namespace */
     for (let j = 0; j < orgWorkflows.length; j++) {
       orgWorkflows[j].workflows.sort(function(a, b) {
-        if (a.repository < b.repository) {
+        if ((<Workflow>a).full_workflow_path < b.full_workflow_path) {
           return -1;
         }
-        if (a.repository > b.repository) {
+        if (a.full_workflow_path > b.full_workflow_path) {
           return 1;
         }
         return 0;
