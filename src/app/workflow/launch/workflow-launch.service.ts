@@ -19,6 +19,9 @@ import { EntryType } from './../../shared/enum/entryType.enum';
 
 export class WorkflowLaunchService extends LaunchService {
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
+    if (currentDescriptor === 'nextflow') {
+      return `$ vim Dockstore.json`;
+    }
     return `$ dockstore workflow convert entry2json --entry ${ path }:${ versionName } > Dockstore.json
             \n$ vim Dockstore.json`;
   }

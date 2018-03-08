@@ -27,7 +27,7 @@ import { ToolLaunchService } from './tool-launch.service';
   styleUrls: ['./launch.component.css']
 })
 export class LaunchComponent {
-
+  @Input() basePath;
   @Input() path;
   @Input() toolname;
 

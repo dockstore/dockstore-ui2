@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 
+import { Dockstore } from './dockstore.model';
 import { EntryType } from './enum/entryType.enum';
 
 @Injectable()
@@ -67,5 +68,26 @@ export abstract class LaunchService {
         } else {
             return '';
         }
+    }
+    /**
+     * This creates the native nextflow launch commands
+     * @param path The GA4GH Tool's path
+     * @param versionName The ToolVersion's name
+     */
+    getNextflowNativeLaunchString(workflowPath: string, versionName: string) {
+      return `$ nextflow run http://${workflowPath} -r ${versionName} -with-docker`;
+    }
+
+    /**
+     * Grabs first test json if it is available
+     * @param path The GA4GH Tool's path
+     * @param versionName The ToolVersion's name
+     */
+    getNxtTestJsonString(workflowPath: string, versionName: string) {
+      const prefix = `$ wget --header='Accept: text/plain`;
+      const outputFile = `-O Dockstore.json`;
+      const encodedID = encodeURIComponent('#workflow/ ${ workflowPath) }');
+      const encodedVersion = encodeURIComponent('${ versionName }');
+      return `${prefix}'   ${ Dockstore.API_URI }/api/ga4gh/v2/tools/${ encodedID }/versions/${ encodedVersion }/NXT/tests ${outputFile}`;
     }
 }
