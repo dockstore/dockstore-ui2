@@ -99,14 +99,8 @@ export class LaunchComponent {
   }
 
   reactToDescriptor(): void {
-    let fullToolPath = this.path;
-    if (this.toolname) {
-      fullToolPath += '/' + this.toolname;
-    }
-    this.changeMessages(fullToolPath, this._selectedVersion.name);
-  }
-
-  private changeMessages(toolPath: string, versionName: string) {
+    const toolPath = this.path;
+    const versionName = this._selectedVersion.name;
     this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
     this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(toolPath, versionName, encodeURIComponent(this._selectedVersion.cwl_path));
