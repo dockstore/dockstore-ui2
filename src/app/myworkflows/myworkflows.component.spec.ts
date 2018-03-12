@@ -1,6 +1,4 @@
-import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
-import { TokenService } from './../loginComponents/token.service';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +13,34 @@ import { TokenService } from './../loginComponents/token.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { StateService } from './../shared/state.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
 
 import { RefreshService } from '../shared/refresh.service';
 import { RouterLinkStubDirective } from '../test';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { TokenService } from './../loginComponents/token.service';
 import { UserService } from './../loginComponents/user.service';
+import { StateService } from './../shared/state.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
+import { UrlResolverService } from './../shared/url-resolver.service';
 import { WorkflowService } from './../shared/workflow.service';
 import { sampleWorkflow1, sampleWorkflow2, sampleWorkflow3 } from './../test/mocked-objects';
 import { RouterOutletStubComponent } from './../test/router-stubs';
 import {
-    AccountsStubService,
-    AuthStubService,
-    ConfigurationStub,
-    RefreshStubService,
-    RegisterWorkflowModalStubService,
-    StateStubService,
-    TokenStubService,
-    UsersStubService,
-    UserStubService,
-    WorkflowStubService,
+  AccountsStubService,
+  AuthStubService,
+  ConfigurationStub,
+  RefreshStubService,
+  RegisterWorkflowModalStubService,
+  StateStubService,
+  TokenStubService,
+  UrlResolverStubService,
+  UsersStubService,
+  UserStubService,
+  WorkflowStubService,
 } from './../test/service-stubs';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsComponent } from './myworkflows.component';
@@ -63,7 +64,8 @@ describe('MyWorkflowsComponent', () => {
         { provide: UserService, useClass: UserStubService },
         { provide: StateService, useClass: StateStubService },
         { provide: TokenService, useClass: TokenStubService },
-        { provide: AccountsService, useClass: AccountsStubService }
+        { provide: AccountsService, useClass: AccountsStubService },
+        { provide: UrlResolverService, useClass: UrlResolverStubService }
       ]
     })
     .compileComponents();

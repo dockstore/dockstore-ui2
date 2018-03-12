@@ -18,10 +18,9 @@ import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
 import { Component, Input } from '@angular/core';
 
 import { ToolLaunchService } from './tool-launch.service';
-import { ContainerService } from '../../shared/container.service';
-import { MetadataService } from '../../shared/swagger/api/metadata.service';
-import { Tag } from './../../shared/swagger/model/tag';
-import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
+import { MetadataService } from '../../shared/swagger';
+import { Tag } from '../../shared/swagger';
+import { DescriptorLanguageBean } from '../../shared/swagger';
 
 @Component({
   selector: 'app-launch',
@@ -29,7 +28,7 @@ import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorL
   styleUrls: ['./launch.component.css']
 })
 export class LaunchComponent {
-
+  @Input() basePath;
   @Input() path;
   @Input() toolname;
 

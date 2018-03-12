@@ -42,6 +42,13 @@ export class RouterOutletStubComponent { }
 @Injectable()
 export class RouterStub {
     navigate(commands: any[], extras?: NavigationExtras) { }
+    url = 'quay.io/garyluu/dockstore-tool-md5sum'
+    setUrl(url: string) {
+        this.url = url;
+    }
+    navigateByUrl(url: string) {
+        this.url = url;
+    }
 }
 
 

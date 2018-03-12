@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
@@ -26,10 +25,12 @@ import { Tool } from './../container/register-tool/tool';
 import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 import { TokenService } from './../loginComponents/token.service';
 import { TokenSource } from './../shared/enum/token-source.enum';
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { Configuration } from './../shared/swagger/configuration';
+import { UrlResolverService } from './../shared/url-resolver.service';
 import { MytoolsService } from './mytools.service';
 
 @Component({
@@ -52,7 +53,9 @@ export class MyToolsComponent implements OnInit {
     private userService: UserService, private authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
     private refreshService: RefreshService, private accountsService: AccountsService,
-    private registerToolService: RegisterToolService, private tokenService: TokenService) { }
+    private registerToolService: RegisterToolService, private tokenService: TokenService,
+    private urlResolverService: UrlResolverService
+  ) { }
   ngOnInit() {
     localStorage.setItem('page', '/my-tools');
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
@@ -83,7 +86,12 @@ export class MyToolsComponent implements OnInit {
       /* For the first initial time, set the first tool to be the selected one */
       if (this.nsContainers && this.nsContainers.length > 0) {
         const theFirstTool = this.nsContainers[0].containers[0];
-        this.selectContainer(theFirstTool);
+        const foundWorkflow = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), this.nsContainers);
+        if (foundWorkflow) {
+          this.selectContainer(foundWorkflow);
+        } else {
+          this.selectContainer(theFirstTool);
+        }
       } else {
         this.selectContainer(null);
       }
@@ -94,6 +102,19 @@ export class MyToolsComponent implements OnInit {
 
   link() {
       this.accountsService.link(TokenSource.GITHUB);
+  }
+
+  private findToolFromPath(path: string, nsContainers: any[]): ExtendedDockstoreTool {
+    let matchingWorkflow: ExtendedDockstoreTool;
+    nsContainers.forEach((nsContainer)  => {
+      nsContainer.containers.forEach(container => {
+        if (container.path === path) {
+          matchingWorkflow = container;
+        }
+      });
+    });
+    return matchingWorkflow;
+
   }
 
   setIsFirstOpen() {
