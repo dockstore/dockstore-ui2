@@ -48,6 +48,7 @@ export class RegisterCheckerWorkflowService {
                     this.isModalShown$.next(false);
                     this.refreshService.handleSuccess(message);
                     this.workflowsService.refresh(entry.checker_id).first().subscribe((workflow: Workflow) => {
+                        this.workflowService.upsertWorkflowToWorkflow(workflow);
                         this.refreshService.handleSuccess('Refreshing checker workflow');
                     });
             }, error => {
