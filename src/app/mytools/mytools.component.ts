@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 /**
  *    Copyright 2017 OICR
  *
@@ -54,7 +55,7 @@ export class MyToolsComponent implements OnInit {
     private containerService: ContainerService,
     private refreshService: RefreshService, private accountsService: AccountsService,
     private registerToolService: RegisterToolService, private tokenService: TokenService,
-    private urlResolverService: UrlResolverService
+    private urlResolverService: UrlResolverService, private router: Router
   ) { }
   ngOnInit() {
     localStorage.setItem('page', '/my-tools');
@@ -115,6 +116,10 @@ export class MyToolsComponent implements OnInit {
     });
     return matchingWorkflow;
 
+  }
+  goToTool(tool: ExtendedDockstoreTool) {
+    this.containerService.setTool(tool);
+    // this.router.navigateByUrl('/my-tools/' + tool.tool_path);
   }
 
   setIsFirstOpen() {
