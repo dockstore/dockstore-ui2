@@ -24,7 +24,7 @@ export class WorkflowService {
   private workflowSource = new BehaviorSubject<any>(null);
   // Observable streams
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
-  workflowId$: Observable<number>
+  workflowId$: Observable<number>;
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
