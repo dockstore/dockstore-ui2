@@ -64,8 +64,8 @@
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
           <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
-          <input *ngIf="cwlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control"
-            name="contCWLPath" [(ngModel)]="tool.default_cwl_path" placeholder="e.g. /Dockerfile" />
+          <input *ngIf="cwlPathEditing" [required]="!tool?.default_wdl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control"
+            name="contCWLPath" [(ngModel)]="tool.default_cwl_path" [placeholder]="exampleDescriptorPatterns.cwl" />
         </div>
         <div class="btn-group push-right" role="group" aria-label="Basic example">
           <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
@@ -84,8 +84,8 @@
         <div class="form-group">
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
           <span *ngIf="!wdlPathEditing">{{ tool?.default_wdl_path || 'n/a' }}</span>
-          <input *ngIf="wdlPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
-            name="contWDLPath" [(ngModel)]="tool.default_wdl_path" placeholder="e.g. /Dockerfile" />
+          <input *ngIf="wdlPathEditing" [required]="!tool?.default_cwl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
+            name="contWDLPath" [(ngModel)]="tool.default_wdl_path" [placeholder]="exampleDescriptorPatterns.wdl" />
         </div>
         <div class="btn-group push-right" role="group" aria-label="Basic example">
           <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">

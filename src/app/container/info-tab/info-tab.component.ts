@@ -1,5 +1,4 @@
-import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,14 @@ import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTo
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input, OnInit } from '@angular/core';
 
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { StateService } from './../../shared/state.service';
-import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { InfoTabService } from './info-tab.service';
 import { ContainerService } from './../../shared/container.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
+import { StateService } from './../../shared/state.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { InfoTabService } from './info-tab.service';
 
 @Component({
   selector: 'app-info-tab',
@@ -30,6 +30,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class InfoTabComponent implements OnInit {
   @Input() selectedVersion;
   public validationPatterns = validationDescriptorPatterns;
+  public exampleDescriptorPatterns = exampleDescriptorPatterns;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
