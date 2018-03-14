@@ -1,3 +1,4 @@
+import { DockstoreTool } from './../../swagger/model/dockstoreTool';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -41,6 +42,8 @@ export class RegisterCheckerWorkflowService {
                     // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
                     if (entry.hasOwnProperty('is_checker')) {
                         this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
+                    } else {
+                        this.containerService.upsertToolToTools(<DockstoreTool>entry);
                     }
                     this.isModalShown$.next(false);
                     this.refreshService.handleSuccess(message);

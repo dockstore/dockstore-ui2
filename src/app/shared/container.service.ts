@@ -51,6 +51,25 @@ export class ContainerService {
     this.tools$.next(tools);
   }
 
+    /**
+   * Upsert the new workflow into the current list of workflows (depends on the workflow id)
+   * @param tool Workflow to be upserted
+   */
+  upsertToolToTools(tool: DockstoreTool) {
+    const tools = this.tools$.getValue();
+    if (!tool || !tools) {
+      return;
+    }
+    const oldWorkflow = tools.find(x => x.id === tool.id);
+    if (oldWorkflow) {
+      const index = tools.indexOf(oldWorkflow);
+      tools[index] = tool;
+    } else {
+      tools.push(tool);
+    }
+    this.setTools(tools);
+  }
+
   /**
    * This function replaces the tool inside of tools with an updated tool
    *
