@@ -16,6 +16,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   isPublic$: Observable<boolean>;
   hasParentEntry$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
+  isStub$: Observable<boolean>;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService) { }
 
@@ -23,6 +24,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
     this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
+    this.isStub$ = this.checkerWorkflowService.isStub$;
   }
 
   add(): void {

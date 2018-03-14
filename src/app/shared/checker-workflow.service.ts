@@ -33,6 +33,8 @@ export class CheckerWorkflowService {
     // Whether the current entry has a parent or not
     public hasParentEntry$: Observable<boolean>;
     public entry: Entry;
+    // Whether current entry is a stub or not
+    public isStub$: Observable<boolean>;
     constructor(private workflowsService: WorkflowsService, private stateService: StateService, private workflowService: WorkflowService,
         private containerService: ContainerService, private router: Router, private containersService: ContainersService) {
         this.publicPage$ = this.stateService.publicPage$;
@@ -55,6 +57,17 @@ export class CheckerWorkflowService {
         });
         this.checkerWorkflow$.subscribe((workflow: Workflow) => {
             this.checkerWorkflow = workflow;
+        });
+        this.isStub$ = this.entry$.map((entry: Entry) => {
+            if (!this.isEntryAWorkflow(entry)) {
+                return false;
+            } else {
+                if ((<Workflow>entry).mode === Workflow.ModeEnum.STUB) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         });
         this.entry$.subscribe((entry: Entry) => {
             this.entry = entry;
