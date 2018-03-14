@@ -35,7 +35,7 @@
         <span *ngIf="(hit?._source).private_access" class="private-lock">
             <app-private-icon></app-private-icon>
         </span>
-        <a (click)="sendToolInfo(hit._source)" [routerLink]="['/containers', hit?._source.tool_path ]">{{ hit?._source.name +
+        <a (click)="sendToolInfo(hit._source)" [routerLink]="('/containers/' + hit?._source.tool_path )">{{ hit?._source.name +
           (hit?._source.toolname ? '/' + hit?._source.toolname : '') }}
         </a>
       </td>
@@ -87,8 +87,8 @@
         <span *ngIf="getVerifiedWorkflow(hit?._source)">
             <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"></a>
         </span>
-        <a (click)="sendToolInfo(hit?._source)" [routerLink]="['/workflows', hit?._source.path ]">
-          {{ hit?._source.repository + (hit?._source.workflowName ? ' (' + hit?._source.workflowName + ')' : '') }}
+        <a (click)="sendToolInfo(hit?._source)" [routerLink]="('/workflows/' + hit?._source.path )">
+          {{ hit?._source.repository + (hit?._source.workflowName ? '/' + hit?._source.workflowName : '') }}
         </a>
       </td>
       <td>
