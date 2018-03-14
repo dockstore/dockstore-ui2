@@ -33,7 +33,7 @@ export class RegisterCheckerWorkflowService {
 
     registerCheckerWorkflow(workflowPath: string, descriptorType: string, testParameterFilePath: string): void {
         if (this.entryId) {
-            const message = 'Regstering checker workflow';
+            const message = 'Registering checker workflow';
             this.stateService.setRefreshMessage(message);
             // Figure out why testParameterFilePath and descriptorType is swapped
             this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, testParameterFilePath, descriptorType).
@@ -47,6 +47,9 @@ export class RegisterCheckerWorkflowService {
                     }
                     this.isModalShown$.next(false);
                     this.refreshService.handleSuccess(message);
+                    this.workflowsService.refresh(entry.checker_id).first().subscribe((workflow: Workflow) => {
+                        this.refreshService.handleSuccess('Refreshing checker workflow');
+                    });
             }, error => {
                 this.refreshService.handleError('Could not register checker workflow', error);
             });
