@@ -59,11 +59,12 @@
           <span class="glyphicon pull-right" [ngClass]="getIconClass('verified')" (click)="clickSortColumn('verified')">
           </span>
         </th>
-        <th>
+        <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+        <!-- <th>
           <label placement="top" tooltip="Link to DOI entry for the given version">
             DOI
           </label>
-        </th>
+        </th> -->
         <th>
           <label placement="top" tooltip="View more information about the given version">
             Actions
@@ -104,9 +105,10 @@
           </a>
           <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
         </td>
-        <td>
+        <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+        <!-- <td>
           <a href="https://zenodo.org/record/">Placeholder</a>
-        </td>
+        </td> -->
         <td class="tag-actions">
           <app-view-container [version]="version"></app-view-container>
         </td>
