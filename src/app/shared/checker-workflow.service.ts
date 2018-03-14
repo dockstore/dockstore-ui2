@@ -150,7 +150,7 @@ export class CheckerWorkflowService {
      * Returns true if entry is a workflow, returns false if entry is not a workflow (i.e. a tool)
      * @param entry The entry to check
      */
-    private isEntryAWorkflow(entry: Entry) {
+    private isEntryAWorkflow(entry: Entry): boolean {
         if (!entry) {
             return null;
         }
