@@ -18,7 +18,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { ContainerService } from './../../shared/container.service';
-import { CheckerWorkflowStubService, ContainerStubService, DescriptorsStubService } from './../../test/service-stubs';
+import { WorkflowService } from './../../shared/workflow.service';
+import {
+  CheckerWorkflowStubService,
+  ContainerStubService,
+  DescriptorsStubService,
+  WorkflowStubService,
+} from './../../test/service-stubs';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
@@ -33,7 +39,8 @@ describe('LaunchWorkflowComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [WorkflowLaunchService, { provide: ContainerService, useClass: ContainerStubService },
         { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
-        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }]
+        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+      { provide: WorkflowService, useClass: WorkflowStubService}]
     })
       .compileComponents();
   }));

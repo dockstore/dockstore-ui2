@@ -15,12 +15,16 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
+import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowStubService } from './../../test/service-stubs';
 import { WorkflowLaunchService } from './workflow-launch.service';
 
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkflowLaunchService]
+      providers: [WorkflowLaunchService,
+        { provide: WorkflowService, useClass: WorkflowStubService}
+      ]
     });
   });
 
