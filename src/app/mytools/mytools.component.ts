@@ -119,7 +119,6 @@ export class MyToolsComponent implements OnInit {
   }
   goToTool(tool: ExtendedDockstoreTool) {
     this.containerService.setTool(tool);
-    // this.router.navigateByUrl('/my-tools/' + tool.tool_path);
   }
 
   setIsFirstOpen() {
