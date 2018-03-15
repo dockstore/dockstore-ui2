@@ -154,10 +154,6 @@ export class CheckerWorkflowService {
         if (!entry) {
             return null;
         }
-        if (entry.hasOwnProperty('is_checker')) {
-            return true;
-        } else {
-            return false;
-        }
+        return entry.hasOwnProperty('is_checker');
     }
 }
