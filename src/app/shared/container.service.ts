@@ -1,5 +1,4 @@
-import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-/**
+/*
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +17,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 @Injectable()

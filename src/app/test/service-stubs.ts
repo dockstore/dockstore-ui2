@@ -13,23 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
+import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
-import { Dockstore } from './../shared/dockstore.model';
-import { Token } from './../shared/swagger/model/token';
-import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
-import { User } from './../shared/swagger/model/user';
-import { StarRequest } from './../shared/swagger/model/starRequest';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
-import { SourceFile } from './../shared/swagger/model/sourceFile';
-import { Workflow } from './../shared/swagger/model/workflow';
-import { Configuration } from './../shared/swagger/configuration';
-import { SearchService } from './../search/search.service';
-import { Observable } from 'rxjs/Observable';
 import { Metadata } from './../shared/swagger/model/metadata';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SourceFile } from './../shared/swagger/model/sourceFile';
+import { StarRequest } from './../shared/swagger/model/starRequest';
+import { Token } from './../shared/swagger/model/token';
+import { User } from './../shared/swagger/model/user';
+import { Workflow } from './../shared/swagger/model/workflow';
+import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
     copyBtn$ = this.copyBtnSource.asObservable();

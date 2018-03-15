@@ -13,14 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
-import { NgForm } from '@angular/forms';
-import { formErrors, validationDescriptorPatterns } from '../../shared/validationMessages.model';
-import { validationMessages, exampleDescriptorPatterns } from '../../shared/validationMessages.model';
+import {
+  exampleDescriptorPatterns,
+  formErrors,
+  validationDescriptorPatterns,
+  validationMessages,
+} from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 
 @Component({
   selector: 'app-register-workflow-modal',

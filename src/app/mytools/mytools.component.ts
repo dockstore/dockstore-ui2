@@ -1,6 +1,5 @@
-import { Router } from '@angular/router';
 /**
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +14,7 @@ import { Router } from '@angular/router';
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
 import { UserService } from '../loginComponents/user.service';

@@ -1,4 +1,18 @@
-import { DockstoreTool } from './../../swagger/model/dockstoreTool';
+/*
+ *    Copyright 2018 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License")
+ *    you may not use this file except in compliance with the License
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -8,6 +22,7 @@ import { ErrorService } from './../../error.service';
 import { RefreshService } from './../../refresh.service';
 import { StateService } from './../../state.service';
 import { WorkflowsService } from './../../swagger/api/workflows.service';
+import { DockstoreTool } from './../../swagger/model/dockstoreTool';
 import { Entry } from './../../swagger/model/entry';
 import { Workflow } from './../../swagger/model/workflow';
 import { WorkflowService } from './../../workflow.service';
