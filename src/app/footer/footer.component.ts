@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-/*
+/**
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,12 @@ import { HttpErrorResponse } from '@angular/common/http';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Dockstore } from './../shared/dockstore.model';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-import { versions } from './versions';
 import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
+import { Metadata } from './../shared/swagger/model/metadata';
+import { versions } from './versions';
 
 @Component({
   selector: 'app-footer',
@@ -31,7 +29,6 @@ export class FooterComponent implements OnInit {
   version: string;
   tag: string;
   public prod = true;
-  public UI1_WEBSITE = Dockstore.HOSTNAME + ':' + '9000';
 
   constructor(private gA4GHService: GA4GHService) { }
 

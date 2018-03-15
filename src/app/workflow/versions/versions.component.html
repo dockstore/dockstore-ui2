@@ -66,12 +66,12 @@
           Verified
         </label>
       </th>
-
-      <th>
+      <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+      <!-- <th>
         <label placement="top" tooltip="Link to DOI entry for the given version">
           DOI
         </label>
-      </th>
+      </th> -->
 
       <th>
         <label placement="top" tooltip="View more information about the given version">
@@ -106,9 +106,10 @@
         </a>
         <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
       </td>
-      <td>
+      <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+      <!-- <td>
         <a href="https://zenodo.org/record/">Placeholder</a>
-      </td>
+      </td> -->
       <td *ngIf="version">
         <app-view-workflow [version]="version" [workflowId]="this.workflowId"></app-view-workflow>
       </td>
