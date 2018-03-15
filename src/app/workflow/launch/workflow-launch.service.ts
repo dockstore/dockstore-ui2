@@ -1,6 +1,3 @@
-import { Injectable } from '@angular/core';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
 /**
  *    Copyright 2017 OICR
  *
@@ -16,9 +13,13 @@ import { WorkflowService } from './../../shared/workflow.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+
 import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
 import { EntryType } from './../../shared/enum/entryType.enum';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
@@ -50,7 +51,7 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return `$ cwl-runner ${Dockstore.API_URI}/api/ga4gh/v1/tools/${encodeURIComponent('#workflow/' + path)}` +
+    return `$ cwl-runner ${Dockstore.API_URI}/api/ga4gh/v2/tools/${encodeURIComponent('#workflow/' + path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 

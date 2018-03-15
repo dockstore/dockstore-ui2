@@ -41,7 +41,7 @@ export class ToolLaunchService extends LaunchService {
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
     return '$ cwl-runner ' +
-      `${Dockstore.API_URI}/api/ga4gh/v1/tools/${encodeURIComponent(path)}` +
+      `${Dockstore.API_URI}/api/ga4gh/v2/tools/${encodeURIComponent(path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 
