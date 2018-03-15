@@ -56,8 +56,8 @@ describe('WorkflowLaunchService', () => {
   }));
   it('should get the right check workflow command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service).toBeTruthy();
-    expect(service.getCheckWorkflowString('potato', null)).toBe('$ dockstore workflow check --entry potato checkparam.json');
-    expect(service.getCheckWorkflowString('potato', 'stew')).toBe('$ dockstore workflow check --entry potato:stew checkparam.json');
+    expect(service.getCheckWorkflowString('potato', null)).toBe('$ dockstore checker --entry potato checkparam.json');
+    expect(service.getCheckWorkflowString('potato', 'stew')).toBe('$ dockstore checker --entry potato:stew checkparam.json');
     expect(service.getCheckWorkflowString(null, null)).toBe('');
   }));
 });

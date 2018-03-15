@@ -58,8 +58,8 @@ describe('ToolLaunchService', () => {
     }));
     it('should get the right check tool command', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service).toBeTruthy();
-        expect(service.getCheckToolString('potato', null)).toBe('$ dockstore tool check --entry potato checkparam.json');
-        expect(service.getCheckToolString('potato', 'stew')).toBe('$ dockstore tool check --entry potato:stew checkparam.json');
+        expect(service.getCheckToolString('potato', null)).toBe('$ dockstore checker --entry potato checkparam.json');
+        expect(service.getCheckToolString('potato', 'stew')).toBe('$ dockstore checker --entry potato:stew checkparam.json');
         expect(service.getCheckToolString(null, null)).toBe('');
       }));
 });
