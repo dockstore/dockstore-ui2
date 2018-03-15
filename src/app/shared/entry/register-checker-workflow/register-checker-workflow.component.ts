@@ -45,7 +45,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
     this.syncTestJson = false;
     this.refreshMessage$ = this.registerCheckerWorkflowService.refreshMessage$;
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
-      this.descriptorLanguages = descriptorLanguages;
+      this.descriptorLanguages = descriptorLanguages.filter((language: string) => language.toLowerCase() !== 'nextflow');
     });
     this.checkerWorkflowService.checkerWorkflow$.subscribe((workflow: Workflow) => {
       if (workflow) {
