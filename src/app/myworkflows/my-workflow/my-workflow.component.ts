@@ -33,6 +33,7 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
+import { Workflow } from '../../shared/swagger';
 
 @Component({
   selector: 'app-my-workflow',
@@ -112,6 +113,25 @@ export class MyWorkflowComponent implements OnInit {
   private goToWorkflow(workflow: ExtendedWorkflow): void {
     this.workflowService.setWorkflow(workflow);
     this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+  }
+
+  /**
+   * Determines whether the given workflow is present in the list of workflows and is in the desired published state
+   * @param {boolean} published Whether we're looking for a published workflow or not
+   * @param {Array<Workflow>} workflows The current list of workflows in an organization
+   * @param {Workflow} selectedWorkflow The current selected workflow
+   * @returns Whether the workflow is present or not
+   * @memberof MyWorkflowComponent
+   */
+  public orgObjContainsWorkflow(published: boolean, workflows: Array<Workflow>, selectedWorkflow: Workflow): boolean {
+    console.log('executed');
+    const filteredWorkflows = workflows.filter(workflow => (workflow.is_published === published));
+    const foundWorkflow = filteredWorkflows.find(workflow => workflow.id === selectedWorkflow.id);
+    if (foundWorkflow) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
