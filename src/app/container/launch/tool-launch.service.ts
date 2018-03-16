@@ -1,4 +1,3 @@
-import { ga4ghPath } from './../../shared/constants';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,6 +13,7 @@ import { ga4ghPath } from './../../shared/constants';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ga4ghPath } from './../../shared/constants';
 import { Dockstore } from './../../shared/dockstore.model';
 import { EntryType } from './../../shared/enum/entryType.enum';
 import { LaunchService } from './../../shared/launch.service';

@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Dockstore } from './dockstore.model';
 import { ga4ghPath } from './constants';
+import { Dockstore } from './dockstore.model';
 
 export class FileService {
 

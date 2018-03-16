@@ -1,4 +1,3 @@
-import { ga4ghPath } from './constants';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,6 +15,7 @@ import { ga4ghPath } from './constants';
  */
 import { Injectable } from '@angular/core';
 
+import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 import { EntryType } from './enum/entryType.enum';
 

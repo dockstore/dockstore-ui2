@@ -1,4 +1,3 @@
-import { ga4ghPath } from './../../shared/constants';
 /*
  *    Copyright 2017 OICR
  *
@@ -18,6 +17,7 @@ import { Injectable } from '@angular/core';
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
+import { ga4ghPath } from './../../shared/constants';
 import { EntryType } from './../../shared/enum/entryType.enum';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
