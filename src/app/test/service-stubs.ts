@@ -431,6 +431,9 @@ export class CheckerWorkflowStubService {
     checkerWorkflowPath$ = Observable.of({});
     checkerWorkflowDefaultWorkflowPath$ = Observable.of('checkerWorkflowDefaultWorkflowPath');
     checkerWorkflowVersionName$ = Observable.of({});
+    isEntryAWorkflow() {
+        return true;
+    }
 }
 
 export class DescriptorLanguageStubService {

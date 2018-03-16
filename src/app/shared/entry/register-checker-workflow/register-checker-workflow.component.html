@@ -47,7 +47,7 @@
               <label class="col-sm-3 control-label" tooltip="Type of descriptor language used">Descriptor Type:
               </label>
               <div class="col-sm-9">
-                <select class="form-control input-sm" [(ngModel)]="descriptorType" name="descriptorType">
+                <select class="form-control input-sm" [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">
                   <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{descriptorLanguage | lowercase}}">{{descriptorLanguage | lowercase}}</option>
                 </select>
               </div>
