@@ -88,6 +88,6 @@ export class InfoTabComponent implements OnInit {
   }
 
   descriptorLanguages(): Array<string> {
-    return this.infoTabService.getDescriptorLanguageKeys();
+    return this.infoTabService.descriptorLanguageMap;
   }
 }

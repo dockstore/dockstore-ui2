@@ -13,15 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
 
-import { TestBed, inject } from '@angular/core/testing';
-
+import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowStubService } from './../../test/service-stubs';
 import { WorkflowLaunchService } from './workflow-launch.service';
 
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkflowLaunchService]
+      providers: [WorkflowLaunchService,
+        { provide: WorkflowService, useClass: WorkflowStubService}
+      ]
     });
   });
 
@@ -45,10 +48,16 @@ describe('WorkflowLaunchService', () => {
     expect(service.getCwlString('a/b', 'c', '%2Fpotato'))
       .not.toContain('non-strict');
     expect(service.getCwlString('a/b', 'c', '%2Fpotato'))
-      .toContain('api/ga4gh/v1/tools/%23workflow%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json');
+      .toContain('api/ga4gh/v2/tools/%23workflow%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json');
   }));
   it('should getConsonanceString', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service.getConsonanceString('a/b', 'latest')).toContain(
       'consonance run --tool-dockstore-id a/b:latest --run-descriptor Dockstore.json --flavour <AWS instance-type>');
+  }));
+  it('should get the right check workflow command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
+    expect(service).toBeTruthy();
+    expect(service.getCheckWorkflowString('potato', null)).toBe('$ dockstore checker --entry potato checkparam.json');
+    expect(service.getCheckWorkflowString('potato', 'stew')).toBe('$ dockstore checker --entry potato:stew checkparam.json');
+    expect(service.getCheckWorkflowString(null, null)).toBe('');
   }));
 });

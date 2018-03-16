@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
 
-import {Injectable} from '@angular/core';
-import {Dockstore} from './dockstore.model';
+import { Dockstore } from './dockstore.model';
+import { EntryType } from './enum/entryType.enum';
 
 @Injectable()
 export abstract class LaunchService {
@@ -31,6 +32,7 @@ export abstract class LaunchService {
     abstract getParamsString(path: string, versionName: string, currentDescriptor: string);
     abstract getCliString(path: string, versionName: string, currentDescriptor: string);
     abstract getCwlString(path: string, versionName: string, mainDescriptor: string);
+
     getConsonanceString(path: string, versionName: string) {
         return `$ consonance run --tool-dockstore-id ${path}:${versionName} ` +
             '--run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
@@ -54,6 +56,19 @@ export abstract class LaunchService {
         return `$ cwltool --make-template ${path}:${versionName} > input.yaml`;
     }
 
+    /**
+     * Gets the tool/workflow check command
+     * @param path The tool/workflow's path
+     * @param versionName The version name tool/workflow
+     */
+    getCheckEntry(path: string, versionName: string, entryType: EntryType) {
+        if (path) {
+            const entryName = path + (versionName ? ':' + versionName : '');
+            return '$ dockstore checker --entry ' + entryName + ' checkparam.json';
+        } else {
+            return '';
+        }
+    }
     /**
      * This creates the native nextflow launch commands
      * @param path The GA4GH Tool's path

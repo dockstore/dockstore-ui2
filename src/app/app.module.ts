@@ -52,11 +52,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
+import { CheckerWorkflowService } from './shared/checker-workflow.service';
 import { CommunicatorService } from './shared/communicator.service';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
 import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
+import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
+import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
+import { ErrorService } from './shared/error.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
@@ -66,6 +70,7 @@ import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
+import { RefreshService } from './shared/refresh.service';
 import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
@@ -147,12 +152,16 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
+    RegisterCheckerWorkflowService,
+    RefreshService,
     StateService,
     SearchService,
     PagenumberService,
     TwitterService,
-    ContainerService,
     GA4GHService,
+    CheckerWorkflowService,
+    ErrorService,
+    DescriptorLanguageService,
     UrlResolverService
   ],
   bootstrap: [ AppComponent ]

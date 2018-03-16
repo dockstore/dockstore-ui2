@@ -1,4 +1,4 @@
-/**
+/*
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ErrorService } from './../shared/error.service';
+import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
-import * as WorkflowMode from './../shared/swagger/model/workflow';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
 
@@ -55,7 +55,7 @@ export class WorkflowComponent extends Entry {
   private workflowCopyBtn: string;
   public selectedVersion = null;
   public urlVersion = null;
-  public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public sortedVersions: Array<Tag | WorkflowVersion> = [];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -90,8 +90,11 @@ export class WorkflowComponent extends Entry {
     }
   }
 
+  /**
+   * Populate the extra ExtendedWorkflow properties
+   */
   setProperties() {
-    const workflowRef: any = this.workflow;
+    const workflowRef: ExtendedWorkflow = this.workflow;
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
@@ -174,7 +177,7 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshMessage !== null  || !this.isValid() || this.workflow.mode === WorkflowMode.Workflow.ModeEnum.STUB;
+    return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB;
   }
 
   publish() {
@@ -185,7 +188,9 @@ export class WorkflowComponent extends Entry {
         publish: this.published
       };
       this.workflowsService.publish(this.workflow.id, request).subscribe(
-        response => this.workflow.is_published = response.is_published, err => {
+        (response: Workflow) => {
+          this.workflowService.upsertWorkflowToWorkflow(response);
+        }, err => {
           this.published = !this.published;
           this.refreshService.handleError('publish error', err);
         });

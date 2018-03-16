@@ -13,27 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
+import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
-import { Dockstore } from './../shared/dockstore.model';
-import { Token } from './../shared/swagger/model/token';
-import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
-import { User } from './../shared/swagger/model/user';
-import { StarRequest } from './../shared/swagger/model/starRequest';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
-import { SourceFile } from './../shared/swagger/model/sourceFile';
-import { Workflow } from './../shared/swagger/model/workflow';
-import { Configuration } from './../shared/swagger/configuration';
-import { SearchService } from './../search/search.service';
-import { Observable } from 'rxjs/Observable';
 import { Metadata } from './../shared/swagger/model/metadata';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SourceFile } from './../shared/swagger/model/sourceFile';
+import { StarRequest } from './../shared/swagger/model/starRequest';
+import { Token } from './../shared/swagger/model/token';
+import { User } from './../shared/swagger/model/user';
+import { Workflow } from './../shared/swagger/model/workflow';
+import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
     copyBtn$ = this.copyBtnSource.asObservable();
     tool$: BehaviorSubject<any> = new BehaviorSubject({});
+    toolId$ = Observable.of(1);
     tools$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     getDescriptors() {
         return null;
@@ -260,6 +260,7 @@ export class HttpStubService {
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
     workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
+    workflowId$ = Observable.of(1);
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
@@ -422,6 +423,29 @@ export class StarringStubService {
     getStarring(id: any, type: any): Observable<Array<User>> {
         return Observable.of([]);
     }
+}
+
+export class CheckerWorkflowStubService {
+    entry$ = Observable.of({id: 1});
+    checkerWorkflow$ = Observable.of(null);
+    checkerWorkflowPath$ = Observable.of({});
+    checkerWorkflowDefaultWorkflowPath$ = Observable.of('checkerWorkflowDefaultWorkflowPath');
+    checkerWorkflowVersionName$ = Observable.of({});
+}
+
+export class DescriptorLanguageStubService {
+    descriptorLanguages$ = Observable.of(['cwl', 'wdl', 'nextflow']);
+}
+
+export class RegisterCheckerWorkflowStubService {
+    errorObj$ = Observable.of(null);
+    public isModalShown$ = new BehaviorSubject<boolean>(false);
+    public refreshMessage$ = new BehaviorSubject<string>(null);
+    public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
+}
+
+export class LaunchCheckerWorkflowStubService {
+    command = 'potato';
 }
 
 export class UrlResolverStubService {

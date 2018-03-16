@@ -13,24 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { RefreshAlertModule } from './../shared/alert/alert.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import {
-    RefreshWorkflowOrganizationComponent,
+  RefreshWorkflowOrganizationComponent,
 } from './../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-modal/register-workflow-modal.component';
+import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
 
@@ -38,8 +37,9 @@ import { myworkflowRouting } from './myworkflows.routing';
   declarations: [
     MyWorkflowsComponent,
     RegisterWorkflowModalComponent,
-    RefreshWorkflowOrganizationComponent
-  ],
+    RefreshWorkflowOrganizationComponent,
+    MyWorkflowComponent
+],
   imports: [
     CommonModule,
     WorkflowModule,

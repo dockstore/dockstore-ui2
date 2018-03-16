@@ -56,7 +56,7 @@
           <div *ngFor="let containerObj of nsObj?.containers">
             <div class="panel-container-label" [ngClass]="{selected: tool.id === containerObj.id}">
               <div class="container-name-oflw pull-left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
-                <a style="cursor: pointer;" (click)="selectContainer(containerObj)">
+                <a style="cursor: pointer;" (click)="goToTool(containerObj)">
                   {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
                 </a>
               </div>

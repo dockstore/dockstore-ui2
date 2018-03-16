@@ -1,4 +1,4 @@
-/**
+/*
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router/';
+import { NavigationEnd, Router } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -46,6 +46,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public labelsEditMode: boolean;
   private loginSubscription: Subscription;
   public error;
+  private routerSubscription: Subscription;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
@@ -58,15 +59,23 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.subscriptions();
-    const url = this.router.url;
-    if (this.isPublic()) {
-      this.setupPublicEntry(url);
-    }
+    this.routerSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.parseURL(event.url);
+      }
+    });
+    this.parseURL(this.router.url);
     this.stateService.setPublicPage(this.isPublic());
     this.errorService.errorObj$.subscribe(toolError => this.error = toolError);
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
+  }
+
+  private parseURL(url: String): void {
+    if (this.isPublic()) {
+      this.setupPublicEntry(url);
+    }
   }
 
   getVerifiedLink(): string {
@@ -83,6 +92,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.onDestroy();
+    this.routerSubscription.unsubscribe();
   }
 
   abstract onDestroy(): void;

@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
- import { Dockstore } from './dockstore.model';
+import { Dockstore } from './dockstore.model';
 
 export class FileService {
 
@@ -25,7 +25,7 @@ export class FileService {
     // Get the download path of a descriptor
     getDescriptorPath(entrypath, currentVersion, currentFile, descriptor, entrytype): string {
       if (currentFile != null) {
-        const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
+        const basepath = Dockstore.API_URI + '/api/ga4gh/v2/tools/';
         let descriptorType = 'plain-CWL';
         if (descriptor === 'wdl') {
           descriptorType = 'plain-WDL';

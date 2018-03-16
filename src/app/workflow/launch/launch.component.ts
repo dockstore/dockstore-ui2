@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, Input } from '@angular/core';
-import { WorkflowLaunchService } from './workflow-launch.service';
-import { WorkflowVersion } from '../../shared/swagger';
+
+import { WorkflowLaunchService } from '../launch/workflow-launch.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 
 @Component({
   selector: 'app-launch',
@@ -41,6 +42,7 @@ export class LaunchWorkflowComponent {
   cwl: string;
   dockstoreSupportedCwlLaunch: string;
   dockstoreSupportedCwlMakeTemplate: string;
+  checkEntryCommand: string;
   consonance: string;
   wgetTestJsonDescription: string;
   nextflowNativeLaunchDescription: string;
@@ -59,6 +61,7 @@ export class LaunchWorkflowComponent {
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
+    this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
     this.wgetTestJsonDescription = this.launchService.getNxtTestJsonString(workflowPath, versionName);

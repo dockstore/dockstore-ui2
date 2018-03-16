@@ -13,15 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { StateService } from './../../shared/state.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
+import { StateService } from './../../shared/state.service';
+import { MetadataService } from './../../shared/swagger/api/metadata.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -36,13 +36,13 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService,
-        private stateService: StateService,
+        private stateService: StateService, private descriptorLanguageService: DescriptorLanguageService,
         private metadataService: MetadataService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
-        this.metadataService.getDescriptorLanguages().subscribe(map => this.descriptorLanguageMap = map);
+        this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }

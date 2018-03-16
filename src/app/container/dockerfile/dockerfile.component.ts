@@ -73,7 +73,7 @@ export class DockerfileComponent implements AfterViewChecked {
   }
 
   getDockerfilePath(): string {
-    const basepath = Dockstore.API_URI + '/api/ga4gh/v1/tools/';
+    const basepath = Dockstore.API_URI + '/api/ga4gh/v2/tools/';
     const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedVersion.name + '/dockerfile';
     return basepath + customPath;
   }

@@ -13,15 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { DescriptorService } from '../../shared/descriptor.service';
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
-import { ContainerStubService, DescriptorsStubService } from './../../test/service-stubs';
-import { ContainerService } from './../../shared/container.service';
-import { WorkflowLaunchService } from './workflow-launch.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
+import { ContainerService } from './../../shared/container.service';
+import { WorkflowService } from './../../shared/workflow.service';
+import {
+  CheckerWorkflowStubService,
+  ContainerStubService,
+  DescriptorsStubService,
+  WorkflowStubService,
+} from './../../test/service-stubs';
+import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
+import { WorkflowLaunchService } from './workflow-launch.service';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
@@ -29,12 +35,14 @@ describe('LaunchWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LaunchWorkflowComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ WorkflowLaunchService, {provide: ContainerService, useClass: ContainerStubService},
-      { provide: WorkflowDescriptorService, useClass: DescriptorsStubService}]
+      declarations: [LaunchWorkflowComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [WorkflowLaunchService, { provide: ContainerService, useClass: ContainerStubService },
+        { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
+        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+      { provide: WorkflowService, useClass: WorkflowStubService}]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

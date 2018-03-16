@@ -13,24 +13,49 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
 
-import { LaunchService } from '../../shared/launch.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { LaunchService } from '../../shared/launch.service';
+import { EntryType } from './../../shared/enum/entryType.enum';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { WorkflowService } from './../../shared/workflow.service';
+
+@Injectable()
 export class WorkflowLaunchService extends LaunchService {
+  private type = 'workflow';
+  constructor(private workflowService: WorkflowService) {
+    super();
+    workflowService.workflow$.subscribe((workflow: Workflow) => {
+      if (!workflow) {
+        this.type = 'workflow';
+      } else {
+        if (workflow.is_checker) {
+          this.type = 'checker';
+        } else {
+          this.type = 'workflow';
+        }
+      }
+    });
+  }
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
     if (currentDescriptor === 'nextflow') {
       return `$ vim Dockstore.json`;
     }
-    return `$ dockstore workflow convert entry2json --entry ${ path }:${ versionName } > Dockstore.json
+    return `$ dockstore ${this.type} convert entry2json --entry ${path}:${versionName} > Dockstore.json
             \n$ vim Dockstore.json`;
   }
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
-    return `$ dockstore workflow launch --entry ${ path }:${ versionName } --json Dockstore.json`;
+    return `$ dockstore ${this.type} launch --entry ${path}:${versionName} --json Dockstore.json`;
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return `$ cwl-runner ${ Dockstore.API_URI }/api/ga4gh/v1/tools/${ encodeURIComponent('#workflow/' + path) }` +
-      `/versions/${ encodeURIComponent(versionName) }/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+    return `$ cwl-runner ${Dockstore.API_URI}/api/ga4gh/v2/tools/${encodeURIComponent('#workflow/' + path)}` +
+      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+  }
+
+  getCheckWorkflowString(path: string, versionName: string): string {
+    return this.getCheckEntry(path, versionName, EntryType.WORKFLOW);
   }
 }

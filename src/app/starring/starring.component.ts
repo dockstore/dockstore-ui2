@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { User } from './../shared/swagger/model/user';
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import { UserService } from '../loginComponents/user.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkflowService } from '../shared/workflow.service';
+
+import { UserService } from '../loginComponents/user.service';
 import { ContainerService } from '../shared/container.service';
-import { TrackLoginService } from '../shared/track-login.service';
-import { StarringService } from './starring.service';
 import { StarentryService } from '../shared/starentry.service';
+import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowService } from '../shared/workflow.service';
+import { User } from './../shared/swagger/model/user';
+import { StarringService } from './starring.service';
 
 @Component({
   selector: 'app-starring',
@@ -53,24 +53,11 @@ export class StarringComponent implements OnInit {
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     // get tool from the observer
-    if (!this.workflow && !this.tool) {
-      this.setupSubscription();
-    } else {
-      // get the tool from the input, used by the starred Page
+    if (this.workflow || this.tool) {
+      // get the tool from the input, used by the starred Page and entry components
       this.setupInputEntry();
     }
     this.userService.user$.subscribe(user => this.user = user);
-  }
-
-  setupSubscription() {
-    this.workflowSubscription = this.workflowService.workflow$.subscribe(
-      workflow => {
-        this.setupWorkflow(workflow);
-      });
-    this.toolSubscription = this.containerService.tool$.subscribe(
-      tool => {
-        this.setupTool(tool);
-      });
   }
 
   setupInputEntry() {

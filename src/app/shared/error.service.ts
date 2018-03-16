@@ -13,15 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ErrorService {
     errorObj$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     constructor() { }
-    setErrorAlert(error: any) {
+    setErrorAlert(error: HttpErrorResponse) {
         let errorObj = null;
         if (error) {
             errorObj = {

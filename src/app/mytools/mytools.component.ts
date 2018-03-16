@@ -1,5 +1,5 @@
 /**
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
 import { UserService } from '../loginComponents/user.service';
@@ -54,7 +55,7 @@ export class MyToolsComponent implements OnInit {
     private containerService: ContainerService,
     private refreshService: RefreshService, private accountsService: AccountsService,
     private registerToolService: RegisterToolService, private tokenService: TokenService,
-    private urlResolverService: UrlResolverService
+    private urlResolverService: UrlResolverService, private router: Router
   ) { }
   ngOnInit() {
     localStorage.setItem('page', '/my-tools');
@@ -107,14 +108,17 @@ export class MyToolsComponent implements OnInit {
   private findToolFromPath(path: string, nsContainers: any[]): ExtendedDockstoreTool {
     let matchingWorkflow: ExtendedDockstoreTool;
     nsContainers.forEach((nsContainer)  => {
-      nsContainer.containers.forEach(container => {
-        if (container.path === path) {
+      nsContainer.containers.forEach((container: ExtendedDockstoreTool) => {
+        if (container.tool_path === path) {
           matchingWorkflow = container;
         }
       });
     });
     return matchingWorkflow;
 
+  }
+  goToTool(tool: ExtendedDockstoreTool) {
+    this.containerService.setTool(tool);
   }
 
   setIsFirstOpen() {

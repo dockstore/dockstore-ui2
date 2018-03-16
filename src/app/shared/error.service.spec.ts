@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { ErrorService } from './error.service';
-import { TestBed, inject } from '@angular/core/testing';
 
 describe('ErrorService', () => {
     beforeEach(() => {
@@ -28,12 +29,17 @@ describe('ErrorService', () => {
         expect(service).toBeTruthy();
     }));
     it('should have multiple docs', inject([ErrorService], (service: ErrorService) => {
-        service.setErrorAlert({'status': 'status', 'statusText': 'statusText', 'error': 'error'});
+        const baseErrorStub = {
+            'message': 'potato', 'name': 'HttpErrorResponse', 'status': 400, 'statusText': 'statusText', 'error': 'error'};
+        const errorStub = new HttpErrorResponse(baseErrorStub);
+        service.setErrorAlert(errorStub);
         const errorObj: any = {
             message: 'The webservice encountered an error trying to create/modify.',
-            errorDetails: '[HTTP ' + 'status' + '] ' + 'statusText' + ': ' +
+            errorDetails: '[HTTP ' + '400' + '] ' + 'statusText' + ': ' +
             'error'
         };
+        console.log(service.errorObj$.getValue());
+        console.log(errorObj);
         expect(service.errorObj$.getValue()).toEqual(errorObj);
     }));
 });

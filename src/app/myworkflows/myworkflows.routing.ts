@@ -15,13 +15,14 @@
  */
 import { RouterModule, Routes } from '@angular/router';
 
+import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 
 const MYTOOLS_ROUTES: Routes = [
   {
     path: '', component: MyWorkflowsComponent, children: [
-      { path: '', component: MyWorkflowsComponent},
-      { path: '**', component: MyWorkflowsComponent}
+      { path: '', component: MyWorkflowComponent},
+      { path: '**', component: MyWorkflowComponent}
     ]
   }
 ];

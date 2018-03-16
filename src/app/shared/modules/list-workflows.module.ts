@@ -13,15 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
-import { HeaderModule } from './header.module';
 
 import { ListWorkflowsComponent } from '../../workflows/list/list.component';
-import { WorkflowService } from '../workflow.service';
+import { HeaderModule } from './header.module';
 
 @NgModule({
   declarations: [
@@ -35,9 +33,6 @@ import { WorkflowService } from '../workflow.service';
   ],
   exports: [
     ListWorkflowsComponent
-  ],
-  providers: [
-    WorkflowService
   ]
 })
 export class ListWorkflowsModule { }

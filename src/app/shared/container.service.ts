@@ -1,4 +1,3 @@
-import { DockstoreTool } from './swagger/model/dockstoreTool';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,20 +13,32 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 @Injectable()
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
   tool$ = new BehaviorSubject<any>(null); // This is the selected tool
+  toolId$: Observable<number>;
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
-  constructor() { }
+  constructor() {
+    this.toolId$ = this.tool$.map((tool: ExtendedDockstoreTool) => {
+      if (tool) {
+        return tool.id;
+      } else {
+        return null;
+      }
+    });
+  }
   setTool(tool: any) {
     this.tool$.next(tool);
   }
@@ -40,6 +51,25 @@ export class ContainerService {
     this.tools$.next(tools);
   }
 
+    /**
+   * Upsert the new workflow into the current list of workflows (depends on the workflow id)
+   * @param tool Workflow to be upserted
+   */
+  upsertToolToTools(tool: DockstoreTool) {
+    const tools = this.tools$.getValue();
+    if (!tool || !tools) {
+      return;
+    }
+    const oldWorkflow = tools.find(x => x.id === tool.id);
+    if (oldWorkflow) {
+      const index = tools.indexOf(oldWorkflow);
+      tools[index] = tool;
+    } else {
+      tools.push(tool);
+    }
+    this.setTools(tools);
+  }
+
   /**
    * This function replaces the tool inside of tools with an updated tool
    *
@@ -48,6 +78,9 @@ export class ContainerService {
    * @memberof ContainerService
    */
   replaceTool(tools: any, newTool) {
+    if (this.tools$.getValue()) {
+      tools = this.tools$.getValue();
+    }
     const oldTool = tools.find(x => x.id === newTool.id);
     const index = tools.indexOf(oldTool);
     tools[index] = newTool;
@@ -84,9 +117,7 @@ export class ContainerService {
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';
-
+    }
   }
-
-}
 
 }
