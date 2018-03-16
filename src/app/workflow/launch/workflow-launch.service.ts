@@ -1,3 +1,4 @@
+import { ga4ghPath } from './../../shared/constants';
 /*
  *    Copyright 2017 OICR
  *
@@ -51,7 +52,7 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return `$ cwl-runner ${Dockstore.API_URI}/api/ga4gh/v2/tools/${encodeURIComponent('#workflow/' + path)}` +
+    return `$ cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent('#workflow/' + path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 
