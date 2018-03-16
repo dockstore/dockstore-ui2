@@ -1,0 +1,166 @@
+/*
+ *     Copyright 2018 OICR
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'ng2-ui-auth';
+
+import { RegisterToolService } from '../../container/register-tool/register-tool.service';
+import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { UserService } from '../../loginComponents/user.service';
+import { CommunicatorService } from '../../shared/communicator.service';
+import { DockstoreService } from '../../shared/dockstore.service';
+import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from '../../shared/refresh.service';
+import { StateService } from '../../shared/state.service';
+import { UrlResolverService } from '../../shared/url-resolver.service';
+import { MytoolsService } from '../mytools.service';
+import { Tool } from './../../container/register-tool/tool';
+import { TokenService } from './../../loginComponents/token.service';
+import { ContainerService } from './../../shared/container.service';
+import { TokenSource } from './../../shared/enum/token-source.enum';
+import { UsersService } from './../../shared/swagger/api/users.service';
+import { Configuration } from './../../shared/swagger/configuration';
+
+@Component({
+  selector: 'app-my-tool',
+  templateUrl: './my-tool.component.html',
+  styleUrls: ['./my-tool.component.scss'],
+  providers: [MytoolsService, DockstoreService]
+})
+export class MyToolComponent implements OnInit {
+  nsContainers: any;
+  oneAtATime = true;
+  tools: any;
+  user: any;
+  tool: any;
+  public hasGitHubToken = true;
+  public refreshMessage: string;
+  private registerTool: Tool;
+  constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
+    private communicatorService: CommunicatorService, private usersService: UsersService,
+    private userService: UserService, private authService: AuthService, private stateService: StateService,
+    private containerService: ContainerService,
+    private refreshService: RefreshService, private accountsService: AccountsService,
+    private registerToolService: RegisterToolService, private tokenService: TokenService,
+    private urlResolverService: UrlResolverService, private router: Router) { }
+
+  ngOnInit() {
+    localStorage.setItem('page', '/my-tools');
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    this.containerService.setTool(null);
+    this.containerService.tool$.subscribe(selectedTool => {
+      this.tool = selectedTool;
+      this.communicatorService.setTool(selectedTool);
+      this.setIsFirstOpen();
+    });
+    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
+    this.userService.user$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.usersService.userContainers(user.id).subscribe(tools => {
+          this.containerService.setTools(tools);
+        });
+      }
+    });
+    this.containerService.tools$.subscribe(tools => {
+      this.tools = tools;
+      if (this.user) {
+        const sortedContainers = this.mytoolsService.sortNSContainers(tools, this.user.username);
+        this.containerService.setNsContainers(sortedContainers);
+      }
+    });
+    this.containerService.nsContainers.subscribe(containers => {
+      this.nsContainers = containers;
+      /* For the first initial time, set the first tool to be the selected one */
+      if (this.nsContainers && this.nsContainers.length > 0) {
+        const theFirstTool = this.nsContainers[0].containers[0];
+        const foundWorkflow = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), this.nsContainers);
+        if (foundWorkflow) {
+          this.selectContainer(foundWorkflow);
+        } else {
+          this.selectContainer(theFirstTool);
+        }
+      } else {
+        this.selectContainer(null);
+      }
+    });
+    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
+  }
+
+  link() {
+      this.accountsService.link(TokenSource.GITHUB);
+  }
+
+  private findToolFromPath(path: string, nsContainers: any[]): ExtendedDockstoreTool {
+    let matchingWorkflow: ExtendedDockstoreTool;
+    nsContainers.forEach((nsContainer)  => {
+      nsContainer.containers.forEach((container: ExtendedDockstoreTool) => {
+        if (container.tool_path === path) {
+          matchingWorkflow = container;
+        }
+      });
+    });
+    return matchingWorkflow;
+
+  }
+  goToTool(tool: ExtendedDockstoreTool) {
+    this.containerService.setTool(tool);
+    this.router.navigateByUrl('/my-tools/' + tool.tool_path);
+  }
+
+  setIsFirstOpen() {
+    if (this.nsContainers && this.tool) {
+      for (const nsObj of this.nsContainers) {
+        if (this.containSelectedTool(nsObj)) {
+          nsObj.isFirstOpen = true;
+          break;
+        }
+      }
+    }
+  }
+  containSelectedTool(nsObj) {
+    let containTool = false;
+    for (const tool of nsObj.containers) {
+      if (tool.id === this.tool.id) {
+        containTool = true;
+        break;
+      }
+    }
+    return containTool;
+  }
+  selectContainer(tool) {
+    this.tool = tool;
+    this.containerService.setTool(tool);
+    this.communicatorService.setTool(tool);
+  }
+
+  setModalGitPathAndImgPath(namespace: string) {
+    const namespaceArray = namespace.split('/');
+    const path = namespaceArray[1] + '/new_tool';
+    this.registerTool.gitPath = path;
+    this.registerTool.imagePath = path;
+    this.registerToolService.setTool(this.registerTool);
+  }
+
+  showRegisterToolModal() {
+    this.registerToolService.setIsModalShown(true);
+  }
+
+  refreshAllTools() {
+    this.refreshService.refreshAllTools(this.user.id);
+  }
+}

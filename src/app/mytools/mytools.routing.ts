@@ -16,12 +16,13 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { MyToolsComponent } from './mytools.component';
+import { MyToolComponent } from './my-tool/my-tool.component';
 
 const MYTOOLS_ROUTES: Routes = [
   {
     path: '', component: MyToolsComponent, children: [
-      { path: '', component: MyToolsComponent},
-      { path: '**', component: MyToolsComponent}
+      { path: '', component: MyToolComponent},
+      { path: '**', component: MyToolComponent}
     ]
   }
 ];

@@ -1,4 +1,3 @@
-import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,25 +13,25 @@ import { AccountsService } from './../loginComponents/accounts/external/accounts
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import {
-    RefreshToolOrganizationComponent,
+  RefreshToolOrganizationComponent,
 } from '../container/refresh-tool-organization/refresh-tool-organization.component';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
+import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 import { getTooltipConfig } from './../shared/tooltip';
+import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
 
@@ -40,8 +39,9 @@ import { mytoolsRouting } from './mytools.routing';
   declarations: [
     MyToolsComponent,
     RegisterToolComponent,
-    RefreshToolOrganizationComponent
-  ],
+    RefreshToolOrganizationComponent,
+    MyToolComponent
+],
   imports: [
     CommonModule,
     ContainerModule,
