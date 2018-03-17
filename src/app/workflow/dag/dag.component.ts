@@ -23,6 +23,7 @@ import { CommunicatorService } from './../../shared/communicator.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Dockstore } from '../../shared/dockstore.model';
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
@@ -56,7 +57,7 @@ export class DagComponent implements OnInit, AfterViewChecked {
   private refresh = false;
 
   public dagType: 'classic' | 'cwlviewer' = 'classic';
-  public enableCwlViewer = false;
+  public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   public refreshCounter = 1;
 
   setDagResult(dagResult: any) {
