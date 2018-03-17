@@ -57,5 +57,5 @@ export class Dockstore {
 
   static readonly FEATURES = {
     enableCwlViewer: false
-  }
+  };
 }
