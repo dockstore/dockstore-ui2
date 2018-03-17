@@ -104,12 +104,20 @@ export class WorkflowComponent extends Entry {
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
     if (workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl') {
-      const myParams = new URLSearchParams();
-      myParams.set('path', workflowRef.full_workflow_path);
-      myParams.set('descriptorType', workflowRef.descriptorType);
-      this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
-      this.fireCloudURL = Dockstore.FIRECLOUD_IMPORT_URL + '?' + myParams;
+      this.dnastackURL = this.setupDnastackUrl(workflowRef);
+      this.fireCloudURL = this.setupFireCloudUrl(workflowRef);
     }
+  }
+
+  private setupDnastackUrl(workflowRef: any) {
+    const myParams = new URLSearchParams();
+    myParams.set('path', workflowRef.full_workflow_path);
+    myParams.set('descriptorType', workflowRef.descriptorType);
+    return Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
+  }
+
+  private setupFireCloudUrl(workflowRef: any) {
+    return `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.path}`;
   }
 
   public getDefaultVersionName(): string {
@@ -272,4 +280,5 @@ export class WorkflowComponent extends Entry {
     const currentWorkflowPath = (this.router.url).split(':')[0];
     this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
   }
+
 }
