@@ -101,7 +101,12 @@ export class MyWorkflowComponent implements OnInit {
         if (foundWorkflow) {
           this.selectWorkflow(foundWorkflow);
         } else {
-          this.selectWorkflow(theFirstWorkflow);
+          const publishedWorkflow = this.getFirstPublishedWorkflow(this.orgWorkflows);
+          if (publishedWorkflow) {
+            this.selectWorkflow(publishedWorkflow);
+          } else {
+            this.selectWorkflow(theFirstWorkflow);
+          }
         }
       } else {
         this.selectWorkflow(null);
@@ -110,9 +115,23 @@ export class MyWorkflowComponent implements OnInit {
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
+  private getFirstPublishedWorkflow(orgWorkflows: any): Workflow {
+    for (let i = 0; i < orgWorkflows.length; i++) {
+      const foundWorkflow = orgWorkflows[i]['workflows'].find((workflow: Workflow) => {
+        return workflow.is_published === true;
+      });
+      if (foundWorkflow) {
+        return foundWorkflow;
+      }
+    }
+    return null;
+  }
+
   private goToWorkflow(workflow: ExtendedWorkflow): void {
     this.workflowService.setWorkflow(workflow);
-    this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+    if (workflow) {
+      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+    }
   }
 
   /**
@@ -164,7 +183,7 @@ export class MyWorkflowComponent implements OnInit {
     }
   }
   selectWorkflow(workflow: ExtendedWorkflow) {
-    this.workflowService.setWorkflow(workflow);
+    this.goToWorkflow(workflow);
   }
 
   setModalGitURL(gitURL: string) {
