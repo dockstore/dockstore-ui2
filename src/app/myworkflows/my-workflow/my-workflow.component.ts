@@ -124,7 +124,6 @@ export class MyWorkflowComponent implements OnInit {
    * @memberof MyWorkflowComponent
    */
   public orgObjContainsWorkflow(published: boolean, workflows: Array<Workflow>, selectedWorkflow: Workflow): boolean {
-    console.log('executed');
     const filteredWorkflows = workflows.filter(workflow => (workflow.is_published === published));
     const foundWorkflow = filteredWorkflows.find(workflow => workflow.id === selectedWorkflow.id);
     if (foundWorkflow) {
