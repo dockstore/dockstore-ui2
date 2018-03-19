@@ -16,6 +16,9 @@
 
 import { Provider } from './enum/provider.enum';
 
+// If you add new properties to this class, you need to also update
+// dockstore.model.ts.template at https://github.com/dockstore/compose_setup
+
 export class Dockstore {
   // Please fill in HOSTNAME with your address
   static readonly HOSTNAME = 'http://localhost';
@@ -51,4 +54,8 @@ export class Dockstore {
   static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
 
   static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
+
+  static readonly FEATURES = {
+    enableCwlViewer: false
+  };
 }
