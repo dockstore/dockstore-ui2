@@ -34,7 +34,7 @@ export class Dockstore {
   static readonly LOCAL_URI = Dockstore.HOSTNAME + ':' + Dockstore.UI_PORT;
   static readonly API_URI = Dockstore.HOSTNAME + ':' + Dockstore.API_PORT;
   static readonly DNASTACK_IMPORT_URL= 'https://app.dnastack.com/#/app/workflow/import/dockstore';
-  static readonly FIRECLOUD_IMPORT_URL= 'https://app.firecloud.com/#/app/workflow/import/dockstore';
+  static readonly FIRECLOUD_IMPORT_URL= 'https://portal.firecloud.org/#import/dockstore';
 
   static readonly GITHUB_CLIENT_ID = 'fill_this_in';
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
@@ -57,6 +57,7 @@ export class Dockstore {
   static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
   static readonly FEATURES = {
-    enableCwlViewer: false
+    enableCwlViewer: false,
+    enableLaunchWithFireCloud: false
   };
 }

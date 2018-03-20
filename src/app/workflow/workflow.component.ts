@@ -36,6 +36,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
+import { FireCloudService } from '../shared/firecloud.service';
 
 @Component({
   selector: 'app-workflow',
@@ -59,10 +60,10 @@ export class WorkflowComponent extends Entry {
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService,
-    stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    private locationService: Location) {
+              private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
+              router: Router, private workflowService: WorkflowService,
+              stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
+              private firecloudService: FireCloudService, private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService, urlResolverService);
     this._toolType = 'workflows';
@@ -103,21 +104,30 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
-    if (workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl') {
-      this.dnastackURL = this.setupDnastackUrl(workflowRef);
-      this.fireCloudURL = this.setupFireCloudUrl(workflowRef);
+    if (this.isWdl(workflowRef)) {
+      const myParams = new URLSearchParams();
+      myParams.set('path', workflowRef.full_workflow_path);
+      myParams.set('descriptorType', workflowRef.descriptorType);
+      this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
     }
   }
 
-  private setupDnastackUrl(workflowRef: any) {
-    const myParams = new URLSearchParams();
-    myParams.set('path', workflowRef.full_workflow_path);
-    myParams.set('descriptorType', workflowRef.descriptorType);
-    return Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
+  private isWdl(workflowRef: ExtendedWorkflow) {
+    return workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
   }
 
-  private setupFireCloudUrl(workflowRef: any) {
-    return `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.path}`;
+  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
+    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
+      this.fireCloudURL = null;
+      const version: WorkflowVersion = this.selectedVersion;
+      if (version && this.isWdl(workflowRef)) {
+        this.workflowsService.wdl(workflowRef.id, version.name).subscribe(sourceFile => {
+          if (sourceFile.content && sourceFile.content.length && !this.firecloudService.wdlHasImports(sourceFile.content)) {
+            this.fireCloudURL = this.firecloudService.redirectUrl(workflowRef.full_workflow_path, version.name);
+          }
+        });
+      }
+    }
   }
 
   public getDefaultVersionName(): string {
@@ -134,6 +144,7 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      this.setupFireCloudUrl(this.workflow);
     }
   }
 
@@ -279,6 +290,6 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     const currentWorkflowPath = (this.router.url).split(':')[0];
     this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
+    this.setupFireCloudUrl(this.workflow);
   }
-
 }
