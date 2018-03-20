@@ -14,10 +14,12 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router/';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { Subject } from 'rxjs/Subject';
 
+import { Workflow } from '../../shared/swagger';
 import { AccountsService } from './../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from './../../loginComponents/token.service';
 import { UserService } from './../../loginComponents/user.service';
@@ -33,7 +35,6 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-import { Workflow } from '../../shared/swagger';
 
 @Component({
   selector: 'app-my-workflow',
@@ -43,13 +44,14 @@ import { Workflow } from '../../shared/swagger';
     DockstoreService]
 })
 
-export class MyWorkflowComponent implements OnInit {
+export class MyWorkflowComponent implements OnInit, OnDestroy {
   hasGitHubToken = true;
   orgWorkflows = [];
   oneAtATime = true;
   workflow: any;
   user: any;
   workflows: any;
+  private ngUnsubscribe: Subject<{}> = new Subject();
   public refreshMessage: string;
   public orgWorkflowsObject: Array<OrgWorkflowObject>;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
@@ -64,15 +66,15 @@ export class MyWorkflowComponent implements OnInit {
   }
 
   ngOnInit() {
-    localStorage.setItem('page', '/my-workflows');
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
-    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
+        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
         this.selectWorkflow(foundWorkflow);
       }
     });
+    localStorage.setItem('page', '/my-workflows');
+    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
@@ -91,15 +93,14 @@ export class MyWorkflowComponent implements OnInit {
         });
       }
     });
-    this.workflowService.workflows$.subscribe(workflows => {
+    this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
       if (workflows) {
         this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
-        this.workflowService.setNsWorkflows(sortedWorkflows);
         this.orgWorkflows = sortedWorkflows;
         if (this.orgWorkflows && this.orgWorkflows.length > 0) {
           this.orgWorkflowsObject = this.convertNamespaceWorkflowsToOrgWorkflowsObject(sortedWorkflows);
-          const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
+          const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
           const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
           if (foundWorkflow) {
             this.selectWorkflow(foundWorkflow);
@@ -117,6 +118,11 @@ export class MyWorkflowComponent implements OnInit {
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
@@ -150,7 +156,19 @@ export class MyWorkflowComponent implements OnInit {
     }
   }
 
-  private convertNamespaceWorkflowsToOrgWorkflowsObject(nsWorkflows: Array<any>) {
+  /**
+   * Converts the deprecated nsWorkflows object to the new OrgWorkflowsObject contains:
+   * an array of published and unpublished workflows
+   * and which tab should be opened (published or unpublished)
+   * Main reason to convert to the new object is because figuring it out which tab should be active on
+   * the fly will result in function being executed far too many times (150 times)
+   * @private
+   * @param {Array<any>} nsWorkflows The original nsWorkflows object
+   * @returns {Array<OrgWorkflowObject>} The new object with more properties
+   * @memberof MyWorkflowComponent
+   */
+
+  private convertNamespaceWorkflowsToOrgWorkflowsObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
     const orgWorkflowsObject: Array<OrgWorkflowObject> = [];
     for (let i = 0; i < nsWorkflows.length; i++) {
       const orgWorkflowObject: OrgWorkflowObject = {
@@ -176,6 +194,14 @@ export class MyWorkflowComponent implements OnInit {
     return orgWorkflowsObject;
   }
 
+  /**
+   * Find the first published workflow in all of the organizations
+   *
+   * @private
+   * @param {*} orgWorkflows The deprecated object containing all the workflows
+   * @returns {Workflow} The first published workflow found, null if there aren't any
+   * @memberof MyWorkflowComponent
+   */
   private getFirstPublishedWorkflow(orgWorkflows: any): Workflow {
     for (let i = 0; i < orgWorkflows.length; i++) {
       const foundWorkflow = orgWorkflows[i]['workflows'].find((workflow: Workflow) => {
@@ -188,25 +214,35 @@ export class MyWorkflowComponent implements OnInit {
     return null;
   }
 
-  private goToWorkflow(workflow: ExtendedWorkflow): void {
-    this.workflowService.setWorkflow(workflow);
-    if (workflow) {
-      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
-    }
-  }
-
-  private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
+  /**
+   * Determines the workflow to go to based on the URL
+   * Null if there's no known workflow with that path
+   * @private
+   * @param {string} path The current URL
+   * @param {Array<OrgWorkflowObject>} orgWorkflows The new object containing all the workflows seperated in into published and unpublished
+   * @returns {ExtendedWorkflow} The matching workflow if it exists
+   * @memberof MyWorkflowComponent
+   */
+  private findWorkflowFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
     let matchingWorkflow: ExtendedWorkflow;
-    orgWorkflows.forEach((orgWorkflow) => {
-      orgWorkflow.workflows.forEach(workflow => {
-        if (workflow.full_workflow_path === path) {
-          matchingWorkflow = workflow;
-        }
-      });
-    });
-    return matchingWorkflow;
+    for (let i = 0; i < orgWorkflows.length; i++) {
+      matchingWorkflow = orgWorkflows[i].published.find((workflow: Workflow) => workflow.full_workflow_path === path);
+      if (matchingWorkflow) {
+        return matchingWorkflow;
+      }
+      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: Workflow) => workflow.full_workflow_path === path);
+      if (matchingWorkflow) {
+        return matchingWorkflow;
+      }
+    }
+    return null;
   }
 
+  /**
+   * Determines which accordion is expanded on the workflow selector sidebar
+   *
+   * @memberof MyWorkflowComponent
+   */
   setIsFirstOpen() {
     if (this.orgWorkflowsObject && this.workflow) {
       for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
@@ -221,16 +257,18 @@ export class MyWorkflowComponent implements OnInit {
       }
     }
   }
-  containSelectedWorkflow(orgObj) {
-    const workflows: Array<any> = orgObj.workflows;
-    if (workflows.find(workflow => workflow.id === this.workflow.id)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+
+  /**
+   * Select which workflow to display in the workflow component
+   *
+   * @param {ExtendedWorkflow} workflow The workflow to display
+   * @memberof MyWorkflowComponent
+   */
   selectWorkflow(workflow: ExtendedWorkflow) {
-    this.goToWorkflow(workflow);
+    this.workflowService.setWorkflow(workflow);
+    if (workflow) {
+      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+    }
   }
 
   setModalGitURL(gitURL: string) {
