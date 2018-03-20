@@ -42,6 +42,7 @@ import { Workflow } from '../../shared/swagger';
   providers: [MyWorkflowsService, ProviderService,
     DockstoreService]
 })
+
 export class MyWorkflowComponent implements OnInit {
   hasGitHubToken = true;
   orgWorkflows = [];
@@ -50,6 +51,7 @@ export class MyWorkflowComponent implements OnInit {
   user: any;
   workflows: any;
   public refreshMessage: string;
+  public orgWorkflowsObject: Array<OrgWorkflowObject>;
   constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
     private usersService: UsersService, private userService: UserService, private tokenService: TokenService,
     private workflowService: WorkflowService, private authService: AuthService, private accountsService: AccountsService,
@@ -75,44 +77,103 @@ export class MyWorkflowComponent implements OnInit {
     this.workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;
-        this.setIsFirstOpen();
+        if (workflow) {
+          this.setIsFirstOpen();
+          this.updateActiveTab();
+        }
       }
     );
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userWorkflows(user.id).subscribe(workflows => {
+        this.usersService.userWorkflows(user.id).first().subscribe(workflows => {
           this.workflowService.setWorkflows(workflows);
         });
       }
     });
     this.workflowService.workflows$.subscribe(workflows => {
-      this.workflows = workflows;
-      if (this.user) {
+      if (workflows) {
+        this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
         this.workflowService.setNsWorkflows(sortedWorkflows);
-      }
-    });
-    this.workflowService.nsWorkflows$.subscribe(nsWorkflows => {
-      this.orgWorkflows = nsWorkflows;
-      if (this.orgWorkflows && this.orgWorkflows.length > 0) {
-        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
-        const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
-        if (foundWorkflow) {
-          this.selectWorkflow(foundWorkflow);
-        } else {
-          const publishedWorkflow = this.getFirstPublishedWorkflow(this.orgWorkflows);
-          if (publishedWorkflow) {
-            this.selectWorkflow(publishedWorkflow);
+        this.orgWorkflows = sortedWorkflows;
+        if (this.orgWorkflows && this.orgWorkflows.length > 0) {
+          this.orgWorkflowsObject = this.convertNamespaceWorkflowsToOrgWorkflowsObject(sortedWorkflows);
+          const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
+          const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
+          if (foundWorkflow) {
+            this.selectWorkflow(foundWorkflow);
           } else {
-            this.selectWorkflow(theFirstWorkflow);
+            const publishedWorkflow = this.getFirstPublishedWorkflow(this.orgWorkflows);
+            if (publishedWorkflow) {
+              this.selectWorkflow(publishedWorkflow);
+            } else {
+              this.selectWorkflow(theFirstWorkflow);
+            }
           }
+        } else {
+          this.selectWorkflow(null);
         }
-      } else {
-        this.selectWorkflow(null);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+  }
+
+  /**
+   * This figures out which tab (Published/Unpublished) is active
+   * In order of priority:
+   * 1. If the selected entry is published/unpublished, the tab selected will published/unpublished to reflect it
+   * 2. If there are published entries, the published tab will be selected
+   * 3. Unpublished otherwise
+   * @private
+   * @memberof MyWorkflowComponent
+   */
+  private updateActiveTab() {
+    if (this.orgWorkflowsObject) {
+      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
+        if (this.workflow) {
+          if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+            continue;
+          }
+          if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.orgWorkflowsObject[i].activeTab = 'published';
+            continue;
+          }
+          if (this.orgWorkflowsObject[i].published.length > 0) {
+            this.orgWorkflowsObject[i].activeTab = 'published';
+          } else {
+            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+          }
+        }
+      }
+    }
+  }
+
+  private convertNamespaceWorkflowsToOrgWorkflowsObject(nsWorkflows: Array<any>) {
+    const orgWorkflowsObject: Array<OrgWorkflowObject> = [];
+    for (let i = 0; i < nsWorkflows.length; i++) {
+      const orgWorkflowObject: OrgWorkflowObject = {
+        sourceControl: '',
+        isFirstOpen: false,
+        organization: '',
+        published: [],
+        unpublished: [],
+        activeTab: 'published'
+      };
+      const nsWorkflow: Array<Workflow> = nsWorkflows[i].workflows;
+      orgWorkflowObject.isFirstOpen = nsWorkflows[i].isFirstOpen;
+      orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
+      orgWorkflowObject.organization = nsWorkflows[i].organization;
+      orgWorkflowObject.published = nsWorkflow.filter((workflow: Workflow) => {
+        return workflow.is_published;
+      });
+      orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: Workflow) => {
+        return !workflow.is_published;
+      });
+      orgWorkflowsObject.push(orgWorkflowObject);
+    }
+    return orgWorkflowsObject;
   }
 
   private getFirstPublishedWorkflow(orgWorkflows: any): Workflow {
@@ -134,27 +195,9 @@ export class MyWorkflowComponent implements OnInit {
     }
   }
 
-  /**
-   * Determines whether the given workflow is present in the list of workflows and is in the desired published state
-   * @param {boolean} published Whether we're looking for a published workflow or not
-   * @param {Array<Workflow>} workflows The current list of workflows in an organization
-   * @param {Workflow} selectedWorkflow The current selected workflow
-   * @returns Whether the workflow is present or not
-   * @memberof MyWorkflowComponent
-   */
-  public orgObjContainsWorkflow(published: boolean, workflows: Array<Workflow>, selectedWorkflow: Workflow): boolean {
-    const filteredWorkflows = workflows.filter(workflow => (workflow.is_published === published));
-    const foundWorkflow = filteredWorkflows.find(workflow => workflow.id === selectedWorkflow.id);
-    if (foundWorkflow) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
     let matchingWorkflow: ExtendedWorkflow;
-    orgWorkflows.forEach((orgWorkflow)  => {
+    orgWorkflows.forEach((orgWorkflow) => {
       orgWorkflow.workflows.forEach(workflow => {
         if (workflow.full_workflow_path === path) {
           matchingWorkflow = workflow;
@@ -165,10 +208,14 @@ export class MyWorkflowComponent implements OnInit {
   }
 
   setIsFirstOpen() {
-    if (this.orgWorkflows && this.workflow) {
-      for (const orgObj of this.orgWorkflows) {
-        if (this.containSelectedWorkflow(orgObj)) {
-          orgObj.isFirstOpen = true;
+    if (this.orgWorkflowsObject && this.workflow) {
+      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
+        if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.orgWorkflowsObject[i].isFirstOpen = true;
+          break;
+        }
+        if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.orgWorkflowsObject[i].isFirstOpen = true;
           break;
         }
       }
@@ -197,5 +244,14 @@ export class MyWorkflowComponent implements OnInit {
   refreshAllWorkflows(): any {
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
+
+}
+interface OrgWorkflowObject {
+  sourceControl: string;
+  organization: string;
+  isFirstOpen: boolean;
+  published: Array<Workflow>;
+  unpublished: Array<Workflow>;
+  activeTab: 'unpublished' | 'published';
 }
 

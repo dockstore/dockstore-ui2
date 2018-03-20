@@ -51,12 +51,12 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let orgObj of orgWorkflows" [heading]="orgObj?.sourceControl + '/' + orgObj?.organization" panelClass="no-wrap containers-accordion"
+        <accordion-group *ngFor="let orgObj of orgWorkflowsObject" [heading]="orgObj?.sourceControl + '/' + orgObj?.organization" panelClass="no-wrap containers-accordion"
           [isOpen]="orgObj?.isFirstOpen">
           <tabset [justified]="true">
-            <tab heading="Published">
-              <div *ngFor="let workflowObj of orgObj?.workflows">
-                <div *ngIf="workflowObj?.is_published" class="panel-container-label" [ngClass]="{selected: workflow.id === workflowObj.id}">
+            <tab heading="Published" [active]="orgObj.activeTab === 'published'">
+              <div *ngFor="let workflowObj of orgObj?.published">
+                <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
                   <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
                     (click)="goToWorkflow(workflowObj)">
                     {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
@@ -64,9 +64,9 @@
                 </div>
               </div>
             </tab>
-            <tab heading="Unpublished" [active]="orgObjContainsWorkflow(false, orgObj.workflows, workflow)">
-              <div *ngFor="let workflowObj of orgObj?.workflows">
-                <div *ngIf="!workflowObj?.is_published" class="panel-container-label" [ngClass]="{selected: workflow.id === workflowObj.id}">
+            <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
+              <div *ngFor="let workflowObj of orgObj?.unpublished">
+                <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
                   <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
                     (click)="goToWorkflow(workflowObj)">
                     {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
