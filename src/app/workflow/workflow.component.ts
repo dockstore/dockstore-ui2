@@ -60,10 +60,10 @@ export class WorkflowComponent extends Entry {
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
-              private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-              router: Router, private workflowService: WorkflowService,
-              stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-              private firecloudService: FireCloudService, private locationService: Location) {
+    private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
+    router: Router, private workflowService: WorkflowService,
+    stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
+    private firecloudService: FireCloudService, private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService, urlResolverService);
     this._toolType = 'workflows';
