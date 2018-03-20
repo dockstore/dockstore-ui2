@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 
+import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 import { EntryType } from './enum/entryType.enum';
 
@@ -88,6 +89,6 @@ export abstract class LaunchService {
       const outputFile = `-O Dockstore.json`;
       const encodedID = encodeURIComponent('#workflow/ ${ workflowPath) }');
       const encodedVersion = encodeURIComponent('${ versionName }');
-      return `${prefix}'   ${ Dockstore.API_URI }/api/ga4gh/v2/tools/${ encodedID }/versions/${ encodedVersion }/NXT/tests ${outputFile}`;
+      return `${prefix}'   ${ Dockstore.API_URI }${ga4ghPath}/tools/${ encodedID }/versions/${ encodedVersion }/NXT/tests ${outputFile}`;
     }
 }

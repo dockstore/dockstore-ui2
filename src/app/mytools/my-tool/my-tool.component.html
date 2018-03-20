@@ -1,0 +1,87 @@
+<!--
+  ~    Copyright 2018 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+  <app-header>
+    <img src="../assets/images/dockstore/dockstore-tools-blue.png"> My Tools
+    <div class="pull-right refresh-all-holder">
+      <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()" [disabled]="refreshMessage !== null">
+        Refresh All Tools
+      </button>
+    </div>
+  </app-header>
+  <div class="container padding-top">
+    <app-alert></app-alert>
+    <!--Msg/Warning Page, this should be a Component-->
+    <div class="row" *ngIf="nsContainers?.length == 0">
+      <div class="col-md-12">
+        <div class="alert alert-info" role="alert">
+          <p>
+            <span class="glyphicon glyphicon-info-sign"></span>
+            There are currently no tools registered under this account, to add your first tool, do one of the following:
+          </p>
+          <ul>
+            <li>
+              Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized
+              in the linking process.
+            </li>
+            <li>
+              Press the 'Add Tool' button to manually add a tool.
+            </li>
+          </ul>
+          <div *ngIf="!hasGitHubToken">
+              <a class="btn btn-block btn-social btn-github" (click)="link()">
+                <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--Tool Content Page, this should be a Component-->
+    <div class="row">
+      <div class="col-md-3 containers-rsb">
+        <accordion [closeOthers]="oneAtATime">
+          <accordion-group *ngFor="let nsObj of nsContainers" panelClass="containers-accordion" [heading]="nsObj?.namespace" [isOpen]="nsObj?.isFirstOpen">
+            <div *ngFor="let containerObj of nsObj?.containers">
+              <div class="panel-container-label" [ngClass]="{selected: tool.id === containerObj.id}">
+                <div class="container-name-oflw pull-left" title="{{containerObj.name + (containerObj?.toolname ? '/' + containerObj?.toolname : '')}}">
+                  <a style="cursor: pointer;" (click)="goToTool(containerObj)">
+                    {{containerObj.name + (containerObj.toolname ? '/' + containerObj.toolname : '')}}
+                  </a>
+                </div>
+                <div class="pull-right">
+                  <span class="label" [ngClass]="containerObj?.is_published ? 'label-primary' : 'label-warning'">
+                    {{ containerObj?.is_published ? 'PUB' : 'UNPUB'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <hr class="accordion-hr">
+            <app-refresh-tool-organization class="pull-right" [organization]="nsObj.namespace"></app-refresh-tool-organization>
+            <button type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitPathAndImgPath(nsObj?.namespace); showRegisterToolModal()">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </accordion-group>
+        </accordion>
+        <button (click)="showRegisterToolModal()" id="register_tool_button" type="button" class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
+          Add Tool
+        </button>
+        <app-register-tool></app-register-tool>
+      </div>
+      <div *ngIf="tool" class="col-md-9 containers-rsb">
+        <app-container [isToolPublic]="false"></app-container>
+      </div>
+    </div>
+  </div>
+  

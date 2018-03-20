@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ga4ghPath } from './../../shared/constants';
 import { Dockstore } from './../../shared/dockstore.model';
 import { EntryType } from './../../shared/enum/entryType.enum';
 import { LaunchService } from './../../shared/launch.service';
@@ -41,7 +42,7 @@ export class ToolLaunchService extends LaunchService {
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
     return '$ cwl-runner ' +
-      `${Dockstore.API_URI}/api/ga4gh/v2/tools/${encodeURIComponent(path)}` +
+      `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 

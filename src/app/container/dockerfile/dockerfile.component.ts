@@ -13,16 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainersService } from '../../shared/swagger';
-import {Component, Input, ElementRef, AfterViewChecked, AfterViewInit} from '@angular/core';
-import { Dockstore } from '../../shared/dockstore.model';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-import { FileService } from '../../shared/file.service';
 import { ContainerService } from '../../shared/container.service';
+import { Dockstore } from '../../shared/dockstore.model';
+import { FileService } from '../../shared/file.service';
+import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ga4ghPath } from './../../shared/constants';
 
 @Component({
   selector: 'app-dockerfile',
@@ -73,7 +72,7 @@ export class DockerfileComponent implements AfterViewChecked {
   }
 
   getDockerfilePath(): string {
-    const basepath = Dockstore.API_URI + '/api/ga4gh/v2/tools/';
+    const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
     const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedVersion.name + '/dockerfile';
     return basepath + customPath;
   }
