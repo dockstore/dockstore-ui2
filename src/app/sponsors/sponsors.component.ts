@@ -17,6 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sponsors',
@@ -27,8 +28,10 @@ import { SponsorsService } from './sponsors.service';
 export class SponsorsComponent implements OnInit {
 
   public sponsors: Sponsor[];
+  public partners: Sponsor[];
+  public showSecondRow: boolean = false;
 
-  constructor(private sponsorsService: SponsorsService) { }
+  constructor(private sponsorsService: SponsorsService, private location: Location) { }
 
   onMouseOver(sponsor: Sponsor): void {
     sponsor.setToColoured();
@@ -40,6 +43,11 @@ export class SponsorsComponent implements OnInit {
 
   ngOnInit() {
     this.sponsors = this.sponsorsService.getSponsors();
+    this.partners = this.sponsorsService.getPartners();
+    const currentPath = this.location.prepareExternalUrl(this.location.path());
+    if (currentPath === '/') {
+      this.showSecondRow = true;
+    }
   }
 
 }

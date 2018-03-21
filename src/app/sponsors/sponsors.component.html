@@ -24,5 +24,15 @@
         (mouseout)="onMouseOut(sponsor)"/>
       </a>
     </div>
+
+    <div *ngIf="showSecondRow == true">
+      <div *ngFor="let partner of partners" class="col-md-3 col-sm-6"  style="padding-bottom:30px">
+        <a href="{{partner.url}}" target="_blank">
+          <img [src]="partner.current" class="img-responsive center-image"
+          (mouseover)="onMouseOver(partner)"
+          (mouseout)="onMouseOut(partner)"/>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
