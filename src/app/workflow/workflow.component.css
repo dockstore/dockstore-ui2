@@ -22,3 +22,15 @@ pre {
   white-space: pre-wrap;
   word-break: normal;
 }
+
+.button-wrap {
+  display: inline-block;
+}
+
+.button-wrap > .button {
+    display: block;
+}
+
+.button-wrap > .button:not(:last-child) {
+  margin-bottom: 10px;
+}

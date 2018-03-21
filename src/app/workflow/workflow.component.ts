@@ -36,6 +36,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
+import { FireCloudService } from '../shared/firecloud.service';
 
 @Component({
   selector: 'app-workflow',
@@ -47,6 +48,7 @@ export class WorkflowComponent extends Entry {
   workflowEditData: any;
   dnastackURL: string;
   location: Location;
+  fireCloudURL: string;
   public workflow;
   public missingWarning: boolean;
   public title: string;
@@ -61,7 +63,7 @@ export class WorkflowComponent extends Entry {
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    private locationService: Location) {
+    private firecloudService: FireCloudService, private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService, urlResolverService);
     this._toolType = 'workflows';
@@ -102,11 +104,29 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
-    if (workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl') {
+    if (this.isWdl(workflowRef)) {
       const myParams = new URLSearchParams();
       myParams.set('path', workflowRef.full_workflow_path);
       myParams.set('descriptorType', workflowRef.descriptorType);
       this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
+    }
+  }
+
+  private isWdl(workflowRef: ExtendedWorkflow) {
+    return workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
+  }
+
+  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
+    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
+      this.fireCloudURL = null;
+      const version: WorkflowVersion = this.selectedVersion;
+      if (version && this.isWdl(workflowRef)) {
+        this.workflowsService.wdl(workflowRef.id, version.name).subscribe(sourceFile => {
+          if (sourceFile.content && sourceFile.content.length && !this.firecloudService.wdlHasImports(sourceFile.content)) {
+            this.fireCloudURL = this.firecloudService.redirectUrl(workflowRef.full_workflow_path, version.name);
+          }
+        });
+      }
     }
   }
 
@@ -124,6 +144,7 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      this.setupFireCloudUrl(this.workflow);
     }
   }
 
@@ -269,5 +290,6 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     const currentWorkflowPath = (this.router.url).split(':')[0];
     this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
+    this.setupFireCloudUrl(this.workflow);
   }
 }
