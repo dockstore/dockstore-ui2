@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router/';
+import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 import { Subject } from 'rxjs/Subject';
 
@@ -46,7 +46,6 @@ import { MyWorkflowsService } from './../myworkflows.service';
 
 export class MyWorkflowComponent implements OnInit, OnDestroy {
   hasGitHubToken = true;
-  orgWorkflows = [];
   oneAtATime = true;
   workflow: any;
   user: any;
@@ -66,6 +65,9 @@ export class MyWorkflowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    /**
+     * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons
+     */
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
@@ -97,18 +99,18 @@ export class MyWorkflowComponent implements OnInit, OnDestroy {
       if (workflows) {
         this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
-        this.orgWorkflows = sortedWorkflows;
-        if (this.orgWorkflows && this.orgWorkflows.length > 0) {
+        /* For the first initial time, set the first tool to be the selected one */
+        if (sortedWorkflows && sortedWorkflows.length > 0) {
           this.orgWorkflowsObject = this.convertNamespaceWorkflowsToOrgWorkflowsObject(sortedWorkflows);
           const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
-          const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
           if (foundWorkflow) {
             this.selectWorkflow(foundWorkflow);
           } else {
-            const publishedWorkflow = this.getFirstPublishedWorkflow(this.orgWorkflows);
+            const publishedWorkflow = this.getFirstPublishedWorkflow(sortedWorkflows);
             if (publishedWorkflow) {
               this.selectWorkflow(publishedWorkflow);
             } else {
+              const theFirstWorkflow = sortedWorkflows[0].workflows[0];
               this.selectWorkflow(theFirstWorkflow);
             }
           }

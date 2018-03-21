@@ -6,6 +6,9 @@ describe('Checker workflow test from my-workflows', function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")
     });
 
+    /**
+     * This specifically gets the 'l' workflow, not something containing the 'l', but exactly 'l'
+     */
     function getWorkflow() {
         cy.contains('github.com')
         // Apparently you need to click the accordion in order for the other components inside
