@@ -60,6 +60,9 @@ export class WorkflowComponent extends Entry {
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
   private showRedirect: boolean = false;
+  public githubPath = "github.com/";
+  public gitlabPath = "gitlab.com/";
+  public bitbucketPath = "bitbucket.org/";
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -186,10 +189,24 @@ export class WorkflowComponent extends Entry {
         }, error => {
           let regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
-            console.log("matches!");
             this.router.navigate(['../']);
           } else {
             this.showRedirect = true;
+            let splitPath = this.resourcePath.split('/');
+            let pathSuffix = "";
+            for (let i = 0; i < splitPath.length; i++) {
+              // 0 is null
+              // 1 is workflows
+              if (i > 1) {
+                pathSuffix += splitPath[i];
+                if (i != splitPath.length - 1) {
+                  pathSuffix += "/";
+                }
+              }
+            }
+            this.gitlabPath += pathSuffix;
+            this.githubPath += pathSuffix;
+            this.bitbucketPath += pathSuffix;
           }
         });
     }
