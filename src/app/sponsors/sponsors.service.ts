@@ -21,8 +21,8 @@ export class SponsorsService {
     new Sponsor('collaboratory.png', new URL('https://www.cancercollaboratory.org/')),
     new Sponsor('oicr.png', new URL('https://oicr.on.ca/')),
     new Sponsor('ga4gh.png', new URL('https://genomicsandhealth.org/')),
-    new Sponsor('ucsc.png', new URL('https://www.ucsc.edu/')),
-    new Sponsor('broad.png', new URL('https://www.broadinstitute.org/'))
+    new Sponsor('ucsc.png', new URL('https://www.ucsc.edu/'))
+    // new Sponsor('broad.png', new URL('https://www.broadinstitute.org/'))
   ];
 
   private partners: Sponsor[] = [
