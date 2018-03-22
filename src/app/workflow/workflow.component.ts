@@ -58,6 +58,8 @@ export class WorkflowComponent extends Entry {
   public selectedVersion = null;
   public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  private resourcePath: string;
+  private showRedirect: boolean = false;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -74,6 +76,8 @@ export class WorkflowComponent extends Entry {
       discourseUrl: Dockstore.DISCOURSE_URL,
       discourseEmbedUrl: decodeURIComponent(window.location.href)
     };
+
+    this.resourcePath = this.location.prepareExternalUrl(this.location.path())
   }
 
   isPublic(): boolean {
@@ -180,7 +184,13 @@ export class WorkflowComponent extends Entry {
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
         }, error => {
-          this.router.navigate(['../']);
+          let regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          if (regex.test(this.resourcePath)) {
+            console.log("matches!");
+            this.router.navigate(['../']);
+          } else {
+            this.showRedirect = true;
+          }
         });
     }
   }
