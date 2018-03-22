@@ -30,7 +30,7 @@ export class SponsorsComponent implements OnInit {
 
   public sponsors: Sponsor[];
   public partners: Sponsor[];
-  public showSecondRow: boolean = false;
+  public showSecondRow = false;
 
   constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
     router.events.subscribe((event) => {
