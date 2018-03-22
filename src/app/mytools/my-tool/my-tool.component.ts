@@ -99,7 +99,7 @@ export class MyToolComponent implements OnInit, OnDestroy {
             if (publishedWorkflow) {
               this.selectContainer(publishedWorkflow);
             } else {
-              const theFirstWorkflow = sortedContainers[0].workflows[0];
+              const theFirstWorkflow = sortedContainers[0].containers[0];
               this.selectContainer(theFirstWorkflow);
             }
           }
