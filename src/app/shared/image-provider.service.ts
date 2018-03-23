@@ -33,7 +33,7 @@ export class ImageProviderService {
   }
 
   setUpImageProvider(tool) {
-    const registry = this.getImageProvider(tool.registry_provider);
+    const registry = this.getImageProvider(tool.registry);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
@@ -94,7 +94,7 @@ export class ImageProviderService {
     if (!this.dockerRegistryList) {
       console.log('This should not be necessary');
       this.containersService.getDockerRegistries().subscribe(registryList => {
-        const dockerReg = registryList.find(x => x._enum === tool.registry_provider);
+        const dockerReg = registryList.find(x => x._enum === tool.registry);
         if (dockerReg) {
           return dockerReg.privateOnly === 'true';
         } else {
@@ -102,7 +102,7 @@ export class ImageProviderService {
         }
       });
     } else {
-    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry_provider);
+    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
     if (dockerReg) {
       return dockerReg.privateOnly === 'true';
     } else {
