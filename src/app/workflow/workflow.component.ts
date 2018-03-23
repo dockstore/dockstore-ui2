@@ -58,6 +58,11 @@ export class WorkflowComponent extends Entry {
   public selectedVersion = null;
   public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  private resourcePath: string;
+  public showRedirect = false;
+  public githubPath = 'github.com/';
+  public gitlabPath = 'gitlab.com/';
+  public bitbucketPath = 'bitbucket.org/';
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -74,6 +79,8 @@ export class WorkflowComponent extends Entry {
       discourseUrl: Dockstore.DISCOURSE_URL,
       discourseEmbedUrl: decodeURIComponent(window.location.href)
     };
+
+    this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
   isPublic(): boolean {
@@ -180,7 +187,21 @@ export class WorkflowComponent extends Entry {
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
         }, error => {
-          this.router.navigate(['../']);
+          const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          if (regex.test(this.resourcePath)) {
+            this.router.navigate(['../']);
+          } else {
+            this.showRedirect = true;
+            // Retrieve the workflow path from the URL
+            const splitPath = this.resourcePath.split('/');
+            const workflowPath = splitPath.slice(2, 5);
+            const pathSuffix = workflowPath.join('/');
+
+            // Create suggested paths
+            this.gitlabPath += pathSuffix;
+            this.githubPath += pathSuffix;
+            this.bitbucketPath += pathSuffix;
+          }
         });
     }
   }
