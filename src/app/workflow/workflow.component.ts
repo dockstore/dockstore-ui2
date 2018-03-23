@@ -194,8 +194,8 @@ export class WorkflowComponent extends Entry {
             this.showRedirect = true;
             // Retrieve the workflow path from the URL
             const splitPath = this.resourcePath.split('/');
-            const workflowPath = splitPath.slice(2,5);
-            const pathSuffix = workflowPath.join("/");
+            const workflowPath = splitPath.slice(2, 5);
+            const pathSuffix = workflowPath.join('/');
 
             // Create suggested paths
             this.gitlabPath += pathSuffix;
