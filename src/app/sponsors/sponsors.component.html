@@ -15,13 +15,26 @@
   -->
 
 <div class="container">
-  <div class="row text-center" style="padding-bottom:30px">
+  <div class="row text-center">
     <h5 style="color:#21335B">In Affiliation With</h5><br />
-    <div *ngFor="let sponsor of sponsors" class="col-md-3 col-sm-6"  style="padding-bottom:30px">
+    <!-- TODO: Will need to adjust spacing once the Broad Logo is added -->
+    <div *ngFor="let sponsor of sponsors" class="col-md-3 col-sm-6 sponsor-row">
       <a href="{{sponsor.url}}" target="_blank">
         <img [src]="sponsor.current" class="img-responsive center-image"
         (mouseover)="onMouseOver(sponsor)"
         (mouseout)="onMouseOut(sponsor)"/>
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="showSecondRow" class="row text-center">
+    <h5 style="color:#21335B">Works With</h5><br />
+    <div class="col-lg-1 col-sm-12"></div>
+    <div *ngFor="let partner of partners" class="col-md-3 col-sm-6 sponsor-row">
+      <a href="{{partner.url}}" target="_blank">
+        <img [src]="partner.current" class="img-responsive center-image"
+        (mouseover)="onMouseOver(partner)"
+        (mouseout)="onMouseOut(partner)"/>
       </a>
     </div>
   </div>
