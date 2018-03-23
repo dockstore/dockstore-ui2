@@ -27,14 +27,14 @@
   </div>
 </div>
 <div class="row" *ngIf="showRedirect">
-  <div class="col-md-10 col-md-offset-2">
+  <div class="col-md-10 col-md-offset-1">
     <h2 class="text-center">The workflow linked to could not be found!</h2>
     <p class="text-center">
       Workflows have been updated to include the Git registry in their path for identification purposes. The workflow linked to did not have
-      a valid Git registry in the path. Try the following links to find the correct workflow.
+      a valid Git registry in the path. In most cases you were looking for <strong><a href="/workflows/{{githubPath}}">{{githubPath}}</a></strong>. If not then it
+      may be one of the following.
     </p>
-    <ul class="col-md-6 col-md-offset-3">
-      <li><a href="/workflows/{{githubPath}}">{{githubPath}}</a></li>
+    <ul class="text-center list-inline">
       <li><a href="/workflows/{{bitbucketPath}}">{{bitbucketPath}}</a></li>
       <li><a href="/workflows/{{gitlabPath}}">{{gitlabPath}}</a></li>
     </ul>
