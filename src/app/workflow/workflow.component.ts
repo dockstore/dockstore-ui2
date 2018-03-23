@@ -192,18 +192,12 @@ export class WorkflowComponent extends Entry {
             this.router.navigate(['../']);
           } else {
             this.showRedirect = true;
+            // Retrieve the workflow path from the URL
             const splitPath = this.resourcePath.split('/');
-            let pathSuffix = '';
-            for (let i = 0; i < splitPath.length; i++) {
-              // 0 is null
-              // 1 is workflows
-              if (i > 1) {
-                pathSuffix += splitPath[i];
-                if (i !== splitPath.length - 1) {
-                  pathSuffix += '/';
-                }
-              }
-            }
+            const workflowPath = splitPath.slice(2,5);
+            const pathSuffix = workflowPath.join("/");
+
+            // Create suggested paths
             this.gitlabPath += pathSuffix;
             this.githubPath += pathSuffix;
             this.bitbucketPath += pathSuffix;
