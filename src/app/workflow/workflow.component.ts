@@ -59,7 +59,7 @@ export class WorkflowComponent extends Entry {
   public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
-  private showRedirect = false;
+  public showRedirect = false;
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
