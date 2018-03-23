@@ -59,10 +59,10 @@ export class WorkflowComponent extends Entry {
   public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
-  private showRedirect: boolean = false;
-  public githubPath = "github.com/";
-  public gitlabPath = "gitlab.com/";
-  public bitbucketPath = "bitbucket.org/";
+  private showRedirect = false;
+  public githubPath = 'github.com/';
+  public gitlabPath = 'gitlab.com/';
+  public bitbucketPath = 'bitbucket.org/';
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -80,7 +80,7 @@ export class WorkflowComponent extends Entry {
       discourseEmbedUrl: decodeURIComponent(window.location.href)
     };
 
-    this.resourcePath = this.location.prepareExternalUrl(this.location.path())
+    this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
   isPublic(): boolean {
@@ -187,20 +187,20 @@ export class WorkflowComponent extends Entry {
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
         }, error => {
-          let regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
             this.router.navigate(['../']);
           } else {
             this.showRedirect = true;
-            let splitPath = this.resourcePath.split('/');
-            let pathSuffix = "";
+            const splitPath = this.resourcePath.split('/');
+            let pathSuffix = '';
             for (let i = 0; i < splitPath.length; i++) {
               // 0 is null
               // 1 is workflows
               if (i > 1) {
                 pathSuffix += splitPath[i];
-                if (i != splitPath.length - 1) {
-                  pathSuffix += "/";
+                if (i !== splitPath.length - 1) {
+                  pathSuffix += '/';
                 }
               }
             }
