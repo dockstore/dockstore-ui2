@@ -17,16 +17,17 @@
 import { Sponsor } from './sponsor.model';
 
 export class SponsorsService {
+  // TODO: UCSC logo is technically different than the one linked to
   private sponsors: Sponsor[] = [
     new Sponsor('collaboratory.png', new URL('https://www.cancercollaboratory.org/')),
     new Sponsor('oicr.png', new URL('https://oicr.on.ca/')),
     new Sponsor('ga4gh.png', new URL('https://genomicsandhealth.org/')),
-    new Sponsor('ucsc.png', new URL('https://www.ucsc.edu/'))
+    new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/'))
     // new Sponsor('broad.png', new URL('https://www.broadinstitute.org/'))
   ];
 
   private partners: Sponsor[] = [
-    new Sponsor('cwl.png', new URL('http://www.commonwl.org/')),
+    new Sponsor('cwl.png', new URL('http://www.openwdl.org/')),
     new Sponsor('wdl.png', new URL('https://software.broadinstitute.org/wdl/')),
     new Sponsor('dnastack.png', new URL('https://dnastack.com/'))
   ];

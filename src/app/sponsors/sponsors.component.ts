@@ -52,9 +52,6 @@ export class SponsorsComponent implements OnInit {
     // Initialize sponsors and partners
     this.sponsors = this.sponsorsService.getSponsors();
     this.partners = this.sponsorsService.getPartners();
-
-    // Hide second row if necessary
-    this.hideSecondRow();
   }
 
   hideSecondRow() {
