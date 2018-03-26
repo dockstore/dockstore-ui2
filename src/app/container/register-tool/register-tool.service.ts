@@ -243,7 +243,7 @@ export class RegisterToolService {
             private_access: toolObj.private_access,
             tool_maintainer_email: toolObj.tool_maintainer_email
         };
-        if (normToolObj.toolname === normToolObj.name || normToolObj.toolname === null) {
+        if (normToolObj.toolname === normToolObj.name || !normToolObj.toolname) {
             delete normToolObj.toolname;
         }
         return normToolObj;
