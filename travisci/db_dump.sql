@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.11
--- Dumped by pg_dump version 9.5.11
+-- Dumped from database version 9.6.7
+-- Dumped by pg_dump version 9.6.7
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -343,10 +343,12 @@ CREATE TABLE tool (
     privateaccess boolean DEFAULT false,
     registry character varying(255) NOT NULL,
     toolmaintaineremail character varying(255),
-    toolname text NOT NULL,
+    toolname text,
     checkerid bigint,
     dbcreatedate timestamp without time zone,
-    dbupdatedate timestamp without time zone
+    dbupdatedate timestamp without time zone,
+    CONSTRAINT tool_check CHECK ((((defaultwdlpath IS NOT NULL) OR (defaultcwlpath IS NOT NULL)) AND (toolname !~~ '\_%'::text))),
+    CONSTRAINT tool_toolname_notempty CHECK ((toolname <> ''::text))
 );
 
 
@@ -449,6 +451,7 @@ CREATE TABLE workflow (
     ischecker boolean DEFAULT false,
     dbcreatedate timestamp without time zone,
     dbupdatedate timestamp without time zone,
+    CONSTRAINT workflow_check CHECK (((ischecker IS TRUE) OR ((ischecker IS FALSE) AND (workflowname !~~ '\_%'::text)))),
     CONSTRAINT workflow_workflowname_notempty CHECK ((workflowname <> ''::text))
 );
 
@@ -492,35 +495,35 @@ CREATE TABLE workflowversion (
 ALTER TABLE workflowversion OWNER TO postgres;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: enduser id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser ALTER COLUMN id SET DEFAULT nextval('enduser_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: label id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label ALTER COLUMN id SET DEFAULT nextval('label_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sourcefile id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile ALTER COLUMN id SET DEFAULT nextval('sourcefile_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: token id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token ALTER COLUMN id SET DEFAULT nextval('token_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: usergroup id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup ALTER COLUMN id SET DEFAULT nextval('usergroup_id_seq'::regclass);
@@ -613,6 +616,11 @@ INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('more-dates', 'dyuen (generated)', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-27 10:10:32.430996', 72, 'EXECUTED', '7:afe5039a4fe370bcbe3a5a47e06dfc15', 'addColumn tableName=usergroup; addColumn tableName=label; addColumn tableName=sourcefile; addColumn tableName=token; addColumn tableName=enduser; addColumn tableName=workflowversion; addColumn tableName=tag', '', NULL, '3.5.3', NULL, NULL, '9744232136');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('mutate-tool-modified-timestamp', 'dyuen', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-27 10:10:32.590327', 73, 'EXECUTED', '7:02fabf8d219a9eb9af3021adbc1ea1d1', 'sql', '', NULL, '3.5.3', NULL, NULL, '9744232136');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('mutate-workflow-modified-timestamp', 'dyuen', '../dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-02-27 10:10:32.754087', 74, 'EXECUTED', '7:3dde38db6057354c1ecdfd758a9b3dd2', 'sql', '', NULL, '3.5.3', NULL, NULL, '9744232136');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1520436537629-2', 'aduncan (generated)', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.112821', 75, 'EXECUTED', '7:f92da822adb927187555c9f054fd622b', 'addForeignKeyConstraint baseTableName=workflow, constraintName=fk_checkerid_with_workflow, referencedTableName=workflow', '', NULL, '3.5.3', NULL, NULL, '2083227088');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1520436537629-3', 'aduncan (generated)', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.128173', 76, 'EXECUTED', '7:b247682ede0cf5b6a44bb7fda57eebeb', 'addForeignKeyConstraint baseTableName=tool, constraintName=fk_checkerid_with_tool, referencedTableName=workflow', '', NULL, '3.5.3', NULL, NULL, '2083227088');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraint-for-underscore-workflow-and-tool-names', 'agduncan', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.148171', 77, 'EXECUTED', '7:ff45c59a12b61110acb018acdbbd4437', 'sql; sql; sql', '', NULL, '3.5.3', NULL, NULL, '2083227088');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_rogue_git_urls', 'dyuen', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.156562', 78, 'EXECUTED', '7:0a58187fe000b278c408feb559d32d10', 'sql', '', NULL, '3.5.3', NULL, NULL, '2083227088');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('drop-toolname-null-constraint-update-check-constraint', 'agduncan', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.171878', 79, 'EXECUTED', '7:78ea1afeb92bb869c882608d083e71fb', 'dropNotNullConstraint columnName=toolname, tableName=tool; dropDefaultValue columnName=toolname, tableName=tool; sql; sql', '', NULL, '3.5.3', NULL, NULL, '2083227088');
 
 
 --
@@ -1785,12 +1793,12 @@ SELECT pg_catalog.setval('token_id_seq', 10, true);
 -- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', false, 'quay.io', '', '', NULL, NULL, NULL);
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', false, 'quay.io', '', '', NULL, NULL, NULL);
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', false, 'quay.io', '', '', NULL, NULL, NULL);
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', false, 'quay.io', '', '', NULL, NULL, NULL);
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', false, 'quay.io', '', 'cgpmap-cramOut', NULL, NULL, NULL);
-INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'amazon.dkr.ecr.test.amazonaws.com', 'test@email.com', '', NULL, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (2, 'testuser2', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', false, 'quay.io', '', NULL, NULL, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (5, NULL, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', false, 'quay.io', '', NULL, NULL, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', false, 'quay.io', '', NULL, NULL, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', false, 'quay.io', '', NULL, NULL, NULL, NULL);
+INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'amazon.dkr.ecr.test.amazonaws.com', 'test@email.com', NULL, NULL, NULL, NULL);
 
 
 --
@@ -1928,7 +1936,7 @@ INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference
 
 
 --
--- Name: enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -1936,7 +1944,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1944,7 +1952,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
@@ -1952,7 +1960,7 @@ ALTER TABLE ONLY entry_label
 
 
 --
--- Name: label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -1960,7 +1968,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY databasechangeloglock
@@ -1968,7 +1976,7 @@ ALTER TABLE ONLY databasechangeloglock
 
 
 --
--- Name: sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sourcefile sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sourcefile
@@ -1976,7 +1984,7 @@ ALTER TABLE ONLY sourcefile
 
 
 --
--- Name: starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: starred starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY starred
@@ -1984,7 +1992,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tag
@@ -1992,7 +2000,7 @@ ALTER TABLE ONLY tag
 
 
 --
--- Name: token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY token
@@ -2000,7 +2008,7 @@ ALTER TABLE ONLY token
 
 
 --
--- Name: tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -2008,7 +2016,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2016,7 +2024,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY enduser
@@ -2024,7 +2032,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY label
@@ -2032,7 +2040,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2040,7 +2048,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2048,7 +2056,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2056,7 +2064,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool
@@ -2064,7 +2072,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -2072,7 +2080,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_entry user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY user_entry
@@ -2080,7 +2088,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usergroup
@@ -2088,7 +2096,7 @@ ALTER TABLE ONLY usergroup
 
 
 --
--- Name: version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2096,7 +2104,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow
@@ -2104,7 +2112,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2112,7 +2120,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflowversion workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflowversion
@@ -2148,7 +2156,23 @@ CREATE UNIQUE INDEX partial_workflow_name ON workflow USING btree (sourcecontrol
 
 
 --
--- Name: fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool fk_checkerid_with_tool; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tool
+    ADD CONSTRAINT fk_checkerid_with_tool FOREIGN KEY (checkerid) REFERENCES workflow(id);
+
+
+--
+-- Name: workflow fk_checkerid_with_workflow; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY workflow
+    ADD CONSTRAINT fk_checkerid_with_workflow FOREIGN KEY (checkerid) REFERENCES workflow(id);
+
+
+--
+-- Name: starred fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY starred
@@ -2156,7 +2180,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2164,7 +2188,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2172,7 +2196,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2180,7 +2204,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2188,7 +2212,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -2196,7 +2220,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2204,7 +2228,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY endusergroup
@@ -2212,21 +2236,11 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entry_label
     ADD CONSTRAINT fks71c9mk0f98015eqgtyvs0ewp FOREIGN KEY (labelid) REFERENCES label(id);
-
-
---
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
