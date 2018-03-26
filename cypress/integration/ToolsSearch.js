@@ -10,7 +10,7 @@ describe('Dockstore tool search page', function() {
       cy.get('tbody')
       .children('tr')
       .find('a')
-      .contains('a')
+      .contains(/\ba\b/)
       .should('have.attr', 'href', '/containers/quay.io/A2/a')
       .should('not.have.attr', 'href', '/containers/quay.io%20A2%20a')
       cy.get('tbody')
@@ -32,8 +32,8 @@ describe('Dockstore tool search page', function() {
       cy
         .get('tbody')
         .children('tr')
-        .first()
         .find('a')
+        .contains(/\ba\b/)
         .first()
         .click()
         .get('#tool-path')

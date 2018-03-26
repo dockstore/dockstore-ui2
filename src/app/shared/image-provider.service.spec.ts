@@ -46,17 +46,17 @@ describe('ImageProviderService', () => {
             name: '',
             namespace: '',
             private_access: false,
-            registry: 'quay.io',
-            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
+            registry_string: 'quay.io',
+            registry: DockstoreTool.RegistryEnum.QUAYIO,
             toolname: ''
         };
         expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
         const tool2 = tool;
-        tool2.registry = 'amazon.dkr.ecr.test.amazonaws.com';
-        tool2.registry_provider = DockstoreTool.RegistryProviderEnum.AMAZONECR;
-        expect(service.checkPrivateOnlyRegistry(tool)).toBeTruthy();
+        tool2.registry_string = 'amazon.dkr.ecr.test.amazonaws.com';
+        tool2.registry = DockstoreTool.RegistryEnum.AMAZONECR;
+        expect(service.checkPrivateOnlyRegistry(tool2)).toBeTruthy();
+        tool2.registry_string = null;
         tool2.registry = null;
-        tool2.registry_provider = null;
         expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
     }));
 
@@ -73,21 +73,21 @@ describe('ImageProviderService', () => {
             name: '',
             namespace: '',
             private_access: false,
-            registry: 'quay.io',
-            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
+            registry_string: 'quay.io',
+            registry: DockstoreTool.RegistryEnum.QUAYIO,
             toolname: null
         };
         expect(service.setUpImageProvider(tool).imgProvider).toEqual('Quay.io');
         const tool2: any = tool;
-        tool2.registry = 'asdf';
-        tool2.registry_provider = null;
+        tool2.registry_string = 'asdf';
+        tool2.registry = null;
         expect(service.setUpImageProvider(tool).imgProvider).toBeFalsy();
-        tool.registry = 'registry.hub.docker.com';
-        tool.registry_provider = DockstoreTool.RegistryProviderEnum.DOCKERHUB;
+        tool.registry_string = 'registry.hub.docker.com';
+        tool.registry = DockstoreTool.RegistryEnum.DOCKERHUB;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
             'https://hub.docker.com/r/dockstore-testing/dockstore-tool-bamstats');
-        tool.registry = 'gitlab.com';
-        tool.registry_provider = DockstoreTool.RegistryProviderEnum.GITLAB;
+        tool.registry_string = 'gitlab.com';
+        tool.registry = DockstoreTool.RegistryEnum.GITLAB;
         expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
             'https://gitlab.com/dockstore-testing/dockstore-tool-bamstats/container_registry');
     }));
