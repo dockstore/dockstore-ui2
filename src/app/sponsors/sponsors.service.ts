@@ -27,8 +27,8 @@ export class SponsorsService {
   ];
 
   private partners: Sponsor[] = [
-    new Sponsor('cwl.png', new URL('http://www.openwdl.org/')),
-    new Sponsor('wdl.png', new URL('https://software.broadinstitute.org/wdl/')),
+    new Sponsor('cwl.png', new URL('http://www.commonwl.org/')),
+    new Sponsor('wdl.png', new URL('http://www.openwdl.org/')),
     new Sponsor('dnastack.png', new URL('https://dnastack.com/'))
   ];
 
