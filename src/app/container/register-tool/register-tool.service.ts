@@ -232,7 +232,7 @@ export class RegisterToolService {
             name: this.getImagePath(toolObj.imagePath, 'name'),
             toolname: toolObj.toolname,
             namespace: this.getImagePath(toolObj.imagePath, 'namespace'),
-            registry: this.getToolRegistry(toolObj.irProvider, customDockerRegistryPath),
+            registry_string: this.getToolRegistry(toolObj.irProvider, customDockerRegistryPath),
             gitUrl: this.getGitUrl(toolObj.gitPath, toolObj.scrProvider),
             default_dockerfile_path: toolObj.default_dockerfile_path,
             default_cwl_path: toolObj.default_cwl_path,
@@ -243,7 +243,7 @@ export class RegisterToolService {
             private_access: toolObj.private_access,
             tool_maintainer_email: toolObj.tool_maintainer_email
         };
-        if (normToolObj.toolname === normToolObj.name || normToolObj.toolname === '') {
+        if (normToolObj.toolname === normToolObj.name || normToolObj.toolname === null) {
             delete normToolObj.toolname;
         }
         return normToolObj;
