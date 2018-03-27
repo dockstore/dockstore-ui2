@@ -26,6 +26,9 @@ export class DockstoreService {
   }
 
   getVersionVerified(versions) {
+    if (!versions) {
+      return false;
+    }
     const verifiedVersion = versions.find(version => version.verified);
     if (verifiedVersion) {
       return true;
