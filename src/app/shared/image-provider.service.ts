@@ -17,6 +17,7 @@
 import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 
 @Injectable()
 export class ImageProviderService {
@@ -32,12 +33,19 @@ export class ImageProviderService {
     }
   }
 
-  setUpImageProvider(tool) {
+  /**
+   * Returns an ExtendedDockstoreTool with the image provider url populated
+   *
+   * @param {ExtendedDockstoreTool} tool The original ExtendedDockstoreTool without the image provider url
+   * @returns {ExtendedDockstoreTool} ExtendedDockstoreTool with the image provider url
+   * @memberof ImageProviderService
+   */
+  setUpImageProvider(tool: ExtendedDockstoreTool): ExtendedDockstoreTool {
     const registry = this.getImageProvider(tool.registry);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
     }
     return tool;
   }
