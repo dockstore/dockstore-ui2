@@ -55,9 +55,9 @@ export class InfoTabComponent implements OnInit {
   }
 
   restubWorkflow() {
-    this.workflowsService.restub(this.workflow.id).subscribe(response => {
-      this.workflowService.setWorkflow(response);
-      this.workflowService.upsertWorkflowToWorkflow(this.workflow);
+    this.workflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
+      this.workflowService.setWorkflow(restubbedWorkflow);
+      this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
     });
   }
 
