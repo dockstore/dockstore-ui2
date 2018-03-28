@@ -23,7 +23,7 @@
 </app-header>
 <div class="container padding-top">
   <app-alert></app-alert>
-  <div class="row" *ngIf="orgWorkflows?.length == 0">
+  <div class="row" *ngIf="orgWorkflowsObject?.length == 0">
     <div class="col-md-12">
       <div class="alert alert-info" role="alert">
         <p>
@@ -51,22 +51,30 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let orgObj of orgWorkflows" [heading]="orgObj?.sourceControl + '/' + orgObj?.organization" panelClass="containers-accordion"
+        <accordion-group *ngFor="let orgObj of orgWorkflowsObject" [heading]="orgObj?.sourceControl + '/' + orgObj?.organization" panelClass="no-wrap containers-accordion"
           [isOpen]="orgObj?.isFirstOpen">
-          <div *ngFor="let workflowObj of orgObj?.workflows">
-            <div class="panel-container-label" [ngClass]="{selected: workflow.id === workflowObj.id}">
-              <div class="container-name-oflw pull-left" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}">
-                <a style="cursor: pointer;" (click)="goToWorkflow(workflowObj)">
-                  {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
-                </a>
+          <tabset [justified]="true">
+            <tab heading="Published" [active]="orgObj.activeTab === 'published'">
+              <div *ngFor="let workflowObj of orgObj?.published">
+                <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
+                  <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
+                    (click)="selectWorkflow(workflowObj)">
+                    {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
+                  </div>
+                </div>
               </div>
-              <div class="pull-right">
-                <span class="label" [ngClass]="workflowObj?.is_published ? 'label-primary' : 'label-warning'">
-                  {{ workflowObj?.is_published ? 'PUB' : 'UNPUB'}}
-                </span>
+            </tab>
+            <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
+              <div *ngFor="let workflowObj of orgObj?.unpublished">
+                <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
+                  <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
+                    (click)="selectWorkflow(workflowObj)">
+                    {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </tab>
+          </tabset>
           <hr class="accordion-hr">
           <app-refresh-workflow-organization class="pull-right" [organization]="orgObj?.organization"></app-refresh-workflow-organization>
           <button type="button" class="glyphicon glyphicon-plus btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitURL(orgObj?.organization + '/new_workflow'); showModal()">

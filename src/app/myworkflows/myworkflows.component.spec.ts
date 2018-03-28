@@ -100,16 +100,4 @@ describe('MyWorkflowComponent', () => {
     component.refreshAllWorkflows();
     expect(refreshService.refreshAllWorkflows).toHaveBeenCalled();
   });
-  it('should check if it contains workflows', () => {
-    component.workflow = {
-      id: 5
-    };
-    fixture.detectChanges();
-    expect(component.containSelectedWorkflow({workflows: [sampleWorkflow1, sampleWorkflow2, sampleWorkflow3]})).toBeFalsy();
-    component.workflow = {
-      id: 3
-    };
-    fixture.detectChanges();
-    expect(component.containSelectedWorkflow({workflows: [sampleWorkflow1, sampleWorkflow2, sampleWorkflow3]})).toBeTruthy();
-  });
 });

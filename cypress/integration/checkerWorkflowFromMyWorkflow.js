@@ -6,16 +6,28 @@ describe('Checker workflow test from my-workflows', function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")
     });
 
+    /**
+     * This specifically gets the 'l' workflow, not something containing the 'l', but exactly 'l'
+     */
+    function getWorkflow() {
+        cy.contains('github.com')
+        // Apparently you need to click the accordion in order for the other components inside
+        // to become click-able
+        cy
+            .get('accordion')
+            .click()
+        cy.get('accordion')
+            .contains('div .no-wrap', /\l\b/)
+            .should('be.visible')
+            .parent()
+            .should('be.visible').click()
+    }
+
 
     describe('Should be able to register and publish a checker workflow from a workflow', function() {
-        it('visit a tool and have the correct buttons and be able to register a checker workflow', function() {        
-            cy
-            .get('accordion')
-            .get('.panel')
-            .children(':nth-child(2)')
-            .contains('a', 'l')
-            .click()
-
+        it('visit a tool and have the correct buttons and be able to register a checker workflow', function() {
+            getWorkflow();
+            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('be.visible').click()
@@ -31,13 +43,7 @@ describe('Checker workflow test from my-workflows', function() {
             cy.get('#submitButton').click()
         });
         it('visit the workflow and its checker workflow and have the correct buttons', function() {
-            cy
-                .get('accordion')
-                .get('.panel')
-                .children(':nth-child(2)')
-                .contains('a', 'l')
-                .click()
-
+            getWorkflow();
             // In the parent workflow right now
             cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
             cy.get('#viewParentEntryButton').should('not.be.visible')
@@ -60,13 +66,10 @@ describe('Checker workflow test from my-workflows', function() {
             cy.get('#viewCheckerWorkflowButton').should('visible')
         })
         it('visit the workflow and have its publish/unpublish reflected in the checker workflow', function() {
-            cy
-                .get('accordion')
-                .get('.panel')
-                .children(':nth-child(2)')
-                .contains('a', 'l')
-                .click()
-
+            // The url should automatically change to include the workflow full path
+            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            getWorkflow();
+            // The url should automatically change to include the workflow full path
             // In the parent tool right now
             cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
             cy.get('#publishButton').should('be.visible').should('contain', 'Unpublish').click()
@@ -76,7 +79,7 @@ describe('Checker workflow test from my-workflows', function() {
 
             // In the checker workflow right now
             cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l/_cwl_checker')
-            cy.get('#publishButton').should('be.visible').should('contain', 'Publish')            
+            cy.get('#publishButton').should('be.visible').should('contain', 'Publish')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent tool right now
