@@ -36,6 +36,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
+import { SourceFile } from '../shared/swagger/model/sourceFile';
 
 @Component({
   selector: 'app-workflow',
@@ -127,7 +128,7 @@ export class WorkflowComponent extends Entry {
       this.fireCloudURL = null;
       const version: WorkflowVersion = this.selectedVersion;
       if (version && this.isWdl(workflowRef)) {
-        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe(sourceFiles => {
+        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
           if (!sourceFiles || sourceFiles.length === 0) {
             this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
           }
