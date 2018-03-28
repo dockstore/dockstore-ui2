@@ -19,25 +19,12 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
 import { ga4ghPath } from './../../shared/constants';
 import { EntryType } from './../../shared/enum/entryType.enum';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
   private type = 'workflow';
-  constructor(private workflowService: WorkflowService) {
+  constructor() {
     super();
-    workflowService.workflow$.subscribe((workflow: Workflow) => {
-      if (!workflow) {
-        this.type = 'workflow';
-      } else {
-        if (workflow.is_checker) {
-          this.type = 'checker';
-        } else {
-          this.type = 'workflow';
-        }
-      }
-    });
   }
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
     if (currentDescriptor === 'nextflow') {
