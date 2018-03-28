@@ -104,8 +104,6 @@ export class RegisterWorkflowModalService {
     }
 
     getDescriptorLanguageKeys(): Array<string> {
-      if (this.descriptorLanguageMap) {
-        return this.descriptorLanguageMap.map((a) => a.value);
-      }
+      return this.descriptorLanguageMap;
     }
 }
