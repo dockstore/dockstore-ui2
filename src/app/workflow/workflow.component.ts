@@ -36,7 +36,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
-import { FireCloudService } from '../shared/firecloud.service';
+import { SourceFile } from '../shared/swagger/model/sourceFile';
 
 @Component({
   selector: 'app-workflow',
@@ -68,7 +68,7 @@ export class WorkflowComponent extends Entry {
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    private firecloudService: FireCloudService, private locationService: Location) {
+    private locationService: Location) {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService, urlResolverService);
     this._toolType = 'workflows';
@@ -128,9 +128,9 @@ export class WorkflowComponent extends Entry {
       this.fireCloudURL = null;
       const version: WorkflowVersion = this.selectedVersion;
       if (version && this.isWdl(workflowRef)) {
-        this.workflowsService.wdl(workflowRef.id, version.name).subscribe(sourceFile => {
-          if (sourceFile.content && sourceFile.content.length && !this.firecloudService.wdlHasImports(sourceFile.content)) {
-            this.fireCloudURL = this.firecloudService.redirectUrl(workflowRef.full_workflow_path, version.name);
+        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
+          if (!sourceFiles || sourceFiles.length === 0) {
+            this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
           }
         });
       }

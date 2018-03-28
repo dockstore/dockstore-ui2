@@ -87,7 +87,6 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
-import { FireCloudService } from './shared/firecloud.service';
 
 @NgModule({
   declarations: [
@@ -150,7 +149,6 @@ import { FireCloudService } from './shared/firecloud.service';
     UserService,
     ListService,
     CommunicatorService,
-    FireCloudService,
     ProviderService,
     ContainerService,
     WorkflowService,
