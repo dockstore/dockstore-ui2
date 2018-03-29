@@ -79,13 +79,13 @@
     </button>
   </li>
   <li>
-    <div *ngIf="!isPublic && workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
+    <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
       <select class="form-control input-sm" (change)="save()" [(ngModel)]="workflow.descriptorType">
         <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{descriptorLanguage | lowercase}}</option>
       </select>
     </div>
-    <div *ngIf="isPublic || workflow?.mode === WorkflowType.ModeEnum.FULL">
+    <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL">
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ workflow?.descriptorType }}</div>
   </li>
 </ul>
