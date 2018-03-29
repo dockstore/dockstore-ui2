@@ -26,7 +26,7 @@ import { WorkflowService } from './../../shared/workflow.service';
 @Injectable()
 export class RegisterWorkflowModalService {
     workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-    private descriptorLanguageMap = [];
+    private descriptorLanguageMap: Array<string> = [];
     sampleWorkflow: Workflow = <Workflow>{};
     actualWorkflow: Workflow;
     private sourceControlMap = [];
@@ -104,8 +104,6 @@ export class RegisterWorkflowModalService {
     }
 
     getDescriptorLanguageKeys(): Array<string> {
-      if (this.descriptorLanguageMap) {
-        return this.descriptorLanguageMap.map((a) => a.value);
-      }
+      return this.descriptorLanguageMap;
     }
 }
