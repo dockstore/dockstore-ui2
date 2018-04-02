@@ -433,15 +433,17 @@ export class SearchComponent implements OnInit {
   }
 
   // Given a URL, will attempt to shorten it
+  // TODO: Find another method for shortening URLs
   setShortUrl(url: string) {
-    const googleUrlShortenerBase = 'https://www.googleapis.com/urlshortener/v1/url?key=';
-    const body = {'longUrl': url};
-    const req = this.http.post(googleUrlShortenerBase + Dockstore.GOOGLE_SHORTENER_KEY, body);
-
-    const sub = req.subscribe(
-      data => { this.shortUrl = data['id']; },
-      err => { this.shortUrl = url; }
-    );
+    this.shortUrl = url;
+    // const googleUrlShortenerBase = 'https://www.googleapis.com/urlshortener/v1/url?key=';
+    // const body = {'longUrl': url};
+    // const req = this.http.post(googleUrlShortenerBase + Dockstore.GOOGLE_SHORTENER_KEY, body);
+    //
+    // const sub = req.subscribe(
+    //   data => { this.shortUrl = data['id']; },
+    //   err => { this.shortUrl = url; }
+    // );
   }
 
   /**===============================================
