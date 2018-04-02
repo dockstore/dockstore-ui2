@@ -436,14 +436,6 @@ export class SearchComponent implements OnInit {
   // TODO: Find another method for shortening URLs
   setShortUrl(url: string) {
     this.shortUrl = url;
-    // const googleUrlShortenerBase = 'https://www.googleapis.com/urlshortener/v1/url?key=';
-    // const body = {'longUrl': url};
-    // const req = this.http.post(googleUrlShortenerBase + Dockstore.GOOGLE_SHORTENER_KEY, body);
-    //
-    // const sub = req.subscribe(
-    //   data => { this.shortUrl = data['id']; },
-    //   err => { this.shortUrl = url; }
-    // );
   }
 
   /**===============================================
