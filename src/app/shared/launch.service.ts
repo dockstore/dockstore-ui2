@@ -65,7 +65,7 @@ export abstract class LaunchService {
     getCheckEntry(path: string, versionName: string, entryType: EntryType) {
         if (path) {
             const entryName = path + (versionName ? ':' + versionName : '');
-            return '$ dockstore checker --entry ' + entryName + ' checkparam.json';
+            return '$ dockstore checker launch --entry ' + entryName + ' checkparam.json';
         } else {
             return '';
         }

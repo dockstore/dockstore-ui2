@@ -26,7 +26,21 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="showRedirect">
+  <div class="col-md-10 col-md-offset-1">
+    <h2 class="text-center">The workflow linked to could not be found!</h2>
+    <p class="text-center">
+      Workflows have been updated to include the Git registry in their path for identification purposes. The workflow linked to did not have
+      a valid Git registry in the path. In most cases you were looking for <strong><a href="/workflows/{{githubPath}}">{{githubPath}}</a></strong>. If not then it
+      may be one of the following.
+    </p>
+    <ul class="text-center list-inline">
+      <li><a href="/workflows/{{bitbucketPath}}">{{bitbucketPath}}</a></li>
+      <li><a href="/workflows/{{gitlabPath}}">{{gitlabPath}}</a></li>
+    </ul>
+  </div>
+</div>
+<div class="row" *ngIf="!showRedirect">
   <div class="col-md-7">
     <h3 id="workflow-path">
       <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
@@ -79,7 +93,7 @@
     </h3>
   </div>
 </div>
-<div class="row" *ngIf="!starGazersClicked">
+<div class="row" *ngIf="!starGazersClicked && !showRedirect">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
@@ -176,15 +190,20 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default" *ngIf="workflow && dnastackURL">
+    <div class="panel panel-default" *ngIf="workflow && (dnastackURL || fireCloudURL)">
       <div class="panel-heading">
         <h3>Launch with</h3>
       </div>
       <div class="panel-body">
         <div class="container-source-repos">
           <div class="container-launch-with">
-            <div class="button">
-              <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a></p>
+            <div class="button-wrap">
+              <div *ngIf="dnastackURL" class="button">
+                <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a></p>
+              </div>
+              <div *ngIf="fireCloudURL" class="button">
+                <p><a href="{{fireCloudURL}}"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud &raquo;</a></p>
+              </div>
             </div>
           </div>
         </div>

@@ -48,6 +48,7 @@ import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { FundingComponent } from './funding/funding.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
@@ -106,7 +107,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
-    MaintenanceComponent
+    MaintenanceComponent,
+    FundingComponent
 ],
   imports: [
     BrowserAnimationsModule,

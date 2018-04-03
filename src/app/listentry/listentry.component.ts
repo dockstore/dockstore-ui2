@@ -13,18 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { SearchService } from './../search/search.service';
-import { AfterViewInit, Component, Input, OnInit, ViewChild,  Output, EventEmitter} from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
-import { SearchComponent } from '../search/search.component';
+
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs/Subject';
+
 import { ListContainersService } from '../containers/list/list.service';
-import { PagenumberService } from '../shared/pagenumber.service';
-import { OnDestroy } from '@angular/core';
 import { DockstoreService } from '../shared/dockstore.service';
+import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
+import { SearchService } from './../search/search.service';
 
 @Component({
   selector: 'app-listentry',
@@ -103,11 +102,25 @@ export class ListentryComponent implements OnInit, AfterViewInit, OnDestroy {
     }).catch(error => console.log(error));
   }
 
-  getVerifiedTool(tool) {
+  /**
+   * Determines whether a DockstoreTool is considered verified
+   *
+   * @param {ExtendedDockstoreTool} tool The DockstoreTool to be looked at
+   * @returns {boolean} Whether or not the DockstoreTool is considered verified
+   * @memberof ListentryComponent
+   */
+  getVerifiedTool(tool: ExtendedDockstoreTool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
 
-  getVerifiedWorkflow(workflow) {
+  /**
+   * Determines whether a Workflow is considered verified
+   *
+   * @param {ExtendedWorkflow} workflow The Workflow to be looked at
+   * @returns {boolean} Whether or not the Workflow is considered verified
+   * @memberof ListentryComponent
+   */
+  getVerifiedWorkflow(workflow: ExtendedWorkflow): boolean {
     return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
 }

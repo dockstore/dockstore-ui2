@@ -42,6 +42,7 @@ export class DocsComponent implements OnInit {
   ];
 
   public redirectLink = this.getLink();
+
   constructor() { }
 
   ngOnInit() {

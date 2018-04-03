@@ -17,6 +17,7 @@
 import { Injectable } from '@angular/core';
 
 import { ContainersService } from './swagger';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 
 @Injectable()
 export class ImageProviderService {
@@ -32,12 +33,19 @@ export class ImageProviderService {
     }
   }
 
-  setUpImageProvider(tool) {
-    const registry = this.getImageProvider(tool.registry_provider);
+  /**
+   * Returns an ExtendedDockstoreTool with the image provider url populated
+   *
+   * @param {ExtendedDockstoreTool} tool The original ExtendedDockstoreTool without the image provider url
+   * @returns {ExtendedDockstoreTool} ExtendedDockstoreTool with the image provider url
+   * @memberof ImageProviderService
+   */
+  setUpImageProvider(tool: ExtendedDockstoreTool): ExtendedDockstoreTool {
+    const registry = this.getImageProvider(tool.registry);
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.tool_path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
     }
     return tool;
   }
@@ -94,7 +102,7 @@ export class ImageProviderService {
     if (!this.dockerRegistryList) {
       console.log('This should not be necessary');
       this.containersService.getDockerRegistries().subscribe(registryList => {
-        const dockerReg = registryList.find(x => x._enum === tool.registry_provider);
+        const dockerReg = registryList.find(x => x._enum === tool.registry);
         if (dockerReg) {
           return dockerReg.privateOnly === 'true';
         } else {
@@ -102,7 +110,7 @@ export class ImageProviderService {
         }
       });
     } else {
-    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry_provider);
+    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
     if (dockerReg) {
       return dockerReg.privateOnly === 'true';
     } else {

@@ -15,7 +15,8 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { Location } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
 import { SponsorsComponent } from './sponsors.component';
 
 describe('SponsorsComponent', () => {
@@ -24,7 +25,9 @@ describe('SponsorsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SponsorsComponent ]
+      declarations: [ SponsorsComponent ],
+      providers: [Location],
+      imports: [RouterTestingModule]
     })
     .compileComponents();
   }));

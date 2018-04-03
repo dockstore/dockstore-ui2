@@ -662,8 +662,8 @@ export class ContainersStubService {
             name: 'refreshedName',
             namespace: 'refreshedNamespace',
             private_access: false,
-            registry: 'quay.io',
-            registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
+            registry_string: 'quay.io',
+            registry: DockstoreTool.RegistryEnum.QUAYIO,
             toolname: 'refreshedToolname',
             defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
             defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'

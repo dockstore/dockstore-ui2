@@ -36,6 +36,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
+import { SourceFile } from '../shared/swagger/model/sourceFile';
 
 @Component({
   selector: 'app-workflow',
@@ -47,6 +48,7 @@ export class WorkflowComponent extends Entry {
   workflowEditData: any;
   dnastackURL: string;
   location: Location;
+  fireCloudURL: string;
   public workflow;
   public missingWarning: boolean;
   public title: string;
@@ -56,6 +58,11 @@ export class WorkflowComponent extends Entry {
   public selectedVersion = null;
   public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  private resourcePath: string;
+  public showRedirect = false;
+  public githubPath = 'github.com/';
+  public gitlabPath = 'gitlab.com/';
+  public bitbucketPath = 'bitbucket.org/';
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -72,6 +79,8 @@ export class WorkflowComponent extends Entry {
       discourseUrl: Dockstore.DISCOURSE_URL,
       discourseEmbedUrl: decodeURIComponent(window.location.href)
     };
+
+    this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
   isPublic(): boolean {
@@ -98,15 +107,33 @@ export class WorkflowComponent extends Entry {
     this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
-    workflowRef.agoMessage = this.dateService.getAgoMessage(workflowRef.last_modified);
+    workflowRef.agoMessage = this.dateService.getAgoMessage(new Date(workflowRef.last_modified_date).getTime());
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
-    if (workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl') {
+    if (this.isWdl(workflowRef)) {
       const myParams = new URLSearchParams();
       myParams.set('path', workflowRef.full_workflow_path);
       myParams.set('descriptorType', workflowRef.descriptorType);
       this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
+    }
+  }
+
+  private isWdl(workflowRef: ExtendedWorkflow) {
+    return workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
+  }
+
+  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
+    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
+      this.fireCloudURL = null;
+      const version: WorkflowVersion = this.selectedVersion;
+      if (version && this.isWdl(workflowRef)) {
+        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
+          if (!sourceFiles || sourceFiles.length === 0) {
+            this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
+          }
+        });
+      }
     }
   }
 
@@ -124,6 +151,7 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      this.setupFireCloudUrl(this.workflow);
     }
   }
 
@@ -159,7 +187,21 @@ export class WorkflowComponent extends Entry {
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
         }, error => {
-          this.router.navigate(['../']);
+          const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          if (regex.test(this.resourcePath)) {
+            this.router.navigate(['../']);
+          } else {
+            this.showRedirect = true;
+            // Retrieve the workflow path from the URL
+            const splitPath = this.resourcePath.split('/');
+            const workflowPath = splitPath.slice(2, 5);
+            const pathSuffix = workflowPath.join('/');
+
+            // Create suggested paths
+            this.gitlabPath += pathSuffix;
+            this.githubPath += pathSuffix;
+            this.bitbucketPath += pathSuffix;
+          }
         });
     }
   }
@@ -269,5 +311,6 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     const currentWorkflowPath = (this.router.url).split(':')[0];
     this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
+    this.setupFireCloudUrl(this.workflow);
   }
 }

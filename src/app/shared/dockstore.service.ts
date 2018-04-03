@@ -13,8 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Injectable } from '@angular/core';
+
+import { Tag, WorkflowVersion } from './swagger';
 
 @Injectable()
 export class DockstoreService {
@@ -25,7 +26,17 @@ export class DockstoreService {
     return versions.filter(version => version.valid);
   }
 
-  getVersionVerified(versions) {
+  /**
+   * Determines whether any of the versions of the entry are verified
+   *
+   * @param {(Array<WorkflowVersion|Tag>)} versions  an entry's versions
+   * @returns {boolean} Whether or not one of the versions are verified
+   * @memberof DockstoreService
+   */
+  getVersionVerified(versions: Array<WorkflowVersion|Tag>): boolean {
+    if (!versions) {
+      return false;
+    }
     const verifiedVersion = versions.find(version => version.verified);
     if (verifiedVersion) {
       return true;

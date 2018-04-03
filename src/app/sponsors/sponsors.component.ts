@@ -17,6 +17,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
+import { Location } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-sponsors',
@@ -27,8 +29,16 @@ import { SponsorsService } from './sponsors.service';
 export class SponsorsComponent implements OnInit {
 
   public sponsors: Sponsor[];
+  public partners: Sponsor[];
+  public showSecondRow = false;
 
-  constructor(private sponsorsService: SponsorsService) { }
+  constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
+    router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.hideSecondRow();
+      }
+    });
+  }
 
   onMouseOver(sponsor: Sponsor): void {
     sponsor.setToColoured();
@@ -39,7 +49,19 @@ export class SponsorsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Initialize sponsors and partners
     this.sponsors = this.sponsorsService.getSponsors();
+    this.partners = this.sponsorsService.getPartners();
+  }
+
+  hideSecondRow() {
+    // Hide the second row if not on the home page
+    const currentPath = this.location.prepareExternalUrl(this.location.path());
+    if (currentPath === '/') {
+      this.showSecondRow = true;
+    } else {
+      this.showSecondRow = false;
+    }
   }
 
 }

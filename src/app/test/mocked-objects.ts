@@ -84,8 +84,8 @@ export const sampleTool1: DockstoreTool = {
     name: 'sampleName',
     namespace: 'sampleNamespace',
     private_access: false,
-    registry: 'quay.io',
-    registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
+    registry_string: 'quay.io',
+    registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
@@ -101,8 +101,8 @@ export const sampleTool2: DockstoreTool = {
     name: 'sampleName',
     namespace: 'sampleNamespace',
     private_access: false,
-    registry: 'quay.io',
-    registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
+    registry_string: 'quay.io',
+    registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
@@ -118,8 +118,8 @@ export const sampleTool3: DockstoreTool = {
     name: 'sampleName',
     namespace: 'sampleNamespace',
     private_access: false,
-    registry: 'quay.io',
-    registry_provider: DockstoreTool.RegistryProviderEnum.QUAYIO,
+    registry_string: 'quay.io',
+    registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'

@@ -87,7 +87,7 @@
         <span *ngIf="getVerifiedWorkflow(hit?._source)">
             <a style="text-decoration: none" tooltip="Verified" class="glyphicon glyphicon-ok"></a>
         </span>
-        <a (click)="sendToolInfo(hit?._source)" [routerLink]="('/workflows/' + hit?._source.path )">
+        <a (click)="sendToolInfo(hit?._source)" [routerLink]="('/workflows/' + hit?._source.full_workflow_path )">
           {{ hit?._source.repository + (hit?._source.workflowName ? '/' + hit?._source.workflowName : '') }}
         </a>
       </td>
