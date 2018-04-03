@@ -62,19 +62,24 @@ describe('Checker workflow test from my-tools', function() {
             // Didn't change the tool path upon entry or select
             // cy.url().should('eq', 'http://localhost:4200/my-tools/quay.io/A2/b3')
             cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click()
+            cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
-
+            
             // In the checker workflow right now
+            cy.get('#workflow-path').should('contain', '_checker')
             cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A2/b3/_cwl_checker')
             cy.get('#publishButton').should('be.visible').should('contain', 'Publish')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent tool right now            
+            cy.get('#tool-path').should('not.contain', '_checker')
             cy.url().should('eq', 'http://localhost:4200/my-tools/quay.io/A2/b3')
             cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish').click()
+            cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // in the checker workflow right now
+            cy.get('#workflow-path').should('contain', '_checker')
             cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A2/b3/_cwl_checker')
             cy.get('#publishButton').should('be.visible').should('contain', 'Unpublish')
         })

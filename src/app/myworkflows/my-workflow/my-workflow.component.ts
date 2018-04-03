@@ -70,8 +70,10 @@ export class MyWorkflowComponent implements OnInit, OnDestroy {
      */
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
-        this.selectWorkflow(foundWorkflow);
+        if (this.orgWorkflowsObject) {
+          const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
+          this.selectWorkflow(foundWorkflow);
+        }
       }
     });
     localStorage.setItem('page', '/my-workflows');
