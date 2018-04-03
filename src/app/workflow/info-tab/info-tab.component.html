@@ -89,7 +89,7 @@
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ workflow?.descriptorType }}</div>
   </li>
 </ul>
-<div *ngIf="workflow">
+<div *ngIf="workflow && workflow?.mode === WorkflowType.ModeEnum.FULL">
   <div *ngIf="workflow?.description || !isPublic">
     <label tooltip="Description of workflow obtained from workflow descriptor">
       Description
