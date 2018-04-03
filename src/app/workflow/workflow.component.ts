@@ -16,7 +16,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DateService } from '../shared/date.service';
@@ -44,10 +44,8 @@ import { SourceFile } from '../shared/swagger/model/sourceFile';
   styleUrls: ['./workflow.component.css']
 })
 export class WorkflowComponent extends Entry {
-  mode: string;
   workflowEditData: any;
   dnastackURL: string;
-  location: Location;
   fireCloudURL: string;
   public workflow;
   public missingWarning: boolean;
@@ -68,11 +66,11 @@ export class WorkflowComponent extends Entry {
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    private locationService: Location) {
+    location: Location, activatedRoute: ActivatedRoute) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService);
+      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'workflows';
-    this.location = locationService;
+    this.location = location;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -210,14 +208,6 @@ export class WorkflowComponent extends Entry {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  setTab(tab: string) {
-    this.mode = tab;
-  }
-
-  checkMode(tab: string) {
-    return (tab === this.mode);
-  }
-
   publishDisable() {
     return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB;
   }
@@ -312,5 +302,11 @@ export class WorkflowComponent extends Entry {
     const currentWorkflowPath = (this.router.url).split(':')[0];
     this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
     this.setupFireCloudUrl(this.workflow);
+  }
+
+  setTabParameter(tabName: string): void {
+    const currentPath = (this.router.url).split(':')[0];
+    console.log(currentPath);
+    this.location.go(currentPath + ':' + this.selectedVersion.name + '?tab=' + tabName);
   }
 }

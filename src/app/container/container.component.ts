@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ListContainersService } from '../containers/list/list.service';
@@ -48,7 +48,6 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
-  location: Location;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
@@ -75,11 +74,11 @@ export class ContainerComponent extends Entry {
     private containerService: ContainerService,
     stateService: StateService,
     errorService: ErrorService,
-    private locationService: Location) {
+    location: Location,
+    activatedRoute: ActivatedRoute) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService);
+      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
-    this.location = locationService;
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
@@ -284,6 +283,18 @@ export class ContainerComponent extends Entry {
     const currentToolPath = (this.router.url).split(':')[0];
     this.location.go(currentToolPath + ':' + this.selectedVersion.name);
     this.onTagChange(tag);
+  }
+
+  setTabParameter(tabName: string): void {
+    const currentPath = (this.router.url).split(':')[0];
+    console.log(this.selectedVersion);
+    console.log(currentPath);
+    let newPath = currentPath;
+    if (this.selectedVersion !== null) {
+      newPath += ':' + this.selectedVersion.name;
+    }
+    newPath += '?tab=' + tabName
+    this.location.go(newPath);
   }
 
 }

@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router/';
+import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
+import { Location } from '@angular/common';
 
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
@@ -47,6 +48,8 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   private loginSubscription: Subscription;
   public error;
   private routerSubscription: Subscription;
+  public validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
+  location: Location;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
@@ -54,7 +57,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     public providerService: ProviderService,
     public router: Router,
     private stateService: StateService,
-    private errorService: ErrorService, public dateService: DateService, public urlResolverService: UrlResolverService) {
+    private errorService: ErrorService,
+    public dateService: DateService,
+    public urlResolverService: UrlResolverService,
+    public activatedRoute: ActivatedRoute,
+    public locationService: Location) {
+      this.location = locationService;
   }
 
   ngOnInit() {
@@ -151,6 +159,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
       })();
     }
+
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+        let tab = this.validTabs.indexOf(params['tab']);
+        this.selectTab(tab > -1 ? tab : 0);
+      });
   }
 
   public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
@@ -196,6 +209,13 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   selectTab(tabIndex: number): void {
     this.entryTabs.tabs[tabIndex].active = true;
   }
+
+  /**
+   * Updates the URL to include the tab
+   * @param {number} tabIndex - index of tab to select
+   * @returns {void}
+   */
+  abstract setTabParameter(tabName: string): void;
 
   /**
    * Sorts two entries by last modified, and then verified
