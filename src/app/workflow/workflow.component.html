@@ -135,25 +135,37 @@
         </form>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setTabParameter('versions')">
-        <div *ngIf="validVersions">
+        <div *ngIf="validVersions && !isStub()">
           <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
           </app-versions-workflow>
         </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see versions, please refresh the workflow.
+        </div>
       </tab>
       <tab id="fileTab" heading="Files" (select)="setTabParameter('files')">
-        <div *ngIf="validVersions">
+        <div *ngIf="validVersions && !isStub()">
           <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
           </app-files-workflow>
         </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.
+        </div>
       </tab>
       <tab id="toolsTab"  heading="Tools" (select)="setTabParameter('tools')">
-        <div *ngIf="validVersions">
+        <div *ngIf="validVersions && !isStub()">
           <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
+        </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
         </div>
       </tab>
       <tab id="dagTab" heading="DAG" (select)="setTabParameter('dag')">
-        <div *ngIf="validVersions">
+        <div *ngIf="validVersions && !isStub()">
           <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
+        </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
         </div>
       </tab>
     </tabset>

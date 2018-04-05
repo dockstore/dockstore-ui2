@@ -289,12 +289,17 @@ export class ContainerComponent extends Entry {
   }
 
   updateUrl(): void {
-    let currentPath = '/containers/' + this.tool.path;
+    let currentPath = '';
+    if (this.router.url.indexOf('my-tools') != -1) {
+      currentPath += '/my-tools/';
+    } else {
+      currentPath += '/containers/';
+    }
+    currentPath += this.tool.path;
     if (this.selectedVersion != null) {
       currentPath += ':' + this.selectedVersion.name;
     }
     currentPath += '?tab=' + this.currentTab;
-    console.log(currentPath);
     this.location.go(currentPath);
   }
 

@@ -308,12 +308,17 @@ export class WorkflowComponent extends Entry {
   }
 
   updateUrl(): void {
-    let currentPath = '/workflows/' + this.workflow.path;
+    let currentPath = '';
+    if (this.router.url.indexOf('my-workflows') != -1) {
+      currentPath += '/my-workflows/';
+    } else {
+      currentPath += '/workflows/';
+    }
+    currentPath += this.workflow.path;
     if (this.selectedVersion != null) {
       currentPath += ':' + this.selectedVersion.name;
     }
     currentPath += '?tab=' + this.currentTab;
-    console.log(currentPath);
     this.location.go(currentPath);
   }
 
