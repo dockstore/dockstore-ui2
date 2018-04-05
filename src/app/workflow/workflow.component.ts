@@ -308,13 +308,13 @@ export class WorkflowComponent extends Entry {
   updateUrl(): void {
     if (this.publicPage) {
       let currentPath = '';
-      if (this.router.url.indexOf('my-workflows') != -1) {
+      if (this.router.url.indexOf('my-workflows') !== -1) {
         currentPath += '/my-workflows/';
       } else {
         currentPath += '/workflows/';
       }
       currentPath += this.workflow.path;
-      if (this.selectedVersion != null) {
+      if (this.selectedVersion !== null) {
         currentPath += ':' + this.selectedVersion.name;
       }
       currentPath += '?tab=' + this.currentTab;

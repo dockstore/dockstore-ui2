@@ -289,13 +289,13 @@ export class ContainerComponent extends Entry {
   updateUrl(): void {
     if (this.publicPage) {
       let currentPath = '';
-      if (this.router.url.indexOf('my-tools') != -1) {
+      if (this.router.url.indexOf('my-tools') !== -1) {
         currentPath += '/my-tools/';
       } else {
         currentPath += '/containers/';
       }
       currentPath += this.tool.path;
-      if (this.selectedVersion != null) {
+      if (this.selectedVersion !== null) {
         currentPath += ':' + this.selectedVersion.name;
       }
       currentPath += '?tab=' + this.currentTab;

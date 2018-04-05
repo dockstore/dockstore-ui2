@@ -165,7 +165,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      let tabIndex = this.validTabs.indexOf(params['tab']);
+      const tabIndex = this.validTabs.indexOf(params['tab']);
       if (tabIndex > -1) {
         this.currentTab = this.validTabs[tabIndex];
       }
