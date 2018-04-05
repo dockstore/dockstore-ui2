@@ -48,8 +48,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   private loginSubscription: Subscription;
   public error;
   private routerSubscription: Subscription;
-  public validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
+  public validTabs;
   public currentTab = 'info';
+  public urlVersion;
   location: Location;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
@@ -83,6 +84,8 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   private parseURL(url: String): void {
     if (this.isPublic()) {
+      this.title = this.getEntryPathFromURL();
+      this.urlVersion = this.getVersionFromURL();
       this.setupPublicEntry(url);
     }
   }
@@ -162,11 +165,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-        let tabIndex = this.validTabs.indexOf(params['tab']);
-        if (tabIndex > -1) {
-          this.currentTab = this.validTabs[tabIndex];
-        }
-      });
+      let tabIndex = this.validTabs.indexOf(params['tab']);
+      if (tabIndex > -1) {
+        this.currentTab = this.validTabs[tabIndex];
+      }
+    });
   }
 
   public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
@@ -204,6 +207,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     return this.urlResolverService.getEntryPathFromUrl();
   }
 
+  public getVersionFromURL(): string {
+    return this.urlResolverService.getVersionFromURL();
+  }
+
   /**
    * Selects a tab of index tabIndex
    * @param {number} tabIndex - index of tab to select
@@ -214,7 +221,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Updates the URL to include the tab
+   * Updates the URL to include the tab and sets the tab
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */

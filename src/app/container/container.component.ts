@@ -56,8 +56,8 @@ export class ContainerComponent extends Entry {
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
   public selectedVersion = null;
-  public urlTag = null;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  validTabs = ['info', 'labels', 'versions', 'files'];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     urlResolverService: UrlResolverService,
@@ -134,12 +134,8 @@ export class ContainerComponent extends Entry {
           if (this.tool.tags.length === 0) {
             this.selectedVersion = null;
           } else {
-            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
           }
-
-          // Set the active tab
-          this.selectTab(this.validTabs.indexOf(this.currentTab));
-          this.updateUrl();
         }
         // Select version
         this.setUpTool(tool);
@@ -176,14 +172,16 @@ export class ContainerComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('containers') || url.includes('tools')) {
-      this.title = this.getEntryPathFromURL();
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title)
         .subscribe(tool => {
           this.containerService.setTool(tool);
-          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
 
+          // Set the active tab
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          this.updateUrl();
         }, error => {
           this.router.navigate(['../']);
         });
@@ -289,18 +287,20 @@ export class ContainerComponent extends Entry {
   }
 
   updateUrl(): void {
-    let currentPath = '';
-    if (this.router.url.indexOf('my-tools') != -1) {
-      currentPath += '/my-tools/';
-    } else {
-      currentPath += '/containers/';
+    if (this.publicPage) {
+      let currentPath = '';
+      if (this.router.url.indexOf('my-tools') != -1) {
+        currentPath += '/my-tools/';
+      } else {
+        currentPath += '/containers/';
+      }
+      currentPath += this.tool.path;
+      if (this.selectedVersion != null) {
+        currentPath += ':' + this.selectedVersion.name;
+      }
+      currentPath += '?tab=' + this.currentTab;
+      this.location.go(currentPath);
     }
-    currentPath += this.tool.path;
-    if (this.selectedVersion != null) {
-      currentPath += ':' + this.selectedVersion.name;
-    }
-    currentPath += '?tab=' + this.currentTab;
-    this.location.go(currentPath);
   }
 
   setTabParameter(tabName: string): void {

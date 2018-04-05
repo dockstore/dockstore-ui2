@@ -27,6 +27,20 @@ export class UrlResolverService {
         return title;
     }
 
+    public getVersionFromURL(): string {
+      const url = this.router.url;
+      // Remove query params
+      const splitUrlByQueryParams = url.split('?');
+      const path = splitUrlByQueryParams[0];
+
+      const splitPathByVersion = path.split(':');
+      if (splitPathByVersion.length === 2) {
+        return splitPathByVersion[1];
+      } else {
+        return null;
+      }
+    }
+
     private isEncoded(uri: string): boolean {
         if (uri) {
             return uri !== decodeURIComponent(uri);

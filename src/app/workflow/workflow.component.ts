@@ -54,13 +54,13 @@ export class WorkflowComponent extends Entry {
   private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;
   public selectedVersion = null;
-  public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
+  validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -174,8 +174,6 @@ export class WorkflowComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('workflows')) {
-      this.title = this.getEntryPathFromURL();
-
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.workflowsService.getPublishedWorkflowByPath(this.title)
@@ -308,18 +306,20 @@ export class WorkflowComponent extends Entry {
   }
 
   updateUrl(): void {
-    let currentPath = '';
-    if (this.router.url.indexOf('my-workflows') != -1) {
-      currentPath += '/my-workflows/';
-    } else {
-      currentPath += '/workflows/';
+    if (this.publicPage) {
+      let currentPath = '';
+      if (this.router.url.indexOf('my-workflows') != -1) {
+        currentPath += '/my-workflows/';
+      } else {
+        currentPath += '/workflows/';
+      }
+      currentPath += this.workflow.path;
+      if (this.selectedVersion != null) {
+        currentPath += ':' + this.selectedVersion.name;
+      }
+      currentPath += '?tab=' + this.currentTab;
+      this.location.go(currentPath);
     }
-    currentPath += this.workflow.path;
-    if (this.selectedVersion != null) {
-      currentPath += ':' + this.selectedVersion.name;
-    }
-    currentPath += '?tab=' + this.currentTab;
-    this.location.go(currentPath);
   }
 
   setTabParameter(tabName: string): void {
