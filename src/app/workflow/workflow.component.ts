@@ -184,6 +184,10 @@ export class WorkflowComponent extends Entry {
 
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
+
+          // Set the active tab
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          this.updateUrl();
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -299,14 +303,22 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
-    const currentWorkflowPath = (this.router.url).split(':')[0];
-    this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
+    this.updateUrl();
     this.setupFireCloudUrl(this.workflow);
   }
 
-  setTabParameter(tabName: string): void {
-    const currentPath = (this.router.url).split(':')[0];
+  updateUrl(): void {
+    let currentPath = '/workflows/' + this.workflow.path;
+    if (this.selectedVersion != null) {
+      currentPath += ':' + this.selectedVersion.name;
+    }
+    currentPath += '?tab=' + this.currentTab;
     console.log(currentPath);
-    this.location.go(currentPath + ':' + this.selectedVersion.name + '?tab=' + tabName);
+    this.location.go(currentPath);
+  }
+
+  setTabParameter(tabName: string): void {
+    this.currentTab = tabName;
+    this.updateUrl();
   }
 }

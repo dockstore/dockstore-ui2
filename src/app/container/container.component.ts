@@ -136,6 +136,10 @@ export class ContainerComponent extends Entry {
           } else {
             this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
           }
+
+          // Set the active tab
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          this.updateUrl();
         }
         // Select version
         this.setUpTool(tool);
@@ -280,21 +284,23 @@ export class ContainerComponent extends Entry {
    */
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
-    const currentToolPath = (this.router.url).split(':')[0];
-    this.location.go(currentToolPath + ':' + this.selectedVersion.name);
+    this.updateUrl();
     this.onTagChange(tag);
   }
 
-  setTabParameter(tabName: string): void {
-    const currentPath = (this.router.url).split(':')[0];
-    console.log(this.selectedVersion);
-    console.log(currentPath);
-    let newPath = currentPath;
-    if (this.selectedVersion !== null) {
-      newPath += ':' + this.selectedVersion.name;
+  updateUrl(): void {
+    let currentPath = '/containers/' + this.tool.path;
+    if (this.selectedVersion != null) {
+      currentPath += ':' + this.selectedVersion.name;
     }
-    newPath += '?tab=' + tabName
-    this.location.go(newPath);
+    currentPath += '?tab=' + this.currentTab;
+    console.log(currentPath);
+    this.location.go(currentPath);
+  }
+
+  setTabParameter(tabName: string): void {
+    this.currentTab = tabName;
+    this.updateUrl();
   }
 
 }

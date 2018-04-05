@@ -49,6 +49,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public error;
   private routerSubscription: Subscription;
   public validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
+  public currentTab = 'info';
   location: Location;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
@@ -161,8 +162,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-        let tab = this.validTabs.indexOf(params['tab']);
-        this.selectTab(tab > -1 ? tab : 0);
+        let tabIndex = this.validTabs.indexOf(params['tab']);
+        if (tabIndex > -1) {
+          this.currentTab = this.validTabs[tabIndex];
+        }
       });
   }
 
@@ -216,6 +219,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @returns {void}
    */
   abstract setTabParameter(tabName: string): void;
+
+  /**
+   * Updates the URL with both tab and version information
+   * @returns {void}
+   */
+  abstract updateUrl(): void;
 
   /**
    * Sorts two entries by last modified, and then verified
