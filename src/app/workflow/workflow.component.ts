@@ -183,7 +183,6 @@ export class WorkflowComponent extends Entry {
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
 
-          // Set the active tab
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           this.updateUrl();
         }, error => {
@@ -320,10 +319,5 @@ export class WorkflowComponent extends Entry {
       currentPath += '?tab=' + this.currentTab;
       this.location.go(currentPath);
     }
-  }
-
-  setTabParameter(tabName: string): void {
-    this.currentTab = tabName;
-    this.updateUrl();
   }
 }

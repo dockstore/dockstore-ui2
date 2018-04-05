@@ -179,7 +179,6 @@ export class ContainerComponent extends Entry {
           this.containerService.setTool(tool);
           this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
 
-          // Set the active tab
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           this.updateUrl();
         }, error => {
@@ -301,11 +300,6 @@ export class ContainerComponent extends Entry {
       currentPath += '?tab=' + this.currentTab;
       this.location.go(currentPath);
     }
-  }
-
-  setTabParameter(tabName: string): void {
-    this.currentTab = tabName;
-    this.updateUrl();
   }
 
 }

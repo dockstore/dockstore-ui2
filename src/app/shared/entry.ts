@@ -225,7 +225,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */
-  abstract setTabParameter(tabName: string): void;
+   setTabParameter(tabName: string): void {
+     this.currentTab = tabName;
+     this.updateUrl();
+   }
 
   /**
    * Updates the URL with both tab and version information
