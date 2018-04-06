@@ -82,9 +82,9 @@ export class ContainerComponent extends Entry {
     this.location = locationService;
 
     let trimmedURL = window.location.href;
-    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf("containers"));
+    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('containers'));
     if (indexOfLastColon > 0) {
-      trimmedURL = window.location.href.substring(0, indexOfLastColon)
+      trimmedURL = window.location.href.substring(0, indexOfLastColon);
     }
 
     // Initialize discourse urls
