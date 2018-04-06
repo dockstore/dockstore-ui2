@@ -161,7 +161,7 @@
         </div>
       </tab>
       <tab id="dagTab" heading="DAG" (select)="setEntryTab('dag')">
-        <div *ngIf="validVersions && !isStub()">
+        <div *ngIf="validVersions && !isStub() && currentTab == 'dag'">
           <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
