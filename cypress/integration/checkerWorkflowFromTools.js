@@ -17,14 +17,14 @@ describe('Checker workflow test from tools', function() {
                 .should('have.attr', 'href', '/containers/quay.io/A2/b3').click()
 
             // In the parent tool right now
-            cy.url().should('eq', 'http://localhost:4200/containers/quay.io/A2/b3:latest?tab=info')
+            cy.url().should('eq', 'http://localhost:4200/containers/quay.io/A2/b3?tab=info')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('be.visible')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', 'http://localhost:4200/workflows/github.com/A2/b3/_cwl_checker:latest?tab=info')
+            cy.url().should('eq', 'http://localhost:4200/workflows/github.com/A2/b3/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
@@ -32,7 +32,7 @@ describe('Checker workflow test from tools', function() {
 
             // In the parent tool right now
             // Accidentically allow the uri "tools" to work
-            cy.url().should('eq', 'http://localhost:4200/tools/quay.io/A2/b3:latest?tab=info')
+            cy.url().should('eq', 'http://localhost:4200/tools/quay.io/A2/b3?tab=info')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('be.visible')
