@@ -1,4 +1,4 @@
-<li *ngIf="(checkerWorkflow$ | async) || (!(checkerWorkflow$ | async) && !(hasParentEntry$ | async) && !(isStub$ | async))">
+<li *ngIf="(checkerWorkflow$ | async) || (!(checkerWorkflow$ | async) && !(hasParentEntry$ | async) && !(isStub$ | async)) && !(isPublic$ | async)">
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group">
       <strong tooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
