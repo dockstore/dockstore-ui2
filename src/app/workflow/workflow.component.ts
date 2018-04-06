@@ -312,7 +312,7 @@ export class WorkflowComponent extends Entry {
       } else {
         currentPath += '/workflows/';
       }
-      currentPath += this.workflow.path;
+      currentPath += this.workflow.full_workflow_path;
       if (this.selectedVersion !== null) {
         currentPath += ':' + this.selectedVersion.name;
       }

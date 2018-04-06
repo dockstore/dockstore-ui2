@@ -293,7 +293,7 @@ export class ContainerComponent extends Entry {
       } else {
         currentPath += '/containers/';
       }
-      currentPath += this.tool.path;
+      currentPath += this.tool.tool_path;
       if (this.selectedVersion !== null) {
         currentPath += ':' + this.selectedVersion.name;
       }
