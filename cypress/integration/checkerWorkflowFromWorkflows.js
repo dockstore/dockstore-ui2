@@ -19,7 +19,7 @@ describe('Checker workflow test from workflows', function() {
                 .should('have.attr', 'href', '/workflows/github.com/A/l/_cwl_checker').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker:master?tab=info')
+            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
