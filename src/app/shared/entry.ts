@@ -212,7 +212,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Selects a tab of index tabIndex
+   * Selects a tab of index tabIndex (like clicking on a tab)
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */
@@ -225,7 +225,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */
-   setTabParameter(tabName: string): void {
+   setEntryTab(tabName: string): void {
      this.currentTab = tabName;
      this.updateUrl();
    }

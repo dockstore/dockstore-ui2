@@ -96,12 +96,12 @@
 <div class="row" *ngIf="!starGazersClicked && !showRedirect">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
-      <tab id="infoTab" heading="Info" id="infoTab" (select)="setTabParameter('info')">
+      <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
-      <tab id="labelsTab" heading="Labels" (select)="setTabParameter('labels')">
+      <tab id="labelsTab" heading="Labels" (select)="setEntryTab('labels')">
         <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
@@ -134,7 +134,7 @@
           </div>
         </form>
       </tab>
-      <tab id="versionsTab" heading="Versions" (select)="setTabParameter('versions')">
+      <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">
           <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
           </app-versions-workflow>
@@ -143,7 +143,7 @@
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see versions, please refresh the workflow.
         </div>
       </tab>
-      <tab id="fileTab" heading="Files" (select)="setTabParameter('files')">
+      <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions && !isStub()">
           <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
           </app-files-workflow>
@@ -152,7 +152,7 @@
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.
         </div>
       </tab>
-      <tab id="toolsTab"  heading="Tools" (select)="setTabParameter('tools')">
+      <tab id="toolsTab"  heading="Tools" (select)="setEntryTab('tools')">
         <div *ngIf="validVersions && !isStub()">
           <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
         </div>
@@ -160,7 +160,7 @@
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
         </div>
       </tab>
-      <tab id="dagTab" heading="DAG" (select)="setTabParameter('dag')">
+      <tab id="dagTab" heading="DAG" (select)="setEntryTab('dag')">
         <div *ngIf="validVersions && !isStub()">
           <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
         </div>
