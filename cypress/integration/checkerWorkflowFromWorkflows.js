@@ -19,21 +19,21 @@ describe('Checker workflow test from workflows', function() {
                 .should('have.attr', 'href', '/workflows/github.com/A/l/_cwl_checker').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', 'http://localhost:4200/workflows/github.com/A/l/_cwl_checker:master?tab=info')
+            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker:master?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent workflow right now
-            cy.url().should('eq', 'http://localhost:4200/workflows/github.com/A/l:master?tab=info')
+            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('be.visible')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', 'http://localhost:4200/workflows/github.com/A/l/_cwl_checker:master?tab=info')
+            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker:master?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
