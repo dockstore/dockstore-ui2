@@ -106,7 +106,7 @@ export class SearchResultsComponent implements OnInit {
           count--;
         }
       );
-    });
+    }).catch(error => console.log(error));
   }
 
   // Tells the search service to tell the search filters to save its data
