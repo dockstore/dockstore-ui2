@@ -22,7 +22,7 @@ export class ToolLaunchService extends LaunchService {
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
     let descriptor = '';
 
-    if (currentDescriptor === 'wdl') {
+    if (currentDescriptor === 'WDL') {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
@@ -32,8 +32,7 @@ export class ToolLaunchService extends LaunchService {
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
     let descriptor = '';
-
-    if (currentDescriptor === 'wdl') {
+    if (currentDescriptor === 'WDL') {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 

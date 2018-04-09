@@ -28,13 +28,13 @@ describe('ToolLaunchService', () => {
         expect(service).toBeTruthy();
     }));
     it('should getParamsString', inject([ToolLaunchService], (service: ToolLaunchService) => {
-        expect(service.getParamsString('quay.io/a/b', 'latest', 'wdl'))
+        expect(service.getParamsString('quay.io/a/b', 'latest', 'WDL'))
             .toContain('$ dockstore tool convert entry2json --descriptor wdl --entry quay.io/a/b:latest > Dockstore.json');
     }));
     it('should getCliString', inject([ToolLaunchService], (service: ToolLaunchService) => {
-        expect(service.getCliString('a/b', 'latest', 'cwl'))
+        expect(service.getCliString('a/b', 'latest', 'CWL'))
             .toContain('dockstore tool launch --entry a/b:latest --json Dockstore.json');
-        expect(service.getCliString('quay.io/a/b', 'c', 'wdl'))
+        expect(service.getCliString('quay.io/a/b', 'c', 'WDL'))
             .toContain('dockstore tool launch --entry quay.io/a/b:c --json Dockstore.json --descriptor wdl');
     }));
 
