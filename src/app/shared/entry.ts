@@ -185,8 +185,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
           urlTagExists = true;
           break;
         }
-      }
-      if (defaultVersion !== null && !urlTagExists) {
+      } else if (defaultVersion !== null && !urlTagExists) {
         // If the tool has a default version then use it
         if (item.name === defaultVersion) {
           selectedVersion = item;
