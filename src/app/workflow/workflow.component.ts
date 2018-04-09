@@ -159,6 +159,8 @@ export class WorkflowComponent extends Entry {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;
+          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
+            this.workflow.defaultVersion, this.selectedVersion);
         }
         this.setUpWorkflow(workflow);
       }
