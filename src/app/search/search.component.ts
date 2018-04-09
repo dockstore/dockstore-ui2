@@ -314,8 +314,8 @@ export class SearchComponent implements OnInit {
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(
       ([key, value]) => {
-        if (value.buckets != null) {
-          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value.buckets);
+        if (value['buckets'] != null) {
+          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
         }
         // look for second level buckets (with filtering)
         // If there are second level buckets,
@@ -402,7 +402,7 @@ export class SearchComponent implements OnInit {
     }).then(hits => {
       this.setupAllBuckets(hits);
       this.setupOrderBuckets();
-    });
+    }).catch(error => console.log(error));
   }
 
   /**
@@ -429,7 +429,7 @@ export class SearchComponent implements OnInit {
       if (this.searchTerm && this.hits.length === 0) {
         this.suggestKeyTerm();
       }
-    });
+    }).catch(error => console.log(error));
   }
 
   // Given a URL, will attempt to shorten it
@@ -498,7 +498,7 @@ export class SearchComponent implements OnInit {
           this.autocompleteTerms.push(term.key);
         }
       );
-    });
+    }).catch(error => console.log(error));
     if (!this._timeout) {
       this.advancedSearchObject.toAdvanceSearch = false;
       this.searchTerm = true;
@@ -533,7 +533,7 @@ export class SearchComponent implements OnInit {
       } else {
         this.suggestTerm = '';
       }
-    });
+    }).catch(error => console.log(error));
   }
 
   searchSuggestTerm() {
