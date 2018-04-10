@@ -1,9 +1,11 @@
 // tslint:disable:max-line-length
-import { Metadata } from './../../../shared/swagger/model/metadata';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
+
 import { Dockstore } from '../../../shared/dockstore.model';
+import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
+import { Metadata } from './../../../shared/swagger/model/metadata';
+import { pipRequirements } from './pipRequirement';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -14,13 +16,11 @@ export class DownloadCLIClientComponent implements OnInit {
   public downloadCli = 'dummy-start-value';
   public dockstoreVersion = 'dummy-start-value';
   public dsToken = 'dummy-token';
-  public cwltoolVersion = '1.0.20170828135420';
   public dsServerURI: any;
   public isCopied2: boolean;
   public textData1 = '';
   public textData2 = '';
   public textData3 = '';
-
   constructor(private authService: AuthService,
     private gA4GHService: GA4GHService) { }
 
@@ -80,10 +80,11 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 1. Run this to verify that pip has been installed \`pip --version\`
 2. Run these commands to install cwltool
 \`\`\`
-pip install setuptools==36.5.0
-pip install cwl-runner cwltool==${this.cwltoolVersion} schema-salad==2.6.20170806163416 avro==1.8.1 ruamel.yaml==0.14.12 requests==2.18.4
+pip install setuptools==${pipRequirements.setupToolsVersion}
+pip install cwl-runner cwltool==${pipRequirements.cwltoolVersion} schema-salad==${pipRequirements.schemaSaladVersion} avro==${pipRequirements.avroVersion} ruamel.yaml==${pipRequirements.ruamelYamlVersion} requests==${pipRequirements.requestsVersion}
 \`\`\`
-If using Python 3, install cwl-avro==1.8.3 instead of avro==1.8.1.
+<!-- Workaround until https://github.com/common-workflow-language/cwltool/issues/524 is resolved -->
+If using Python 3, install cwl-avro==${pipRequirements.cwlAvroVersion} instead of avro==${pipRequirements.avroVersion}.
 
 3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/engine/installation/linux/ubuntulinux/).
 Ensure that you are able to run Docker without using sudo directly with the
@@ -103,7 +104,7 @@ java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 $ cwltool --version
-/usr/local/bin/cwltool ${this.cwltoolVersion}
+/usr/local/bin/cwltool ${pipRequirements.cwltoolVersion}
 $ docker run hello-world
 Hello from Docker!
 ...
