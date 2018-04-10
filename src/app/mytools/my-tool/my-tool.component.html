@@ -52,7 +52,10 @@
     <div class="row">
       <div class="col-md-3 containers-rsb">
         <accordion [closeOthers]="oneAtATime">
-          <accordion-group *ngFor="let orgObj of orgToolsObject" panelClass="containers-accordion" [heading]="orgObj?.namespace" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.namespace">
+          <accordion-group *ngFor="let orgObj of orgToolsObject" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.namespace">
+            <div accordion-heading class="no-wrap">
+              {{orgObj?.namespace}}
+            </div>
             <tabset [justified]="true">
                 <tab heading="Published" [active]="orgObj.activeTab === 'published'">
                   <div *ngFor="let entryObj of orgObj?.published">
@@ -61,6 +64,9 @@
                         (click)="selectContainer(entryObj)">
                         {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
                       </div>
+                    </div>
+                    <div *ngIf="orgObj?.published.length == 0" class="text-center">
+                      <p>No published tools.</p>
                     </div>
                   </div>
                 </tab>
@@ -72,11 +78,14 @@
                           {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
                         </div>
                       </div>
+                      <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
+                        <p>No unpublished tools.</p>
+                      </div>
                     </div>
                   </tab>
               </tabset>
             <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
-            <button type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitPathAndImgPath(orgObj?.namespace); showRegisterToolModal()">
+            <button tooltip="Refresh organization" placement="right" type="button" type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitPathAndImgPath(orgObj?.namespace); showRegisterToolModal()">
               <span class="glyphicon glyphicon-plus"></span>
             </button>
           </accordion-group>
