@@ -52,30 +52,29 @@
     <div class="row">
       <div class="col-md-3 containers-rsb">
         <accordion [closeOthers]="oneAtATime">
-          <accordion-group *ngFor="let orgObj of orgToolsObject" panelClass="containers-accordion" [heading]="orgObj?.namespace" [isOpen]="orgObj?.isFirstOpen">
-              <tabset [justified]="true">
-                  <tab heading="Published" [active]="orgObj.activeTab === 'published'">
-                    <div *ngFor="let entryObj of orgObj?.published">
+          <accordion-group *ngFor="let orgObj of orgToolsObject" panelClass="containers-accordion" [heading]="orgObj?.namespace" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.namespace">
+            <tabset [justified]="true">
+                <tab heading="Published" [active]="orgObj.activeTab === 'published'">
+                  <div *ngFor="let entryObj of orgObj?.published">
+                    <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
+                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
+                        (click)="selectContainer(entryObj)">
+                        {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
+                    <div *ngFor="let entryObj of orgObj?.unpublished">
                       <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                        <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.repository + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
+                        <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
                           (click)="selectContainer(entryObj)">
                           {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
                         </div>
                       </div>
                     </div>
                   </tab>
-                  <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
-                      <div *ngFor="let entryObj of orgObj?.unpublished">
-                        <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                          <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.repository + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
-                            (click)="selectContainer(entryObj)">
-                            {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
-                          </div>
-                        </div>
-                      </div>
-                    </tab>
-                </tabset>
-            <hr class="accordion-hr">
+              </tabset>
             <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
             <button type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitPathAndImgPath(orgObj?.namespace); showRegisterToolModal()">
               <span class="glyphicon glyphicon-plus"></span>
@@ -92,4 +91,3 @@
       </div>
     </div>
   </div>
-  
