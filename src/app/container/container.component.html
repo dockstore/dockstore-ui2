@@ -132,10 +132,10 @@
                   [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
               </div>
               <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-                <div [hidden]="!name.errors.maxlength">
+                <div [hidden]="!validationMessages.label.maxlength">
                   Labels string is too long. (Max 512 characters.)
                 </div>
-                <div [hidden]="!name.errors.pattern">
+                <div [hidden]="!validationMessages.label.pattern">
                   Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
                 </div>
               </div>

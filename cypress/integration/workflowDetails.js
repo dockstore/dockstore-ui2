@@ -6,7 +6,7 @@ describe('Dockstore Workflow Details', function() {
      cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
      cy
       .get('tab')
-      .should('have.length', 8)
+      .should('have.length', 8) // 8 Tabs include all top level tabs plus 2 tabs in the files tab
 
   });
 

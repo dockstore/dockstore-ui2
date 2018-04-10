@@ -286,7 +286,7 @@ export class ContainerComponent extends Entry {
   }
 
   updateUrl(): void {
-    if (this.publicPage) {
+    if (this.publicPage && this.tool != null) {
       let currentPath = '';
       if (this.router.url.indexOf('my-tools') !== -1) {
         currentPath += '/my-tools/';
