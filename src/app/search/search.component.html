@@ -34,7 +34,7 @@
             </span>
           </div>
           <div>
-            <input  tooltip="Find tools and workflows with files that have at least one of these terms"
+            <input  tooltip="Find tools and workflows"
                     type="text" list="suggestions" class="search-box form-control" [(ngModel)]="values"
                     (ngModelChange)="onKey()" placeholder="Enter search term" />
             <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">

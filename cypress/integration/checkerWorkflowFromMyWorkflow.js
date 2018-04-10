@@ -45,21 +45,21 @@ describe('Checker workflow test from my-workflows', function() {
         it('visit the workflow and its checker workflow and have the correct buttons', function() {
             getWorkflow();
             // In the parent workflow right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('be.visible')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l/_cwl_checker')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l/_cwl_checker')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent workflow right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('be.visible')
@@ -71,26 +71,26 @@ describe('Checker workflow test from my-workflows', function() {
             getWorkflow();
             // The url should automatically change to include the workflow full path
             // In the parent tool right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#publishButton').should('be.visible').should('contain', 'Unpublish').click()
             // Need to wait because switching to another entry too fast will cause the new entry's checker workflow to be updated instead
             cy.wait(500)
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l/_cwl_checker')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l/_cwl_checker')
             cy.get('#publishButton').should('be.visible').should('contain', 'Publish')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent tool right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#publishButton').should('be.visible').should('contain', 'Publish').click()
             // Need to wait because switching to another entry too fast will cause the new entry's checker workflow to be updated instead
             cy.wait(500)
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // in the checker workflow right now
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l/_cwl_checker')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l/_cwl_checker')
             cy.get('#publishButton').should('be.visible').should('contain', 'Unpublish')
         })
     });

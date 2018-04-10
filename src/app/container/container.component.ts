@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ListContainersService } from '../containers/list/list.service';
@@ -48,7 +48,6 @@ export class ContainerComponent extends Entry {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
-  location: Location;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
@@ -56,9 +55,8 @@ export class ContainerComponent extends Entry {
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
-  public selectedVersion = null;
-  public urlTag = null;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  validTabs = ['info', 'labels', 'versions', 'files'];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     urlResolverService: UrlResolverService,
@@ -75,16 +73,22 @@ export class ContainerComponent extends Entry {
     private containerService: ContainerService,
     stateService: StateService,
     errorService: ErrorService,
-    private locationService: Location) {
+    location: Location,
+    activatedRoute: ActivatedRoute) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService);
+      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
-    this.location = locationService;
+
+    let trimmedURL = window.location.href;
+    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('containers'));
+    if (indexOfLastColon > 0) {
+      trimmedURL = window.location.href.substring(0, indexOfLastColon);
+    }
 
     // Initialize discourse urls
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
-      discourseEmbedUrl: decodeURIComponent(window.location.href)
+      discourseEmbedUrl: decodeURIComponent(trimmedURL)
     };
   }
 
@@ -135,7 +139,7 @@ export class ContainerComponent extends Entry {
           if (this.tool.tags.length === 0) {
             this.selectedVersion = null;
           } else {
-            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
           }
         }
         // Select version
@@ -173,14 +177,17 @@ export class ContainerComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('containers') || url.includes('tools')) {
-      this.title = this.getEntryPathFromURL();
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title)
         .subscribe(tool => {
           this.containerService.setTool(tool);
-          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlTag, this.tool.defaultVersion, this.selectedVersion);
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
 
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          if (this.tool != null) {
+            this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+          }
         }, error => {
           this.router.navigate(['../']);
         });
@@ -283,9 +290,17 @@ export class ContainerComponent extends Entry {
    */
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
-    const currentToolPath = (this.router.url).split(':')[0];
-    this.location.go(currentToolPath + ':' + this.selectedVersion.name);
+    if (this.tool != null) {
+      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+    }
     this.onTagChange(tag);
   }
+
+  setEntryTab(tabName: string): void {
+     this.currentTab = tabName;
+     if (this.tool != null) {
+       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+     }
+   }
 
 }

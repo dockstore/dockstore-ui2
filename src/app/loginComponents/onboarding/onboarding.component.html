@@ -26,7 +26,7 @@ For those of you that use [Docker Hub](https://hub.docker.com/) and [GitLab](htt
       </li>
       <li *ngIf="tokenSetComplete">
         <button class="changePage" (click)="nextStep()" id="next_step" *ngIf="curStep < 2">Next<span class="glyphicon glyphicon-chevron-right"></span></button>
-        <button class="changePage" routerLink="/docs/getting-started-with-docker" id="finish_step" *ngIf="curStep >= 2">Finish<span class="glyphicon glyphicon-chevron-right"></span></button>
+        <a href="https://docs.dockstore.org/docs/prereqs/getting-started-with-docker/" *ngIf="curStep >= 2">Finish<span class="glyphicon glyphicon-chevron-right"></span></a>
       </li>
     </ul>
   </nav>

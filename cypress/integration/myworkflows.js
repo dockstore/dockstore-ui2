@@ -45,40 +45,6 @@ describe('Dockstore my workflows', function() {
                 .should('not.have.class', 'disabled')
         });
 
-        it('Only Info and Labels tab should be enabled', function() {
-            cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
-            cy
-                .get('.nav-link')
-                .contains('Info')
-                .parent()
-                .should('have.class', 'active')
-                .and('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Labels')
-                .parent()
-                .should('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Versions')
-                .parent()
-                .should('have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Files')
-                .parent()
-                .should('have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Tools')
-                .parent()
-                .should('have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('DAG')
-                .parent()
-                .should('have.class', 'disabled')
-        });
     });
 
     describe('Look at a published workflow', function() {
