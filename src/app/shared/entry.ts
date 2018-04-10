@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router/';
+import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
+import { Location } from '@angular/common';
 
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
@@ -26,7 +27,7 @@ import { DateService } from './date.service';
 import { ProviderService } from './provider.service';
 import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
-import { validationDescriptorPatterns } from './validationMessages.model';
+import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -47,14 +48,25 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   private loginSubscription: Subscription;
   public error;
   private routerSubscription: Subscription;
+  public validTabs;
+  public currentTab = 'info';
+  public urlVersion;
+  location: Location;
+  public selectedVersion = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
+  public validationMessage = validationMessages;
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
     private stateService: StateService,
-    private errorService: ErrorService, public dateService: DateService, public urlResolverService: UrlResolverService) {
+    private errorService: ErrorService,
+    public dateService: DateService,
+    public urlResolverService: UrlResolverService,
+    public activatedRoute: ActivatedRoute,
+    public locationService: Location) {
+      this.location = locationService;
   }
 
   ngOnInit() {
@@ -74,6 +86,8 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   private parseURL(url: String): void {
     if (this.isPublic()) {
+      this.title = this.getEntryPathFromURL();
+      this.urlVersion = this.getVersionFromURL();
       this.setupPublicEntry(url);
     }
   }
@@ -151,6 +165,13 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
       })();
     }
+
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      const tabIndex = this.validTabs.indexOf(params['tab']);
+      if (tabIndex > -1) {
+        this.currentTab = this.validTabs[tabIndex];
+      }
+    });
   }
 
   public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
@@ -166,8 +187,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
           urlTagExists = true;
           break;
         }
-      }
-      if (defaultVersion !== null && !urlTagExists) {
+      } else if (defaultVersion !== null && !urlTagExists) {
         // If the tool has a default version then use it
         if (item.name === defaultVersion) {
           selectedVersion = item;
@@ -188,14 +208,46 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     return this.urlResolverService.getEntryPathFromUrl();
   }
 
+  public getVersionFromURL(): string {
+    return this.urlResolverService.getVersionFromURL();
+  }
+
   /**
-   * Selects a tab of index tabIndex
+   * Selects a tab of index tabIndex (like clicking on a tab)
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */
   selectTab(tabIndex: number): void {
     this.entryTabs.tabs[tabIndex].active = true;
   }
+
+  /**
+   * Updates the URL to include the tab and sets the tab
+   * @param {number} tabIndex - index of tab to select
+   * @returns {void}
+   */
+   abstract setEntryTab(tabName: string): void;
+
+  /**
+   * Updates the URL with both tab and version information
+   * @returns {void}
+   */
+   updateUrl(entryPath: string, myEntry: string, entry: string): void {
+     if (this.publicPage) {
+       let currentPath = '';
+       if (this.router.url.indexOf(myEntry) !== -1) {
+         currentPath += '/' + myEntry + '/';
+       } else {
+         currentPath += '/' + entry + '/';
+       }
+       currentPath += entryPath;
+       if (this.selectedVersion !== null) {
+         currentPath += ':' + this.selectedVersion.name;
+       }
+       currentPath += '?tab=' + this.currentTab;
+       this.location.go(currentPath);
+     }
+   }
 
   /**
    * Sorts two entries by last modified, and then verified
