@@ -83,6 +83,8 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 pip install setuptools==36.5.0
 pip install cwl-runner cwltool==${this.cwltoolVersion} schema-salad==2.6.20170806163416 avro==1.8.1 ruamel.yaml==0.14.12 requests==2.18.4
 \`\`\`
+If using Python 3, install cwl-avro==1.8.3 instead of avro==1.8.1.
+
 3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/engine/installation/linux/ubuntulinux/).
 Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
