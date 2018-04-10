@@ -27,7 +27,7 @@ import { DateService } from './date.service';
 import { ProviderService } from './provider.service';
 import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
-import { validationDescriptorPatterns } from './validationMessages.model';
+import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -55,6 +55,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
+  public validationMessage = validationMessages;
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
