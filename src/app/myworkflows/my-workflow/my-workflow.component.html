@@ -78,9 +78,9 @@
                     {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
                   </div>
                 </div>
-                <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
-                  <p>No unpublished workflows.</p>
-                </div>
+              </div>
+              <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
+                <p>No unpublished workflows.</p>
               </div>
             </tab>
           </tabset>

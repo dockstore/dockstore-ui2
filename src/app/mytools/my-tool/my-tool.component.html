@@ -65,24 +65,24 @@
                         {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
                       </div>
                     </div>
-                    <div *ngIf="orgObj?.published.length == 0" class="text-center">
-                      <p>No published tools.</p>
-                    </div>
+                  </div>
+                  <div *ngIf="orgObj?.published.length == 0" class="text-center">
+                    <p>No published tools.</p>
                   </div>
                 </tab>
                 <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
-                    <div *ngFor="let entryObj of orgObj?.unpublished">
-                      <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                        <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
-                          (click)="selectContainer(entryObj)">
-                          {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
-                        </div>
-                      </div>
-                      <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
-                        <p>No unpublished tools.</p>
+                  <div *ngFor="let entryObj of orgObj?.unpublished">
+                    <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
+                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
+                        (click)="selectContainer(entryObj)">
+                        {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
                       </div>
                     </div>
-                  </tab>
+                  </div>
+                  <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
+                    <p>No unpublished tools.</p>
+                  </div>
+                </tab>
               </tabset>
             <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
             <button tooltip="Refresh organization" placement="right" type="button" type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitPathAndImgPath(orgObj?.namespace); showRegisterToolModal()">
