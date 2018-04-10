@@ -52,6 +52,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public currentTab = 'info';
   public urlVersion;
   location: Location;
+  public selectedVersion = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
@@ -225,16 +226,28 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */
-   setEntryTab(tabName: string): void {
-     this.currentTab = tabName;
-     this.updateUrl();
-   }
+   abstract setEntryTab(tabName: string): void;
 
   /**
    * Updates the URL with both tab and version information
    * @returns {void}
    */
-  abstract updateUrl(): void;
+   updateUrl(entryPath: string, myEntry: string, entry: string): void {
+     if (this.publicPage) {
+       let currentPath = '';
+       if (this.router.url.indexOf(myEntry) !== -1) {
+         currentPath += '/' + myEntry + '/';
+       } else {
+         currentPath += '/' + entry + '/';
+       }
+       currentPath += entryPath;
+       if (this.selectedVersion !== null) {
+         currentPath += ':' + this.selectedVersion.name;
+       }
+       currentPath += '?tab=' + this.currentTab;
+       this.location.go(currentPath);
+     }
+   }
 
   /**
    * Sorts two entries by last modified, and then verified

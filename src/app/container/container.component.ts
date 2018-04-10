@@ -55,7 +55,6 @@ export class ContainerComponent extends Entry {
   private toolSubscription: Subscription;
   private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
-  public selectedVersion = null;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
   validTabs = ['info', 'labels', 'versions', 'files'];
   constructor(private dockstoreService: DockstoreService,
@@ -180,7 +179,9 @@ export class ContainerComponent extends Entry {
           this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
-          this.updateUrl();
+          if (this.tool != null) {
+            this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+          }
         }, error => {
           this.router.navigate(['../']);
         });
@@ -281,25 +282,17 @@ export class ContainerComponent extends Entry {
    */
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
-    this.updateUrl();
+    if (this.tool != null) {
+      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+    }
     this.onTagChange(tag);
   }
 
-  updateUrl(): void {
-    if (this.publicPage && this.tool != null) {
-      let currentPath = '';
-      if (this.router.url.indexOf('my-tools') !== -1) {
-        currentPath += '/my-tools/';
-      } else {
-        currentPath += '/containers/';
-      }
-      currentPath += this.tool.tool_path;
-      if (this.selectedVersion !== null) {
-        currentPath += ':' + this.selectedVersion.name;
-      }
-      currentPath += '?tab=' + this.currentTab;
-      this.location.go(currentPath);
-    }
-  }
+  setEntryTab(tabName: string): void {
+     this.currentTab = tabName;
+     if (this.tool != null) {
+       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+     }
+   }
 
 }

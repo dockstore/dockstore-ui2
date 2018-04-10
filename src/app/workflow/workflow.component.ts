@@ -53,7 +53,6 @@ export class WorkflowComponent extends Entry {
   private workflowSubscription: Subscription;
   private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;
-  public selectedVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
@@ -183,7 +182,9 @@ export class WorkflowComponent extends Entry {
             this.workflow.defaultVersion, this.selectedVersion);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
-          this.updateUrl();
+          if (this.workflow != null) {
+            this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+          }
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -299,24 +300,16 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
-    this.updateUrl();
+    if (this.workflow != null) {
+      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+    }
     this.setupFireCloudUrl(this.workflow);
   }
 
-  updateUrl(): void {
-    if (this.publicPage && this.workflow != null) {
-      let currentPath = '';
-      if (this.router.url.indexOf('my-workflows') !== -1) {
-        currentPath += '/my-workflows/';
-      } else {
-        currentPath += '/workflows/';
-      }
-      currentPath += this.workflow.full_workflow_path;
-      if (this.selectedVersion !== null) {
-        currentPath += ':' + this.selectedVersion.name;
-      }
-      currentPath += '?tab=' + this.currentTab;
-      this.location.go(currentPath);
-    }
-  }
+  setEntryTab(tabName: string): void {
+     this.currentTab = tabName;
+     if (this.workflow != null) {
+       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+     }
+   }
 }
