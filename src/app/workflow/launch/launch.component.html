@@ -14,37 +14,45 @@
   ~    limitations under the License.
   -->
 <div *ngIf="_selectedVersion">
-  <div class="form-inline">
+  <div *ngIf="!_selectedVersion.valid">
     <label tooltip="Commands to launch workflow from the command line">Launch With</label>
+    <div class="alert alert-warning" role="alert">
+      This section is only available for valid versions.
+    </div>
   </div>
-  <div class="well">
-    <div class="well well-sm" tooltip="Commands for creating a runtime JSON template">
-      Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-      <pre>{{ params }}</pre>
-      or grab one that the workflow author has provided (if applicable)
-      <pre>{{ wgetTestJsonDescription }}</pre>
+  <div *ngIf="_selectedVersion.valid">
+    <div class="form-inline">
+      <label tooltip="Commands to launch workflow from the command line">Launch With</label>
     </div>
-    <div class="well well-sm" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
-      Run locally with the Dockstore CLI
-      <pre>{{ cli }}</pre>
-    </div>
-    <div *ngIf="(currentDescriptor | lowercase) === 'nextflow'">
-      <div class="well well-sm" tooltip="Nextflow can conveniently run a workflow off of source control">
-        Run with nextflow
-        <pre>{{ nextflowNativeLaunchDescription }}</pre>
+    <div class="well">
+      <div class="well well-sm" tooltip="Commands for creating a runtime JSON template">
+        Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+        <pre>{{ params }}</pre>
+        or grab one that the workflow author has provided (if applicable)
+        <pre>{{ wgetTestJsonDescription }}</pre>
       </div>
-    </div>
-    <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
-      <div class="well well-sm" [tooltip]="cwlrunnerTooltip">
-        {{cwlrunnerDescription}}
-        <pre>{{ cwl }}</pre>
+      <div class="well well-sm" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+        Run locally with the Dockstore CLI
+        <pre>{{ cli }}</pre>
       </div>
-      <div class="well well-sm" [tooltip]="cwltoolTooltip">
-        Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
-        <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
-        <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
+      <div *ngIf="(currentDescriptor | lowercase) === 'nextflow'">
+        <div class="well well-sm" tooltip="Nextflow can conveniently run a workflow off of source control">
+          Run with nextflow
+          <pre>{{ nextflowNativeLaunchDescription }}</pre>
+        </div>
       </div>
+      <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
+        <div class="well well-sm" [tooltip]="cwlrunnerTooltip">
+          {{cwlrunnerDescription}}
+          <pre>{{ cwl }}</pre>
+        </div>
+        <div class="well well-sm" [tooltip]="cwltoolTooltip">
+          Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
+          <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
+          <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
+        </div>
+      </div>
+      <app-launch-checker-workflow [command]="checkEntryCommand"></app-launch-checker-workflow>
     </div>
-    <app-launch-checker-workflow [command]="checkEntryCommand"></app-launch-checker-workflow>
   </div>
 </div>
