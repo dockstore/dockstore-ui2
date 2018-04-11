@@ -64,7 +64,7 @@ describe('Checker workflow test from my-tools', function() {
             cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click()
             cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
-            
+
             // In the checker workflow right now
             cy.get('#workflow-path').should('contain', '_checker')
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A2/b3/_cwl_checker')

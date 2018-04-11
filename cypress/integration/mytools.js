@@ -144,7 +144,8 @@ describe('Dockstore my tools', function() {
                 .get('#deregisterConfirmButton')
                 .click()
 
-            // This should be activated later
+            
+            // This should be activated later when https://github.com/ga4gh/dockstore/issues/1318 is resolved
             // cy
             // .get('#tool-path')
             // .should('not.contain', 'amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname')
