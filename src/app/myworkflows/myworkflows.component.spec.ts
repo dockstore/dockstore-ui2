@@ -89,15 +89,15 @@ describe('MyWorkflowComponent', () => {
     registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
     spyOn(registerWorkflowModalService, 'setIsModalShown');
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
-    component.showModal();
-    component.setModalGitURL('a/b');
+    component.showRegisterEntryModal();
+    component.setRegisterEntryModalInfo('a/b');
     expect(registerWorkflowModalService.setIsModalShown).toHaveBeenCalled();
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
     refreshService = fixture.debugElement.injector.get(RefreshService);
     spyOn(refreshService, 'refreshAllWorkflows');
-    component.refreshAllWorkflows();
+    component.refreshAllEntries();
     expect(refreshService.refreshAllWorkflows).toHaveBeenCalled();
   });
 });
