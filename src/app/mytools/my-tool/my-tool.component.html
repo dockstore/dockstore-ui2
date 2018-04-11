@@ -24,7 +24,7 @@
   <div class="container padding-top">
     <app-alert></app-alert>
     <!--Msg/Warning Page, this should be a Component-->
-    <div class="row" *ngIf="orgToolsObject?.length == 0">
+    <div class="row" *ngIf="orgToolsObject?.length == 0 || !orgToolsObject">
       <div class="col-md-12">
         <div class="alert alert-info" role="alert">
           <p>
