@@ -90,17 +90,17 @@ export class MyToolComponent implements OnInit, OnDestroy {
         const sortedContainers = this.mytoolsService.sortNSContainers(tools, this.user.username);
         /* For the first initial time, set the first tool to be the selected one */
         if (sortedContainers && sortedContainers.length > 0) {
-          this.orgToolsObject = this.convertNamespaceWorkflowsToOrgWorkflowsObject(sortedContainers);
-          const foundWorkflow = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgToolsObject);
-          if (foundWorkflow) {
-            this.selectContainer(foundWorkflow);
+          this.orgToolsObject = this.convertNamespaceToolsToOrgToolsObject(sortedContainers);
+          const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgToolsObject);
+          if (foundTool) {
+            this.selectContainer(foundTool);
           } else {
-            const publishedWorkflow = this.getFirstPublishedEntry(sortedContainers);
-            if (publishedWorkflow) {
-              this.selectContainer(publishedWorkflow);
+            const publishedTool = this.getFirstPublishedEntry(sortedContainers);
+            if (publishedTool) {
+              this.selectContainer(publishedTool);
             } else {
-              const theFirstWorkflow = sortedContainers[0].containers[0];
-              this.selectContainer(theFirstWorkflow);
+              const theFirstTool = sortedContainers[0].containers[0];
+              this.selectContainer(theFirstTool);
             }
           }
         } else {
@@ -130,11 +130,11 @@ export class MyToolComponent implements OnInit, OnDestroy {
     if (this.orgToolsObject) {
       for (let i = 0; i < this.orgToolsObject.length; i++) {
         if (this.tool) {
-          if (this.orgToolsObject[i].unpublished.find((workflow: DockstoreTool) => workflow.id === this.tool.id)) {
+          if (this.orgToolsObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
             this.orgToolsObject[i].activeTab = 'unpublished';
             continue;
           }
-          if (this.orgToolsObject[i].published.find((workflow: DockstoreTool) => workflow.id === this.tool.id)) {
+          if (this.orgToolsObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
             this.orgToolsObject[i].activeTab = 'published';
             continue;
           }
@@ -149,21 +149,20 @@ export class MyToolComponent implements OnInit, OnDestroy {
   }
 
   /**
- * Converts the deprecated nsWorkflows object to the new OrgWorkflowsObject contains:
- * an array of published and unpublished workflows
+ * Converts the deprecated nsTool object to the new OrgToolsObject contains:
+ * an array of published and unpublished tools
  * and which tab should be opened (published or unpublished)
  * Main reason to convert to the new object is because figuring it out which tab should be active on
  * the fly will result in function being executed far too many times (150 times)
  * @private
- * @param {Array<any>} nsWorkflows The original nsWorkflows object
- * @returns {Array<OrgWorkflowObject>} The new object with more properties
- * @memberof MyWorkflowComponent
+ * @param {Array<any>} nsTools The original nsTools object
+ * @returns {Array<OrgToolObject>} The new object with more properties
+ * @memberof MyToolsComponent
  */
-
-  private convertNamespaceWorkflowsToOrgWorkflowsObject(nsWorkflows: Array<any>): Array<OrgToolObject> {
-    const orgWorkflowsObject: Array<OrgToolObject> = [];
-    for (let i = 0; i < nsWorkflows.length; i++) {
-      const orgWorkflowObject: OrgToolObject = {
+  private convertNamespaceToolsToOrgToolsObject(nsTools: Array<any>): Array<OrgToolObject> {
+    const orgToolsObject: Array<OrgToolObject> = [];
+    for (let i = 0; i < nsTools.length; i++) {
+      const orgToolObject: OrgToolObject = {
         namespace: '',
         isFirstOpen: false,
         organization: '',
@@ -171,58 +170,67 @@ export class MyToolComponent implements OnInit, OnDestroy {
         unpublished: [],
         activeTab: 'published'
       };
-      const nsWorkflow: Array<DockstoreTool> = nsWorkflows[i].containers;
-      orgWorkflowObject.isFirstOpen = nsWorkflows[i].isFirstOpen;
-      orgWorkflowObject.namespace = nsWorkflows[i].namespace;
-      orgWorkflowObject.organization = nsWorkflows[i].organization;
-      orgWorkflowObject.published = nsWorkflow.filter((workflow: DockstoreTool) => {
-        return workflow.is_published;
+      const nsTool: Array<DockstoreTool> = nsTools[i].containers;
+      orgToolObject.isFirstOpen = nsTools[i].isFirstOpen;
+      orgToolObject.namespace = nsTools[i].namespace;
+      orgToolObject.organization = nsTools[i].organization;
+      orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
+        return tool.is_published;
       });
-      orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: DockstoreTool) => {
-        return !workflow.is_published;
+      orgToolObject.unpublished = nsTool.filter((tool: DockstoreTool) => {
+        return !tool.is_published;
       });
-      orgWorkflowsObject.push(orgWorkflowObject);
+      orgToolsObject.push(orgToolObject);
     }
-    return orgWorkflowsObject;
+    return orgToolsObject;
   }
 
   /**
-   * Find the first published workflow in all of the organizations
+   * Find the first published tool in all of the organizations
    *
    * @private
-   * @param {*} orgEntries The deprecated object containing all the workflows
-   * @returns {DockstoreTool} The first published workflow found, null if there aren't any
+   * @param {*} orgEntries The deprecated object containing all the tools
+   * @returns {DockstoreTool} The first published tool found, null if there aren't any
    * @memberof MyToolComponent
    */
   private getFirstPublishedEntry(orgEntries: any): DockstoreTool {
     for (let i = 0; i < orgEntries.length; i++) {
-      const foundWorkflow = orgEntries[i]['containers'].find((entry: DockstoreTool) => {
+      const foundTool = orgEntries[i]['containers'].find((entry: DockstoreTool) => {
         return entry.is_published === true;
       });
-      if (foundWorkflow) {
-        return foundWorkflow;
-      }
-    }
-    return null;
-  }
-
-  private findToolFromPath(path: string, orgWorkflows: Array<OrgToolObject>): ExtendedDockstoreTool {
-    let matchingWorkflow: ExtendedDockstoreTool;
-    for (let i = 0; i < orgWorkflows.length; i++) {
-      matchingWorkflow = orgWorkflows[i].published.find((workflow: DockstoreTool) => workflow.tool_path === path);
-      if (matchingWorkflow) {
-        return matchingWorkflow;
-      }
-      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: DockstoreTool) => workflow.tool_path === path);
-      if (matchingWorkflow) {
-        return matchingWorkflow;
+      if (foundTool) {
+        return foundTool;
       }
     }
     return null;
   }
 
   /**
-   * Determines which accordion is expanded on the workflow selector sidebar
+   * Determines the tool to go to based on the URL
+   * Null if there's no known tool with that path
+   * @private
+   * @param {string} path The current URL
+   * @param {Array<OrgToolObject>} orgTools The new object containing all the tools seperated in into published and unpublished
+   * @returns {ExtendedDockstoreTool} The matching tool if it exists
+   * @memberof MyToolComponent
+   */
+  private findToolFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool {
+    let matchingTool: ExtendedDockstoreTool;
+    for (let i = 0; i < orgTools.length; i++) {
+      matchingTool = orgTools[i].published.find((tool: DockstoreTool) => tool.tool_path === path);
+      if (matchingTool) {
+        return matchingTool;
+      }
+      matchingTool = orgTools[i].unpublished.find((tool: DockstoreTool) => tool.tool_path === path);
+      if (matchingTool) {
+        return matchingTool;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Determines which accordion is expanded on the tool selector sidebar
    *
    * @memberof MyToolComponent
    */
