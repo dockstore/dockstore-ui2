@@ -62,7 +62,7 @@
                     <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
                       <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
                         (click)="selectEntry(entryObj)">
-                        {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
+                        {{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}
                       </div>
                     </div>
                   </div>
@@ -73,9 +73,9 @@
                 <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
                   <div *ngFor="let entryObj of orgObj?.unpublished">
                     <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
+                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}"
                         (click)="selectEntry(entryObj)">
-                        {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
+                        {{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}
                       </div>
                     </div>
                   </div>
