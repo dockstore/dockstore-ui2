@@ -40,10 +40,59 @@ export abstract class MyEntry implements OnDestroy {
         this.accountsService.link(TokenSource.GITHUB);
     }
 
+    /**
+     * This figures out which tab (Published/Unpublished) is active
+     * In order of priority:
+     * 1. If the selected entry is published/unpublished, the tab selected will published/unpublished to reflect it
+     * 2. If there are published entries, the published tab will be selected
+     * 3. Unpublished otherwise
+     * @protected
+     * @abstract
+     * @memberof MyEntry
+     */
     protected abstract updateActiveTab(): void;
+
+    /**
+     * Converts the deprecated nsTool object to the new OrgToolsObject contains:
+     * an array of published and unpublished tools
+     * and which tab should be opened (published or unpublished)
+     * Main reason to convert to the new object is because figuring it out which tab should be active on
+     * the fly will result in function being executed far too many times (150 times)
+     * @protected
+     * @abstract
+     * @param {Array<any>} nsObject The original nsTools or nsWorkflows object
+     * @returns {(Array<OrgToolObject> | Array<OrgWorkflowObject>)} The new object with more properties
+     * @memberof MyEntry
+     */
     protected abstract convertOldNamespaceObjectToOrgEntriesObject(nsObject: Array<any>): Array<OrgToolObject> | Array<OrgWorkflowObject>;
+
+    /**
+     * Find the first published entry in all of the organizations
+     * @protected
+     * @abstract
+     * @param {(Array<OrgToolObject> | Array<OrgWorkflowObject>)} orgEntries The deprecated object containing all the entries
+     * @returns {((DockstoreTool | Workflow))} The first published entry found, null if there aren't any
+     * @memberof MyEntry
+     */
     protected abstract getFirstPublishedEntry(orgEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): (DockstoreTool | Workflow);
-    public abstract findEntryFromPath(path: string, orgEntries: (Array<OrgToolObject> | Array<OrgWorkflowObject>));
+
+    /**
+     * Determines the tool to go to based on the URL
+     * Null if there's no known tool with that path
+     * @abstract
+     * @param {string} path The current URL
+     * @param {((Array<OrgToolObject> | Array<OrgWorkflowObject>))} orgEntries Object with entries seperated into published/unpublished
+     * @returns {(ExtendedDockstoreTool | ExtendedWorkflow)} The matching entry if it exists
+     * @memberof MyEntry
+     */
+    protected abstract findEntryFromPath(path: string, orgEntries: (Array<OrgToolObject> | Array<OrgWorkflowObject>)):
+        ExtendedDockstoreTool | ExtendedWorkflow;
+
+    /**
+     * Determines which accordion is expanded on the entry selector sidebar
+     * @abstract
+     * @memberof MyEntry
+     */
     public abstract setIsFirstOpen(): void;
     public abstract selectEntry(entry: (ExtendedDockstoreTool | ExtendedWorkflow)): void;
     public abstract setRegisterEntryModalInfo(gitURLOrNamespace: String): void;

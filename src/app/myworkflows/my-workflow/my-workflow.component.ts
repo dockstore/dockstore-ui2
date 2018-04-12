@@ -59,7 +59,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     /**
-     * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons
+     * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
+     * It is the only section of code that does not exist in my-tools
      */
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -115,15 +116,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
-  /**
-   * This figures out which tab (Published/Unpublished) is active
-   * In order of priority:
-   * 1. If the selected entry is published/unpublished, the tab selected will published/unpublished to reflect it
-   * 2. If there are published entries, the published tab will be selected
-   * 3. Unpublished otherwise
-   * @private
-   * @memberof MyWorkflowComponent
-   */
   protected updateActiveTab(): void {
     if (this.orgWorkflowsObject) {
       for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
@@ -145,18 +137,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       }
     }
   }
-
-  /**
-   * Converts the deprecated nsWorkflows object to the new OrgWorkflowsObject contains:
-   * an array of published and unpublished workflows
-   * and which tab should be opened (published or unpublished)
-   * Main reason to convert to the new object is because figuring it out which tab should be active on
-   * the fly will result in function being executed far too many times (150 times)
-   * @private
-   * @param {Array<any>} nsWorkflows The original nsWorkflows object
-   * @returns {Array<OrgWorkflowObject>} The new object with more properties
-   * @memberof MyWorkflowComponent
-   */
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
     const orgWorkflowsObject: Array<OrgWorkflowObject> = [];
@@ -184,14 +164,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     return orgWorkflowsObject;
   }
 
-  /**
-   * Find the first published workflow in all of the organizations
-   *
-   * @private
-   * @param {*} orgWorkflows The deprecated object containing all the workflows
-   * @returns {Workflow} The first published workflow found, null if there aren't any
-   * @memberof MyWorkflowComponent
-   */
   protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
     for (let i = 0; i < orgWorkflows.length; i++) {
       const foundWorkflow = orgWorkflows[i]['workflows'].find((workflow: Workflow) => {
@@ -204,16 +176,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     return null;
   }
 
-  /**
-   * Determines the workflow to go to based on the URL
-   * Null if there's no known workflow with that path
-   * @private
-   * @param {string} path The current URL
-   * @param {Array<OrgWorkflowObject>} orgWorkflows The new object containing all the workflows seperated in into published and unpublished
-   * @returns {ExtendedWorkflow} The matching workflow if it exists
-   * @memberof MyWorkflowComponent
-   */
-  public findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
+  protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
     let matchingWorkflow: ExtendedWorkflow;
     for (let i = 0; i < orgWorkflows.length; i++) {
       matchingWorkflow = orgWorkflows[i].published.find((workflow: Workflow) => workflow.full_workflow_path === path);
@@ -228,11 +191,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     return null;
   }
 
-  /**
-   * Determines which accordion is expanded on the workflow selector sidebar
-   *
-   * @memberof MyWorkflowComponent
-   */
   setIsFirstOpen(): void {
     if (this.orgWorkflowsObject && this.workflow) {
       for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
@@ -248,12 +206,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     }
   }
 
-  /**
-   * Select which workflow to display in the workflow component
-   *
-   * @param {ExtendedWorkflow} workflow The workflow to display
-   * @memberof MyWorkflowComponent
-   */
   selectEntry(workflow: ExtendedWorkflow): void {
     this.workflowService.setWorkflow(workflow);
     if (workflow) {

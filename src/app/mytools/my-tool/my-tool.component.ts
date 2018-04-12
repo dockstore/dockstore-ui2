@@ -104,15 +104,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
 
-  /**
-     * This figures out which tab (Published/Unpublished) is active
-     * In order of priority:
-     * 1. If the selected entry is published/unpublished, the tab selected will published/unpublished to reflect it
-     * 2. If there are published entries, the published tab will be selected
-     * 3. Unpublished otherwise
-     * @private
-     * @memberof MyToolComponent
-     */
   protected updateActiveTab(): void {
     if (this.orgToolsObject) {
       for (let i = 0; i < this.orgToolsObject.length; i++) {
@@ -135,17 +126,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     }
   }
 
-  /**
-   * Converts the deprecated nsTool object to the new OrgToolsObject contains:
-   * an array of published and unpublished tools
-   * and which tab should be opened (published or unpublished)
-   * Main reason to convert to the new object is because figuring it out which tab should be active on
-   * the fly will result in function being executed far too many times (150 times)
-   * @private
-   * @param {Array<any>} nsTools The original nsTools object
-   * @returns {Array<OrgToolObject>} The new object with more properties
-   * @memberof MyToolsComponent
-   */
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
     const orgToolsObject: Array<OrgToolObject> = [];
     for (let i = 0; i < nsTools.length; i++) {
@@ -172,14 +152,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     return orgToolsObject;
   }
 
-  /**
-   * Find the first published tool in all of the organizations
-   *
-   * @private
-   * @param {*} orgEntries The deprecated object containing all the tools
-   * @returns {DockstoreTool} The first published tool found, null if there aren't any
-   * @memberof MyToolComponent
-   */
   protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool {
     for (let i = 0; i < orgEntries.length; i++) {
       const foundTool = orgEntries[i]['containers'].find((entry: DockstoreTool) => {
@@ -192,16 +164,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     return null;
   }
 
-  /**
-   * Determines the tool to go to based on the URL
-   * Null if there's no known tool with that path
-   * @private
-   * @param {string} path The current URL
-   * @param {Array<OrgToolObject>} orgTools The new object containing all the tools seperated in into published and unpublished
-   * @returns {ExtendedDockstoreTool} The matching tool if it exists
-   * @memberof MyToolComponent
-   */
-  public findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool {
+  protected findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool {
     let matchingTool: ExtendedDockstoreTool;
     for (let i = 0; i < orgTools.length; i++) {
       matchingTool = orgTools[i].published.find((tool: DockstoreTool) => tool.tool_path === path);
@@ -216,11 +179,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     return null;
   }
 
-  /**
-   * Determines which accordion is expanded on the tool selector sidebar
-   *
-   * @memberof MyToolComponent
-   */
   setIsFirstOpen(): void {
     if (this.orgToolsObject && this.tool) {
       for (let i = 0; i < this.orgToolsObject.length; i++) {
