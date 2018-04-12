@@ -83,7 +83,7 @@ export class ContainerComponent extends Entry {
 
     // Change /tools or /containers
     let pageIndex = window.location.href.indexOf('/containers');
-    if (pageIndex == -1) {
+    if (pageIndex === -1) {
       pageIndex = window.location.href.indexOf('/tools');
       this.switchToolsToContainers();
     }
