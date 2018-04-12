@@ -81,12 +81,16 @@ export class ContainerComponent extends Entry {
 
     let trimmedURL = window.location.href;
 
-    // Deal with users going to /tools or /containers
+    // Change /tools or /containers
     let pageIndex = window.location.href.indexOf('/containers');
     if (pageIndex == -1) {
       pageIndex = window.location.href.indexOf('/tools');
-      this.switchToolsToContainers(trimmedURL);
+      this.switchToolsToContainers();
     }
+
+    // Decode the URL
+    this.decodeURL();
+
     const indexOfLastColon = window.location.href.indexOf(':', pageIndex);
     if (indexOfLastColon > 0) {
       trimmedURL = window.location.href.substring(0, indexOfLastColon);
@@ -310,10 +314,25 @@ export class ContainerComponent extends Entry {
      }
    }
 
-   switchToolsToContainers(url):void {
-     url = url.replace('/tools', '/containers');
+   /**
+    * Will change the /tools in the current URL with /containers
+    * @return {void}
+    */
+   switchToolsToContainers(): void {
+     const url = window.location.href.replace('/tools', '/containers');
      const toolsIndex = window.location.href.indexOf('/tools');
      const newPath = url.substring(toolsIndex);
+     this.location.go(newPath);
+   }
+
+   /**
+    * Will decode the URL
+    * @return {void}
+    */
+   decodeURL(): void {
+     const url = decodeURIComponent(window.location.href);
+     const containersIndex = window.location.href.indexOf('/containers');
+     const newPath = url.substring(containersIndex);
      this.location.go(newPath);
    }
 
