@@ -79,28 +79,30 @@ export class ContainerComponent extends Entry {
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
 
-    let trimmedURL = window.location.href;
+    if (window.location.href.indexOf('/my-tools') === -1) {
+      let trimmedURL = window.location.href;
 
-    // Change /tools or /containers
-    let pageIndex = window.location.href.indexOf('/containers');
-    if (pageIndex === -1) {
-      pageIndex = window.location.href.indexOf('/tools');
-      this.switchToolsToContainers();
+      // Change /tools or /containers
+      let pageIndex = window.location.href.indexOf('/containers');
+      if (pageIndex === -1) {
+        pageIndex = window.location.href.indexOf('/tools');
+        this.switchToolsToContainers();
+      }
+
+      // Decode the URL
+      this.decodeURL(this._toolType);
+
+      const indexOfLastColon = window.location.href.indexOf(':', pageIndex);
+      if (indexOfLastColon > 0) {
+        trimmedURL = window.location.href.substring(0, indexOfLastColon);
+      }
+
+      // Initialize discourse urls
+      (<any>window).DiscourseEmbed = {
+        discourseUrl: Dockstore.DISCOURSE_URL,
+        discourseEmbedUrl: decodeURIComponent(trimmedURL)
+      };
     }
-
-    // Decode the URL
-    this.decodeURL();
-
-    const indexOfLastColon = window.location.href.indexOf(':', pageIndex);
-    if (indexOfLastColon > 0) {
-      trimmedURL = window.location.href.substring(0, indexOfLastColon);
-    }
-
-    // Initialize discourse urls
-    (<any>window).DiscourseEmbed = {
-      discourseUrl: Dockstore.DISCOURSE_URL,
-      discourseEmbedUrl: decodeURIComponent(trimmedURL)
-    };
   }
 
   public getDefaultVersionName(): string {
@@ -322,18 +324,7 @@ export class ContainerComponent extends Entry {
      const url = window.location.href.replace('/tools', '/containers');
      const toolsIndex = window.location.href.indexOf('/tools');
      const newPath = url.substring(toolsIndex);
+     console.log(newPath);
      this.location.go(newPath);
    }
-
-   /**
-    * Will decode the URL
-    * @return {void}
-    */
-   decodeURL(): void {
-     const url = decodeURIComponent(window.location.href);
-     const containersIndex = window.location.href.indexOf('/containers');
-     const newPath = url.substring(containersIndex);
-     this.location.go(newPath);
-   }
-
 }

@@ -71,17 +71,23 @@ export class WorkflowComponent extends Entry {
     this._toolType = 'workflows';
     this.location = location;
 
-    let trimmedURL = window.location.href;
-    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('workflows'));
-    if (indexOfLastColon > 0) {
-      trimmedURL = window.location.href.substring(0, indexOfLastColon);
-    }
+    if (window.location.href.indexOf('/my-workflows') === -1) {
+      let trimmedURL = window.location.href;
 
-    // Initialize discourse urls
-    (<any>window).DiscourseEmbed = {
-      discourseUrl: Dockstore.DISCOURSE_URL,
-      discourseEmbedUrl: decodeURIComponent(trimmedURL)
-    };
+      // Decode the URL
+      this.decodeURL(this._toolType);
+
+      const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('workflows'));
+      if (indexOfLastColon > 0) {
+        trimmedURL = window.location.href.substring(0, indexOfLastColon);
+      }
+
+      // Initialize discourse urls
+      (<any>window).DiscourseEmbed = {
+        discourseUrl: Dockstore.DISCOURSE_URL,
+        discourseEmbedUrl: decodeURIComponent(trimmedURL)
+      };
+    }
 
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }

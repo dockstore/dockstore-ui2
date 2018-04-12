@@ -305,4 +305,16 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
     return recentVersions;
   }
+
+  /**
+   * Will decode the URL
+   * @return {void}
+   */
+  decodeURL(type: string): void {
+    const url = decodeURIComponent(window.location.href);
+    const containersIndex = window.location.href.indexOf('/' + type);
+    const newPath = url.substring(containersIndex);
+    console.log(newPath);
+    this.location.go(newPath);
+  }
 }
