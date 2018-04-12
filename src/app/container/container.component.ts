@@ -80,7 +80,14 @@ export class ContainerComponent extends Entry {
     this._toolType = 'containers';
 
     let trimmedURL = window.location.href;
-    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('containers'));
+
+    // Deal with users going to /tools or /containers
+    let pageIndex = window.location.href.indexOf('/containers');
+    if (pageIndex == -1) {
+      pageIndex = window.location.href.indexOf('/tools');
+      this.switchToolsToContainers(trimmedURL);
+    }
+    const indexOfLastColon = window.location.href.indexOf(':', pageIndex);
     if (indexOfLastColon > 0) {
       trimmedURL = window.location.href.substring(0, indexOfLastColon);
     }
@@ -301,6 +308,13 @@ export class ContainerComponent extends Entry {
      if (this.tool != null) {
        this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
      }
+   }
+
+   switchToolsToContainers(url):void {
+     url = url.replace('/tools', '/containers');
+     const toolsIndex = window.location.href.indexOf('/tools');
+     const newPath = url.substring(toolsIndex);
+     this.location.go(newPath);
    }
 
 }
