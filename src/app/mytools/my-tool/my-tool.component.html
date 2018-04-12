@@ -16,7 +16,7 @@
   <app-header>
     <img src="../assets/images/dockstore/dockstore-tools-blue.png"> My Tools
     <div class="pull-right refresh-all-holder">
-      <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllTools()" [disabled]="refreshMessage !== null">
+      <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
         Refresh All Tools
       </button>
     </div>
@@ -24,7 +24,7 @@
   <div class="container padding-top">
     <app-alert></app-alert>
     <!--Msg/Warning Page, this should be a Component-->
-    <div class="row" *ngIf="orgToolsObject?.length == 0">
+    <div class="row" *ngIf="orgToolsObject?.length == 0 || !orgToolsObject">
       <div class="col-md-12">
         <div class="alert alert-info" role="alert">
           <p>
@@ -61,8 +61,8 @@
                   <div *ngFor="let entryObj of orgObj?.published">
                     <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
                       <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
-                        (click)="selectContainer(entryObj)">
-                        {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
+                        (click)="selectEntry(entryObj)">
+                        {{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}
                       </div>
                     </div>
                   </div>
@@ -73,9 +73,9 @@
                 <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
                   <div *ngFor="let entryObj of orgObj?.unpublished">
                     <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
-                        (click)="selectContainer(entryObj)">
-                        {{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}
+                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}"
+                        (click)="selectEntry(entryObj)">
+                        {{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}
                       </div>
                     </div>
                   </div>
@@ -85,12 +85,12 @@
                 </tab>
               </tabset>
             <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
-            <button tooltip="Refresh organization" placement="right" type="button" type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setModalGitPathAndImgPath(orgObj?.namespace); showRegisterToolModal()">
+            <button tooltip="Refresh organization" placement="right" type="button" type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setRegisterEntryModalInfo(orgObj?.namespace); showRegisterEntryModal()">
               <span class="glyphicon glyphicon-plus"></span>
             </button>
           </accordion-group>
         </accordion>
-        <button (click)="showRegisterToolModal()" id="register_tool_button" type="button" class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
+        <button (click)="showRegisterEntryModal()" id="register_tool_button" type="button" class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
           Add Tool
         </button>
         <app-register-tool></app-register-tool>

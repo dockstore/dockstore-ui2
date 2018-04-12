@@ -144,8 +144,11 @@ describe('Dockstore my tools', function() {
                 .get('#deregisterConfirmButton')
                 .click()
 
-            
-            // This should be activated later when https://github.com/ga4gh/dockstore/issues/1318 is resolved
+            // This is deactivated because:
+            // Registering a tool also refreshes it.  
+            // Refresh results in an error so it is mocked.
+            // The mocked results has an id that is not correct
+            // The deregister uses this mocked id to deregister but since the id is incorrect, it can't deregister
             // cy
             // .get('#tool-path')
             // .should('not.contain', 'amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname')
