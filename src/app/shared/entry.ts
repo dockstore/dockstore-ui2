@@ -312,8 +312,38 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    */
   decodeURL(type: string): void {
     const url = decodeURIComponent(window.location.href);
-    const containersIndex = window.location.href.indexOf('/' + type);
+    const containersIndex = getIndexInURL('/' + type);
     const newPath = url.substring(containersIndex);
     this.location.go(newPath);
+  }
+
+  /**
+   * Determine the index of a string in the current URL
+   * @return {number}
+   */
+  getIndexInURL(page: string): number {
+    return window.location.href.indexOf(page)
+  }
+
+  /**
+   * Determine the index of a string in the current URL, starting at an offset
+   * @return {number}
+   */
+  getIndexInURL(page: string, startFrom: number): number {
+    return window.location.href.indexOf(page, startFrom)
+  }
+
+  /**
+   * Returns the URL to send to Discourse
+   * No encoding, version, or query params (tabs)
+   * @return {string}
+   */
+  getCanonicalUrlForDiscourse(pageIndex: number): string {
+    const indexOfLastColon = getIndexInURL(':', pageIndex);
+    if (indexOfLastColon > 0) {
+      return window.location.href.substring(0, indexOfLastColon);
+    } else {
+      return null;
+    }
   }
 }

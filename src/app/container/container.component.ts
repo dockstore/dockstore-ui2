@@ -79,23 +79,19 @@ export class ContainerComponent extends Entry {
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
 
-    if (window.location.href.indexOf('/my-tools') === -1) {
+    if (getIndexOfPage('/my-tools') === -1) {
       let trimmedURL = window.location.href;
 
       // Change /tools or /containers
-      let pageIndex = window.location.href.indexOf('/containers');
+      let pageIndex = getIndexOfPage('/containers');
       if (pageIndex === -1) {
-        pageIndex = window.location.href.indexOf('/tools');
+        pageIndex = getIndexOfPage('/tools');
         this.switchToolsToContainers();
       }
 
       // Decode the URL
       this.decodeURL(this._toolType);
-
-      const indexOfLastColon = window.location.href.indexOf(':', pageIndex);
-      if (indexOfLastColon > 0) {
-        trimmedURL = window.location.href.substring(0, indexOfLastColon);
-      }
+      this.trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
 
       // Initialize discourse urls
       (<any>window).DiscourseEmbed = {
@@ -324,7 +320,6 @@ export class ContainerComponent extends Entry {
      const url = window.location.href.replace('/tools', '/containers');
      const toolsIndex = window.location.href.indexOf('/tools');
      const newPath = url.substring(toolsIndex);
-     console.log(newPath);
      this.location.go(newPath);
    }
 }
