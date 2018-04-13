@@ -346,4 +346,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       return null;
     }
   }
+
+  /**
+   * Deals with redirecting to canonical URL and running discourse call
+   * @return {void}
+   */
+  abstract redirectAndCallDiscourse(): void;
 }

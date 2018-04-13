@@ -70,25 +70,7 @@ export class WorkflowComponent extends Entry {
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'workflows';
     this.location = location;
-
-    if (this.getIndexInURL('/my-workflows') === -1) {
-      let trimmedURL = window.location.href;
-
-      // Decode the URL
-      this.decodeURL(this._toolType);
-
-      const pageIndex = this.getIndexInURL('/workflows');
-
-      // Get the URL for discourse
-      trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
-
-      // Initialize discourse urls
-      (<any>window).DiscourseEmbed = {
-        discourseUrl: Dockstore.DISCOURSE_URL,
-        discourseEmbedUrl: decodeURIComponent(trimmedURL)
-      };
-    }
-
+    this.redirectAndCallDiscourse();
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
@@ -322,6 +304,26 @@ export class WorkflowComponent extends Entry {
      this.currentTab = tabName;
      if (this.workflow != null) {
        this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+     }
+   }
+
+   redirectAndCallDiscourse(): void {
+     if (this.getIndexInURL('/my-workflows') === -1) {
+       let trimmedURL = window.location.href;
+
+       // Decode the URL
+       this.decodeURL(this._toolType);
+
+       const pageIndex = this.getIndexInURL('/workflows');
+
+       // Get the URL for discourse
+       trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
+
+       // Initialize discourse urls
+       (<any>window).DiscourseEmbed = {
+         discourseUrl: Dockstore.DISCOURSE_URL,
+         discourseEmbedUrl: decodeURIComponent(trimmedURL)
+       };
      }
    }
 }
