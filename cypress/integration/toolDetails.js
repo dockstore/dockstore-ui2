@@ -3,9 +3,11 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
         cy.visit(String(global.baseUrl) + "/containers/quay.io%2FA2%2Fa")
+        cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
         cy
             .get('tab')
             .should('have.length', 7)
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
     });
 
     it('Change tab to labels', function() {
@@ -14,6 +16,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
             .contains('Labels')
             .parent()
             .click()
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=labels')
     });
 
     it('Change tab to versions', function() {
@@ -22,6 +25,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
             .contains('Versions')
             .parent()
             .click()
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=versions')
     });
 
     describe('Change tab to files', function() {
@@ -31,6 +35,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
                 .contains('Files')
                 .parent()
                 .click()
+            cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
         });
 
         it('Should have Dockerfile tab selected', function() {
