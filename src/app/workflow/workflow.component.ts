@@ -71,16 +71,16 @@ export class WorkflowComponent extends Entry {
     this._toolType = 'workflows';
     this.location = location;
 
-    if (getIndexInURL('/my-workflows') === -1) {
+    if (this.getIndexInURL('/my-workflows') === -1) {
       let trimmedURL = window.location.href;
 
       // Decode the URL
       this.decodeURL(this._toolType);
 
-      const pageIndex = getIndexInURL('/workflows');
+      const pageIndex = this.getIndexInURL('/workflows');
 
       // Get the URL for discourse
-      this.trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
+      trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
 
       // Initialize discourse urls
       (<any>window).DiscourseEmbed = {

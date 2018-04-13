@@ -312,7 +312,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    */
   decodeURL(type: string): void {
     const url = decodeURIComponent(window.location.href);
-    const containersIndex = getIndexInURL('/' + type);
+    const containersIndex = this.getIndexInURL('/' + type);
     const newPath = url.substring(containersIndex);
     this.location.go(newPath);
   }
@@ -322,15 +322,15 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @return {number}
    */
   getIndexInURL(page: string): number {
-    return window.location.href.indexOf(page)
+    return window.location.href.indexOf(page);
   }
 
   /**
    * Determine the index of a string in the current URL, starting at an offset
    * @return {number}
    */
-  getIndexInURL(page: string, startFrom: number): number {
-    return window.location.href.indexOf(page, startFrom)
+  getIndexInURLFrom(page: string, startFrom: number): number {
+    return window.location.href.indexOf(page, startFrom);
   }
 
   /**
@@ -339,7 +339,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @return {string}
    */
   getCanonicalUrlForDiscourse(pageIndex: number): string {
-    const indexOfLastColon = getIndexInURL(':', pageIndex);
+    const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
     if (indexOfLastColon > 0) {
       return window.location.href.substring(0, indexOfLastColon);
     } else {

@@ -79,19 +79,21 @@ export class ContainerComponent extends Entry {
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
 
-    if (getIndexOfPage('/my-tools') === -1) {
+    if (this.getIndexInURL('/my-tools') === -1) {
       let trimmedURL = window.location.href;
 
       // Change /tools or /containers
-      let pageIndex = getIndexOfPage('/containers');
+      let pageIndex = this.getIndexInURL('/containers');
       if (pageIndex === -1) {
-        pageIndex = getIndexOfPage('/tools');
+        pageIndex = this.getIndexInURL('/tools');
         this.switchToolsToContainers();
       }
 
       // Decode the URL
       this.decodeURL(this._toolType);
-      this.trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
+
+      // Get the URL for discourse
+      trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
 
       // Initialize discourse urls
       (<any>window).DiscourseEmbed = {
