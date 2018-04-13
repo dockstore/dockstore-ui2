@@ -78,7 +78,7 @@ export class ContainerComponent extends Entry {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
-    this.redirectAndCallDiscourse();
+    this.redirectAndCallDiscourse('/my-tools');
   }
 
   public getDefaultVersionName(): string {
@@ -303,28 +303,12 @@ export class ContainerComponent extends Entry {
      this.location.go(newPath);
    }
 
-   redirectAndCallDiscourse(): void {
-     if (this.getIndexInURL('/my-tools') === -1) {
-       let trimmedURL = window.location.href;
-
-       // Change /tools or /containers
-       let pageIndex = this.getIndexInURL('/containers');
-       if (pageIndex === -1) {
-         pageIndex = this.getIndexInURL('/tools');
-         this.switchToolsToContainers();
-       }
-
-       // Decode the URL
-       this.decodeURL(this._toolType);
-
-       // Get the URL for discourse
-       trimmedURL = this.getCanonicalUrlForDiscourse(pageIndex);
-
-       // Initialize discourse urls
-       (<any>window).DiscourseEmbed = {
-         discourseUrl: Dockstore.DISCOURSE_URL,
-         discourseEmbedUrl: decodeURIComponent(trimmedURL)
-       };
+   getPageIndex(): number {
+     let pageIndex = this.getIndexInURL('/containers');
+     if (pageIndex === -1) {
+       pageIndex = this.getIndexInURL('/tools');
+       this.switchToolsToContainers();
      }
+     return pageIndex;
    }
 }

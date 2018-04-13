@@ -19,6 +19,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { Location } from '@angular/common';
 
+import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -334,22 +335,36 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Returns the URL to send to Discourse
-   * No encoding, version, or query params (tabs)
-   * @return {string}
+   * Deals with redirecting to canonical URL and running discourse call
+   * @return {void}
    */
-  getCanonicalUrlForDiscourse(pageIndex: number): string {
-    const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
-    if (indexOfLastColon > 0) {
-      return window.location.href.substring(0, indexOfLastColon);
-    } else {
-      return null;
+  redirectAndCallDiscourse(myPage: string): void {
+    if (this.getIndexInURL(myPage) === -1) {
+      let trimmedURL = window.location.href;
+
+      // Decode the URL
+      this.decodeURL(this._toolType);
+
+      // Get index of /containers or /workflows
+      const pageIndex = this.getPageIndex();
+
+      // Get the URL for discourse
+      const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
+      if (indexOfLastColon > 0) {
+        trimmedURL = window.location.href.substring(0, indexOfLastColon);
+      }
+
+      // Initialize discourse urls
+      (<any>window).DiscourseEmbed = {
+        discourseUrl: Dockstore.DISCOURSE_URL,
+        discourseEmbedUrl: decodeURIComponent(trimmedURL)
+      };
     }
   }
 
   /**
-   * Deals with redirecting to canonical URL and running discourse call
-   * @return {void}
+   * Gets the index of /containers or /workflows from the URL
+   * @return {number}
    */
-  abstract redirectAndCallDiscourse(): void;
+  abstract getPageIndex(): number;
 }
