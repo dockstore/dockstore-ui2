@@ -24,7 +24,7 @@ export class ErrorService {
     setErrorAlert(error: HttpErrorResponse) {
         let errorObj = null;
         if (error) {
-          if (error.status == 0) {
+          if (error.status === 0) {
             // Error code of 0 means the webservice is not responding, likely down
             errorObj = {
               message: 'The webservice is currently down, possibly due to load. Please wait and try again later.'
