@@ -40,6 +40,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
 
   content: string;
   contentHighlighted: boolean;
+  public descriptorPath: string;
+  public filePath: string;
   constructor(private highlightJsService: HighlightJsService,
               private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
@@ -58,6 +60,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
+    this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
+    this.filePath = this.getFilePath(this.currentFile);
   }
   ngAfterViewChecked() {
     if (this.contentHighlighted) {
@@ -66,12 +70,12 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
     }
   }
 
-  getDescriptorPath(entrytype): string {
+  private getDescriptorPath(entrytype): string {
     return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
 
   // Get the path of the file
-  getFilePath(file): string {
+  private getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 }

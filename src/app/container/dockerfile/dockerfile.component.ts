@@ -40,7 +40,7 @@ export class DockerfileComponent implements AfterViewChecked {
   filepath: string;
   nullContent: boolean;
   contentHighlighted: boolean;
-
+  public containerFilePath: string;
   constructor(private highlightJsService: HighlightJsService,
               public fileService: FileService,
               private elementRef: ElementRef,
@@ -57,6 +57,7 @@ export class DockerfileComponent implements AfterViewChecked {
             this.content = file.content;
             this.contentHighlighted = true;
             this.filepath = file.path;
+            this.containerFilePath = this.getContainerfilePath();
           }
         );
     } else {
@@ -71,7 +72,7 @@ export class DockerfileComponent implements AfterViewChecked {
     }
   }
 
-  getDockerfilePath(): string {
+  private getContainerfilePath(): string {
     const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
     const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedVersion.name + '/containerfile';
     return basepath + customPath;

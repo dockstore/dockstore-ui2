@@ -42,6 +42,8 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
     this.onVersionChange(value);
   }
 
+  public descriptorPath: string;
+  public filePath: string;
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private descriptorsService: ToolDescriptorService,
@@ -61,6 +63,8 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
+    this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
+    this.filePath = this.getFilePath(this.currentFile);
   }
 
   ngAfterViewChecked() {
@@ -70,12 +74,12 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
     }
   }
 
-  getDescriptorPath(descType): string {
+  private getDescriptorPath(descType): string {
     return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'tool');
   }
 
   // Get the path of the file
-  getFilePath(file): string {
+  private getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 
