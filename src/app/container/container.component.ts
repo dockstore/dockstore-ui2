@@ -78,18 +78,7 @@ export class ContainerComponent extends Entry {
     super(trackLoginService, providerService, router,
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'containers';
-
-    let trimmedURL = window.location.href;
-    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('containers'));
-    if (indexOfLastColon > 0) {
-      trimmedURL = window.location.href.substring(0, indexOfLastColon);
-    }
-
-    // Initialize discourse urls
-    (<any>window).DiscourseEmbed = {
-      discourseUrl: Dockstore.DISCOURSE_URL,
-      discourseEmbedUrl: decodeURIComponent(trimmedURL)
-    };
+    this.redirectAndCallDiscourse('/my-tools');
   }
 
   public getDefaultVersionName(): string {
@@ -303,4 +292,23 @@ export class ContainerComponent extends Entry {
      }
    }
 
+   /**
+    * Will change the /tools in the current URL with /containers
+    * @return {void}
+    */
+   switchToolsToContainers(): void {
+     const url = window.location.href.replace('/tools', '/containers');
+     const toolsIndex = window.location.href.indexOf('/tools');
+     const newPath = url.substring(toolsIndex);
+     this.location.go(newPath);
+   }
+
+   getPageIndex(): number {
+     let pageIndex = this.getIndexInURL('/containers');
+     if (pageIndex === -1) {
+       pageIndex = this.getIndexInURL('/tools');
+       this.switchToolsToContainers();
+     }
+     return pageIndex;
+   }
 }

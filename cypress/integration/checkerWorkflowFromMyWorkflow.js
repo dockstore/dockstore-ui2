@@ -27,7 +27,7 @@ describe('Checker workflow test from my-workflows', function() {
     describe('Should be able to register and publish a checker workflow from a workflow', function() {
         it('visit a tool and have the correct buttons and be able to register a checker workflow', function() {
             getWorkflow();
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('be.visible').click()
@@ -67,7 +67,7 @@ describe('Checker workflow test from my-workflows', function() {
         })
         it('visit the workflow and have its publish/unpublish reflected in the checker workflow', function() {
             // The url should automatically change to include the workflow full path
-            cy.url().should('eq', 'http://localhost:4200/my-workflows/github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             getWorkflow();
             // The url should automatically change to include the workflow full path
             // In the parent tool right now
