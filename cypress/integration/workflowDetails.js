@@ -1,9 +1,15 @@
+describe('Variations of URL', function() {
+  require('./helper.js')
+  it('Should redirect to canonical url (encoding)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
+  });
+});
 
 describe('Dockstore Workflow Details', function() {
   require('./helper.js')
 	beforeEach(function () {
      cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l")
-     cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
      cy
       .get('tab')
       .should('have.length', 8) // 8 Tabs include all top level tabs plus 2 tabs in the files tab

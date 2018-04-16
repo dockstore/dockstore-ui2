@@ -1,9 +1,23 @@
+describe('Variations of URL', function() {
+  require('./helper.js')
+  it('Should redirect to canonical url (encoding)', function() {
+    cy.visit(String(global.baseUrl) + "/containers/quay.io%2FA2%2Fa")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+  });
+  it('Should redirect to canonical url (tools)', function() {
+    cy.visit(String(global.baseUrl) + "/tools/quay.io/A2/a")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+  });
+  it('Should redirect to canonical url (encoding + tools)', function() {
+    cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+  });
+});
+
 describe('Dockstore Tool Details of quay.io/A2/a', function() {
     require('./helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
-        cy.visit(String(global.baseUrl) + "/containers/quay.io%2FA2%2Fa")
-        cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
         cy
             .get('tab')
             .should('have.length', 7)
