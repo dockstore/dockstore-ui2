@@ -19,6 +19,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { Location } from '@angular/common';
 
+import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -305,4 +306,65 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
     return recentVersions;
   }
+
+  /**
+   * Will decode the URL
+   * @return {void}
+   */
+  decodeURL(type: string): void {
+    const url = decodeURIComponent(window.location.href);
+    const containersIndex = this.getIndexInURL('/' + type);
+    const newPath = url.substring(containersIndex);
+    this.location.go(newPath);
+  }
+
+  /**
+   * Determine the index of a string in the current URL
+   * @return {number}
+   */
+  getIndexInURL(page: string): number {
+    return window.location.href.indexOf(page);
+  }
+
+  /**
+   * Determine the index of a string in the current URL, starting at an offset
+   * @return {number}
+   */
+  getIndexInURLFrom(page: string, startFrom: number): number {
+    return window.location.href.indexOf(page, startFrom);
+  }
+
+  /**
+   * Deals with redirecting to canonical URL and running discourse call
+   * @return {void}
+   */
+  redirectAndCallDiscourse(myPage: string): void {
+    if (this.getIndexInURL(myPage) === -1) {
+      let trimmedURL = window.location.href;
+
+      // Decode the URL
+      this.decodeURL(this._toolType);
+
+      // Get index of /containers or /workflows
+      const pageIndex = this.getPageIndex();
+
+      // Get the URL for discourse
+      const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
+      if (indexOfLastColon > 0) {
+        trimmedURL = window.location.href.substring(0, indexOfLastColon);
+      }
+
+      // Initialize discourse urls
+      (<any>window).DiscourseEmbed = {
+        discourseUrl: Dockstore.DISCOURSE_URL,
+        discourseEmbedUrl: decodeURIComponent(trimmedURL)
+      };
+    }
+  }
+
+  /**
+   * Gets the index of /containers or /workflows from the URL
+   * @return {number}
+   */
+  abstract getPageIndex(): number;
 }

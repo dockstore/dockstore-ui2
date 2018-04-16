@@ -56,23 +56,23 @@ describe('Dropdown test', function() {
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
             everythingOk();
-            cy.visit('http://localhost:4200/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+            cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
             everythingOk();
-            cy.visit('http://localhost:4200/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+            cy.visit(String(global.baseUrl) + '/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
             everythingOk();
-            cy.visit('http://localhost:4200/auth/potato.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+            cy.visit(String(global.baseUrl) + '/auth/potato.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
             everythingOk();
-            cy.visit('http://localhost:4200/auth/github.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+            cy.visit(String(global.baseUrl) + '/auth/github.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
             everythingOk();
-            cy.visit('http://localhost:4200/auth/quay.io?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+            cy.visit(String(global.baseUrl) + '/auth/quay.io?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
             everythingOk();
