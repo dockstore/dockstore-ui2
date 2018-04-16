@@ -15,7 +15,7 @@ describe('Checker workflow test from my-workflows', function() {
             .children(':nth-child(2)')
             .contains('a', 'l')
             .click()
-
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('be.visible').click()
@@ -66,7 +66,6 @@ describe('Checker workflow test from my-workflows', function() {
                 .children(':nth-child(2)')
                 .contains('a', 'l')
                 .click()
-
             // In the parent tool right now
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#publishButton').should('be.visible').should('contain', 'Unpublish').click()

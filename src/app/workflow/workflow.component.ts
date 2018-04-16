@@ -70,19 +70,7 @@ export class WorkflowComponent extends Entry {
       stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'workflows';
     this.location = location;
-
-    let trimmedURL = window.location.href;
-    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('workflows'));
-    if (indexOfLastColon > 0) {
-      trimmedURL = window.location.href.substring(0, indexOfLastColon);
-    }
-
-    // Initialize discourse urls
-    (<any>window).DiscourseEmbed = {
-      discourseUrl: Dockstore.DISCOURSE_URL,
-      discourseEmbedUrl: decodeURIComponent(trimmedURL)
-    };
-
+    this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
@@ -317,5 +305,10 @@ export class WorkflowComponent extends Entry {
      if (this.workflow != null) {
        this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
      }
+   }
+
+   getPageIndex(): number {
+     const pageIndex = this.getIndexInURL('/workflows');
+     return pageIndex;
    }
 }

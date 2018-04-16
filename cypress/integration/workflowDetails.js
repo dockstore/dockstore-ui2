@@ -1,13 +1,35 @@
+describe('Variations of URL', function() {
+  require('./helper.js')
+  it('Should redirect to canonical url (encoding)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
+  });
+  it('Should redirect to canonical url (version)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l:master")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
+  });
+  it('Should redirect to canonical url (tab)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
+  });
+  it('Should redirect to canonical url (version + tab)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l:master?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
+  });
+  it('Should redirect to canonical url (encoding + version + tab)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl:master?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
+  });
+});
 
 describe('Dockstore Workflow Details', function() {
   require('./helper.js')
 	beforeEach(function () {
      cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l")
-     cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
      cy
       .get('tab')
       .should('have.length', 8) // 8 Tabs include all top level tabs plus 2 tabs in the files tab
-
+     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
   });
 
 	it('should not show Edit Button', function() {
@@ -24,6 +46,7 @@ describe('Dockstore Workflow Details', function() {
     .contains('Labels')
     .parent()
     .click()
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=labels')
   });
 
   it('Change tab to versions', function() {
@@ -32,6 +55,7 @@ describe('Dockstore Workflow Details', function() {
     .contains('Versions')
     .parent()
     .click()
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=versions')
   });
 
   describe('Change tab to files', function() {
@@ -41,6 +65,7 @@ describe('Dockstore Workflow Details', function() {
       .contains('Files')
       .parent()
       .click()
+      cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
     });
 
     it('Should have Descriptor files tab selected', function() {
@@ -82,6 +107,7 @@ describe('Dockstore Workflow Details', function() {
     .contains('Tools')
     .parent()
     .click()
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=tools')
   });
 
   describe('Change tab to dag', function () {
@@ -91,6 +117,7 @@ describe('Dockstore Workflow Details', function() {
       .contains('DAG')
       .parent()
       .click()
+      cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=dag')
     });
 
     it('Change to fullscreen and back', function() {
