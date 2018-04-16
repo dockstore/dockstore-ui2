@@ -73,7 +73,10 @@ export class RegisterToolService {
         let errorObj = null;
         if (error) {
           if (error.status === 0) {
-            errorObj = { message: 'The webservice is currently down, possibly due to load. Please wait and try again later.', errorDetails: '' }
+            errorObj = {
+              message: 'The webservice is currently down, possibly due to load. Please wait and try again later.',
+              errorDetails: ''
+            };
           } else {
             errorObj = {
                 message: 'The webservice encountered an error trying to create this ' +

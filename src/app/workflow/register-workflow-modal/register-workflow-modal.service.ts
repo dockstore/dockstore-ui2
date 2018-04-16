@@ -93,7 +93,8 @@ export class RegisterWorkflowModalService {
             }, error =>  {
               if (error) {
                 if (error.status === 0) {
-                  this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. Please wait and try again later.', '');
+                  this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
+                  'Please wait and try again later.', '');
                 } else {
                   this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
                     'workflow, please ensure that the workflow attributes are ' +
