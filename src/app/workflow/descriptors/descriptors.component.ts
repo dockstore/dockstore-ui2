@@ -13,18 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowDescriptorService } from './workflow-descriptor.service';
-import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-
-import { WorkflowService } from '../../shared/workflow.service';
-
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { Workflow } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -40,12 +38,15 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
 
   content: string;
   contentHighlighted: boolean;
+  public descriptorPath: string;
+  public filePath: string;
   constructor(private highlightJsService: HighlightJsService,
               private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
               private workflowService: WorkflowService,
               private elementRef: ElementRef) {
     super();
+    this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
@@ -58,6 +59,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
+    this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
+    this.filePath = this.getFilePath(this.currentFile);
   }
   ngAfterViewChecked() {
     if (this.contentHighlighted) {
@@ -66,12 +69,12 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
     }
   }
 
-  getDescriptorPath(entrytype): string {
+  private getDescriptorPath(entrytype): string {
     return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
 
   // Get the path of the file
-  getFilePath(file): string {
+  private getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 }

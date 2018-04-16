@@ -13,19 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-
 import { ContainerService } from '../../shared/container.service';
-import { ToolDescriptorService } from './tool-descriptor.service';
-
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { DockstoreTool } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolDescriptorService } from './tool-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -42,12 +39,15 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
     this.onVersionChange(value);
   }
 
+  public descriptorPath: string;
+  public filePath: string;
   constructor(private containerService: ContainerService,
               private highlightJsService: HighlightJsService,
               private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
               private elementRef: ElementRef) {
     super();
+    this.published$ = this.containerService.toolIsPublished$;
   }
 
   getDescriptors(version): Array<any> {
@@ -61,6 +61,8 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
+    this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
+    this.filePath = this.getFilePath(this.currentFile);
   }
 
   ngAfterViewChecked() {
@@ -70,12 +72,12 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
     }
   }
 
-  getDescriptorPath(descType): string {
+  private getDescriptorPath(descType): string {
     return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'tool');
   }
 
   // Get the path of the file
-  getFilePath(file): string {
+  private getFilePath(file): string {
     return this.fileService.getFilePath(file);
   }
 

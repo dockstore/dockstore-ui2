@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ga4ghPath } from './../../shared/constants';
 
@@ -40,13 +41,15 @@ export class DockerfileComponent implements AfterViewChecked {
   filepath: string;
   nullContent: boolean;
   contentHighlighted: boolean;
-
+  public published$: Observable<boolean>;
+  public containerFilePath: string;
   constructor(private highlightJsService: HighlightJsService,
               public fileService: FileService,
               private elementRef: ElementRef,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
     this.filepath = '/Dockerfile';
+    this.published$ = this.containerService.toolIsPublished$;
   }
 
   reactToVersion(): void {
@@ -57,6 +60,7 @@ export class DockerfileComponent implements AfterViewChecked {
             this.content = file.content;
             this.contentHighlighted = true;
             this.filepath = file.path;
+            this.containerFilePath = this.getContainerfilePath();
           }
         );
     } else {
@@ -71,9 +75,9 @@ export class DockerfileComponent implements AfterViewChecked {
     }
   }
 
-  getDockerfilePath(): string {
+  private getContainerfilePath(): string {
     const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
-    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedVersion.name + '/dockerfile';
+    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + this._selectedVersion.name + '/containerfile';
     return basepath + customPath;
   }
 
