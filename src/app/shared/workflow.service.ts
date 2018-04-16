@@ -27,12 +27,20 @@ export class WorkflowService {
   workflowId$: Observable<number>;
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
+  workflowIsPublished$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor() {
     this.workflowId$ = this.workflow$.map((workflow: Workflow) => {
       if (workflow) {
         return workflow.id;
+      } else {
+        return null;
+      }
+    });
+    this.workflowIsPublished$ = this.workflow$.map((workflow: Workflow) => {
+      if (workflow) {
+        return workflow.is_published;
       } else {
         return null;
       }

@@ -49,9 +49,7 @@ export class DockerfileComponent implements AfterViewChecked {
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
     this.filepath = '/Dockerfile';
-    this.published$ = this.containerService.tool$.distinctUntilChanged().map((tool: DockstoreTool) => {
-      return tool.is_published;
-    });
+    this.published$ = this.containerService.toolIsPublished$;
   }
 
   reactToVersion(): void {

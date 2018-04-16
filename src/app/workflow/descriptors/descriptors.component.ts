@@ -46,9 +46,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
               private workflowService: WorkflowService,
               private elementRef: ElementRef) {
     super();
-    this.published$ = this.workflowService.workflow$.distinctUntilChanged().map((workflow: Workflow) => {
-      return workflow.is_published;
-    });
+    this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
