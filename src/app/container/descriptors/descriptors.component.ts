@@ -20,7 +20,7 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 import { ContainerService } from '../../shared/container.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { StateService } from '../../shared/state.service';
+import { DockstoreTool } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptorService } from './tool-descriptor.service';
 
@@ -45,9 +45,11 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
               private highlightJsService: HighlightJsService,
               private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
-              private elementRef: ElementRef, private stateService: StateService) {
+              private elementRef: ElementRef) {
     super();
-    this.publicPage$ = this.stateService.publicPage$;
+    this.published$ = this.containerService.tool$.distinctUntilChanged().map((tool: DockstoreTool) => {
+      return tool.is_published;
+    });
   }
 
   getDescriptors(version): Array<any> {

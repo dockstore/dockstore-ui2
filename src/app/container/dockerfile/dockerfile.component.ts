@@ -20,8 +20,7 @@ import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highl
 import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
-import { StateService } from '../../shared/state.service';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ga4ghPath } from './../../shared/constants';
 
@@ -42,15 +41,17 @@ export class DockerfileComponent implements AfterViewChecked {
   filepath: string;
   nullContent: boolean;
   contentHighlighted: boolean;
-  public publicPage$: Observable<boolean>;
+  public published$: Observable<boolean>;
   public containerFilePath: string;
   constructor(private highlightJsService: HighlightJsService,
               public fileService: FileService,
-              private elementRef: ElementRef, private stateService: StateService,
+              private elementRef: ElementRef,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
     this.filepath = '/Dockerfile';
-    this.publicPage$ = this.stateService.publicPage$;
+    this.published$ = this.containerService.tool$.distinctUntilChanged().map((tool: DockstoreTool) => {
+      return tool.is_published;
+    });
   }
 
   reactToVersion(): void {

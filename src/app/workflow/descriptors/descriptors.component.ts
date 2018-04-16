@@ -13,19 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowDescriptorService } from './workflow-descriptor.service';
-import { Component, Input, ElementRef, OnInit, AfterViewChecked } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-
-import { WorkflowService } from '../../shared/workflow.service';
-
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { Workflow } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { StateService } from '../../shared/state.service';
+import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -47,9 +44,11 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
               private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
               private workflowService: WorkflowService,
-              private elementRef: ElementRef, private stateService: StateService) {
+              private elementRef: ElementRef) {
     super();
-    this.publicPage$ = this.stateService.publicPage$;
+    this.published$ = this.workflowService.workflow$.distinctUntilChanged().map((workflow: Workflow) => {
+      return workflow.is_published;
+    });
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
