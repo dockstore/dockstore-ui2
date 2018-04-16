@@ -25,6 +25,7 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { StateService } from '../../shared/state.service';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -46,8 +47,9 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
               private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
               private workflowService: WorkflowService,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef, private stateService: StateService) {
     super();
+    this.publicPage$ = this.stateService.publicPage$;
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);

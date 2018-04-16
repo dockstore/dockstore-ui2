@@ -23,7 +23,7 @@
   </div>
   <div *ngIf="!nullContent && _selectedVersion?.valid" class="code-copy">
     <div class="code-copy-button btn-group">
-      <a download="{{filepath}}" [href]="containerFilePath" class="btn btn-default" type="button" title="{{filepath}}">
+      <a *ngIf="(publicPage$ | async)" download="{{filepath}}" [href]="containerFilePath" class="btn btn-default" type="button" title="{{filepath}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
       <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'dockerfile'}"

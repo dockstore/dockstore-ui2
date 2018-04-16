@@ -14,11 +14,13 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
+import { StateService } from '../../shared/state.service';
 import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ga4ghPath } from './../../shared/constants';
@@ -40,13 +42,15 @@ export class DockerfileComponent implements AfterViewChecked {
   filepath: string;
   nullContent: boolean;
   contentHighlighted: boolean;
+  public publicPage$: Observable<boolean>;
   public containerFilePath: string;
   constructor(private highlightJsService: HighlightJsService,
               public fileService: FileService,
-              private elementRef: ElementRef,
+              private elementRef: ElementRef, private stateService: StateService,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
     this.filepath = '/Dockerfile';
+    this.publicPage$ = this.stateService.publicPage$;
   }
 
   reactToVersion(): void {

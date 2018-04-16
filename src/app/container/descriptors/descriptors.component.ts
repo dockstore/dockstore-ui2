@@ -13,19 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-
 import { ContainerService } from '../../shared/container.service';
-import { ToolDescriptorService } from './tool-descriptor.service';
-
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { StateService } from '../../shared/state.service';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolDescriptorService } from './tool-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -48,8 +45,9 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
               private highlightJsService: HighlightJsService,
               private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef, private stateService: StateService) {
     super();
+    this.publicPage$ = this.stateService.publicPage$;
   }
 
   getDescriptors(version): Array<any> {
