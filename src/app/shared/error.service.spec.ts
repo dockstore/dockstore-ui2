@@ -34,9 +34,9 @@ describe('ErrorService', () => {
         const errorStub = new HttpErrorResponse(baseErrorStub);
         service.setErrorAlert(errorStub);
         const errorObj: any = {
-            message: 'The webservice encountered an error trying to create/modify.',
-            errorDetails: '[HTTP ' + '400' + '] ' + 'statusText' + ': ' +
-            'error'
+          message: 'The webservice encountered an error trying to create/modify.',
+          errorDetails: '[HTTP ' + '400' + '] ' + 'statusText' + ': ' +
+          'error'
         };
         console.log(service.errorObj$.getValue());
         console.log(errorObj);
