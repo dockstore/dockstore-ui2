@@ -12,6 +12,22 @@ describe('Variations of URL', function() {
     cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
   });
+  it('Should redirect to canonical url (version)', function() {
+    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:master")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+  });
+  it('Should redirect to canonical url (tab)', function() {
+    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+  });
+  it('Should redirect to canonical url (tab + version)', function() {
+    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:master?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+  });
+  it('Should redirect to canonical url (tools + encoding + tab + version)', function() {
+    cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa:master?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+  });
 });
 
 describe('Dockstore Tool Details of quay.io/A2/a', function() {

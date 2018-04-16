@@ -4,6 +4,22 @@ describe('Variations of URL', function() {
     cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
   });
+  it('Should redirect to canonical url (version)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l:master")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
+  });
+  it('Should redirect to canonical url (tab)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
+  });
+  it('Should redirect to canonical url (version + tab)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l:master?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
+  });
+  it('Should redirect to canonical url (encoding + version + tab)', function() {
+    cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl:master?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
+  });
 });
 
 describe('Dockstore Workflow Details', function() {
