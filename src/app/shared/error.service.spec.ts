@@ -34,7 +34,9 @@ describe('ErrorService', () => {
         const errorStub = new HttpErrorResponse(baseErrorStub);
         service.setErrorAlert(errorStub);
         const errorObj: any = {
-            message: 'The webservice is currently down, possibly due to load. Please wait and try again later.'
+          message: 'The webservice encountered an error trying to create/modify.',
+          errorDetails: '[HTTP ' + '400' + '] ' + 'statusText' + ': ' +
+          'error'
         };
         console.log(service.errorObj$.getValue());
         console.log(errorObj);
