@@ -25,9 +25,7 @@ export class ErrorService {
         let errorObj = null;
         if (error) {
             errorObj = {
-                message: 'The webservice encountered an error trying to create/modify.',
-                errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error.error
+                message: 'The webservice is currently down, possibly due to load. Please wait and try again later.'
             };
         }
         this.errorObj$.next(errorObj);
