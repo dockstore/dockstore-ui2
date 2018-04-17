@@ -128,7 +128,7 @@
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               WDL Test Parameter File(s):
             </label>
-            <div class="col-sm-9 col-md-9 col-lg-9 form-margin" *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
+            <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
               <div class="input-group">
                 <input [ngClass]="{ 'input-right-button' : editMode, 'input-no-button' : !editMode }" type="text" class="form-control" name="unsavedWDLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedWDLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" disabled ng-class="editMode ? 'test_parameter_input' : ''" />
                 <span class="input-group-btn">
