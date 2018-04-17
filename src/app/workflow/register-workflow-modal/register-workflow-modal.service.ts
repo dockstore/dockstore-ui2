@@ -90,10 +90,19 @@ export class RegisterWorkflowModalService {
                     this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
                 }, error => this.stateService.setRefreshMessage(null));
-            }, error => this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
-                'workflow, please ensure that the workflow attributes are ' +
-                'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error.error)
+            }, error =>  {
+              if (error) {
+                if (error.status === 0) {
+                  this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
+                  'Please wait and try again later.', '');
+                } else {
+                  this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
+                    'workflow, please ensure that the workflow attributes are ' +
+                    'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+                    error.error);
+                  }
+                }
+              }
             );
     }
 
