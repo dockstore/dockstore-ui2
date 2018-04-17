@@ -72,6 +72,12 @@ export class RegisterToolService {
     setToolRegisterError(error: HttpErrorResponse) {
         let errorObj = null;
         if (error) {
+          if (error.status === 0) {
+            errorObj = {
+              message: 'The webservice is currently down, possibly due to load. Please wait and try again later.',
+              errorDetails: ''
+            };
+          } else {
             errorObj = {
                 message: 'The webservice encountered an error trying to create this ' +
                 'tool, please ensure that the tool attributes are ' +
@@ -79,6 +85,7 @@ export class RegisterToolService {
                 errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
                 error.error
             };
+          }
         }
         this.toolRegisterError.next(errorObj);
     }
