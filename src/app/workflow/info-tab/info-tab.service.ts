@@ -86,6 +86,24 @@ export class InfoTabService {
         });
     }
 
+    /**
+     * This updates the workflow without refreshing
+     *
+     * @param {Workflow} workflow The updated workflow to send
+     * @memberof InfoTabService
+     */
+    update(workflow: Workflow) {
+        const message = 'Descriptor Type';
+        this.stateService.setRefreshMessage('Updating ' + message + '...');
+        this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe((updatedWorkflow: Workflow) => {
+            this.workflowService.replaceWorkflow(this.workflows, updatedWorkflow);
+            this.refreshService.handleSuccess(message);
+        }, error => {
+            this.refreshService.handleError(message, error);
+        });
+
+    }
+
     get workflow(): ExtendedWorkflow {
         return this.currentWorkflow;
     }
