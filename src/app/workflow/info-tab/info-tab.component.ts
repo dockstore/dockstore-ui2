@@ -85,6 +85,10 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.updateAndRefresh(this.workflow);
   }
 
+  update() {
+    this.infoTabService.update(this.workflow);
+  }
+
  /**
    * Cancel button function
    *
