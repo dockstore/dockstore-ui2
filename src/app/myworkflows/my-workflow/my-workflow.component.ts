@@ -18,11 +18,12 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
+import { MyEntry } from '../../shared/my-entry';
+import { Workflow } from '../../shared/swagger';
 import { AccountsService } from './../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from './../../loginComponents/token.service';
 import { UserService } from './../../loginComponents/user.service';
 import { DockstoreService } from './../../shared/dockstore.service';
-import { TokenSource } from './../../shared/enum/token-source.enum';
 import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
 import { ProviderService } from './../../shared/provider.service';
 import { RefreshService } from './../../shared/refresh.service';
@@ -41,123 +42,196 @@ import { MyWorkflowsService } from './../myworkflows.service';
   providers: [MyWorkflowsService, ProviderService,
     DockstoreService]
 })
-export class MyWorkflowComponent implements OnInit {
-  hasGitHubToken = true;
-  orgWorkflows = [];
-  oneAtATime = true;
+
+export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: any;
-  user: any;
   workflows: any;
+  readonly pageName = '/my-workflows';
   public refreshMessage: string;
-  constructor(private myworkflowService: MyWorkflowsService, private configuration: Configuration,
-    private usersService: UsersService, private userService: UserService, private tokenService: TokenService,
-    private workflowService: WorkflowService, private authService: AuthService, private accountsService: AccountsService,
+  public orgWorkflowsObject: Array<OrgWorkflowObject>;
+  constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
+    private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
+    private workflowService: WorkflowService, protected authService: AuthService, protected accountsService: AccountsService,
     private refreshService: RefreshService, private stateService: StateService, private router: Router, private location: Location,
     private registerWorkflowModalService: RegisterWorkflowModalService, private urlResolverService: UrlResolverService) {
-  }
-
-  link() {
-    this.accountsService.link(TokenSource.GITHUB);
+    super(accountsService, authService, configuration, tokenService);
   }
 
   ngOnInit() {
-    localStorage.setItem('page', '/my-workflows');
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
-    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
+    /**
+     * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
+     * It is the only section of code that does not exist in my-tools
+     */
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
-        this.selectWorkflow(foundWorkflow);
+        if (this.orgWorkflowsObject) {
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
+          this.selectEntry(foundWorkflow);
+        }
       }
     });
+    this.commonMyEntriesOnInit();
     this.workflowService.setWorkflow(null);
     this.workflowService.workflow$.subscribe(
       workflow => {
         this.workflow = workflow;
-        this.setIsFirstOpen();
+        if (workflow) {
+          this.setIsFirstOpen();
+          this.updateActiveTab();
+        }
       }
     );
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userWorkflows(user.id).subscribe(workflows => {
+        this.usersService.userWorkflows(user.id).first().subscribe(workflows => {
           this.workflowService.setWorkflows(workflows);
         });
       }
     });
-    this.workflowService.workflows$.subscribe(workflows => {
-      this.workflows = workflows;
-      if (this.user) {
+    this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
+      if (workflows) {
+        this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
-        this.workflowService.setNsWorkflows(sortedWorkflows);
-      }
-    });
-    this.workflowService.nsWorkflows$.subscribe(nsWorkflows => {
-      this.orgWorkflows = nsWorkflows;
-      if (this.orgWorkflows && this.orgWorkflows.length > 0) {
-        const foundWorkflow = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflows);
-        const theFirstWorkflow = this.orgWorkflows[0].workflows[0];
-        if (foundWorkflow) {
-          this.selectWorkflow(foundWorkflow);
+        /* For the first initial time, set the first tool to be the selected one */
+        if (sortedWorkflows && sortedWorkflows.length > 0) {
+          this.orgWorkflowsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedWorkflows);
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
+          if (foundWorkflow) {
+            this.selectEntry(foundWorkflow);
+          } else {
+            const publishedWorkflow = this.getFirstPublishedEntry(sortedWorkflows);
+            if (publishedWorkflow) {
+              this.selectEntry(publishedWorkflow);
+            } else {
+              const theFirstWorkflow = sortedWorkflows[0].workflows[0];
+              this.selectEntry(theFirstWorkflow);
+            }
+          }
         } else {
-          this.selectWorkflow(theFirstWorkflow);
+          this.selectEntry(null);
         }
-      } else {
-        this.selectWorkflow(null);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
-  private goToWorkflow(workflow: ExtendedWorkflow): void {
-    this.workflowService.setWorkflow(workflow);
-    this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
-  }
-
-  private findWorkflowFromPath(path: string, orgWorkflows: any[]): ExtendedWorkflow {
-    let matchingWorkflow: ExtendedWorkflow;
-    orgWorkflows.forEach((orgWorkflow)  => {
-      orgWorkflow.workflows.forEach(workflow => {
-        if (workflow.full_workflow_path === path) {
-          matchingWorkflow = workflow;
+  protected updateActiveTab(): void {
+    if (this.orgWorkflowsObject) {
+      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
+        if (this.workflow) {
+          if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+            continue;
+          }
+          if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.orgWorkflowsObject[i].activeTab = 'published';
+            continue;
+          }
+          if (this.orgWorkflowsObject[i].published.length > 0) {
+            this.orgWorkflowsObject[i].activeTab = 'published';
+          } else {
+            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+          }
         }
-      });
-    });
-    return matchingWorkflow;
+      }
+    }
   }
 
-  setIsFirstOpen() {
-    if (this.orgWorkflows && this.workflow) {
-      for (const orgObj of this.orgWorkflows) {
-        if (this.containSelectedWorkflow(orgObj)) {
-          orgObj.isFirstOpen = true;
+  protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
+    const orgWorkflowsObject: Array<OrgWorkflowObject> = [];
+    for (let i = 0; i < nsWorkflows.length; i++) {
+      const orgWorkflowObject: OrgWorkflowObject = {
+        sourceControl: '',
+        isFirstOpen: false,
+        organization: '',
+        published: [],
+        unpublished: [],
+        activeTab: 'published'
+      };
+      const nsWorkflow: Array<Workflow> = nsWorkflows[i].workflows;
+      orgWorkflowObject.isFirstOpen = nsWorkflows[i].isFirstOpen;
+      orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
+      orgWorkflowObject.organization = nsWorkflows[i].organization;
+      orgWorkflowObject.published = nsWorkflow.filter((workflow: Workflow) => {
+        return workflow.is_published;
+      });
+      orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: Workflow) => {
+        return !workflow.is_published;
+      });
+      orgWorkflowsObject.push(orgWorkflowObject);
+    }
+    return orgWorkflowsObject;
+  }
+
+  protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
+    for (let i = 0; i < orgWorkflows.length; i++) {
+      const foundWorkflow = orgWorkflows[i]['workflows'].find((workflow: Workflow) => {
+        return workflow.is_published === true;
+      });
+      if (foundWorkflow) {
+        return foundWorkflow;
+      }
+    }
+    return null;
+  }
+
+  protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
+    let matchingWorkflow: ExtendedWorkflow;
+    for (let i = 0; i < orgWorkflows.length; i++) {
+      matchingWorkflow = orgWorkflows[i].published.find((workflow: Workflow) => workflow.full_workflow_path === path);
+      if (matchingWorkflow) {
+        return matchingWorkflow;
+      }
+      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: Workflow) => workflow.full_workflow_path === path);
+      if (matchingWorkflow) {
+        return matchingWorkflow;
+      }
+    }
+    return null;
+  }
+
+  setIsFirstOpen(): void {
+    if (this.orgWorkflowsObject && this.workflow) {
+      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
+        if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.orgWorkflowsObject[i].isFirstOpen = true;
+          break;
+        }
+        if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.orgWorkflowsObject[i].isFirstOpen = true;
           break;
         }
       }
     }
   }
-  containSelectedWorkflow(orgObj) {
-    const workflows: Array<any> = orgObj.workflows;
-    if (workflows.find(workflow => workflow.id === this.workflow.id)) {
-      return true;
-    } else {
-      return false;
+
+  selectEntry(workflow: ExtendedWorkflow): void {
+    this.workflowService.setWorkflow(workflow);
+    if (workflow) {
+      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
     }
   }
-  selectWorkflow(workflow: ExtendedWorkflow) {
-    this.workflowService.setWorkflow(workflow);
-  }
 
-  setModalGitURL(gitURL: string) {
+  setRegisterEntryModalInfo(gitURL: string): void {
     this.registerWorkflowModalService.setWorkflowRepository(gitURL);
   }
 
-  showModal() {
+  showRegisterEntryModal(): void {
     this.registerWorkflowModalService.setIsModalShown(true);
   }
 
-  refreshAllWorkflows(): any {
+  refreshAllEntries(): void {
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
+
+}
+export interface OrgWorkflowObject {
+  sourceControl: string;
+  organization: string;
+  isFirstOpen: boolean;
+  published: Array<Workflow>;
+  unpublished: Array<Workflow>;
+  activeTab: 'unpublished' | 'published';
 }
 

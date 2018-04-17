@@ -173,7 +173,7 @@ export class QueryBuilderService {
         if (values.toString().length > 0) {
             if (advancedSearchObject && !advancedSearchObject.toAdvanceSearch) {
                 advancedSearchObject.ORFilter = values;
-                this.advancedSearchFiles(body, advancedSearchObject);
+                this.searchEverything(body, values);
                 advancedSearchObject.ORFilter = '';
             }
         } else {
@@ -191,6 +191,29 @@ export class QueryBuilderService {
             }
         }
         return body;
+    }
+
+    /**
+     * Appends search-everything filter to the query
+     * Currently searches sourcefiles, description, labels, author, and path
+     * @param {*} body The original body
+     * @param {string} searchString the search string
+     * @memberof QueryBuilderService
+     */
+    searchEverything(body: any, searchString: string): void {
+        body = body.filter('bool', filter => filter
+        .orFilter('bool', workflowVersionsFileContent => workflowVersionsFileContent
+            .filter('match_phrase', 'workflowVersions.sourceFiles.content', searchString))
+        .orFilter('bool', tagsFileContent => tagsFileContent
+            .filter('match_phrase', 'tags.sourceFiles.content', searchString))
+        .orFilter('bool', descriptionFilter => descriptionFilter
+            .filter('match_phrase', 'description', searchString))
+        .orFilter('bool', labelsFilter => labelsFilter
+            .filter('match_phrase', 'labels', searchString))
+        .orFilter('bool', authorFilter => authorFilter
+            .filter('match_phrase', 'author', searchString))
+        .orFilter('bool', pathFilter => pathFilter
+            .filter('match_phrase', 'path', searchString)));
     }
 
     /**===============================================

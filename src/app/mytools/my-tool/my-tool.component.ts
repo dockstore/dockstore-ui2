@@ -23,14 +23,15 @@ import { UserService } from '../../loginComponents/user.service';
 import { CommunicatorService } from '../../shared/communicator.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { StateService } from '../../shared/state.service';
+import { DockstoreTool } from '../../shared/swagger';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { MytoolsService } from '../mytools.service';
 import { Tool } from './../../container/register-tool/tool';
 import { TokenService } from './../../loginComponents/token.service';
 import { ContainerService } from './../../shared/container.service';
-import { TokenSource } from './../../shared/enum/token-source.enum';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { Configuration } from './../../shared/swagger/configuration';
 
@@ -40,115 +41,167 @@ import { Configuration } from './../../shared/swagger/configuration';
   styleUrls: ['./my-tool.component.scss'],
   providers: [MytoolsService, DockstoreService]
 })
-export class MyToolComponent implements OnInit {
-  nsContainers: any;
-  oneAtATime = true;
+export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
-  user: any;
   tool: any;
-  public hasGitHubToken = true;
+  readonly pageName = '/my-tools';
   public refreshMessage: string;
   private registerTool: Tool;
-  constructor(private mytoolsService: MytoolsService, private configuration: Configuration,
+  public orgToolsObject: Array<OrgToolObject>;
+  constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
-    private userService: UserService, private authService: AuthService, private stateService: StateService,
+    private userService: UserService, protected authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
-    private refreshService: RefreshService, private accountsService: AccountsService,
-    private registerToolService: RegisterToolService, private tokenService: TokenService,
-    private urlResolverService: UrlResolverService, private router: Router) { }
+    private refreshService: RefreshService, protected accountsService: AccountsService,
+    private registerToolService: RegisterToolService, protected tokenService: TokenService,
+    private urlResolverService: UrlResolverService, private router: Router) {
+    super(accountsService, authService, configuration, tokenService);
+  }
 
   ngOnInit() {
-    localStorage.setItem('page', '/my-tools');
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
-    this.containerService.tool$.subscribe(selectedTool => {
-      this.tool = selectedTool;
-      this.communicatorService.setTool(selectedTool);
-      this.setIsFirstOpen();
+    this.containerService.tool$.subscribe(tool => {
+      this.tool = tool;
+      if (tool) {
+        this.setIsFirstOpen();
+        this.updateActiveTab();
+      }
     });
-    this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userContainers(user.id).subscribe(tools => {
+        this.usersService.userContainers(user.id).first().subscribe(tools => {
           this.containerService.setTools(tools);
         });
       }
     });
-    this.containerService.tools$.subscribe(tools => {
-      this.tools = tools;
-      if (this.user) {
+    this.containerService.tools$.takeUntil(this.ngUnsubscribe).subscribe(tools => {
+      if (tools) {
+        this.tools = tools;
         const sortedContainers = this.mytoolsService.sortNSContainers(tools, this.user.username);
-        this.containerService.setNsContainers(sortedContainers);
-      }
-    });
-    this.containerService.nsContainers.subscribe(containers => {
-      this.nsContainers = containers;
-      /* For the first initial time, set the first tool to be the selected one */
-      if (this.nsContainers && this.nsContainers.length > 0) {
-        const theFirstTool = this.nsContainers[0].containers[0];
-        const foundWorkflow = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), this.nsContainers);
-        if (foundWorkflow) {
-          this.selectContainer(foundWorkflow);
+        /* For the first initial time, set the first tool to be the selected one */
+        if (sortedContainers && sortedContainers.length > 0) {
+          this.orgToolsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedContainers);
+          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgToolsObject);
+          if (foundTool) {
+            this.selectEntry(foundTool);
+          } else {
+            const publishedTool = this.getFirstPublishedEntry(sortedContainers);
+            if (publishedTool) {
+              this.selectEntry(publishedTool);
+            } else {
+              const theFirstTool = sortedContainers[0].containers[0];
+              this.selectEntry(theFirstTool);
+            }
+          }
         } else {
-          this.selectContainer(theFirstTool);
+          this.selectEntry(null);
         }
-      } else {
-        this.selectContainer(null);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
 
-  link() {
-      this.accountsService.link(TokenSource.GITHUB);
-  }
-
-  private findToolFromPath(path: string, nsContainers: any[]): ExtendedDockstoreTool {
-    let matchingWorkflow: ExtendedDockstoreTool;
-    nsContainers.forEach((nsContainer)  => {
-      nsContainer.containers.forEach((container: ExtendedDockstoreTool) => {
-        if (container.tool_path === path) {
-          matchingWorkflow = container;
+  protected updateActiveTab(): void {
+    if (this.orgToolsObject) {
+      for (let i = 0; i < this.orgToolsObject.length; i++) {
+        if (this.tool) {
+          if (this.orgToolsObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
+            this.orgToolsObject[i].activeTab = 'unpublished';
+            continue;
+          }
+          if (this.orgToolsObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
+            this.orgToolsObject[i].activeTab = 'published';
+            continue;
+          }
+          if (this.orgToolsObject[i].published.length > 0) {
+            this.orgToolsObject[i].activeTab = 'published';
+          } else {
+            this.orgToolsObject[i].activeTab = 'unpublished';
+          }
         }
+      }
+    }
+  }
+
+  protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
+    const orgToolsObject: Array<OrgToolObject> = [];
+    for (let i = 0; i < nsTools.length; i++) {
+      const orgToolObject: OrgToolObject = {
+        namespace: '',
+        isFirstOpen: false,
+        organization: '',
+        published: [],
+        unpublished: [],
+        activeTab: 'published'
+      };
+      const nsTool: Array<DockstoreTool> = nsTools[i].containers;
+      orgToolObject.isFirstOpen = nsTools[i].isFirstOpen;
+      orgToolObject.namespace = nsTools[i].namespace;
+      orgToolObject.organization = nsTools[i].organization;
+      orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
+        return tool.is_published;
       });
-    });
-    return matchingWorkflow;
-
+      orgToolObject.unpublished = nsTool.filter((tool: DockstoreTool) => {
+        return !tool.is_published;
+      });
+      orgToolsObject.push(orgToolObject);
+    }
+    return orgToolsObject;
   }
-  goToTool(tool: ExtendedDockstoreTool) {
-    this.containerService.setTool(tool);
-    this.router.navigateByUrl('/my-tools/' + tool.tool_path);
+
+  protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool {
+    for (let i = 0; i < orgEntries.length; i++) {
+      const foundTool = orgEntries[i]['containers'].find((entry: DockstoreTool) => {
+        return entry.is_published === true;
+      });
+      if (foundTool) {
+        return foundTool;
+      }
+    }
+    return null;
   }
 
-  setIsFirstOpen() {
-    if (this.nsContainers && this.tool) {
-      for (const nsObj of this.nsContainers) {
-        if (this.containSelectedTool(nsObj)) {
-          nsObj.isFirstOpen = true;
+  protected findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool {
+    let matchingTool: ExtendedDockstoreTool;
+    for (let i = 0; i < orgTools.length; i++) {
+      matchingTool = orgTools[i].published.find((tool: DockstoreTool) => tool.tool_path === path);
+      if (matchingTool) {
+        return matchingTool;
+      }
+      matchingTool = orgTools[i].unpublished.find((tool: DockstoreTool) => tool.tool_path === path);
+      if (matchingTool) {
+        return matchingTool;
+      }
+    }
+    return null;
+  }
+
+  setIsFirstOpen(): void {
+    if (this.orgToolsObject && this.tool) {
+      for (let i = 0; i < this.orgToolsObject.length; i++) {
+        if (this.orgToolsObject[i].published.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
+          this.orgToolsObject[i].isFirstOpen = true;
+          break;
+        }
+        if (this.orgToolsObject[i].unpublished.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
+          this.orgToolsObject[i].isFirstOpen = true;
           break;
         }
       }
     }
   }
-  containSelectedTool(nsObj) {
-    let containTool = false;
-    for (const tool of nsObj.containers) {
-      if (tool.id === this.tool.id) {
-        containTool = true;
-        break;
-      }
-    }
-    return containTool;
-  }
-  selectContainer(tool) {
-    this.tool = tool;
+
+  selectEntry(tool: ExtendedDockstoreTool): void {
     this.containerService.setTool(tool);
-    this.communicatorService.setTool(tool);
+    if (tool) {
+      this.router.navigateByUrl(this.pageName + '/' + tool.tool_path);
+    }
   }
 
-  setModalGitPathAndImgPath(namespace: string) {
+  setRegisterEntryModalInfo(namespace: string): void {
     const namespaceArray = namespace.split('/');
     const path = namespaceArray[1] + '/new_tool';
     this.registerTool.gitPath = path;
@@ -156,11 +209,20 @@ export class MyToolComponent implements OnInit {
     this.registerToolService.setTool(this.registerTool);
   }
 
-  showRegisterToolModal() {
+  showRegisterEntryModal(): void {
     this.registerToolService.setIsModalShown(true);
   }
 
-  refreshAllTools() {
+  refreshAllEntries(): void {
     this.refreshService.refreshAllTools(this.user.id);
   }
+}
+
+export interface OrgToolObject {
+  namespace: string;
+  organization: string;
+  isFirstOpen: boolean;
+  published: Array<ExtendedDockstoreTool>;
+  unpublished: Array<ExtendedDockstoreTool>;
+  activeTab: 'unpublished' | 'published';
 }

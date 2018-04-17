@@ -314,8 +314,8 @@ export class SearchComponent implements OnInit {
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(
       ([key, value]) => {
-        if (value.buckets != null) {
-          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value.buckets);
+        if (value['buckets'] != null) {
+          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
         }
         // look for second level buckets (with filtering)
         // If there are second level buckets,

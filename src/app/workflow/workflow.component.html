@@ -96,12 +96,12 @@
 <div class="row" *ngIf="!starGazersClicked && !showRedirect">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
-      <tab id="infoTab" heading="Info" id="infoTab" (select)="setTab('Info')">
+      <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
-      <tab id="labelsTab" heading="Labels" (select)="setTab('Labels')">
+      <tab id="labelsTab" heading="Labels" (select)="setEntryTab('labels')">
         <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
           <span class="glyphicon glyphicon-edit"></span>Edit
         </button>
@@ -125,28 +125,48 @@
             </div>
             <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
               <div [hidden]="!name.errors.maxlength">
-                Labels string is too long. (Max 512 characters.)
+                {{ validationMessage.label.maxlength }}
               </div>
               <div [hidden]="!name.errors.pattern">
-                Labels are comma-delimited, and may only contain alphanumerical characters and internal hyphens.
+                  {{ validationMessage.label.pattern }}
               </div>
             </div>
           </div>
         </form>
       </tab>
-      <tab id="versionsTab" [disabled]="isStub()" heading="Versions" *ngIf="validVersions" (select)="setTab('Versions')">
-        <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
-        </app-versions-workflow>
+      <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
+        <div *ngIf="validVersions && !isStub()">
+          <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
+          </app-versions-workflow>
+        </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see versions, please refresh the workflow.
+        </div>
       </tab>
-      <tab id="fileTab" [disabled]="isStub()" heading="Files" *ngIf="validVersions" (select)="setTab('Files')">
-        <app-files-workflow *ngIf="validVersions && checkMode('Files')" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
-        </app-files-workflow>
+      <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
+        <div *ngIf="validVersions && !isStub()">
+          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+          </app-files-workflow>
+        </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.
+        </div>
       </tab>
-      <tab id="toolsTab" [disabled]="isStub()" heading="Tools" *ngIf="validVersions" (select)="setTab('Tools')">
-        <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
+      <tab id="toolsTab"  heading="Tools" (select)="setEntryTab('tools')">
+        <div *ngIf="validVersions && !isStub()">
+          <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
+        </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
+        </div>
       </tab>
-      <tab id="dagTab" [disabled]="isStub()" heading="DAG" *ngIf="validVersions" (select)="setTab('DAG')">
-        <app-dag *ngIf="checkMode('DAG')" [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
+      <tab id="dagTab" heading="DAG" (select)="setEntryTab('dag')">
+        <div *ngIf="validVersions && !isStub() && currentTab == 'dag'">
+          <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
+        </div>
+        <div *ngIf="isStub()" class="alert alert-warning" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
+        </div>
       </tab>
     </tabset>
   </div>

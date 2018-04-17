@@ -89,27 +89,15 @@ describe('MyWorkflowComponent', () => {
     registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
     spyOn(registerWorkflowModalService, 'setIsModalShown');
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
-    component.showModal();
-    component.setModalGitURL('a/b');
+    component.showRegisterEntryModal();
+    component.setRegisterEntryModalInfo('a/b');
     expect(registerWorkflowModalService.setIsModalShown).toHaveBeenCalled();
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
     refreshService = fixture.debugElement.injector.get(RefreshService);
     spyOn(refreshService, 'refreshAllWorkflows');
-    component.refreshAllWorkflows();
+    component.refreshAllEntries();
     expect(refreshService.refreshAllWorkflows).toHaveBeenCalled();
-  });
-  it('should check if it contains workflows', () => {
-    component.workflow = {
-      id: 5
-    };
-    fixture.detectChanges();
-    expect(component.containSelectedWorkflow({workflows: [sampleWorkflow1, sampleWorkflow2, sampleWorkflow3]})).toBeFalsy();
-    component.workflow = {
-      id: 3
-    };
-    fixture.detectChanges();
-    expect(component.containSelectedWorkflow({workflows: [sampleWorkflow1, sampleWorkflow2, sampleWorkflow3]})).toBeTruthy();
   });
 });
