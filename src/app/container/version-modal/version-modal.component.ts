@@ -124,23 +124,25 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     }
 
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
+    const CWL = 'CWL';
+    const WDL = 'WDL';
     if (newCWL && newCWL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newCWL, null, tagName, 'CWL').subscribe(response => {},
+      this.containersService.addTestParameterFiles(id, newCWL, CWL, null, tagName).subscribe(response => {},
         err => this.refreshService.handleError(message, err) );
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingCWL, tagName, 'CWL').subscribe(response => {},
+      this.containersService.deleteTestParameterFiles(id, missingCWL, CWL, tagName).subscribe(response => {},
         err => this.refreshService.handleError(message, err) );
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newWDL, null, tagName, 'WDL').subscribe(response => {},
+      this.containersService.addTestParameterFiles(id, newWDL, WDL, null, tagName).subscribe(response => {},
         err => this.refreshService.handleError(message, err) );
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingWDL, tagName, 'WDL').subscribe(response => {},
+      this.containersService.deleteTestParameterFiles(id, missingWDL, WDL, tagName).subscribe(response => {},
         err => this.refreshService.handleError(message, err) );
     }
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
