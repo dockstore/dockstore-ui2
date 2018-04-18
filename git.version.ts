@@ -1,9 +1,10 @@
 import fs = require('fs');
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
 
-let exec = require('child_process').exec;
+const exec = require('child_process').exec;
 
-const revision = new Observable<string>(s => {
+const revision$ = new Observable<string>(s => {
   exec('git rev-parse --short HEAD',
     function(error: Error, stdout: Buffer, stderr: Buffer) {
       if (error !== null) {
@@ -14,7 +15,7 @@ const revision = new Observable<string>(s => {
     });
 });
 
-const tag = new Observable<string>(s => {
+const tag$ = new Observable<string>(s => {
   exec('git describe --tag',
     function(error: Error, stdout: Buffer, stderr: Buffer) {
       if (error !== null) {
@@ -26,7 +27,7 @@ const tag = new Observable<string>(s => {
 });
 
 Observable
-  .combineLatest(revision, tag)
+  .combineLatest(revision$, tag$)
   .subscribe(([revision, tag]) => {
     console.log(`tag: '${tag}', version: '${process.env.WEBSERVICE_VERSION}', revision: '${revision}'`);
 
