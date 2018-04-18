@@ -7,8 +7,11 @@ import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
 
-@Component({selector: 'app-navbar', template: ''})
+@Component({selector: 'app-banner', template: ''})
 class NavbarStubComponent {}
+
+@Component({selector: 'app-navbar', template: ''})
+class BannerStubComponent {}
 
 @Component({selector: 'app-sponsors', template: ''})
 class SponsorsStubComponent {}
@@ -22,7 +25,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         NavbarStubComponent, SponsorsStubComponent, FooterStubComponent,
-        RouterLinkStubDirective, RouterOutletStubComponent
+        BannerStubComponent, RouterLinkStubDirective, RouterOutletStubComponent
       ],
       imports: [RouterTestingModule, ToasterModule]
     }).compileComponents();
