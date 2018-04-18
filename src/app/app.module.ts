@@ -87,6 +87,7 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import { BannerComponent } from './banner/banner.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
-    FundingComponent
+    FundingComponent,
+    BannerComponent
 ],
   imports: [
     BrowserAnimationsModule,
