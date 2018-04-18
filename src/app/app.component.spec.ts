@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
 
 @Component({selector: 'app-banner', template: ''})
-class NavbarStubComponent {}
+class BannerStubComponent {}
 
 @Component({selector: 'app-navbar', template: ''})
-class BannerStubComponent {}
+class NavbarStubComponent {}
 
 @Component({selector: 'app-sponsors', template: ''})
 class SponsorsStubComponent {}
