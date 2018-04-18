@@ -1,3 +1,18 @@
+/*
+ *     Copyright 2018 OICR
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 describe('Dockstore my tools', function() {
     require('./helper.js')
 
@@ -35,6 +50,21 @@ describe('Dockstore my tools', function() {
             cy.contains('Last Updated')
             cy.contains('Build Mode')
             cy.contains('Fully-Automated')
+        });
+        it('add and remove test parameter file', function() {
+            goToB1();
+            cy.contains('Versions').click();
+            cy.get('td').find('button').contains('Edit').invoke('width').should('be.gt', 0)
+            cy.get('td').find('button').contains('Edit').should('be.visible').click()
+            cy.get("#addWDLField").type("/test.wdl.json")
+            cy.get("#addCWLField").type("/test.cwl.json")
+            cy.get("#saveVersionModal").click()
+            cy.get("#saveVersionModal").should('not.exist')
+            cy.get('td').find('button').contains('Edit').invoke('width').should('be.gt', 0)
+            cy.get('td').find('button').contains('Edit').should('be.visible').click()
+            cy.get('#removeCWLTestParameterFileButton').click()
+            cy.get('#removeWDLTestParameterFileButton').click()
+            cy.get("#saveVersionModal").click()
         });
     });
 
