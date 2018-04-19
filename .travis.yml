@@ -38,7 +38,6 @@ before_script:
   - 'sleep 20'
 
 script:
-  - bash ./scripts/check-webservice-version.sh
   - ./scripts/run-travis-script.sh
 
 after_success:
