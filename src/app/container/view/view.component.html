@@ -15,13 +15,13 @@
   -->
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" *ngIf="isPublic" (click)="setMode(TagEditorMode.View); false">
+<button type="button" class="btn btn-primary btn-block" *ngIf="isPublic" (click)="setMode(TagEditorMode.View); false">
   View
 </button>
-<button type="button" class="btn btn-primary" *ngIf="!isPublic" (click)="setMode(TagEditorMode.Edit); false">
+<button type="button" class="btn btn-primary btn-block" *ngIf="!isPublic" (click)="setMode(TagEditorMode.Edit); false">
   Edit
 </button>
-<button type="button" class="btn btn-primary" *ngIf="!isPublic && isManualTool()" (click)="deleteTag(); false">
+<button type="button" class="btn btn-primary btn-block" *ngIf="!isPublic && isManualTool()" (click)="deleteTag(); false">
   Delete
 </button>
 <!-- Modal -->
