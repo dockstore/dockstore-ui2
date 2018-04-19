@@ -95,13 +95,38 @@ export class InfoTabService {
     update(workflow: Workflow) {
         const message = 'Descriptor Type';
         this.stateService.setRefreshMessage('Updating ' + message + '...');
+        workflow = this.changeWorkflowPathToDefaults(workflow);
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe((updatedWorkflow: Workflow) => {
             this.workflowService.replaceWorkflow(this.workflows, updatedWorkflow);
             this.refreshService.handleSuccess(message);
         }, error => {
             this.refreshService.handleError(message, error);
         });
+    }
 
+    /**
+     * Change workflow path to the defaults based on the descriptor type
+     *
+     * @private
+     * @param {Workflow} workflow The original stubbed workflow with a newly modified descriptor type
+     * @returns {Workflow} The new workflow with the default workflow path set to match the new descriptor type
+     * @memberof InfoTabService
+     */
+    private changeWorkflowPathToDefaults(workflow: Workflow): Workflow {
+        switch (workflow.descriptorType) {
+            case 'cwl':
+                workflow.workflow_path = '/Dockstore.cwl';
+                break;
+            case 'wdl':
+                workflow.workflow_path = '/Dockstore.wdl';
+                break;
+            case 'nextflow':
+                workflow.workflow_path = '/nextflow.config';
+                break;
+            default:
+                break;
+        }
+        return workflow;
     }
 
     get workflow(): ExtendedWorkflow {
