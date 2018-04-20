@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Router } from '@angular/router';
 
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { StateService } from './../../shared/state.service';
@@ -35,7 +36,7 @@ export class RegisterWorkflowModalService {
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
-        private workflowService: WorkflowService,
+        private workflowService: WorkflowService, private router: Router,
         private stateService: StateService, private descriptorLanguageService: DescriptorLanguageService,
         private metadataService: MetadataService) {
         this.sampleWorkflow.repository = 'GitHub';
@@ -89,6 +90,7 @@ export class RegisterWorkflowModalService {
                     this.stateService.setRefreshMessage(null);
                     this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
+                    this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
                 }, error => this.stateService.setRefreshMessage(null));
             }, error =>  {
               if (error) {
