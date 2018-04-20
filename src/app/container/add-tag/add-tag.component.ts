@@ -39,20 +39,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   public validationPatterns = validationDescriptorPatterns;
   public trackByIndex;
   editMode = true;
-  unsavedVersion: Tag = {
-    'name': '',
-    'reference': '',
-    'image_id': '',
-    'dockerfile_path': '',
-    'cwl_path': '',
-    'wdl_path': '',
-    'hidden': false,
-    'automated': false,
-    'dirtyBit': false,
-    'verified': false,
-    'verifiedSource': null,
-    'size': 0
-  };
+  unsavedVersion: Tag;
   unsavedTestCWLFile = '';
   unsavedTestWDLFile = '';
   unsavedCWLTestParameterFilePaths = [];
@@ -61,20 +48,44 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     private containersService: ContainersService, private paramFilesService: ParamfilesService) {
   }
 
+  initializeTag() {
+    this.unsavedVersion = {
+      'name': '',
+      'reference': '',
+      'image_id': '',
+      'dockerfile_path': '',
+      'cwl_path': '',
+      'wdl_path': '',
+      'hidden': false,
+      'automated': false,
+      'dirtyBit': false,
+      'verified': false,
+      'verifiedSource': null,
+      'size': 0
+    };
+    this.unsavedCWLTestParameterFilePaths = [];
+    this.unsavedWDLTestParameterFilePaths = [];
+  }
+
+  loadDefaults() {
+    if (this.tool) {
+      this.unsavedVersion.cwl_path = this.tool.default_cwl_path;
+      this.unsavedVersion.wdl_path = this.tool.default_wdl_path;
+      this.unsavedVersion.dockerfile_path = this.tool.default_dockerfile_path;
+      if (this.tool.defaultCWLTestParameterFile) {
+        this.unsavedTestCWLFile = this.tool.defaultCWLTestParameterFile;
+      }
+      if (this.tool.defaultWDLTestParameterFile) {
+        this.unsavedTestWDLFile = this.tool.defaultWDLTestParameterFile;
+      }
+    }
+  }
+
   ngOnInit() {
+    this.initializeTag();
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
-      if (this.tool) {
-        this.unsavedVersion.cwl_path = this.tool.default_cwl_path;
-        this.unsavedVersion.wdl_path = this.tool.default_wdl_path;
-        this.unsavedVersion.dockerfile_path = this.tool.default_dockerfile_path;
-        if (this.tool.defaultCWLTestParameterFile) {
-          this.unsavedTestCWLFile = this.tool.defaultCWLTestParameterFile;
-        }
-        if (this.tool.defaultWDLTestParameterFile) {
-          this.unsavedTestWDLFile = this.tool.defaultWDLTestParameterFile;
-        }
-      }
+      this.loadDefaults();
     });
   }
 
@@ -130,6 +141,8 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', null, tagName).subscribe();
       this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', null, tagName).subscribe();
       this.containerService.setTool(this.tool);
+      this.initializeTag();
+      this.loadDefaults();
     }, error => console.log(error));
   }
 
