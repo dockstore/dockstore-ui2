@@ -71,6 +71,7 @@ import { SelectModule } from './select.module';
     FilesContainerComponent,
     DockerfileComponent,
     DescriptorsComponent,
+    ParamfilesComponent,
     ModalComponent,
     AddTagComponent,
     VersionModalComponent,
