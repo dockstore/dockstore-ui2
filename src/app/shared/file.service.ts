@@ -39,7 +39,7 @@ export class FileService {
           entry = encodeURIComponent(entrypath);
         }
 
-        const customPath =  entry + '/versions/' + currentVersion.name + '/'
+        const customPath =  entry + '/versions/' + encodeURIComponent(currentVersion.name) + '/'
           + descriptorType + '/descriptor/' + encodeURIComponent(currentFile.path);
         return basepath + customPath;
       } else {
