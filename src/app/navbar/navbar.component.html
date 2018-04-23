@@ -15,7 +15,7 @@
   -->
 
 <nav class="main-menu navbar navbar-default">
-    <div class="container" style="padding-bottom: 5px;padding-right:0px;">
+    <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
@@ -66,7 +66,7 @@
                   </p>
               </div>
           </li>
-          <li *ngIf=isLoggedIn class="btn-group" dropdown style="margin-right:0px;">
+          <li *ngIf=isLoggedIn class="btn-group no-margin" dropdown>
               <div class="button login">
                   <a href dropdownToggle (click)="false" id="dropdown-main" class="account-dropdown dropdown-toggle">
                       <span class="glyphicon glyphicon-user"></span>

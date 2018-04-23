@@ -198,12 +198,21 @@ nav {
   padding-bottom: 6px !important;
 }
 
+nav > .container {
+  padding-bottom: 5px;
+  padding-right:0px;
+}
+
 .navbar.navbar-default {
   border: none;
 }
 .navbar.navbar-default .navbar-collapse {
   border: none;
   box-shadow: none;
+}
+
+.no-margin {
+  margin: 0px !important;
 }
 
 p {
