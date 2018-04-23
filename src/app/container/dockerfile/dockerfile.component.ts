@@ -55,12 +55,15 @@ export class DockerfileComponent implements AfterViewChecked {
   reactToVersion(): void {
     if (this._selectedVersion) {
       this.nullContent = false;
-      this.containersService.dockerfile(this.id, this._selectedVersion.name)
+      this.containersService.dockerfile(this.id, this._selectedVersion.name).first()
         .subscribe(file => {
             this.content = file.content;
             this.contentHighlighted = true;
             this.filepath = file.path;
             this.containerFilePath = this.getContainerfilePath();
+          }, error => {
+            this.nullContent = true;
+            this.content = null;
           }
         );
     } else {
@@ -77,7 +80,8 @@ export class DockerfileComponent implements AfterViewChecked {
 
   private getContainerfilePath(): string {
     const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
-    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + encodeURIComponent(this._selectedVersion.name) + '/containerfile';
+    const customPath = encodeURIComponent(this.entrypath) + '/versions/' + encodeURIComponent(this._selectedVersion.name)
+       + '/containerfile';
     return basepath + customPath;
   }
 
