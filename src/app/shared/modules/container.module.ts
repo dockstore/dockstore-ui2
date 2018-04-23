@@ -60,7 +60,6 @@ import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
-import { ParamfilesModule } from './paramfiles.module';
 import { SelectModule } from './select.module';
 
 @NgModule({
@@ -72,7 +71,6 @@ import { SelectModule } from './select.module';
     FilesContainerComponent,
     DockerfileComponent,
     DescriptorsComponent,
-    ParamfilesComponent,
     ModalComponent,
     AddTagComponent,
     VersionModalComponent,
@@ -88,7 +86,6 @@ import { SelectModule } from './select.module';
     HeaderModule,
     SelectModule,
     ListContainersModule,
-    ParamfilesModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),

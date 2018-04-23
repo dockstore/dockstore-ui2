@@ -25,7 +25,6 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { HighlightJsModule, HighlightJsService } from '../shared/angular2-highlight-js/lib/highlight-js.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
-import { ParamfilesModule } from '../shared/modules/paramfiles.module';
 import { SelectModule } from '../shared/modules/select.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { getTooltipConfig } from './../shared/tooltip';
@@ -50,7 +49,6 @@ import { workflowsRouting } from './workflows.routing';
     SelectModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    ParamfilesModule,
     WorkflowModule,
     workflowsRouting
   ],

@@ -46,7 +46,6 @@ import { ExtendedWorkflowService } from '../extended-workflow.service';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
-import { ParamfilesModule } from '../modules/paramfiles.module';
 import { SelectModule } from '../modules/select.module';
 import { DagModule } from './../../workflow/dag/dag.module';
 import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
@@ -81,7 +80,6 @@ import { getTooltipConfig } from './../tooltip';
     HeaderModule,
     HighlightJsModule,
     ListWorkflowsModule,
-    ParamfilesModule,
     ModalModule.forRoot(),
     SelectModule,
     TooltipModule.forRoot(),
