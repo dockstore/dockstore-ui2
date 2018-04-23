@@ -15,6 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { ContainerService } from './../../shared/container.service';
@@ -45,7 +46,7 @@ export class RegisterToolService {
             'Quay.io', '', false, '', ''));
     constructor(private containersService: ContainersService,
         private containerService: ContainerService,
-        private stateService: StateService,
+        private stateService: StateService, private router: Router,
         private metadataService: MetadataService) {
         this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
@@ -96,11 +97,12 @@ export class RegisterToolService {
         this.containersService.registerManual(normalizedToolObj).subscribe(response => {
             this.setToolRegisterError(null);
             this.stateService.setRefreshMessage('Registering new tool...');
-            this.containersService.refresh(response.id).subscribe(refreshResponse => {
+            this.containersService.refresh(response.id).subscribe((refreshResponse: DockstoreTool) => {
+                this.stateService.setRefreshMessage(null);
                 this.setIsModalShown(false);
                 this.containerService.addToTools(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);
-                this.stateService.setRefreshMessage(null);
+                this.router.navigateByUrl('/my-tools' + '/' + refreshResponse.tool_path);
             });
             // Use types instead
         }, error => this.setToolRegisterError(error)

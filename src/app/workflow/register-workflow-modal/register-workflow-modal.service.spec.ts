@@ -27,6 +27,7 @@ import {
     WorkflowStubService,
 } from './../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('Service: RegisterWorkflowModal', () => {
     beforeEach(() => {
@@ -36,8 +37,8 @@ describe('Service: RegisterWorkflowModal', () => {
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: MetadataService, useClass: MetadataStubService },
                 StateService,
-                { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }
-            ]
+                { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+            ], imports: [RouterTestingModule]
         });
     });
     const expectedError: any = {
