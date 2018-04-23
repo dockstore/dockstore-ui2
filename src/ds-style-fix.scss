@@ -139,7 +139,7 @@ table.workflow-versions-grid {
   padding: 5px 10px;
 }
 
-#navigation ul.nav {
+#navbar-collapse ul.nav {
   &.auth > li {
     margin-left: 20px;
     margin-right: 20px
@@ -538,7 +538,7 @@ div.contact-button {
   ul.nav-tabs {
     li { min-width: 110px; }
   }
-  #navigation.row ul.nav {
+  #navbar-collapse.row ul.nav {
     li {
       font-size: 12px;
     }
@@ -618,7 +618,7 @@ div.contact-button {
   ul.nav-tabs {
     li { min-width: 130px; }
   }
-  #navigation.row ul.nav {
+  #navbar-collapse.row ul.nav {
     & > li {
       margin-left: 20px;
       margin-right: 20px
