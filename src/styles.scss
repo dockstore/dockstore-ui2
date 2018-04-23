@@ -147,35 +147,72 @@ body {
   }
 }
 
-#navigation {
+#navbar-collapse {
   padding-bottom: 8px;
+  padding-top: 8px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
-#navigation ul.nav {
+#navbar-collapse ul.nav {
   margin: 0;
   padding: 0;
   padding-top: 5px;
 }
 
-#navigation ul.nav li {
+#navbar-collapse ul.nav li {
   display: inline;
-  margin: 32px 16px 32px 16px;
-  /*white-space: nowrap;*/
+  margin: 0px 16px 0px 16px;
 }
 
-#navigation ul.nav li a {
+@media (max-width: 768px) {
+  #navbar-collapse ul.nav li {
+    display: inline;
+    margin: 0px;
+  }
+}
+
+#navbar-collapse ul.nav li a {
   font-weight: bold;
   text-decoration: none;
   color: white;
-  /*font-size: */
 }
 
-#navigation ul.nav li a:hover {
+#navbar-collapse ul.nav li a:hover {
   text-decoration: underline;
 }
 
-#navigation ul.nav li a.current-page {
+#navbar-collapse ul.nav li a.current-page {
   color: #a0adcc;
+}
+
+#home-nav-button {
+  padding: 8px !important;
+}
+
+nav {
+  margin:0px !important;
+  border:2px !important;
+  border-radius:0px !important;
+  min-height:50px !important;
+  padding-bottom: 6px !important;
+}
+
+nav > .container {
+  padding-bottom: 5px;
+  padding-right:0px;
+}
+
+.navbar.navbar-default {
+  border: none;
+}
+.navbar.navbar-default .navbar-collapse {
+  border: none;
+  box-shadow: none;
+}
+
+.no-margin {
+  margin: 0px !important;
 }
 
 p {
