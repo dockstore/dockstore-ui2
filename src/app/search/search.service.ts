@@ -209,6 +209,7 @@ export class SearchService {
       ['Entry Type', '_type'],
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
+      ['Source Control', 'source_control_provider.keyword'],
       ['Private Access', 'private_access'],
       ['VerifiedTool', 'tags.verified'],
       ['Author', 'author'],
@@ -224,7 +225,8 @@ export class SearchService {
     return new Map([
       ['_type', 'Entry Type'],
       ['descriptorType', 'Language'],
-      ['registry', 'Registry'],
+      ['registry', 'Tool: Registry'],
+      ['source_control_provider.keyword', 'Workflow: Source Control'],
       ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
       ['tags.verified', 'Verified'],
       ['author', 'Author'],
@@ -242,6 +244,7 @@ export class SearchService {
       ['descriptorType', new SubBucket],
       ['author', new SubBucket],
       ['registry', new SubBucket],
+      ['source_control_provider.keyword', new SubBucket],
       ['namespace', new SubBucket],
       ['organization', new SubBucket],
       ['labels.value.keyword', new SubBucket],
@@ -265,6 +268,9 @@ export class SearchService {
      ])],
      ['registry', new Map([
        ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
+     ])],
+     ['source_control_provider.keyword', new Map([
+       ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com']
      ])]
    ]);
   }
