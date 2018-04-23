@@ -26,14 +26,14 @@
     </span>
   </span>
 
-  <div *ngIf="nullDescriptors || !_selectedVersion?.valid">
+  <div *ngIf="!content">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Descriptor File associated with this Docker container could not be found.
     </alert>
   </div>
 
-  <div *ngIf="!nullDescriptors && _selectedVersion?.valid" class="code-copy">
+  <div *ngIf="content" class="code-copy">
     <div class="code-copy-button btn-group">
       <a *ngIf="(published$ | async)" download [href]="descriptorPath" class="btn btn-default" type="button" title="{{filePath}}">
         <span class="glyphicon glyphicon-download"></span>
