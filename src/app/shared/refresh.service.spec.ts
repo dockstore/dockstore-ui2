@@ -24,7 +24,7 @@ import { WorkflowsService } from './swagger/api/workflows.service';
 import { ErrorService } from './../shared/error.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { ContainersStubService, StateStubService, ErrorStubService, WorkflowsStubService,
-    ContainerStubService, WorkflowStubService, UsersStubService } from './../test/service-stubs';
+    ContainerStubService, WorkflowStubService, UsersStubService, NotificationsStubService } from './../test/service-stubs';
 import { StateService } from './state.service';
 import { RefreshService } from './refresh.service';
 import { ImageProviderService } from './image-provider.service';
@@ -39,12 +39,13 @@ describe('RefreshService', () => {
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
                 { provide: WorkflowService, useClass: WorkflowStubService },
-                { provide: UsersService, useClass: UsersStubService }, NotificationsService
+                { provide: UsersService, useClass: UsersStubService },
+                { provide: NotificationsService, useClass: NotificationsStubService }
             ]
         });
     });
 
-    it('should be created', inject([RefreshService], (service: RefreshService) => {
+    it('should be created', inject([RefreshService, NotificationsService], (service: RefreshService) => {
         expect(service).toBeTruthy();
     }));
 

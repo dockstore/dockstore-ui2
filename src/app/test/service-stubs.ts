@@ -227,6 +227,15 @@ export class ConfigurationStub {
     };
 }
 
+export class NotificationsStubService {
+  success() {
+
+  }
+  error() {
+
+  }
+}
+
 export class UsersStubService {
     getUser() {
         return Observable.of({});

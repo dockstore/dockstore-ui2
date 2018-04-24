@@ -1,5 +1,3 @@
-import { SimpleNotificationsModule } from 'angular2-notifications/dist';
-import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,14 +14,21 @@ import { RefreshService } from './../../shared/refresh.service';
  *    limitations under the License.
  */
 
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { VersionModalService } from './version-modal.service';
+import { inject, TestBed } from '@angular/core/testing';
+import { NotificationsService } from 'angular2-notifications';
+
+import { RefreshService } from './../../shared/refresh.service';
 import { StateService } from './../../shared/state.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
-import { StateStubService, WorkflowsStubService, WorkflowStubService, RefreshStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { TestBed, async, inject } from '@angular/core/testing';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowService } from './../../shared/workflow.service';
+import {
+  NotificationsStubService,
+  RefreshStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+} from './../../test/service-stubs';
+import { VersionModalService } from './version-modal.service';
 
 describe('Service: version-modal.service.ts', () => {
     beforeEach(() => {
@@ -33,7 +38,8 @@ describe('Service: version-modal.service.ts', () => {
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 StateService,
                 { provide: RefreshService, useClass: RefreshStubService},
-            ], imports: [SimpleNotificationsModule]
+                { provide: NotificationsService, useClass: NotificationsStubService}
+            ]
         });
     });
     const expectedError: any = {

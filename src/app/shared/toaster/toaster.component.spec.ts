@@ -12,7 +12,7 @@ describe('ToasterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToasterComponent ], imports: [SimpleNotificationsModule]
+      declarations: [ ToasterComponent ], imports: [SimpleNotificationsModule.forRoot()]
     })
     .compileComponents();
   }));
