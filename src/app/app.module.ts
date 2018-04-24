@@ -16,7 +16,6 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
@@ -115,7 +114,6 @@ import { BannerComponent } from './banner/banner.component';
   imports: [
     BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
