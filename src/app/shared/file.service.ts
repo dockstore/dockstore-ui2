@@ -20,7 +20,16 @@ export class FileService {
 
     /* Highlight Code */
     highlightCode(code: string): string {
-      return '<pre><code class="yaml highlight">' + code + '</pre></code>';
+      return '<pre><code class="yaml highlight">' + this.escapeEntities(code) + '</code></pre>';
+    }
+
+    escapeEntities(code: string): string {
+      return code && code
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
     }
 
     // Get the download path of a descriptor
