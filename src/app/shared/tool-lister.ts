@@ -19,7 +19,6 @@ import { Subject } from 'rxjs/Subject';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
 
-@Injectable()
 export abstract class ToolLister implements OnInit {
 
   protected displayTable = false;
