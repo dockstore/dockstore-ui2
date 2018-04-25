@@ -5,7 +5,6 @@ import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
-import { pipRequirements } from './pipRequirement';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -89,6 +88,7 @@ If using Python 3, install cwl-avro instead of avro.  Do this by running these c
 curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
 pip install -r requirements.txt
 \`\`\`
+Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
 
 3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/engine/installation/linux/ubuntulinux/).
 Ensure that you are able to run Docker without using sudo directly with the
@@ -107,8 +107,6 @@ $ java -version
 java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
-$ cwltool --version
-/usr/local/bin/cwltool ${pipRequirements.cwltoolVersion}
 $ docker run hello-world
 Hello from Docker!
 ...
