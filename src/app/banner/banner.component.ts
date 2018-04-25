@@ -13,7 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class BannerComponent implements OnInit {
   showBanner: boolean;
-  mismatchedVersion: boolean = false;
+  mismatchedVersion = false;
   versionFromAPI: string;
   versionBuiltWith: string;
 
