@@ -80,11 +80,15 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 1. Run this to verify that pip has been installed \`pip --version\`
 2. Run these commands to install cwltool
 \`\`\`
-pip install setuptools==${pipRequirements.setupToolsVersion}
-pip install cwl-runner cwltool==${pipRequirements.cwltoolVersion} schema-salad==${pipRequirements.schemaSaladVersion} avro==${pipRequirements.avroVersion} ruamel.yaml==${pipRequirements.ruamelYamlVersion} requests==${pipRequirements.requestsVersion}
+curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
+pip install -r requirements.txt
 \`\`\`
 <!-- Workaround until https://github.com/common-workflow-language/cwltool/issues/524 is resolved -->
-If using Python 3, install cwl-avro==${pipRequirements.cwlAvroVersion} instead of avro==${pipRequirements.avroVersion}.
+If using Python 3, install cwl-avro instead of avro.  Do this by running these commands:
+\`\`\`
+curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
+pip install -r requirements.txt
+\`\`\`
 
 3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/engine/installation/linux/ubuntulinux/).
 Ensure that you are able to run Docker without using sudo directly with the
