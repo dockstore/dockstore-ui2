@@ -74,6 +74,7 @@ describe('Workflow starring', function() {
       cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l")
       cy
         .get('#starringButtonIcon')
+        .should("be.visible")
         .should("have.class", "glyphicon-star")
 
       cy
