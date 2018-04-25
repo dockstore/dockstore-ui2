@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
+import { GA4GHStubService } from './../test/service-stubs';
 import { BannerComponent } from './banner.component';
 
 describe('BannerComponent', () => {
@@ -8,7 +9,8 @@ describe('BannerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BannerComponent ]
+      declarations: [ BannerComponent ],
+      providers: [ {provide: GA4GHService, useClass: GA4GHStubService} ]
     })
     .compileComponents();
   }));
