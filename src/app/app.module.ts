@@ -88,6 +88,7 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 import { StarringModule } from './starring/starring.module';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { BannerComponent } from './banner/banner.component';
+import { MetadataService } from './metadata/metadata.service';
 
 @NgModule({
   declarations: [
@@ -166,7 +167,8 @@ import { BannerComponent } from './banner/banner.component';
     CheckerWorkflowService,
     ErrorService,
     DescriptorLanguageService,
-    UrlResolverService
+    UrlResolverService,
+    MetadataService
   ],
   bootstrap: [ AppComponent ]
 })

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from '../footer/versions';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { MetadataService } from '../metadata/metadata.service';
 
 @Component({
   selector: 'app-banner',
@@ -17,12 +16,12 @@ export class BannerComponent implements OnInit {
   versionFromAPI: string;
   versionBuiltWith: string;
 
-  constructor(private gA4GHService: GA4GHService) { }
+  constructor(private metadataService: MetadataService) { }
 
   ngOnInit() {
     this.showBanner = environment.staging;
 
-    this.gA4GHService.metadataGet()
+    this.metadataService.getMetadata()
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {

@@ -15,8 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
+import { MetadataService } from '../metadata/metadata.service';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from './versions';
 
@@ -29,16 +28,18 @@ export class FooterComponent implements OnInit {
   version: string;
   tag: string;
   public prod = true;
+  metadata: any;
 
-  constructor(private gA4GHService: GA4GHService) { }
+  constructor(private metadataService: MetadataService) { }
 
   ngOnInit() {
-    this.gA4GHService.metadataGet()
+    this.metadataService.getMetadata()
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
             this.version = metadata['version'];
             this.tag = versions.tag;
+            this.metadata = metadata;
           } else {
             throw new Error('Version undefined');
           }
