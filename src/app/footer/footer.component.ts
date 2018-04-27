@@ -14,31 +14,33 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-
-import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MetadataService } from '../metadata/metadata.service';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from './versions';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, OnDestroy {
   version: string;
   tag: string;
   public prod = true;
+  mdService: Subscription;
 
-  constructor(private gA4GHService: GA4GHService) { }
+  constructor(private metadataService: MetadataService) { }
 
   ngOnInit() {
-    this.gA4GHService.metadataGet()
+    this.tag = versions.tag;
+
+    this.mdService = this.metadataService.getMetadata()
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
             this.version = metadata['version'];
-            this.tag = versions.tag;
           } else {
             throw new Error('Version undefined');
           }
@@ -49,5 +51,9 @@ export class FooterComponent implements OnInit {
           }
         }
       );
+  }
+
+  ngOnDestroy() {
+    this.mdService.unsubscribe();
   }
 }
