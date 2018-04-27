@@ -9,7 +9,7 @@ import 'rxjs/add/operator/publishReplay';
 
 @Injectable()
 export class MetadataService {
-  metadata: any;
+  metadata: Observable<Metadata>;
 
   constructor(private gA4GHService: GA4GHService) {
     this.metadata = this.gA4GHService.metadataGet()
