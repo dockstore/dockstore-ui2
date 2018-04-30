@@ -93,7 +93,7 @@ export class SearchComponent implements OnInit {
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private friendlyValueNames: Map<string, Map<string, string>>;
+  public friendlyValueNames: Map<string, Map<string, string>>;
   private nonVerifiedCount: number;
   private verifiedCount: number;
 
