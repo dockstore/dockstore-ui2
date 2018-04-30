@@ -72,6 +72,9 @@ describe('Tool starring', function() {
         .should('exist')
 
       cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
+      cy
+        .get('#starringButtonIcon')
+        .should("have.class", "glyphicon-star")
 
       cy
         .get('#starringButton')
