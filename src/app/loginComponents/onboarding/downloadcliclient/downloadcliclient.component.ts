@@ -100,6 +100,7 @@ exec newgrp docker
 
 #### Part 4
 1. Run our dependencies to verify that they have been installed properly. You should see something like the following.
+The cwltool version should match the version listed in the requirements.txt file.
 \`\`\`
 $ dockstore --version
 Dockstore version ${this.dockstoreVersion}
@@ -107,6 +108,8 @@ $ java -version
 java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
+$ cwltool --version
+/usr/local/bin/cwltool 1.0.20170828135420
 $ docker run hello-world
 Hello from Docker!
 ...
