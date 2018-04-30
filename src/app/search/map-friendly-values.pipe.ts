@@ -30,8 +30,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
   /**
    * This pipe searches the friendly value names map for the key whose value is 'subBucket'
    *
-   * @param {*} key The key (e.g. fileFormats.value.keyword)
-   * @param {*} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
+   * @param {string} key The key (e.g. file_formats.keyword)
+   * @param {string} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
    * @returns {string} The friendly name if found, otherwise the same name
    * @memberof MapFriendlyValuesPipe
    */
