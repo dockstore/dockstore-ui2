@@ -258,26 +258,6 @@ export class SearchService {
     ]);
   }
 
-  initializeFriendlyValueNames() {
-    return new Map([
-     ['workflowVersions.verified', new Map([
-       ['1', 'verified'], ['0', 'non-verified']
-     ])],
-     ['tags.verified', new Map([
-      ['1', 'verified'], ['0', 'non-verified']
-    ])],
-     ['private_access', new Map([
-       ['1', 'private'], ['0', 'public']
-     ])],
-     ['registry', new Map([
-       ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
-     ])],
-     ['source_control_provider.keyword', new Map([
-       ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com']
-     ])]
-   ]);
-  }
-
   // Functions called from HTML
   /**
   * Returns true if either basic search is set and has results, or advanced search is set
@@ -330,13 +310,4 @@ export class SearchService {
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
   }
-
-  mapFriendlyValueNames(key: any, subBucket: any, friendlyValueNames: any) {
-    if (friendlyValueNames.has(key)) {
-      return friendlyValueNames.get(key).get(subBucket.toString());
-    } else {
-      return subBucket;
-    }
-  }
-
 }

@@ -73,7 +73,7 @@
               <div class="container-name-oflw pull-left">
                   <span>
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
+                    {{( key | mapFriendlyValue : subBucket)}}
                   </span>
               </div>
               <div class="pull-right">
@@ -85,9 +85,9 @@
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
-                  <span tooltip="{{ searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames) }}">
+                  <span tooltip="{{( key | mapFriendlyValue : subBucket)}}">
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
+                    {{( key | mapFriendlyValue : subBucket)}}
                   </span>
                 </div>
                 <div class="pull-right">
@@ -96,9 +96,9 @@
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
-                  <span tooltip="{{ searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames) }}">
+                  <span tooltip="{{( key | mapFriendlyValue : subBucket)}}">
                     <input tooltip="{{subBucket}}" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
+                    {{( key | mapFriendlyValue : subBucket)}}
                   </span>
                 </div>
                 <div class="pull-right">
@@ -169,7 +169,7 @@
             <span *ngFor="let key of getFilterKeys(); let i = index">
               the <strong>{{friendlyNames.get(key)}}</strong> is
               <span *ngFor='let subBucket of filters.get(key); let j = index'>
-                <strong>{{searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames)}}</strong>
+                <strong>{{( key | mapFriendlyValue : subBucket)}}</strong>
                 <span *ngIf="j < filters.get(key).size - 1">
                   OR
                 </span>
