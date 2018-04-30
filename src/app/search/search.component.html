@@ -85,7 +85,7 @@
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
-                  <span>
+                  <span tooltip="{{ searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames) }}">
                     <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
                     {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
                   </span>
@@ -96,9 +96,9 @@
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
-                  <span>
-                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
-                    {{ subBucket }}
+                  <span tooltip="{{ searchService.mapFriendlyValueNames(key, subBucket, friendlyValueNames) }}">
+                    <input tooltip="{{subBucket}}" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    {{ searchService.mapFriendlyValueNames(key,subBucket, friendlyValueNames) }}
                   </span>
                 </div>
                 <div class="pull-right">
