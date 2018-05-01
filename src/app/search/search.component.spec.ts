@@ -24,7 +24,6 @@ import { QueryBuilderService } from './query-builder.service';
 import { SearchService } from './search.service';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
-import { TagCloudModule } from 'angular-tag-cloud-module/dist';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
 /* tslint:disable:no-unused-variable */

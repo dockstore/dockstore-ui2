@@ -54,7 +54,7 @@
     "highlightjs-line-numbers.js": "^2.0.0",
     "jquery": "^3.2.1",
     "jquery-colorbox": "^1.6.4",
-    "ng2-ui-auth": "^8.0.1",
+    "ng2-ui-auth": "^6.2.0",
     "ngx-bootstrap": "^2.0.4",
     "ngx-clipboard": "^10.0.0",
     "ngx-sharebuttons": "^3.0.0",
