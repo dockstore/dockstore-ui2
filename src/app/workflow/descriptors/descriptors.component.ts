@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
@@ -24,17 +24,25 @@ import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
+declare var CodeMirror: any;
+declare var ace: any;
+
 @Component({
   selector: 'app-descriptors-workflow',
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
+export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewInit {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
   }
+  @ViewChild('myTextArea') myTextArea: ElementRef;
+  @ViewChild('aceEditor') aceEditor: ElementRef;
+
+  codeMirror: any;
+  editor: any;
 
   content: string;
   contentHighlighted: boolean;
@@ -61,12 +69,31 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
     this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
+    this.codeMirror.setValue(this.content);
+    // this.codeMirror.setOption('viewportMargin': 'infinity')
+    this.editor.setValue(this.content, -1);
   }
-  ngAfterViewChecked() {
-    if (this.contentHighlighted) {
-      this.contentHighlighted = false;
-      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
-    }
+
+  ngAfterViewInit() {
+    this.codeMirror = CodeMirror.fromTextArea(this.myTextArea.nativeElement,
+      {
+        lineNumbers: true,
+        mode: 'yaml',
+        readOnly: true,
+        theme: 'material'
+      }
+    );
+
+    this.editor = ace.edit('aceEditor',
+      {
+        mode: 'ace/mode/yaml',
+        readOnly: true,
+        showLineNumbers: true,
+        maxLines: 60,
+        theme: 'ace/theme/dracula',
+        fontSize: '14pt'
+      }
+    );
   }
 
   private getDescriptorPath(entrytype): string {

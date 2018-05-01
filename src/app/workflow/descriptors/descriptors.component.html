@@ -38,6 +38,13 @@
         <span class="glyphicon glyphicon-copy"></span>
       </button>
     </div>
-    <section *ngIf="content && _selectedVersion?.valid" [innerHTML]="fileService.highlightCode(content)"></section>
+    <!-- <section *ngIf="content && _selectedVersion?.valid" [innerHTML]="fileService.highlightCode(content)"></section> -->
+  </div>
+  <div [hidden]="!content || !_selectedVersion?.valid">
+    <textarea #myTextArea>
+    </textarea>
+
+    <div #aceEditor id="aceEditor">
+    </div>
   </div>
 </div>
