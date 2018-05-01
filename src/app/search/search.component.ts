@@ -93,7 +93,6 @@ export class SearchComponent implements OnInit {
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private friendlyValueNames: Map<string, Map<string, string>>;
   private nonVerifiedCount: number;
   private verifiedCount: number;
 
@@ -125,7 +124,6 @@ export class SearchComponent implements OnInit {
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
-    this.friendlyValueNames = this.searchService.initializeFriendlyValueNames();
   }
 
   getKeys(map: Map<any, any>): Array<string> {

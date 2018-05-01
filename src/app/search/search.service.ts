@@ -210,6 +210,7 @@ export class SearchService {
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Source Control', 'source_control_provider.keyword'],
+      ['File Formats', 'file_formats.keyword'],
       ['Private Access', 'private_access'],
       ['VerifiedTool', 'tags.verified'],
       ['Author', 'author'],
@@ -233,6 +234,7 @@ export class SearchService {
       ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['tags.verifiedSource', 'Tool: Verified Source'],
+      ['file_formats.keyword', 'File Formats'],
       ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
       ['organization', 'Workflow: Organization']
     ]);
@@ -251,28 +253,9 @@ export class SearchService {
       ['private_access', new SubBucket],
       ['tags.verified', new SubBucket],
       ['tags.verifiedSource', new SubBucket],
-      ['workflowVersions.verifiedSource.keyword', new SubBucket]
+      ['workflowVersions.verifiedSource.keyword', new SubBucket],
+      ['file_formats.keyword', new SubBucket]
     ]);
-  }
-
-  initializeFriendlyValueNames() {
-    return new Map([
-     ['workflowVersions.verified', new Map([
-       ['1', 'verified'], ['0', 'non-verified']
-     ])],
-     ['tags.verified', new Map([
-      ['1', 'verified'], ['0', 'non-verified']
-    ])],
-     ['private_access', new Map([
-       ['1', 'private'], ['0', 'public']
-     ])],
-     ['registry', new Map([
-       ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
-     ])],
-     ['source_control_provider.keyword', new Map([
-       ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com']
-     ])]
-   ]);
   }
 
   // Functions called from HTML
@@ -327,13 +310,4 @@ export class SearchService {
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
   }
-
-  mapFriendlyValueNames(key: any, subBucket: any, friendlyValueNames: any) {
-    if (friendlyValueNames.has(key)) {
-      return friendlyValueNames.get(key).get(subBucket.toString());
-    } else {
-      return subBucket;
-    }
-  }
-
 }
