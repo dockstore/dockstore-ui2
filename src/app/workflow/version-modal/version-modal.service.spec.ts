@@ -15,7 +15,6 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
-import { NotificationsService } from 'angular2-notifications';
 
 import { RefreshService } from './../../shared/refresh.service';
 import { StateService } from './../../shared/state.service';
@@ -23,7 +22,6 @@ import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from './../../shared/workflow.service';
 import {
-  NotificationsStubService,
   RefreshStubService,
   WorkflowsStubService,
   WorkflowStubService,
@@ -37,8 +35,7 @@ describe('Service: version-modal.service.ts', () => {
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 StateService,
-                { provide: RefreshService, useClass: RefreshStubService},
-                { provide: NotificationsService, useClass: NotificationsStubService}
+                { provide: RefreshService, useClass: RefreshStubService}
             ]
         });
     });

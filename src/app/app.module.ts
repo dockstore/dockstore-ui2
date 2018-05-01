@@ -16,7 +16,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
@@ -78,7 +78,6 @@ import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
-import { ToasterModule } from './shared/toaster/toaster.module';
 import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
@@ -115,6 +114,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
 ],
   imports: [
     BrowserAnimationsModule,
+    MatSnackBarModule,
     FormsModule,
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
@@ -128,7 +128,6 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
-    ToasterModule,
     FlexLayoutModule,
     StarringModule,
     routing,
