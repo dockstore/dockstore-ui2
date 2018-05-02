@@ -80,7 +80,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
         lineNumbers: true,
         mode: 'yaml',
         readOnly: true,
-        theme: 'material'
+        theme: 'material',
+        autoRefresh: true
       }
     );
 
