@@ -81,7 +81,7 @@ export class MytoolsService {
   sortNSContainers(tools: any[], username: string): any {
     const nsContainers = [];
     for (let i = 0; i < tools.length; i++) {
-      const prefix = tools[i].tool_path.split('/', 2).join('/');
+      const prefix = tools[i].path.split('/', 2).join('/');
       let pos = this.getNSIndex(nsContainers, prefix);
       if (pos < 0) {
         nsContainers.push({

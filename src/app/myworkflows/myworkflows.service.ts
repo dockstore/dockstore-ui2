@@ -23,12 +23,7 @@ export class MyWorkflowsService {
   }
 
   getORGIndex(orgWorkflows: any[], organization: string): number {
-    for (let i = 0; i < orgWorkflows.length; i++) {
-      if (orgWorkflows[i].organization === organization) {
-        return i;
-      }
-    }
-    return -1;
+    return orgWorkflows.findIndex(orgWorkflow => orgWorkflow.sourceControl + '/' + orgWorkflow.organization === organization);
   }
 
   sortNamespaces(orgWorkflows: any[], username: string): any {
@@ -78,7 +73,8 @@ export class MyWorkflowsService {
   sortORGWorkflows(workflows: any[], username: string): any {
     const orgWorkflows = [];
     for (let i = 0; i < workflows.length; i++) {
-      let pos = this.getORGIndex(orgWorkflows, workflows[i].organization);
+      const prefix = workflows[i].path.split('/', 2).join('/');
+      let pos = this.getORGIndex(orgWorkflows, prefix);
       if (pos < 0) {
         orgWorkflows.push({
           organization: workflows[i].organization,
