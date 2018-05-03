@@ -20,9 +20,10 @@ import { MyEntriesService } from './../shared/myentries.service';
 @Injectable()
 export class MytoolsService extends MyEntriesService {
   constructor() {
+    super();
   }
 
-  getGroupIndex(nsContainers: any[], group: string): number {
-    return nsContainers.findIndex(nsContainer => nsContainer.namespace === group);
+  getGroupIndex(groupEntries: any[], group: string): number {
+    return groupEntries.findIndex(nsContainer => nsContainer.namespace === group);
   }
 }

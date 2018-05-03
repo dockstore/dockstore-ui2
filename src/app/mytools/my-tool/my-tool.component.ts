@@ -47,7 +47,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   public refreshMessage: string;
   private registerTool: Tool;
-  public orgToolsObject: Array<OrgToolObject>;
+  public groupEntriesObject: Array<OrgToolObject>;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
@@ -80,24 +80,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (tools) {
         this.tools = tools;
         const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'namespace');
-        /* For the first initial time, set the first tool to be the selected one */
-        if (sortedContainers && sortedContainers.length > 0) {
-          this.orgToolsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedContainers);
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgToolsObject);
-          if (foundTool) {
-            this.selectEntry(foundTool);
-          } else {
-            const publishedTool = this.getFirstPublishedEntry(sortedContainers);
-            if (publishedTool) {
-              this.selectEntry(publishedTool);
-            } else {
-              const theFirstTool = sortedContainers[0].entries[0];
-              this.selectEntry(theFirstTool);
-            }
-          }
-        } else {
-          this.selectEntry(null);
-        }
+        this.selectInitialEntry(sortedContainers);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
@@ -105,21 +88,21 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   protected updateActiveTab(): void {
-    if (this.orgToolsObject) {
-      for (let i = 0; i < this.orgToolsObject.length; i++) {
+    if (this.groupEntriesObject) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
         if (this.tool) {
-          if (this.orgToolsObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
-            this.orgToolsObject[i].activeTab = 'unpublished';
+          if (this.groupEntriesObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
+            this.groupEntriesObject[i].activeTab = 'unpublished';
             continue;
           }
-          if (this.orgToolsObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
-            this.orgToolsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
+            this.groupEntriesObject[i].activeTab = 'published';
             continue;
           }
-          if (this.orgToolsObject[i].published.length > 0) {
-            this.orgToolsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.length > 0) {
+            this.groupEntriesObject[i].activeTab = 'published';
           } else {
-            this.orgToolsObject[i].activeTab = 'unpublished';
+            this.groupEntriesObject[i].activeTab = 'unpublished';
           }
         }
       }
@@ -127,7 +110,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
-    const orgToolsObject: Array<OrgToolObject> = [];
+    const groupEntriesObject: Array<OrgToolObject> = [];
     for (let i = 0; i < nsTools.length; i++) {
       const orgToolObject: OrgToolObject = {
         namespace: '',
@@ -146,9 +129,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
       orgToolObject.unpublished = nsTool.filter((tool: DockstoreTool) => {
         return !tool.is_published;
       });
-      orgToolsObject.push(orgToolObject);
+      groupEntriesObject.push(orgToolObject);
     }
-    return orgToolsObject;
+    return groupEntriesObject;
   }
 
   protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool {
@@ -179,14 +162,14 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   setIsFirstOpen(): void {
-    if (this.orgToolsObject && this.tool) {
-      for (let i = 0; i < this.orgToolsObject.length; i++) {
-        if (this.orgToolsObject[i].published.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
-          this.orgToolsObject[i].isFirstOpen = true;
+    if (this.groupEntriesObject && this.tool) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
+        if (this.groupEntriesObject[i].published.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
-        if (this.orgToolsObject[i].unpublished.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
-          this.orgToolsObject[i].isFirstOpen = true;
+        if (this.groupEntriesObject[i].unpublished.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
       }

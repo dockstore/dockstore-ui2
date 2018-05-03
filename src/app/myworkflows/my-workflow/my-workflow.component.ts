@@ -48,7 +48,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflows: any;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
-  public orgWorkflowsObject: Array<OrgWorkflowObject>;
+  public groupEntriesObject: Array<OrgWorkflowObject>;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
     private workflowService: WorkflowService, protected authService: AuthService, protected accountsService: AccountsService,
@@ -64,8 +64,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      */
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        if (this.orgWorkflowsObject) {
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
+        if (this.groupEntriesObject) {
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
           this.selectEntry(foundWorkflow);
         }
       }
@@ -93,45 +93,28 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       if (workflows) {
         this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'organization');
-        /* For the first initial time, set the first tool to be the selected one */
-        if (sortedWorkflows && sortedWorkflows.length > 0) {
-          this.orgWorkflowsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedWorkflows);
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
-          if (foundWorkflow) {
-            this.selectEntry(foundWorkflow);
-          } else {
-            const publishedWorkflow = this.getFirstPublishedEntry(sortedWorkflows);
-            if (publishedWorkflow) {
-              this.selectEntry(publishedWorkflow);
-            } else {
-              const theFirstWorkflow = sortedWorkflows[0].entries[0];
-              this.selectEntry(theFirstWorkflow);
-            }
-          }
-        } else {
-          this.selectEntry(null);
-        }
+        this.selectInitialEntry(sortedWorkflows);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   protected updateActiveTab(): void {
-    if (this.orgWorkflowsObject) {
-      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
+    if (this.groupEntriesObject) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
         if (this.workflow) {
-          if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+          if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.groupEntriesObject[i].activeTab = 'unpublished';
             continue;
           }
-          if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.orgWorkflowsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.groupEntriesObject[i].activeTab = 'published';
             continue;
           }
-          if (this.orgWorkflowsObject[i].published.length > 0) {
-            this.orgWorkflowsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.length > 0) {
+            this.groupEntriesObject[i].activeTab = 'published';
           } else {
-            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+            this.groupEntriesObject[i].activeTab = 'unpublished';
           }
         }
       }
@@ -139,7 +122,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
-    const orgWorkflowsObject: Array<OrgWorkflowObject> = [];
+    const groupEntriesObject: Array<OrgWorkflowObject> = [];
     for (let i = 0; i < nsWorkflows.length; i++) {
       const orgWorkflowObject: OrgWorkflowObject = {
         sourceControl: '',
@@ -159,9 +142,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: Workflow) => {
         return !workflow.is_published;
       });
-      orgWorkflowsObject.push(orgWorkflowObject);
+      groupEntriesObject.push(orgWorkflowObject);
     }
-    return orgWorkflowsObject;
+    return groupEntriesObject;
   }
 
   protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
@@ -192,14 +175,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   setIsFirstOpen(): void {
-    if (this.orgWorkflowsObject && this.workflow) {
-      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
-        if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.orgWorkflowsObject[i].isFirstOpen = true;
+    if (this.groupEntriesObject && this.workflow) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
+        if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
-        if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.orgWorkflowsObject[i].isFirstOpen = true;
+        if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
       }

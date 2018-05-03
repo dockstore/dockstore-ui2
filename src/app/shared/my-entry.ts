@@ -53,7 +53,7 @@ export abstract class MyEntry implements OnDestroy {
     protected abstract updateActiveTab(): void;
 
     /**
-     * Converts the deprecated nsTool object to the new OrgToolsObject contains:
+     * Converts the deprecated nsTool object to the new groupEntriesObject contains:
      * an array of published and unpublished tools
      * and which tab should be opened (published or unpublished)
      * Main reason to convert to the new object is because figuring it out which tab should be active on
@@ -108,5 +108,30 @@ export abstract class MyEntry implements OnDestroy {
     ngOnDestroy() {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+    }
+
+    /**
+     * Select the initially selected entry
+     * @param sortedEntries Array of sorted entries
+     */
+    selectInitialEntry(sortedEntries: any): void {
+      /* For the first initial time, set the first entry to be the selected one */
+      if (sortedEntries && sortedEntries.length > 0) {
+        this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
+        const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+        if (foundEntry) {
+          this.selectEntry(foundEntry);
+        } else {
+          const publishedEntry = this.getFirstPublishedEntry(sortedEntries);
+          if (publishedEntry) {
+            this.selectEntry(publishedEntry);
+          } else {
+            const theFirstEntry = sortedEntries[0].entries[0];
+            this.selectEntry(theFirstEntry);
+          }
+        }
+      } else {
+        this.selectEntry(null);
+      }
     }
 }

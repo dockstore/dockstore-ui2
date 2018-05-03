@@ -21,10 +21,11 @@ import { MyEntriesService } from './../shared/myentries.service';
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService {
   constructor() {
+    super();
   }
 
-  getGroupIndex(orgWorkflows: any[], group: string): number {
-    return orgWorkflows.findIndex(orgWorkflow => orgWorkflow.sourceControl + '/' + orgWorkflow.organization === group);
+  getGroupIndex(groupEntries: any[], group: string): number {
+    return groupEntries.findIndex(orgWorkflow => orgWorkflow.sourceControl + '/' + orgWorkflow.organization === group);
   }
 
   // Given enum name, returns the friendly name
