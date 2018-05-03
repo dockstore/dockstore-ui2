@@ -90,6 +90,14 @@ export class WorkflowComponent extends Entry {
     }
   }
 
+  isHosted(): boolean {
+    if (this.workflow) {
+      return this.workflow.mode === Workflow.ModeEnum.HOSTED;
+    } else {
+      return true;
+    }
+  }
+
   /**
    * Populate the extra ExtendedWorkflow properties
    */

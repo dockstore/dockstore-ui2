@@ -24,6 +24,7 @@ import { DateService } from './../../shared/date.service';
 import { VersionModalService } from './version-modal.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { Workflow } from './../../shared/swagger/model/workflow';
 
 @Component({
   selector: 'app-version-modal',
@@ -44,6 +45,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   validationMessages = validationMessages;
   validationPatterns = validationDescriptorPatterns;
   public refreshMessage: string;
+  public WorkflowType = Workflow;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService, private stateService: StateService) {

@@ -38,7 +38,7 @@
       </div>
       <form #versionEditorForm="ngForm" class="form-horizontal">
         <div class="modal-body tagEditor">
-          <div class="form-group form-group-sm">
+          <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Git Reference:
             </label>
@@ -70,7 +70,7 @@
                 </span>
               </div>
             </div>
-            
+
             <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
               <div class="input-group full-width">
                 <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"

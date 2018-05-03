@@ -48,8 +48,7 @@
           <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
         </a>
       </span>
-      {{ title }}<span *ngIf="!isStub()">:<span class="ds-green">{{ selectedVersion?.name }}</span></span>
-
+      {{ title }}<span *ngIf="workflow?.workflowVersions.length > 0">:<span class="ds-green">{{ selectedVersion?.name }}</span></span>
     </h3>
     <div *ngIf="workflow">
       <span class="label label-default container-label" *ngFor="let label of labels">
