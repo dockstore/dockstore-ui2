@@ -92,7 +92,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
       if (workflows) {
         this.workflows = workflows;
-        const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
+        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'organization');
         /* For the first initial time, set the first tool to be the selected one */
         if (sortedWorkflows && sortedWorkflows.length > 0) {
           this.orgWorkflowsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedWorkflows);
@@ -104,7 +104,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             if (publishedWorkflow) {
               this.selectEntry(publishedWorkflow);
             } else {
-              const theFirstWorkflow = sortedWorkflows[0].workflows[0];
+              const theFirstWorkflow = sortedWorkflows[0].entries[0];
               this.selectEntry(theFirstWorkflow);
             }
           }
@@ -149,7 +149,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         unpublished: [],
         activeTab: 'published'
       };
-      const nsWorkflow: Array<Workflow> = nsWorkflows[i].workflows;
+      const nsWorkflow: Array<Workflow> = nsWorkflows[i].entries;
       orgWorkflowObject.isFirstOpen = nsWorkflows[i].isFirstOpen;
       orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
       orgWorkflowObject.organization = nsWorkflows[i].organization;
@@ -166,7 +166,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
     for (let i = 0; i < orgWorkflows.length; i++) {
-      const foundWorkflow = orgWorkflows[i]['workflows'].find((workflow: Workflow) => {
+      const foundWorkflow = orgWorkflows[i]['entries'].find((workflow: Workflow) => {
         return workflow.is_published === true;
       });
       if (foundWorkflow) {
@@ -234,4 +234,3 @@ export interface OrgWorkflowObject {
   unpublished: Array<Workflow>;
   activeTab: 'unpublished' | 'published';
 }
-

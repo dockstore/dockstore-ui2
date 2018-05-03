@@ -79,7 +79,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.containerService.tools$.takeUntil(this.ngUnsubscribe).subscribe(tools => {
       if (tools) {
         this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortNSContainers(tools, this.user.username);
+        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'namespace');
         /* For the first initial time, set the first tool to be the selected one */
         if (sortedContainers && sortedContainers.length > 0) {
           this.orgToolsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedContainers);
@@ -91,7 +91,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
             if (publishedTool) {
               this.selectEntry(publishedTool);
             } else {
-              const theFirstTool = sortedContainers[0].containers[0];
+              const theFirstTool = sortedContainers[0].entries[0];
               this.selectEntry(theFirstTool);
             }
           }
@@ -137,10 +137,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
         unpublished: [],
         activeTab: 'published'
       };
-      const nsTool: Array<DockstoreTool> = nsTools[i].containers;
+      const nsTool: Array<DockstoreTool> = nsTools[i].entries;
       orgToolObject.isFirstOpen = nsTools[i].isFirstOpen;
       orgToolObject.namespace = nsTools[i].namespace;
-      orgToolObject.organization = nsTools[i].organization;
       orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
         return tool.is_published;
       });
@@ -154,7 +153,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool {
     for (let i = 0; i < orgEntries.length; i++) {
-      const foundTool = orgEntries[i]['containers'].find((entry: DockstoreTool) => {
+      const foundTool = orgEntries[i]['entries'].find((entry: DockstoreTool) => {
         return entry.is_published === true;
       });
       if (foundTool) {
