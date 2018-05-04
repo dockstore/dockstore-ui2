@@ -26,7 +26,7 @@ export abstract class MyEntriesService {
   protected abstract getGroupIndex(groupEntries: any[], group: string): number;
 
   /**
-   * [sortGroups description]
+   * Sorts the groups of entries and returns
    * @param  groupEntries Array of groups of entries by partial path
    * @param  username     Dockstore username
    * @param  type         either tool or workflow
