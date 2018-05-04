@@ -48,13 +48,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflows: any;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
-  public groupEntriesObject: Array<OrgWorkflowObject>;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
     private workflowService: WorkflowService, protected authService: AuthService, protected accountsService: AccountsService,
     private refreshService: RefreshService, private stateService: StateService, private router: Router, private location: Location,
-    private registerWorkflowModalService: RegisterWorkflowModalService, private urlResolverService: UrlResolverService) {
-    super(accountsService, authService, configuration, tokenService);
+    private registerWorkflowModalService: RegisterWorkflowModalService, protected urlResolverService: UrlResolverService) {
+    super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
   ngOnInit() {

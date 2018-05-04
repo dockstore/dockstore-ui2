@@ -25,6 +25,7 @@ import { TokenSource } from './enum/token-source.enum';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { Configuration, DockstoreTool, Workflow } from './swagger';
+import { UrlResolverService } from './url-resolver.service';
 
 @Injectable()
 export abstract class MyEntry implements OnDestroy {
@@ -32,9 +33,10 @@ export abstract class MyEntry implements OnDestroy {
     oneAtATime = true;
     user: any;
     public hasGitHubToken = true;
+    public groupEntriesObject: Array<any>;
     protected ngUnsubscribe: Subject<{}> = new Subject();
     constructor(protected accountsService: AccountsService, protected authService: AuthService, protected configuration: Configuration,
-        protected tokenService: TokenService) { }
+        protected tokenService: TokenService, protected urlResolverService: UrlResolverService) { }
 
     link() {
         this.accountsService.link(TokenSource.GITHUB);

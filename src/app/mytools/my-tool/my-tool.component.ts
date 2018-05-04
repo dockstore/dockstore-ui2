@@ -47,15 +47,14 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   public refreshMessage: string;
   private registerTool: Tool;
-  public groupEntriesObject: Array<OrgToolObject>;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService,
-    private urlResolverService: UrlResolverService, private router: Router) {
-    super(accountsService, authService, configuration, tokenService);
+    protected urlResolverService: UrlResolverService, private router: Router) {
+    super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
   ngOnInit() {
