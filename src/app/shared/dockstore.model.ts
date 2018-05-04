@@ -51,6 +51,9 @@ export class Dockstore {
   static readonly GITLAB_CLIENT_ID = 'fill_this_in';
   static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
 
+  static readonly GOOGLE_CLIENT_ID = 'fill_this_in';
+  static readonly GOOGLE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+
   static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
   static readonly FEATURES = {
