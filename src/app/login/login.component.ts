@@ -48,4 +48,8 @@ export class LoginComponent {
   loginWithGitHub() {
     this.login(this.authService.authenticate('github'));
   }
+
+  public loginWithGoogle() {
+    this.login(this.authService.authenticate('google'));
+  }
 }
