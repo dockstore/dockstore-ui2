@@ -29,7 +29,7 @@ export abstract class MyEntriesService {
    * [sortGroups description]
    * @param  groupEntries Array of groups of entries by partial path
    * @param  username     Dockstore username
-   * @param  type         organization or namespace
+   * @param  type         either tool or workflow
    * @return              A sorted array of entries grouped together
    */
   sortGroups(groupEntries: any[], username: string, type: string): any {
@@ -86,7 +86,7 @@ export abstract class MyEntriesService {
    * for tools.
    * @param  entries  Array of entries (tools or workflows)
    * @param  username Dockstore username
-   * @param  type     Either organization or namespace
+   * @param  type     Either tool or workflow
    * @return          A sorted array of entries grouped together
    */
   sortGroupEntries(entries: any[], username: string, type: string): any {
