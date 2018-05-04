@@ -9,7 +9,7 @@ import { UserService } from '../../user.service';
 @Component({
   selector: 'app-accounts-internal',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.css']
+  styleUrls: ['./accounts.component.scss']
 })
 export class AccountsInternalComponent implements OnInit {
   user;

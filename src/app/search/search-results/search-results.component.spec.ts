@@ -18,7 +18,7 @@ import { QueryBuilderService } from './../query-builder.service';
 import { SearchStubService, QueryBuilderStubService } from './../../test/service-stubs';
 import { SearchService } from './../search.service';
 import { FormsModule } from '@angular/forms';
-import { TagCloudModule } from 'angular-tag-cloud-module/dist';
+import { TagCloudModule } from 'angular-tag-cloud-module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
