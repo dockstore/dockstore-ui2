@@ -28,6 +28,8 @@ describe('MyWorkflowsService', () => {
       repository: 'aa',
       workflow_path: '',
       sourceControl: 'github.com',
+      path: 'github.com/cc/aa',
+      full_workflow_path: 'github.com/cc/aa',
       source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
   };
   const tool2: Workflow = {
@@ -39,6 +41,8 @@ describe('MyWorkflowsService', () => {
     repository: 'bb',
     workflow_path: '',
     sourceControl: 'github.com',
+    path: 'github.com/cc/bb',
+    full_workflow_path: 'github.com/cc/bb',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool3: Workflow = {
@@ -50,6 +54,8 @@ describe('MyWorkflowsService', () => {
     repository: 'cc',
     workflow_path: '',
     sourceControl: 'github.com',
+    path: 'github.com/bb/cc',
+    full_workflow_path: 'github.com/bb/cc',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool4: Workflow = {
@@ -61,6 +67,8 @@ describe('MyWorkflowsService', () => {
     repository: 'dd',
     workflow_path: '',
     sourceControl: 'github.com',
+    path: 'github.com/bb/dd',
+    full_workflow_path: 'github.com/bb/dd',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool5: Workflow = {
@@ -72,6 +80,8 @@ describe('MyWorkflowsService', () => {
     repository: 'ee',
     workflow_path: '',
     sourceControl: 'github.com',
+    path: 'github.com/aa/ee',
+    full_workflow_path: 'github.com/aa/ee',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool6: Workflow = {
@@ -83,12 +93,17 @@ describe('MyWorkflowsService', () => {
     repository: 'ee',
     workflow_path: '1',
     sourceControl: 'github.com',
+    path: 'github.com/aa/ee',
+    full_workflow_path: 'github.com/aa/ee',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1 = {'containers': [(tool5), (tool6)], 'isFirstOpen': false, 'namespace': 'quay.io/aa'};
-  const expectedResult2 = {'containers': [(tool3), (tool4)], 'isFirstOpen': false, 'namespace': 'quay.io/bb'};
-  const expectedResult3 = {'containers': [(tool1), (tool2)], 'isFirstOpen': false, 'namespace': 'quay.io/cc'};
+  const expectedResult1 = {'entries': [(tool5), (tool6)], 'isFirstOpen': false,
+  'namespace': 'github.com/aa', 'sourceControl': 'github.com', 'organization': 'aa'};
+  const expectedResult2 = {'entries': [(tool3), (tool4)], 'isFirstOpen': false,
+  'namespace': 'github.com/bb', 'sourceControl': 'github.com', 'organization': 'bb'};
+  const expectedResult3 = {'entries': [(tool1), (tool2)], 'isFirstOpen': false,
+  'namespace': 'github.com/cc', 'sourceControl': 'github.com', 'organization': 'cc'};
   const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -99,8 +114,8 @@ describe('MyWorkflowsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should ...', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
-    expect(service.sortORGWorkflows(tools, 'asdf').length).toBe(3);
-    // expect(service.sortORGWorkflows(tools, 'asdf')).toEqual(expectedResult);
-    expect(service.sortORGWorkflows([], 'asdf')).toEqual([]);
+    expect(service.sortGroupEntries(tools, 'asdf', 'workflow').length).toBe(3);
+    expect(service.sortGroupEntries(tools, 'asdf', 'workflow')).toEqual(expectedResult);
+    expect(service.sortGroupEntries([], 'asdf', 'workflow')).toEqual([]);
   }));
 });

@@ -34,7 +34,8 @@ describe('MytoolsService', () => {
     'registry_string': 'quay.io',
     'registry': DockstoreTool.RegistryEnum.QUAYIO,
     'toolname': '',
-    'tool_path': 'quay.io/cc/aa'
+    'tool_path': 'quay.io/cc/aa',
+    'path': 'quay.io/cc/aa'
   };
   const tool2: DockstoreTool = {
     'defaultWDLTestParameterFile': '',
@@ -50,7 +51,8 @@ describe('MytoolsService', () => {
     'registry_string': 'quay.io',
     'registry': DockstoreTool.RegistryEnum.QUAYIO,
     'toolname': '',
-    'tool_path': 'quay.io/cc/bb'
+    'tool_path': 'quay.io/cc/bb',
+    'path': 'quay.io/cc/bb'
   };
   const tool3: DockstoreTool = {
     'defaultWDLTestParameterFile': '',
@@ -66,7 +68,8 @@ describe('MytoolsService', () => {
     'registry_string': 'quay.io',
     'registry': DockstoreTool.RegistryEnum.QUAYIO,
     'toolname': '',
-    'tool_path': 'quay.io/bb/cc'
+    'tool_path': 'quay.io/bb/cc',
+    'path': 'quay.io/bb/cc'
   };
   const tool4: DockstoreTool = {
     'defaultWDLTestParameterFile': '',
@@ -82,7 +85,8 @@ describe('MytoolsService', () => {
     'registry_string': 'quay.io',
     'registry': DockstoreTool.RegistryEnum.QUAYIO,
     'toolname': '',
-    'tool_path': 'quay.io/bb/dd'
+    'tool_path': 'quay.io/bb/dd',
+    'path': 'quay.io/bb/dd'
   };
   const tool5: DockstoreTool = {
     'defaultWDLTestParameterFile': '',
@@ -98,7 +102,8 @@ describe('MytoolsService', () => {
     'registry_string': 'quay.io',
     'registry': DockstoreTool.RegistryEnum.QUAYIO,
     'toolname': '',
-    'tool_path': 'quay.io/aa/ee'
+    'tool_path': 'quay.io/aa/ee',
+    'path': 'quay.io/aa/ee'
   };
   const tool6: DockstoreTool = {
     'defaultWDLTestParameterFile': '',
@@ -114,12 +119,16 @@ describe('MytoolsService', () => {
     'registry_string': 'quay.io',
     'registry': DockstoreTool.RegistryEnum.QUAYIO,
     'toolname': '1',
-    'tool_path': 'quay.io/aa/ee'
+    'tool_path': 'quay.io/aa/ee',
+    'path': 'quay.io/aa/ee'
   };
   const tools: DockstoreTool[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1 = {'containers': [(tool5), (tool6)], 'isFirstOpen': false, 'namespace': 'quay.io/aa'};
-  const expectedResult2 = {'containers': [(tool3), (tool4)], 'isFirstOpen': false, 'namespace': 'quay.io/bb'};
-  const expectedResult3 = {'containers': [(tool1), (tool2)], 'isFirstOpen': false, 'namespace': 'quay.io/cc'};
+  const expectedResult1 = {'entries': [(tool5), (tool6)], 'isFirstOpen': false,
+  'namespace': 'quay.io/aa', 'sourceControl': 'quay.io', 'organization': 'aa'};
+  const expectedResult2 = {'entries': [(tool3), (tool4)], 'isFirstOpen': false,
+  'namespace': 'quay.io/bb', 'sourceControl': 'quay.io', 'organization': 'bb'};
+  const expectedResult3 = {'entries': [(tool1), (tool2)], 'isFirstOpen': false,
+  'namespace': 'quay.io/cc', 'sourceControl': 'quay.io', 'organization': 'cc'};
   const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -130,8 +139,8 @@ describe('MytoolsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {
-    expect(service.sortNSContainers(tools, 'asdf').length).toBe(3);
-    expect(service.sortNSContainers(tools, 'asdf')).toEqual(expectedResult);
-    expect(service.sortNSContainers([], 'asdf')).toEqual([]);
+    expect(service.sortGroupEntries(tools, 'asdf', 'tool').length).toBe(3);
+    expect(service.sortGroupEntries(tools, 'asdf', 'tool')).toEqual(expectedResult);
+    expect(service.sortGroupEntries([], 'asdf', 'tool')).toEqual([]);
   }));
 });
