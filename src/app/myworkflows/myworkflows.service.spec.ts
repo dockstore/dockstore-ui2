@@ -29,6 +29,7 @@ describe('MyWorkflowsService', () => {
       workflow_path: '',
       sourceControl: 'github.com',
       path: 'github.com/cc/aa',
+      full_workflow_path: 'github.com/cc/aa',
       source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
   };
   const tool2: Workflow = {
@@ -41,6 +42,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: '',
     sourceControl: 'github.com',
     path: 'github.com/cc/bb',
+    full_workflow_path: 'github.com/cc/bb',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool3: Workflow = {
@@ -53,6 +55,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: '',
     sourceControl: 'github.com',
     path: 'github.com/bb/cc',
+    full_workflow_path: 'github.com/bb/cc',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool4: Workflow = {
@@ -65,6 +68,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: '',
     sourceControl: 'github.com',
     path: 'github.com/bb/dd',
+    full_workflow_path: 'github.com/bb/dd',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool5: Workflow = {
@@ -77,6 +81,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: '',
     sourceControl: 'github.com',
     path: 'github.com/aa/ee',
+    full_workflow_path: 'github.com/aa/ee',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tool6: Workflow = {
@@ -89,6 +94,7 @@ describe('MyWorkflowsService', () => {
     workflow_path: '1',
     sourceControl: 'github.com',
     path: 'github.com/aa/ee',
+    full_workflow_path: 'github.com/aa/ee',
     source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
 };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
@@ -108,8 +114,8 @@ describe('MyWorkflowsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should ...', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', 'organization').length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', 'organization')).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', 'organization')).toEqual([]);
+    expect(service.sortGroupEntries(tools, 'asdf', 'workflow').length).toBe(3);
+    expect(service.sortGroupEntries(tools, 'asdf', 'workflow')).toEqual(expectedResult);
+    expect(service.sortGroupEntries([], 'asdf', 'workflow')).toEqual([]);
   }));
 });

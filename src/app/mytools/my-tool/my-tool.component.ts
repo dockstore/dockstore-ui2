@@ -78,7 +78,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.containerService.tools$.takeUntil(this.ngUnsubscribe).subscribe(tools => {
       if (tools) {
         this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'namespace');
+        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
         this.selectInitialEntry(sortedContainers);
       }
     });

@@ -91,7 +91,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
       if (workflows) {
         this.workflows = workflows;
-        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'organization');
+        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
         this.selectInitialEntry(sortedWorkflows);
       }
     });

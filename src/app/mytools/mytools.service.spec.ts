@@ -139,8 +139,8 @@ describe('MytoolsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', 'namespace').length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', 'namespace')).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', 'namespace')).toEqual([]);
+    expect(service.sortGroupEntries(tools, 'asdf', 'tool').length).toBe(3);
+    expect(service.sortGroupEntries(tools, 'asdf', 'tool')).toEqual(expectedResult);
+    expect(service.sortGroupEntries([], 'asdf', 'tool')).toEqual([]);
   }));
 });

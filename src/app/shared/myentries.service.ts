@@ -60,12 +60,15 @@ export abstract class MyEntriesService {
         1
       );
     }
+
+    const path = (type === 'workflow') ? 'organization' : 'namespace';
+
     sortedGroupEntries = sortedGroupEntries.concat(
       groupEntries.sort(function(a, b) {
-        if (a[type] < b[type]) {
+        if (a[path] < b[path]) {
           return -1;
         }
-        if (a[type] > b[type]) {
+        if (a[path] > b[path]) {
           return 1;
         }
         return 0;
@@ -104,10 +107,12 @@ export abstract class MyEntriesService {
       groupEntries[pos].entries.push(entries[i]);
     }
 
+    const path = (type === 'workflow') ? 'full_workflow_path' : 'tool_path';
+
     groupEntries.forEach(groupEntry => {
       groupEntry.entries.sort((a, b) => {
-        if (a.path < b.path) { return -1; }
-        if (a.path > b.path) { return 1; }
+        if (a[path] < b[path]) { return -1; }
+        if (a[path] > b[path]) { return 1; }
         return 0;
       });
     });
