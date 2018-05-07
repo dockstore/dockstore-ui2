@@ -57,6 +57,7 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
+import { CodeEditorComponent } from './../code-editor/code-editor.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { getTooltipConfig } from './../tooltip';
     ViewWorkflowComponent,
     VersionModalComponent,
     InfoTabComponent,
-    ToolTabComponent
+    ToolTabComponent,
+    CodeEditorComponent
   ],
   imports: [
     CommonModule,

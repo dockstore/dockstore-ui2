@@ -38,10 +38,8 @@
         <span class="glyphicon glyphicon-copy"></span>
       </button>
     </div>
-    <!-- <section *ngIf="content && _selectedVersion?.valid" [innerHTML]="fileService.highlightCode(content)"></section> -->
   </div>
   <div [hidden]="!content || !_selectedVersion?.valid">
-    <div #aceEditor id="aceEditor">
-    </div>
+    <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
   </div>
 </div>

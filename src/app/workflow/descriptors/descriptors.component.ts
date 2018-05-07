@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
@@ -23,23 +23,18 @@ import { Workflow } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
-import { ace } from '../../shared/grammars/cwl-grammar.js';
 
 @Component({
   selector: 'app-descriptors-workflow',
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewInit {
+export class DescriptorsWorkflowComponent extends EntryFileSelector {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
   }
-  @ViewChild('myTextArea') myTextArea: ElementRef;
-  @ViewChild('aceEditor') aceEditor: ElementRef;
-
-  editor: any;
 
   content: string;
   contentHighlighted: boolean;
@@ -48,8 +43,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
   constructor(private highlightJsService: HighlightJsService,
               private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
-              private workflowService: WorkflowService,
-              private elementRef: ElementRef) {
+              private workflowService: WorkflowService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -66,20 +60,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
     this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
-    this.editor.setValue(this.content, -1);
-  }
-
-  ngAfterViewInit() {
-    this.editor = ace.edit('aceEditor',
-      {
-        mode: 'ace/mode/cwl',
-        readOnly: true,
-        showLineNumbers: true,
-        maxLines: 60,
-        theme: 'ace/theme/dracula',
-        fontSize: '14pt'
-      }
-    );
   }
 
   private getDescriptorPath(entrytype): string {
