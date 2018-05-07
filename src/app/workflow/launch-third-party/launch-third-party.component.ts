@@ -11,7 +11,7 @@ import { URLSearchParams } from '@angular/http';
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss']
 })
-export class LaunchThirdPartyComponent implements OnInit {
+export class LaunchThirdPartyComponent {
 
   private _workflow: Workflow;
   private _selectedVersion: WorkflowVersion;
@@ -38,9 +38,6 @@ export class LaunchThirdPartyComponent implements OnInit {
   fireCloudURL: string;
 
   constructor(private workflowsService: WorkflowsService) { }
-
-  ngOnInit() {
-  }
 
   private onChange() {
     this.setupFireCloudUrl(this.workflow);
