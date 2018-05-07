@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /src/app/**/*.js
+!/src/app/shared/grammars/*.js
 !/src/app/shared/angular2-highlight-js/lib/*.js
 src/app/shared/swagger/
 swagger-codegen-cli.jar

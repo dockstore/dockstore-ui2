@@ -41,9 +41,6 @@
     <!-- <section *ngIf="content && _selectedVersion?.valid" [innerHTML]="fileService.highlightCode(content)"></section> -->
   </div>
   <div [hidden]="!content || !_selectedVersion?.valid">
-    <textarea #myTextArea>
-    </textarea>
-
     <div #aceEditor id="aceEditor">
     </div>
   </div>

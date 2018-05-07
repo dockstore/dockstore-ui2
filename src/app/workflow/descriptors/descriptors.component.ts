@@ -23,9 +23,7 @@ import { Workflow } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
-
-declare var CodeMirror: any;
-declare var ace: any;
+import { ace } from '../../shared/grammars/cwl-grammar.js';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -41,7 +39,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
   @ViewChild('myTextArea') myTextArea: ElementRef;
   @ViewChild('aceEditor') aceEditor: ElementRef;
 
-  codeMirror: any;
   editor: any;
 
   content: string;
@@ -69,25 +66,13 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
     this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
-    this.codeMirror.setValue(this.content);
-    // this.codeMirror.setOption('viewportMargin': 'infinity')
     this.editor.setValue(this.content, -1);
   }
 
   ngAfterViewInit() {
-    this.codeMirror = CodeMirror.fromTextArea(this.myTextArea.nativeElement,
-      {
-        lineNumbers: true,
-        mode: 'yaml',
-        readOnly: true,
-        theme: 'material',
-        autoRefresh: true
-      }
-    );
-
     this.editor = ace.edit('aceEditor',
       {
-        mode: 'ace/mode/yaml',
+        mode: 'ace/mode/cwl',
         readOnly: true,
         showLineNumbers: true,
         maxLines: 60,
