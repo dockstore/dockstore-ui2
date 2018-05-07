@@ -88,6 +88,7 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
+import { LaunchThirdPartyComponent } from './workflow/launch-third-party/launch-third-party.component';
 
 @NgModule({
   declarations: [

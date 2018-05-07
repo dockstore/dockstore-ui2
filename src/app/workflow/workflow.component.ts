@@ -15,12 +15,10 @@
  */
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DateService } from '../shared/date.service';
-import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ProviderService } from '../shared/provider.service';
@@ -36,7 +34,6 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
-import { SourceFile } from '../shared/swagger/model/sourceFile';
 
 @Component({
   selector: 'app-workflow',
@@ -45,9 +42,7 @@ import { SourceFile } from '../shared/swagger/model/sourceFile';
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
-  dnastackURL: string;
-  fireCloudURL: string;
-  public workflow;
+  public workflow: Workflow;
   public missingWarning: boolean;
   public title: string;
   private workflowSubscription: Subscription;
@@ -102,30 +97,6 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
-    if (this.isWdl(workflowRef)) {
-      const myParams = new URLSearchParams();
-      myParams.set('path', workflowRef.full_workflow_path);
-      myParams.set('descriptorType', workflowRef.descriptorType);
-      this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
-    }
-  }
-
-  private isWdl(workflowRef: ExtendedWorkflow) {
-    return workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
-  }
-
-  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
-    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
-      this.fireCloudURL = null;
-      const version: WorkflowVersion = this.selectedVersion;
-      if (version && this.isWdl(workflowRef)) {
-        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
-          if (!sourceFiles || sourceFiles.length === 0) {
-            this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
-          }
-        });
-      }
-    }
   }
 
   public getDefaultVersionName(): string {
@@ -142,7 +113,6 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
-      this.setupFireCloudUrl(this.workflow);
     }
   }
 
@@ -297,7 +267,6 @@ export class WorkflowComponent extends Entry {
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
     }
-    this.setupFireCloudUrl(this.workflow);
   }
 
   setEntryTab(tabName: string): void {

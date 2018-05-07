@@ -57,6 +57,7 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
+import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { getTooltipConfig } from './../tooltip';
     FilesWorkflowComponent,
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
+    LaunchThirdPartyComponent,
     LaunchWorkflowComponent,
     ViewWorkflowComponent,
     VersionModalComponent,

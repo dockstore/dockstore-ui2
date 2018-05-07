@@ -166,3 +166,10 @@ export const sampleTag = {
     'image_id': 'sampleImageId',
     'name': 'sampleName'
 };
+
+export const wdlSourceFile: SourceFile = {
+  content: 'task foo {}',
+  id: 0,
+  path: '',
+  type: undefined
+};
