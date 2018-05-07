@@ -1,7 +1,7 @@
 import * as ace from '../../../../node_modules/ace-builds/src-min-noconflict/ace.js'
 'use strict';
 
-// CWL STUFF
+// CWL Grammar
 ace.define("ace/mode/cwl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
 "use strict";
 
@@ -122,15 +122,7 @@ oop.inherits(Mode, TextMode);
 exports.Mode = Mode;
 });
 
-// (function() {
-//     ace.require(["ace/mode/cwl"], function(m) {
-//         if (typeof module == "object" && typeof exports == "object" && module) {
-//             module.exports = m;
-//         }
-//     });
-// })();
-
-// WDL STUFF
+// WDL Grammar
 ace.define("ace/mode/wdl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
 "use strict";
 
