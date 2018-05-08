@@ -88,7 +88,6 @@ import { StarringModule } from './starring/starring.module';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
 import { BannerComponent } from './banner/banner.component';
 import { MetadataService } from './metadata/metadata.service';
-import { CodeEditorComponent } from './shared/code-editor/code-editor.component';
 
 @NgModule({
   declarations: [

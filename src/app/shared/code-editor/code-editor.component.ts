@@ -52,7 +52,7 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   setMode(filepath: string): void {
-    if (filepath !== undefined) {
+    if (filepath !== undefined && filepath !== null) {
       if (filepath.endsWith('cwl')) {
         this.mode = 'cwl';
       } else if (filepath.endsWith('wdl')) {
