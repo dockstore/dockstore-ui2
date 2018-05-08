@@ -44,7 +44,7 @@ import { MyWorkflowsService } from './../myworkflows.service';
 })
 
 export class MyWorkflowComponent extends MyEntry implements OnInit {
-  workflow: any;
+  workflow: Workflow;
   workflows: any;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
