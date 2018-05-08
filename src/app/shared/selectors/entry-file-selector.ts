@@ -26,7 +26,7 @@ export abstract class EntryFileSelector {
   protected descriptors: Array<any>;
   public nullDescriptors: boolean;
 
-  protected currentFile;
+  public currentFile;
   protected files: Array<any>;
   protected published$: Observable<boolean>;
 
