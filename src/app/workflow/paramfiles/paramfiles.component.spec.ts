@@ -17,7 +17,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { ParamfilesService } from './../../container/paramfiles/paramfiles.service';
 import { FileService } from './../../shared/file.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -34,7 +33,6 @@ describe('ParamfilesWorkflowComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ParamfilesService, useClass: ParamFilesStubService },
-        HighlightJsService,
         { provide: FileService, useClass: FileStubService},
         { provide: WorkflowService, useClass: WorkflowStubService}]
     })

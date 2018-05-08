@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { DataTablesModule } from 'angular-datatables';
-import { HighlightJsModule, HighlightJsService } from '../shared/angular2-highlight-js/lib/highlight-js.module';
 import { MarkdownModule } from 'angular2-markdown';
 
 import { ContainersComponent } from './containers.component';
@@ -39,15 +38,11 @@ import { ModalModule} from 'ngx-bootstrap/modal';
     CommonModule,
     MarkdownModule.forRoot(),
     DataTablesModule.forRoot(),
-    HighlightJsModule,
     HeaderModule,
     SelectModule,
     ListContainersModule,
     ContainerModule,
     containersRouting
-  ],
-  providers: [
-    HighlightJsService
   ]
 })
 export class ContainersModule {

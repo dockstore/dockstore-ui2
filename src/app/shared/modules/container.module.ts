@@ -43,7 +43,6 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { StarringService } from '../../starring/starring.service';
-import { HighlightJsModule, HighlightJsService } from '../angular2-highlight-js/lib/highlight-js.module';
 import { DateService } from '../date.service';
 import { FileService } from '../file.service';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
@@ -85,7 +84,6 @@ import { CodeEditorComponent } from './../code-editor/code-editor.component';
     ClipboardModule,
     MarkdownModule.forRoot(),
     DataTablesModule.forRoot(),
-    HighlightJsModule,
     HeaderModule,
     SelectModule,
     ListContainersModule,
@@ -104,7 +102,6 @@ import { CodeEditorComponent } from './../code-editor/code-editor.component';
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
-    HighlightJsService,
     EmailService,
     DateService,
     FileService,

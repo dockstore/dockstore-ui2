@@ -31,7 +31,6 @@ export abstract class EntryFileSelector {
   protected published$: Observable<boolean>;
 
   content: string = null;
-  contentHighlighted: boolean;
 
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
@@ -76,7 +75,6 @@ export abstract class EntryFileSelector {
 
   clearContent() {
     this.content = null;
-    this.contentHighlighted = false;
   }
 
 }

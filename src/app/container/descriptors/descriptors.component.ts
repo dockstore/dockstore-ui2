@@ -58,7 +58,6 @@ export class DescriptorsComponent extends EntryFileSelector {
 
   reactToFile(): void {
     this.content = this.currentFile.content;
-    this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
   }

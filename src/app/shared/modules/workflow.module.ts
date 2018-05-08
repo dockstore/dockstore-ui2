@@ -28,7 +28,6 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
@@ -80,7 +79,6 @@ import { CodeEditorComponent } from './../code-editor/code-editor.component';
     MarkdownModule.forRoot(),
     DataTablesModule,
     HeaderModule,
-    HighlightJsModule,
     ListWorkflowsModule,
     ModalModule.forRoot(),
     SelectModule,
@@ -99,7 +97,6 @@ import { CodeEditorComponent } from './../code-editor/code-editor.component';
   providers: [
     ExtendedWorkflowService,
     { provide: TooltipConfig, useFactory: getTooltipConfig },
-    HighlightJsService,
     DateService,
     FileService,
     WorkflowLaunchService,

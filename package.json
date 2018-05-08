@@ -51,7 +51,6 @@
     "datatables.net-dt": "^1.10.15",
     "elasticsearch": "^13.0.0",
     "font-awesome": "^4.7.0",
-    "highlightjs-line-numbers.js": "^2.0.0",
     "jquery": "^3.2.1",
     "jquery-colorbox": "^1.6.4",
     "ng2-ui-auth": "^6.1.4",
