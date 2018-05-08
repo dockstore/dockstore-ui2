@@ -61,6 +61,7 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
+import { CodeEditorComponent } from './../code-editor/code-editor.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { SelectModule } from './select.module';
     ModalComponent,
     AddTagComponent,
     VersionModalComponent,
-    InfoTabComponent
+    InfoTabComponent,
+    CodeEditorComponent
   ],
   imports: [
     ButtonsModule.forRoot(),

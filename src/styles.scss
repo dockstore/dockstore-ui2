@@ -480,9 +480,6 @@ div.button a {
 .button:hover {
   text-decoration: underline;
 }
-.code-copy {
-  position:relative
-}
 
 .refresh-all-button {
   background-color: #487980 !important;
@@ -911,17 +908,6 @@ div.tabs>div:target>div,
   width: 100%;
 }
 
-.btn-copy {
-  color: white !important;
-  background-color: #487980 !important;
-  border-color: #487980 !important;
-  &:hover{
-    color: white !important;
-    background-color: #487980 !important;
-    border-color: #487980 !important;
-  }
-}
-
 .btn-sad {
   background-color: white;
   box-shadow: none;
@@ -1062,21 +1048,6 @@ div.tabs>div:target>div,
 .my-1 {
   margin-top: 5px;
   margin-bottom: 5px;
-}
-
-.code-holder {
-  position: relative;
-  overflow: visible;
-}
-
-.code-copy-button {
-  top: 20px;
-  right: 20px;
-  position: absolute;
-}
-
-.code-copy-button > a {
-  border: 1px solid transparent !important;
 }
 
 .ellipsis-lines {

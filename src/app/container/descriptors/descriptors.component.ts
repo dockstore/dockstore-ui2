@@ -16,7 +16,6 @@
 import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { ContainerService } from '../../shared/container.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
@@ -30,7 +29,7 @@ import { ToolDescriptorService } from './tool-descriptor.service';
   providers: [ToolDescriptorService]
 })
 
-export class DescriptorsComponent extends EntryFileSelector implements AfterViewChecked {
+export class DescriptorsComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
@@ -42,7 +41,6 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
   public descriptorPath: string;
   public filePath: string;
   constructor(private containerService: ContainerService,
-              private highlightJsService: HighlightJsService,
               private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
               private elementRef: ElementRef) {
@@ -63,13 +61,6 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
     this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
-  }
-
-  ngAfterViewChecked() {
-    if (this.contentHighlighted && !this.nullDescriptors) {
-      this.contentHighlighted = false;
-      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
-    }
   }
 
   private getDescriptorPath(descType): string {

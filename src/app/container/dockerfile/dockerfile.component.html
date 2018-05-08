@@ -21,16 +21,17 @@
       &nbsp;A Dockerfile associated with this Docker container could not be found.
     </alert>
   </div>
-  <div *ngIf="!nullContent && _selectedVersion?.valid" class="code-copy">
-    <div class="code-copy-button btn-group">
+  <div *ngIf="!nullContent && _selectedVersion?.valid" class="row no-margin">
+    <div class="btn-group" role="group">
       <a *ngIf="(published$ | async)" download="{{filepath}}" [href]="containerFilePath" class="btn btn-default" type="button" title="{{filepath}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
-      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'dockerfile'}"
-              (cbOnSuccess)="toolCopyBtnClick('dockerfile')" title="Copy to clipboard">
+      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
         <span class="glyphicon glyphicon-copy"></span>
       </button>
     </div>
-    <section [innerHTML]="fileService.highlightCode(content)"></section>
+  </div>
+  <div [hidden]="!content || !_selectedVersion?.valid">
+    <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
   </div>
 </div>

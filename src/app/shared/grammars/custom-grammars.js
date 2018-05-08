@@ -2,11 +2,11 @@ import * as ace from '../../../../node_modules/ace-builds/src-min-noconflict/ace
 'use strict';
 
 // CWL Grammar
-ace.define("ace/mode/cwl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
+ace.define("ace/mode/cwl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/yaml_highlight_rules"], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
-var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+var YamlHighlightRules = require("./yaml_highlight_rules").YamlHighlightRules;
 
 var CWLHighlightRules = function() {
     this.$rules = {
@@ -97,15 +97,15 @@ CWLHighlightRules.metaData = {
 }
 
 
-oop.inherits(CWLHighlightRules, TextHighlightRules);
+oop.inherits(CWLHighlightRules, YamlHighlightRules);
 
 exports.CWLHighlightRules = CWLHighlightRules;
 });
 
-ace.define('ace/mode/cwl',["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
+ace.define('ace/mode/cwl',["require","exports","module","ace/lib/oop","ace/mode/yaml_highlight_rules"], function(require, exports, module) {
 
   var oop = require("../lib/oop");
-  var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+  var YamlHighlightRules = require("./yaml_highlight_rules").YamlHighlightRules;
   var TextMode = require("./text").Mode;
 
 var CWLHighlightRules = require("ace/mode/cwl_highlight_rules").CWLHighlightRules;
@@ -123,11 +123,11 @@ exports.Mode = Mode;
 });
 
 // WDL Grammar
-ace.define("ace/mode/wdl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
+ace.define("ace/mode/wdl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/yaml_highlight_rules"], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
-var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+var YamlHighlightRules = require("./yaml_highlight_rules").YamlHighlightRules;
 
 var WDLHighlightRules = function() {
     this.$rules = {
@@ -283,14 +283,14 @@ WDLHighlightRules.metaData = {
 }
 
 
-oop.inherits(WDLHighlightRules, TextHighlightRules);
+oop.inherits(WDLHighlightRules, YamlHighlightRules);
 
 exports.WDLHighlightRules = WDLHighlightRules;
 });
-ace.define('ace/mode/wdl',["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
+ace.define('ace/mode/wdl',["require","exports","module","ace/lib/oop","ace/mode/yaml_highlight_rules"], function(require, exports, module) {
 
   var oop = require("../lib/oop");
-  var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+  var YamlHighlightRules = require("./yaml_highlight_rules").YamlHighlightRules;
   var TextMode = require("./text").Mode;
 
 var WDLHighlightRules = require("ace/mode/wdl_highlight_rules").WDLHighlightRules;

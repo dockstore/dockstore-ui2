@@ -16,7 +16,6 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { Workflow } from '../../shared/swagger';
@@ -37,11 +36,9 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   }
 
   content: string;
-  contentHighlighted: boolean;
   public descriptorPath: string;
   public filePath: string;
-  constructor(private highlightJsService: HighlightJsService,
-              private workflowDescriptorService: WorkflowDescriptorService,
+  constructor(private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
               private workflowService: WorkflowService) {
     super();
@@ -57,7 +54,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
 
   reactToFile(): void {
     this.content = this.currentFile.content;
-    this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
   }

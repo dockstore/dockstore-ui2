@@ -15,10 +15,8 @@
  */
 
 import { ContainersService } from '../../shared/swagger';
-import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
+import { Component, Input, ElementRef, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 
 import { ContainerService } from '../../shared/container.service';
 import { ParamfilesService } from './paramfiles.service';
@@ -32,7 +30,7 @@ import { Tag } from '../../shared/swagger/model/tag';
   templateUrl: './paramfiles.component.html'
 })
 
-export class ParamfilesComponent extends EntryFileSelector implements AfterViewChecked {
+export class ParamfilesComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
@@ -42,7 +40,6 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
   }
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
-              private highlightJsService: HighlightJsService,
               private paramfilesService: ParamfilesService,
               public fileService: FileService,
               private elementRef: ElementRef) {
@@ -58,14 +55,6 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
 
   reactToFile(): void {
     this.content = this.currentFile.content;
-    this.contentHighlighted = true;
-  }
-
-  ngAfterViewChecked() {
-    if (this.contentHighlighted && this.elementRef.nativeElement.querySelector('.highlight')) {
-      this.contentHighlighted = false;
-      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
-    }
   }
 
   // Downloads a file
