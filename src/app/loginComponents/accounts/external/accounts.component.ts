@@ -1,3 +1,18 @@
+/*
+ *     Copyright 2018 OICR
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 import { AccountsService } from './accounts.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { Provider } from '../../../shared/enum/provider.enum';
@@ -29,6 +44,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       source: TokenSource.GITHUB,
       bold: 'Required',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
+      show: false
+    },
+    {
+      name: 'Google',
+      source: TokenSource.GOOGLE,
+      bold: 'Required',
+      message: 'Google credentials are used for login purposes',
       show: false
     },
     {
