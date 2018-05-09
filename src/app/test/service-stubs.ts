@@ -65,7 +65,11 @@ export class ProviderStubService {
         return tool;
     }
 }
-export class FileStubService { }
+export class FileStubService {
+  getFilePath(file): string {
+    return '';
+  }
+}
 
 export class QueryBuilderStubService {
     getTagCloudQuery(type: string): string {
@@ -500,10 +504,10 @@ export class DescriptorsStubService {
 }
 
 export class ParamFilesStubService {
-    getVersions() {
+    getVersions(version) {
         return Observable.of([]);
     }
-    getDescriptors() {
+    getDescriptors(id, type, versionName, descriptor) {
         return Observable.of({});
     }
 }
