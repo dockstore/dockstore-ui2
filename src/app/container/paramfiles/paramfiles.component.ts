@@ -38,6 +38,7 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.clearContent();
     this.onVersionChange(value);
   }
+  public filePath: string;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private paramfilesService: ParamfilesService,
@@ -54,6 +55,7 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   reactToFile(): void {
     this.content = this.currentFile.content;
+    this.filePath = this.getFilePath(this.currentFile);
   }
 
   // Downloads a file

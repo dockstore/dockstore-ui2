@@ -35,6 +35,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.clearContent();
     this.onVersionChange(value);
   }
+  public filePath: string;
 
   constructor(private paramfilesService: ParamfilesService,
               public fileService: FileService,
@@ -51,6 +52,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
 
   reactToFile(): void {
     this.content = this.currentFile.content;
+    this.filePath = this.getFilePath(this.currentFile);
   }
 
   // Downloads a file

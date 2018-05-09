@@ -21,7 +21,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   @Input() set content(content: string) {
     this._content = content;
-    if (this.editor !== undefined && content !== undefined && content !== null) {
+    if (this.editor !== undefined && content) {
       this.editor.setValue(this._content, -1);
     }
   }
@@ -46,7 +46,7 @@ export class CodeEditorComponent implements AfterViewInit {
     );
 
     // Set content if possible
-    if (this._content !== null && this._content !== undefined && this._content !== null) {
+    if (this._content) {
       this.editor.setValue(this._content, -1);
     }
   }
