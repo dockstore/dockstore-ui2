@@ -35,6 +35,7 @@
         "../node_modules/ace-builds/src-min-noconflict/mode-yaml.js",
         "../node_modules/ace-builds/src-min-noconflict/mode-json.js",
         "../node_modules/ace-builds/src-min-noconflict/mode-dockerfile.js",
+        "../node_modules/ace-builds/src-min-noconflict/mode-text.js",
         "../node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
         "../node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",

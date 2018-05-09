@@ -65,8 +65,10 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'dockerfile';
       } else if (filepath.endsWith('json')) {
         this.mode = 'json';
-      } else {
+      } else if (filepath.endsWith('yml') || filepath.endsWith('yaml')) {
         this.mode = 'yaml';
+      } else {
+        this.mode = 'text';
       }
       if (this.editor !== undefined) {
         this.editor.session.setMode('ace/mode/' + this.mode);
