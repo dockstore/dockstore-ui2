@@ -210,7 +210,8 @@ export class SearchService {
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Source Control', 'source_control_provider.keyword'],
-      ['File Formats', 'file_formats.keyword'],
+      ['Input File Formats', 'input_file_formats.value.keyword'],
+      ['Output File Formats', 'output_file_formats.value.keyword'],
       ['Private Access', 'private_access'],
       ['VerifiedTool', 'tags.verified'],
       ['Author', 'author'],
@@ -234,7 +235,8 @@ export class SearchService {
       ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['tags.verifiedSource', 'Tool: Verified Source'],
-      ['file_formats.keyword', 'File Formats'],
+      ['input_file_formats.value.keyword', 'Input File Formats'],
+      ['output_file_formats.value.keyword', 'Output File Formats'],
       ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
       ['organization', 'Workflow: Organization']
     ]);
@@ -254,7 +256,8 @@ export class SearchService {
       ['tags.verified', new SubBucket],
       ['tags.verifiedSource', new SubBucket],
       ['workflowVersions.verifiedSource.keyword', new SubBucket],
-      ['file_formats.keyword', new SubBucket]
+      ['input_file_formats.value.keyword', new SubBucket],
+      ['output_file_formats.value.keyword', new SubBucket]
     ]);
   }
 

@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import bodybuilder from 'bodybuilder';
+import * as bodybuilder from 'bodybuilder';
 
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './search.service';
@@ -33,11 +33,12 @@ export class QueryBuilderService {
     constructor(private searchService: SearchService) { }
 
     getTagCloudQuery(type: string): string {
-        let body = bodybuilder().size();
+        const tagCloudSize = 20;
+        let body = bodybuilder().size(tagCloudSize);
         body = this.excludeContent(body);
         body = body.query('match', '_type', type);
-        body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: 20 }).build();
-        const toolQuery = JSON.stringify(body, null, 1);
+        body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: tagCloudSize });
+        const toolQuery = JSON.stringify(body.build(), null, 1);
         return toolQuery;
     }
 

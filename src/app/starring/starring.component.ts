@@ -39,6 +39,7 @@ export class StarringComponent implements OnInit {
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
+  public disable = false;
   private starredUsers: User[];
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
@@ -100,12 +101,13 @@ export class StarringComponent implements OnInit {
    * @memberof StarringComponent
    */
   setStarring() {
+    this.disable = true;
     if (this.isLoggedIn) {
       this.setStar().subscribe(
         data => {
           // update total_stars
           this.getStarredUsers();
-        });
+        }, error => this.disable = false);
     }
   }
   setStar(): any {
@@ -121,7 +123,10 @@ export class StarringComponent implements OnInit {
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.rate = this.calculateRate(starring);
-        });
+          this.disable = false;
+        }, error => this.disable = false);
+    } else {
+      this.disable = false;
     }
   }
   getStargazers() {
