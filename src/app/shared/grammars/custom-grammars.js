@@ -9,6 +9,7 @@ var oop = require("../lib/oop");
 var YamlHighlightRules = require("./yaml_highlight_rules").YamlHighlightRules;
 
 var CWLHighlightRules = function() {
+    // NOTE: To update CWL highlighting, replace this.$rules = ... with the new highlighting rules
     this.$rules = {
         start: [{
             token: "string.quoted.single.cwl",
@@ -96,7 +97,6 @@ CWLHighlightRules.metaData = {
     scopeName: "source.cwl"
 }
 
-
 oop.inherits(CWLHighlightRules, YamlHighlightRules);
 
 exports.CWLHighlightRules = CWLHighlightRules;
@@ -130,6 +130,7 @@ var oop = require("../lib/oop");
 var YamlHighlightRules = require("./yaml_highlight_rules").YamlHighlightRules;
 
 var WDLHighlightRules = function() {
+    // NOTE: To update WDL highlighting, replace this.$rules = ... with the new highlighting rules
     this.$rules = {
         start: [{
             token: "keyword.operator.assignment.wdl",
@@ -282,7 +283,6 @@ WDLHighlightRules.metaData = {
     scopeName: "source.wdl"
 }
 
-
 oop.inherits(WDLHighlightRules, YamlHighlightRules);
 
 exports.WDLHighlightRules = WDLHighlightRules;
@@ -314,4 +314,6 @@ exports.Mode = Mode;
         }
     });
 })();
+
+// Exported ace now has custom modes for CWL and WDL
 export { ace };

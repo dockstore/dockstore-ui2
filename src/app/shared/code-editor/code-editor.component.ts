@@ -29,7 +29,7 @@ export class CodeEditorComponent implements AfterViewInit {
   @ViewChild('aceEditor') aceEditor: ElementRef;
 
   constructor(private elementRef: ElementRef) {
-    this.aceId = Math.floor(Math.random() * 1000).toString();
+    this.aceId = Math.floor(Math.random() * 100000).toString();
   }
 
   ngAfterViewInit() {
@@ -51,6 +51,10 @@ export class CodeEditorComponent implements AfterViewInit {
     }
   }
 
+  /**
+   * Changes the mode of the editor based on the filepath
+   * @param filepath Filepath of file
+   */
   setMode(filepath: string): void {
     if (filepath !== undefined && filepath !== null) {
       if (filepath.endsWith('cwl')) {
