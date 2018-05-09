@@ -79,7 +79,7 @@ describe('Dockstore Workflow Details', function() {
 
     it('Should have content in file viewer', function() {
       cy
-      .get(".hljs.yaml")
+      .get(".ace_content")
       .should("be.visible")
     });
 
@@ -94,7 +94,7 @@ describe('Dockstore Workflow Details', function() {
 
           it('Should not have content in file viewer', function() {
             cy
-              .get(".hljs.yaml")
+              .get(".ace_content")
                 .children()
                 .should("not.be.visible")
           });

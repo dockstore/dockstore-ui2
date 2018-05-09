@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import {Component, Input, OnInit, ElementRef} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
@@ -38,7 +38,6 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
 
   constructor(private paramfilesService: ParamfilesService,
               public fileService: FileService,
-              private elementRef: ElementRef,
               private workflowService: WorkflowService) {
     super();
   }

@@ -29,11 +29,11 @@ describe('DescriptorsWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DescriptorsWorkflowComponent ],
-      providers: [ {
-        provide: WorkflowDescriptorService, useClass: DescriptorsStubService
-      }, {provide: FileService, useClass: FileStubService}, {
-        provide: WorkflowService, useClass: WorkflowStubService
-      }],
+      providers: [
+        { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
+        { provide: FileService, useClass: FileStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService }
+      ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();

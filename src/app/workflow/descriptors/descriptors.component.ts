@@ -35,7 +35,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
 
-  content: string;
   public descriptorPath: string;
   public filePath: string;
   constructor(private workflowDescriptorService: WorkflowDescriptorService,

@@ -15,7 +15,7 @@
  */
 
 import { ContainersService } from '../../shared/swagger';
-import { Component, Input, ElementRef, OnInit} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ContainerService } from '../../shared/container.service';
@@ -41,8 +41,7 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private paramfilesService: ParamfilesService,
-              public fileService: FileService,
-              private elementRef: ElementRef) {
+              public fileService: FileService) {
     super();
   }
   getDescriptors(version): Array<any> {

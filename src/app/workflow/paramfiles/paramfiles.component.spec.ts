@@ -16,7 +16,6 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ParamfilesService } from './../../container/paramfiles/paramfiles.service';
 import { FileService } from './../../shared/file.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -29,12 +28,15 @@ describe('ParamfilesWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ParamfilesWorkflowComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        ParamfilesWorkflowComponent
+      ],
       providers: [
         { provide: ParamfilesService, useClass: ParamFilesStubService },
         { provide: FileService, useClass: FileStubService},
-        { provide: WorkflowService, useClass: WorkflowStubService}]
+        { provide: WorkflowService, useClass: WorkflowStubService}
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));

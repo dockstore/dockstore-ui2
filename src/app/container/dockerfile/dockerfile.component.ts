@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ContainerService } from '../../shared/container.service';
@@ -42,7 +42,6 @@ export class DockerfileComponent {
   public published$: Observable<boolean>;
   public containerFilePath: string;
   constructor(public fileService: FileService,
-              private elementRef: ElementRef,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
     this.filepath = '/Dockerfile';

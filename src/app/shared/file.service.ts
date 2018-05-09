@@ -17,12 +17,6 @@ import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 
 export class FileService {
-
-    /* Highlight Code */
-    highlightCode(code: string): string {
-      return '<pre><code class="yaml highlight">' + this.escapeEntities(code) + '</code></pre>';
-    }
-
     escapeEntities(code: string): string {
       return code && code
           .replace(/&/g, '&amp;')
