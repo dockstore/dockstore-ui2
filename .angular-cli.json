@@ -36,7 +36,6 @@
         "../node_modules/ace-builds/src-min-noconflict/mode-dockerfile.js",
         "../node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
         "../node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
-        "../node_modules/ace-builds/src-min-noconflict/ext-emmet.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
