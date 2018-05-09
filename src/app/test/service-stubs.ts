@@ -231,15 +231,6 @@ export class ConfigurationStub {
     };
 }
 
-export class NotificationsStubService {
-  success() {
-
-  }
-  error() {
-
-  }
-}
-
 export class UsersStubService {
     getUser() {
         return Observable.of({});
@@ -290,6 +281,8 @@ export class WorkflowStubService {
         return Observable.of({});
     }
     replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
+    get full_workflow_path() { return ''; }
+    get descriptorType() { return ''; }
 }
 
 export class MetadataStubService {
@@ -609,6 +602,12 @@ export class WorkflowsStubService {
     getWorkflowDag(workflowId: number, workflowVersionId: number, extraHttpRequestParams?: any): Observable<string> {
         return Observable.of('someDAG');
     }
+    wdl(workflowId: number, tag: string ) {
+      return Observable.of({});
+    }
+    secondaryWdl(workflowId: number, tag: string) {
+      return Observable.of([]);
+    }
 }
 
 export class ContainersStubService {
@@ -687,6 +686,10 @@ export class ContainersStubService {
 
 export class VersionModalStubService {
 
+}
+
+export class WorkflowVersionStubService {
+  get name() {return ''; }
 }
 
 export class StateStubService {

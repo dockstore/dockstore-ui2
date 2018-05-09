@@ -33,22 +33,23 @@ export class StarringComponent implements OnInit {
   @Input() tool: any;
   @Input() workflow: any;
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
-  user: any;
-  entry: any;
-  entryType: string;
-  isLoggedIn: boolean;
-  rate: boolean;
-  total_stars = 0;
+  private user: any;
+  private entry: any;
+  private entryType: string;
+  public isLoggedIn: boolean;
+  public rate = false;
+  public total_stars = 0;
+  public disable = false;
   private starredUsers: User[];
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
   private loginSubscription: Subscription;
   constructor(private trackLoginService: TrackLoginService,
-              private userService: UserService,
-              private workflowService: WorkflowService,
-              private containerService: ContainerService,
-              private starringService: StarringService,
-              private starentryService: StarentryService) { }
+    private userService: UserService,
+    private workflowService: WorkflowService,
+    private containerService: ContainerService,
+    private starringService: StarringService,
+    private starentryService: StarentryService) { }
 
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
@@ -80,32 +81,37 @@ export class StarringComponent implements OnInit {
     this.getStarredUsers();
   }
 
-  calculateRate(starredUsers: User[]) {
+  calculateRate(starredUsers: User[]): boolean {
     if (!this.user) {
-      this.rate = false;
+      return false;
     } else {
-    let matchingUser: User;
-    matchingUser = starredUsers.find(user => user.id === this.user.id);
-    if (matchingUser) {
-      this.rate = true;
-    } else {
-      this.rate = false;
+      let matchingUser: User;
+      matchingUser = starredUsers.find(user => user.id === this.user.id);
+      if (matchingUser) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
-  }
 
+  /**
+   * Handles the star button being clicked
+   *
+   * @memberof StarringComponent
+   */
   setStarring() {
-    this.rate = !this.rate;
+    this.disable = true;
     if (this.isLoggedIn) {
       this.setStar().subscribe(
         data => {
-          // update total_start
+          // update total_stars
           this.getStarredUsers();
-        });
+        }, error => this.disable = false);
     }
   }
   setStar(): any {
-    if (!this.rate) {
+    if (this.rate) {
       return this.starringService.setUnstar(this.entry.id, this.entryType);
     } else {
       return this.starringService.setStar(this.entry.id, this.entryType);
@@ -113,17 +119,20 @@ export class StarringComponent implements OnInit {
   }
   getStarredUsers(): any {
     if (this.entry && this.entryType) {
-      this.starringService.getStarring(this.entry.id, this.entryType).subscribe(
-        starring => {
+      this.starringService.getStarring(this.entry.id, this.entryType).first().subscribe(
+        (starring: User[]) => {
           this.total_stars = starring.length;
-          this.calculateRate(starring);
-        });
+          this.rate = this.calculateRate(starring);
+          this.disable = false;
+        }, error => this.disable = false);
+    } else {
+      this.disable = false;
     }
   }
-  getStargazers(entry, entryType) {
+  getStargazers() {
     const selectedEntry = {
-      theEntry: entry,
-      theEntryType: entryType
+      theEntry: this.entry,
+      theEntryType: this.entryType
     };
     this.starentryService.setEntry(selectedEntry);
     this.change.emit();

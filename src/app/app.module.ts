@@ -16,6 +16,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
@@ -29,7 +30,9 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
+import { BannerComponent } from './banner/banner.component';
 import { FooterComponent } from './footer/footer.component';
+import { FundingComponent } from './funding/funding.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
 import { ListentryModule } from './listentry/listentry.module';
@@ -47,7 +50,7 @@ import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { FundingComponent } from './funding/funding.component';
+import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
@@ -75,7 +78,6 @@ import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
-import { ToasterModule } from './shared/toaster/toaster.module';
 import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
@@ -86,8 +88,6 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { ToolDetailsComponent } from './tool-details/tool-details.component';
-import { BannerComponent } from './banner/banner.component';
-import { MetadataService } from './metadata/metadata.service';
 
 @NgModule({
   declarations: [
@@ -114,10 +114,12 @@ import { MetadataService } from './metadata/metadata.service';
 ],
   imports: [
     BrowserAnimationsModule,
+    MatSnackBarModule,
     FormsModule,
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
+    MatButtonModule,
     ListContainersModule,
     ListWorkflowsModule,
     BsDropdownModule.forRoot(),
@@ -126,7 +128,6 @@ import { MetadataService } from './metadata/metadata.service';
     TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
-    ToasterModule,
     FlexLayoutModule,
     StarringModule,
     routing,

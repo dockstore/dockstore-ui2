@@ -24,7 +24,7 @@
   <div class="container padding-top">
     <app-alert></app-alert>
     <!--Msg/Warning Page, this should be a Component-->
-    <div class="row" *ngIf="orgToolsObject?.length == 0 || !orgToolsObject">
+    <div class="row" *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
       <div class="col-md-12">
         <div class="alert alert-info" role="alert">
           <p>
@@ -52,7 +52,7 @@
     <div class="row">
       <div class="col-md-3 containers-rsb">
         <accordion [closeOthers]="oneAtATime">
-          <accordion-group *ngFor="let orgObj of orgToolsObject" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.namespace">
+          <accordion-group *ngFor="let orgObj of groupEntriesObject" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.namespace">
             <div accordion-heading class="no-wrap">
               {{orgObj?.namespace}}
             </div>

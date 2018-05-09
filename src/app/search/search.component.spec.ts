@@ -1,4 +1,3 @@
-import { ExpandService } from './expand.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,31 +13,29 @@ import { ExpandService } from './expand.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { AccordionModule } from 'ngx-bootstrap';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
-import { ProviderService } from '../shared/provider.service';
-import { QueryBuilderStubService, SearchStubService, AdvancedSearchStubService } from './../test/service-stubs';
-import { QueryBuilderService } from './query-builder.service';
-import { SearchService } from './search.service';
-import { SearchComponent } from './search.component';
-import { FormsModule } from '@angular/forms';
-import { TagCloudModule } from 'angular-tag-cloud-module/dist';
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
-/* tslint:disable:no-unused-variable */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AccordionModule } from 'ngx-bootstrap';
 
+import { ProviderService } from '../shared/provider.service';
+import { AdvancedSearchStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
+import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { ExpandService } from './expand.service';
+import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
+import { QueryBuilderService } from './query-builder.service';
+import { SearchComponent } from './search.component';
+import { SearchService } from './search.service';
+
+/* tslint:disable:no-unused-variable */
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent ],
+      declarations: [ SearchComponent, MapFriendlyValuesPipe ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [RouterTestingModule, AccordionModule.forRoot(), HttpClientModule],
       providers: [

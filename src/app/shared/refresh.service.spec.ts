@@ -1,4 +1,3 @@
-import { NotificationsService } from 'angular2-notifications';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,38 +13,46 @@ import { NotificationsService } from 'angular2-notifications';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { Workflow } from './swagger/model/workflow';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { UsersService } from './swagger/api/users.service';
-import { WorkflowService } from './workflow.service';
-import { ContainerService } from './container.service';
-import { WorkflowsService } from './swagger/api/workflows.service';
 import { ErrorService } from './../shared/error.service';
-import { ContainersService } from './swagger/api/containers.service';
-import { ContainersStubService, StateStubService, ErrorStubService, WorkflowsStubService,
-    ContainerStubService, WorkflowStubService, UsersStubService, NotificationsStubService } from './../test/service-stubs';
-import { StateService } from './state.service';
+import {
+  ContainersStubService,
+  ContainerStubService,
+  ErrorStubService,
+  UsersStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+} from './../test/service-stubs';
+import { ContainerService } from './container.service';
 import { RefreshService } from './refresh.service';
-import { ImageProviderService } from './image-provider.service';
-import { TestBed, inject } from '@angular/core/testing';
+import { StateService } from './state.service';
+import { ContainersService } from './swagger/api/containers.service';
+import { UsersService } from './swagger/api/users.service';
+import { WorkflowsService } from './swagger/api/workflows.service';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { Workflow } from './swagger/model/workflow';
+import { WorkflowService } from './workflow.service';
+
 
 describe('RefreshService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
+          imports: [BrowserAnimationsModule, MatSnackBarModule],
             providers: [RefreshService, StateService,
                 { provide: ContainersService, useClass: ContainersStubService },
                 { provide: ErrorService, useClass: ErrorStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
                 { provide: WorkflowService, useClass: WorkflowStubService },
-                { provide: UsersService, useClass: UsersStubService },
-                { provide: NotificationsService, useClass: NotificationsStubService }
+                { provide: UsersService, useClass: UsersStubService }
             ]
         });
     });
 
-    it('should be created', inject([RefreshService, NotificationsService], (service: RefreshService) => {
+    it('should be created', inject([RefreshService], (service: RefreshService) => {
         expect(service).toBeTruthy();
     }));
 
