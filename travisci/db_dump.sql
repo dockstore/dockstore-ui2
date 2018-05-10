@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.7
--- Dumped by pg_dump version 9.6.7
+-- Dumped from database version 9.6.8
+-- Dumped by pg_dump version 9.6.8
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -30,8 +30,9 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+
 --
--- Name: container_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: container_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE container_id_seq
@@ -42,14 +43,14 @@ CREATE SEQUENCE container_id_seq
     CACHE 1;
 
 
-ALTER TABLE container_id_seq OWNER TO postgres;
+ALTER TABLE container_id_seq OWNER TO dockstore;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: databasechangelog; Type: TABLE; Schema: public; Owner: postgres
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE databasechangelog (
@@ -70,10 +71,10 @@ CREATE TABLE databasechangelog (
 );
 
 
-ALTER TABLE databasechangelog OWNER TO postgres;
+ALTER TABLE databasechangelog OWNER TO dockstore;
 
 --
--- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: postgres
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE databasechangeloglock (
@@ -84,10 +85,10 @@ CREATE TABLE databasechangeloglock (
 );
 
 
-ALTER TABLE databasechangeloglock OWNER TO postgres;
+ALTER TABLE databasechangeloglock OWNER TO dockstore;
 
 --
--- Name: enduser; Type: TABLE; Schema: public; Owner: postgres
+-- Name: enduser; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE enduser (
@@ -104,10 +105,10 @@ CREATE TABLE enduser (
 );
 
 
-ALTER TABLE enduser OWNER TO postgres;
+ALTER TABLE enduser OWNER TO dockstore;
 
 --
--- Name: enduser_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: enduser_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE enduser_id_seq
@@ -118,17 +119,17 @@ CREATE SEQUENCE enduser_id_seq
     CACHE 1;
 
 
-ALTER TABLE enduser_id_seq OWNER TO postgres;
+ALTER TABLE enduser_id_seq OWNER TO dockstore;
 
 --
--- Name: enduser_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: enduser_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
 --
 
 ALTER SEQUENCE enduser_id_seq OWNED BY enduser.id;
 
 
 --
--- Name: endusergroup; Type: TABLE; Schema: public; Owner: postgres
+-- Name: endusergroup; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE endusergroup (
@@ -137,10 +138,10 @@ CREATE TABLE endusergroup (
 );
 
 
-ALTER TABLE endusergroup OWNER TO postgres;
+ALTER TABLE endusergroup OWNER TO dockstore;
 
 --
--- Name: entry_label; Type: TABLE; Schema: public; Owner: postgres
+-- Name: entry_label; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE entry_label (
@@ -149,10 +150,10 @@ CREATE TABLE entry_label (
 );
 
 
-ALTER TABLE entry_label OWNER TO postgres;
+ALTER TABLE entry_label OWNER TO dockstore;
 
 --
--- Name: label; Type: TABLE; Schema: public; Owner: postgres
+-- Name: label; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE label (
@@ -163,10 +164,10 @@ CREATE TABLE label (
 );
 
 
-ALTER TABLE label OWNER TO postgres;
+ALTER TABLE label OWNER TO dockstore;
 
 --
--- Name: label_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: label_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE label_id_seq
@@ -177,17 +178,17 @@ CREATE SEQUENCE label_id_seq
     CACHE 1;
 
 
-ALTER TABLE label_id_seq OWNER TO postgres;
+ALTER TABLE label_id_seq OWNER TO dockstore;
 
 --
--- Name: label_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: label_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
 --
 
 ALTER SEQUENCE label_id_seq OWNED BY label.id;
 
 
 --
--- Name: sourcefile; Type: TABLE; Schema: public; Owner: postgres
+-- Name: sourcefile; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE sourcefile (
@@ -200,10 +201,10 @@ CREATE TABLE sourcefile (
 );
 
 
-ALTER TABLE sourcefile OWNER TO postgres;
+ALTER TABLE sourcefile OWNER TO dockstore;
 
 --
--- Name: sourcefile_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: sourcefile_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE sourcefile_id_seq
@@ -214,17 +215,17 @@ CREATE SEQUENCE sourcefile_id_seq
     CACHE 1;
 
 
-ALTER TABLE sourcefile_id_seq OWNER TO postgres;
+ALTER TABLE sourcefile_id_seq OWNER TO dockstore;
 
 --
--- Name: sourcefile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: sourcefile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
 --
 
 ALTER SEQUENCE sourcefile_id_seq OWNED BY sourcefile.id;
 
 
 --
--- Name: starred; Type: TABLE; Schema: public; Owner: postgres
+-- Name: starred; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE starred (
@@ -233,10 +234,10 @@ CREATE TABLE starred (
 );
 
 
-ALTER TABLE starred OWNER TO postgres;
+ALTER TABLE starred OWNER TO dockstore;
 
 --
--- Name: tag; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tag; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE tag (
@@ -258,14 +259,15 @@ CREATE TABLE tag (
     doistatus text DEFAULT 'NOT_REQUESTED'::text NOT NULL,
     doiurl character varying(255),
     dbcreatedate timestamp without time zone,
-    dbupdatedate timestamp without time zone
+    dbupdatedate timestamp without time zone,
+    referencetype text DEFAULT 'UNSET'::text NOT NULL
 );
 
 
-ALTER TABLE tag OWNER TO postgres;
+ALTER TABLE tag OWNER TO dockstore;
 
 --
--- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE tag_id_seq
@@ -276,10 +278,10 @@ CREATE SEQUENCE tag_id_seq
     CACHE 1;
 
 
-ALTER TABLE tag_id_seq OWNER TO postgres;
+ALTER TABLE tag_id_seq OWNER TO dockstore;
 
 --
--- Name: token; Type: TABLE; Schema: public; Owner: postgres
+-- Name: token; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE token (
@@ -294,10 +296,10 @@ CREATE TABLE token (
 );
 
 
-ALTER TABLE token OWNER TO postgres;
+ALTER TABLE token OWNER TO dockstore;
 
 --
--- Name: token_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: token_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE token_id_seq
@@ -308,17 +310,17 @@ CREATE SEQUENCE token_id_seq
     CACHE 1;
 
 
-ALTER TABLE token_id_seq OWNER TO postgres;
+ALTER TABLE token_id_seq OWNER TO dockstore;
 
 --
--- Name: token_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: token_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
 --
 
 ALTER SEQUENCE token_id_seq OWNED BY token.id;
 
 
 --
--- Name: tool; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tool; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE tool (
@@ -352,10 +354,10 @@ CREATE TABLE tool (
 );
 
 
-ALTER TABLE tool OWNER TO postgres;
+ALTER TABLE tool OWNER TO dockstore;
 
 --
--- Name: tool_tag; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tool_tag; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE tool_tag (
@@ -364,10 +366,10 @@ CREATE TABLE tool_tag (
 );
 
 
-ALTER TABLE tool_tag OWNER TO postgres;
+ALTER TABLE tool_tag OWNER TO dockstore;
 
 --
--- Name: user_entry; Type: TABLE; Schema: public; Owner: postgres
+-- Name: user_entry; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE user_entry (
@@ -376,10 +378,10 @@ CREATE TABLE user_entry (
 );
 
 
-ALTER TABLE user_entry OWNER TO postgres;
+ALTER TABLE user_entry OWNER TO dockstore;
 
 --
--- Name: usergroup; Type: TABLE; Schema: public; Owner: postgres
+-- Name: usergroup; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE usergroup (
@@ -390,10 +392,10 @@ CREATE TABLE usergroup (
 );
 
 
-ALTER TABLE usergroup OWNER TO postgres;
+ALTER TABLE usergroup OWNER TO dockstore;
 
 --
--- Name: usergroup_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: usergroup_id_seq; Type: SEQUENCE; Schema: public; Owner: dockstore
 --
 
 CREATE SEQUENCE usergroup_id_seq
@@ -404,17 +406,17 @@ CREATE SEQUENCE usergroup_id_seq
     CACHE 1;
 
 
-ALTER TABLE usergroup_id_seq OWNER TO postgres;
+ALTER TABLE usergroup_id_seq OWNER TO dockstore;
 
 --
--- Name: usergroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: usergroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dockstore
 --
 
 ALTER SEQUENCE usergroup_id_seq OWNED BY usergroup.id;
 
 
 --
--- Name: version_sourcefile; Type: TABLE; Schema: public; Owner: postgres
+-- Name: version_sourcefile; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE version_sourcefile (
@@ -423,10 +425,10 @@ CREATE TABLE version_sourcefile (
 );
 
 
-ALTER TABLE version_sourcefile OWNER TO postgres;
+ALTER TABLE version_sourcefile OWNER TO dockstore;
 
 --
--- Name: workflow; Type: TABLE; Schema: public; Owner: postgres
+-- Name: workflow; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE workflow (
@@ -456,10 +458,10 @@ CREATE TABLE workflow (
 );
 
 
-ALTER TABLE workflow OWNER TO postgres;
+ALTER TABLE workflow OWNER TO dockstore;
 
 --
--- Name: workflow_workflowversion; Type: TABLE; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE workflow_workflowversion (
@@ -468,10 +470,10 @@ CREATE TABLE workflow_workflowversion (
 );
 
 
-ALTER TABLE workflow_workflowversion OWNER TO postgres;
+ALTER TABLE workflow_workflowversion OWNER TO dockstore;
 
 --
--- Name: workflowversion; Type: TABLE; Schema: public; Owner: postgres
+-- Name: workflowversion; Type: TABLE; Schema: public; Owner: dockstore
 --
 
 CREATE TABLE workflowversion (
@@ -488,56 +490,57 @@ CREATE TABLE workflowversion (
     doistatus text DEFAULT 'NOT_REQUESTED'::text NOT NULL,
     doiurl character varying(255),
     dbcreatedate timestamp without time zone,
-    dbupdatedate timestamp without time zone
+    dbupdatedate timestamp without time zone,
+    referencetype text DEFAULT 'UNSET'::text NOT NULL
 );
 
 
-ALTER TABLE workflowversion OWNER TO postgres;
+ALTER TABLE workflowversion OWNER TO dockstore;
 
 --
--- Name: enduser id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: enduser id; Type: DEFAULT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY enduser ALTER COLUMN id SET DEFAULT nextval('enduser_id_seq'::regclass);
 
 
 --
--- Name: label id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: label id; Type: DEFAULT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY label ALTER COLUMN id SET DEFAULT nextval('label_id_seq'::regclass);
 
 
 --
--- Name: sourcefile id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sourcefile id; Type: DEFAULT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY sourcefile ALTER COLUMN id SET DEFAULT nextval('sourcefile_id_seq'::regclass);
 
 
 --
--- Name: token id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: token id; Type: DEFAULT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY token ALTER COLUMN id SET DEFAULT nextval('token_id_seq'::regclass);
 
 
 --
--- Name: usergroup id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: usergroup id; Type: DEFAULT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY usergroup ALTER COLUMN id SET DEFAULT nextval('usergroup_id_seq'::regclass);
 
 
 --
--- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('container_id_seq', 101, true);
 
 
 --
--- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1511468490651-1', 'dyuen (generated)', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.3.0.generated.xml', '2018-01-12 11:40:48.894584', 1, 'EXECUTED', '7:45eddb8745751992c52a60a4837da953', 'createSequence sequenceName=container_id_seq', '', NULL, '3.5.3', NULL, NULL, '5775248835');
@@ -592,7 +595,6 @@ INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1511468490651-50', 'dyuen (generated)', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.3.0.generated.xml', '2018-01-12 11:40:49.793651', 50, 'EXECUTED', '7:77453359c92cf134f8aec571ea785714', 'addForeignKeyConstraint baseTableName=entry_label, constraintName=fks71c9mk0f98015eqgtyvs0ewp, referencedTableName=label', '', NULL, '3.5.3', NULL, NULL, '5775248835');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflowWorkflownameConvertEmptyStringToNull', 'gluu', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.584697', 51, 'EXECUTED', '7:fefcc071200d5dadf0907bd192dc88da', 'update tableName=workflow', '', NULL, '3.5.3', NULL, NULL, '5775259574');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowWorkflownameNotEmptyConstraint', 'gluu', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.598251', 52, 'EXECUTED', '7:3e6ef47c3241d3027c8198dad0ce3260', 'sql', '', NULL, '3.5.3', NULL, NULL, '5775259574');
-INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('74274923472389478923', 'agduncan', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.650556', 53, 'EXECUTED', '7:32495c4abfe9554bea994fd12ad08272', 'addColumn tableName=workflow; sql; sql; sql; sql; sql; sql; addNotNullConstraint columnName=sourcecontrol, tableName=workflow; sql; sql; sql; sql; sql; sql', '', NULL, '3.5.3', NULL, NULL, '5775259574');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('custom_tool_sequence1', 'dyuen', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.661272', 54, 'EXECUTED', '7:ffea8875af6c3a7152e257cb080494bd', 'sql', '', NULL, '3.5.3', NULL, NULL, '5775259574');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('custom_tag_sequence2', 'dyuen', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.672744', 55, 'EXECUTED', '7:d6953fc6a3408ee815050f0dd762cf03', 'sql', '', NULL, '3.5.3', NULL, NULL, '5775259574');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflowWorkflownameConvertEmptyStringToNull', 'gluu', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:38:55.122412', 1, 'EXECUTED', '7:fefcc071200d5dadf0907bd192dc88da', 'update tableName=workflow', '', NULL, '3.5.3', NULL, NULL, '5775135109');
@@ -621,17 +623,48 @@ INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraint-for-underscore-workflow-and-tool-names', 'agduncan', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.148171', 77, 'EXECUTED', '7:ff45c59a12b61110acb018acdbbd4437', 'sql; sql; sql', '', NULL, '3.5.3', NULL, NULL, '2083227088');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_rogue_git_urls', 'dyuen', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.156562', 78, 'EXECUTED', '7:0a58187fe000b278c408feb559d32d10', 'sql', '', NULL, '3.5.3', NULL, NULL, '2083227088');
 INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('drop-toolname-null-constraint-update-check-constraint', 'agduncan', 'dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-03-26 12:53:47.171878', 79, 'EXECUTED', '7:78ea1afeb92bb869c882608d083e71fb', 'dropNotNullConstraint columnName=toolname, tableName=tool; dropDefaultValue columnName=toolname, tableName=tool; sql; sql', '', NULL, '3.5.3', NULL, NULL, '2083227088');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('create reference type', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-05-08 14:35:17.274028', 80, 'EXECUTED', '7:c5d6bec11d36146b1471f7632f916fa7', 'addColumn tableName=tag; addColumn tableName=workflowversion; addNotNullConstraint columnName=referencetype, tableName=tag; addNotNullConstraint columnName=referencetype, tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '5804517195');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('74274923472389478923', 'agduncan', '/home/gluu/dockstore/dockstore-webservice/src/main/resources/migrations.1.4.0.xml', '2018-01-12 11:40:59.650556', 53, 'EXECUTED', '7:d7456a463382261c64fa34dc37729272', 'addColumn tableName=workflow; sql; sql; sql; sql; sql; sql; addNotNullConstraint columnName=sourcecontrol, tableName=workflow; sql; sql; sql; sql; sql; sql', '', NULL, '3.5.3', NULL, NULL, '5775259574');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflowWorkflownameConvertEmptyStringToNull', 'gluu', 'migrations.1.4.0.xml', '2018-05-08 14:46:17.614554', 81, 'EXECUTED', '7:fefcc071200d5dadf0907bd192dc88da', 'update tableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805177590');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowWorkflownameNotEmptyConstraint', 'gluu', 'migrations.1.4.0.xml', '2018-05-08 14:52:06.124293', 82, 'EXECUTED', '7:3e6ef47c3241d3027c8198dad0ce3260', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805526074');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('74274923472389478923', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:52:38.475241', 83, 'EXECUTED', '7:d7456a463382261c64fa34dc37729272', 'addColumn tableName=workflow; sql; sql; sql; sql; sql; sql; addNotNullConstraint columnName=sourcecontrol, tableName=workflow; sql; sql; dropIndex indexName=full_workflow_name, tableName=workflow; sql; dropIndex indexName=partial_workflow_name, ta...', '', NULL, '3.5.4', NULL, NULL, '5805558425');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('custom_tool_sequence1', 'dyuen', 'migrations.1.4.0.xml', '2018-05-08 14:52:43.611274', 84, 'EXECUTED', '7:ffea8875af6c3a7152e257cb080494bd', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805563573');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('custom_tag_sequence2', 'dyuen', 'migrations.1.4.0.xml', '2018-05-08 14:52:43.6261', 85, 'EXECUTED', '7:d6953fc6a3408ee815050f0dd762cf03', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805563573');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCustomDockerRegistryPath', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:52:43.641171', 86, 'EXECUTED', '7:be0c4b6e5be6b34bef2459aa61a6fbd6', 'addColumn tableName=tool', '', NULL, '3.5.4', NULL, NULL, '5805563573');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('updateAmazonCustomDockerRegistryPath', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:53:14.732208', 87, 'EXECUTED', '7:abfaad1c15020be7c1ac1d07408034db', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805594685');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropWorkflowPath', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:53:57.838763', 88, 'EXECUTED', '7:319cd9e44b15d6760d6cc5acad01f4cc', 'dropColumn columnName=path, tableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805637782');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropToolPath', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:54:12.021723', 89, 'EXECUTED', '7:a1a29cd690ef5ef4c75cc3a23312f0b8', 'dropColumn columnName=path, tableName=tool', '', NULL, '3.5.4', NULL, NULL, '5805651963');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-1', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:54:32.984832', 90, 'EXECUTED', '7:d8d8a4d446e1c3a4fe0bb622eb141221', 'addColumn tableName=tag', '', NULL, '3.5.4', NULL, NULL, '5805672934');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-2', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:54:49.060161', 91, 'EXECUTED', '7:9dd05a2ade4a535bd3a3911950a2b084', 'addColumn tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '5805689007');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-3', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:55:01.074699', 92, 'EXECUTED', '7:59ac9ed5e01b10c07ef316723271fd01', 'addColumn tableName=tag', '', NULL, '3.5.4', NULL, NULL, '5805701033');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516219456530-4', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:55:12.000629', 93, 'EXECUTED', '7:c4107502953ffeb230d9470f04e20c1e', 'addColumn tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '5805711954');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516220040864-6', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:55:17.139183', 94, 'EXECUTED', '7:c2e8572dacac26a58d8290df8a9bb15b', 'addNotNullConstraint columnName=doistatus, tableName=tag', '', NULL, '3.5.4', NULL, NULL, '5805717114');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1516220040864-7', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:55:17.152387', 95, 'EXECUTED', '7:b0138c55c539c1421b9e5791a228dff3', 'addNotNullConstraint columnName=doistatus, tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '5805717114');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('3424324325r3r3g45g-8', 'aduncan', 'migrations.1.4.0.xml', '2018-05-08 14:55:17.17288', 96, 'EXECUTED', '7:e4d51fe173245a0a03a827747674e6eb', 'sql; sql; sql; sql; sql; sql; sql; dropColumn columnName=customdockerregistrypath, tableName=tool', '', NULL, '3.5.4', NULL, NULL, '5805717114');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('n4io234ni23o4nio33r-1', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:55:25.720645', 97, 'EXECUTED', '7:73b67459612bc9f1de12b1a422fb333c', 'addColumn tableName=tool; addColumn tableName=workflow; addColumn tableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805725677');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflow-jpa-dbcreate', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:55:38.19353', 98, 'EXECUTED', '7:076afe9518fa17c967b6f4947f08f185', 'addColumn tableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805738146');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflow-jpa-dbupdate', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.326949', 99, 'EXECUTED', '7:ba02911ddbd98eb5f4fc11fba21dbf84', 'addColumn tableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('tool-jpa-dbcreate', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.337498', 100, 'EXECUTED', '7:a74182295f270443128215ade086a3d2', 'addColumn tableName=tool', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('tool-jpa-dbupdate', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.342906', 101, 'EXECUTED', '7:773d4bccae8c403a013729c43e5508f0', 'addColumn tableName=tool', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('more-dates', 'dyuen (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.347776', 102, 'EXECUTED', '7:afe5039a4fe370bcbe3a5a47e06dfc15', 'addColumn tableName=usergroup; addColumn tableName=label; addColumn tableName=sourcefile; addColumn tableName=token; addColumn tableName=enduser; addColumn tableName=workflowversion; addColumn tableName=tag', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('mutate-tool-modified-timestamp', 'dyuen', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.353405', 103, 'EXECUTED', '7:02fabf8d219a9eb9af3021adbc1ea1d1', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('mutate-workflow-modified-timestamp', 'dyuen', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.359052', 104, 'EXECUTED', '7:3dde38db6057354c1ecdfd758a9b3dd2', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1520436537629-2', 'aduncan (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.365063', 105, 'EXECUTED', '7:f92da822adb927187555c9f054fd622b', 'addForeignKeyConstraint baseTableName=workflow, constraintName=fk_checkerid_with_workflow, referencedTableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1520436537629-3', 'aduncan (generated)', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.370068', 106, 'EXECUTED', '7:b247682ede0cf5b6a44bb7fda57eebeb', 'addForeignKeyConstraint baseTableName=tool, constraintName=fk_checkerid_with_tool, referencedTableName=workflow', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraint-for-underscore-workflow-and-tool-names', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.375101', 107, 'EXECUTED', '7:ff45c59a12b61110acb018acdbbd4437', 'sql; sql; sql', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_rogue_git_urls', 'dyuen', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.38177', 108, 'EXECUTED', '7:0a58187fe000b278c408feb559d32d10', 'sql', '', NULL, '3.5.4', NULL, NULL, '5805789307');
+INSERT INTO databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('drop-toolname-null-constraint-update-check-constraint', 'agduncan', 'migrations.1.4.0.xml', '2018-05-08 14:56:29.38747', 109, 'EXECUTED', '7:78ea1afeb92bb869c882608d083e71fb', 'dropNotNullConstraint columnName=toolname, tableName=tool; dropDefaultValue columnName=toolname, tableName=tool; sql; sql', '', NULL, '3.5.4', NULL, NULL, '5805789307');
 
 
 --
--- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO databasechangeloglock (id, locked, lockgranted, lockedby) VALUES (1, false, NULL, NULL);
 
 
 --
--- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A', NULL, NULL);
@@ -639,39 +672,39 @@ INSERT INTO enduser (id, avatarurl, bio, company, email, isadmin, location, user
 
 
 --
--- Name: enduser_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: enduser_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('enduser_id_seq', 2, true);
 
 
 --
--- Data for Name: endusergroup; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: endusergroup; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
 
 --
--- Data for Name: entry_label; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: entry_label; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
 
 --
--- Data for Name: label; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: label; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
 
 --
--- Name: label_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: label_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('label_id_seq', 1, false);
 
 
 --
--- Data for Name: sourcefile; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (1, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL);
@@ -1736,45 +1769,45 @@ INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VAL
 
 
 --
--- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('sourcefile_id_seq', 41, true);
 
 
 --
--- Data for Name: starred; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: starred; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
 
 --
--- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (1, false, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (2, false, false, '2016-02-16 17:06:55', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (52, false, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, false, NULL, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL);
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (1, false, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (2, false, false, '2016-02-16 17:06:55', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (6, false, false, '2016-03-15 15:39:17', 'master', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (7, false, false, '2016-03-15 15:39:19', 'latest', 'master', false, false, NULL, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (52, false, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, false, NULL, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 
 
 --
--- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('tag_id_seq', 101, true);
 
 
 --
--- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (1, 'imamafakedockstoretoken', NULL, 'dockstore', 1, 'user_A', NULL, NULL);
@@ -1783,14 +1816,14 @@ INSERT INTO token (id, content, refreshtoken, tokensource, userid, username, dbc
 
 
 --
--- Name: token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('token_id_seq', 10, true);
 
 
 --
--- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (52, NULL, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', '/examples/cgpmap/cramOut/fastq_gz_input.json', '/test.wdl.json', '/Dockstore.wdl', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', false, 'quay.io', '', 'cgpmap-cramOut', NULL, NULL, NULL);
@@ -1802,7 +1835,7 @@ INSERT INTO tool (id, author, defaultversion, description, email, giturl, ispubl
 
 
 --
--- Data for Name: tool_tag; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tool_tag; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO tool_tag (toolid, tagid) VALUES (1, 1);
@@ -1820,7 +1853,7 @@ INSERT INTO tool_tag (toolid, tagid) VALUES (52, 52);
 
 
 --
--- Data for Name: user_entry; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: user_entry; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO user_entry (userid, entryid) VALUES (1, 1);
@@ -1846,20 +1879,20 @@ INSERT INTO user_entry (userid, entryid) VALUES (2, 52);
 
 
 --
--- Data for Name: usergroup; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: usergroup; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
 
 --
--- Name: usergroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: usergroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
 SELECT pg_catalog.setval('usergroup_id_seq', 1, false);
 
 
 --
--- Data for Name: version_sourcefile; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: version_sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (1, 2);
@@ -1902,7 +1935,7 @@ INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 41);
 
 
 --
--- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'c', NULL, 'github.com', NULL, false, NULL, NULL);
@@ -1922,21 +1955,21 @@ INSERT INTO workflow (id, author, defaultversion, description, email, giturl, is
 
 
 --
--- Data for Name: workflow_workflowversion; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: workflow_workflowversion; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 13);
 
 
 --
--- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, NULL, NULL);
+INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 
 
 --
--- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY enduser
@@ -1944,7 +1977,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: endusergroup endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup endusergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY endusergroup
@@ -1952,7 +1985,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label entry_label_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY entry_label
@@ -1960,7 +1993,7 @@ ALTER TABLE ONLY entry_label
 
 
 --
--- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY label
@@ -1968,7 +2001,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY databasechangeloglock
@@ -1976,7 +2009,7 @@ ALTER TABLE ONLY databasechangeloglock
 
 
 --
--- Name: sourcefile sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sourcefile sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY sourcefile
@@ -1984,7 +2017,7 @@ ALTER TABLE ONLY sourcefile
 
 
 --
--- Name: starred starred_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: starred starred_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY starred
@@ -1992,7 +2025,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tag
@@ -2000,7 +2033,7 @@ ALTER TABLE ONLY tag
 
 
 --
--- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY token
@@ -2008,7 +2041,7 @@ ALTER TABLE ONLY token
 
 
 --
--- Name: tool tool_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool tool_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool
@@ -2016,7 +2049,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: tool_tag tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag tool_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2024,7 +2057,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: enduser uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: enduser uk_9vcoeu4nuu2ql7fh05mn20ydd; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY enduser
@@ -2032,7 +2065,7 @@ ALTER TABLE ONLY enduser
 
 
 --
--- Name: label uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: label uk_9xhsn1bsea2csoy3l0gtq41vv; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY label
@@ -2040,7 +2073,7 @@ ALTER TABLE ONLY label
 
 
 --
--- Name: version_sourcefile uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile uk_e2j71kjdot9b8l5qmjw2ve38o; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2048,7 +2081,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow_workflowversion uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion uk_encl8hnebnkcaxj9tlugr9cxh; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2056,7 +2089,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: tool_tag uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag uk_jdgfioq44aqox39xrs1wceow1; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2064,7 +2097,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: tool ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool ukbq5vy17y4ocaist3d3r3imcus; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool
@@ -2072,7 +2105,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: workflow uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow uknlbos7i98icbaql5cyt5bhhy2; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow
@@ -2080,7 +2113,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: user_entry user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_entry user_entry_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY user_entry
@@ -2088,7 +2121,7 @@ ALTER TABLE ONLY user_entry
 
 
 --
--- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY usergroup
@@ -2096,7 +2129,7 @@ ALTER TABLE ONLY usergroup
 
 
 --
--- Name: version_sourcefile version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile version_sourcefile_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2104,7 +2137,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: workflow workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow workflow_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow
@@ -2112,7 +2145,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: workflow_workflowversion workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion workflow_workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2120,7 +2153,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: workflowversion workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflowversion workflowversion_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflowversion
@@ -2128,35 +2161,35 @@ ALTER TABLE ONLY workflowversion
 
 
 --
--- Name: full_tool_name; Type: INDEX; Schema: public; Owner: postgres
+-- Name: full_tool_name; Type: INDEX; Schema: public; Owner: dockstore
 --
 
 CREATE UNIQUE INDEX full_tool_name ON tool USING btree (registry, namespace, name, toolname) WHERE (toolname IS NOT NULL);
 
 
 --
--- Name: full_workflow_name; Type: INDEX; Schema: public; Owner: postgres
+-- Name: full_workflow_name; Type: INDEX; Schema: public; Owner: dockstore
 --
 
 CREATE UNIQUE INDEX full_workflow_name ON workflow USING btree (sourcecontrol, organization, repository, workflowname) WHERE (workflowname IS NOT NULL);
 
 
 --
--- Name: partial_tool_name; Type: INDEX; Schema: public; Owner: postgres
+-- Name: partial_tool_name; Type: INDEX; Schema: public; Owner: dockstore
 --
 
 CREATE UNIQUE INDEX partial_tool_name ON tool USING btree (registry, namespace, name) WHERE (toolname IS NULL);
 
 
 --
--- Name: partial_workflow_name; Type: INDEX; Schema: public; Owner: postgres
+-- Name: partial_workflow_name; Type: INDEX; Schema: public; Owner: dockstore
 --
 
 CREATE UNIQUE INDEX partial_workflow_name ON workflow USING btree (sourcecontrol, organization, repository) WHERE (workflowname IS NULL);
 
 
 --
--- Name: tool fk_checkerid_with_tool; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool fk_checkerid_with_tool; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool
@@ -2164,7 +2197,7 @@ ALTER TABLE ONLY tool
 
 
 --
--- Name: workflow fk_checkerid_with_workflow; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow fk_checkerid_with_workflow; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow
@@ -2172,7 +2205,7 @@ ALTER TABLE ONLY workflow
 
 
 --
--- Name: starred fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: starred fkdcfqiy0arvxmmh5e68ix75gwo; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY starred
@@ -2180,7 +2213,7 @@ ALTER TABLE ONLY starred
 
 
 --
--- Name: workflow_workflowversion fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion fkibmeux3552ua8dwnqdb8w6991; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2188,7 +2221,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: tool_tag fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag fkjkn6qubuvn25bun52eqjleyl6; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2196,7 +2229,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: tool_tag fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tool_tag fkjtsjg6jdnwxoeicd27ujmeeaj; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY tool_tag
@@ -2204,7 +2237,7 @@ ALTER TABLE ONLY tool_tag
 
 
 --
--- Name: workflow_workflowversion fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_workflowversion fkl8yg13ahjhtn0notrlf3amwwi; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY workflow_workflowversion
@@ -2212,7 +2245,7 @@ ALTER TABLE ONLY workflow_workflowversion
 
 
 --
--- Name: endusergroup fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup fkm0exig2r3dsxqafwaraf7rnr3; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY endusergroup
@@ -2220,7 +2253,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: version_sourcefile fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: version_sourcefile fkmby5o476bdwrx07ax2keoyttn; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY version_sourcefile
@@ -2228,7 +2261,7 @@ ALTER TABLE ONLY version_sourcefile
 
 
 --
--- Name: endusergroup fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: endusergroup fkrxn6hh2max4sk4ceehyv7mt2e; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY endusergroup
@@ -2236,7 +2269,7 @@ ALTER TABLE ONLY endusergroup
 
 
 --
--- Name: entry_label fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entry_label fks71c9mk0f98015eqgtyvs0ewp; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
 ALTER TABLE ONLY entry_label

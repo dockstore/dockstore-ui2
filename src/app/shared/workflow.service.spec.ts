@@ -44,7 +44,7 @@ describe('WorkflowService', () => {
             'workflowVersions': [],
             'defaultTestParameterFilePath': 'replacedDefaultTestParameterFilePath',
             'sourceControl': 'github.com',
-            'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
+            'source_control_provider': 'GITHUB'
         };
         service.replaceWorkflow(workflows, newSampleWorkflow1);
         expect(service.workflows$.getValue()).toEqual([newSampleWorkflow1, sampleWorkflow2, sampleWorkflow3]);

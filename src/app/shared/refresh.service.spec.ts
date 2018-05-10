@@ -93,7 +93,7 @@ describe('RefreshService', () => {
                 'workflowVersions': [],
                 'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath',
                 'sourceControl': 'github.com',
-                'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
+                'source_control_provider': 'GITHUB'
             };
         service.refreshWorkflow();
         stateService.refreshMessage$.subscribe(refreshing => {
