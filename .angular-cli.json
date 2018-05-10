@@ -26,15 +26,22 @@
         "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/bootstrap-social/bootstrap-social.css",
         "styles.css",
-        "styles.scss"
+        "styles.scss",
+        "material.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/ace-builds/src-min-noconflict/ace.js",
+        "../node_modules/ace-builds/src-min-noconflict/mode-yaml.js",
+        "../node_modules/ace-builds/src-min-noconflict/mode-json.js",
+        "../node_modules/ace-builds/src-min-noconflict/mode-dockerfile.js",
+        "../node_modules/ace-builds/src-min-noconflict/mode-text.js",
+        "../node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
+        "../node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../node_modules/jquery-colorbox/jquery.colorbox.js",
-        "../node_modules/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js",
         "../node_modules/cytoscape/dist/cytoscape.js",
         "../node_modules/dagre/dist/dagre.min.js",
         "../node_modules/cytoscape-dagre/cytoscape-dagre.js",
@@ -76,7 +83,7 @@
       "config": "./karma.conf.js"
     },
     "codeCoverage": {
-      "exclude": ["src/app/shared/swagger/**", "src/app/shared/angular2-highlight-js/lib/**", "src/app/test/**"]
+      "exclude": ["src/app/shared/swagger/**", "src/app/test/**"]
     }
   },
   "defaults": {

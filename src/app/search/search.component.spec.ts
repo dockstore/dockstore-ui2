@@ -28,6 +28,7 @@ import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
 import { SearchService } from './search.service';
 
+/* tslint:disable:no-unused-variable */
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;

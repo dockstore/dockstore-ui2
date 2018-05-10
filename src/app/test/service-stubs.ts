@@ -65,7 +65,11 @@ export class ProviderStubService {
         return tool;
     }
 }
-export class FileStubService { }
+export class FileStubService {
+  getFilePath(file): string {
+    return '';
+  }
+}
 
 export class QueryBuilderStubService {
     getTagCloudQuery(type: string): string {
@@ -227,15 +231,6 @@ export class ConfigurationStub {
     };
 }
 
-export class NotificationsStubService {
-  success() {
-
-  }
-  error() {
-
-  }
-}
-
 export class UsersStubService {
     getUser() {
         return Observable.of({});
@@ -286,6 +281,8 @@ export class WorkflowStubService {
         return Observable.of({});
     }
     replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
+    get full_workflow_path() { return ''; }
+    get descriptorType() { return ''; }
 }
 
 export class MetadataStubService {
@@ -500,10 +497,10 @@ export class DescriptorsStubService {
 }
 
 export class ParamFilesStubService {
-    getVersions() {
+    getVersions(version) {
         return Observable.of([]);
     }
-    getDescriptors() {
+    getDescriptors(id, type, versionName, descriptor) {
         return Observable.of({});
     }
 }
@@ -605,6 +602,12 @@ export class WorkflowsStubService {
     getWorkflowDag(workflowId: number, workflowVersionId: number, extraHttpRequestParams?: any): Observable<string> {
         return Observable.of('someDAG');
     }
+    wdl(workflowId: number, tag: string ) {
+      return Observable.of({});
+    }
+    secondaryWdl(workflowId: number, tag: string) {
+      return Observable.of([]);
+    }
 }
 
 export class ContainersStubService {
@@ -683,6 +686,10 @@ export class ContainersStubService {
 
 export class VersionModalStubService {
 
+}
+
+export class WorkflowVersionStubService {
+  get name() {return ''; }
 }
 
 export class StateStubService {

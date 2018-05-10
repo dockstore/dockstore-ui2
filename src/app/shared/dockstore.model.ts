@@ -55,6 +55,6 @@ export class Dockstore {
 
   static readonly FEATURES = {
     enableCwlViewer: false,
-    enableLaunchWithFireCloud: false
+    enableLaunchWithFireCloud: true
   };
 }

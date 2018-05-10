@@ -28,7 +28,6 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { HighlightJsModule, HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
@@ -57,6 +56,7 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
+import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +65,7 @@ import { getTooltipConfig } from './../tooltip';
     FilesWorkflowComponent,
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
+    LaunchThirdPartyComponent,
     LaunchWorkflowComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
@@ -78,7 +79,6 @@ import { getTooltipConfig } from './../tooltip';
     MarkdownModule.forRoot(),
     DataTablesModule,
     HeaderModule,
-    HighlightJsModule,
     ListWorkflowsModule,
     ModalModule.forRoot(),
     SelectModule,
@@ -97,7 +97,6 @@ import { getTooltipConfig } from './../tooltip';
   providers: [
     ExtendedWorkflowService,
     { provide: TooltipConfig, useFactory: getTooltipConfig },
-    HighlightJsService,
     DateService,
     FileService,
     WorkflowLaunchService,

@@ -44,17 +44,16 @@ import { MyWorkflowsService } from './../myworkflows.service';
 })
 
 export class MyWorkflowComponent extends MyEntry implements OnInit {
-  workflow: any;
+  workflow: Workflow;
   workflows: any;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
-  public orgWorkflowsObject: Array<OrgWorkflowObject>;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
     private workflowService: WorkflowService, protected authService: AuthService, protected accountsService: AccountsService,
     private refreshService: RefreshService, private stateService: StateService, private router: Router, private location: Location,
-    private registerWorkflowModalService: RegisterWorkflowModalService, private urlResolverService: UrlResolverService) {
-    super(accountsService, authService, configuration, tokenService);
+    private registerWorkflowModalService: RegisterWorkflowModalService, protected urlResolverService: UrlResolverService) {
+    super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
   ngOnInit() {
@@ -64,8 +63,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      */
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        if (this.orgWorkflowsObject) {
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
+        if (this.groupEntriesObject) {
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
           this.selectEntry(foundWorkflow);
         }
       }
@@ -92,46 +91,29 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
       if (workflows) {
         this.workflows = workflows;
-        const sortedWorkflows = this.myworkflowService.sortORGWorkflows(workflows, this.user.username);
-        /* For the first initial time, set the first tool to be the selected one */
-        if (sortedWorkflows && sortedWorkflows.length > 0) {
-          this.orgWorkflowsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedWorkflows);
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgWorkflowsObject);
-          if (foundWorkflow) {
-            this.selectEntry(foundWorkflow);
-          } else {
-            const publishedWorkflow = this.getFirstPublishedEntry(sortedWorkflows);
-            if (publishedWorkflow) {
-              this.selectEntry(publishedWorkflow);
-            } else {
-              const theFirstWorkflow = sortedWorkflows[0].workflows[0];
-              this.selectEntry(theFirstWorkflow);
-            }
-          }
-        } else {
-          this.selectEntry(null);
-        }
+        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+        this.selectInitialEntry(sortedWorkflows);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   protected updateActiveTab(): void {
-    if (this.orgWorkflowsObject) {
-      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
+    if (this.groupEntriesObject) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
         if (this.workflow) {
-          if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+          if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.groupEntriesObject[i].activeTab = 'unpublished';
             continue;
           }
-          if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.orgWorkflowsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+            this.groupEntriesObject[i].activeTab = 'published';
             continue;
           }
-          if (this.orgWorkflowsObject[i].published.length > 0) {
-            this.orgWorkflowsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.length > 0) {
+            this.groupEntriesObject[i].activeTab = 'published';
           } else {
-            this.orgWorkflowsObject[i].activeTab = 'unpublished';
+            this.groupEntriesObject[i].activeTab = 'unpublished';
           }
         }
       }
@@ -139,7 +121,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
-    const orgWorkflowsObject: Array<OrgWorkflowObject> = [];
+    const groupEntriesObject: Array<OrgWorkflowObject> = [];
     for (let i = 0; i < nsWorkflows.length; i++) {
       const orgWorkflowObject: OrgWorkflowObject = {
         sourceControl: '',
@@ -149,7 +131,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         unpublished: [],
         activeTab: 'published'
       };
-      const nsWorkflow: Array<Workflow> = nsWorkflows[i].workflows;
+      const nsWorkflow: Array<Workflow> = nsWorkflows[i].entries;
       orgWorkflowObject.isFirstOpen = nsWorkflows[i].isFirstOpen;
       orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
       orgWorkflowObject.organization = nsWorkflows[i].organization;
@@ -159,14 +141,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: Workflow) => {
         return !workflow.is_published;
       });
-      orgWorkflowsObject.push(orgWorkflowObject);
+      groupEntriesObject.push(orgWorkflowObject);
     }
-    return orgWorkflowsObject;
+    return groupEntriesObject;
   }
 
   protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
     for (let i = 0; i < orgWorkflows.length; i++) {
-      const foundWorkflow = orgWorkflows[i]['workflows'].find((workflow: Workflow) => {
+      const foundWorkflow = orgWorkflows[i]['entries'].find((workflow: Workflow) => {
         return workflow.is_published === true;
       });
       if (foundWorkflow) {
@@ -192,14 +174,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   setIsFirstOpen(): void {
-    if (this.orgWorkflowsObject && this.workflow) {
-      for (let i = 0; i < this.orgWorkflowsObject.length; i++) {
-        if (this.orgWorkflowsObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.orgWorkflowsObject[i].isFirstOpen = true;
+    if (this.groupEntriesObject && this.workflow) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
+        if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
-        if (this.orgWorkflowsObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.orgWorkflowsObject[i].isFirstOpen = true;
+        if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
       }
@@ -234,4 +216,3 @@ export interface OrgWorkflowObject {
   unpublished: Array<Workflow>;
   activeTab: 'unpublished' | 'published';
 }
-

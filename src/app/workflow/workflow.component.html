@@ -209,25 +209,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default" *ngIf="workflow && (dnastackURL || fireCloudURL)">
-      <div class="panel-heading">
-        <h3>Launch with</h3>
-      </div>
-      <div class="panel-body">
-        <div class="container-source-repos">
-          <div class="container-launch-with">
-            <div class="button-wrap">
-              <div *ngIf="dnastackURL" class="button">
-                <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a></p>
-              </div>
-              <div *ngIf="fireCloudURL" class="button">
-                <p><a href="{{fireCloudURL}}"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud &raquo;</a></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
     <div class="panel panel-default" *ngIf="workflow?.versionVerified">
       <div class="panel-heading">
         <h3>Verified</h3>

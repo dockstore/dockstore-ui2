@@ -93,11 +93,6 @@ export class DockstoreService {
     return labelValues.sort();
   }
 
-  /* Highlight Code */
-  highlightCode(code): string {
-    return '<pre><code class="YAML highlight">' + code + '</pre></code>';
-  }
-
   /* Strip mailto from email field */
   stripMailTo(email: string) {
     if (email) {

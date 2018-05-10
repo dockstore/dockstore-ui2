@@ -119,10 +119,6 @@ describe('DockstoreService', () => {
         };
         expect(service.getLabelStrings([label3, label2, label1])).toEqual(['a', 'b', 'c']);
     }));
-    it('should get highlight code', inject([DockstoreService], (service: DockstoreService) => {
-        const code = 'FROM ubuntu:16.04';
-        expect(service.highlightCode(code)).toEqual('<pre><code class="YAML highlight">FROM ubuntu:16.04</pre></code>');
-    }));
     it('should strip mail to', inject([DockstoreService], (service: DockstoreService) => {
         const email = 'mailto:gary.luu@oicr.on.ca';
         expect(service.stripMailTo(email)).toEqual('gary.luu@oicr.on.ca');

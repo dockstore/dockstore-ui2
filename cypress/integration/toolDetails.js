@@ -78,7 +78,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
 
             it('Should have content in file viewer', function() {
                 cy
-                    .get(".hljs.yaml")
+                    .get(".ace_content")
                     .should("be.visible")
             });
         });
@@ -94,7 +94,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
 
             it('Should have content in file viewer', function() {
                 cy
-                    .get(".hljs.yaml")
+                    .get(".ace_content")
                     .should("be.visible")
             });
         });
@@ -110,7 +110,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
 
             it('Should not have content in file viewer', function() {
                 cy
-                    .get(".hljs.yaml")
+                    .get(".ace_content")
                     .should("not.be.visible")
                 cy
                     .contains('A Test Parameter File associated with this Docker container, descriptor type and version could not be found.')
@@ -148,7 +148,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 
             it('Should have content in file viewer', function() {
                 cy
-                    .get(".hljs.yaml")
+                    .get(".ace_content")
                     .should("be.visible")
             });
         });
@@ -164,7 +164,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 
             it('Should have content in file viewer', function() {
                 cy
-                    .get(".hljs.yaml")
+                    .get(".ace_content")
                     .should("be.visible")
             });
         });
@@ -180,7 +180,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 
             it('Should have content in file viewer', function() {
                 cy
-                    .get(".hljs.yaml")
+                    .get(".ace_content")
                     .should("be.visible")
             });
         });

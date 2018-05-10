@@ -23,7 +23,7 @@
 </app-header>
 <div class="container padding-top">
   <app-alert></app-alert>
-  <div class="row" *ngIf="orgWorkflowsObject?.length == 0 || !orgWorkflowsObject">
+  <div class="row" *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
     <div class="col-md-12">
       <div class="alert alert-info" role="alert">
         <p>
@@ -51,7 +51,7 @@
   <div class="row">
     <div class="col-md-3 containers-rsb">
       <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let orgObj of orgWorkflowsObject"  panelClass="containers-accordion"
+        <accordion-group *ngFor="let orgObj of groupEntriesObject"  panelClass="containers-accordion"
           [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.sourceControl + '/' + orgObj?.organization">
           <div accordion-heading class="no-wrap">
             {{orgObj?.sourceControl + '/' + orgObj?.organization}}

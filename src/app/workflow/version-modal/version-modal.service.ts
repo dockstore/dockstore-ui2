@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { NotificationsService } from 'angular2-notifications';
 import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
@@ -35,7 +34,7 @@ export class VersionModalService {
     private workflowId;
     constructor(
         private stateService: StateService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-        private refreshService: RefreshService, private notificationsService: NotificationsService) {
+        private refreshService: RefreshService) {
         workflowService.workflow$.subscribe(workflow => {
             if (workflow) {
                 this.workflowId = workflow.id;

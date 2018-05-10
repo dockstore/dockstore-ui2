@@ -1,4 +1,3 @@
-import { NotificationsService } from 'angular2-notifications';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,19 +13,18 @@ import { NotificationsService } from 'angular2-notifications';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 import { ErrorService } from './../shared/error.service';
-import { Injectable } from '@angular/core';
-
-import { WorkflowsService } from './swagger/api/workflows.service';
-import { UsersService } from './swagger/api/users.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { Workflow } from './swagger/model/workflow';
-import { ContainersService } from './swagger/api/containers.service';
-
-import { WorkflowService } from './workflow.service';
 import { ContainerService } from './container.service';
 import { StateService } from './state.service';
+import { ContainersService } from './swagger/api/containers.service';
+import { UsersService } from './swagger/api/users.service';
+import { WorkflowsService } from './swagger/api/workflows.service';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { Workflow } from './swagger/model/workflow';
+import { WorkflowService } from './workflow.service';
 
 @Injectable()
 export class RefreshService {
@@ -36,7 +34,7 @@ export class RefreshService {
     private workflows;
     constructor(private workflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private errorService: ErrorService, private notificationsService: NotificationsService) {
+        private errorService: ErrorService, private snackBar: MatSnackBar) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
@@ -66,7 +64,9 @@ export class RefreshService {
      */
     handleSuccess(message: string): void {
         this.stateService.setRefreshMessage(null);
-        this.notificationsService.success(message + ' succeeded');
+        this.snackBar.open(message + ' succeeded', 'Dismiss', {
+          duration: 5000,
+        });
     }
 
 
@@ -80,7 +80,9 @@ export class RefreshService {
     handleError(message: string, error: any): void {
         this.errorService.setErrorAlert(error);
         this.stateService.setRefreshMessage(null);
-        this.notificationsService.error(message + ' failed');
+        this.snackBar.open(message + ' failed', 'Dismiss', {
+          duration: 5000,
+        });
     }
 
     /**

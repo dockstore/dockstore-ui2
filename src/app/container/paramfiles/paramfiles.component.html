@@ -32,16 +32,17 @@
       &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
     </alert>
   </div>
-  <div *ngIf="content && _selectedVersion?.valid" class="code-copy">
-    <div class="code-copy-button btn-group">
-      <a href id="downloadLinkParams" (click)="downloadFile(currentFile, 'downloadLinkParams')" class="btn btn-default" type="button" title="{{getFilePath(currentFile)}}">
+  <div *ngIf="content && _selectedVersion?.valid" class="row no-margin">
+    <div class="btn-group">
+      <a href id="downloadLinkParams" (click)="downloadFile(currentFile, 'downloadLinkParams')" class="btn btn-default" type="button" title="{{filePath}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
-      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'test_param_file'}"
-              (cbOnSuccess)="toolCopyBtnClick('test_param_file')" title="Copy to clipboard">
+      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
         <span class="glyphicon glyphicon-copy"></span>
       </button>
     </div>
-    <section [innerHTML]="fileService.highlightCode(content)"></section>
+  </div>
+  <div [hidden]="!content || !_selectedVersion?.valid">
+    <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
   </div>
 </div>

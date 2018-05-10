@@ -47,15 +47,14 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   public refreshMessage: string;
   private registerTool: Tool;
-  public orgToolsObject: Array<OrgToolObject>;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
     private containerService: ContainerService,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService,
-    private urlResolverService: UrlResolverService, private router: Router) {
-    super(accountsService, authService, configuration, tokenService);
+    protected urlResolverService: UrlResolverService, private router: Router) {
+    super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
   ngOnInit() {
@@ -79,25 +78,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.containerService.tools$.takeUntil(this.ngUnsubscribe).subscribe(tools => {
       if (tools) {
         this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortNSContainers(tools, this.user.username);
-        /* For the first initial time, set the first tool to be the selected one */
-        if (sortedContainers && sortedContainers.length > 0) {
-          this.orgToolsObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedContainers);
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.orgToolsObject);
-          if (foundTool) {
-            this.selectEntry(foundTool);
-          } else {
-            const publishedTool = this.getFirstPublishedEntry(sortedContainers);
-            if (publishedTool) {
-              this.selectEntry(publishedTool);
-            } else {
-              const theFirstTool = sortedContainers[0].containers[0];
-              this.selectEntry(theFirstTool);
-            }
-          }
-        } else {
-          this.selectEntry(null);
-        }
+        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
+        this.selectInitialEntry(sortedContainers);
       }
     });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
@@ -105,21 +87,21 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   protected updateActiveTab(): void {
-    if (this.orgToolsObject) {
-      for (let i = 0; i < this.orgToolsObject.length; i++) {
+    if (this.groupEntriesObject) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
         if (this.tool) {
-          if (this.orgToolsObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
-            this.orgToolsObject[i].activeTab = 'unpublished';
+          if (this.groupEntriesObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
+            this.groupEntriesObject[i].activeTab = 'unpublished';
             continue;
           }
-          if (this.orgToolsObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
-            this.orgToolsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
+            this.groupEntriesObject[i].activeTab = 'published';
             continue;
           }
-          if (this.orgToolsObject[i].published.length > 0) {
-            this.orgToolsObject[i].activeTab = 'published';
+          if (this.groupEntriesObject[i].published.length > 0) {
+            this.groupEntriesObject[i].activeTab = 'published';
           } else {
-            this.orgToolsObject[i].activeTab = 'unpublished';
+            this.groupEntriesObject[i].activeTab = 'unpublished';
           }
         }
       }
@@ -127,7 +109,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
-    const orgToolsObject: Array<OrgToolObject> = [];
+    const groupEntriesObject: Array<OrgToolObject> = [];
     for (let i = 0; i < nsTools.length; i++) {
       const orgToolObject: OrgToolObject = {
         namespace: '',
@@ -137,24 +119,23 @@ export class MyToolComponent extends MyEntry implements OnInit {
         unpublished: [],
         activeTab: 'published'
       };
-      const nsTool: Array<DockstoreTool> = nsTools[i].containers;
+      const nsTool: Array<DockstoreTool> = nsTools[i].entries;
       orgToolObject.isFirstOpen = nsTools[i].isFirstOpen;
       orgToolObject.namespace = nsTools[i].namespace;
-      orgToolObject.organization = nsTools[i].organization;
       orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
         return tool.is_published;
       });
       orgToolObject.unpublished = nsTool.filter((tool: DockstoreTool) => {
         return !tool.is_published;
       });
-      orgToolsObject.push(orgToolObject);
+      groupEntriesObject.push(orgToolObject);
     }
-    return orgToolsObject;
+    return groupEntriesObject;
   }
 
   protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool {
     for (let i = 0; i < orgEntries.length; i++) {
-      const foundTool = orgEntries[i]['containers'].find((entry: DockstoreTool) => {
+      const foundTool = orgEntries[i]['entries'].find((entry: DockstoreTool) => {
         return entry.is_published === true;
       });
       if (foundTool) {
@@ -180,14 +161,14 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   setIsFirstOpen(): void {
-    if (this.orgToolsObject && this.tool) {
-      for (let i = 0; i < this.orgToolsObject.length; i++) {
-        if (this.orgToolsObject[i].published.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
-          this.orgToolsObject[i].isFirstOpen = true;
+    if (this.groupEntriesObject && this.tool) {
+      for (let i = 0; i < this.groupEntriesObject.length; i++) {
+        if (this.groupEntriesObject[i].published.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
-        if (this.orgToolsObject[i].unpublished.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
-          this.orgToolsObject[i].isFirstOpen = true;
+        if (this.groupEntriesObject[i].unpublished.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
+          this.groupEntriesObject[i].isFirstOpen = true;
           break;
         }
       }

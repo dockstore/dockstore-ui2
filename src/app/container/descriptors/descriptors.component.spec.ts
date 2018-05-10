@@ -19,7 +19,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 
 import { ContainersStubService, ContainerStubService } from '../../../../src/app/test/service-stubs';
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { ContainersService } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { FileService } from './../../shared/file.service';
@@ -44,7 +43,6 @@ describe('DescriptorsComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ToolDescriptorService, useClass: DescriptorsStubService },
-        { provide: HighlightJsService, useClass: HighlightJsService },
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService }]
