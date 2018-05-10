@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { Workflow } from '../../shared/swagger';
@@ -29,22 +28,18 @@ import { WorkflowDescriptorService } from './workflow-descriptor.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.css']
 })
-export class DescriptorsWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
+export class DescriptorsWorkflowComponent extends EntryFileSelector {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
   }
 
-  content: string;
-  contentHighlighted: boolean;
   public descriptorPath: string;
   public filePath: string;
-  constructor(private highlightJsService: HighlightJsService,
-              private workflowDescriptorService: WorkflowDescriptorService,
+  constructor(private workflowDescriptorService: WorkflowDescriptorService,
               public fileService: FileService,
-              private workflowService: WorkflowService,
-              private elementRef: ElementRef) {
+              private workflowService: WorkflowService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -58,15 +53,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
 
   reactToFile(): void {
     this.content = this.currentFile.content;
-    this.contentHighlighted = true;
     this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
     this.filePath = this.getFilePath(this.currentFile);
-  }
-  ngAfterViewChecked() {
-    if (this.contentHighlighted) {
-      this.contentHighlighted = false;
-      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
-    }
   }
 
   private getDescriptorPath(entrytype): string {

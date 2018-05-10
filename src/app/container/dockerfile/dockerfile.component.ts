@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
@@ -28,7 +27,7 @@ import { ga4ghPath } from './../../shared/constants';
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
 })
-export class DockerfileComponent implements AfterViewChecked {
+export class DockerfileComponent {
 
   @Input() id: number;
   @Input() entrypath: string;
@@ -40,12 +39,9 @@ export class DockerfileComponent implements AfterViewChecked {
   content: string;
   filepath: string;
   nullContent: boolean;
-  contentHighlighted: boolean;
   public published$: Observable<boolean>;
   public containerFilePath: string;
-  constructor(private highlightJsService: HighlightJsService,
-              public fileService: FileService,
-              private elementRef: ElementRef,
+  constructor(public fileService: FileService,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
     this.filepath = '/Dockerfile';
@@ -58,7 +54,6 @@ export class DockerfileComponent implements AfterViewChecked {
       this.containersService.dockerfile(this.id, this._selectedVersion.name).first()
         .subscribe(file => {
             this.content = file.content;
-            this.contentHighlighted = true;
             this.filepath = file.path;
             this.containerFilePath = this.getContainerfilePath();
           }, error => {
@@ -69,12 +64,6 @@ export class DockerfileComponent implements AfterViewChecked {
     } else {
       this.nullContent = true;
       this.content = null;
-    }
-  }
-  ngAfterViewChecked() {
-    if (this.contentHighlighted && !this.nullContent && this.elementRef.nativeElement.querySelector('.highlight')) {
-      this.contentHighlighted = false;
-      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
   }
 

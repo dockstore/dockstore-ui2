@@ -480,9 +480,6 @@ div.button a {
 .button:hover {
   text-decoration: underline;
 }
-.code-copy {
-  position:relative
-}
 
 .refresh-all-button {
   background-color: #487980 !important;
@@ -911,17 +908,6 @@ div.tabs>div:target>div,
   width: 100%;
 }
 
-.btn-copy {
-  color: white !important;
-  background-color: #487980 !important;
-  border-color: #487980 !important;
-  &:hover{
-    color: white !important;
-    background-color: #487980 !important;
-    border-color: #487980 !important;
-  }
-}
-
 .btn-sad {
   background-color: white;
   box-shadow: none;
@@ -1064,21 +1050,6 @@ div.tabs>div:target>div,
   margin-bottom: 5px;
 }
 
-.code-holder {
-  position: relative;
-  overflow: visible;
-}
-
-.code-copy-button {
-  top: 20px;
-  right: 20px;
-  position: absolute;
-}
-
-.code-copy-button > a {
-  border: 1px solid transparent !important;
-}
-
 .ellipsis-lines {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1190,37 +1161,6 @@ tabset.homeComponent {
       }
     }
   }
-}
-
-.hljs-ln-n {
-  word-break: normal;
-  padding-right: 10px;
-}
-
-.hljs-ln,.hljs-ln td, .hljs-ln th {
-  border: 0;
-}
-
-td.hljs-ln-numbers {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  text-align: center;
-  color: #979797;
-  border-right: 1px solid #9a9a9a;
-  vertical-align: top;
-  padding-right: 5px;
-
-  /* your custom style here */
-}
-
-/* for block of code */
-td.hljs-ln-code {
-  padding-left: 10px;
 }
 
 /* This is for dropdown anchor to have a mouse pointer without redirecting to a different page */

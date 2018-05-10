@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 
-import {Component, Input, OnInit, ElementRef, AfterViewChecked} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
@@ -29,18 +28,17 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.css']
 })
-export class ParamfilesWorkflowComponent extends EntryFileSelector implements AfterViewChecked {
+export class ParamfilesWorkflowComponent extends EntryFileSelector {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.clearContent();
     this.onVersionChange(value);
   }
+  public filePath: string;
 
   constructor(private paramfilesService: ParamfilesService,
-              private highlightJsService: HighlightJsService,
               public fileService: FileService,
-              private elementRef: ElementRef,
               private workflowService: WorkflowService) {
     super();
   }
@@ -54,14 +52,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
 
   reactToFile(): void {
     this.content = this.currentFile.content;
-    this.contentHighlighted = true;
-  }
-
-  ngAfterViewChecked() {
-    if (this.contentHighlighted && this.elementRef.nativeElement.querySelector('.highlight')) {
-      this.contentHighlighted = false;
-      this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
-    }
+    this.filePath = this.getFilePath(this.currentFile);
   }
 
   // Downloads a file
