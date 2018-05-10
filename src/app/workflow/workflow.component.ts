@@ -45,8 +45,6 @@ export class WorkflowComponent extends Entry {
   public workflow: Workflow;
   public missingWarning: boolean;
   public title: string;
-  private workflowSubscription: Subscription;
-  private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
@@ -117,7 +115,7 @@ export class WorkflowComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.workflowSubscription = this.workflowService.workflow$.subscribe(
+    this.workflowService.workflow$.takeUntil(this.ngUnsubscribe).subscribe(
       workflow => {
         this.workflow = workflow;
         if (workflow) {
@@ -128,7 +126,7 @@ export class WorkflowComponent extends Entry {
         this.setUpWorkflow(workflow);
       }
     );
-    this.workflowCopyBtnSubscription = this.workflowService.copyBtn$.subscribe(
+    this.workflowService.copyBtn$.takeUntil(this.ngUnsubscribe).subscribe(
       workflowCopyBtn => {
         this.workflowCopyBtn = workflowCopyBtn;
       }
@@ -213,11 +211,6 @@ export class WorkflowComponent extends Entry {
       }
     }
     return false;
-  }
-
-  onDestroy(): void {
-    this.workflowSubscription.unsubscribe();
-    this.workflowCopyBtnSubscription.unsubscribe();
   }
 
   restubWorkflow() {

@@ -61,7 +61,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      * It is the only section of code that does not exist in my-tools
      */
-    this.router.events.subscribe(event => {
+    this.router.events.takeUntil(this.ngUnsubscribe).subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (this.groupEntriesObject) {
           const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
