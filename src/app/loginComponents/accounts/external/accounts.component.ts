@@ -13,23 +13,19 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { AccountsService } from './accounts.service';
-import { TokenSource } from '../../../shared/enum/token-source.enum';
-import { Provider } from '../../../shared/enum/provider.enum';
-import { Token } from './../../../shared/swagger/model/token';
-import { Configuration } from './../../../shared/swagger/configuration';
-import { AuthService } from 'ng2-ui-auth';
-import { UsersService } from './../../../shared/swagger/api/users.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { ISubscription } from 'rxjs/Subscription';
+import { AuthService } from 'ng2-ui-auth';
+import { Subject } from 'rxjs/Subject';
 
-import { Links } from './links.model';
-
-import { UserService } from '../../user.service';
-import { TokenService } from '../../token.service';
+import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TrackLoginService } from '../../../shared/track-login.service';
+import { TokenService } from '../../token.service';
+import { UserService } from '../../user.service';
+import { UsersService } from './../../../shared/swagger/api/users.service';
+import { Configuration } from './../../../shared/swagger/configuration';
+import { Token } from './../../../shared/swagger/model/token';
+import { AccountsService } from './accounts.service';
 
 @Component({
   selector: 'app-accounts-external',
@@ -78,14 +74,12 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   private tokens: Token[];
   private userId;
-  private tokensSubscription: ISubscription;
-  private deleteSubscription: ISubscription;
-  private routeSubscription: ISubscription;
+  private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
     private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService) {
-    this.routeSubscription = this.trackLoginService.isLoggedIn$.subscribe(
+    this.trackLoginService.isLoggedIn$.takeUntil(this.ngUnsubscribe).subscribe(
       state => {
         if (!state) {
           this.router.navigate(['']);
@@ -118,8 +112,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   // Delete a token and unlink service in the UI
   unlink(source: string) {
-    this.deleteSubscription = this.deleteToken(source)
-      .subscribe(() => {
+    this.deleteToken(source)
+      .first().subscribe(() => {
         this.tokenService.updateTokens();
         this.unlinkToken(source);
       });
@@ -127,12 +121,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   // Show linked services in the UI
   private setAvailableTokens(tokens) {
-    for (const token of tokens) {
       for (const account of this.accountsInfo) {
-        if (token.tokenSource === account.source) {
+        const found = tokens.find(token => token.tokenSource === account.source);
+        if (found) {
           account.isLinked = true;
+        } else {
+          account.isLinked = false;
         }
-      }
     }
   }
 
@@ -160,15 +155,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.tokensSubscription) {
-      this.tokensSubscription.unsubscribe();
-    }
-
-    if (this.deleteSubscription) {
-      this.deleteSubscription.unsubscribe();
-    }
-
-    this.routeSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }
