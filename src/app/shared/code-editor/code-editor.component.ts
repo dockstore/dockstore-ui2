@@ -7,28 +7,29 @@ import { ace } from './../grammars/custom-grammars.js';
   styleUrls: ['./code-editor.component.scss']
 })
 export class CodeEditorComponent implements AfterViewInit {
-  _content: string;
+  editorContent: string;
   editor: any;
   mode = 'yaml';
-  _filepath: string;
+  editorFilepath: string;
   aceId: string;
   @Input() set filepath(filepath: string) {
     if (filepath !== undefined) {
       this.setMode(filepath);
-      this._filepath = filepath;
+      this.editorFilepath = filepath;
     }
   }
 
   @Input() set content(content: string) {
-    this._content = content;
+    this.editorContent = content;
     if (this.editor !== undefined && content) {
-      this.editor.setValue(this._content, -1);
+      this.editor.setValue(this.editorContent, -1);
     }
   }
 
   @ViewChild('aceEditor') aceEditor: ElementRef;
 
   constructor(private elementRef: ElementRef) {
+    // The purpose of the aceId is to deal with cases where multiple editors exist on a page
     this.aceId = Math.floor(Math.random() * 100000).toString();
   }
 
@@ -46,13 +47,13 @@ export class CodeEditorComponent implements AfterViewInit {
     );
 
     // Set content if possible
-    if (this._content) {
-      this.editor.setValue(this._content, -1);
+    if (this.editorContent) {
+      this.editor.setValue(this.editorContent, -1);
     }
   }
 
   /**
-   * Changes the mode of the editor based on the filepath
+   * Changes the mode of the editor based on the filepath, fallback is text modew
    * @param filepath Filepath of file
    */
   setMode(filepath: string): void {
