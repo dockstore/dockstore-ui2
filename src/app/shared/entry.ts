@@ -198,7 +198,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    // If no url tag or default version, select first element in the dropdown
+    // If no url tag or default version, select last element in the dropdown
     if (useFirstTag && versions.length > 0) {
       selectedVersion = versions[versions.length - 1];
     }
