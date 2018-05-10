@@ -21,6 +21,7 @@ import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/concatMap';
 import { Subject } from 'rxjs/Subject';
@@ -30,6 +31,7 @@ import { Injectable } from '@angular/core';
 export class VersionModalService {
     isModalShown$: Subject<boolean> = new BehaviorSubject<boolean>(false);
     version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
+    workflow: Subject<Workflow> = new BehaviorSubject<Workflow>(null);
     testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
     private workflowId;
     constructor(
@@ -47,6 +49,10 @@ export class VersionModalService {
 
     setVersion(version: WorkflowVersion) {
         this.version.next(version);
+    }
+
+    setWorkflow(workflow: Workflow) {
+      this.workflow.next(workflow);
     }
 
     setTestParameterFiles(testParameterFiles: SourceFile[]) {

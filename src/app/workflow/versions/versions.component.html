@@ -33,7 +33,7 @@
             Revision
           </label>
         </span>
-        
+
         <span class="glyphicon pull-right"
               [ngClass]="getIconClass('reference')"
               (click)="clickSortColumn('reference')">
@@ -120,7 +120,7 @@
         <a href="https://zenodo.org/record/">Placeholder</a>
       </td> -->
       <td *ngIf="version">
-        <app-view-workflow [version]="version" [workflowId]="this.workflowId"></app-view-workflow>
+        <app-view-workflow [version]="version" [workflowId]="this.workflowId" [workflow]="this.workflow"></app-view-workflow>
       </td>
     </tr>
     </tbody>

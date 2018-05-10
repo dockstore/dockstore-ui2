@@ -23,8 +23,8 @@ import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { DateService } from './../../shared/date.service';
 import { VersionModalService } from './version-modal.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { Workflow } from './../../shared/swagger/model/workflow';
+import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 
 @Component({
   selector: 'app-version-modal',
@@ -35,6 +35,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
+  workflow: Workflow;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
   public tooltip = Tooltip;
@@ -54,6 +55,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.subscribe(version => this.version = version);
+    this.versionModalService.workflow.subscribe(workflow => this.workflow = workflow);
     this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];

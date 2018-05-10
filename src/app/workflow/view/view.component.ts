@@ -44,6 +44,7 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
+    this.versionModalService.setWorkflow(this.workflow);
     this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name)
         .subscribe(items => {
             this.items = items;

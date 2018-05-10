@@ -21,6 +21,7 @@ import { DateService } from './date.service';
 export abstract class View {
 
   @Input() version;
+  @Input() workflow;
 
   constructor(private dateService: DateService) {
   }
