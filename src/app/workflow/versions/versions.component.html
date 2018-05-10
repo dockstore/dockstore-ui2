@@ -18,13 +18,22 @@
   <table class="table workflow-versions-grid table-bordered table-condensed table-striped">
     <thead>
     <tr>
-      <th *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-        <label placement="top" tooltip="Git branches/tags: The selected reference and tag will be used
-                       to populate the info tab including 'launch with'">
-          Git Reference
-        </label>
-        <a *ngIf="!publicPage" href="http://docs.dockstore.org/faq/#what-is-a-default-version-of-a-tool-or-workflow"
-           target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a>
+      <th>
+        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+          <label placement="top" tooltip="Git branches/tags: The selected reference and tag will be used
+                         to populate the info tab including 'launch with'">
+            Git Reference
+          </label>
+          <a *ngIf="!publicPage" href="http://docs.dockstore.org/faq/#what-is-a-default-version-of-a-tool-or-workflow"
+             target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a>
+        </span>
+
+        <span *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
+          <label placement="top" tooltip="Revision of the workflow.">
+            Revision
+          </label>
+        </span>
+        
         <span class="glyphicon pull-right"
               [ngClass]="getIconClass('reference')"
               (click)="clickSortColumn('reference')">
@@ -87,7 +96,7 @@
       </td>
     </tr>
     <tr *ngFor="let version of versions | orderBy : convertSorting()" [ngClass]="{'info': _selectedVersion != null && version != null && _selectedVersion.id == version.id}">
-      <td *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+      <td>
         <span *ngIf="publicPage && defaultVersion === version.name" class="label label-primary">Default</span>
         <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion"
                      [(ngModel)]="defaultVersion" [value]="version.reference" (click)="updateDefaultVersion(version.reference)"
