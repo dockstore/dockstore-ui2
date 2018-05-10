@@ -29,6 +29,7 @@ import { ProviderService } from './provider.service';
 import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -48,7 +49,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public labelsEditMode: boolean;
   private loginSubscription: Subscription;
   public error;
-  private routerSubscription: Subscription;
   public validTabs;
   public currentTab = 'info';
   public urlVersion;
@@ -58,6 +58,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   @Input() isToolPublic = true;
   public publicPage: boolean;
   public validationMessage = validationMessages;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
@@ -72,7 +73,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.subscriptions();
-    this.routerSubscription = this.router.events.subscribe((event) => {
+    this.router.events.takeUntil(this.ngUnsubscribe).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.parseURL(event.url);
       }
@@ -106,11 +107,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.onDestroy();
-    this.routerSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
-  abstract onDestroy(): void;
   abstract subscriptions(): void;
   abstract setProperties(): void;
   abstract getValidVersions(): void;
