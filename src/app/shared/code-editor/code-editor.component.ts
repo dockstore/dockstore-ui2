@@ -53,7 +53,7 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   /**
-   * Changes the mode of the editor based on the filepath, fallback is text modew
+   * Changes the mode of the editor based on the filepath, fallback is text mode
    * @param filepath Filepath of file
    */
   setMode(filepath: string): void {
