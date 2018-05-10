@@ -92,7 +92,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       this.addTestParameterFile();
     }
 
-    this.versionModalService.saveVersion(this.version, this.originalTestParameterFilePaths, this.testParameterFilePaths);
+    this.versionModalService.saveVersion(this.version, this.originalTestParameterFilePaths,
+      this.testParameterFilePaths, this.workflow.mode);
   }
 
   // Validation starts here, should move most of these to a service somehow
