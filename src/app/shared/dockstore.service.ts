@@ -26,6 +26,10 @@ export class DockstoreService {
     return versions.filter(version => version.valid);
   }
 
+  getVisibleVersions(versions) {
+    return versions.filter(version => !version.hidden);
+  }
+
   /**
    * Determines whether any of the versions of the entry are verified
    *
