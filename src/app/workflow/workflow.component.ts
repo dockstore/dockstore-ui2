@@ -172,8 +172,6 @@ export class WorkflowComponent extends Entry {
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
-
-    // Filter out hidden versions if public
     if (this.publicPage) {
       this.validVersions = this.dockstoreService.getVisibleVersions(this.validVersions);
     }

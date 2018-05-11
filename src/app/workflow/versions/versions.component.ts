@@ -34,7 +34,6 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
   styleUrls: ['./versions.component.css']
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit {
-  filteredVersions: Array<any>;
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
