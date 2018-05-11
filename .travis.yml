@@ -33,7 +33,10 @@ before_script:
   - pwd
   - wget --no-verbose http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.3.1/swagger-codegen-cli-2.3.1.jar -O swagger-codegen-cli.jar
   - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
-  - psql 'postgres' -U postgres < travisci/db_dump.sql
+  - psql -c "create user dockstore with password 'dockstore' createdb;" -U postgres
+  - psql -c "ALTER USER dockstore WITH superuser;" -U postgres
+  - psql -c 'create database webservice_test with owner = dockstore;' -U postgres
+  - psql -f travisci/db_dump.sql webservice_test
   - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
   - 'sleep 20'
 

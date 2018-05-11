@@ -52,8 +52,6 @@ export class ContainerComponent extends Entry {
   public contactAuthorHREF: string;
   public missingWarning: boolean;
   public tool: ExtendedDockstoreTool;
-  private toolSubscription: Subscription;
-  private toolCopyBtnSubscription: Subscription;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
   validTabs = ['info', 'labels', 'versions', 'files'];
@@ -120,7 +118,7 @@ export class ContainerComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.toolSubscription = this.containerService.tool$.subscribe(
+    this.containerService.tool$.takeUntil(this.ngUnsubscribe).subscribe(
       tool => {
         this.tool = tool;
         if (tool) {
@@ -135,16 +133,11 @@ export class ContainerComponent extends Entry {
         this.setUpTool(tool);
       }
     );
-    this.toolCopyBtnSubscription = this.containerService.copyBtn$.subscribe(
+    this.containerService.copyBtn$.takeUntil(this.ngUnsubscribe).subscribe(
       toolCopyBtn => {
         this.toolCopyBtn = toolCopyBtn;
       }
     );
-  }
-
-  onDestroy(): void {
-    this.toolSubscription.unsubscribe();
-    this.toolCopyBtnSubscription.unsubscribe();
   }
 
   protected setUpTool(tool: ExtendedDockstoreTool) {
