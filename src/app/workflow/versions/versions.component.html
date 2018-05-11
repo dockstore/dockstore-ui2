@@ -92,7 +92,10 @@
         <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion"
                      [(ngModel)]="defaultVersion" [value]="version.reference" (click)="updateDefaultVersion(version.reference)"
                      [tooltip]="getDefaultTooltip(publicPage)"/>
-        <a (click)="setVersion(version)">{{version?.name}}</a>
+
+       <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
+       <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
+       <a (click)="setVersion(version)">{{version?.name}}</a>
       </td>
       <td>{{ version.workflow_path }}</td>
       <td>{{ getDateTimeString(version.last_modified) }}</td>
