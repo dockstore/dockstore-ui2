@@ -16,7 +16,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatSnackBarModule, MatStepperModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
 import { MarkdownModule } from 'angular2-markdown';
@@ -115,6 +115,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
   imports: [
     BrowserAnimationsModule,
     MatSnackBarModule,
+    MatStepperModule,
     FormsModule,
     DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),

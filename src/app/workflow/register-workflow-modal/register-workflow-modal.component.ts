@@ -15,7 +15,6 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
 import {
@@ -39,6 +38,21 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public workflowRegisterError;
   public isModalShown: boolean;
   public refreshMessage: string;
+  public hostedWorkflow = {
+    name: '',
+    descriptorType: 'cwl'
+  };
+  public options = [
+    {
+      label: 'Use CWL or WDL from GitHub, BitBucket, etc.',
+      value: 0
+    },
+    {
+      label: 'Create and save CWL or WDL on Dockstore.org',
+      value: 1
+    }
+  ];
+  public selectedOption = this.options[0];
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
@@ -73,6 +87,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
 
   registerWorkflow() {
     this.registerWorkflowModalService.registerWorkflow();
+  }
+
+  registerHostedWorkflow() {
+    this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow);
   }
 
   showModal() {
