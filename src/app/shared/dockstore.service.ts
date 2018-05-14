@@ -22,11 +22,11 @@ export class DockstoreService {
   constructor() {
   }
 
-  getValidVersions(versions) {
+  getValidVersions(versions: Array<WorkflowVersion|Tag>): Array<WorkflowVersion|Tag> {
     return versions.filter(version => version.valid);
   }
 
-  getVisibleVersions(versions) {
+  getVisibleVersions(versions: Array<WorkflowVersion|Tag>): Array<WorkflowVersion|Tag> {
     return versions.filter(version => !version.hidden);
   }
 
