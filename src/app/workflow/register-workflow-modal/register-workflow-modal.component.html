@@ -140,7 +140,7 @@
               </button>
             </div>
           </form>
-          <form *ngIf="selectedOption?.value == 1" #registerWorkflowForm="ngForm" name="registerWorkflowForm" class="form-horizontal" (submit)="registerHostedWorkflow()" novalidate>
+          <form *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm" class="form-horizontal" (submit)="registerHostedWorkflow()" novalidate>
             <div class="modal-body">
               <div class="form-group form-group-sm">
                 <label class="col-sm-3 control-label">
@@ -171,7 +171,7 @@
                   Workflow Name:
                 </label>
                 <div class="col-sm-9">
-                  <input id="workflowName" type="text" class="form-control" [(ngModel)]="hostedWorkflow.name" [ngModelOptions]="{standalone: true}" maxlength="256" placeholder="e.g. fastqc" required/>
+                  <input id="workflowName" type="text" class="form-control" [(ngModel)]="hostedWorkflow.name" [ngModelOptions]="{standalone: true}" [pattern]="validationPatterns.workflowName" maxlength="256" placeholder="e.g. fastqc" required/>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@
               <button mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
                 Close
               </button>
-              <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid || savingActive || refreshing}}">
+              <button id="submitButton" type="submit" mat-raised-button color="primary">
                 Register Workflow
               </button>
             </div>

@@ -32,6 +32,9 @@ import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
+import { MatButtonModule, MatSnackBarModule, MatRadioModule } from '@angular/material';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,13 @@ import { myworkflowRouting } from './myworkflows.routing';
     AccordionModule.forRoot(),
     RefreshAlertModule,
     TabsModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    MatSnackBarModule,
+    MatButtonModule,
+    MatStepperModule,
+    MatDialogModule,
+    MatRadioModule
+
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
