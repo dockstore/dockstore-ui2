@@ -32,7 +32,7 @@ import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
-import { MatButtonModule, MatSnackBarModule, MatRadioModule } from '@angular/material';
+import { MatButtonModule, MatSnackBarModule, MatRadioModule, MatIconModule } from '@angular/material';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -58,7 +58,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatButtonModule,
     MatStepperModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
+    MatIconModule
 
   ],
   providers: [

@@ -37,11 +37,15 @@
         </span>
         Please wait, retrieving workflow...
       </div>
-      <mat-horizontal-stepper [linear]="isLinear" #stepper>
+
+      <mat-horizontal-stepper #stepper>
+        <ng-template matStepperIcon="edit">
+          <mat-icon>done</mat-icon>
+        </ng-template>
         <mat-step>
           <ng-template matStepLabel>Workflow storage type</ng-template>
           <p>
-            You can write your CWL or WDL from scratch, or you can register a CWL/WDL on an existing third
+            You can write your CWL/WDL from scratch, or you can register a CWL/WDL on an existing third
             party repository, such as GitHub, Bitbucket, etc.
           </p>
           <div class="modal-body">
