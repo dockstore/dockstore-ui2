@@ -206,7 +206,7 @@ describe('Dockstore Tool Details of quay.io/A2/b3', function() {
         cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/b3:latest?tab=versions')
 
         cy
-            .get('tbody')
+            .get('tbody>tr')
             .should('have.length', 1)
     });
 
