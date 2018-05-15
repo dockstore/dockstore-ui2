@@ -186,3 +186,28 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
         });
     });
 })
+
+describe('Dockstore Tool Details of quay.io/A2/b3', function() {
+    require('./helper.js')
+    beforeEach(function() {
+        cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/b3")
+        cy
+            .get('tab')
+            .should('have.length', 7)
+    });
+
+    it('Change tab to versions, should only have one visible', function() {
+        cy
+            .get('.nav-link')
+            .contains('Versions')
+            .parent()
+            .click()
+
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/b3:latest?tab=versions')
+
+        cy
+            .get('tbody')
+            .should('have.length', 1)
+    });
+
+})
