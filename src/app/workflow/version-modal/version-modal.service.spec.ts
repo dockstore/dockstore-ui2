@@ -73,7 +73,7 @@ describe('Service: version-modal.service.ts', () => {
     }));
     it('should be able to save version and clear refreshing state', inject([VersionModalService, StateService],
         (service: VersionModalService, stateService: StateService) => {
-        service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c']);
+        service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
         // Refresh service takes modifying the refreshMessage from the third message
         stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));
     }));

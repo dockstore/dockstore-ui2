@@ -16,24 +16,28 @@ import { Tooltip } from '../../shared/tooltip';
  */
 
 import { NgForm } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewChecked, OnDestroy } from '@angular/core';
+import { WorkflowService } from './../../shared/workflow.service';
 
 import { StateService } from './../../shared/state.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { DateService } from './../../shared/date.service';
 import { VersionModalService } from './version-modal.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked {
+export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
+  workflow: Workflow;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
   public tooltip = Tooltip;
@@ -44,14 +48,18 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   validationMessages = validationMessages;
   validationPatterns = validationDescriptorPatterns;
   public refreshMessage: string;
+  public WorkflowType = Workflow;
+  workflowSubscription: Subscription;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
-  constructor(private versionModalService: VersionModalService, private dateService: DateService, private stateService: StateService) {
+  constructor(private versionModalService: VersionModalService, private dateService: DateService,
+    private stateService: StateService, private workflowService: WorkflowService) {
   }
 
   ngOnInit() {
     this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.subscribe(version => this.version = version);
+    this.workflowSubscription = this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
@@ -88,7 +96,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       this.addTestParameterFile();
     }
 
-    this.versionModalService.saveVersion(this.version, this.originalTestParameterFilePaths, this.testParameterFilePaths);
+    this.versionModalService.saveVersion(this.version, this.originalTestParameterFilePaths,
+      this.testParameterFilePaths, this.workflow.mode);
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -132,5 +141,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     } else {
       return false;
     }
+  }
+
+  ngOnDestroy() {
+    this.workflowSubscription.unsubscribe();
   }
 }
