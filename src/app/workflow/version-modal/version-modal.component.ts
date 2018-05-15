@@ -17,6 +17,7 @@ import { Tooltip } from '../../shared/tooltip';
 
 import { NgForm } from '@angular/forms';
 import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
+import { WorkflowService } from './../../shared/workflow.service';
 
 import { StateService } from './../../shared/state.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
@@ -49,13 +50,14 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public WorkflowType = Workflow;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
-  constructor(private versionModalService: VersionModalService, private dateService: DateService, private stateService: StateService) {
+  constructor(private versionModalService: VersionModalService, private dateService: DateService,
+    private stateService: StateService, private workflowService: WorkflowService) {
   }
 
   ngOnInit() {
     this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.subscribe(version => this.version = version);
-    this.versionModalService.workflow.subscribe(workflow => this.workflow = workflow);
+    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
