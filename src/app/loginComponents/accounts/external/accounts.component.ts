@@ -46,7 +46,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'Required',
-      message: 'Google credentials are used for login purposes',
+      message: 'Google credentials are used for login purposes and integration with FireCloud.',
       show: false
     },
     {
