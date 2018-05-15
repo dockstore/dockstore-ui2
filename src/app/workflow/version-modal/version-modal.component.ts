@@ -16,7 +16,7 @@ import { Tooltip } from '../../shared/tooltip';
  */
 
 import { NgForm } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewChecked, OnDestroy } from '@angular/core';
 import { WorkflowService } from './../../shared/workflow.service';
 
 import { StateService } from './../../shared/state.service';
@@ -26,13 +26,14 @@ import { VersionModalService } from './version-modal.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked {
+export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
@@ -48,6 +49,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   validationPatterns = validationDescriptorPatterns;
   public refreshMessage: string;
   public WorkflowType = Workflow;
+  workflowSubscription: Subscription;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
@@ -57,7 +59,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.subscribe(version => this.version = version);
-    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+    this.workflowSubscription = this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
     this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
@@ -139,5 +141,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     } else {
       return false;
     }
+  }
+
+  ngOnDestroy() {
+    this.workflowSubscription.unsubscribe();
   }
 }
