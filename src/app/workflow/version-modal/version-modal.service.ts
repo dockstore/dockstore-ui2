@@ -21,6 +21,7 @@ import { StateService } from './../../shared/state.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Workflow } from './../../shared/swagger/model/workflow';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/concatMap';
 import { Subject } from 'rxjs/Subject';
@@ -66,35 +67,45 @@ export class VersionModalService {
      * @param {any} newTestParameterFiles
      * @memberof VersionModalService
      */
-    saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles) {
+    saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
         const message1 = 'Saving workflow version';
         const message2 = 'Refreshing workflow';
         const message3 = 'Modifying test parameter files';
         this.setIsModalShown(false);
         this.stateService.setRefreshMessage(message1 + '...');
-        this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
-            response => {
-                this.refreshService.handleSuccess(message1);
-                this.stateService.setRefreshMessage(message2 + '...');
-                this.workflowsService.refresh(this.workflowId).subscribe(workflow => {
-                    this.refreshService.handleSuccess(message2);
-                    this.stateService.setRefreshMessage(message3 + '...');
-                    this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
-                        success => {
-                            this.refreshService.handleSuccess(message3);
-                            this.refreshService.refreshWorkflow();
-                        }, error => {
-                            this.refreshService.handleError(message3, error);
-                            this.refreshService.refreshWorkflow();
-                        });
-                },
-                    error => {
-                        this.refreshService.handleError(message2, error);
-                    });
-            }, error => {
-                this.refreshService.handleError(message1, error);
-            }
-        );
+        if (workflowMode !== 'HOSTED') {
+          this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
+              response => {
+                  this.refreshService.handleSuccess(message1);
+                  this.stateService.setRefreshMessage(message2 + '...');
+                  this.workflowsService.refresh(this.workflowId).subscribe(workflow => {
+                      this.refreshService.handleSuccess(message2);
+                      this.stateService.setRefreshMessage(message3 + '...');
+                      this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
+                          success => {
+                              this.refreshService.handleSuccess(message3);
+                              this.refreshService.refreshWorkflow();
+                          }, error => {
+                              this.refreshService.handleError(message3, error);
+                              this.refreshService.refreshWorkflow();
+                          });
+                  },
+                      error => {
+                          this.refreshService.handleError(message2, error);
+                      });
+              }, error => {
+                  this.refreshService.handleError(message1, error);
+              }
+          );
+        } else {
+          this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
+              response => {
+                  this.refreshService.handleSuccess(message1);
+              }, error => {
+                  this.refreshService.handleError(message1, error);
+              }
+          );
+        }
     }
 
 
