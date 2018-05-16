@@ -12,7 +12,7 @@ describe('AuthComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AuthComponent],
-      imports: [ RouterTestingModule ],
+      imports: [ RouterTestingModule.withRoutes([{path: '**', component: AuthComponent}]) ],
       providers: [{provide: TokenService, useClass: TokenStubService}]
     })
     .compileComponents();
