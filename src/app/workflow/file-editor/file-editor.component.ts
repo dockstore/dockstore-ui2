@@ -49,7 +49,6 @@ export class FileEditorComponent extends Files implements OnInit {
   }
 
   saveVersion() {
-    console.log(this.id);
     this.hostedService.editHostedWorkflow(
         this.id,
         this._selectedVersion.sourceFiles).subscribe(result => {
@@ -74,6 +73,6 @@ export class FileEditorComponent extends Files implements OnInit {
   }
 
   resetFiles() {
-
+    console.log('Reset files');
   }
 }

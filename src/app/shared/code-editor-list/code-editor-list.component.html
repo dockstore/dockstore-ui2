@@ -5,7 +5,11 @@
   <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom:10px;">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        <span>{{sourcefile.path}}</span>
+        <form style="width:100%;">
+          <mat-form-field color="accent" style="width:40%;">
+              <input matInput value="{{sourcefile.path}}">
+            </mat-form-field>
+        </form>
         <span class="spacer"></span>
         <span>
           <mat-icon class="icon">edit</mat-icon>

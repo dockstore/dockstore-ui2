@@ -26,7 +26,7 @@ import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
-import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -37,7 +37,8 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule } from 
     MatButtonModule,
     MatTabsModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatInputModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -54,7 +55,8 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule } from 
     MatButtonModule,
     MatTabsModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatInputModule
   ]
 })
 export class EntryModule { }
