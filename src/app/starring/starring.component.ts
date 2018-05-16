@@ -58,7 +58,10 @@ export class StarringComponent implements OnInit {
       // get the tool from the input, used by the starred Page and entry components
       this.setupInputEntry();
     }
-    this.userService.user$.subscribe(user => this.user = user);
+    this.userService.user$.subscribe(user => {
+      this.user = user;
+      this.calculateRate(this.starredUsers);
+    });
   }
 
   setupInputEntry() {
