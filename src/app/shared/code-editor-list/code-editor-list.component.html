@@ -1,0 +1,10 @@
+<div>
+  <div *ngFor="let sourcefile of sourcefiles">
+    <app-code-editor [(content)]="sourcefile.content" [filepath]="sourcefile.path"></app-code-editor>
+  </div>
+
+  <div class="alert alert-info" role="alert" *ngIf="sourcefiles?.length == 0">
+    No sourcefiles exist.
+  </div>
+
+</div>

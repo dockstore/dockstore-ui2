@@ -34,6 +34,7 @@ import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
 import { WorkflowDescriptorService } from '../../workflow/descriptors/workflow-descriptor.service';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
+import { FileEditorComponent } from '../../workflow/file-editor/file-editor.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
 import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
@@ -57,12 +58,16 @@ import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
+import { MatButtonModule } from '@angular/material';
+import { MatTabsModule } from '@angular/material';
+
 
 @NgModule({
   declarations: [
     WorkflowComponent,
     DescriptorsWorkflowComponent,
     FilesWorkflowComponent,
+    FileEditorComponent,
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchThirdPartyComponent,
@@ -92,7 +97,9 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     DagModule,
     StargazersModule,
     ClipboardModule,
-    EntryModule
+    EntryModule,
+    MatButtonModule,
+    MatTabsModule
   ],
   providers: [
     ExtendedWorkflowService,
