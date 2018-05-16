@@ -13,13 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Client } from 'elasticsearch';
+import { Client } from 'elasticsearch-browser';
 
 import { ga4ghPath } from '../shared/constants';
 import { Dockstore } from './../shared/dockstore.model';
 
 export const ELASTIC_SEARCH_CLIENT = new Client({
     host: Dockstore.API_URI + ga4ghPath + '/extended',
-    apiVersion: '5.x',
+    apiVersion: '5.6',
     log: 'warning'
   });
