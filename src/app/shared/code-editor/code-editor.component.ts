@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { ace } from './../grammars/custom-grammars.js';
 
 @Component({
@@ -31,6 +31,8 @@ export class CodeEditorComponent implements AfterViewInit {
     }
   }
 
+  @Output() contentChange = new EventEmitter<any>();
+
   constructor() {
     // The purpose of the aceId is to deal with cases where multiple editors exist on a page
     this.aceId = 'aceEditor_' + Math.floor(Math.random() * 100000).toString();
@@ -48,6 +50,10 @@ export class CodeEditorComponent implements AfterViewInit {
         fontSize: '14pt'
       }
     );
+
+    this.editor.getSession().on('change', () => {
+      this.contentChange.emit(this.editor.getValue());
+    });
 
     // Set content if possible
     if (this.editorContent) {

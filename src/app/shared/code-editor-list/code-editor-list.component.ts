@@ -14,7 +14,12 @@ export class CodeEditorListComponent implements OnInit {
   }
 
   addFile() {
-    console.log('adding file');
+    // Need to properly get the type
+    const newSourceFile = {
+      content: '',
+      path: '/testfile.wdl',
+      type: 'DOCKSTORE_WDL'
+    };
+    this.sourcefiles.push(newSourceFile);
   }
-
 }

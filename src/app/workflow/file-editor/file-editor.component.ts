@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Files } from '../../shared/files';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Component({
   selector: 'app-file-editor',
@@ -15,7 +17,7 @@ export class FileEditorComponent extends Files implements OnInit {
     this._selectedVersion = value;
     this.loadVersionSourcefiles();
   }
-  constructor() {
+  constructor(private hostedService: HostedService, private workflowService: WorkflowService) {
     super();
   }
 
@@ -44,5 +46,34 @@ export class FileEditorComponent extends Files implements OnInit {
         this.testParameterFiles.push(sourcefile);
       }
     }
+  }
+
+  saveVersion() {
+    console.log(this.id);
+    this.hostedService.editHostedWorkflow(
+        this.id,
+        this._selectedVersion.sourceFiles).subscribe(result => {
+          this.toggleEdit();
+          this.workflowService.setWorkflow(result);
+        }, error =>  {
+          if (error) {
+              console.log(error);
+          }
+          // if (error) {
+          //   if (error.status === 0) {
+          //     this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
+          //     'Please wait and try again later.', '');
+          //   } else {
+          //     this.setWorkflowRegisterError('The webservice encountered an error trying to update this ' +
+          //       'tool version, please ensure that the sourcefiles are valid ', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+          //       error.error);
+          //     }
+          //   }
+          }
+        );
+  }
+
+  resetFiles() {
+
   }
 }

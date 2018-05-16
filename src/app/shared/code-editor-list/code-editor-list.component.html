@@ -2,13 +2,15 @@
   <div class="alert alert-info" role="alert" *ngIf="sourcefiles?.length == 0">
     No sourcefiles exist.
   </div>
-  <div *ngFor="let sourcefile of sourcefiles" style="margin-top: 10px; margin-bottom:10px;">
+  <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom:10px;">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
         <span>{{sourcefile.path}}</span>
         <span class="spacer"></span>
-        <mat-icon class="icon">edit</mat-icon>
-        <mat-icon class="icon">delete</mat-icon>
+        <span>
+          <mat-icon class="icon">edit</mat-icon>
+          <mat-icon class="icon">delete</mat-icon>
+        </span>
       </mat-toolbar-row>
     </mat-toolbar>
     <app-code-editor [(content)]="sourcefile.content" [filepath]="sourcefile.path" [editing]="editing"></app-code-editor>
