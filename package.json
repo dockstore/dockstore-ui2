@@ -56,7 +56,7 @@
     "jquery-colorbox": "^1.6.4",
     "ng2-ui-auth": "^6.2.0",
     "ngx-bootstrap": "^2.0.5",
-    "ngx-clipboard": "^10.0.0",
+    "ngx-clipboard": "^11.1.0",
     "ngx-sharebuttons": "^3.0.0",
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",
