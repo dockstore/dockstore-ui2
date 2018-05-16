@@ -30,7 +30,10 @@ export class FileEditorComponent extends Files implements OnInit {
     console.log('Delete Version');
   }
 
-  // Need to get current version, then set
+  /**
+   * Splits up the sourcefiles for the version into descroptor files and test parameter files
+   * @return void
+   */
   loadVersionSourcefiles() {
     this.descriptorFiles = [];
     this.testParameterFiles = [];

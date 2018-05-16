@@ -13,29 +13,27 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-Editing: {{editing}}
-<mat-tab-group class="tab-group">
-  <mat-tab label="Descriptor Files">
-    <app-code-editor-list [sourcefiles]="descriptorFiles"></app-code-editor-list>
-  </mat-tab>
-  <mat-tab label="Test Parameter Files">
-    <app-code-editor-list [sourcefiles]="testParameterFiles"></app-code-editor-list>
-  </mat-tab>
-</mat-tab-group>
-<div *ngIf="!versions">
-  <div class="alert alert-info">
-    <strong>No Valid Tags</strong> No files will be shown for invalid versions.
-  </div>
-</div>
+<tabset [justified]="true">
+  <tab heading="Descriptor Files">
+    <app-code-editor-list  [sourcefiles]="descriptorFiles" [editing]="editing"></app-code-editor-list>
+  </tab>
+  <tab heading="Test Parameter Files">
+    <app-code-editor-list  [sourcefiles]="testParameterFiles" [editing]="editing"></app-code-editor-list>
+  </tab>
+</tabset>
 
 <div style="margin-top:10px;">
-  <button mat-raised-button color="warn" (click)="deleteVersion()">
+  <button mat-raised-button color="warn" (click)="deleteVersion()" *ngIf="!editing">
     Delete Version
   </button>
   <button mat-raised-button color="primary" (click)="toggleEdit()" *ngIf="!editing">
-    Edit
+    Edit Files
   </button>
   <button mat-raised-button color="secondary" (click)="toggleEdit()" *ngIf="editing">
     Cancel
   </button>
+  <button mat-raised-button color="primary" *ngIf="editing">
+    Save as New Version
+  </button>
+  <!-- {{_selectedVersion?.sourceFiles | json}} -->
 </div>

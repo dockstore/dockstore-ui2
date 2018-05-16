@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, Input, ViewChild } from '@angular/core';
 import { ace } from './../grammars/custom-grammars.js';
 
 @Component({
@@ -12,6 +12,11 @@ export class CodeEditorComponent implements AfterViewInit {
   mode = 'yaml';
   editorFilepath: string;
   aceId: string;
+  @Input() set editing(value: string) {
+    if (value !== undefined) {
+      this.toggleReadOnly(!value);
+    }
+  }
   @Input() set filepath(filepath: string) {
     if (filepath !== undefined) {
       this.setMode(filepath);
@@ -26,16 +31,14 @@ export class CodeEditorComponent implements AfterViewInit {
     }
   }
 
-  @ViewChild('aceEditor') aceEditor: ElementRef;
-
-  constructor(private elementRef: ElementRef) {
+  constructor() {
     // The purpose of the aceId is to deal with cases where multiple editors exist on a page
-    this.aceId = Math.floor(Math.random() * 100000).toString();
+    this.aceId = 'aceEditor_' + Math.floor(Math.random() * 100000).toString();
   }
 
   ngAfterViewInit() {
     const aceMode = 'ace/mode/' + this.mode;
-    this.editor = ace.edit('aceEditor_' + this.aceId,
+    this.editor = ace.edit(this.aceId,
       {
         mode: aceMode,
         readOnly: true,
@@ -74,6 +77,12 @@ export class CodeEditorComponent implements AfterViewInit {
       if (this.editor !== undefined) {
         this.editor.session.setMode('ace/mode/' + this.mode);
       }
+    }
+  }
+
+  toggleReadOnly(readOnly: boolean): void {
+    if (this.editor !== undefined) {
+      this.editor.setReadOnly(readOnly);
     }
   }
 

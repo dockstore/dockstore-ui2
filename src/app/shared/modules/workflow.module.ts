@@ -58,9 +58,6 @@ import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
-import { MatButtonModule } from '@angular/material';
-import { MatTabsModule } from '@angular/material';
-
 
 @NgModule({
   declarations: [
@@ -97,9 +94,7 @@ import { MatTabsModule } from '@angular/material';
     DagModule,
     StargazersModule,
     ClipboardModule,
-    EntryModule,
-    MatButtonModule,
-    MatTabsModule
+    EntryModule
   ],
   providers: [
     ExtendedWorkflowService,

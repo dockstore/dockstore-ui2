@@ -7,9 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CodeEditorListComponent implements OnInit {
   @Input() sourcefiles: any;
+  @Input() editing: boolean;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addFile() {
+    console.log('adding file');
   }
 
 }
