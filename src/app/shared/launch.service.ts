@@ -84,11 +84,23 @@ export abstract class LaunchService {
      * @param path The GA4GH Tool's path
      * @param versionName The ToolVersion's name
      */
-    getNxtTestJsonString(workflowPath: string, versionName: string) {
+    getTestJsonString(workflowPath: string, versionName: string, type: string) {
+      let urlType = 'PLAIN_NFL';
+      switch (type) {
+        case 'wdl':
+          urlType = 'PLAIN_WDL';
+          break;
+        case 'cwl':
+          urlType = 'PLAIN_CWL';
+          break;
+        default:
+          urlType = 'PLAIN_NFL';
+      }
+
       const prefix = `$ wget --header='Accept: text/plain`;
       const outputFile = `-O Dockstore.json`;
-      const encodedID = encodeURIComponent('#workflow/ ${ workflowPath) }');
-      const encodedVersion = encodeURIComponent('${ versionName }');
-      return `${prefix}'   ${ Dockstore.API_URI }${ga4ghPath}/tools/${ encodedID }/versions/${ encodedVersion }/NXT/tests ${outputFile}`;
+      const encodedID = encodeURIComponent(`#workflow/${ workflowPath }`);
+      const encodedVersion = encodeURIComponent(`${ versionName }`);
+      return `${prefix}' ${Dockstore.API_URI}${ga4ghPath}/tools/${encodedID}/versions/${encodedVersion}/${urlType}/tests ${outputFile}`;
     }
 }
