@@ -3,7 +3,6 @@ import { Files } from '../../shared/files';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { FileEditorComponent } from '../../shared/file-editor/file-editor.component';
 
 @Component({
   selector: 'app-workflow-file-editor',
