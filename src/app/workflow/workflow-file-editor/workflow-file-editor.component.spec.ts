@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FileEditorComponent } from './file-editor.component';
+import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
 
-describe('FileEditorComponent', () => {
-  let component: FileEditorComponent;
-  let fixture: ComponentFixture<FileEditorComponent>;
+describe('WorkflowFileEditorComponent', () => {
+  let component: WorkflowFileEditorComponent;
+  let fixture: ComponentFixture<WorkflowFileEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileEditorComponent ]
+      declarations: [ WorkflowFileEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileEditorComponent);
+    fixture = TestBed.createComponent(WorkflowFileEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

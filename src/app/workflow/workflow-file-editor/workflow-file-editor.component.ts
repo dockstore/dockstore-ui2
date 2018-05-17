@@ -3,13 +3,14 @@ import { Files } from '../../shared/files';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
+import { FileEditorComponent } from '../../shared/file-editor/file-editor.component';
 
 @Component({
-  selector: 'app-file-editor',
-  templateUrl: './file-editor.component.html',
-  styleUrls: ['./file-editor.component.scss']
+  selector: 'app-workflow-file-editor',
+  templateUrl: './workflow-file-editor.component.html',
+  styleUrls: ['./workflow-file-editor.component.scss']
 })
-export class FileEditorComponent extends Files implements OnInit {
+export class WorkflowFileEditorComponent extends Files implements OnInit {
   descriptorFiles: Array<any>;
   testParameterFiles: Array<any>;
   _selectedVersion: WorkflowVersion;

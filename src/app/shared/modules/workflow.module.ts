@@ -34,7 +34,7 @@ import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
 import { WorkflowDescriptorService } from '../../workflow/descriptors/workflow-descriptor.service';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
-import { FileEditorComponent } from '../../workflow/file-editor/file-editor.component';
+import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
 import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
@@ -64,7 +64,7 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     WorkflowComponent,
     DescriptorsWorkflowComponent,
     FilesWorkflowComponent,
-    FileEditorComponent,
+    WorkflowFileEditorComponent,
     ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchThirdPartyComponent,
