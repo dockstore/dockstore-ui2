@@ -12,6 +12,7 @@ export class CodeEditorComponent implements AfterViewInit {
   mode = 'yaml';
   editorFilepath: string;
   aceId: string;
+  readOnly = true;
   @Input() set editing(value: string) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
@@ -26,7 +27,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   @Input() set content(content: string) {
     this.editorContent = content;
-    if (this.editor !== undefined && content) {
+    if (this.editor !== undefined && content && this.editorContent == null) {
       this.editor.setValue(this.editorContent, -1);
     }
   }
@@ -43,7 +44,7 @@ export class CodeEditorComponent implements AfterViewInit {
     this.editor = ace.edit(this.aceId,
       {
         mode: aceMode,
-        readOnly: true,
+        readOnly: this.readOnly,
         showLineNumbers: true,
         maxLines: 60,
         theme: 'ace/theme/idle_fingers',
@@ -87,6 +88,7 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   toggleReadOnly(readOnly: boolean): void {
+    this.readOnly = readOnly;
     if (this.editor !== undefined) {
       this.editor.setReadOnly(readOnly);
     }

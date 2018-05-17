@@ -13,16 +13,16 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
+
 <tabset [justified]="true">
   <tab heading="Descriptor Files">
-    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'"></app-code-editor-list>
   </tab>
   <tab heading="Test Parameter Files">
-    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'"></app-code-editor-list>
   </tab>
 </tabset>
-
-<div style="margin-top:10px;">
+<div style="margin-top:10px;" *ngIf="!publicPage">
   <button mat-raised-button color="warn" (click)="deleteVersion()" *ngIf="!editing">
     Delete Version
   </button>

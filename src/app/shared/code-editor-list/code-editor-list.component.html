@@ -5,15 +5,19 @@
   <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom:10px;">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        <form style="width:100%;">
+        <form style="width:100%;" *ngIf="editing">
           <mat-form-field color="accent" style="width:40%;">
-              <input matInput value="{{sourcefile.path}}">
-            </mat-form-field>
+            <input matInput [value]="sourcefile.path" (input)="sourcefile.path = $event.target.value" type="text">
+          </mat-form-field>
         </form>
+        <span *ngIf="!editing">
+          {{sourcefile.path}}
+        </span>
         <span class="spacer"></span>
         <span>
-          <mat-icon class="icon">edit</mat-icon>
-          <mat-icon class="icon">delete</mat-icon>
+        <button mat-mini-fab color="warn" (click)="deleteFile(i)" *ngIf="editing">
+          <mat-icon>delete</mat-icon>
+        </button>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>

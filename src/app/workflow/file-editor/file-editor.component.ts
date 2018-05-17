@@ -13,9 +13,13 @@ export class FileEditorComponent extends Files implements OnInit {
   descriptorFiles: Array<any>;
   testParameterFiles: Array<any>;
   _selectedVersion: WorkflowVersion;
+  @Input() descriptorType: string;
+  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: WorkflowVersion) {
-    this._selectedVersion = value;
-    this.loadVersionSourcefiles();
+    if (value != null) {
+      this._selectedVersion = value;
+      this.loadVersionSourcefiles();
+    }
   }
   constructor(private hostedService: HostedService, private workflowService: WorkflowService) {
     super();
@@ -29,7 +33,27 @@ export class FileEditorComponent extends Files implements OnInit {
   }
 
   deleteVersion() {
-    console.log('Delete Version');
+    console.log('Deleting Version');
+    this.hostedService.deleteHostedWorkflowVersion(
+        this.id * 1,
+        this._selectedVersion.name).subscribe(result => {
+          this.workflowService.setWorkflow(result);
+        }, error =>  {
+          if (error) {
+              console.log(error);
+          }
+          // if (error) {
+          //   if (error.status === 0) {
+          //     this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
+          //     'Please wait and try again later.', '');
+          //   } else {
+          //     this.setWorkflowRegisterError('The webservice encountered an error trying to update this ' +
+          //       'tool version, please ensure that the sourcefiles are valid ', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+          //       error.error);
+          //     }
+          //   }
+          }
+        );
   }
 
   /**
@@ -48,10 +72,15 @@ export class FileEditorComponent extends Files implements OnInit {
     }
   }
 
+  getCombinedSourceFiles() {
+    return this.descriptorFiles.concat(this.testParameterFiles);
+  }
+
   saveVersion() {
+    console.log('Saving Version');
     this.hostedService.editHostedWorkflow(
         this.id,
-        this._selectedVersion.sourceFiles).subscribe(result => {
+        this.getCombinedSourceFiles()).subscribe(result => {
           this.toggleEdit();
           this.workflowService.setWorkflow(result);
         }, error =>  {

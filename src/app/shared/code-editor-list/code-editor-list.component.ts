@@ -8,18 +8,46 @@ import { Component, OnInit, Input } from '@angular/core';
 export class CodeEditorListComponent implements OnInit {
   @Input() sourcefiles: any;
   @Input() editing: boolean;
+  @Input() descriptorType: string;
+  @Input() fileType: string;
   constructor() { }
 
   ngOnInit() {
   }
 
   addFile() {
-    // Need to properly get the type
     const newSourceFile = {
       content: '',
-      path: '/testfile.wdl',
-      type: 'DOCKSTORE_WDL'
+      path: this.getDefaultPath(),
+      type: this.getFileType()
     };
+
+    if (this.sourcefiles === undefined) {
+      this.sourcefiles = [];
+    }
     this.sourcefiles.push(newSourceFile);
+  }
+
+  deleteFile(index: number) {
+    console.log('Deleting file ' + index);
+    this.sourcefiles[index].content = null;
+  }
+
+  getFileType() {
+    if (this.fileType === 'descriptor') {
+      return 'DOCKSTORE_' + this.descriptorType.toUpperCase();
+    } else if (this.fileType === 'testParam') {
+      return this.descriptorType.toUpperCase() + '_TEST_JSON';
+    } else {
+      return null;
+    }
+  }
+
+  getDefaultPath() {
+    if (this.fileType === 'descriptor') {
+      return '.' + this.descriptorType.toLowerCase();
+    } else if (this.fileType === 'testParam') {
+      return '.json';
+    }
   }
 }
