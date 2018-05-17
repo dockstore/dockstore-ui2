@@ -23,16 +23,20 @@
   </tab>
 </tabset>
 <div style="margin-top:10px;" *ngIf="!publicPage">
-  <button mat-raised-button color="warn" (click)="deleteVersion()" *ngIf="!editing">
-    Delete Version
-  </button>
-  <button mat-raised-button color="primary" (click)="toggleEdit()" *ngIf="!editing">
-    Edit Files
-  </button>
-  <button mat-raised-button color="secondary" (click)="toggleEdit();resetFiles()" *ngIf="editing">
-    Cancel
-  </button>
-  <button mat-raised-button color="primary" (click)="saveVersion()" *ngIf="editing">
-    Save as New Version
-  </button>
+  <span *ngIf="!editing">
+    <button mat-raised-button color="warn" (click)="deleteVersion()">
+      Delete Version
+    </button>
+    <button mat-raised-button color="primary" (click)="toggleEdit()">
+      Edit Files
+    </button>
+  </span>
+  <span *ngIf="editing">
+    <button mat-raised-button color="secondary" (click)="toggleEdit();resetFiles()">
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="saveVersion()">
+      Save as New Version
+    </button>
+  </span>
 </div>
