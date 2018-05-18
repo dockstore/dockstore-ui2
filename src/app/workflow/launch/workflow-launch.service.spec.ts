@@ -70,6 +70,11 @@ describe('WorkflowLaunchService', () => {
       .toBe(`$ wget --header='Accept: text/plain' ` +
       `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_WDL/tests ` +
       `-O Dockstore.json`);
-
+    expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'nextflow'))
+      .toBe(`$ wget --header='Accept: text/plain' ` +
+      `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_NFL/tests ` +
+      `-O Dockstore.json`);
+    expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'potato'))
+      .toBe(null);
   }));
 });

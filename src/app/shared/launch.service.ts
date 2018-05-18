@@ -93,8 +93,12 @@ export abstract class LaunchService {
         case 'cwl':
           urlType = 'PLAIN_CWL';
           break;
-        default:
+        case 'nextflow':
           urlType = 'PLAIN_NFL';
+          break;
+        default:
+          console.log('Unknown descriptor type: ' + type);
+          return null;
       }
 
       const prefix = `$ wget --header='Accept: text/plain`;
