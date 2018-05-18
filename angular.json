@@ -1,0 +1,197 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "dockstore-ui2": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
+              "node_modules/jquery-colorbox/example1/colorbox.css",
+              "src/jquery.qtip.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/bootstrap-social/bootstrap-social.css",
+              "src/styles.css",
+              "src/styles.scss",
+              "src/material.scss"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/ace-builds/src-min-noconflict/ace.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-yaml.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-json.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-dockerfile.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-text.js",
+              "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
+              "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
+              "node_modules/jquery-colorbox/jquery.colorbox.js",
+              "node_modules/cytoscape/dist/cytoscape.js",
+              "node_modules/dagre/dist/dagre.min.js",
+              "node_modules/cytoscape-dagre/cytoscape-dagre.js",
+              "node_modules/qtip2/dist/jquery.qtip.js",
+              "node_modules/cytoscape-qtip/cytoscape-qtip.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "dockstore-ui2:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "dockstore-ui2:build:production"
+            },
+            "staging": {
+              "browserTarget": "dockstore-ui2:build:staging"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "dockstore-ui2:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/ace-builds/src-min-noconflict/ace.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-yaml.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-json.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-dockerfile.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-text.js",
+              "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
+              "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
+              "node_modules/jquery-colorbox/jquery.colorbox.js",
+              "node_modules/cytoscape/dist/cytoscape.js",
+              "node_modules/dagre/dist/dagre.min.js",
+              "node_modules/cytoscape-dagre/cytoscape-dagre.js",
+              "node_modules/qtip2/dist/jquery.qtip.js",
+              "node_modules/cytoscape-qtip/cytoscape-qtip.js"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
+              "node_modules/jquery-colorbox/example1/colorbox.css",
+              "src/jquery.qtip.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/bootstrap-social/bootstrap-social.css",
+              "src/styles.css",
+              "src/styles.scss",
+              "src/material.scss"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "**/src/app/shared/swagger/**"
+            ]
+          }
+        }
+      }
+    },
+    "dockstore-ui2-e2e": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "dockstore-ui2:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "**/src/app/shared/swagger/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "dockstore-ui2",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
+}

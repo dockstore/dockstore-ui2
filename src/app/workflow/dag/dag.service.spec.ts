@@ -68,7 +68,7 @@ describe('Service: Dag', () => {
     service.currentVersion.subscribe(results => expect(results).toEqual(2));
   }));
   it('should get DAG', inject([DagService], (service: DagService) => {
-    expect(service.getCurrentDAG(2, 2)).toEqual(Observable.of('someDAG'));
+    service.getCurrentDAG(2, 2).subscribe(results => expect(results).toEqual('someDAG'));
     expect(service.getCurrentDAG(null, null)).toBeFalsy();
   }));
 });
