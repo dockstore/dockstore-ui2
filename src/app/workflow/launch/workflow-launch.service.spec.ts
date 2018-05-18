@@ -18,6 +18,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { WorkflowService } from './../../shared/workflow.service';
 import { WorkflowStubService } from './../../test/service-stubs';
 import { WorkflowLaunchService } from './workflow-launch.service';
+import { Dockstore } from '../../shared/dockstore.model';
 
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {
@@ -59,5 +60,21 @@ describe('WorkflowLaunchService', () => {
     expect(service.getCheckWorkflowString('potato', null)).toBe('$ dockstore checker launch --entry potato --json checkparam.json');
     expect(service.getCheckWorkflowString('potato', 'stew')).toBe('$ dockstore checker launch --entry potato:stew --json checkparam.json');
     expect(service.getCheckWorkflowString(null, null)).toBe('');
+  }));
+  it('should get the wget test parameter file command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
+    expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'cwl'))
+      .toBe(`$ wget --header='Accept: text/plain' ` +
+      `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_CWL/tests ` +
+      `-O Dockstore.json`);
+    expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'wdl'))
+      .toBe(`$ wget --header='Accept: text/plain' ` +
+      `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_WDL/tests ` +
+      `-O Dockstore.json`);
+    expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'nextflow'))
+      .toBe(`$ wget --header='Accept: text/plain' ` +
+      `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_NFL/tests ` +
+      `-O Dockstore.json`);
+    expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'potato'))
+      .toBe(null);
   }));
 });
