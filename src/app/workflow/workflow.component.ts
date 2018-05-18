@@ -42,7 +42,7 @@ import { UrlResolverService } from './../shared/url-resolver.service';
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
-  public workflow: Workflow;
+  public workflow: ExtendedWorkflow;
   public missingWarning: boolean;
   public title: string;
   private workflowCopyBtn: string;
