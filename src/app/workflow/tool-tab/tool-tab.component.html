@@ -33,6 +33,11 @@
             <span class="glyphicon pull-right">
             </span>
           </th>
+          <th *ngIf="workflow.descriptorType === 'nextflow'">
+            Process Excerpt
+            <span class="glyphicon pull-right">
+            </span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -59,11 +64,24 @@
             <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
             <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
           </td>
+
           <td *ngIf="workflow.descriptorType === 'wdl'">
             <strong>task ID</strong>: {{tool?.id}}
             <br>
           </td>
           <td *ngIf="workflow.descriptorType === 'wdl'">
+            <strong>docker</strong>: {{tool?.docker}}
+            <br>
+            <strong>link</strong>:
+            <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
+            <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
+          </td>
+
+          <td *ngIf="workflow.descriptorType === 'nextflow'">
+            <strong>process name</strong>: {{tool?.id}}
+            <br>
+          </td>
+          <td *ngIf="workflow.descriptorType === 'nextflow'">
             <strong>docker</strong>: {{tool?.docker}}
             <br>
             <strong>link</strong>:
