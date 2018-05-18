@@ -1,0 +1,55 @@
+<div *ngIf="!hosted" style="font-style: italic; font-size: smaller; line-height: 1.5">
+  The workflow's source code is hosted outside of Dockstore. The permissions shown
+  here are only for the Dockstore workflow. Sharing for the source code
+  is controlled by settings on {{workflow.gitUrl}}.
+</div>
+<ul class="list-unstyled container-info" *ngIf="canViewPermissions">
+  <li>
+    <mat-form-field style="width: 100%;">
+      <mat-chip-list #ownerlist>
+        <mat-chip *ngFor="let owner of owners" (remove)="remove(owner)">
+          {{owner}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <input placeholder="Owners"
+             [matChipInputFor]="ownerlist"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="addOwner($event)" />
+    </mat-form-field>
+  </li>
+  <li>
+    <mat-form-field style="width: 100%;">
+      <mat-chip-list #writerlist>
+        <mat-chip *ngFor="let writer of writers" (remove)="remove(writer)">
+          {{writer}}
+          <mat-icon matChipRemove >cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <input placeholder="Writers"
+             [matChipInputFor]="writerlist"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="addWriter($event)" />
+    </mat-form-field>
+  </li>
+  <li>
+    <mat-form-field style="width: 100%;">
+      <mat-chip-list #readerlist>
+        <mat-chip *ngFor="let reader of readers" (remove)="remove(reader)">
+          {{reader}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <input placeholder="Readers"
+             [matChipInputFor]="readerlist"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="addReader($event)" />
+    </mat-form-field>
+  </li>
+</ul>
+<div *ngIf="!canViewPermissions">
+  You do not have permission to view the permissions.
+</div>

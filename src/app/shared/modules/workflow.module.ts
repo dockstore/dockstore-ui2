@@ -59,6 +59,8 @@ import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
+import { PermissionsComponent } from '../../workflow/permissions/permissions.component';
+import { MatChipsModule, MatFormFieldModule, MatIconModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,7 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     VersionsWorkflowComponent,
     LaunchThirdPartyComponent,
     LaunchWorkflowComponent,
+    PermissionsComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
     InfoTabComponent,
@@ -92,6 +95,9 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     StarringModule,
     OrderByModule,
     FormsModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatIconModule,
     DagModule,
     StargazersModule,
     ClipboardModule,
