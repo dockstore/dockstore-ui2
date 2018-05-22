@@ -1,19 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-code-editor-list',
   templateUrl: './code-editor-list.component.html',
   styleUrls: ['./code-editor-list.component.scss']
 })
-export class CodeEditorListComponent implements OnInit {
+export class CodeEditorListComponent {
   @Input() sourcefiles: any;
   @Input() editing: boolean;
   @Input() descriptorType: string;
   @Input() fileType: string;
   constructor() { }
-
-  ngOnInit() {
-  }
 
   addFile() {
     const newSourceFile = {
@@ -49,5 +46,9 @@ export class CodeEditorListComponent implements OnInit {
     } else if (this.fileType === 'testParam') {
       return '.json';
     }
+  }
+
+  isPrimaryDescriptor(path: string) {
+    return path === '/Dockstore.' + this.descriptorType.toLowerCase();
   }
 }
