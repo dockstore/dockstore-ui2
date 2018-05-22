@@ -39,11 +39,14 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
   public filePath: string;
+  public entryType = 'tool';
+  public downloadFilePath: string;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private paramfilesService: ParamfilesService,
               public fileService: FileService) {
-    super();
+      super();
+      this.published$ = this.containerService.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
@@ -56,11 +59,8 @@ export class ParamfilesComponent extends EntryFileSelector {
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.filePath = this.getFilePath(this.currentFile);
-  }
-
-  // Downloads a file
-  downloadFile(file, id): void {
-    this.fileService.downloadFile(file, id);
+    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
+      this.currentFile, this.currentDescriptor, this.entryType);
   }
 
   // Get the path of the file
