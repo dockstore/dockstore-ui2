@@ -40,6 +40,9 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
     this.clearContent();
     this.onVersionChange(value);
   }
+  public filePath: string;
+  public entryType = 'tool';
+  public downloadFilePath: string;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private highlightJsService: HighlightJsService,
@@ -47,6 +50,7 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
               public fileService: FileService,
               private elementRef: ElementRef) {
     super();
+      this.published$ = this.containerService.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
@@ -59,6 +63,9 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
+    this.filePath = this.getFilePath(this.currentFile);
+    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
+      this.currentFile, this.currentDescriptor, this.entryType);
   }
 
   ngAfterViewChecked() {
@@ -66,11 +73,6 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-
-  // Downloads a file
-  downloadFile(file, id): void {
-    this.fileService.downloadFile(file, id);
   }
 
   // Get the path of the file

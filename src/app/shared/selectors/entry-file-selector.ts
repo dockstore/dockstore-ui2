@@ -28,6 +28,7 @@ export abstract class EntryFileSelector {
 
   protected currentFile;
   protected files: Array<any>;
+  protected published$: Observable<boolean>;
 
   content: string = null;
   contentHighlighted: boolean;
