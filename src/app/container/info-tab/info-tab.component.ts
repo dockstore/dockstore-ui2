@@ -29,6 +29,7 @@ import { InfoTabService } from './info-tab.service';
 })
 export class InfoTabComponent implements OnInit {
   @Input() selectedVersion;
+  @Input() privateOnlyRegistry;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   dockerFileEditing: boolean;

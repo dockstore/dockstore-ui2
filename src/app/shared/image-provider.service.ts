@@ -77,7 +77,7 @@ export class ImageProviderService {
           suffix = '/container_registry';
         }
 
-        if (containerRegistry === 'AMAZON_ECR') {
+        if (containerRegistry === 'AMAZON_ECR' || containerRegistry === 'SEVEN_BRIDGES') {
           url = match[1] + '/';
         }
 
