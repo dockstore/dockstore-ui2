@@ -59,7 +59,11 @@ export const validationDescriptorPatterns = {
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
   'amazonDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com',
-  'sevenBridgesDockerRegistryPath': '^([a-zA-Z0-9-_]+)?images\.sbgenomics\.com'
+  'sevenBridgesDockerRegistryPath': '^([a-zA-Z0-9]+-)?images\.sbgenomics\.com'
+  /**
+   *
+   */
+
 };
 
 export const validationMessages = {
@@ -156,6 +160,6 @@ export const validationMessages = {
   },
   'sevenBridgesDockerRegistryPath': {
     'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
-    'pattern': 'Must be of the form *images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.'
+    'pattern': 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.'
   }
 };
