@@ -15,7 +15,7 @@
   -->
 
 <div>
-  <table class="table workflow-versions-grid table-bordered table-condensed table-striped">
+  <table class="table table-bordered table-condensed table-striped" [ngClass]="workflow?.mode !== WorkflowType.ModeEnum.HOSTED ? 'workflow-versions-grid' : 'hosted-workflow-versions-grid'">
     <thead>
     <tr>
       <th>
@@ -38,6 +38,14 @@
               [ngClass]="getIconClass('reference')"
               (click)="clickSortColumn('reference')">
         </span>
+      </th>
+
+      <th *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
+        <span class="glyphicon pull-right"
+              [ngClass]="getIconClass('author')"
+              (click)="clickSortColumn('author')">
+        </span>
+        <label placement="top" tooltip="The editing author as collected by Dockstore">Author</label>
       </th>
 
       <th>
@@ -106,6 +114,7 @@
        <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
        <a (click)="setVersion(version)">{{version?.name}}</a>
       </td>
+      <td *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
       <td>{{ version.workflow_path }}</td>
       <td>{{ getDateTimeString(version.last_modified) }}</td>
       <td>

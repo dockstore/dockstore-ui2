@@ -131,6 +131,34 @@ table.workflow-versions-grid {
   margin-bottom: 10px;
 }
 
+table.hosted-workflow-versions-grid {
+  th:nth-child(1) {
+    width: 15%;
+  }
+  th:nth-child(2) {
+    width: 20%;
+  }
+  th:nth-child(3) {
+    width: 30%;
+  }
+  th:nth-child(4) {
+    width: 17.5%;
+  }
+  th:nth-child(5) {
+    width: 10%;
+  }
+  th:nth-child(6) {
+    width: 10%;
+  }
+  div.git-ref {
+    width: 124px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  margin-bottom: 10px;
+}
+
 .side-block table {
   margin-bottom: 1em;
 }
