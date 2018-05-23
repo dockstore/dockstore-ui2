@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<tabset [justified]="true" *ngIf="_selectedVersion">
+<tabset [justified]="true">
   <tab heading="Descriptor Files">
     <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'"></app-code-editor-list>
   </tab>
@@ -27,7 +27,7 @@
     <button mat-raised-button color="warn" (click)="deleteVersion()" [disabled]="versions?.length == 0">
       Delete Version
     </button>
-    <button mat-raised-button color="primary" (click)="toggleEdit()">
+    <button mat-raised-button color="primary" (click)="toggleEdit()" [disabled]="_selectedVersion?.id !== versions[versions?.length - 1]?.id">
       Edit Files
     </button>
   </span>
