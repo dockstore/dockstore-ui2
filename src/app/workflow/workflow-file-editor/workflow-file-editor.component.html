@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<tabset [justified]="true">
+<tabset [justified]="true" *ngIf="_selectedVersion">
   <tab heading="Descriptor Files">
     <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'"></app-code-editor-list>
   </tab>
@@ -22,9 +22,9 @@
     <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'"></app-code-editor-list>
   </tab>
 </tabset>
-<div style="margin-top:10px;" *ngIf="!publicPage">
+<div class="editor-button-container" *ngIf="!publicPage">
   <span *ngIf="!editing">
-    <button mat-raised-button color="warn" (click)="deleteVersion()">
+    <button mat-raised-button color="warn" (click)="deleteVersion()" [disabled]="versions?.length == 0">
       Delete Version
     </button>
     <button mat-raised-button color="primary" (click)="toggleEdit()">

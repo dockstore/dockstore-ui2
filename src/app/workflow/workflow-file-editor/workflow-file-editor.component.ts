@@ -3,6 +3,7 @@ import { Files } from '../../shared/files';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
+import { RefreshService } from './../../shared/refresh.service';
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -17,41 +18,41 @@ export class WorkflowFileEditorComponent extends Files {
   @Input() descriptorType: string;
   @Input() publicPage: boolean;
   @Input() set selectedVersion(value: WorkflowVersion) {
+    this._selectedVersion = value;
     if (value != null) {
-      this._selectedVersion = value;
       this.originalSourceFiles =  jQuery.extend(true, [], value.sourceFiles);
       this.loadVersionSourcefiles();
     }
   }
-  constructor(private hostedService: HostedService, private workflowService: WorkflowService) {
+  constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService) {
     super();
   }
 
+  /**
+   * Toggles edit mode
+   * @return
+   */
   toggleEdit() {
     this.editing = !this.editing;
   }
 
+  /**
+   * Deletes the current version of the workflow
+   * @return
+   */
   deleteVersion() {
+    const message = 'Delete Version';
     this.hostedService.deleteHostedWorkflowVersion(
         this.id * 1,
         this._selectedVersion.name).subscribe(result => {
           this.workflowService.setWorkflow(result);
+          this.refreshService.handleSuccess(message);
         }, error =>  {
           if (error) {
-              console.log(error);
+              this.refreshService.handleError(message, error);
           }
-          // if (error) {
-          //   if (error.status === 0) {
-          //     this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
-          //     'Please wait and try again later.', '');
-          //   } else {
-          //     this.setWorkflowRegisterError('The webservice encountered an error trying to update this ' +
-          //       'tool version, please ensure that the sourcefiles are valid ', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-          //       error.error);
-          //     }
-          //   }
-          }
-        );
+        }
+      );
   }
 
   /**
@@ -113,27 +114,19 @@ export class WorkflowFileEditorComponent extends Files {
    * @return
    */
   saveVersion() {
+    const message = 'Save Version';
     this.hostedService.editHostedWorkflow(
         this.id,
         this.getCombinedSourceFiles()).subscribe(result => {
           this.toggleEdit();
           this.workflowService.setWorkflow(result);
+          this.refreshService.handleSuccess(message);
         }, error =>  {
           if (error) {
-              console.log(error);
+            this.refreshService.handleError(message, error);
           }
-          // if (error) {
-          //   if (error.status === 0) {
-          //     this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
-          //     'Please wait and try again later.', '');
-          //   } else {
-          //     this.setWorkflowRegisterError('The webservice encountered an error trying to update this ' +
-          //       'tool version, please ensure that the sourcefiles are valid ', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-          //       error.error);
-          //     }
-          //   }
-          }
-        );
+        }
+      );
   }
 
   /**

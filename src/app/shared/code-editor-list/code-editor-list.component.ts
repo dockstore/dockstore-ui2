@@ -12,10 +12,18 @@ export class CodeEditorListComponent {
   @Input() fileType: string;
   constructor() { }
 
+  /**
+   * Adds a new file editor
+   * @return
+   */
   addFile() {
+    let newFilePath = this.getDefaultPath();
+    if (this.sourcefiles.length === 0 && this.fileType === 'descriptor') {
+      newFilePath = '/Dockstore' + newFilePath;
+    }
     const newSourceFile = {
       content: '',
-      path: this.getDefaultPath(),
+      path: newFilePath,
       type: this.getFileType()
     };
 
@@ -25,11 +33,19 @@ export class CodeEditorListComponent {
     this.sourcefiles.push(newSourceFile);
   }
 
+  /**
+   * Deletes the file at the given index
+   * @param  index index of file to delete
+   * @return
+   */
   deleteFile(index: number) {
-    console.log('Deleting file ' + index);
     this.sourcefiles[index].content = null;
   }
 
+  /**
+   * Get the file type enum
+   * @return The file type enum
+   */
   getFileType() {
     if (this.fileType === 'descriptor') {
       return 'DOCKSTORE_' + this.descriptorType.toUpperCase();
@@ -40,6 +56,10 @@ export class CodeEditorListComponent {
     }
   }
 
+  /**
+   * Get the default path extension
+   * @return the default path extension
+   */
   getDefaultPath() {
     if (this.fileType === 'descriptor') {
       return '.' + this.descriptorType.toLowerCase();
@@ -48,6 +68,11 @@ export class CodeEditorListComponent {
     }
   }
 
+  /**
+   * Returns true if path is the primary descriptor, false otherwise
+   * @param  path Path to check
+   * @return      Is path for primary descriptor
+   */
   isPrimaryDescriptor(path: string) {
     return path === '/Dockstore.' + this.descriptorType.toLowerCase();
   }
