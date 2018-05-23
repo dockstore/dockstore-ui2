@@ -55,8 +55,8 @@ export class ListContainersComponent extends ToolLister {
     ],
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
       const self = this;
-      $('td', row).unbind('click');
-      $('td', row).bind('click', () => {
+      $('td', row).off('click');
+      $('td', row).on('click', () => {
         self.findPageNumber(index);
       });
       return row;
