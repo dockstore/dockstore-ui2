@@ -15,27 +15,27 @@
   -->
 
 <tabset [justified]="true">
-  <tab heading="Descriptor Files">
+  <tab heading="Descriptor Files" id="descriptorFilesTab">
     <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'"></app-code-editor-list>
   </tab>
-  <tab heading="Test Parameter Files">
+  <tab heading="Test Parameter Files" id="testParameterFilesTab">
     <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'"></app-code-editor-list>
   </tab>
 </tabset>
 <div class="editor-button-container" *ngIf="!publicPage">
   <span *ngIf="!editing">
-    <button mat-raised-button color="warn" (click)="deleteVersion()" [disabled]="versions?.length == 0">
+    <button id="deleteVersionButton" mat-raised-button color="warn" (click)="deleteVersion()" [disabled]="versions?.length == 0">
       Delete Version
     </button>
-    <button mat-raised-button color="primary" (click)="toggleEdit()" [disabled]="_selectedVersion?.id !== versions[versions?.length - 1]?.id">
+    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()" [disabled]="_selectedVersion?.id !== versions[versions?.length - 1]?.id">
       Edit Files
     </button>
   </span>
   <span *ngIf="editing">
-    <button mat-raised-button color="secondary" (click)="toggleEdit();resetFiles()">
+    <button id="cancelButton" mat-raised-button color="secondary" (click)="toggleEdit();resetFiles()">
       Cancel
     </button>
-    <button mat-raised-button color="primary" (click)="saveVersion()">
+    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">
       Save as New Version
     </button>
   </span>

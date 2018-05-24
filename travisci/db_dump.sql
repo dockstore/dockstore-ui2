@@ -16,14 +16,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -1962,6 +1962,7 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (1, 17);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 18);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 19);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 20);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 21);
 INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
 
 
@@ -2051,6 +2052,7 @@ INSERT INTO public.workflow (id, author, defaultversion, description, email, git
 INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'a', NULL, 'github.com', NULL, false, NULL, NULL);
 INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', NULL, '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'l', NULL, 'github.com', NULL, false, NULL, NULL);
 INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'a', NULL, 'bitbucket.org', NULL, false, NULL, NULL);
+INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (21, NULL, NULL, NULL, NULL, NULL, false, NULL, '2016-11-28 15:00:57.315', NULL, '/Dockstore.wdl', 'wdl', 'HOSTED', 'A', 'hosted-workflow', NULL, 'dockstore.org', NULL, false, NULL, NULL);
 
 
 --
@@ -2442,4 +2444,3 @@ ALTER TABLE ONLY public.workflowversion
 --
 -- PostgreSQL database dump complete
 --
-
