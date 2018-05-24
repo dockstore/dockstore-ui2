@@ -68,6 +68,10 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'json';
       } else if (filepath.endsWith('yml') || filepath.endsWith('yaml')) {
         this.mode = 'yaml';
+      } else if (filepath.endsWith('config')) {
+        this.mode = 'groovy';
+      } else if (filepath.endsWith('nf')) {
+        this.mode = 'nfl';
       } else {
         this.mode = 'text';
       }
