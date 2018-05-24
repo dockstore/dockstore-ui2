@@ -28,7 +28,7 @@ describe('MyWorkflowsService', () => {
       repository: 'aa',
       workflow_path: '',
       sourceControl: 'github.com',
-      source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
+      source_control_provider: 'GITHUB'
   };
   const tool2: Workflow = {
     defaultTestParameterFilePath: '',
@@ -39,7 +39,7 @@ describe('MyWorkflowsService', () => {
     repository: 'bb',
     workflow_path: '',
     sourceControl: 'github.com',
-    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
+    source_control_provider: 'GITHUB'
 };
   const tool3: Workflow = {
     defaultTestParameterFilePath: '',
@@ -50,7 +50,7 @@ describe('MyWorkflowsService', () => {
     repository: 'cc',
     workflow_path: '',
     sourceControl: 'github.com',
-    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
+    source_control_provider: 'GITHUB'
 };
   const tool4: Workflow = {
     defaultTestParameterFilePath: '',
@@ -61,7 +61,7 @@ describe('MyWorkflowsService', () => {
     repository: 'dd',
     workflow_path: '',
     sourceControl: 'github.com',
-    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
+    source_control_provider: 'GITHUB'
 };
   const tool5: Workflow = {
     defaultTestParameterFilePath: '',
@@ -72,7 +72,7 @@ describe('MyWorkflowsService', () => {
     repository: 'ee',
     workflow_path: '',
     sourceControl: 'github.com',
-    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
+    source_control_provider: 'GITHUB'
 };
   const tool6: Workflow = {
     defaultTestParameterFilePath: '',
@@ -83,7 +83,7 @@ describe('MyWorkflowsService', () => {
     repository: 'ee',
     workflow_path: '1',
     sourceControl: 'github.com',
-    source_control_provider: Workflow.SourceControlProviderEnum.GITHUB
+    source_control_provider: 'GITHUB'
 };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
   const expectedResult1 = {'containers': [(tool5), (tool6)], 'isFirstOpen': false, 'namespace': 'quay.io/aa'};
