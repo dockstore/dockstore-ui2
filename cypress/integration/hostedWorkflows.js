@@ -9,6 +9,8 @@ describe('Dockstore my workflows', function() {
     describe('Should be able to register a hosted workflow and add files to it', function() {
       it('Register the workflow', function() {
         // Select the hosted workflow
+        cy
+          .contains('dockstore.org')
         cy.wait(500)
         cy
           .contains('dockstore.org')
