@@ -29,7 +29,7 @@ export class FileService {
      * TODO: Convert to pipe
      * @param {string} entryPath         the entry's path (e.g. "quay.io/pancancer/pcawg-dkfz-workflow")
      * @param {string} entryVersion      the version object of the entry
-     * @param {string} sourceFile        path of the file (e.g. "/Dockstore.cwl")
+     * @param {string} sourceFile        the SourceFile object
      * @param {string} descriptorType    the descriptor type (e.g. "cwl")
      * @param {string} entryType         the entry type, either "tool" or "workflow"
      * @returns {string}                 the url to download the test parameter file
