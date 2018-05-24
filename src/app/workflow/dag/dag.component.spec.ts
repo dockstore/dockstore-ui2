@@ -69,7 +69,7 @@ describe('DagComponent', () => {
       'repository': 'l',
       'workflow_path': '',
       'sourceControl': 'github.com',
-      'source_control_provider': 'GITHUB'
+      'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
     };
   //   fixture.detectChanges();
   //   de = fixture.debugElement.query(By.css('#exportLink'));
