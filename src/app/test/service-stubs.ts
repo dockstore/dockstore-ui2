@@ -573,7 +573,7 @@ export class WorkflowsStubService {
             'workflowVersions': [],
             'defaultTestParameterFilePath': 'refreshedDefaultTestParameterFilePath',
             'sourceControl': 'github.com',
-            'source_control_provider': 'GITHUB'
+            'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
         };
         return Observable.of(refreshedWorkflow);
     }

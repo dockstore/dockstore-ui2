@@ -29,7 +29,7 @@ export const updatedWorkflow: Workflow = {
     'workflowVersions': [],
     'defaultTestParameterFilePath': 'updatedTestParameterPath',
     'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -43,7 +43,7 @@ export const sampleWorkflow1: Workflow = {
     'workflowVersions': [],
     'defaultTestParameterFilePath': 'updatedTestParameterPath',
     'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -57,7 +57,7 @@ export const sampleWorkflow2: Workflow = {
     'workflowVersions': [],
     'defaultTestParameterFilePath': 'updatedTestParameterPath',
     'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -71,7 +71,7 @@ export const sampleWorkflow3: Workflow = {
     'workflowVersions': [],
     'defaultTestParameterFilePath': 'updatedTestParameterPath',
     'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+    'source_control_provider': Workflow.SourceControlProviderEnum.GITHUB
 };
 
 export const sampleTool1: DockstoreTool = {
