@@ -9,9 +9,6 @@ gitlabClientSecret: <gitlab_client_secret_here>
 gitlabRedirectURI: http://localhost:9001/auth/gitlab.com
 bitbucketClientID:  <bitbucket client is here>
 bitbucketClientSecret: <bitbucket secret here>
-googleClientID: <fill me in>
-googleClientSecret: <fill me in>
-googleRedirectURI: http://<fill me in>:8080/auth/tokens/google.com
 hostname: localhost
 scheme: http
 port: 8080
