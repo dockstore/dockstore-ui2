@@ -1767,7 +1767,65 @@ INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VAL
 }
 ', '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON', NULL, NULL);
 
+INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (42, 'cwlVersion: v1.0
+class: Workflow
 
+inputs:
+  input_file: File
+
+outputs:
+  output_file:
+    type: File
+    outputSource: md5sum/output_file
+
+steps:
+  md5sum:
+    run: md5sum-tool.cwl
+    in:
+      input_file: input_file
+    out: [output_file]
+', 'md5sum-workflow.cwl', 'DOCKSTORE_CWL', NULL, NULL);
+
+INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (43, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+id: Md5sum
+label: Simple md5sum tool
+cwlVersion: v1.0
+
+$namespaces:
+  dct: http://purl.org/dc/terms/
+  foaf: http://xmlns.com/foaf/0.1/
+
+requirements:
+- class: DockerRequirement
+  dockerPull: quay.io/agduncan94/my-md5sum
+- class: InlineJavascriptRequirement
+
+hints:
+- class: ResourceRequirement
+  # The command really requires very little resources.
+  coresMin: 1
+  ramMin: 1024
+  outdirMin: 512
+
+inputs:
+  input_file:
+    type: File
+    inputBinding:
+      position: 1
+    doc: The file that will have its md5sum calculated.
+
+outputs:
+  output_file:
+    type: File
+    format: http://edamontology.org/data_3671
+    outputBinding:
+      glob: md5sum.txt
+    doc: A text file that contains a single line that is the md5sum of the input file.
+
+baseCommand: [/bin/my_md5sum]
+', 'md5sum-tool.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 --
 -- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
@@ -1927,6 +1985,8 @@ INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 30);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 32);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 29);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 31);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 42);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 43);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (6, 35);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 39);
@@ -1959,6 +2019,7 @@ INSERT INTO workflow (id, author, defaultversion, description, email, giturl, is
 --
 
 INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 13);
+INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 14);
 
 
 --
@@ -1966,6 +2027,7 @@ INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11,
 --
 
 INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (14, false, true, '2016-11-28 15:01:57.003', 'test', 'test', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 
 
 --
