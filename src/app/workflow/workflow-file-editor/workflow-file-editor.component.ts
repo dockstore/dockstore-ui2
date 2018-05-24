@@ -115,12 +115,12 @@ export class WorkflowFileEditorComponent extends Files {
    */
   saveVersion() {
     const message = 'Save Version';
-    const newSourceFiles = this.getCombinedSourceFiles();
+    let newSourceFiles = this.getCombinedSourceFiles();
     const sourceFilesToDelete = [];
 
     // Deal with file renames
     for (const originalSourceFile of this.originalSourceFiles) {
-      const toDelete = true;
+      let toDelete = true;
       for (const newSourceFile of newSourceFiles) {
         if (newSourceFile.path === originalSourceFile.path) {
           toDelete = false;
