@@ -11,7 +11,7 @@ bitbucketClientID:  <bitbucket client is here>
 bitbucketClientSecret: <bitbucket secret here>
 googleClientID: <fill me in>
 googleClientSecret: <fill me in>
-googleRedirectURI: http://<fill me in>:8080/auth/tokens/google.com
+googleRedirectURI: http://localhost:8080/auth/tokens/google.com
 hostname: localhost
 scheme: http
 port: 8080
