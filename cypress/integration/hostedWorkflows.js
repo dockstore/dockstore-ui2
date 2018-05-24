@@ -132,6 +132,57 @@ describe('Dockstore my workflows', function() {
             .get('#publishButton')
             .should('not.have.class', 'disabled')
 
+          // Try deleting a file (.wdl file)
+          cy
+            .get('.nav-link')
+            .contains('Files')
+            .parent()
+            .click()
+          cy
+            .get('#editFilesButton')
+            .click()
+          cy
+            .get('.delete-editor-file')
+            .first()
+            .click()
+          cy
+            .get('#saveNewVersionButton')
+            .click()
+
+          // Should now only be two ace editors
+          cy
+            .get('.ace_editor')
+            .should('have.length', 2)
+
+          // New version should be added
+          cy
+            .get('.nav-link')
+            .contains('Versions')
+            .parent()
+            .click()
+            .get('table')
+            .find('a')
+            .contains('2')
+
+          // Try deleting a version
+          cy
+            .get('.nav-link')
+            .contains('Files')
+            .parent()
+            .click()
+          cy
+            .get('#deleteVersionButton')
+            .click()
+
+          // Version should no longer exist
+          cy
+            .get('.nav-link')
+            .contains('Versions')
+            .parent()
+            .click()
+            .get('table')
+            .find('a')
+            .should('not.contain', '2')
       });
     });
 

@@ -16,7 +16,7 @@
           </span>
           <span class="spacer"></span>
           <span>
-          <button mat-mini-fab color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path)">
+          <button mat-mini-fab class="delete-editor-file" color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path)">
             <mat-icon>delete</mat-icon>
           </button>
           </span>
