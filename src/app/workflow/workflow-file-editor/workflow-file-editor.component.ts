@@ -115,9 +115,33 @@ export class WorkflowFileEditorComponent extends Files {
    */
   saveVersion() {
     const message = 'Save Version';
+    const newSourceFiles = this.getCombinedSourceFiles();
+    const sourceFilesToDelete = [];
+
+    // Deal with file renames
+    for (const originalSourceFile of this.originalSourceFiles) {
+      const toDelete = true;
+      for (const newSourceFile of newSourceFiles) {
+        if (newSourceFile.path === originalSourceFile.path) {
+          toDelete = false;
+          break;
+        }
+      }
+
+      if (toDelete) {
+        const sourceFileCopy = originalSourceFile;
+        sourceFileCopy.content = null;
+        sourceFilesToDelete.push(sourceFileCopy);
+      }
+    }
+
+    if (sourceFilesToDelete.length > 0) {
+      newSourceFiles = newSourceFiles.concat(sourceFilesToDelete);
+    }
+
     this.hostedService.editHostedWorkflow(
         this.id,
-        this.getCombinedSourceFiles()).subscribe(result => {
+        newSourceFiles).subscribe(result => {
           this.toggleEdit();
           this.workflowService.setWorkflow(result);
           this.refreshService.handleSuccess(message);
