@@ -21,6 +21,11 @@ describe('Dockstore my workflows', function() {
           .contains('hosted-workflow')
           .click()
 
+        // Should not be able to publish
+        cy
+          .get('#publishButton')
+          .should('have.class', 'disabled')
+
         // Check content of the info tab
         cy
           .contains('Mode: HOSTED')
@@ -35,7 +40,7 @@ describe('Dockstore my workflows', function() {
           .find('tr')
           .should('have.length', 2)
 
-        // Add a new version
+        // Add a new version with one descriptor
         cy
           .get('.nav-link')
           .contains('Files')
@@ -50,14 +55,83 @@ describe('Dockstore my workflows', function() {
         cy
           .contains('Add File')
           .click()
+        cy.window().then(function (window) {
+          cy.document().then((doc) => {
+            var editors = doc.getElementsByClassName('ace_editor');
+            var wdlDescriptorFile = 'task md5 {\nFile inputFile\ncommand {\n/bin/my_md5sum ${inputFile}\n}\noutput {\nFile value = \"md5sum.txt\"\n}\nruntime {\ndocker: \"quay.io/agduncan94/my-md5sum\"\n}\n}\nworkflow ga4ghMd5 {\nFile inputFile\ncall md5 { input: inputFile=inputFile }\n}';
+            window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
+          })
+        });
 
         cy
-          .get('.ace_text-input')
-          .type('hello')
+          .get('#saveNewVersionButton')
+          .click()
 
-        // Versions tab should include new version
-        // Should be able to publish and unpublish
-        // Add a new version with a test parameter file
+        // Should have a version 0
+        cy
+          .get('.nav-link')
+          .contains('Versions')
+          .parent()
+          .click()
+          .get('table')
+          .find('a')
+          .contains('0')
+
+          // Add a new version with a second descriptor and a test json
+          cy
+            .get('.nav-link')
+            .contains('Files')
+            .parent()
+            .click()
+          cy
+            .get('#editFilesButton')
+            .click()
+          cy
+            .contains('Add File')
+            .click()
+          cy.window().then(function (window) {
+            cy.document().then((doc) => {
+              var editors = doc.getElementsByClassName('ace_editor');
+              var wdlDescriptorFile = 'task test {\nFile inputFile\ncommand {\n/bin/my_md5sum ${inputFile}\n}\noutput {\nFile value = \"md5sum.txt\"\n}\nruntime {\ndocker: \"quay.io/agduncan94/my-md5sum\"\n}\n}\nworkflow ga4ghMd5 {\nFile inputFile\ncall test { input: inputFile=inputFile }\n}';
+              window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
+            })
+          });
+
+          cy
+            .get('#testParameterFilesTab-link')
+            .click()
+          cy.wait(500)
+          cy
+            .get('#testParameterFilesTab')
+            .contains('Add File')
+            .click()
+          cy.window().then(function (window) {
+            cy.document().then((doc) => {
+              var editors = doc.getElementsByClassName('ace_editor');
+              var testParameterFile = '{}';
+              window.ace.edit(editors[2]).setValue(testParameterFile, -1);
+            })
+          });
+
+          cy
+            .get('#saveNewVersionButton')
+            .click()
+
+          // Should have a version 1
+          cy
+            .get('.nav-link')
+            .contains('Versions')
+            .parent()
+            .click()
+            .get('table')
+            .find('a')
+            .contains('1')
+
+          // Should be able to publish
+          cy
+            .get('#publishButton')
+            .should('not.have.class', 'disabled')
+
       });
     });
 

@@ -8,7 +8,7 @@
         <mat-toolbar-row>
           <form style="width:100%;" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path)">
             <mat-form-field color="accent" style="width:40%;">
-              <input matInput [value]="sourcefile.path" (input)="sourcefile.path = $event.target.value" type="text">
+              <input matInput [value]="sourcefile.path" (input)="sourcefile.path = $event.target.value" type="text" class="editor-file-name">
             </mat-form-field>
           </form>
           <span *ngIf="!editing || isPrimaryDescriptor(sourcefile?.path)">
