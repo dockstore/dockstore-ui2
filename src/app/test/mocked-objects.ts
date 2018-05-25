@@ -167,13 +167,6 @@ export const sampleTag = {
     'name': 'sampleName'
 };
 
-export const wdlSourceFile: SourceFile = {
-  content: 'task foo {}',
-  id: 0,
-  path: '',
-  type: undefined
-};
-
 export const sampleSourceFile: SourceFile = {
   content: 'potato',
   id: 1,

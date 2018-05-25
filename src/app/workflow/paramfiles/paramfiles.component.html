@@ -23,8 +23,8 @@
   </span>
   <span *ngIf="content" class="input-group-btn code-copy">
   </span>
-  <div *ngIf="content && _selectedVersion?.valid" class="row no-margin">
-    <div class="btn-group">
+  <div *ngIf="content && _selectedVersion?.valid" class="code-copy">
+    <div class="code-copy-button btn-group">
       <a *ngIf="(published$ | async)" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
