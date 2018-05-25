@@ -109,6 +109,11 @@ export class RegisterWorkflowModalService {
             );
     }
 
+    /**
+     * Registers a hosted workflow
+     * @param  hostedWorkflow hosted workflow object
+     * @return
+     */
     registerHostedWorkflow(hostedWorkflow) {
       this.stateService.setRefreshMessage('Registering workflow...');
       this.hostedService.createHostedWorkflow(

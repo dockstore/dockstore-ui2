@@ -1,6 +1,6 @@
 <div>
   <div class="alert alert-info" role="alert" *ngIf="sourcefiles?.length == 0">
-    No sourcefiles exist.
+    No files exist.
   </div>
   <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom:10px;">
     <div *ngIf="sourcefile?.content !== null">
