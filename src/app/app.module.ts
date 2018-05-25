@@ -87,7 +87,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { ToolDetailsComponent } from './tool-details/tool-details.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +96,6 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     HomeComponent,
     FooterComponent,
     HomeFootNoteComponent,
-    ToolDetailsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
