@@ -61,7 +61,7 @@ describe('VersionModalComponent', () => {
     const fakeTool = sampleTool1;
     fakeTool.path = 'quay.io\/wtsicgp\/dockstore-cgpmap';
     component.tool = fakeTool;
-    const fakeTag = sampleTag;
+    const fakeTag = Object.assign({}, sampleTag);
     fakeTag.name = '3.0.0-rc8';
     component.version = fakeTag;
     // Manually trigger the update

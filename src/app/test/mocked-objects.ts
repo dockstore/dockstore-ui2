@@ -173,3 +173,10 @@ export const wdlSourceFile: SourceFile = {
   path: '',
   type: undefined
 };
+
+export const sampleSourceFile: SourceFile = {
+  content: 'potato',
+  id: 1,
+  path: '/cwl.json',
+  type: SourceFile.TypeEnum.CWLTESTJSON
+};

@@ -13,9 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { FileService} from './file.service';
 import { inject, TestBed } from '@angular/core/testing';
+
+import { Dockstore } from './dockstore.model';
+import { FileService } from './file.service';
+import { SourceFile } from './swagger';
+import { sampleTag, sampleSourceFile } from '../test/mocked-objects';
+import { ga4ghPath } from './constants';
 
 describe('FileService', () => {
   beforeEach(() => {
@@ -32,7 +36,13 @@ describe('FileService', () => {
     expect(fileService.escapeEntities('')).toEqual('');
     expect(fileService.escapeEntities(null)).toEqual(null);
   }));
-
-
+  it('should get descriptor path', inject([FileService], (fileService: FileService) => {
+    const tag = sampleTag;
+    const sourceFile = sampleSourceFile;
+    const descriptorType = 'cwl';
+    const entryType = 'tool';
+    const url = fileService.getDescriptorPath('quay.io/org/repo', tag, sourceFile, descriptorType, entryType);
+    expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor//cwl.json');
+  }));
 });
 
