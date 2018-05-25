@@ -141,7 +141,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     let defaultVersionName = this.getDefaultVersionName();
     // if user did not specify a default version, use the latest version
     if (!defaultVersionName) {
-      if (this.validVersions.length > 0) {
+      if (this.validVersions.length) {
         const last: number = this.validVersions.length - 1;
         defaultVersionName = this.validVersions[last].name;
       }
@@ -176,6 +176,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
+    if (versions === null || versions === undefined || versions.length === 0) {
+      return null;
+    }
     let useFirstTag = true;
     let urlTagExists = false;
     // Determine which tag to select
