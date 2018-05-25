@@ -1767,7 +1767,7 @@ INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VAL
 }
 ', '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON', NULL, NULL);
 
-INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (42, 'cwlVersion: v1.0
+INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (70, 'cwlVersion: v1.0
 class: Workflow
 
 inputs:
@@ -1786,7 +1786,7 @@ steps:
     out: [output_file]
 ', 'md5sum-workflow.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 
-INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (43, '#!/usr/bin/env cwl-runner
+INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (71, '#!/usr/bin/env cwl-runner
 
 class: CommandLineTool
 id: Md5sum
@@ -1985,8 +1985,8 @@ INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 30);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 32);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 29);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 31);
-INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 42);
-INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 43);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 70);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 71);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (6, 35);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 39);
