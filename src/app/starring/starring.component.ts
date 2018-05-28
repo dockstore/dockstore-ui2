@@ -58,7 +58,10 @@ export class StarringComponent implements OnInit {
       // get the tool from the input, used by the starred Page and entry components
       this.setupInputEntry();
     }
-    this.userService.user$.subscribe(user => this.user = user);
+    this.userService.user$.subscribe(user => {
+      this.user = user;
+      this.calculateRate(this.starredUsers);
+    });
   }
 
   setupInputEntry() {
@@ -125,6 +128,7 @@ export class StarringComponent implements OnInit {
       this.starringService.getStarring(this.entry.id, this.entryType).first().subscribe(
         (starring: User[]) => {
           this.total_stars = starring.length;
+          this.starredUsers = starring;
           this.rate = this.calculateRate(starring);
           this.disable = false;
         }, error => this.disable = false);

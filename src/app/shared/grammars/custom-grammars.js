@@ -307,8 +307,96 @@ oop.inherits(Mode, TextMode);
 exports.Mode = Mode;
 });
 
+// NFL Grammar
+ace.define("ace/mode/nfl_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules","ace/mode/groovy_highlight_rules"], function(require, exports, module) {
+  "use strict";
+
+  var oop = require("../lib/oop");
+  var GroovyHighlightRules = require("./groovy_highlight_rules").GroovyHighlightRules;
+
+  var NextflowHighlightRules = function(options) {
+      var ruless =[{
+              token: [
+                  "process.nextflow",
+                  "keyword.nextflow",
+                  "process.nextflow",
+                  "function.nextflow",
+                  "process.nextflow"
+              ],
+              regex: /^(\s*)(process)(\s+)(\w+|"[^"]+"|'[^']+')(\s*)/,
+              push: [{
+                  token: "process.nextflow",
+                  regex: /}/,
+                  next: "pop"
+              }, {
+                  include: "#process-body"
+              }, {
+                  defaultToken: "process.nextflow"
+              }]
+          },
+          {
+              token: "process.body.nextflow",
+              regex: /{/,
+              push: [{
+                  token: "process.body.nextflow",
+                  regex: /(?=})/,
+                  next: "pop"
+              }, {
+                  token: "process.directive.type.nextflow",
+                  regex: /(?:afterScript|beforeScript|cache|container|cpus|clusterOptions|disk|echo|errorStrategy|executor|ext|maxErrors|maxForks|maxRetries|memory|module|penv|publishDir|queue|scratch|storeDir|stageInMode|stageOutMode|tag|time|validExitStatus)\b/
+              }, {
+                  token: "constant.block.nextflow",
+                  regex: /(?:input|output|script|shell|exec):/
+              }, {
+                  defaultToken: "process.body.nextflow"
+              }]
+          },{
+              token: "code.block.nextflow",
+              regex: /{/,
+              push: [{
+                  token: "code.block.nextflow",
+                  regex: /}/,
+                  next: "pop"
+              }, {
+                  include: "#nfl-rules"
+              }, {
+                  defaultToken: "code.block.nextflow"
+              }]
+          }]
+
+      var GroovyRules = new GroovyHighlightRules().getRules();
+
+      GroovyRules.start = ruless.concat(GroovyRules.start);
+      this.$rules = GroovyRules;
+  };
+
+  oop.inherits(NextflowHighlightRules, GroovyHighlightRules);
+
+  exports.NextflowHighlightRules = NextflowHighlightRules;
+  });
+  ace.define('ace/mode/nfl',["require","exports","module","ace/lib/oop","ace/mode/nfl_highlight_rules","ace/mode/groovy_highlight_rules"], function(require, exports, module) {
+
+    var oop = require("../lib/oop");
+    // var TextHighlightRules = require("./nfl_highlight_rules").TextHighlightRules;
+    var GroovyHighlightRules = require("./groovy_highlight_rules").GroovyHighlightRules;
+    var TextMode = require("./text").Mode;
+
+  var NextflowHighlightRules = require("ace/mode/nfl_highlight_rules").NextflowHighlightRules;
+
+  var Mode = function() {
+      this.HighlightRules = NextflowHighlightRules;
+  };
+  oop.inherits(Mode, TextMode);
+
+  (function() {
+      // Extra logic goes here. (see below)
+  }).call(Mode.prototype);
+
+  exports.Mode = Mode;
+  });
+
 (function() {
-    ace.require(["ace/mode/wdl","ace/mode/cwl"], function(m) {
+    ace.require(["ace/mode/wdl","ace/mode/cwl","ace/mode/nfl"], function(m) {
         if (typeof module == "object" && typeof exports == "object" && module) {
             module.exports = m;
         }
