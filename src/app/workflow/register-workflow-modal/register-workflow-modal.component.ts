@@ -22,7 +22,7 @@ import {
   formErrors,
   validationDescriptorPatterns,
   validationMessages,
-} from '../../shar`ed/validationMessages.model';
+} from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 
 @Component({
