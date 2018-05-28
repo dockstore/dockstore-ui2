@@ -176,7 +176,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
-    if (versions === null || versions === undefined || versions.length === 0) {
+    if (!versions || versions.length === 0) {
       return null;
     }
     let useFirstTag = true;
