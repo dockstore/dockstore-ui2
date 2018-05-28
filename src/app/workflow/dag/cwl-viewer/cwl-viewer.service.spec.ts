@@ -44,8 +44,8 @@ describe('Service: CWLViewer', () => {
     httpMock = TestBed.get(HttpTestingController);
   });
 
-  it ('should work if POST returns 200', (done) => {
-    if (Dockstore.FEATURES.enableCwlViewer) {
+  if (Dockstore.FEATURES.enableCwlViewer) {
+    it ('should work if POST returns 200', (done) => {
       cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath).subscribe(
         (resp) => {
           expect(resp.svgUrl).toBe(Dockstore.CWL_VISUALIZER_URI +
@@ -58,13 +58,11 @@ describe('Service: CWLViewer', () => {
       const response200 = httpMock.expectOne(commonWlEndpoint);
       response200.flush(cwlViewerResponse);
       httpMock.verify();
-    } else {
-      done();
-    }
-  });
+    });
+  }
 
-  it ('should work if POST returns 202', fakeAsync(() => {
-    if (Dockstore.FEATURES.enableCwlViewer) {
+  if (Dockstore.FEATURES.enableCwlViewer) {
+    it ('should work if POST returns 202', fakeAsync(() => {
       cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath).subscribe(
         (resp) => {
           expect(resp.svgUrl).toBe(Dockstore.CWL_VISUALIZER_URI +
@@ -82,18 +80,16 @@ describe('Service: CWLViewer', () => {
       const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');
       poll.flush(cwlViewerResponse);
       httpMock.verify();
-    }
-  }));
+    }));
+  }
 
-  it ('should fail if POST returns 400', (done) => {
-    if (Dockstore.FEATURES.enableCwlViewer) {
+  if (Dockstore.FEATURES.enableCwlViewer) {
+    it ('should fail if POST returns 400', (done) => {
       cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath).subscribe(null,
         () => done());
       const response400 = httpMock.expectOne(commonWlEndpoint);
       response400.flush(null, {status: 400, statusText: 'Bad Request'});
       httpMock.verify();
-    } else {
-      done();
-    }
-  });
+    });
+  }
 });

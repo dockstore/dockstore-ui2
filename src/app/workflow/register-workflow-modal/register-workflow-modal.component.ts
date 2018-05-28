@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import {
   formErrors,
   validationDescriptorPatterns,
   validationMessages,
-} from '../../shared/validationMessages.model';
+} from '../../shar`ed/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 
 @Component({
@@ -44,7 +44,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   };
   public options = [
     {
-      label: 'Use CWL or WDL from GitHub, BitBucket, etc.',
+      label: 'Use CWL, WDL or NextFlow from GitHub, BitBucket, etc.',
       value: 0
     },
     {
