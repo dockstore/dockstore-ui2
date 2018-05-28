@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomMaterialModule } from './../modules/material.module';
 
 import {
   InfoTabCheckerWorkflowPathComponent,
@@ -26,7 +27,6 @@ import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
-import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -34,12 +34,7 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInp
     TooltipModule.forRoot(),
     FormsModule,
     ModalModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule
+    CustomMaterialModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -53,12 +48,7 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInp
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
     CodeEditorListComponent,
-    MatButtonModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule
+    CustomMaterialModule
   ]
 })
 export class EntryModule { }

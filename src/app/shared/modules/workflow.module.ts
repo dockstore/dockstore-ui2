@@ -26,6 +26,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
+import { CustomMaterialModule } from './../modules/material.module';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { OrderByModule } from '../../shared/modules/orderby.module';
@@ -110,7 +111,8 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     VersionModalService
   ],
   exports: [
-    WorkflowComponent
+    WorkflowComponent,
+    CustomMaterialModule
   ]
 })
 export class WorkflowModule { }

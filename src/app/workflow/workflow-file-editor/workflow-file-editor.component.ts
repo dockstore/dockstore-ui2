@@ -38,12 +38,11 @@ export class WorkflowFileEditorComponent extends Files {
 
   /**
    * Deletes the current version of the workflow
-   * @return
    */
   deleteVersion() {
     const message = 'Delete Version';
     this.hostedService.deleteHostedWorkflowVersion(
-        this.id * 1,
+        this.id * 1, // Converts to a number
         this._selectedVersion.name).subscribe(result => {
           this.workflowService.setWorkflow(result);
           this.refreshService.handleSuccess(message);
@@ -57,7 +56,6 @@ export class WorkflowFileEditorComponent extends Files {
 
   /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
-   * @return void
    */
   loadVersionSourcefiles() {
     this.descriptorFiles = this.getDescriptorFiles(this._selectedVersion.sourceFiles);
@@ -67,43 +65,33 @@ export class WorkflowFileEditorComponent extends Files {
   /**
    * Retrieves all descriptor files from the list of sourcefiles
    * @param  sourceFiles Array of sourcefiles
-   * @return             Array of descriptor files
+   * @return  {Array<SourceFile>}     Array of descriptor files
    */
   getDescriptorFiles(sourceFiles) {
-    const descriptorFiles = [];
-    for (const sourcefile of sourceFiles) {
-      if (sourcefile.type === 'DOCKSTORE_WDL' || sourcefile.type === 'DOCKSTORE_CWL') {
-        descriptorFiles.push(sourcefile);
-      }
-    }
-    return descriptorFiles;
+    return sourceFiles.filter(
+      sourcefile => sourcefile.type === 'DOCKSTORE_WDL' || sourcefile.type === 'DOCKSTORE_CWL');
   }
 
   /**
    * Retrieves all test parameter files from the list of sourcefiles
    * @param  sourceFiles Array of sourcefiles
-   * @return             Array of test parameter files
+   * @return {Array<SourceFile>}      Array of test parameter files
    */
   getTestFiles(sourceFiles) {
-    const testParameterFiles = [];
-    for (const sourcefile of sourceFiles) {
-      if (sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'CWL_TEST_JSON') {
-        testParameterFiles.push(sourcefile);
-      }
-    }
-    return testParameterFiles;
+    return sourceFiles.filter(
+      sourcefile => sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'CWL_TEST_JSON');
   }
 
   /**
    * Combines sourcefiles into one array
-   * @return Array of sourcefiles
+   * @return {Array<SourceFile>} Array of sourcefiles
    */
   getCombinedSourceFiles() {
     let baseFiles = [];
     if (this.descriptorFiles) {
       baseFiles = baseFiles.concat(this.descriptorFiles);
     }
-    if (this.descriptorFiles) {
+    if (this.testParameterFiles) {
       baseFiles = baseFiles.concat(this.testParameterFiles);
     }
     return baseFiles;
@@ -111,7 +99,6 @@ export class WorkflowFileEditorComponent extends Files {
 
   /**
    * Creates a new version based on changes made
-   * @return
    */
   saveVersion() {
     const message = 'Save Version';
@@ -155,7 +142,6 @@ export class WorkflowFileEditorComponent extends Files {
 
   /**
    * Resets the files back to their original state
-   * @return
    */
   resetFiles() {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);

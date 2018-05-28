@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { SourceFile } from '../../shared/swagger/model/sourceFile';
 
 @Component({
   selector: 'app-code-editor-list',
@@ -6,7 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./code-editor-list.component.scss']
 })
 export class CodeEditorListComponent {
-  @Input() sourcefiles: any;
+  @Input() sourcefiles: Array<any>;
   @Input() editing: boolean;
   @Input() descriptorType: string;
   @Input() fileType: string;
@@ -14,7 +15,6 @@ export class CodeEditorListComponent {
 
   /**
    * Adds a new file editor
-   * @return
    */
   addFile() {
     let newFilePath = this.getDefaultPath();
@@ -36,7 +36,6 @@ export class CodeEditorListComponent {
   /**
    * Deletes the file at the given index
    * @param  index index of file to delete
-   * @return
    */
   deleteFile(index: number) {
     this.sourcefiles[index].content = null;
@@ -44,7 +43,7 @@ export class CodeEditorListComponent {
 
   /**
    * Get the file type enum
-   * @return The file type enum
+   * @return {string} The file type enum
    */
   getFileType() {
     if (this.fileType === 'descriptor') {
@@ -58,7 +57,7 @@ export class CodeEditorListComponent {
 
   /**
    * Get the default path extension
-   * @return the default path extension
+   * @return {string}the default path extension
    */
   getDefaultPath() {
     if (this.fileType === 'descriptor') {
@@ -71,7 +70,7 @@ export class CodeEditorListComponent {
   /**
    * Returns true if path is the primary descriptor, false otherwise
    * @param  path Path to check
-   * @return      Is path for primary descriptor
+   * @return {string}      Is path for primary descriptor
    */
   isPrimaryDescriptor(path: string) {
     return path === '/Dockstore.' + this.descriptorType.toLowerCase();

@@ -20,6 +20,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
@@ -32,7 +33,6 @@ import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
-import { MatButtonModule, MatSnackBarModule, MatRadioModule, MatIconModule, MatStepperModule, MatDialogModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -52,13 +52,7 @@ import { MatButtonModule, MatSnackBarModule, MatRadioModule, MatIconModule, MatS
     RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    MatSnackBarModule,
-    MatButtonModule,
-    MatStepperModule,
-    MatDialogModule,
-    MatRadioModule,
-    MatIconModule
-
+    CustomMaterialModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

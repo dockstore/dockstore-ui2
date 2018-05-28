@@ -64,6 +64,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     return this.registerWorkflowModalService.friendlyRepositoryKeys();
   }
 
+  // TODO: This is called many times, needs to be optimized
   getDescriptorTypes(): Array<string> {
     return this.registerWorkflowModalService.getDescriptorLanguageKeys();
   }

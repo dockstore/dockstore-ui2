@@ -27,6 +27,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
+import { CustomMaterialModule } from './shared/modules/material.module';
 
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
@@ -134,7 +135,8 @@ import { StarringModule } from './starring/starring.module';
     ListentryModule,
     MarkdownModule.forRoot(),
     SearchModule,
-    ApiModule.forRoot(getApiConfig)
+    ApiModule.forRoot(getApiConfig),
+    CustomMaterialModule
   ],
   providers: [
     AccountsService,

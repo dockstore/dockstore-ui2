@@ -10,16 +10,15 @@ describe('Dockstore my workflows', function() {
       it('Register the workflow', function() {
         // Select the hosted workflow
         cy
-          .contains('dockstore.org')
-        cy.wait(500)
+          .contains('dockstore.org/A')
+          .invoke('width').should('be.gt', 0)
         cy
-          .contains('dockstore.org')
+          .contains('dockstore.org/A')
           .parent()
           .parent()
           .should('be.visible')
           .click()
         cy
-          .get('accordion')
           .contains('hosted-workflow')
           .click()
 
@@ -60,7 +59,7 @@ describe('Dockstore my workflows', function() {
         cy.window().then(function (window) {
           cy.document().then((doc) => {
             var editors = doc.getElementsByClassName('ace_editor');
-            var wdlDescriptorFile = 'task md5 {\nFile inputFile\ncommand {\n/bin/my_md5sum ${inputFile}\n}\noutput {\nFile value = \"md5sum.txt\"\n}\nruntime {\ndocker: \"quay.io/agduncan94/my-md5sum\"\n}\n}\nworkflow ga4ghMd5 {\nFile inputFile\ncall md5 { input: inputFile=inputFile }\n}';
+            var wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
             window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
           })
         });
@@ -94,7 +93,7 @@ describe('Dockstore my workflows', function() {
           cy.window().then(function (window) {
             cy.document().then((doc) => {
               var editors = doc.getElementsByClassName('ace_editor');
-              var wdlDescriptorFile = 'task test {\nFile inputFile\ncommand {\n/bin/my_md5sum ${inputFile}\n}\noutput {\nFile value = \"md5sum.txt\"\n}\nruntime {\ndocker: \"quay.io/agduncan94/my-md5sum\"\n}\n}\nworkflow ga4ghMd5 {\nFile inputFile\ncall test { input: inputFile=inputFile }\n}';
+              var wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
               window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
             })
           });
