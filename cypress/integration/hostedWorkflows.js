@@ -13,10 +13,10 @@ describe('Dockstore my workflows', function() {
           .contains('dockstore.org/A')
           .invoke('width').should('be.gt', 0)
         cy
+          .get('accordion')
+          .click()
+        cy
           .contains('dockstore.org/A')
-          .parent()
-          .parent()
-          .should('be.visible')
           .click()
         cy
           .contains('hosted-workflow')
