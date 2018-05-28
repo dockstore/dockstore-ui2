@@ -86,6 +86,9 @@ export class StarringComponent implements OnInit {
       return false;
     } else {
       let matchingUser: User;
+      if (!starredUsers) {
+        return false;
+      }
       matchingUser = starredUsers.find(user => user.id === this.user.id);
       if (matchingUser) {
         return true;

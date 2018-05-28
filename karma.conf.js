@@ -24,10 +24,6 @@ module.exports = function (config) {
       environment: 'dev'
     },
     reporters: ['kjhtml', 'spec'],
-    specReporter: {
-      suppressErrorSummary: false,
-      suppressFailed: false
-    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
