@@ -154,6 +154,9 @@ export class ContainerComponent extends Entry {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedVersions(this.tool.tags, this.defaultVersion);
+      if (this.publicPage) {
+        this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
+      }
     }
   }
 
@@ -195,6 +198,9 @@ export class ContainerComponent extends Entry {
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
+    if (this.publicPage) {
+      this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
+    }
   }
 
   publishDisable() {

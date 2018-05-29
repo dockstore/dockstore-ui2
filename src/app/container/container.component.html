@@ -145,7 +145,7 @@
       </tab>
       <tab id="versionTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
+          <app-versions-container [versions]="sortedVersions" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
           </app-versions-container>
         </div>
       </tab>

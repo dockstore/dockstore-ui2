@@ -80,6 +80,9 @@ describe('Dockstore my workflows', function() {
                 .contains('DAG')
                 .parent()
                 .should('not.have.class', 'disabled')
+            cy
+                .get('table>tbody>tr')
+                .should('have.length', 3) // 2 Versions and warning line
 
             cy
                 .get('#publishButton')

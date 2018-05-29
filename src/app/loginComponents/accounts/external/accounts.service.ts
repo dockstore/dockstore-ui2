@@ -1,11 +1,13 @@
 import { Links } from './links.model';
 import { TokenSource } from './../../../shared/enum/token-source.enum';
 import { Injectable } from '@angular/core';
+import { LoginService } from '../../../login/login.service';
+import { TokenService } from '../../token.service';
 
 @Injectable()
 export class AccountsService {
 
-    constructor() { }
+    constructor(private loginService: LoginService, private tokenService: TokenService) { }
 
     private stripSpace(url: string): string {
         return url.replace(/\s/g, '');
@@ -29,6 +31,16 @@ export class AccountsService {
                 break;
             case TokenSource.QUAY:
                 this.openWindow(Links.QUAY);
+                break;
+            case TokenSource.GOOGLE:
+                this.loginService.authenticate('google').first().subscribe(response => {
+                  // TODO: Hook up to snackbar
+                }, error => {
+                  // TODO: Hook up to snackbar
+                }, () => {
+                  // Always refresh tokens
+                  this.tokenService.updateTokens();
+                });
                 break;
         }
     }
