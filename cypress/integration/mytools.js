@@ -33,6 +33,28 @@ describe('Dockstore my tools', function() {
             .should('be.visible').click()
     }
 
+    function goToB3() {
+      cy.wait(5000)
+        cy.contains('quay.io/A2')
+            .parentsUntil('accordion-group')
+            .contains('div .no-wrap', /\bb3\b/)
+            .should('be.visible').click()
+    }
+
+    describe('Go to published tool A2/b3', function() {
+      it('Should have two versions visible', function() {
+        goToB3();
+        cy
+            .get('.nav-link')
+            .contains('Versions')
+            .parent()
+            .click()
+        cy
+            .get('tbody>tr')
+            .should('have.length', 2)
+      });
+    });
+
     describe('Should contain extended DockstoreTool properties', function() {
         it('visit another page then come back', function() {
             cy.get('a#home-nav-button').click()
@@ -175,7 +197,7 @@ describe('Dockstore my tools', function() {
                 .click()
 
             // This is deactivated because:
-            // Registering a tool also refreshes it.  
+            // Registering a tool also refreshes it.
             // Refresh results in an error so it is mocked.
             // The mocked results has an id that is not correct
             // The deregister uses this mocked id to deregister but since the id is incorrect, it can't deregister

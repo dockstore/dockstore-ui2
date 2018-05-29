@@ -15,14 +15,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -1767,7 +1767,65 @@ INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VAL
 }
 ', '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON', NULL, NULL);
 
+INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (70, 'cwlVersion: v1.0
+class: Workflow
 
+inputs:
+  input_file: File
+
+outputs:
+  output_file:
+    type: File
+    outputSource: md5sum/output_file
+
+steps:
+  md5sum:
+    run: md5sum-tool.cwl
+    in:
+      input_file: input_file
+    out: [output_file]
+', 'md5sum-workflow.cwl', 'DOCKSTORE_CWL', NULL, NULL);
+
+INSERT INTO sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (71, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+id: Md5sum
+label: Simple md5sum tool
+cwlVersion: v1.0
+
+$namespaces:
+  dct: http://purl.org/dc/terms/
+  foaf: http://xmlns.com/foaf/0.1/
+
+requirements:
+- class: DockerRequirement
+  dockerPull: quay.io/agduncan94/my-md5sum
+- class: InlineJavascriptRequirement
+
+hints:
+- class: ResourceRequirement
+  # The command really requires very little resources.
+  coresMin: 1
+  ramMin: 1024
+  outdirMin: 512
+
+inputs:
+  input_file:
+    type: File
+    inputBinding:
+      position: 1
+    doc: The file that will have its md5sum calculated.
+
+outputs:
+  output_file:
+    type: File
+    format: http://edamontology.org/data_3671
+    outputBinding:
+      glob: md5sum.txt
+    doc: A text file that contains a single line that is the md5sum of the input file.
+
+baseCommand: [/bin/my_md5sum]
+', 'md5sum-tool.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 --
 -- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
@@ -1790,7 +1848,7 @@ INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, ver
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (3, false, false, '2016-02-16 17:06:56', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (4, false, false, '2016-03-15 15:41:00', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (5, false, false, '2016-03-15 15:41:03', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
-INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (8, false, false, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (8, false, true, '2016-03-15 15:42:04', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (9, false, false, '2016-03-15 15:42:05', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (10, false, false, '2016-06-08 14:08:08', 'master', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 INSERT INTO tag (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (11, false, false, '2016-06-08 14:08:08', 'latest', 'master', true, false, NULL, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
@@ -1927,6 +1985,8 @@ INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 30);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 32);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 29);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (13, 31);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 70);
+INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (14, 71);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (6, 35);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
 INSERT INTO version_sourcefile (versionid, sourcefileid) VALUES (52, 39);
@@ -1959,6 +2019,7 @@ INSERT INTO workflow (id, author, defaultversion, description, email, giturl, is
 --
 
 INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 13);
+INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 14);
 
 
 --
@@ -1966,6 +2027,7 @@ INSERT INTO workflow_workflowversion (workflowid, workflowversionid) VALUES (11,
 --
 
 INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
+INSERT INTO workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype) VALUES (14, false, true, '2016-11-28 15:01:57.003', 'test', 'test', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, NULL, NULL, 'UNSET');
 
 
 --
@@ -2279,4 +2341,3 @@ ALTER TABLE ONLY entry_label
 --
 -- PostgreSQL database dump complete
 --
-

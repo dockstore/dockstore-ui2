@@ -55,6 +55,9 @@ describe('Dockstore Workflow Details', function() {
     .contains('Versions')
     .parent()
     .click()
+    cy
+        .get('tbody>tr')
+        .should('have.length', 2) // 1 Version and warning line
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=versions')
   });
 

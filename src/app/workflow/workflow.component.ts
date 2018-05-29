@@ -119,6 +119,9 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      if (this.publicPage) {
+        this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
+      }
     }
   }
 
@@ -177,6 +180,9 @@ export class WorkflowComponent extends Entry {
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
+    if (this.publicPage) {
+      this.validVersions = this.dockstoreService.getVisibleVersions(this.validVersions);
+    }
   }
 
   publishDisable() {
