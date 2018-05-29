@@ -36,6 +36,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
     this.clearContent();
     this.onVersionChange(value);
   }
+  public filePath: string;
+  public entryType = 'workflow';
+  public downloadFilePath: string;
 
   constructor(private paramfilesService: ParamfilesService,
               private highlightJsService: HighlightJsService,
@@ -43,6 +46,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
               private elementRef: ElementRef,
               private workflowService: WorkflowService) {
     super();
+    this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
@@ -55,6 +59,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
   reactToFile(): void {
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
+    this.filePath = this.getFilePath(this.currentFile);
+    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
+      this.currentFile, this.currentDescriptor, this.entryType);
   }
 
   ngAfterViewChecked() {
@@ -62,11 +69,6 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-
-  // Downloads a file
-  downloadFile(file, id): void {
-    this.fileService.downloadFile(file, id);
   }
 
   // Get the path of the file

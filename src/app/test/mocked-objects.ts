@@ -166,3 +166,10 @@ export const sampleTag = {
     'image_id': 'sampleImageId',
     'name': 'sampleName'
 };
+
+export const sampleSourceFile: SourceFile = {
+  content: 'potato',
+  id: 1,
+  path: '/cwl.json',
+  type: SourceFile.TypeEnum.CWLTESTJSON
+};
