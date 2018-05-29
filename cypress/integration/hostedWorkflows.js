@@ -58,8 +58,8 @@ describe('Dockstore my workflows', function() {
           .click()
         cy.window().then(function (window) {
           cy.document().then((doc) => {
-            var editors = doc.getElementsByClassName('ace_editor');
-            var wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
+            const editors = doc.getElementsByClassName('ace_editor');
+            const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
             window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
           })
         });
@@ -92,8 +92,8 @@ describe('Dockstore my workflows', function() {
             .click()
           cy.window().then(function (window) {
             cy.document().then((doc) => {
-              var editors = doc.getElementsByClassName('ace_editor');
-              var wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
+              const editors = doc.getElementsByClassName('ace_editor');
+              const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
               window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
             })
           });
@@ -108,8 +108,8 @@ describe('Dockstore my workflows', function() {
             .click()
           cy.window().then(function (window) {
             cy.document().then((doc) => {
-              var editors = doc.getElementsByClassName('ace_editor');
-              var testParameterFile = '{}';
+              const editors = doc.getElementsByClassName('ace_editor');
+              const testParameterFile = '{}';
               window.ace.edit(editors[2]).setValue(testParameterFile, -1);
             })
           });
