@@ -50,8 +50,8 @@ export class PermissionsComponent implements OnInit {
   }
 
 
-  remove(entity: string) {
-    this.workflowsService.removeWorkflowPermission(this.workflow.full_workflow_path, entity).subscribe(
+  remove(entity: string, permission: PermissionEnum) {
+    this.workflowsService.removeWorkflowPermission(this.workflow.full_workflow_path, entity, permission).subscribe(
       (userPermissions: UserPermission[]) => this.processResponse(userPermissions)
     );
   }
