@@ -25,6 +25,11 @@ export class AuthConfig extends CustomConfig {
       url: Dockstore.API_URI + '/auth/tokens/github',
       clientId: Dockstore.GITHUB_CLIENT_ID,
       scope: Dockstore.GITHUB_SCOPE
+    },
+    google: {
+      url: Dockstore.API_URI + '/auth/tokens/google',
+      clientId: Dockstore.GOOGLE_CLIENT_ID,
+      scope: Dockstore.GOOGLE_SCOPE + '&access_type=offline&approval_prompt=force'
     }
   };
 }
