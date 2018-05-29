@@ -8,6 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class PrivateIconComponent {
 
   // Change this link if necessary
-  readonly privateDocsLink = '/docs/public_private_tools';
+  readonly privateDocsLink = 'https://docs.dockstore.org/docs/publisher-tutorials/public-and-private-tools/';
   constructor() { }
 }

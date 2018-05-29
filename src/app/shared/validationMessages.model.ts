@@ -30,7 +30,8 @@ export const formErrors = {
   'versionTag': '',
   'workflow_path': '',
   'workflowName': '',
-  'customDockerRegistryPath': ''
+  'amazonDockerRegistryPath': '',
+  'sevenBridgesDockerRegistryPath': ''
 };
 
 export const exampleDescriptorPatterns = {
@@ -57,7 +58,8 @@ export const validationDescriptorPatterns = {
   'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
-  'customDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com'
+  'amazonDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com',
+  'sevenBridgesDockerRegistryPath': '^([a-zA-Z0-9]+-)?images\.sbgenomics\.com'
 };
 
 export const validationMessages = {
@@ -148,8 +150,12 @@ export const validationMessages = {
     'maxlength': 'Workflow Name is too long. (Max 256 characters.)',
     'pattern': 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
   },
-  'customDockerRegistryPath': {
+  'amazonDockerRegistryPath': {
     'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
     'pattern': 'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.'
+  },
+  'sevenBridgesDockerRegistryPath': {
+    'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
+    'pattern': 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.'
   }
 };

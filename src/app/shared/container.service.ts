@@ -46,6 +46,13 @@ export class ContainerService {
         return null;
       }
     });
+    this.toolIsPublished$ = this.tool$.map((tool: ExtendedDockstoreTool) => {
+      if (tool) {
+        return tool.is_published;
+      } else {
+        return null;
+      }
+});
   }
   setTool(tool: any) {
     this.tool$.next(tool);
