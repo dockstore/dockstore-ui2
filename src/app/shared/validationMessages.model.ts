@@ -60,10 +60,6 @@ export const validationDescriptorPatterns = {
   'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
   'amazonDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com',
   'sevenBridgesDockerRegistryPath': '^([a-zA-Z0-9]+-)?images\.sbgenomics\.com'
-  /**
-   *
-   */
-
 };
 
 export const validationMessages = {
