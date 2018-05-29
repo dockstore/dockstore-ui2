@@ -212,7 +212,7 @@ export class RegisterToolService {
         let foundPath;
         this.dockerRegistryMap.forEach(element => {
             if (irProvider === element.friendlyName) {
-                if (irProvider === 'Amazon ECR') {
+                if (irProvider === 'Amazon ECR' || irProvider === 'Seven Bridges') {
                   foundPath = customDockerRegistryPath;
                 } else {
                   foundPath = element.dockerPath;

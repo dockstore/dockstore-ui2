@@ -16,7 +16,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DateService } from '../shared/date.service';
@@ -44,10 +44,8 @@ import { SourceFile } from '../shared/swagger/model/sourceFile';
   styleUrls: ['./workflow.component.css']
 })
 export class WorkflowComponent extends Entry {
-  mode: string;
   workflowEditData: any;
   dnastackURL: string;
-  location: Location;
   fireCloudURL: string;
   public workflow;
   public missingWarning: boolean;
@@ -55,37 +53,24 @@ export class WorkflowComponent extends Entry {
   private workflowSubscription: Subscription;
   private workflowCopyBtnSubscription: Subscription;
   private workflowCopyBtn: string;
-  public selectedVersion = null;
-  public urlVersion = null;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
+  validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    private locationService: Location) {
+    location: Location, activatedRoute: ActivatedRoute) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService);
+      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
     this._toolType = 'workflows';
-    this.location = locationService;
-
-    let trimmedURL = window.location.href;
-    const indexOfLastColon = window.location.href.indexOf(':', window.location.href.indexOf('workflows'));
-    if (indexOfLastColon > 0) {
-      trimmedURL = window.location.href.substring(0, indexOfLastColon);
-    }
-
-    // Initialize discourse urls
-    (<any>window).DiscourseEmbed = {
-      discourseUrl: Dockstore.DISCOURSE_URL,
-      discourseEmbedUrl: decodeURIComponent(trimmedURL)
-    };
-
+    this.location = location;
+    this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
@@ -182,16 +167,18 @@ export class WorkflowComponent extends Entry {
 
   public setupPublicEntry(url: String) {
     if (url.includes('workflows')) {
-      this.title = this.getEntryPathFromURL();
-
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.workflowsService.getPublishedWorkflowByPath(this.title)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
-
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion, this.selectedVersion);
+
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          if (this.workflow != null) {
+            this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+          }
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -214,14 +201,6 @@ export class WorkflowComponent extends Entry {
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
-  }
-
-  setTab(tab: string) {
-    this.mode = tab;
-  }
-
-  checkMode(tab: string) {
-    return (tab === this.mode);
   }
 
   publishDisable() {
@@ -315,8 +294,21 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
-    const currentWorkflowPath = (this.router.url).split(':')[0];
-    this.location.go(currentWorkflowPath + ':' + this.selectedVersion.name);
+    if (this.workflow != null) {
+      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+    }
     this.setupFireCloudUrl(this.workflow);
   }
+
+  setEntryTab(tabName: string): void {
+     this.currentTab = tabName;
+     if (this.workflow != null) {
+       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+     }
+   }
+
+   getPageIndex(): number {
+     const pageIndex = this.getIndexInURL('/workflows');
+     return pageIndex;
+   }
 }

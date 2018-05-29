@@ -27,6 +27,7 @@ export class ContainerService {
   tool$ = new BehaviorSubject<any>(null); // This is the selected tool
   toolId$: Observable<number>;
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
+  toolIsPublished$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
@@ -38,6 +39,13 @@ export class ContainerService {
         return null;
       }
     });
+    this.toolIsPublished$ = this.tool$.map((tool: ExtendedDockstoreTool) => {
+      if (tool) {
+        return tool.is_published;
+      } else {
+        return null;
+      }
+});
   }
   setTool(tool: any) {
     this.tool$.next(tool);
