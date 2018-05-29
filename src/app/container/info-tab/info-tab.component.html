@@ -35,9 +35,12 @@
     </li>
     <li *ngIf="tool?.imgProviderUrl">
       <strong tooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
-      <a [href]="tool?.imgProviderUrl">
+      <a [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
         {{ tool?.imgProviderUrl }}
       </a>
+      <span *ngIf="privateOnlyRegistry">
+        {{ tool?.imgProviderUrl }}
+      </span>
     </li>
     <li *ngIf="tool?.default_dockerfile_path || !isPublic">
       <form #editDockerfileForm="ngForm" class="form-inline">
