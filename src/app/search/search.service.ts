@@ -257,9 +257,13 @@ export class SearchService {
       ['tags.verifiedSource', new SubBucket],
       ['workflowVersions.verifiedSource.keyword', new SubBucket],
       ['input_file_formats.value.keyword', new SubBucket],
-      ['output_file_formats.value.keyword', new SubBucket]
+      ['output_file_formats.value.keyword', new SubBucket],
+      ['workflowVersions.verifiedSource.keyword', new SubBucket]
     ]);
   }
+
+
+
 
   // Functions called from HTML
   /**

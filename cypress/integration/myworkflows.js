@@ -43,7 +43,6 @@ describe('Dockstore my workflows', function() {
                 .get('#refreshButton')
                 .should('not.have.class', 'disabled')
         });
-
     });
 
     describe('Look at a published workflow', function() {

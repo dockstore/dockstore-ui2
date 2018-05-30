@@ -71,7 +71,7 @@ describe('Checker workflow test from my-tools', function() {
             cy.get('#publishButton').should('be.visible').should('contain', 'Publish')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
-            // In the parent tool right now            
+            // In the parent tool right now
             cy.get('#tool-path').should('not.contain', '_checker')
             cy.url().should('eq', String(global.baseUrl) + '/my-tools/quay.io/A2/b3')
             cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish').click()

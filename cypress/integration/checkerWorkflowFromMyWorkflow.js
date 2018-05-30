@@ -23,7 +23,6 @@ describe('Checker workflow test from my-workflows', function() {
             .should('be.visible').click()
     }
 
-
     describe('Should be able to register and publish a checker workflow from a workflow', function() {
         it('visit a tool and have the correct buttons and be able to register a checker workflow', function() {
             getWorkflow();

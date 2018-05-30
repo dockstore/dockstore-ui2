@@ -136,8 +136,17 @@
               Docker Registry Path:
             </label>
             <div class="col-sm-9">
-              <input id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [disabled]="!showCustomDockerRegistryPath" [pattern]="validationPatterns.customDockerRegistryPath"/>
-              <div *ngIf="formErrors.customDockerRegistryPath" class="alert alert-danger"> {{ formErrors.customDockerRegistryPath}} </div>
+              <span *ngIf="showCustomDockerRegistryPath">
+                <span *ngIf="tool.irProvider === 'Amazon ECR'">
+                  <input id="dockerRegistryPathInput" class="form-control" name="amazonDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"/>
+                  <div *ngIf="formErrors.amazonDockerRegistryPath" class="alert alert-danger"> {{ formErrors.amazonDockerRegistryPath}} </div>
+                </span>
+                <span *ngIf="tool.irProvider === 'Seven Bridges'">
+                  <input id="dockerRegistryPathInput" class="form-control" name="sevenBridgesDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com" [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"/>
+                  <div *ngIf="formErrors.sevenBridgesDockerRegistryPath" class="alert alert-danger"> {{ formErrors.sevenBridgesDockerRegistryPath}} </div>
+                </span>
+              </span>
+              <input *ngIf="!showCustomDockerRegistryPath" id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256" tooltip="Custom Docker registry path" disabled/>
             </div>
           </div>
           <div class="form-group form-group-sm">
