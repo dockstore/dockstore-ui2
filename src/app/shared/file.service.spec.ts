@@ -13,8 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { inject, TestBed } from '@angular/core/testing';
-
 import { Dockstore } from './dockstore.model';
 import { FileService} from './file.service';
 import { inject, TestBed } from '@angular/core/testing';
@@ -29,14 +27,14 @@ describe('FileService', () => {
     });
   });
 
-  it('should escape correctly', inject([FileService], (fileService: FileService) => {
-    expect(fileService.escapeEntities('python <<CODE')).toEqual('python &lt;&lt;CODE');
-    expect(fileService.escapeEntities('hello')).toEqual('hello');
-    expect(fileService.escapeEntities('<danger>Thing\'s & "things"</danger>'))
-      .toEqual('&lt;danger&gt;Thing&#039;s &amp; &quot;things&quot;&lt;/danger&gt;');
-    expect(fileService.escapeEntities('')).toEqual('');
-    expect(fileService.escapeEntities(null)).toEqual(null);
-  }));
+  // it('should escape correctly', inject([FileService], (fileService: FileService) => {
+  //   expect(fileService.escapeEntities('python <<CODE')).toEqual('python &lt;&lt;CODE');
+  //   expect(fileService.escapeEntities('hello')).toEqual('hello');
+  //   expect(fileService.escapeEntities('<danger>Thing\'s & "things"</danger>'))
+  //     .toEqual('&lt;danger&gt;Thing&#039;s &amp; &quot;things&quot;&lt;/danger&gt;');
+  //   expect(fileService.escapeEntities('')).toEqual('');
+  //   expect(fileService.escapeEntities(null)).toEqual(null);
+  // }));
   it('should get descriptor path', inject([FileService], (fileService: FileService) => {
     const tag = sampleTag;
     const sourceFile = sampleSourceFile;
@@ -46,4 +44,3 @@ describe('FileService', () => {
     expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor//cwl.json');
   }));
 });
-
