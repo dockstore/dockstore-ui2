@@ -35,7 +35,7 @@
 
   <div *ngIf="!nullDescriptors && _selectedVersion?.valid" class="code-copy">
     <div class="code-copy-button btn-group">
-      <a download [href]="getDescriptorPath(currentDescriptor)" class="btn btn-default" type="button" title="{{getFilePath(currentFile)}}">
+      <a download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{getFilePath(currentFile)}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
       <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'descriptors_file'}"
