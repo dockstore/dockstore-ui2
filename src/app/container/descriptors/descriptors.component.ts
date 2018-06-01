@@ -49,6 +49,7 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
               public fileService: FileService,
               private elementRef: ElementRef) {
     super();
+    this.published$ = this.containerService.toolIsPublished$;
   }
 
   getDescriptors(version): Array<any> {
