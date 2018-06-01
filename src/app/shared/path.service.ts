@@ -30,11 +30,6 @@ export class PathService {
       }
     }
 
-    if (samePartsLength === 0) {
-      // Don't return absolute path, change to relative even if the base is root
-      return toParts.join('/');
-    }
-
     let outputParts = [];
     for (let i = samePartsLength; i < lowerFromParts.length; i++) {
       outputParts.push('..');

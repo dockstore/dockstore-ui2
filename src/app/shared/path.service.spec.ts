@@ -16,5 +16,6 @@ describe('Service: Path', () => {
     expect(service.relative('/a/b/file1', '/a/file2')).toBe('../file2');
     expect(service.relative('/a/b/file1', '/a/b/file2')).toBe('file2');
     expect(service.relative('/file2', '/a/b/file2')).toBe('a/b/file2');
+    expect(service.relative('/c/d/file2', '/a/b/file2')).toBe('../../a/b/file2');
   }));
 });
