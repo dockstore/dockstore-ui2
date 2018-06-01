@@ -31,6 +31,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { FooterComponent } from './footer/footer.component';
+import { FundingComponent } from './funding/funding.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
 import { ListentryModule } from './listentry/listentry.module';
@@ -48,7 +49,6 @@ import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { FundingComponent } from './funding/funding.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
@@ -70,6 +70,7 @@ import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
+import { PathService } from './shared/path.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
 import { StateService } from './shared/state.service';
@@ -149,6 +150,7 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     UserService,
     ListService,
     CommunicatorService,
+    PathService,
     ProviderService,
     ContainerService,
     WorkflowService,

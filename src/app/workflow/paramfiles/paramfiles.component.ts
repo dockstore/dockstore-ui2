@@ -13,14 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import {Component, Input, OnInit, ElementRef, AfterViewChecked} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { PathService } from '../../shared/path.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
@@ -44,7 +44,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
               private highlightJsService: HighlightJsService,
               public fileService: FileService,
               private elementRef: ElementRef,
-              private workflowService: WorkflowService) {
+              private workflowService: WorkflowService, private pathService: PathService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -60,6 +60,8 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
     this.filePath = this.getFilePath(this.currentFile);
+    const relativePath = this.pathService.relative(this._selectedVersion.workflow_path, this.currentFile.path);
+    this.currentFile.path = relativePath;
     this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
       this.currentFile, this.currentDescriptor, this.entryType);
   }

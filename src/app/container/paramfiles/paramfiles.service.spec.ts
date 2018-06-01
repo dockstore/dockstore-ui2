@@ -1,4 +1,3 @@
-import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,14 +13,16 @@ import { RefreshService } from './../../shared/refresh.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
 
-import { Tag } from './../../shared/swagger/model/tag';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
+import { PathService } from '../../shared/path.service';
+import { RefreshService } from './../../shared/refresh.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { WorkflowsStubService, ContainersStubService, RefreshStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { SourceFile } from './../../shared/swagger/model/sourceFile';
+import { Tag } from './../../shared/swagger/model/tag';
+import { ContainersStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { ParamfilesService } from './paramfiles.service';
-import { TestBed, async, inject } from '@angular/core/testing';
 
 describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {
@@ -29,7 +30,8 @@ describe('Service: paramFiles.service.ts', () => {
       providers: [ParamfilesService,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainersService, useClass: ContainersStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
+        { provide: RefreshService, useClass: RefreshStubService },
+        PathService
       ]
     });
   });

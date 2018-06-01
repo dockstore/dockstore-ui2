@@ -13,19 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainersService } from '../../shared/swagger';
-import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-
 import { ContainerService } from '../../shared/container.service';
-import { ParamfilesService } from './paramfiles.service';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { PathService } from '../../shared/path.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -47,7 +45,7 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
   constructor(private containerService: ContainerService, private containersService: ContainersService,
               private highlightJsService: HighlightJsService,
               private paramfilesService: ParamfilesService,
-              public fileService: FileService,
+              public fileService: FileService, private pathService: PathService,
               private elementRef: ElementRef) {
     super();
       this.published$ = this.containerService.toolIsPublished$;
@@ -64,6 +62,22 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
     this.content = this.currentFile.content;
     this.contentHighlighted = true;
     this.filePath = this.getFilePath(this.currentFile);
+    let basePath: string;
+    switch (this.currentDescriptor) {
+      case 'wdl': {
+        basePath = this._selectedVersion.wdl_path;
+        break;
+      }
+      case 'cwl': {
+        basePath = this._selectedVersion.cwl_path;
+        break;
+      }
+      default: {
+        console.log('Unrecognized descriptor type.  Could not get base path');
+      }
+    }
+    const relativePath = this.pathService.relative(basePath, this.currentFile.path);
+    this.currentFile.path = relativePath;
     this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
       this.currentFile, this.currentDescriptor, this.entryType);
   }
