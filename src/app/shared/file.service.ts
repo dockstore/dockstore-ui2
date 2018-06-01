@@ -78,7 +78,8 @@ export class FileService {
       }
       // Do not encode the filePath because webservice can handle an unencoded file path.  Also the default file name is prettier this way
       const customPath =  entry + '/versions/' + encodeURIComponent(version) + '/'
-        + type + '/descriptor/' + filePath;
+
+        + type + '/descriptor/' + encodeURIComponent(filePath);
       return basepath + customPath;
     }
 
