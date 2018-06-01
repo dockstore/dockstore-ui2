@@ -21,7 +21,7 @@
   <li>
     <mat-form-field style="width: 100%;">
       <mat-chip-list #writerlist>
-        <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, 'WRITE')" [removable]="true">
+        <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, 'WRITER')" [removable]="true">
           {{writer}}
           <mat-icon matChipRemove >cancel</mat-icon>
         </mat-chip>
@@ -36,7 +36,7 @@
   <li>
     <mat-form-field style="width: 100%;">
       <mat-chip-list #readerlist>
-        <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, 'READ')" [removable]="true">
+        <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, 'READER')" [removable]="true">
           {{reader}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

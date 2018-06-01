@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserPermission, Workflow, WorkflowsService } from '../../shared/swagger';
+import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 import { MatChipInputEvent } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-
-import PermissionEnum = UserPermission.PermissionEnum;
+import RoleEnum = Permission.RoleEnum;
 
 @Component({
   selector: 'app-permissions',
@@ -38,31 +37,31 @@ export class PermissionsComponent implements OnInit {
   }
 
   addOwner(event: MatChipInputEvent): void {
-    this.add(event, PermissionEnum.OWNER);
+    this.add(event, RoleEnum.OWNER);
   }
 
   addWriter(event: MatChipInputEvent): void {
-    this.add(event, PermissionEnum.WRITE);
+    this.add(event, RoleEnum.WRITER);
   }
 
   addReader(event: MatChipInputEvent): void {
-    this.add(event, PermissionEnum.READ);
+    this.add(event, RoleEnum.READER);
   }
 
 
-  remove(entity: string, permission: PermissionEnum) {
-    this.workflowsService.removeWorkflowPermission(this.workflow.full_workflow_path, entity, permission).subscribe(
-      (userPermissions: UserPermission[]) => this.processResponse(userPermissions)
+  remove(entity: string, permission: RoleEnum) {
+    this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, entity, permission).subscribe(
+      (userPermissions: Permission[]) => this.processResponse(userPermissions)
     );
   }
 
-  private add(event: MatChipInputEvent, permission: UserPermission.PermissionEnum): void {
+  private add(event: MatChipInputEvent, permission: RoleEnum): void {
     const input = event.input;
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, {email: value, permission: permission}).subscribe(
-        (userPermissions: UserPermission[]) => {
+      this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, {email: value, role: permission}).subscribe(
+        (userPermissions: Permission[]) => {
           this.processResponse(userPermissions);
         }
       );
@@ -79,7 +78,7 @@ export class PermissionsComponent implements OnInit {
     this.owners = [];
     this.hosted = this.workflow.mode === 'HOSTED';
     this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path).subscribe(
-      (userPermissions: UserPermission[]) => {
+      (userPermissions: Permission[]) => {
         this.canViewPermissions = true;
         this.processResponse(userPermissions);
       },
@@ -88,16 +87,16 @@ export class PermissionsComponent implements OnInit {
     );
   }
 
-  private specificPermissionEmails(userPermissions: UserPermission[], permission: PermissionEnum): string[] {
-    return userPermissions
-      .filter(u => u.permission === permission)
+  private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
+    return permissions
+      .filter(u => u.role === role)
       .map(c => c.email);
   }
 
-  private processResponse(userPermissions: UserPermission[]): void {
-    this.owners = this.specificPermissionEmails(userPermissions, PermissionEnum.OWNER);
-    this.writers = this.specificPermissionEmails(userPermissions, PermissionEnum.WRITE);
-    this.readers = this.specificPermissionEmails(userPermissions, PermissionEnum.READ);
+  private processResponse(userPermissions: Permission[]): void {
+    this.owners = this.specificPermissionEmails(userPermissions, RoleEnum.OWNER);
+    this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
+    this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
   }
 
 }
