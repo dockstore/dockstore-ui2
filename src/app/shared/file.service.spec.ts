@@ -33,7 +33,7 @@ describe('FileService', () => {
     const sourceFile = sampleSourceFile;
     const descriptorType = 'cwl';
     const entryType = 'tool';
-    const url = fileService.getDescriptorPath('quay.io/org/repo', tag, sourceFile, descriptorType, entryType);
+    const url = fileService.getDescriptorPath('quay.io/org/repo', tag, '/cwl.json', descriptorType, entryType);
     expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor/%2Fcwl.json');
   }));
 });

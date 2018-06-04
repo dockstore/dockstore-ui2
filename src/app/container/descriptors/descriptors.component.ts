@@ -26,6 +26,8 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
 import { Tag } from '../../shared/swagger/model/tag';
+import { Ga4ghFilesStateService } from '../../shared/entry/ga4gh-files-state.service';
+import { ToolFile, GA4GHService, ToolDescriptor } from '../../shared/swagger';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -43,8 +45,8 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
   }
 
   public downloadFilePath: string;
-  constructor(private containerService: ContainerService,
-              private highlightJsService: HighlightJsService,
+  constructor(private containerService: ContainerService, private ga4ghFilesStateService: Ga4ghFilesStateService,
+              private highlightJsService: HighlightJsService, private ga4ghService: GA4GHService,
               private descriptorsService: ToolDescriptorService,
               public fileService: FileService,
               private elementRef: ElementRef) {
@@ -56,19 +58,38 @@ export class DescriptorsComponent extends EntryFileSelector implements AfterView
     return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
+  getFiles(descriptor): Observable<Array<ToolFile>> {
+    return this.ga4ghFilesStateService.descriptorToolFiles$;
+  }
+
+  updateToolFiles(): void {
+    this.ga4ghFilesStateService.update(this.currentDescriptor, this.entrypath, this._selectedVersion.name);
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
     this.contentHighlighted = true;
-    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile,
-      this.currentDescriptor, 'tool');
+  }
+
+  getFileContent(toolFile: ToolFile): void {
+    this.currentFile = toolFile;
+    const type = this.currentDescriptor;
+    const id = this.entrypath;
+    const versionId = this._selectedVersion.name;
+    const relativePath = toolFile.path;
+    // TODO: Use oneOf in OpenAPI 3.0 to avoid casting
+    this.ga4ghService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(type, id, versionId, relativePath)
+      .subscribe((file: ToolDescriptor) => {
+        if (file) {
+          this.content = file.descriptor;
+          this.contentHighlighted = true;
+          this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, relativePath,
+            this.currentDescriptor, 'tool');
+        }
+      });
   }
 
   ngAfterViewChecked() {
-    if (this.contentHighlighted && !this.nullDescriptors) {
+    if (this.contentHighlighted && !this.nullDescriptors  && this.elementRef.nativeElement.querySelector('.highlight')) {
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }

@@ -24,7 +24,7 @@ import {
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
-
+import { Ga4ghFilesStateService } from './ga4gh-files-state.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -32,6 +32,7 @@ import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/re
     FormsModule,
     ModalModule
   ],
+  providers: [Ga4ghFilesStateService],
   declarations: [InfoTabCheckerWorkflowPathComponent, RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent
   ],

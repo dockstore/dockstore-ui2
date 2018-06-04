@@ -21,9 +21,10 @@ import { ContainerService } from '../../shared/container.service';
 import { FileService } from '../../shared/file.service';
 import { PathService } from '../../shared/path.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService, ToolFile, ToolTests, GA4GHService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from './paramfiles.service';
+import { Ga4ghFilesStateService } from '../../shared/entry/ga4gh-files-state.service';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -43,8 +44,8 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
   public downloadFilePath: string;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
-              private highlightJsService: HighlightJsService,
-              private paramfilesService: ParamfilesService,
+              private highlightJsService: HighlightJsService, private ga4ghFilesStateService: Ga4ghFilesStateService,
+              private paramfilesService: ParamfilesService, private ga4ghService: GA4GHService,
               public fileService: FileService, private pathService: PathService,
               private elementRef: ElementRef) {
     super();
@@ -54,12 +55,30 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'containers', this._selectedVersion.name, this.currentDescriptor);
+  getFiles(descriptor): Observable<Array<ToolFile>> {
+    return this.ga4ghFilesStateService.testToolFiles$;
+  }
+
+  getFileContent(toolFile: ToolFile): void {
+    this.currentFile = toolFile;
+    const type = this.currentDescriptor;
+    const id = this.entrypath;
+    const versionId = this._selectedVersion.name;
+    const relativePath = toolFile.path;
+    // TODO: Use oneOf in OpenAPI 3.0 to avoid casting
+    this.ga4ghService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(type, id, versionId, relativePath)
+      .subscribe((file: ToolTests) => {
+        if (file) {
+          this.content = file.test;
+          this.contentHighlighted = true;
+          this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
+            relativePath, this.currentDescriptor, this.entryType);
+        }
+      });
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
+    this.content = this.currentFile.test;
     this.contentHighlighted = true;
     this.filePath = this.getFilePath(this.currentFile);
     let basePath: string;
@@ -76,10 +95,12 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
         console.log('Unrecognized descriptor type.  Could not get base path');
       }
     }
-    const relativePath = this.pathService.relative(basePath, this.currentFile.path);
-    this.currentFile.path = relativePath;
-    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
-      this.currentFile, this.currentDescriptor, this.entryType);
+    // const relativePath = this.pathService.relative(basePath, this.currentFile.path);
+    // this.currentFile.path = relativePath;
+
+  }
+
+  updateToolFiles(): void {
   }
 
   ngAfterViewChecked() {

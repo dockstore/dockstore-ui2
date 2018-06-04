@@ -13,35 +13,35 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div>
-  <span *ngIf="content != null && _selectedVersion?.valid" class="row no-margin">
-    <span class="form-group col-sm-4">
-      <strong>Descriptor Type:</strong>
-      <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
-    </span>
-    <span class="form-group col-sm-4">
-      <strong>File:</strong>
-      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-    </span>
-  </span>
-
-  <div *ngIf="!content ||  !_selectedVersion?.valid">
+  <div *ngIf="(!content ||  !_selectedVersion?.valid); else displayContent">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
     </alert>
   </div>
-  <div *ngIf="content && _selectedVersion?.valid" class="code-copy">
-    <div class="code-copy-button btn-group">
-      <a *ngIf="(published$ | async)" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
-        <span class="glyphicon glyphicon-download"></span>
-      </a>
-      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'test_param_file'}"
-              (cbOnSuccess)="toolCopyBtnClick('test_param_file')" title="Copy to clipboard">
-        <span class="glyphicon glyphicon-copy"></span>
-      </button>
+  <ng-template #displayContent>
+    <span class="row no-margin">
+      <span class="form-group col-sm-4">
+        <strong>Descriptor Type:</strong>
+        <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+      </span>
+      <span class="form-group col-sm-4">
+        <strong>File:</strong>
+        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+      </span>
+    </span>
+    <div class="code-copy">
+      <div class="code-copy-button btn-group">
+        <a *ngIf="(published$ | async)" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
+          <span class="glyphicon glyphicon-download"></span>
+        </a>
+        <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':toolCopyBtn === 'test_param_file'}" (cbOnSuccess)="toolCopyBtnClick('test_param_file')"
+          title="Copy to clipboard">
+          <span class="glyphicon glyphicon-copy"></span>
+        </button>
+      </div>
+      <section [innerHTML]="fileService.highlightCode(content)"></section>
     </div>
-    <section [innerHTML]="fileService.highlightCode(content)"></section>
-  </div>
+  </ng-template>
 </div>

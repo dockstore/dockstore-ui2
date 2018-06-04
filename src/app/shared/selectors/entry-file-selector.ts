@@ -15,6 +15,7 @@
  */
 import { Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { ToolFile } from '../swagger';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -34,8 +35,10 @@ export abstract class EntryFileSelector {
   contentHighlighted: boolean;
 
   abstract getDescriptors(version): Array<any>;
-  abstract getFiles(descriptor): Observable<any>;
+  abstract getFiles(descriptor): Observable<Array<ToolFile>>;
   abstract reactToFile(): void;
+  abstract updateToolFiles(): void;
+  abstract getFileContent(toolFile: ToolFile): void;
 
   reactToVersion(): void {
     this.descriptors = this.getDescriptors(this._selectedVersion);
@@ -55,17 +58,20 @@ export abstract class EntryFileSelector {
   }
 
   reactToDescriptor() {
+    this.updateToolFiles();
     this.getFiles(this.currentDescriptor)
       .subscribe(files => {
         this.files = files;
         if (this.files.length) {
           this.onFileChange(this.files[0]);
-        }}
+        } else {
+          this.content = null;
+        }}, error => this.content = null
       );
   }
 
-  onFileChange(file) {
-    this.currentFile = file;
+  onFileChange(file: ToolFile) {
+    this.getFileContent(file);
     this.reactToFile();
   }
 

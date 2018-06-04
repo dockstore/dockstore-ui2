@@ -35,9 +35,9 @@ export class FileService {
      * @returns {string}                 the url to download the test parameter file
      * @memberof FileService
      */
-    getDescriptorPath(entryPath: string, entryVersion: (Tag | WorkflowVersion), sourceFile: SourceFile,
+    getDescriptorPath(entryPath: string, entryVersion: (Tag | WorkflowVersion), relativePath: string,
       descriptorType: string, entryType: string): string {
-      if (!entryPath || !entryVersion || !sourceFile || !descriptorType || !entryType) {
+      if (!entryPath || !entryVersion || !relativePath || !descriptorType || !entryType) {
         return null;
       } else {
         let type = '';
@@ -52,7 +52,7 @@ export class FileService {
             console.log('Unhandled type: ' + descriptorType);
             return null;
         }
-        return this.getDownloadFilePath(entryPath, entryVersion.name, sourceFile.path, type, entryType);
+        return this.getDownloadFilePath(entryPath, entryVersion.name, relativePath, type, entryType);
       }
     }
 
@@ -86,7 +86,7 @@ export class FileService {
     // Get the path of the file
     getFilePath(file): string {
       if (file != null) {
-        return file.path;
+        return file.url;
       }
       return null;
     }
