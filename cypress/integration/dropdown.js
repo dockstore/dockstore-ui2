@@ -59,6 +59,8 @@ describe('Dropdown test', function() {
             cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
+            // TODO: Gitlab is being very slow, hopefully one day we can remove this
+            cy.wait(10000);
             everythingOk();
             cy.visit(String(global.baseUrl) + '/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
