@@ -21,4 +21,5 @@ export class Files {
   @Input() versions: Array<any>;
   @Input() default: any;
   @Input() entrypath: string;
+  editing = false;
 }

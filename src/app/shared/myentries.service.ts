@@ -65,10 +65,10 @@ export abstract class MyEntriesService {
 
     sortedGroupEntries = sortedGroupEntries.concat(
       groupEntries.sort(function(a, b) {
-        if (a[path] < b[path]) {
+        if ((a.sourceControl + '/' + a[path]).toLowerCase() < (b.sourceControl + '/' + b[path]).toLowerCase()) {
           return -1;
         }
-        if (a[path] > b[path]) {
+        if ((a.sourceControl + '/' + a[path]).toLowerCase() > (b.sourceControl + '/' + b[path]).toLowerCase()) {
           return 1;
         }
         return 0;

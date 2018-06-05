@@ -20,7 +20,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ['1', 'private'], ['0', 'public']
     ])],
     ['registry', new Map([
-      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
+      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR'],
+      ['SEVEN_BRIDGES', 'Seven Bridges']
     ])],
     ['source_control_provider.keyword', new Map([
       ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com']

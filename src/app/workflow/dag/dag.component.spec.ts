@@ -23,6 +23,8 @@ import { WorkflowService } from './../../shared/workflow.service';
 import { WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { DagComponent } from './dag.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
+import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 
 /* tslint:disable:no-unused-variable */
 declare var cytoscape: any;
@@ -33,11 +35,11 @@ describe('DagComponent', () => {
   // let el: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DagComponent ],
-      imports: [ HttpClientTestingModule ],
+      declarations: [ DagComponent, CwlViewerComponent ],
+      imports: [ HttpClientTestingModule, FormsModule ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [ {provide: WorkflowsService, useClass: WorkflowsStubService },
-        {provide: WorkflowService, useClass: WorkflowStubService},
+        {provide: WorkflowService, useClass: WorkflowStubService}
       ]
     })
     .compileComponents();

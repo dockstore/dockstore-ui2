@@ -19,6 +19,7 @@ describe('Checker workflow test from workflows', function() {
                 .should('have.attr', 'href', '/workflows/github.com/A/l/_cwl_checker').click()
 
             // In the checker workflow right now
+            // TODO: The version is not set because the checker does not actually have any versions. We should add some.
             cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
@@ -33,7 +34,7 @@ describe('Checker workflow test from workflows', function() {
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
-            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker:master?tab=info')
+            cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')

@@ -285,6 +285,20 @@ export class WorkflowStubService {
     get descriptorType() { return ''; }
 }
 
+export class HostedStubService {
+    deleteHostedWorkflowVersion(id: string, version: string) {
+      return Observable.of({});
+    }
+
+    editHostedWorkflow(id: string, sourceFiles: any) {
+      return Observable.of({});
+    }
+
+    createHostedWorkflow(name: string, descriptorType: string) {
+      return Observable.of({});
+    }
+}
+
 export class MetadataStubService {
     sourceControlList = Observable.of([
         {

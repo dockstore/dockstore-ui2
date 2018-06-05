@@ -27,6 +27,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
+import { CustomMaterialModule } from './shared/modules/material.module';
 
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
@@ -87,7 +88,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { ToolDetailsComponent } from './tool-details/tool-details.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +97,6 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     HomeComponent,
     FooterComponent,
     HomeFootNoteComponent,
-    ToolDetailsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
@@ -136,7 +135,8 @@ import { ToolDetailsComponent } from './tool-details/tool-details.component';
     ListentryModule,
     MarkdownModule.forRoot(),
     SearchModule,
-    ApiModule.forRoot(getApiConfig)
+    ApiModule.forRoot(getApiConfig),
+    CustomMaterialModule
   ],
   providers: [
     AccountsService,

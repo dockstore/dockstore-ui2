@@ -20,11 +20,14 @@ import { StateService } from './../../shared/state.service';
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowService } from './../../shared/workflow.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+
 import {
     DescriptorLanguageStubService,
     MetadataStubService,
     WorkflowsStubService,
     WorkflowStubService,
+    HostedStubService
 } from './../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -36,6 +39,7 @@ describe('Service: RegisterWorkflowModal', () => {
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: MetadataService, useClass: MetadataStubService },
+                { provide: HostedService, useClass: HostedStubService },
                 StateService,
                 { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
             ], imports: [RouterTestingModule]

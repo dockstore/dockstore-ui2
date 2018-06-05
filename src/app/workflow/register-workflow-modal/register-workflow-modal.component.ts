@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
 import {
@@ -39,6 +38,21 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public workflowRegisterError;
   public isModalShown: boolean;
   public refreshMessage: string;
+  public hostedWorkflow = {
+    name: '',
+    descriptorType: 'cwl'
+  };
+  public options = [
+    {
+      label: 'Use CWL, WDL or NextFlow from GitHub, BitBucket, etc.',
+      value: 0
+    },
+    {
+      label: 'Create and save CWL or WDL on Dockstore.org',
+      value: 1
+    }
+  ];
+  public selectedOption = this.options[0];
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
@@ -50,6 +64,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     return this.registerWorkflowModalService.friendlyRepositoryKeys();
   }
 
+  // TODO: This is called many times, needs to be optimized
   getDescriptorTypes(): Array<string> {
     return this.registerWorkflowModalService.getDescriptorLanguageKeys();
   }
@@ -73,6 +88,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
 
   registerWorkflow() {
     this.registerWorkflowModalService.registerWorkflow();
+  }
+
+  registerHostedWorkflow() {
+    this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow);
   }
 
   showModal() {
