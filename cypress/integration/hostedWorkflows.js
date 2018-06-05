@@ -22,7 +22,7 @@ describe('Dockstore my workflows', function() {
           .contains('hosted-workflow')
           .click()
 
-        // Should not be able to publish
+        // Should not be able to publish (No valid versions)
         cy
           .get('#publishButton')
           .should('have.class', 'disabled')

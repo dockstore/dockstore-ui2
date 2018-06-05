@@ -27,14 +27,6 @@ describe('FileService', () => {
     });
   });
 
-  // it('should escape correctly', inject([FileService], (fileService: FileService) => {
-  //   expect(fileService.escapeEntities('python <<CODE')).toEqual('python &lt;&lt;CODE');
-  //   expect(fileService.escapeEntities('hello')).toEqual('hello');
-  //   expect(fileService.escapeEntities('<danger>Thing\'s & "things"</danger>'))
-  //     .toEqual('&lt;danger&gt;Thing&#039;s &amp; &quot;things&quot;&lt;/danger&gt;');
-  //   expect(fileService.escapeEntities('')).toEqual('');
-  //   expect(fileService.escapeEntities(null)).toEqual(null);
-  // }));
   it('should get descriptor path', inject([FileService], (fileService: FileService) => {
     const tag = sampleTag;
     const sourceFile = sampleSourceFile;
