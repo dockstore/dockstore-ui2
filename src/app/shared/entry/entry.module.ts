@@ -25,6 +25,7 @@ import {
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
+import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
 
 @NgModule({
   imports: [
@@ -38,6 +39,9 @@ import { CodeEditorComponent } from './../code-editor/code-editor.component';
     RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent
+  ],
+  providers: [
+    GA4GHFilesStateService
   ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,

@@ -19,6 +19,7 @@ import { Component, OnInit, OnChanges, Input} from '@angular/core';
 import { Files } from '../../shared/files';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 
 @Component({
   selector: 'app-files-container',
@@ -27,15 +28,16 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
 export class FilesContainerComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: Tag;
   versionsWithParamfiles: Array<any>;
-
-  constructor(private paramfilesService: ParamfilesService) {
+  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
     super();
   }
 
   ngOnInit() {
+    this.gA4GHFilesStateService.toolFiles$.subscribe(thing => console.log(thing));
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
+    this.gA4GHFilesStateService.update(this.entrypath, this.selectedVersion.name);
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 
