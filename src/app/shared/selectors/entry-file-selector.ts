@@ -64,8 +64,10 @@ export abstract class EntryFileSelector {
   }
 
   onFileChange(file) {
-    this.currentFile = file;
-    this.reactToFile();
+    if (this.currentFile !== file) {
+      this.currentFile = file;
+      this.reactToFile();
+    }
   }
 
   onVersionChange(value) {
