@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { Workflow } from '../../shared/swagger';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
@@ -37,8 +38,9 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
 
   public descriptorPath: string;
   public filePath: string;
-  constructor(private workflowDescriptorService: WorkflowDescriptorService,
-              public fileService: FileService,
+  public downloadFilePath: string;
+  constructor(private workflowDescriptorService: WorkflowDescriptorService, private gA4GHService: GA4GHService,
+              public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
               private workflowService: WorkflowService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
@@ -48,13 +50,21 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.workflowDescriptorService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
+    return this.gA4GHFilesStateService.descriptorToolFiles$.map((toolFiles: Array<ToolFile>) => {
+      return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
+        toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
+    });
+    // return this.workflowDescriptorService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
-    this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
-    this.filePath = this.getFilePath(this.currentFile);
+    // TODO: Memoize this
+    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolDescriptor) => {
+        this.content = file.descriptor;
+        this.downloadFilePath = this.getDescriptorPath(this.currentFile.path);
+        this.filePath = this.getFilePath(this.currentFile);
+      });
   }
 
   private getDescriptorPath(entrytype): string {

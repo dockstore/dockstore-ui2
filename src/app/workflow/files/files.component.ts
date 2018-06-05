@@ -20,6 +20,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import {Subscription} from 'rxjs/Subscription';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 
 @Component({
   selector: 'app-files-workflow',
@@ -29,7 +30,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: WorkflowVersion;
   versionsWithParamfiles: Array<any>;
-  constructor(private paramfilesService: ParamfilesService) {
+  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
     super();
   }
 
@@ -37,6 +38,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
+    this.gA4GHFilesStateService.update('#workflow/' + this.entrypath, this.selectedVersion.name);
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }
