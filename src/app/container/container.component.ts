@@ -15,18 +15,18 @@
  */
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
-import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
+import { DockstoreTool } from '../shared/swagger';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -191,7 +191,10 @@ export class ContainerComponent extends Entry {
         publish: this.published
       };
       this.containersService.publish(this.tool.id, request).subscribe(
-        response => this.tool.is_published = response.is_published, err => {
+        (response: DockstoreTool) => {
+          this.containerService.upsertToolToTools(response);
+          this.containerService.setTool(response);
+        }, err => {
           this.published = !this.published;
           this.refreshService.handleError('publish error', err);
         });

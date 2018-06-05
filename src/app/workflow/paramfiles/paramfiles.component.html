@@ -13,31 +13,31 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div>
-  <span *ngIf="_selectedVersion?.valid && content" class="row no-margin">
-    <span class="form-group col-sm-4">
-      <strong>File:</strong>
-      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-    </span>
-  </span>
-  <span *ngIf="content" class="input-group-btn code-copy">
-  </span>
-  <div *ngIf="content && _selectedVersion?.valid" class="code-copy">
-    <div class="code-copy-button btn-group">
-      <a *ngIf="(published$ | async)" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
-        <span class="glyphicon glyphicon-download"></span>
-      </a>
-      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content"
-              [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_param_file'}"
-              (cbOnSuccess)="workflowCopyBtnClick('workflow_param_file')">
-        <span class="glyphicon glyphicon-copy"></span>
-      </button>
-    </div>
-    <section [innerHTML]="fileService.highlightCode(content)"></section>
-  </div>
-  <alert type="warning" *ngIf="!content || !_selectedVersion?.valid">
+  <alert type="warning" *ngIf="(!content || !_selectedVersion?.valid); else displayContent">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp; A Test Parameter File associated with this workflow could not be found.
   </alert>
+  <ng-template #displayContent>
+    <span class="row no-margin">
+      <span class="form-group col-sm-4">
+        <strong>File:</strong>
+        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+      </span>
+    </span>
+    <span class="input-group-btn code-copy">
+    </span>
+    <div *ngIf="content && _selectedVersion?.valid" class="code-copy">
+      <div class="code-copy-button btn-group">
+        <a *ngIf="(published$ | async)" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
+          <span class="glyphicon glyphicon-download"></span>
+        </a>
+        <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" [ngClass]="{'btn-copy':workflowCopyBtn === 'workflow_param_file'}"
+          (cbOnSuccess)="workflowCopyBtnClick('workflow_param_file')">
+          <span class="glyphicon glyphicon-copy"></span>
+        </button>
+      </div>
+      <section [innerHTML]="fileService.highlightCode(content)"></section>
+    </div>
+  </ng-template>
 </div>

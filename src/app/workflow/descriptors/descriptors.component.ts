@@ -25,6 +25,8 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
 import { FileService } from '../../shared/file.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Ga4ghFilesStateService } from '../../shared/entry/ga4gh-files-state.service';
+import { ToolFile, ToolDescriptor, GA4GHService } from '../../shared/swagger';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -40,34 +42,54 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector implements A
 
   content: string;
   contentHighlighted: boolean;
-  constructor(private highlightJsService: HighlightJsService,
-              private workflowDescriptorService: WorkflowDescriptorService,
+  public downloadFilePath: string;
+  constructor(private highlightJsService: HighlightJsService, private ga4ghFilesStateService: Ga4ghFilesStateService,
+              private workflowDescriptorService: WorkflowDescriptorService, private ga4ghService: GA4GHService,
               public fileService: FileService,
               private workflowService: WorkflowService,
               private elementRef: ElementRef) {
     super();
+    this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
-    return this.workflowDescriptorService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
+  getFiles(descriptor): Observable<Array<ToolFile>> {
+    return this.ga4ghFilesStateService.descriptorToolFiles$;
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
-    this.contentHighlighted = true;
+
   }
+
+  getFileContent(toolFile: ToolFile): void {
+    this.currentFile = toolFile;
+    const type = this.currentDescriptor;
+    const id = this.entrypath;
+    const versionId = this._selectedVersion.name;
+    const relativePath = toolFile.path;
+    // TODO: Use oneOf in OpenAPI 3.0 to avoid casting
+    this.ga4ghService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(type, '#workflow/' + id, versionId, relativePath)
+      .subscribe((file: ToolDescriptor) => {
+        if (file) {
+          this.content = file.descriptor;
+          this.contentHighlighted = true;
+          this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, relativePath,
+            this.currentDescriptor, 'workflow');
+        }
+      });
+  }
+
+  updateToolFiles(): void {
+    this.ga4ghFilesStateService.update(this.currentDescriptor, '#workflow/' + this.entrypath, this._selectedVersion.name);
+  }
+
   ngAfterViewChecked() {
-    if (this.contentHighlighted) {
+    if (this.contentHighlighted  && this.elementRef.nativeElement.querySelector('.highlight')) {
       this.contentHighlighted = false;
       this.highlightJsService.highlight(this.elementRef.nativeElement.querySelector('.highlight'));
     }
-  }
-
-  getDescriptorPath(entrytype): string {
-    return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'workflow');
   }
 
   // Get the path of the file
