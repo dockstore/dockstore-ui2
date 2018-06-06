@@ -13,13 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 
+import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
@@ -39,10 +40,10 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   public entryType = 'workflow';
   public downloadFilePath: string;
 
-  constructor(private paramfilesService: ParamfilesService,
-              public fileService: FileService,
-              private workflowService: WorkflowService) {
-    super();
+  constructor(private paramfilesService: ParamfilesService, private gA4GHService: GA4GHService,
+    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
+    private workflowService: WorkflowService) {
+    super(fileService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
@@ -50,19 +51,18 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'workflows', this._selectedVersion.name, this.currentDescriptor);
+    return this.gA4GHFilesStateService.testToolFiles$.map((toolFiles: Array<ToolFile>) => {
+      return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
+    });
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
-    this.filePath = this.getFilePath(this.currentFile);
-    this.filePath = this.getFilePath(this.currentFile);
-    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
-      this.currentFile, this.currentDescriptor, this.entryType);
-  }
-
-  // Get the path of the file
-  getFilePath(file): string {
-    return this.fileService.getFilePath(file);
+    // TODO: Memoize this
+    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolTests) => {
+        this.content = file.test;
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
+        this.filePath = this.fileService.getFilePath(this.currentFile);
+      });
   }
 }

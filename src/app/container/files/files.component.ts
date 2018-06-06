@@ -33,7 +33,6 @@ export class FilesContainerComponent extends Files implements OnInit, OnChanges 
   }
 
   ngOnInit() {
-    this.gA4GHFilesStateService.toolFiles$.subscribe(thing => console.log(thing));
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {

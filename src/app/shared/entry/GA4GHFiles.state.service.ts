@@ -69,16 +69,16 @@ export class GA4GHFilesStateService {
     });
   }
   update(id: string, version: string) {
-    const cwlToolFiles$ = this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.CWL, id, version).subscribe(files => {
+    this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
+      DescriptorType.CWL, id, version).first().subscribe(files => {
         this.cwlToolFiles$.next(files);
       });
-    const wdlToolFiles$ = this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.WDL, id, version).subscribe(files => {
+    this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
+      DescriptorType.WDL, id, version).first().subscribe(files => {
         this.wdlToolFiles$.next(files);
       });
-    const nflToolFiles$ = this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.NFL, id, version).subscribe(files => {
+    this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
+      DescriptorType.NFL, id, version).first().subscribe(files => {
         this.nflToolFiles$.next(files);
       });
     // TODO: Grab from all descriptor types (CWL, WDL, NFL) to get all test parameter files

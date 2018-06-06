@@ -15,6 +15,7 @@
  */
 import { Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { FileService } from '../file.service';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -29,12 +30,26 @@ export abstract class EntryFileSelector {
   public currentFile;
   protected files: Array<any>;
   protected published$: Observable<boolean>;
-
+  public downloadFilePath: string;
   content: string = null;
 
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
+  /**
+   * Get the file using the descriptor/{relative-path} endpoint
+   *
+   * @abstract
+   * @memberof EntryFileSelector
+   */
   abstract reactToFile(): void;
+
+  constructor(protected fileService: FileService) {
+
+  }
+
+  protected getDescriptorPath(path: string, entryType: ('tool' | 'workflow')): string {
+    return this.fileService.getDescriptorPath(path, this._selectedVersion, this.currentFile, this.currentDescriptor, entryType);
+  }
 
   reactToVersion(): void {
     this.descriptors = this.getDescriptors(this._selectedVersion);
@@ -59,6 +74,9 @@ export abstract class EntryFileSelector {
         this.files = files;
         if (this.files.length) {
           this.onFileChange(this.files[0]);
+        } else {
+          this.currentFile = null;
+          this.content = null;
         }}
       );
   }

@@ -38,23 +38,29 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
 
   public descriptorPath: string;
   public filePath: string;
-  public downloadFilePath: string;
   constructor(private workflowDescriptorService: WorkflowDescriptorService, private gA4GHService: GA4GHService,
-              public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
-              private workflowService: WorkflowService) {
-    super();
+    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
+    private workflowService: WorkflowService) {
+    super(fileService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
+  /**
+   * Get all the primary or secondary descriptors
+   *
+   * @param {*} descriptor  This actually doesn't matter
+   * @returns {Observable<Array<ToolFile>>}  The array of primary or secondary descriptor ToolFiles
+   * @memberof DescriptorsWorkflowComponent
+   */
+  getFiles(descriptor): Observable<Array<ToolFile>> {
     return this.gA4GHFilesStateService.descriptorToolFiles$.map((toolFiles: Array<ToolFile>) => {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
         toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
     });
-    // return this.workflowDescriptorService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
+
   }
 
   reactToFile(): void {
@@ -62,17 +68,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
       this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolDescriptor) => {
         this.content = file.descriptor;
-        this.downloadFilePath = this.getDescriptorPath(this.currentFile.path);
-        this.filePath = this.getFilePath(this.currentFile);
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
+        this.filePath = this.fileService.getFilePath(this.currentFile);
       });
-  }
-
-  private getDescriptorPath(entrytype): string {
-    return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'workflow');
-  }
-
-  // Get the path of the file
-  private getFilePath(file): string {
-    return this.fileService.getFilePath(file);
   }
 }

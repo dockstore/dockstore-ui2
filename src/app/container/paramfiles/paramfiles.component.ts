@@ -13,17 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainersService } from '../../shared/swagger';
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 import { ContainerService } from '../../shared/container.service';
-import { ParamfilesService } from './paramfiles.service';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { ContainersService, GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -42,30 +42,59 @@ export class ParamfilesComponent extends EntryFileSelector {
   public entryType = 'tool';
   public downloadFilePath: string;
 
-  constructor(private containerService: ContainerService, private containersService: ContainersService,
-              private paramfilesService: ParamfilesService,
+  constructor(private containerService: ContainerService, private containersService: ContainersService, private gA4GHService: GA4GHService,
+              private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService,
               public fileService: FileService) {
-    super();
+    super(fileService);
       this.published$ = this.containerService.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'containers', this._selectedVersion.name, this.currentDescriptor);
+  /**
+   * Get all the language-specific test parameter files
+   *
+   * @param {(('cwl' | 'wdl' | 'nfl'))} descriptor The descriptor language selected
+   * @returns {Observable<Array<ToolFile>>} The array of language-specific test parameter files
+   * @memberof ParamfilesComponent
+   */
+  getFiles(descriptor: ('cwl' | 'wdl' | 'nfl')): Observable<Array<ToolFile>> {
+    let testToolFiles$: BehaviorSubject<Array<ToolFile>>;
+    switch (descriptor) {
+      case 'wdl': {
+        testToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
+        break;
+      }
+      case 'cwl': {
+        testToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
+        break;
+      }
+      case 'nfl': {
+        testToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
+        break;
+      }
+      default: {
+        console.log('Unknown descriptor type: ' + descriptor);
+        return Observable.of([]);
+      }
+    }
+      return testToolFiles$.map((toolFiles: Array<ToolFile>) => {
+        if (toolFiles) {
+        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
+        } else {
+          return [];
+        }
+      });
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
-    this.filePath = this.getFilePath(this.currentFile);
-    this.filePath = this.getFilePath(this.currentFile);
-    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
-      this.currentFile, this.currentDescriptor, this.entryType);
-  }
-
-  // Get the path of the file
-  getFilePath(file): string {
-    return this.fileService.getFilePath(file);
+    // TODO: Memoize this
+    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
+      this._selectedVersion.name, this.currentFile.path).first().subscribe((file: ToolTests) => {
+        this.content = file.test;
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
+        this.filePath = this.fileService.getFilePath(this.currentFile);
+      });
   }
 }
