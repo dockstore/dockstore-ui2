@@ -142,9 +142,13 @@
         </div>
       </tab>
       <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
-        <div *ngIf="validVersions && !isStub()">
+        <div *ngIf="validVersions && !isStub() && !isHosted()">
           <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
           </app-files-workflow>
+        </div>
+        <div *ngIf="validVersions && isHosted()">
+          <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage" [descriptorType]="workflow?.descriptorType">
+          </app-workflow-file-editor>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.

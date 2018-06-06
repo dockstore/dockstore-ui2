@@ -20,6 +20,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
@@ -50,7 +51,8 @@ import { myworkflowRouting } from './myworkflows.routing';
     AccordionModule.forRoot(),
     RefreshAlertModule,
     TabsModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    CustomMaterialModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

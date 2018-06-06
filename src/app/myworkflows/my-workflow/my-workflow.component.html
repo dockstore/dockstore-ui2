@@ -38,6 +38,7 @@
           <li>
             Press the 'Register Workflow' button to manually add a workflow.
           </li>
+          <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
         </ul>
         <div *ngIf="!hasGitHubToken">
           <a class="btn btn-block btn-social btn-github" (click)="link()">
@@ -91,7 +92,7 @@
           </button>
         </accordion-group>
       </accordion>
-      <div>
+      <div *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
         <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
       </div>
       <app-register-workflow-modal></app-register-workflow-modal>

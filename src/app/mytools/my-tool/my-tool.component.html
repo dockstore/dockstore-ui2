@@ -39,6 +39,9 @@
             <li>
               Press the 'Add Tool' button to manually add a tool.
             </li>
+            <button (click)="showRegisterEntryModal()" type="button" class="btn btn-primary btn-smq" [disabled]="refreshMessage !== null">
+              Add Tool
+            </button>
           </ul>
           <div *ngIf="!hasGitHubToken">
               <a class="btn btn-block btn-social btn-github" (click)="link()">
@@ -90,9 +93,11 @@
             </button>
           </accordion-group>
         </accordion>
-        <button (click)="showRegisterEntryModal()" id="register_tool_button" type="button" class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
-          Add Tool
-        </button>
+        <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
+          <button (click)="showRegisterEntryModal()" id="register_tool_button" type="button" class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
+            Add Tool
+          </button>
+        </span>
         <app-register-tool></app-register-tool>
       </div>
       <div *ngIf="tool" class="col-md-9 containers-rsb">

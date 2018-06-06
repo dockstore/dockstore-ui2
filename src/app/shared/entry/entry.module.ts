@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomMaterialModule } from './../modules/material.module';
 
 import {
   InfoTabCheckerWorkflowPathComponent,
@@ -26,19 +27,22 @@ import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
+import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
 
 @NgModule({
   imports: [
     CommonModule,
     TooltipModule.forRoot(),
     FormsModule,
-    ModalModule
+    ModalModule,
+    CustomMaterialModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
     RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent,
-    CodeEditorComponent
+    CodeEditorComponent,
+    CodeEditorListComponent
   ],
   providers: [
     GA4GHFilesStateService
@@ -46,7 +50,9 @@ import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
   exports: [
     InfoTabCheckerWorkflowPathComponent,
     LaunchCheckerWorkflowComponent,
-    CodeEditorComponent
+    CodeEditorComponent,
+    CodeEditorListComponent,
+    CustomMaterialModule
   ]
 })
 export class EntryModule { }

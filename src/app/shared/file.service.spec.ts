@@ -36,4 +36,3 @@ describe('FileService', () => {
     expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor//cwl.json');
   }));
 });
-

@@ -23,6 +23,7 @@ import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -38,7 +39,7 @@ export class RegisterWorkflowModalService {
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService, private router: Router,
         private stateService: StateService, private descriptorLanguageService: DescriptorLanguageService,
-        private metadataService: MetadataService) {
+        private metadataService: MetadataService, private hostedService: HostedService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
         this.sampleWorkflow.workflowName = '';
@@ -106,6 +107,38 @@ export class RegisterWorkflowModalService {
                 }
               }
             );
+    }
+
+    /**
+     * Registers a hosted workflow
+     * @param  hostedWorkflow hosted workflow object
+     */
+    registerHostedWorkflow(hostedWorkflow) {
+      this.stateService.setRefreshMessage('Registering workflow...');
+      this.hostedService.createHostedWorkflow(
+          hostedWorkflow.name,
+          hostedWorkflow.descriptorType).subscribe(result => {
+            this.workflows.push(result);
+            this.workflowService.setWorkflows(this.workflows);
+            this.workflowService.setWorkflow(result);
+            this.stateService.setRefreshMessage(null);
+            this.setIsModalShown(false);
+            this.clearWorkflowRegisterError();
+            this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
+          }, error =>  {
+            if (error) {
+              if (error.status === 0) {
+                this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
+                'Please wait and try again later.', '');
+              } else {
+                this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
+                  'workflow, please ensure that the workflow attributes are ' +
+                  'valid and the same workflow has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+                  error.error);
+                }
+              }
+            }
+          );
     }
 
     friendlyRepositoryKeys(): Array<string> {
