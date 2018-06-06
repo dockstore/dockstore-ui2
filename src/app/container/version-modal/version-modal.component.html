@@ -33,7 +33,7 @@
                      placeholder="e.g. develop" [disabled]="!(mode=='Add')" />
             </div>
           </div>
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Git Reference:
             </label>
@@ -44,7 +44,7 @@
                 </div>
             </div>
           </div>
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Image ID:
             </label>
@@ -52,7 +52,7 @@
               <input type="text" class="form-control" name="image_id" [(ngModel)]="unsavedVersion.image_id" title="Docker Image ID." placeholder="e.g. 28d30887157514b6047c9" [disabled]="true" />
             </div>
           </div>
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Dockerfile:
             </label>
@@ -63,7 +63,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               CWL Descriptor:
             </label>
@@ -74,7 +74,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               WDL Descriptor:
             </label>
@@ -86,7 +86,7 @@
             </div>
           </div>
 
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               CWL Test Parameter File(s):
             </label>
@@ -124,7 +124,7 @@
             </div>
           </div>
 
-          <div class="form-group form-group form-group-sm">
+          <div class="form-group form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               WDL Test Parameter File(s):
             </label>
@@ -162,7 +162,7 @@
             </div>
           </div>
 
-          <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">
+          <div class="form-group form-group-sm" *ngIf="editMode" style="clear:both;">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Hidden:
             </label>
@@ -174,7 +174,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm">
+          <div class="form-group form-group-sm" *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Automated:
             </label>
@@ -184,7 +184,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
+          <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Image Size:
             </label>
@@ -194,7 +194,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
+          <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Last Modified:
             </label>
@@ -204,7 +204,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
+          <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Valid:
             </label>
@@ -214,7 +214,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
+          <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               Docker Pull:
             </label>

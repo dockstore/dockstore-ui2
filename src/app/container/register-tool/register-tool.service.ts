@@ -115,7 +115,7 @@ export class RegisterToolService {
      * @param  hostedTool hosted tool object
      */
     registerHostedTool(hostedTool) {
-      const splitPath = hostedTool.path.split('/')
+      const splitPath = hostedTool.path.split('/');
       const namespace = splitPath[0];
       const name = splitPath[1];
       this.stateService.setRefreshMessage('Registering tool...');
