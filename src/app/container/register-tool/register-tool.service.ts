@@ -25,6 +25,7 @@ import { ContainersService } from './../../shared/swagger/api/containers.service
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tool } from './tool';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 
 @Injectable()
 export class RegisterToolService {
@@ -47,7 +48,7 @@ export class RegisterToolService {
     constructor(private containersService: ContainersService,
         private containerService: ContainerService,
         private stateService: StateService, private router: Router,
-        private metadataService: MetadataService) {
+        private metadataService: MetadataService, private hostedService: HostedService) {
         this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
@@ -107,6 +108,30 @@ export class RegisterToolService {
             // Use types instead
         }, error => this.setToolRegisterError(error)
         );
+    }
+
+    /**
+     * Registers a hosted tool
+     * @param  hostedTool hosted tool object
+     */
+    registerHostedTool(hostedTool) {
+      const splitPath = hostedTool.path.split('/')
+      const namespace = splitPath[0];
+      const name = splitPath[1];
+      this.stateService.setRefreshMessage('Registering tool...');
+      this.hostedService.createHostedTool(
+          name,
+          'cwl',
+          hostedTool.registry
+          namespace).subscribe(result => {
+            this.setToolRegisterError(null);
+            this.stateService.setRefreshMessage(null);
+            this.setIsModalShown(false);
+            this.containerService.addToTools(this.tools, result);
+            this.containerService.setTool(result);
+            this.router.navigateByUrl('/my-tools' + '/' + result.tool_path);
+          }, error => this.setToolRegisterError(error)
+          );
     }
 
     setCustomDockerRegistryPath(newCustomDockerRegistryPath: string): void {

@@ -26,6 +26,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
+import { CustomMaterialModule } from './../modules/material.module';
 
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
@@ -114,7 +115,8 @@ import { SelectModule } from './select.module';
     ExtendedToolService
   ],
   exports: [
-    ContainerComponent
+    ContainerComponent,
+    CustomMaterialModule
   ]
 })
 export class ContainerModule {

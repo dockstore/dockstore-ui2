@@ -42,7 +42,7 @@
         {{ tool?.imgProviderUrl }}
       </span>
     </li>
-    <li *ngIf="tool?.default_dockerfile_path || !isPublic">
+    <li *ngIf="(tool?.default_dockerfile_path || !isPublic) && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <form #editDockerfileForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
@@ -62,7 +62,7 @@
         </div>
       </form>
     </li>
-    <li *ngIf="tool?.default_cwl_path || !isPublic">
+    <li *ngIf="(tool?.default_cwl_path || !isPublic) && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <form #editCWLPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
@@ -82,7 +82,7 @@
         </div>
       </form>
     </li>
-    <li *ngIf="tool?.default_wdl_path || !isPublic">
+    <li *ngIf="(tool?.default_wdl_path || !isPublic) && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <form #editWDLPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
@@ -102,7 +102,7 @@
         </div>
       </form>
     </li>
-   <li>
+   <li *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <form #editCWLTestPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
@@ -117,7 +117,7 @@
       </form>
 
     </li>
-    <li>
+    <li *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <form #editWDLTestPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
@@ -133,13 +133,13 @@
       </form>
     </li>
     <app-info-tab-checker-workflow-path></app-info-tab-checker-workflow-path>
-    <li *ngIf="tool?.buildMode">
+    <li *ngIf="tool?.buildMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
-    <li *ngIf="tool?.lastBuildDate">
+    <li *ngIf="tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
     </li>
-    <li *ngIf="tool?.lastUpdatedDate">
+    <li *ngIf="tool?.lastUpdatedDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
     </li>
   </ul>
