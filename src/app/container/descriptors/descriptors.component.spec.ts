@@ -18,12 +18,13 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 
-import { ContainersStubService, ContainerStubService } from '../../../../src/app/test/service-stubs';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersStubService, ContainerStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
+import { ContainersService, GA4GHService } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { FileService } from './../../shared/file.service';
 import { DescriptorsComponent } from './descriptors.component';
 import { ToolDescriptorService } from './tool-descriptor.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 
 describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;
@@ -45,7 +46,10 @@ describe('DescriptorsComponent', () => {
         { provide: ToolDescriptorService, useClass: DescriptorsStubService },
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: FileService, useClass: FileStubService }]
+        { provide: FileService, useClass: FileStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService },
+        GA4GHFilesStateService
+      ]
     })
       .compileComponents();
   }));

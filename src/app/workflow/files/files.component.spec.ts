@@ -14,12 +14,14 @@
  *    limitations under the License.
  */
 
-import { ParamFilesStubService } from './../../test/service-stubs';
+import { ParamFilesStubService, GA4GHStubService } from './../../test/service-stubs';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilesWorkflowComponent } from './files.component';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { GA4GHService } from '../../shared/swagger';
 
 describe('FilesWorkflowComponent', () => {
   let component: FilesWorkflowComponent;
@@ -29,7 +31,11 @@ describe('FilesWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ FilesWorkflowComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [{provide: ParamfilesService, useClass: ParamFilesStubService}]
+      providers: [
+        { provide: ParamfilesService, useClass: ParamFilesStubService },
+        GA4GHFilesStateService,
+        { provide: GA4GHService, useClass: GA4GHStubService }
+      ]
     })
     .compileComponents();
   }));

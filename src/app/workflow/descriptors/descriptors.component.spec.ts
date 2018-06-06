@@ -17,10 +17,12 @@
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { FileService } from './../../shared/file.service';
-import { DescriptorsStubService, FileStubService, WorkflowStubService } from './../../test/service-stubs';
+import { DescriptorsStubService, FileStubService, WorkflowStubService, GA4GHStubService } from './../../test/service-stubs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DescriptorsWorkflowComponent } from './descriptors.component';
+import { GA4GHService } from '../../shared/swagger';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 
 describe('DescriptorsWorkflowComponent', () => {
   let component: DescriptorsWorkflowComponent;
@@ -32,7 +34,9 @@ describe('DescriptorsWorkflowComponent', () => {
       providers: [
         { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService }
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService },
+        GA4GHFilesStateService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
