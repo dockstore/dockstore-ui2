@@ -24,7 +24,7 @@
 <button type="button" class="btn btn-danger btn-block" *ngIf="!isPublic && isManualTool()" (click)="deleteTag(); false">
   Delete
 </button>
-<button type="button" class="btn btn-danger btn-block" *ngIf="!isPublic && tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="deleteHostedTag(); false">
+<button type="button" class="btn btn-danger btn-block deleteVersionButton" *ngIf="!isPublic && tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="deleteHostedTag(); false">
   Delete
 </button>
 <!-- Modal -->

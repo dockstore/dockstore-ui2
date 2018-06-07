@@ -48,9 +48,6 @@ describe('Dockstore my workflows', function() {
           .parent()
           .click()
         cy
-          .get('#deleteVersionButton')
-          .should('be.disabled')
-        cy
           .get('#editFilesButton')
           .click()
         cy
@@ -165,14 +162,10 @@ describe('Dockstore my workflows', function() {
             .find('a')
             .contains('2')
 
-          // Try deleting a version
+          // Delete a version
           cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
-          cy
-            .get('#deleteVersionButton')
+            .get('table')
+            .find('.deleteVersionButton')
             .click()
 
           // Version should no longer exist
