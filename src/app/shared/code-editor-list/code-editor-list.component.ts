@@ -47,9 +47,19 @@ export class CodeEditorListComponent {
    */
   getFileType() {
     if (this.fileType === 'descriptor') {
-      return 'DOCKSTORE_' + this.descriptorType.toUpperCase();
+      if (this.descriptorType) {
+        return 'DOCKSTORE_' + this.descriptorType.toUpperCase();
+      } else {
+        return 'DOCKSTORE_CWL';
+      }
     } else if (this.fileType === 'testParam') {
-      return this.descriptorType.toUpperCase() + '_TEST_JSON';
+      if (this.descriptorType) {
+        return this.descriptorType.toUpperCase() + '_TEST_JSON';
+      } else {
+        return 'CWL_TEST_JSON';
+      }
+    } else if (this.fileType === 'dockerfile') {
+      return 'DOCKERFILE';
     } else {
       return null;
     }
@@ -61,9 +71,15 @@ export class CodeEditorListComponent {
    */
   getDefaultPath() {
     if (this.fileType === 'descriptor') {
-      return '.' + this.descriptorType.toLowerCase();
+      if (this.descriptorType) {
+        return '.' + this.descriptorType.toLowerCase();
+      } else {
+        return '.cwl';
+      }
     } else if (this.fileType === 'testParam') {
       return '.json';
+    } else if (this.fileType === 'dockerfile') {
+      return '/Dockerfile';
     }
   }
 
@@ -73,6 +89,15 @@ export class CodeEditorListComponent {
    * @return {string}      Is path for primary descriptor
    */
   isPrimaryDescriptor(path: string) {
-    return path === '/Dockstore.' + this.descriptorType.toLowerCase();
+    return path === '/Dockstore.cwl' || path === '/Dockstore.wdl';
+  }
+
+  /**
+   * Returns true if path is the dockerfile, false otherwise
+   * @param  path Path to check
+   * @return {string}      Is path for dockerfile
+   */
+  isDockerFile(path: string) {
+    return path === '/Dockerfile';
   }
 }

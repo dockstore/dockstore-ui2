@@ -38,6 +38,7 @@ import { ContainersService } from './../shared/swagger/api/containers.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-container',
@@ -54,6 +55,7 @@ export class ContainerComponent extends Entry {
   public tool: ExtendedDockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'labels', 'versions', 'files'];
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -310,4 +312,12 @@ export class ContainerComponent extends Entry {
      }
      return pageIndex;
    }
+
+   isHosted(): boolean {
+    if (this.tool) {
+      return this.tool.mode === this.DockstoreToolType.ModeEnum.HOSTED;
+    } else {
+      return true;
+    }
+  }
 }

@@ -122,7 +122,7 @@ export class RegisterToolService {
       this.hostedService.createHostedTool(
           name,
           'cwl',
-          hostedTool.registry
+          hostedTool.registry,
           namespace).subscribe(result => {
             this.setToolRegisterError(null);
             this.stateService.setRefreshMessage(null);

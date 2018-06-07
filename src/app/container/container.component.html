@@ -151,8 +151,14 @@
       </tab>
       <tab heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions">
-          <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
-          </app-files-container>
+          <div *ngIf="!isHosted()">
+            <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+            </app-files-container>
+          </div>
+          <div *ngIf="isHosted()">
+            <app-tool-file-editor *ngIf="currentTab === 'files'" [entrypath]="tool.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+            </app-tool-file-editor>
+          </div>
         </div>
       </tab>
     </tabset>
