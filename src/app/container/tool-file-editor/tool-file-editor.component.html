@@ -39,9 +39,6 @@
 </tabset>
 <div class="editor-button-container" *ngIf="!publicPage">
   <span *ngIf="!editing">
-    <button id="deleteVersionButton" mat-raised-button color="warn" (click)="deleteVersion()" [disabled]="versions?.length == 0">
-      Delete Version
-    </button>
     <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
       Edit Files
     </button>

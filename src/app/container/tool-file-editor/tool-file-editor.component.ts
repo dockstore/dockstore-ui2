@@ -29,24 +29,6 @@ export class ToolFileEditorComponent extends Files {
     }
 
   /**
-   * Deletes the current version of the tool
-   */
-  deleteVersion() {
-    const message = 'Delete Version';
-    this.hostedService.deleteHostedToolVersion(
-        this.id * 1, // Converts to a number
-        this._selectedVersion.name).subscribe(result => {
-          this.containerService.setTool(result);
-          this.refreshService.handleSuccess(message);
-        }, error =>  {
-          if (error) {
-              this.refreshService.handleError(message, error);
-          }
-        }
-      );
-  }
-
-  /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {

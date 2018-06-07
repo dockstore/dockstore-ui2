@@ -23,6 +23,7 @@ import { DateService } from './../../shared/date.service';
 import { Component, OnInit } from '@angular/core';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { View } from '../../shared/view';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 
 @Component({
   selector: 'app-view-container',
@@ -33,9 +34,10 @@ import { View } from '../../shared/view';
 export class ViewContainerComponent extends View implements OnInit {
   public TagEditorMode = TagEditorMode;
   private tool: DockstoreTool;
+  public DockstoreToolType = DockstoreTool;
   isPublic: boolean;
   constructor(dateService: DateService, private versionModalService: VersionModalService, private stateService: StateService,
-    private containerService: ContainerService, private containertagsService: ContainertagsService) {
+    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService) {
     super(dateService);
   }
 
@@ -46,13 +48,29 @@ export class ViewContainerComponent extends View implements OnInit {
   }
 
   deleteTag() {
-    this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
-      deleteResponse => {
-        this.containertagsService.getTagsByPath(this.tool.id).subscribe(response => {
-          this.tool.tags = response;
-          this.containerService.setTool(this.tool);
+    const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
+    const confirmDelete = confirm(deleteMessage);
+    if (confirmDelete) {
+      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
+        deleteResponse => {
+          this.containertagsService.getTagsByPath(this.tool.id).subscribe(response => {
+            this.tool.tags = response;
+            this.containerService.setTool(this.tool);
+          });
         });
-      });
+    }
+  }
+
+  deleteHostedTag() {
+    const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
+    const confirmDelete = confirm(deleteMessage);
+    if (confirmDelete) {
+      this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
+        result => {
+            this.containerService.setTool(result);
+          });
+        )
+    }
   }
 
   isManualTool(): boolean {

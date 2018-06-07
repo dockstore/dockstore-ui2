@@ -28,24 +28,6 @@ export class WorkflowFileEditorComponent extends Files {
   }
 
   /**
-   * Deletes the current version of the workflow
-   */
-  deleteVersion() {
-    const message = 'Delete Version';
-    this.hostedService.deleteHostedWorkflowVersion(
-        this.id * 1, // Converts to a number
-        this._selectedVersion.name).subscribe(result => {
-          this.workflowService.setWorkflow(result);
-          this.refreshService.handleSuccess(message);
-        }, error =>  {
-          if (error) {
-              this.refreshService.handleError(message, error);
-          }
-        }
-      );
-  }
-
-  /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
