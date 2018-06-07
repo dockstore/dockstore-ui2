@@ -16,7 +16,6 @@ export class WorkflowFileEditorComponent extends Files {
   originalSourceFiles = [];
   _selectedVersion: WorkflowVersion;
   @Input() descriptorType: string;
-  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
     if (value != null) {
@@ -26,13 +25,6 @@ export class WorkflowFileEditorComponent extends Files {
   }
   constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService) {
     super();
-  }
-
-  /**
-   * Toggles edit mode
-   */
-  toggleEdit() {
-    this.editing = !this.editing;
   }
 
   /**
@@ -62,26 +54,6 @@ export class WorkflowFileEditorComponent extends Files {
   }
 
   /**
-   * Retrieves all descriptor files from the list of sourcefiles
-   * @param  sourceFiles Array of sourcefiles
-   * @return  {Array<SourceFile>}     Array of descriptor files
-   */
-  getDescriptorFiles(sourceFiles) {
-    return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'DOCKSTORE_WDL' || sourcefile.type === 'DOCKSTORE_CWL');
-  }
-
-  /**
-   * Retrieves all test parameter files from the list of sourcefiles
-   * @param  sourceFiles Array of sourcefiles
-   * @return {Array<SourceFile>}      Array of test parameter files
-   */
-  getTestFiles(sourceFiles) {
-    return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'CWL_TEST_JSON');
-  }
-
-  /**
    * Combines sourcefiles into one array
    * @return {Array<SourceFile>} Array of sourcefiles
    */
@@ -101,29 +73,7 @@ export class WorkflowFileEditorComponent extends Files {
    */
   saveVersion() {
     const message = 'Save Version';
-    let newSourceFiles = this.getCombinedSourceFiles();
-    const sourceFilesToDelete = [];
-
-    // Deal with file renames
-    for (const originalSourceFile of this.originalSourceFiles) {
-      let toDelete = true;
-      for (const newSourceFile of newSourceFiles) {
-        if (newSourceFile.path === originalSourceFile.path) {
-          toDelete = false;
-          break;
-        }
-      }
-
-      if (toDelete) {
-        const sourceFileCopy = originalSourceFile;
-        sourceFileCopy.content = null;
-        sourceFilesToDelete.push(sourceFileCopy);
-      }
-    }
-
-    if (sourceFilesToDelete.length > 0) {
-      newSourceFiles = newSourceFiles.concat(sourceFilesToDelete);
-    }
+    const newSourceFiles = this.commonSaveVersion();
 
     this.hostedService.editHostedWorkflow(
         this.id,

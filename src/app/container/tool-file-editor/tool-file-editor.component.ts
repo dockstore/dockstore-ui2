@@ -17,7 +17,6 @@ export class ToolFileEditorComponent extends Files {
   originalSourceFiles = [];
   _selectedVersion: Tag;
   selectedDescriptorType = 'cwl';
-  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
       this._selectedVersion = value;
       if (value != null) {
@@ -28,14 +27,6 @@ export class ToolFileEditorComponent extends Files {
     constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService) {
       super();
     }
-
-  /**
-   * Toggles edit mode
-   * @return
-   */
-  toggleEdit() {
-    this.editing = !this.editing;
-  }
 
   /**
    * Deletes the current version of the tool
@@ -65,36 +56,6 @@ export class ToolFileEditorComponent extends Files {
   }
 
   /**
-   * Retrieves all dockerfiles from the list of sourcefiles
-   * @param  sourceFiles Array of sourcefiles
-   * @return {Array<SourceFile>}      Array of test parameter files
-   */
-  getDockerFile(sourceFiles) {
-    return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'DOCKERFILE');
-  }
-
-  /**
-   * Retrieves all descriptor files from the list of sourcefiles
-   * @param  sourceFiles Array of sourcefiles
-   * @return  {Array<SourceFile>}     Array of descriptor files
-   */
-  getDescriptorFiles(sourceFiles) {
-    return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'DOCKSTORE_WDL' || sourcefile.type === 'DOCKSTORE_CWL');
-  }
-
-  /**
-   * Retrieves all test parameter files from the list of sourcefiles
-   * @param  sourceFiles Array of sourcefiles
-   * @return {Array<SourceFile>}      Array of test parameter files
-   */
-  getTestFiles(sourceFiles) {
-    return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'CWL_TEST_JSON');
-  }
-
-  /**
    * Combines sourcefiles into one array
    * @return {Array<SourceFile>} Array of sourcefiles
    */
@@ -117,32 +78,7 @@ export class ToolFileEditorComponent extends Files {
    */
   saveVersion() {
     const message = 'Save Version';
-    let newSourceFiles = this.getCombinedSourceFiles();
-    const sourceFilesToDelete = [];
-
-    // Deal with file renames
-    for (const originalSourceFile of this.originalSourceFiles) {
-      let toDelete = true;
-      for (const newSourceFile of newSourceFiles) {
-        if (newSourceFile.path === originalSourceFile.path) {
-          toDelete = false;
-          break;
-        }
-      }
-
-      if (toDelete) {
-        console.log('deleting ' + originalSourceFile.path);
-        const sourceFileCopy = originalSourceFile;
-        sourceFileCopy.content = null;
-        sourceFilesToDelete.push(sourceFileCopy);
-      } else {
-        console.log('NOT deleting ' + originalSourceFile.path);
-      }
-    }
-
-    if (sourceFilesToDelete.length > 0) {
-      newSourceFiles = newSourceFiles.concat(sourceFilesToDelete);
-    }
+    const newSourceFiles = this.commonSaveVersion();
 
     this.hostedService.editHostedTool(
         this.id,
