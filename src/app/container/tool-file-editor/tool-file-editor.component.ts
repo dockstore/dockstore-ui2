@@ -16,6 +16,7 @@ export class ToolFileEditorComponent extends Files {
   testParameterFiles = [];
   originalSourceFiles = [];
   _selectedVersion: Tag;
+  selectedDescriptorType = 'cwl';
   @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
       this._selectedVersion = value;
@@ -130,9 +131,12 @@ export class ToolFileEditorComponent extends Files {
       }
 
       if (toDelete) {
+        console.log('deleting ' + originalSourceFile.path);
         const sourceFileCopy = originalSourceFile;
         sourceFileCopy.content = null;
         sourceFilesToDelete.push(sourceFileCopy);
+      } else {
+        console.log('NOT deleting ' + originalSourceFile.path);
       }
     }
 

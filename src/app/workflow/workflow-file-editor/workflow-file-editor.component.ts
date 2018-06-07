@@ -30,7 +30,6 @@ export class WorkflowFileEditorComponent extends Files {
 
   /**
    * Toggles edit mode
-   * @return
    */
   toggleEdit() {
     this.editing = !this.editing;

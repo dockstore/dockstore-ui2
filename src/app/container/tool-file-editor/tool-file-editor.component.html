@@ -19,10 +19,22 @@
     <app-code-editor-list [sourcefiles]="dockerFile" [editing]="editing" [fileType]="'dockerfile'"></app-code-editor-list>
   </tab>
   <tab heading="Descriptor Files" id="descriptorFilesTab">
-    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [fileType]="'descriptor'"></app-code-editor-list>
+    <mat-form-field>
+      <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
+        <mat-option value="cwl">cwl</mat-option>
+        <mat-option value="wdl">wdl</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [fileType]="'descriptor'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
   </tab>
   <tab heading="Test Parameter Files" id="testParameterFilesTab">
-    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'"></app-code-editor-list>
+    <mat-form-field>
+      <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
+        <mat-option value="cwl">cwl</mat-option>
+        <mat-option value="wdl">wdl</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
   </tab>
 </tabset>
 <div class="editor-button-container" *ngIf="!publicPage">

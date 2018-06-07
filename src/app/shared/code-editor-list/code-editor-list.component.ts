@@ -9,8 +9,8 @@ import { SourceFile } from '../../shared/swagger/model/sourceFile';
 export class CodeEditorListComponent {
   @Input() sourcefiles: Array<any>;
   @Input() editing: boolean;
-  @Input() descriptorType: string;
   @Input() fileType: string;
+  @Input() descriptorType: string;
   constructor() { }
 
   /**
@@ -18,8 +18,10 @@ export class CodeEditorListComponent {
    */
   addFile() {
     let newFilePath = this.getDefaultPath();
-    if (this.sourcefiles.length === 0 && this.fileType === 'descriptor') {
+    if (!this.hasPrimaryDescriptor() && this.fileType === 'descriptor') {
       newFilePath = '/Dockstore' + newFilePath;
+    } else if (!this.hasPrimaryTestParam() && this.fileType === 'testParam') {
+      newFilePath = 'test.' + this.descriptorType + newFilePath;
     }
     const newSourceFile = {
       content: '',
@@ -99,5 +101,63 @@ export class CodeEditorListComponent {
    */
   isDockerFile(path: string) {
     return path === '/Dockerfile';
+  }
+
+  /**
+   * Determines whether to show the current sourcefile based on the descriptor type and tab
+   * @param  type sourcefile type
+   * @return      whether or not to show file
+   */
+  showSourcefile(type) {
+    if (type === null || type === undefined) {
+      return true;
+    } else if (this.fileType === 'dockerfile') {
+      return true;
+    } else if (this.fileType === 'descriptor') {
+      return (this.descriptorType === 'cwl' && type === 'DOCKSTORE_CWL') || (this.descriptorType === 'wdl' && type === 'DOCKSTORE_WDL');
+    } else if (this.fileType === 'testParam') {
+      return (this.descriptorType === 'cwl' && type === 'CWL_TEST_JSON') || (this.descriptorType === 'wdl' && type === 'WDL_TEST_JSON');
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * Checks for the given descriptor type, does there already exist a primary descriptor
+   * @return whether or not version has a primary descriptor
+   */
+  hasPrimaryDescriptor() {
+    if (this.descriptorType === null || this.descriptorType === undefined) {
+      return false;
+    }
+    const pathToFind = '/Dockstore.' + this.descriptorType;
+    return this.hasFilePath(pathToFind);
+  }
+
+  /**
+   * Checks for the given descriptor type, does there already exist a primary test json
+   * @return whether or not version has a primary test json
+   */
+  hasPrimaryTestParam() {
+    if (this.descriptorType === null || this.descriptorType === undefined) {
+      return false;
+    }
+    const pathToFind = 'test.' + this.descriptorType + '.json';
+    return this.hasFilePath(pathToFind);
+  }
+
+
+  /**
+   * Determines if there exists a sourcefile with the given file path
+   * @param  path File path to look for
+   * @return      Whether a sourcefile with the path exists
+   */
+  hasFilePath(path: string) {
+    for (const sourcefile of this.sourcefiles) {
+      if (sourcefile.path === path) {
+        return true;
+      }
+    }
+    return false;
   }
 }

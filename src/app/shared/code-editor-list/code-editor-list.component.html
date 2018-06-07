@@ -3,7 +3,7 @@
     No files exist.
   </div>
   <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom:10px;">
-    <div *ngIf="sourcefile?.content !== null">
+    <div *ngIf="sourcefile?.content !== null && showSourcefile(sourcefile?.type)">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
           <form style="width:100%;" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
