@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Files } from '../../shared/files';
+import { FileEditing } from '../../shared/file-editing';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -10,7 +10,7 @@ import { RefreshService } from './../../shared/refresh.service';
   templateUrl: './workflow-file-editor.component.html',
   styleUrls: ['./workflow-file-editor.component.scss']
 })
-export class WorkflowFileEditorComponent extends Files {
+export class WorkflowFileEditorComponent extends FileEditing {
   descriptorFiles = [];
   testParameterFiles = [];
   originalSourceFiles = [];

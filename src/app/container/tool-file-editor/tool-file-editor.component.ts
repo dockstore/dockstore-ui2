@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Files } from '../../shared/files';
+import { FileEditing } from '../../shared/file-editing';
 import { Tag } from './../../shared/swagger/model/tag';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerService } from './../../shared/container.service';
@@ -10,7 +10,7 @@ import { RefreshService } from './../../shared/refresh.service';
   templateUrl: './tool-file-editor.component.html',
   styleUrls: ['./tool-file-editor.component.scss']
 })
-export class ToolFileEditorComponent extends Files {
+export class ToolFileEditorComponent extends FileEditing {
   dockerFile = [];
   descriptorFiles = [];
   testParameterFiles = [];
