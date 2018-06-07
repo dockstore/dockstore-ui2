@@ -15,7 +15,7 @@
  */
 
 import { Input } from '@angular/core';
-import { Files } from './files.ts';
+import { Files } from './files';
 
 export class FileEditing extends Files {
   /**

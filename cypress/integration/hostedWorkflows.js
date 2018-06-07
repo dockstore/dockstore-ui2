@@ -65,7 +65,7 @@ describe('Dockstore my workflows', function() {
           .get('#saveNewVersionButton')
           .click()
 
-        // Should have a version 0
+        // Should have a version 1
         cy
           .get('.nav-link')
           .contains('Versions')
@@ -73,7 +73,7 @@ describe('Dockstore my workflows', function() {
           .click()
           .get('table')
           .find('a')
-          .contains('0')
+          .contains('1')
 
           // Add a new version with a second descriptor and a test json
           cy
@@ -115,7 +115,7 @@ describe('Dockstore my workflows', function() {
             .get('#saveNewVersionButton')
             .click()
 
-          // Should have a version 1
+          // Should have a version 2
           cy
             .get('.nav-link')
             .contains('Versions')
@@ -123,7 +123,7 @@ describe('Dockstore my workflows', function() {
             .click()
             .get('table')
             .find('a')
-            .contains('1')
+            .contains('2')
 
           // Should be able to publish
           cy
@@ -160,12 +160,13 @@ describe('Dockstore my workflows', function() {
             .click()
             .get('table')
             .find('a')
-            .contains('2')
+            .contains('3')
 
           // Delete a version
           cy
             .get('table')
             .find('.deleteVersionButton')
+            .first()
             .click()
 
           // Version should no longer exist
@@ -176,7 +177,7 @@ describe('Dockstore my workflows', function() {
             .click()
             .get('table')
             .find('a')
-            .should('not.contain', '2')
+            .should('not.contain', '1')
       });
     });
 

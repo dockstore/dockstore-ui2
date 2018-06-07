@@ -49,7 +49,7 @@
           </p>
           <div class="modal-body">
             <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
-              <mat-radio-button class="radio-button" *ngFor="let option of options" [value]="option" [id]="option.label">
+              <mat-radio-button class="radio-button" *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
                 {{option.label}}
               </mat-radio-button>
             </mat-radio-group>
