@@ -60,7 +60,8 @@ export class ToolFileEditorComponent extends Files {
    */
   saveVersion() {
     const message = 'Save Version';
-    const newSourceFiles = this.commonSaveVersion();
+    const combinedSourceFiles = this.getCombinedSourceFiles();
+    const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
 
     this.hostedService.editHostedTool(
         this.id,

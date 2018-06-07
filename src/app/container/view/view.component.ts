@@ -69,7 +69,6 @@ export class ViewContainerComponent extends View implements OnInit {
         result => {
             this.containerService.setTool(result);
           });
-        )
     }
   }
 

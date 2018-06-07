@@ -64,14 +64,15 @@ export class Files {
 
   /**
    * Common code between tools and workflows for saving
+   * @param originalSourceFiles Sourcefiles from previous version (unedited)
+   * @param newSourceFiles Current set of sourcefiles
    * @return A list of sourcefiles for the version to be added
    */
-  commonSaveVersion() {
-    let newSourceFiles = this.getCombinedSourceFiles();
+  commonSaveVersion(originalSourceFiles, newSourceFiles) {
     const sourceFilesToDelete = [];
 
     // Deal with file renames
-    for (const originalSourceFile of this.originalSourceFiles) {
+    for (const originalSourceFile of originalSourceFiles) {
       let toDelete = true;
       for (const newSourceFile of newSourceFiles) {
         if (newSourceFile.path === originalSourceFile.path) {
