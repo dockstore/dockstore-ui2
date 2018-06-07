@@ -217,7 +217,7 @@
             </div>
           </form>
 
-          <form *ngIf="selectedOption?.value == 1" #registerHostedToolForm="ngForm" name="registerHostedToolForm" class="form-horizontal" (submit)="registerHostedTool()" novalidate>
+          <form *ngIf="selectedOption?.value == 1" #registerHostedToolForm="ngForm" name="registerHostedToolForm" class="form-horizontal" (ngSubmit)="registerHostedTool()" novalidate>
             <div class="modal-body">
               <div class="form-group form-group-sm">
                 <label class="col-sm-3 control-label">
@@ -238,7 +238,10 @@
                         </li>
                       </ul>
                     </div>
-                    <input id="hostedImageRegistryInput" type="text" class="form-control" name="hostedImagePath" [(ngModel)]="hostedTool.path" minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
+                    <input id="hostedImagePath" type="text" class="form-control" name="hostedImagePath" #hostedImagePath="ngModel" [(ngModel)]="hostedTool.path" minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
+                  </div>
+                  <div *ngIf="hostedImagePath?.errors?.pattern" class="alert alert-danger">
+                    The namespace and name of the image repository, separated by a \'/\'. Use \'_\' for an empty namespace.
                   </div>
                 </div>
               </div>
@@ -247,7 +250,7 @@
               <button mat-raised-button color="secondary" (click)="hideModal();clearToolRegisterError()">
                 Close
               </button>
-              <button id="submitButton" type="submit" mat-raised-button color="primary">
+              <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
                 Add Tool
               </button>
             </div>
