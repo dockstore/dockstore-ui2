@@ -38,11 +38,7 @@
       </span>
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
     </h3>
-    <div *ngIf="tool">
-      <span class="label label-default container-label" *ngFor="let label of labels">
-        {{label}}
-      </span>
-    </div>
+
     <div *ngIf="!publicPage && tool?.tags.length > 0" class="input-group">
       <div class="form-group">
         <select class="form-control" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
@@ -58,6 +54,37 @@
       <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
         <i class="glyphicon glyphicon-chevron-left"></i>Back to details
       </button>
+    </div>
+    <div *ngIf="tool">
+      <span *ngIf="!labelsEditMode">
+        <span class="label label-default container-label" *ngFor="let label of labels">
+          {{label}}
+        </span>
+      </span>
+
+      <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+        <span class="glyphicon glyphicon-edit"></span>Edit labels
+      </button>
+
+      <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
+        <div *ngIf="labelsEditMode && !isToolPublic">
+          <div class="form-group">
+            <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
+              [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+            <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
+              <span class="glyphicon glyphicon-floppy-save"></span>Save
+            </button>
+          </div>
+          <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+            <div [hidden]="!name.errors.maxlength">
+                {{ validationMessages.label.maxlength }}
+            </div>
+            <div [hidden]="!name.errors.pattern">
+              {{ validationMessages.label.pattern }}
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
   <div class="col-md-5">
@@ -106,42 +133,6 @@
         <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
-      </tab>
-      <tab id="labelsTab" heading="Labels" (select)="setEntryTab('labels')">
-        <div *ngIf="tool">
-          <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
-            <span class="glyphicon glyphicon-edit"></span>Edit
-          </button>
-          <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
-            <li *ngIf="tool">
-              <strong>Labels:</strong>
-              <span *ngIf="tool?.labels.length === 0">n/a</span>
-              <span class="label label-default container-label" *ngFor="let label of labels">
-                {{label}}
-              </span>
-            </li>
-          </ul>
-          <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
-            <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
-              <span class="glyphicon glyphicon-floppy-save"></span>Save
-            </button>
-            <div *ngIf="labelsEditMode && !isToolPublic">
-              <div class="form-group">
-                <label>Tool Labels:</label>
-                <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
-                  [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-              </div>
-              <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-                <div [hidden]="!name.errors.maxlength">
-                    {{ validationMessages.label.maxlength }}
-                </div>
-                <div [hidden]="!name.errors.pattern">
-                  {{ validationMessages.label.pattern }}
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
       </tab>
       <tab id="versionTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions">
