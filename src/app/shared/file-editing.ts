@@ -31,7 +31,7 @@ export class FileEditing extends Files {
    * @param  sourceFiles Array of sourcefiles
    * @return {Array<SourceFile>}      Array of test parameter files
    */
-  getDockerFile(sourceFiles) {
+  getDockerFile(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
       sourcefile => sourcefile.type === 'DOCKERFILE');
   }
@@ -41,7 +41,7 @@ export class FileEditing extends Files {
    * @param  sourceFiles Array of sourcefiles
    * @return  {Array<SourceFile>}     Array of descriptor files
    */
-  getDescriptorFiles(sourceFiles) {
+  getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
       sourcefile => sourcefile.type === 'DOCKSTORE_WDL' || sourcefile.type === 'DOCKSTORE_CWL');
   }
@@ -51,7 +51,7 @@ export class FileEditing extends Files {
    * @param  sourceFiles Array of sourcefiles
    * @return {Array<SourceFile>}      Array of test parameter files
    */
-  getTestFiles(sourceFiles) {
+  getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
       sourcefile => sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'CWL_TEST_JSON');
   }
@@ -62,7 +62,7 @@ export class FileEditing extends Files {
    * @param newSourceFiles Current set of sourcefiles
    * @return A list of sourcefiles for the version to be added
    */
-  commonSaveVersion(originalSourceFiles, newSourceFiles) {
+  commonSaveVersion(originalSourceFiles: Array<SourceFile>, newSourceFiles: Array<SourceFile>): Array<SourceFile> {
     const sourceFilesToDelete = [];
 
     // Deal with file renames

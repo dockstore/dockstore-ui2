@@ -5,7 +5,7 @@ describe('Dockstore my tools', function() {
         cy.visit(String(global.baseUrl) + "/my-tools")
     });
 
-    // Ensure tabs are correct for the hosted workflow, try adding a version
+    // Ensure tabs are correct for the hosted tool, try adding a version
     describe('Should be able to register a hosted tool and add files to it', function() {
       it('Register the tool', function() {
         // Select the hosted tool
@@ -37,7 +37,7 @@ describe('Dockstore my tools', function() {
           .find('tr')
           .should('have.length', 1)
 
-        // Add a new version with one descriptor
+        // Add a new version with one descriptor and dockerfile
         cy
           .get('.nav-link')
           .contains('Files')
@@ -47,7 +47,6 @@ describe('Dockstore my tools', function() {
           .get('#editFilesButton')
           .click()
 
-        // add dockerfile
         cy
           .contains('Add File')
           .click()
@@ -58,13 +57,12 @@ describe('Dockstore my tools', function() {
             window.ace.edit(editors[0]).setValue(dockerfile, -1);
           })
         });
-        // Go to descriptor tab
+
         cy
           .get('#descriptorFilesTab-link')
           .click()
         cy.wait(500)
 
-        // add descriptor file
         cy
           .get('#descriptorFilesTab')
           .contains('Add File')

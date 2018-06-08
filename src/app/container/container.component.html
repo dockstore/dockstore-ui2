@@ -79,7 +79,7 @@
       </div>
     </h3>
   </div>
-  <div *ngIf="!publicPage" style="padding-left:15px; padding-right: 15px;">
+  <div *ngIf="!publicPage" class="small-side-padding">
     <h3>
       <div class="pull-right">
         <div class="btn-group" role="group">
@@ -151,11 +151,11 @@
       </tab>
       <tab heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions">
-          <div *ngIf="!isHosted()">
+          <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
             </app-files-container>
           </div>
-          <div *ngIf="isHosted()">
+          <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
             <app-tool-file-editor *ngIf="currentTab === 'files'" [entrypath]="tool.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
             </app-tool-file-editor>
           </div>

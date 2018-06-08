@@ -108,7 +108,7 @@ export class CodeEditorListComponent {
    * @param  type sourcefile type
    * @return      whether or not to show file
    */
-  showSourcefile(type) {
+  showSourcefile(type: string) {
     if (type === null || type === undefined) {
       return true;
     } else if (this.fileType === 'dockerfile') {
@@ -138,7 +138,7 @@ export class CodeEditorListComponent {
    * Checks for the given descriptor type, does there already exist a primary test json
    * @return whether or not version has a primary test json
    */
-  hasPrimaryTestParam() {
+  hasPrimaryTestParam(): boolean {
     if (this.descriptorType === null || this.descriptorType === undefined) {
       return false;
     }
@@ -152,7 +152,7 @@ export class CodeEditorListComponent {
    * @param  path File path to look for
    * @return      Whether a sourcefile with the path exists
    */
-  hasFilePath(path: string) {
+  hasFilePath(path: string): boolean {
     for (const sourcefile of this.sourcefiles) {
       if (sourcefile.path === path) {
         return true;

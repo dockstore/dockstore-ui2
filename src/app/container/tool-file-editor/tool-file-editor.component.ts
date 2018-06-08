@@ -15,10 +15,10 @@ export class ToolFileEditorComponent extends FileEditing {
   descriptorFiles = [];
   testParameterFiles = [];
   originalSourceFiles = [];
-  _selectedVersion: Tag;
+  currentVersion: Tag;
   selectedDescriptorType = 'cwl';
   @Input() set selectedVersion(value: Tag) {
-      this._selectedVersion = value;
+      this.currentVersion = value;
       if (value != null) {
         this.originalSourceFiles =  jQuery.extend(true, [], value.sourceFiles);
         this.loadVersionSourcefiles();
@@ -32,9 +32,9 @@ export class ToolFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
-    this.descriptorFiles = this.getDescriptorFiles(this._selectedVersion.sourceFiles);
-    this.testParameterFiles = this.getTestFiles(this._selectedVersion.sourceFiles);
-    this.dockerFile = this.getDockerFile(this._selectedVersion.sourceFiles);
+    this.descriptorFiles = this.getDescriptorFiles(this.currentVersion.sourceFiles);
+    this.testParameterFiles = this.getTestFiles(this.currentVersion.sourceFiles);
+    this.dockerFile = this.getDockerFile(this.currentVersion.sourceFiles);
   }
 
   /**

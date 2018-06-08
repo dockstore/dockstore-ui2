@@ -312,12 +312,4 @@ export class ContainerComponent extends Entry {
      }
      return pageIndex;
    }
-
-   isHosted(): boolean {
-    if (this.tool) {
-      return this.tool.mode === this.DockstoreToolType.ModeEnum.HOSTED;
-    } else {
-      return true;
-    }
-  }
 }
