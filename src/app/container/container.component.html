@@ -99,7 +99,7 @@
   <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
-        <mat-chip color="primary" *ngFor="let label of labels" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <mat-chip color="primary" *ngFor="let label of containerEditData.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
           Manage labels
         </button>

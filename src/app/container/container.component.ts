@@ -100,7 +100,6 @@ export class ContainerComponent extends Entry {
    */
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
-    this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     if (this.selectedVersion === null) {
       this.dockerPullCmd = null;
     } else {

@@ -18,6 +18,7 @@ import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/'
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { Location } from '@angular/common';
+import { MatChipInputEvent } from '@angular/material';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -34,7 +35,6 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('entryTabs') entryTabs: TabsetComponent;
-  protected labels: string[];
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;
@@ -375,4 +375,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   goToSearch(searchValue: string) {
     window.location.href = '/search?search=' + searchValue;
   }
+
+  /**
+   * Adds a label to the labels list
+   * @param  event Add chip event
+   */
+  abstract addToLabels(event: MatChipInputEvent);
 }

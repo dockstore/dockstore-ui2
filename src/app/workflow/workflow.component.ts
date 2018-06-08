@@ -98,7 +98,6 @@ export class WorkflowComponent extends Entry {
    */
   setProperties() {
     const workflowRef: ExtendedWorkflow = this.workflow;
-    this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
     workflowRef.agoMessage = this.dateService.getAgoMessage(new Date(workflowRef.last_modified_date).getTime());
