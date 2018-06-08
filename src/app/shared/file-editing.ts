@@ -16,6 +16,7 @@
 
 import { Input } from '@angular/core';
 import { Files } from './files';
+import { SourceFile } from './swagger/model/sourceFile';
 
 export class FileEditing extends Files {
   /**
