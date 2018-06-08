@@ -411,7 +411,9 @@ img.site-icons-tab {
 }
 
 .search-home {
-  width: 475px;
+  // width: 475px;
+  // min-width: 200px;
+  width: 100%;
 }
 
 input[type=text]:focus,

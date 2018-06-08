@@ -47,6 +47,7 @@ export class ListContainersComponent extends ToolLister {
   dtOptions = {
     /* No ordering applied by DataTables during initialisation */
     order: [],
+    scrollX: true,
     columnDefs: [
       {
         orderable: false,
