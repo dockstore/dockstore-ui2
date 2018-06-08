@@ -67,37 +67,6 @@
         <i class="glyphicon glyphicon-chevron-left"></i>Back to details
       </button>
     </div>
-
-    <div *ngIf="workflow">
-      <span *ngIf="!labelsEditMode">
-        <span class="label label-default container-label" *ngFor="let label of labels">
-          {{label}}
-        </span>
-      </span>
-
-      <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
-        <span class="glyphicon glyphicon-edit"></span>Edit labels
-      </button>
-
-      <form name="editWorkflowForm" class="edit-container form-inline" (ngSubmit)="submitWorkflowEdits()" #labelForm="ngForm" novalidate>
-        <span *ngIf="labelsEditMode && !isWorkflowPublic">
-          <span class="form-group">
-            <input id="workflowLabels" type="text" class="input-sm form-control" name="workflowLabels" [(ngModel)]="workflowEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-            <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isWorkflowPublic">
-              <span class="glyphicon glyphicon-floppy-save"></span>Save
-            </button>
-          </span>
-          <span *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-            <span [hidden]="!name.errors.maxlength">
-              {{ validationMessage.label.maxlength }}
-            </span>
-            <span [hidden]="!name.errors.pattern">
-                {{ validationMessage.label.pattern }}
-            </span>
-          </span>
-        </span>
-      </form>
-    </div>
   </div>
   <div class="col-md-5">
     <app-starring [workflow]="workflow" class="pull-right starring-button" *ngIf="isWorkflowPublic && workflow" (change)="starGazersChange()"></app-starring>
@@ -115,6 +84,37 @@
         </button>
       </div>
     </h3>
+  </div>
+</div>
+<div class="row" *ngIf="!showRedirect">
+  <div *ngIf="workflow" class="col-sm-9" style="margin-bottom: 5px;">
+    <span *ngIf="!labelsEditMode">
+      <mat-chip-list>
+        <mat-chip color="primary" *ngFor="let label of labels">{{label}}</mat-chip>
+        <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+          Manage labels
+        </button>
+      </mat-chip-list>
+    </span>
+
+    <form name="editWorkflowForm" class="edit-container form-inline" (ngSubmit)="submitWorkflowEdits()" #labelForm="ngForm" novalidate>
+      <span *ngIf="labelsEditMode && !isWorkflowPublic">
+        <span class="form-group">
+          <input id="workflowLabels" type="text" class="input-sm form-control" name="workflowLabels" [(ngModel)]="workflowEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+          <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isWorkflowPublic">
+            <span class="glyphicon glyphicon-floppy-save"></span>Save
+          </button>
+        </span>
+        <span *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+          <span [hidden]="!name.errors.maxlength">
+            {{ validationMessage.label.maxlength }}
+          </span>
+          <span [hidden]="!name.errors.pattern">
+              {{ validationMessage.label.pattern }}
+          </span>
+        </span>
+      </span>
+    </form>
   </div>
 </div>
 <div class="row" *ngIf="!starGazersClicked && !showRedirect">

@@ -55,37 +55,6 @@
         <i class="glyphicon glyphicon-chevron-left"></i>Back to details
       </button>
     </div>
-    <div *ngIf="tool">
-      <span *ngIf="!labelsEditMode">
-        <span class="label label-default container-label" *ngFor="let label of labels">
-          {{label}}
-        </span>
-      </span>
-
-      <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
-        <span class="glyphicon glyphicon-edit"></span>Edit labels
-      </button>
-
-      <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
-        <div *ngIf="labelsEditMode && !isToolPublic">
-          <div class="form-group">
-            <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
-              [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-            <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
-              <span class="glyphicon glyphicon-floppy-save"></span>Save
-            </button>
-          </div>
-          <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-            <div [hidden]="!name.errors.maxlength">
-                {{ validationMessages.label.maxlength }}
-            </div>
-            <div [hidden]="!name.errors.pattern">
-              {{ validationMessages.label.pattern }}
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
   </div>
   <div class="col-md-5">
     <app-starring [tool]="tool" class="pull-right starring-button" *ngIf="isToolPublic && tool" (change)="starGazersChange()"></app-starring>
@@ -124,6 +93,38 @@
         </button>
       </div>
     </h3>
+  </div>
+</div>
+<div class="row">
+  <div *ngIf="tool" class="col-sm-9" style="margin-bottom: 5px;">
+    <span *ngIf="!labelsEditMode">
+      <mat-chip-list>
+        <mat-chip color="primary" *ngFor="let label of labels">{{label}}</mat-chip>
+        <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+          Manage labels
+        </button>
+      </mat-chip-list>
+    </span>
+
+    <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
+      <div *ngIf="labelsEditMode && !isToolPublic">
+        <div class="form-group">
+          <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
+            [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
+          <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
+            <span class="glyphicon glyphicon-floppy-save"></span>Save
+          </button>
+        </div>
+        <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+          <div [hidden]="!name.errors.maxlength">
+              {{ validationMessages.label.maxlength }}
+          </div>
+          <div [hidden]="!name.errors.pattern">
+            {{ validationMessages.label.pattern }}
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 <div class="row" *ngIf="!starGazersClicked">
