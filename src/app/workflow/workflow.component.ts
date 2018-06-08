@@ -16,6 +16,8 @@
 import {Location} from '@angular/common';
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
 
 import {DateService} from '../shared/date.service';
 import {DockstoreService} from '../shared/dockstore.service';
@@ -51,7 +53,8 @@ export class WorkflowComponent extends Entry {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
-  validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
+  validTabs = ['info', 'versions', 'files', 'tools', 'dag'];
+  separatorKeysCodes = [ENTER, COMMA];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -234,7 +237,7 @@ export class WorkflowComponent extends Entry {
 
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
-    const workflowLabels = labelArray.join(', ');
+    const workflowLabels = labelArray;
     this.workflowEditData = {
       labels: workflowLabels,
       is_published: this.workflow.is_published
@@ -251,7 +254,7 @@ export class WorkflowComponent extends Entry {
     }
   }
   setWorkflowLabels(): any {
-    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels)
+    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', '))
       .subscribe(workflow => {
         this.workflow.labels = workflow.labels;
         this.workflowService.setWorkflow(workflow);
@@ -285,5 +288,17 @@ export class WorkflowComponent extends Entry {
    getPageIndex(): number {
      const pageIndex = this.getIndexInURL('/workflows');
      return pageIndex;
+   }
+
+  addToLabels(event: MatChipInputEvent) {
+     const input = event.input;
+     const value = event.value;
+     if ((value || '').trim()) {
+       this.workflowEditData.labels.push(value.trim());
+     }
+
+     if (input) {
+       input.value = '';
+     }
    }
 }

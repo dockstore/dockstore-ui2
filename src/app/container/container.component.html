@@ -96,35 +96,34 @@
   </div>
 </div>
 <div class="row">
-  <div *ngIf="tool" class="col-sm-9" style="margin-bottom: 5px;">
+  <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
-        <mat-chip color="primary" *ngFor="let label of labels">{{label}}</mat-chip>
+        <mat-chip color="primary" *ngFor="let label of labels" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
           Manage labels
         </button>
       </mat-chip-list>
     </span>
 
-    <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
-      <div *ngIf="labelsEditMode && !isToolPublic">
-        <div class="form-group">
-          <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
-            [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-          <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
-            <span class="glyphicon glyphicon-floppy-save"></span>Save
-          </button>
-        </div>
-        <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-          <div [hidden]="!name.errors.maxlength">
-              {{ validationMessages.label.maxlength }}
-          </div>
-          <div [hidden]="!name.errors.pattern">
-            {{ validationMessages.label.pattern }}
-          </div>
-        </div>
-      </div>
-    </form>
+    <span *ngIf="labelsEditMode && !isToolPublic">
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let label of containerEditData.labels" [removable]="removable">
+            {{label}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New label..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addToLabels($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+      <button type="button"(click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+        <span class="glyphicon glyphicon-floppy-save"></span>Save
+      </button>
+    </span>
   </div>
 </div>
 <div class="row" *ngIf="!starGazersClicked">

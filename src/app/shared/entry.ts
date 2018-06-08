@@ -371,4 +371,8 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @return {number}
    */
   abstract getPageIndex(): number;
+
+  goToSearch(searchValue: string) {
+    window.location.href = '/search?search=' + searchValue;
+  }
 }

@@ -87,7 +87,7 @@
   </div>
 </div>
 <div class="row" *ngIf="!showRedirect">
-  <div *ngIf="workflow" class="col-sm-9" style="margin-bottom: 5px;">
+  <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
         <mat-chip color="primary" *ngFor="let label of labels">{{label}}</mat-chip>
@@ -97,24 +97,24 @@
       </mat-chip-list>
     </span>
 
-    <form name="editWorkflowForm" class="edit-container form-inline" (ngSubmit)="submitWorkflowEdits()" #labelForm="ngForm" novalidate>
-      <span *ngIf="labelsEditMode && !isWorkflowPublic">
-        <span class="form-group">
-          <input id="workflowLabels" type="text" class="input-sm form-control" name="workflowLabels" [(ngModel)]="workflowEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-          <button type="submit" class="btn btn-link" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isWorkflowPublic">
-            <span class="glyphicon glyphicon-floppy-save"></span>Save
-          </button>
-        </span>
-        <span *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-          <span [hidden]="!name.errors.maxlength">
-            {{ validationMessage.label.maxlength }}
-          </span>
-          <span [hidden]="!name.errors.pattern">
-              {{ validationMessage.label.pattern }}
-          </span>
-        </span>
-      </span>
-    </form>
+    <span *ngIf="labelsEditMode && !isWorkflowPublic">
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let label of workflowEditData.labels" [removable]="removable">
+            {{label}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New label..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addToLabels($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+      <button type="button"(click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <span class="glyphicon glyphicon-floppy-save"></span>Save
+      </button>
+    </span>
   </div>
 </div>
 <div class="row" *ngIf="!starGazersClicked && !showRedirect">
