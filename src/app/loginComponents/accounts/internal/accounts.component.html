@@ -1,50 +1,109 @@
+<!--
+    Copyright 2018 OICR
+ *
+    Licensed under the Apache License, Version 2.0 (the "License")
+    you may not use this file except in compliance with the License
+    You may obtain a copy of the License at
+ *
+        http://www.apache.org/licenses/LICENSE-2.0
+ *
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
 <div class="container">
-  <div class="panel panel-default">
-    <div class="panel-body" *ngIf="user">
-      <div class="col-lg-2 col-md-3 col-sm-4 hidden-xs thumbnail">
-        <img [src]="user?.avatarUrl" height="175">
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Dockstore Profile
+        </mat-panel-title>
+        <mat-panel-description>
+          Dockstore account information
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item>
+          <strong>Username</strong>:&nbsp;
+          <span id="account-username"> {{user?.username}}</span>
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Administrator</strong>:&nbsp;
+          <span id="account-is-admin"> {{ user?.isAdmin ? 'Yes' : 'No' }}</span>
+        </mat-list-item>
+        <mat-list-item *ngIf="getDockstoreToken()">
+          <strong>Dockstore Token</strong>:&nbsp;<span style="word-break: break-all">{{getDockstoreToken()}}&nbsp;</span>
+          <button class="btn btn-default" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
+            <span class="glyphicon glyphicon-copy"></span>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="gitHubProfile">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          GitHub Profile
+        </mat-panel-title>
+        <mat-panel-description>
+          GitHub account information
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="col-lg-3 col-md-3 col-sm-4">
+          <img [src]="gitHubProfile.avatarURL" height="175">
+        </div>
+        <mat-list class="col-lg-9 col-md-9 col-sm-8">
+          <mat-list-item *ngIf="gitHubProfile.name">
+            <strong>{{ 'name' | titlecase }}</strong>:&nbsp;{{gitHubProfile.name}}
+          </mat-list-item>
+          <mat-list-item *ngIf="gitHubProfile.email">
+            <strong>Email</strong>:&nbsp;{{gitHubProfile.email}}
+          </mat-list-item>
+          <mat-list-item *ngIf="user?.bio">
+            <strong>Bio</strong>:&nbsp;{{user?.bio}}
+          </mat-list-item>
+          <mat-list-item *ngIf="user?.company">
+            <strong>Company</strong>:&nbsp;{{user?.company}}
+          </mat-list-item>
+          <mat-list-item *ngIf="user?.location">
+            <strong>Location</strong>:&nbsp;potato{{user?.location}}
+          </mat-list-item>
+        </mat-list>
       </div>
-      <div class="col-lg-8 col-md-7 col-sm-6">
-        <ul class="list-unstyled">
-          <li>
-            <strong>Username</strong>:
-            <span id="account-username">{{user?.username}}</span>
-          </li>
-          <li>
-            <strong>Administrator</strong>:
-            <span id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</span>
-          </li>
-          <li *ngIf="user?.email">
-            <strong>Email</strong>: {{user?.email}}
-          </li>
-          <li *ngIf="user?.bio">
-            <strong>Bio</strong>: {{user?.bio}}
-          </li>
-          <li *ngIf="user?.company">
-            <strong>Company</strong>: {{user?.company}}
-          </li>
-          <li *ngIf="user?.location">
-            <strong>Location</strong>: {{user?.location}}
-          </li>
-          <li class="form-inline" *ngIf="getDockstoreToken()">
-            <strong>Dockstore Token</strong>:
-            <span class="input-group">
-              <span class="form-control">{{getDockstoreToken()}}</span>
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
-                  <span class="glyphicon glyphicon-copy"></span>
-                </button>
-              </span>
-            </span>
-          </li>
-        </ul>
+      <mat-action-row>
+        <button mat-button color="primary" [disabled]="syncingWithGitHub" (click)="syncGitHub()">Sync with GitHub</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="googleProfile">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Google Profile
+        </mat-panel-title>
+        <mat-panel-description>
+          Google account information
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="col-lg-3 col-md-3 col-sm-4">
+          <img [src]="googleProfile.avatarURL" height="175">
+        </div>
+        <mat-list class="col-lg-9 col-md-9 col-sm-8">
+          <mat-list-item *ngIf="googleProfile.name">
+            <strong>Name</strong>: {{googleProfile.name}}
+          </mat-list-item>
+          <mat-list-item *ngIf="googleProfile.email">
+            <strong>Email</strong>: {{googleProfile.email}}
+          </mat-list-item>
+        </mat-list>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-1">
-        <button mat-raised-button color="primary" disabled="{{syncingWithGithub}}" (click)="syncGitHub()">
-          <span class="glyphicon glyphicon-refresh"></span>
-          Sync with GitHub
-        </button>
-      </div>
-    </div>
-  </div>
+      <mat-action-row>
+        <button mat-button color="primary" [disabled]="syncingWithGoogle" (click)="syncGoogle()">Sync with Google</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
