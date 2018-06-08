@@ -300,4 +300,12 @@ export class WorkflowComponent extends Entry {
        input.value = '';
      }
    }
+
+   removeLabel(label: any) {
+    const index = this.workflowEditData.labels.indexOf(label);
+
+    if (index >= 0) {
+      this.workflowEditData.labels.splice(index, 1);
+    }
+  }
 }

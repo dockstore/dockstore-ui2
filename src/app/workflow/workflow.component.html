@@ -100,7 +100,8 @@
     <span *ngIf="labelsEditMode && !isWorkflowPublic">
       <mat-form-field style="width: 100%;">
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let label of workflowEditData.labels" [removable]="true">
+          <mat-chip *ngFor="let label of workflowEditData.labels" [removable]="true"
+            (removed)="removeLabel(label)">
             {{label}}
             <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
           </mat-chip>
@@ -124,6 +125,9 @@
         <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
+      </tab>
+      <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
+        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType"></app-launch>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">

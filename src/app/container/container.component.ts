@@ -324,4 +324,12 @@ export class ContainerComponent extends Entry {
        input.value = '';
      }
    }
+
+   removeLabel(label: any) {
+    const index = this.containerEditData.labels.indexOf(label);
+
+    if (index >= 0) {
+      this.containerEditData.labels.splice(index, 1);
+    }
+  }
 }

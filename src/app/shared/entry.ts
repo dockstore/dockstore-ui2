@@ -381,4 +381,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param  event Add chip event
    */
   abstract addToLabels(event: MatChipInputEvent);
+
+  /**
+   * Removes a label from the list of labels (does not update in database)
+   * @param  label label to remove
+   */
+  abstract removeLabel(label: any);
 }
