@@ -374,9 +374,7 @@ img.site-icons-tab {
 }
 
 .search-home {
-  // width: 475px;
-  // min-width: 200px;
-  width: 100%;
+  width: 100% !important;
 }
 
 input[type=text]:focus,
@@ -1215,4 +1213,12 @@ td.hljs-ln-code {
 
 .footer-link:hover {
   text-decoration: underline;
+}
+
+.my-entry-button-group {
+  margin-bottom: 5px;
+}
+
+.nav-tabs.nav-justified > li > a {
+  margin: 0px !important;
 }
