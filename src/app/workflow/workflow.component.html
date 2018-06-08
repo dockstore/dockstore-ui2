@@ -100,14 +100,14 @@
     <span *ngIf="labelsEditMode && !isWorkflowPublic">
       <mat-form-field style="width: 100%;">
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let label of workflowEditData.labels" [removable]="removable">
+          <mat-chip *ngFor="let label of workflowEditData.labels" [removable]="true">
             {{label}}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
           </mat-chip>
           <input placeholder="New label..."
                  [matChipInputFor]="chipList"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
+                 [matChipInputAddOnBlur]="true"
                  (matChipInputTokenEnd)="addToLabels($event)"/>
         </mat-chip-list>
       </mat-form-field>
