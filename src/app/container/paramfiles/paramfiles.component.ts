@@ -13,17 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainersService } from '../../shared/swagger';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Component, Input, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ContainerService } from '../../shared/container.service';
-import { ParamfilesService } from './paramfiles.service';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -43,10 +42,10 @@ export class ParamfilesComponent extends EntryFileSelector {
   public downloadFilePath: string;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
-              private paramfilesService: ParamfilesService,
+    private paramfilesService: ParamfilesService,
               public fileService: FileService) {
     super();
-      this.published$ = this.containerService.toolIsPublished$;
+    this.published$ = this.containerService.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
@@ -67,5 +66,9 @@ export class ParamfilesComponent extends EntryFileSelector {
   // Get the path of the file
   getFilePath(file): string {
     return this.fileService.getFilePath(file);
+  }
+
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
   }
 }
