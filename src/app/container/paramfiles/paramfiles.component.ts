@@ -13,19 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainersService } from '../../shared/swagger';
-import { Component, Input, ElementRef, OnInit, AfterViewChecked} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-
 import { ContainerService } from '../../shared/container.service';
-import { ParamfilesService } from './paramfiles.service';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -45,12 +42,12 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
   public downloadFilePath: string;
 
   constructor(private containerService: ContainerService, private containersService: ContainersService,
-              private highlightJsService: HighlightJsService,
-              private paramfilesService: ParamfilesService,
-              public fileService: FileService,
-              private elementRef: ElementRef) {
+    private highlightJsService: HighlightJsService,
+    private paramfilesService: ParamfilesService,
+    public fileService: FileService,
+    private elementRef: ElementRef) {
     super();
-      this.published$ = this.containerService.toolIsPublished$;
+    this.published$ = this.containerService.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
@@ -78,5 +75,9 @@ export class ParamfilesComponent extends EntryFileSelector implements AfterViewC
   // Get the path of the file
   getFilePath(file): string {
     return this.fileService.getFilePath(file);
+  }
+
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
   }
 }

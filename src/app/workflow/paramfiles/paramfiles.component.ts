@@ -13,14 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import {Component, Input, OnInit, ElementRef, AfterViewChecked} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { HighlightJsService } from '../../shared/angular2-highlight-js/lib/highlight-js.module';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
@@ -41,10 +40,10 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
   public downloadFilePath: string;
 
   constructor(private paramfilesService: ParamfilesService,
-              private highlightJsService: HighlightJsService,
-              public fileService: FileService,
-              private elementRef: ElementRef,
-              private workflowService: WorkflowService) {
+    private highlightJsService: HighlightJsService,
+    public fileService: FileService,
+    private elementRef: ElementRef,
+    private workflowService: WorkflowService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -74,5 +73,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector implements Af
   // Get the path of the file
   getFilePath(file): string {
     return this.fileService.getFilePath(file);
+  }
+
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
   }
 }
