@@ -18,12 +18,8 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Dockstore Profile
+          General Dockstore Account Information
         </mat-panel-title>
-        <mat-panel-description>
-          Dockstore account information
-          <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
       </mat-expansion-panel-header>
       <mat-list>
         <mat-list-item>
@@ -35,42 +31,39 @@
           <span id="account-is-admin"> {{ user?.isAdmin ? 'Yes' : 'No' }}</span>
         </mat-list-item>
         <mat-list-item *ngIf="getDockstoreToken()">
-          <strong>Dockstore Token</strong>:&nbsp;<span style="word-break: break-all">{{getDockstoreToken()}}&nbsp;</span>
+          <strong>Dockstore Token</strong>:&nbsp;
+          <span style="word-break: break-all">{{getDockstoreToken()}}&nbsp;</span>
           <button class="btn btn-default" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
             <span class="glyphicon glyphicon-copy"></span>
           </button>
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="gitHubProfile">
+    <mat-expansion-panel *ngIf="(hasGitHubToken$ | async)">
       <mat-expansion-panel-header>
         <mat-panel-title>
           GitHub Profile
         </mat-panel-title>
-        <mat-panel-description>
-          GitHub account information
-          <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="col-lg-3 col-md-3 col-sm-4">
-          <img [src]="gitHubProfile.avatarURL" height="175">
+          <img *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL" height="175">
         </div>
         <mat-list class="col-lg-9 col-md-9 col-sm-8">
-          <mat-list-item *ngIf="gitHubProfile.name">
-            <strong>{{ 'name' | titlecase }}</strong>:&nbsp;{{gitHubProfile.name}}
+          <mat-list-item *ngIf="gitHubProfile?.name">
+            <strong>Name</strong>:&nbsp;{{gitHubProfile.name}}
           </mat-list-item>
-          <mat-list-item *ngIf="gitHubProfile.email">
+          <mat-list-item *ngIf="gitHubProfile?.email">
             <strong>Email</strong>:&nbsp;{{gitHubProfile.email}}
           </mat-list-item>
-          <mat-list-item *ngIf="user?.bio">
-            <strong>Bio</strong>:&nbsp;{{user?.bio}}
+          <mat-list-item *ngIf="gitHubProfile?.bio">
+            <strong>Bio</strong>:&nbsp;{{gitHubProfile.bio}}
           </mat-list-item>
-          <mat-list-item *ngIf="user?.company">
-            <strong>Company</strong>:&nbsp;{{user?.company}}
+          <mat-list-item *ngIf="gitHubProfile?.company">
+            <strong>Company</strong>:&nbsp;{{gitHubProfile.company}}
           </mat-list-item>
-          <mat-list-item *ngIf="user?.location">
-            <strong>Location</strong>:&nbsp;potato{{user?.location}}
+          <mat-list-item *ngIf="gitHubProfile?.location">
+            <strong>Location</strong>:&nbsp;{{gitHubProfile.location}}
           </mat-list-item>
         </mat-list>
       </div>
@@ -78,26 +71,31 @@
         <button mat-button color="primary" [disabled]="syncingWithGitHub" (click)="syncGitHub()">Sync with GitHub</button>
       </mat-action-row>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="googleProfile">
+    <mat-expansion-panel *ngIf="(hasGoogleToken$ | async)">
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title class="flex-vert-center">
           Google Profile
         </mat-panel-title>
-        <mat-panel-description>
-          Google account information
-          <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="col-lg-3 col-md-3 col-sm-4">
-          <img [src]="googleProfile.avatarURL" height="175">
+          <img *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL" height="175">
         </div>
         <mat-list class="col-lg-9 col-md-9 col-sm-8">
-          <mat-list-item *ngIf="googleProfile.name">
-            <strong>Name</strong>: {{googleProfile.name}}
+          <mat-list-item *ngIf="googleProfile?.name">
+            <strong>Name</strong>:&nbsp;{{googleProfile.name}}
           </mat-list-item>
-          <mat-list-item *ngIf="googleProfile.email">
-            <strong>Email</strong>: {{googleProfile.email}}
+          <mat-list-item *ngIf="googleProfile?.email">
+            <strong>Email</strong>:&nbsp;{{googleProfile.email}}
+          </mat-list-item>
+          <mat-list-item *ngIf="googleProfile?.bio">
+            <strong>Bio</strong>:&nbsp;{{googleProfile.bio}}
+          </mat-list-item>
+          <mat-list-item *ngIf="googleProfile?.company">
+            <strong>Company</strong>:&nbsp;{{googleProfile.company}}
+          </mat-list-item>
+          <mat-list-item *ngIf="googleProfile?.location">
+            <strong>Location</strong>:&nbsp;{{googleProfile.location}}
           </mat-list-item>
         </mat-list>
       </div>
