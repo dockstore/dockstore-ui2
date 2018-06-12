@@ -30,6 +30,10 @@
       </a>
     </li>
   </span>
+  <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
+      <strong tooltip="Source code is stored on Dockstore.org">Dockstore.org</strong>:
+      <i>Source code is stored on Dockstore.org</i>
+  </li>
   <li *ngIf="workflow?.author">
     <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
   </li>

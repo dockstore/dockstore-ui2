@@ -33,6 +33,10 @@
         {{ tool?.providerUrl }}
       </a>
     </li>
+    <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+        <strong tooltip="Source code is stored on Dockstore.org">Dockstore.org</strong>:
+        <i>Source code is stored on Dockstore.org</i>
+    </li>
     <li *ngIf="tool?.imgProviderUrl">
       <strong tooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
       <a [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
