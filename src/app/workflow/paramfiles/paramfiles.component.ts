@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
-import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';

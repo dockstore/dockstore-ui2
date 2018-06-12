@@ -13,8 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, Input } from '@angular/core';
-import { Component, Input, OnInit} from '@angular/core';
+import { AfterViewChecked, ElementRef, Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ContainerService } from '../../shared/container.service';
