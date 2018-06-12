@@ -133,13 +133,13 @@
       </form>
     </li>
     <app-info-tab-checker-workflow-path></app-info-tab-checker-workflow-path>
-    <li *ngIf="tool?.buildMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+    <li *ngIf="tool?.buildMode">
       <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
     <li *ngIf="tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
       <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
     </li>
-    <li *ngIf="tool?.lastUpdatedDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+    <li *ngIf="tool?.lastUpdatedDate">
       <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
     </li>
   </ul>

@@ -227,12 +227,12 @@
                   <div class="input-group">
                     <div class="input-group-btn">
                       <button id="hostedImageRegistrySpinner" type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                        {{hostedTool.registry}}
+                        {{hostedTool.registryProvider}}
                         <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
                         <li *ngFor="let registry of friendlyRegistryKeys()">
-                          <a [attr.id]="'hostedImageRegistrySpinner' + registry" class="dropdown-item" (click)="hostedTool.registry = registry; checkForSpecialDockerRegistry()">
+                          <a [attr.id]="'hostedImageRegistrySpinner' + registry" class="dropdown-item" (click)="hostedTool.registryProvider = registry; hostedTool.registry = getToolRegistry(registry, null);">
                             {{registry}}
                           </a>
                         </li>
@@ -241,10 +241,33 @@
                     <input id="hostedImagePath" type="text" class="form-control" name="hostedImagePath" #hostedImagePath="ngModel" [(ngModel)]="hostedTool.path" minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
                   </div>
                   <div *ngIf="hostedImagePath?.errors?.pattern" class="alert alert-danger">
-                    The namespace and name of the image repository, separated by a \'/\'. Use \'_\' for an empty namespace.
+                    The namespace and name of the image repository, separated by a '/'. Use '_' for an empty namespace.
                   </div>
                 </div>
               </div>
+
+              <div class="form-group form-group-sm">
+                  <label class="col-sm-3 control-label">
+                    Docker Registry Path:
+                  </label>
+                  <div class="col-sm-9">
+                    <span *ngIf="hostedTool.registryProvider === 'Seven Bridges' || hostedTool.registryProvider === 'Amazon ECR'">
+                      <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">
+                        <input id="hostedDockerRegistryPathInput" class="form-control" name="amazonDockerRegistryPath" #amazonDockerRegistryPath="ngModel" [(ngModel)]="hostedTool.registry" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"/>
+                        <div *ngIf="amazonDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
+                            Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.
+                        </div>
+                      </span>
+                      <span *ngIf="hostedTool.registryProvider === 'Seven Bridges'">
+                        <input id="hostedDockerRegistryPathInput" class="form-control" name="sevenBridgesDockerRegistryPath" #sevenBridgesDockerRegistryPath="ngModel" [(ngModel)]="hostedTool.registry" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com" [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"/>
+                        <div *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
+                            Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.
+                        </div>
+                      </span>
+                    </span>
+                    <input *ngIf="hostedTool.registryProvider !== 'Seven Bridges' && hostedTool.registryProvider !== 'Amazon ECR'" id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" tooltip="Custom Docker registry path" disabled/>
+                  </div>
+                </div>
             </div>
             <div class="modal-footer">
               <button mat-raised-button color="secondary" (click)="hideModal();clearToolRegisterError()">

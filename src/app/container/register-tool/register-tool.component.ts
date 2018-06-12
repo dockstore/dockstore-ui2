@@ -38,6 +38,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public hostedTool = {
     path: '',
     registry: 'quay.io',
+    registryProvider: 'Quay.io'
   };
   public options = [
     {
@@ -81,6 +82,10 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
 
   registerHostedTool() {
     this.registerToolService.registerHostedTool(this.hostedTool);
+  }
+
+  getToolRegistry(registry: string, customDockerRegistryPath: string) {
+    return this.registerToolService.getToolRegistry(registry, customDockerRegistryPath);
   }
 
   checkForSpecialDockerRegistry() {

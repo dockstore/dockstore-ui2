@@ -117,6 +117,8 @@ export class ContainerService {
         return 'Partially-Automated';
       case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
         return 'Manual';
+      case DockstoreTool.ModeEnum.HOSTED:
+        return 'Hosted';
       default:
         return 'Unknown';
     }
