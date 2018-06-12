@@ -52,7 +52,7 @@ export class CodeEditorComponent implements AfterViewInit {
         showLineNumbers: true,
         maxLines: 60,
         theme: 'ace/theme/idle_fingers',
-        fontSize: '14pt'
+        fontSize: '12pt'
       }
     );
 
