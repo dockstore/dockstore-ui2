@@ -5,10 +5,10 @@ beforeEach(function () {
   localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken')
 });
 
-function goToTab(tabName) {
+Cypress.Commands.add('goToTab', (tabName) => {
 	cy
 			.get('.nav-link')
 			.contains(tabName)
 			.parent()
 			.click()
-}
+})

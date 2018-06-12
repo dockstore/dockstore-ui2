@@ -23,27 +23,27 @@ describe('Checker workflow test from workflows', function() {
             cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
-            goToTab('Launch')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
-            goToTab('Info')
+            cy.goToTab('Info')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent workflow right now
             cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
-            goToTab('Launch')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('be.visible')
-            goToTab('Info')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
             cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
-            goToTab('Launch')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
-            goToTab('Info')
+            cy.goToTab('Info')
             cy.get('#viewParentEntryButton').should('be.visible')
         })
     });

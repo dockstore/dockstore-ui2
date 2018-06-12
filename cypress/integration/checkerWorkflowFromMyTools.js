@@ -40,27 +40,27 @@ describe('Checker workflow test from my-tools', function() {
             // cy.url().should('eq', 'http://localhost:4200/my-tools/quay.io/A2/b3')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
-            goToTab('Launch')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('be.visible')
-            goToTab('Info')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A2/b3/_cwl_checker')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
-            goToTab('Launch')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
-            goToTab('Info')
+            cy.goToTab('Info')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent tool right now
             cy.url().should('eq', String(global.baseUrl) + '/my-tools/quay.io/A2/b3')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
-            goToTab('Launch')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
-            goToTab('Info')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible')
         })
         it('visit the tool and have its publish/unpublish reflected in the checker workflow', function() {
