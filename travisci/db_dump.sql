@@ -16,14 +16,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -99,7 +99,8 @@ CREATE TABLE public.enduser (
     location character varying(255),
     username character varying(255) NOT NULL,
     dbcreatedate timestamp without time zone,
-    dbupdatedate timestamp without time zone
+    dbupdatedate timestamp without time zone,
+    curator boolean DEFAULT false
 );
 
 
@@ -256,6 +257,20 @@ ALTER TABLE public.sourcefile_id_seq OWNER TO dockstore;
 
 ALTER SEQUENCE public.sourcefile_id_seq OWNED BY public.sourcefile.id;
 
+
+--
+-- Name: sourcefile_verified; Type: TABLE; Schema: public; Owner: dockstore
+--
+
+CREATE TABLE public.sourcefile_verified (
+    id bigint NOT NULL,
+    metadata text,
+    verified boolean NOT NULL,
+    source text NOT NULL
+);
+
+
+ALTER TABLE public.sourcefile_verified OWNER TO dockstore;
 
 --
 -- Name: starred; Type: TABLE; Schema: public; Owner: dockstore
@@ -725,6 +740,7 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('create-fileformat-tables', 'gluu (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.962975', 110, 'EXECUTED', '7:3f5097e0e5b8e3ed86d3189b35d69a29', 'createTable tableName=fileformat; createTable tableName=version_input_fileformat; createTable tableName=version_output_fileformat; addUniqueConstraint constraintName=unique_fileformat, tableName=fileformat; addForeignKeyConstraint baseTableName=ve...', '', NULL, '3.5.4', NULL, NULL, '8135173906');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('version editor', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.974563', 111, 'EXECUTED', '7:e6acc1adbb76fe5fdfaa9ee927365400', 'addColumn tableName=tag; addColumn tableName=workflowversion; addForeignKeyConstraint baseTableName=workflowversion, constraintName=versionEditorForWorkflows, referencedTableName=enduser; addForeignKeyConstraint baseTableName=tag, constraintName=v...', '', NULL, '3.5.4', NULL, NULL, '8135173906');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add commit ids to versions', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.980369', 112, 'EXECUTED', '7:257d2e22ca5374e9536359aa3625ca44', 'addColumn tableName=tag; addColumn tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '8135173906');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('verification_metadata', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-13 13:56:14.527219', 113, 'EXECUTED', '7:b2f0b9e12b5c019e948128be040066ec', 'createTable tableName=sourcefile_verified; addColumn tableName=enduser; addForeignKeyConstraint baseTableName=sourcefile_verified, constraintName=foreign_key, referencedTableName=sourcefile', '', NULL, '3.5.4', NULL, NULL, '8912574484');
 
 
 --
@@ -738,8 +754,8 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A', NULL, NULL);
-INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate) VALUES (2, '', NULL, '', '', false, NULL, 'potato', NULL, NULL);
+INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A', NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (2, '', NULL, '', '', false, NULL, 'potato', NULL, NULL, false);
 
 
 --
@@ -1918,6 +1934,12 @@ SELECT pg_catalog.setval('public.sourcefile_id_seq', 41, true);
 
 
 --
+-- Data for Name: sourcefile_verified; Type: TABLE DATA; Schema: public; Owner: dockstore
+--
+
+
+
+--
 -- Data for Name: starred; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
@@ -2182,6 +2204,14 @@ ALTER TABLE ONLY public.databasechangeloglock
 
 ALTER TABLE ONLY public.sourcefile
     ADD CONSTRAINT sourcefile_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sourcefile_verified sourcefile_verified_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY public.sourcefile_verified
+    ADD CONSTRAINT sourcefile_verified_pkey PRIMARY KEY (id, source);
 
 
 --
@@ -2485,6 +2515,14 @@ ALTER TABLE ONLY public.entry_label
 
 
 --
+-- Name: sourcefile_verified foreign_key; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY public.sourcefile_verified
+    ADD CONSTRAINT foreign_key FOREIGN KEY (id) REFERENCES public.sourcefile(id);
+
+
+--
 -- Name: tag versionEditorForTools; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
 --
 
@@ -2503,3 +2541,4 @@ ALTER TABLE ONLY public.workflowversion
 --
 -- PostgreSQL database dump complete
 --
+
