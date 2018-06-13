@@ -24,6 +24,7 @@ import { Component, OnInit } from '@angular/core';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { View } from '../../shared/view';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-container',
@@ -68,6 +69,8 @@ export class ViewContainerComponent extends View implements OnInit {
       this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
         result => {
             this.containerService.setTool(result);
+          }, (error: HttpErrorResponse) => {
+            console.log(error);
           });
     }
   }

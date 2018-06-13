@@ -84,7 +84,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.registerHostedTool(this.hostedTool);
   }
 
-  getToolRegistry(registry: string, customDockerRegistryPath: string) {
+  getToolRegistry(registry: string, customDockerRegistryPath: string): string {
     return this.registerToolService.getToolRegistry(registry, customDockerRegistryPath);
   }
 

@@ -20,6 +20,7 @@ import { VersionModalService } from './../version-modal/version-modal.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AfterViewChecked, AfterViewInit, Component, Input, ViewChild, OnInit } from '@angular/core';
 import { Workflow } from './../../shared/swagger/model/workflow';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { View } from '../../shared/view';
 import { DateService } from '../../shared/date.service';
@@ -78,12 +79,14 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
 
   deleteHostedVersion() {
     const deleteMessage = 'Are you sure you want to delete version ' +
-      this.version.name + ' for tool ' + this.workflow.full_workflow_path + '?';
+      this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
         result => {
             this.workflowService.setWorkflow(result);
+          }, (error: HttpErrorResponse) => {
+            console.log(error);
           }
         );
     }

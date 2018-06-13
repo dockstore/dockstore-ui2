@@ -88,27 +88,27 @@ export class CodeEditorListComponent {
   /**
    * Returns true if path is the primary descriptor, false otherwise
    * @param  path Path to check
-   * @return {string}      Is path for primary descriptor
+   * @return {boolean}      Is path for primary descriptor
    */
-  isPrimaryDescriptor(path: string) {
+  isPrimaryDescriptor(path: string): boolean {
     return path === '/Dockstore.cwl' || path === '/Dockstore.wdl';
   }
 
   /**
    * Returns true if path is the dockerfile, false otherwise
    * @param  path Path to check
-   * @return {string}      Is path for dockerfile
+   * @return {boolean}      Is path for dockerfile
    */
-  isDockerFile(path: string) {
+  isDockerFile(path: string): boolean {
     return path === '/Dockerfile';
   }
 
   /**
    * Determines whether to show the current sourcefile based on the descriptor type and tab
    * @param  type sourcefile type
-   * @return      whether or not to show file
+   * @return {boolean}      whether or not to show file
    */
-  showSourcefile(type: string) {
+  showSourcefile(type: string): boolean {
     if (type === null || type === undefined) {
       return true;
     } else if (this.fileType === 'dockerfile') {
@@ -124,9 +124,9 @@ export class CodeEditorListComponent {
 
   /**
    * Checks for the given descriptor type, does there already exist a primary descriptor
-   * @return whether or not version has a primary descriptor
+   * @return {boolean} whether or not version has a primary descriptor
    */
-  hasPrimaryDescriptor() {
+  hasPrimaryDescriptor(): boolean {
     if (this.descriptorType === null || this.descriptorType === undefined) {
       return false;
     }
@@ -136,7 +136,7 @@ export class CodeEditorListComponent {
 
   /**
    * Checks for the given descriptor type, does there already exist a primary test json
-   * @return whether or not version has a primary test json
+   * @return {boolean} whether or not version has a primary test json
    */
   hasPrimaryTestParam(): boolean {
     if (this.descriptorType === null || this.descriptorType === undefined) {
@@ -150,7 +150,7 @@ export class CodeEditorListComponent {
   /**
    * Determines if there exists a sourcefile with the given file path
    * @param  path File path to look for
-   * @return      Whether a sourcefile with the path exists
+   * @return {boolean}      Whether a sourcefile with the path exists
    */
   hasFilePath(path: string): boolean {
     for (const sourcefile of this.sourcefiles) {
