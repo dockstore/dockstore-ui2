@@ -181,7 +181,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
     let useFirstTag = true;
     let urlTagExists = false;
-    versions = versions.filter(version => !version.hidden);
     // Determine which tag to select
     for (const item of versions) {
       // If a tag is specified in the URL then use it

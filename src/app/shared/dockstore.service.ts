@@ -26,10 +26,6 @@ export class DockstoreService {
     return versions.filter(version => version.valid);
   }
 
-  getVisibleVersions(versions: Array<WorkflowVersion|Tag>): Array<WorkflowVersion|Tag> {
-    return versions.filter(version => !version.hidden);
-  }
-
   /**
    * Determines whether any of the versions of the entry are verified
    *
