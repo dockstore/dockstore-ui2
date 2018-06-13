@@ -29,10 +29,11 @@ describe('Checker workflow test from my-workflows', function() {
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('not.be.visible')
-            cy.get('#addCheckerWorkflowButton').should('be.visible').click()
+            cy.get('#addCheckerWorkflowButton').should('be.visible')
             cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
             cy.goToTab('Info')
+            cy.get('#addCheckerWorkflowButton').should('be.visible').click()
             cy
                 .get('#checkerWorkflowPath')
                 .type('/Dockstore.cwl')
