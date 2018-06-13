@@ -56,7 +56,7 @@ export class ContainerComponent extends Entry {
   public tool: ExtendedDockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
-  validTabs = ['info', 'versions', 'files'];
+  validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
 
   constructor(private dockstoreService: DockstoreService,

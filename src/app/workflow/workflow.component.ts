@@ -53,7 +53,7 @@ export class WorkflowComponent extends Entry {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
-  validTabs = ['info', 'versions', 'files', 'tools', 'dag'];
+  validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
