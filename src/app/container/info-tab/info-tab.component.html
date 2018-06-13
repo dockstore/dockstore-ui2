@@ -106,14 +106,14 @@
         </div>
       </form>
     </li>
-   <li *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+   <li>
       <form #editCWLTestPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
           <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
           <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /test.cwl.json" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right"
+        <button *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right"
           (click)="toggleEditCWLTestPath()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlTestPathEditing, 'glyphicon-save': cwlTestPathEditing }"></span>
           {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
@@ -121,7 +121,7 @@
       </form>
 
     </li>
-    <li *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+    <li>
       <form #editWDLTestPathForm="ngForm" class="form-inline">
         <div class="form-group">
           <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
@@ -129,7 +129,7 @@
           <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
             name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /test.wdl.json" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right"
+        <button *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right"
           (click)="toggleEditWDLTestPath()">
           <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlTestPathEditing, 'glyphicon-save': wdlTestPathEditing }"></span>
           {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
