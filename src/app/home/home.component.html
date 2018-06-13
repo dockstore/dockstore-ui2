@@ -82,21 +82,25 @@
   <div>
     <div class="col-md-9 col-sm-12 home-list">
         <tabset class="homeComponent" type="tabs">
-          <tab id="toolTab" [customClass]="browseToolsTab">
+          <tab id="toolTab" [customClass]="browseToolsTab" (select)="onSelect($event)">
             <ng-template tabHeading>
               <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
               Browse Tools
             </ng-template>
             <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-            <app-list-containers [previewMode]="true"></app-list-containers>
+            <span *ngIf="selectedTab === 'toolTab'">
+                <app-list-containers [previewMode]="true"></app-list-containers>
+            </span>
           </tab>
-          <tab id="workflowTab" [customClass]="browseWorkflowsTab">
+          <tab id="workflowTab" [customClass]="browseWorkflowsTab" (select)="onSelect($event)">
             <ng-template tabHeading>
               <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
               Browse Workflows
             </ng-template>
             <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-            <app-list-workflows [previewMode]="true"></app-list-workflows>
+            <span *ngIf="selectedTab === 'workflowTab'">
+                <app-list-workflows [previewMode]="true"></app-list-workflows>
+            </span>
           </tab>
         </tabset>
     </div>
