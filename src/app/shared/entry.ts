@@ -372,7 +372,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    */
   abstract getPageIndex(): number;
 
-  goToSearch(searchValue: string) {
+  /**
+   * Go to the search page with a query preloaded
+   * @param {string} searchValue Value to search for
+   */
+  goToSearch(searchValue: string): void {
     window.location.href = '/search?search=' + searchValue;
   }
 
@@ -380,11 +384,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * Adds a label to the labels list
    * @param  event Add chip event
    */
-  abstract addToLabels(event: MatChipInputEvent);
+  abstract addToLabels(event: MatChipInputEvent): void;
 
   /**
    * Removes a label from the list of labels (does not update in database)
    * @param  label label to remove
    */
-  abstract removeLabel(label: any);
+  abstract removeLabel(label: any): void;
 }

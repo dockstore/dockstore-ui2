@@ -313,7 +313,7 @@ export class ContainerComponent extends Entry {
      return pageIndex;
    }
 
-   addToLabels(event: MatChipInputEvent) {
+   addToLabels(event: MatChipInputEvent): void {
      const input = event.input;
      const value = event.value;
      if ((value || '').trim()) {
@@ -325,7 +325,7 @@ export class ContainerComponent extends Entry {
      }
    }
 
-   removeLabel(label: any) {
+   removeLabel(label: any): void {
     const index = this.containerEditData.labels.indexOf(label);
 
     if (index >= 0) {

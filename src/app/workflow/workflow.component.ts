@@ -289,7 +289,7 @@ export class WorkflowComponent extends Entry {
      return pageIndex;
    }
 
-  addToLabels(event: MatChipInputEvent) {
+  addToLabels(event: MatChipInputEvent): void {
      const input = event.input;
      const value = event.value;
      if ((value || '').trim()) {
@@ -301,7 +301,7 @@ export class WorkflowComponent extends Entry {
      }
    }
 
-   removeLabel(label: any) {
+   removeLabel(label: any): void {
     const index = this.workflowEditData.labels.indexOf(label);
 
     if (index >= 0) {
