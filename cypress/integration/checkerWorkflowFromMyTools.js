@@ -59,7 +59,7 @@ describe('Checker workflow test from my-tools', function() {
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
             cy.goToTab('Launch')
-            cy.get('#launchCheckerWorkflow').should('not.be.visible')
+            cy.get('#launchCheckerWorkflow').should('be.visible')
             cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible')
         })
