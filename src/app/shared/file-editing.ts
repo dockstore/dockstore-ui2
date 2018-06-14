@@ -34,7 +34,7 @@ export class FileEditing extends Files {
    */
   getDockerFile(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'DOCKERFILE');
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKERFILE);
   }
 
   /**
@@ -44,7 +44,7 @@ export class FileEditing extends Files {
    */
   getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'DOCKSTORE_WDL' || sourcefile.type === 'DOCKSTORE_CWL');
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL || sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL);
   }
 
   /**
@@ -54,7 +54,7 @@ export class FileEditing extends Files {
    */
   getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'CWL_TEST_JSON');
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON || sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON);
   }
 
   /**
