@@ -15,6 +15,7 @@
  */
 
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TwitterService } from '../shared/twitter.service';
 import {UserService} from '../loginComponents/user.service';
 import {User} from '../shared/swagger/model/user';
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
   public user: User;
+  public selectedTab = 'toolTab';
   constructor(private twitterService: TwitterService, private userService: UserService) {
   }
 
@@ -40,6 +42,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   goToSearch(searchValue: string) {
     window.location.href = '/search?search=' + searchValue;
+  }
+
+  onSelect(data: TabDirective): void {
+    this.selectedTab = data.id;
   }
 
 
