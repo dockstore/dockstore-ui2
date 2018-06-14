@@ -15,11 +15,6 @@
   -->
 
 <ul class="list-unstyled container-info" *ngIf="workflow">
-  <li *ngIf="workflow.full_workflow_path">
-    <strong tooltip="Complete path of workflow, used as a unique identifier">
-      Path
-    </strong>: {{ workflow.full_workflow_path }}
-  </li>
   <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
     <li *ngIf="workflow?.provider && workflow?.providerUrl">
       <strong tooltip="Git repository for the associated descriptors">
@@ -116,5 +111,4 @@
       </span>
     </div>
   </div>
-  <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow.path" [path]="workflow.full_workflow_path" [currentDescriptor]="workflow?.descriptorType"></app-launch>
 </div>
