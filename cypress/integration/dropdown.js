@@ -1,4 +1,5 @@
 describe('Dropdown test', function() {
+    // TODO: GitLab tests are commented out
     require('./helper.js')
 
     beforeEach(function() {
@@ -44,7 +45,7 @@ describe('Dropdown test', function() {
             cy.get('#unlink-GitHub').should('be.visible')
             cy.get('#unlink-Quay').should('be.visible')
             cy.get('#link-Bitbucket').should('be.visible')
-            cy.get('#link-GitLab').should('be.visible')
+            // cy.get('#link-GitLab').should('be.visible')
     }
     describe('Go to setup page', function() {
         beforeEach(function() {
@@ -56,9 +57,11 @@ describe('Dropdown test', function() {
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
             everythingOk();
-            cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
-                expect(resp.status).to.eq('')
-            })
+            // cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+            //     expect(resp.status).to.eq('')
+            // })
+            // TODO: Gitlab is being very slow, hopefully one day we can remove this
+            cy.wait(10000);
             everythingOk();
             cy.visit(String(global.baseUrl) + '/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
