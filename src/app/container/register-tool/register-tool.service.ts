@@ -112,7 +112,7 @@ export class RegisterToolService {
 
     /**
      * Registers a hosted tool
-     * @param  hostedTool hosted tool object
+     * @param {any}  hostedTool hosted tool object
      */
     registerHostedTool(hostedTool: any): void {
       const splitPath = hostedTool.path.split('/');
