@@ -1,54 +1,67 @@
-<div style="font-style: italic; font-size: smaller; line-height: 1.5">
-  Workflows that are not public can only be shared with users who have
-  a Google identity.
+<div *ngIf="!hasGoogleAccount">
+  <p>You need to link your account with Google in order to share this workflow. Please go to the accounts
+  page to link your account with Google.</p>
+  <p>Your Google email must also be registered with <a [href]="firecloudUrl" target="_blank">FireCloud</a>.</p>
+  <p>Any emails that you share the workflow with must also be registered with FireCloud.</p>
 </div>
-<ul class="list-unstyled container-info" *ngIf="canViewPermissions">
-  <li>
-    <mat-form-field style="width: 100%;">
-      <mat-chip-list #ownerlist>
-        <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, 'OWNER')" [removable]="true">
-          {{owner}}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-      <input placeholder="Owners"
-             [matChipInputFor]="ownerlist"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="addOwner($event)" />
-    </mat-form-field>
-  </li>
-  <li>
-    <mat-form-field style="width: 100%;">
-      <mat-chip-list #writerlist>
-        <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, 'WRITER')" [removable]="true">
-          {{writer}}
-          <mat-icon matChipRemove >cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-      <input placeholder="Writers"
-             [matChipInputFor]="writerlist"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="addWriter($event)" />
-    </mat-form-field>
-  </li>
-  <li>
-    <mat-form-field style="width: 100%;">
-      <mat-chip-list #readerlist>
-        <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, 'READER')" [removable]="true">
-          {{reader}}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-      <input placeholder="Readers"
-             [matChipInputFor]="readerlist"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="addReader($event)" />
-    </mat-form-field>
-  </li>
-</ul>
-<div *ngIf="!canViewPermissions">
-  You do not have permission to view the permissions.
+<div *ngIf="hasGoogleAccount">
+  <div *ngIf="!canViewPermissions">
+      In order to share this workflow, you must register your Google account with FireCloud.
+  </div>
+  <div style="font-style: italic; font-size: smaller; line-height: 1.5" *ngIf="canViewPermissions">
+    Workflows can only be shared with users and user groups who are
+    registered with <a [href]="firecloudUrl">FireCloud</a>.
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="updating">
+  </mat-progress-bar>
+  <ul class="list-unstyled container-info" *ngIf="canViewPermissions">
+    <li>
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #ownerlist>
+          <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, 'OWNER')" [removable]="owners.length > 1">
+            {{owner}}
+            <mat-icon matChipRemove *ngIf="owners.length > 1">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Owners"
+                 [disabled]="updating"
+                 [matChipInputFor]="ownerlist"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addOwner($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+    </li>
+    <li>
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #writerlist>
+          <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, 'WRITER')" [removable]="true">
+            {{writer}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Writers"
+                 [disabled]="updating"
+                 [matChipInputFor]="writerlist"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addWriter($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+    </li>
+    <li>
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #readerlist>
+          <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, 'READER')" [removable]="true">
+            {{reader}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Readers"
+                 [disabled]="updating"
+                 [matChipInputFor]="readerlist"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addReader($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+    </li>
+  </ul>
 </div>

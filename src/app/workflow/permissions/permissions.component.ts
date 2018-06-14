@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import RoleEnum = Permission.RoleEnum;
+import { TokenService } from '../../loginComponents/token.service';
+import { TokenSource } from '../../shared/enum/token-source.enum';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-permissions',
@@ -16,6 +19,9 @@ export class PermissionsComponent implements OnInit {
   public writers: string[] = [];
   public readers: string[] = [];
   public hosted = false;
+  public updating = false;
+  public hasGoogleAccount = false;
+  public firecloudUrl = Dockstore.FIRECLOUD_IMPORT_URL.substr(0, Dockstore.FIRECLOUD_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
 
   separatorKeysCodes = [ENTER, COMMA];
@@ -30,10 +36,13 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(private workflowsService: WorkflowsService) {
+  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar, private tokenService: TokenService) {
   }
 
   ngOnInit() {
+    this.tokenService.tokens$.subscribe(tokens => {
+      this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE)
+    });
   }
 
   addOwner(event: MatChipInputEvent): void {
@@ -50,8 +59,13 @@ export class PermissionsComponent implements OnInit {
 
 
   remove(entity: string, permission: RoleEnum) {
+    this.updating = true;
     this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, entity, permission).subscribe(
-      (userPermissions: Permission[]) => this.processResponse(userPermissions)
+      (userPermissions: Permission[]) => {
+        this.updating = false;
+        this.processResponse(userPermissions);
+      },
+      () => this.updating = false
     );
   }
 
@@ -60,9 +74,16 @@ export class PermissionsComponent implements OnInit {
     const value = event.value;
 
     if ((value || '').trim()) {
+      this.updating = true;
       this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, {email: value, role: permission}).subscribe(
         (userPermissions: Permission[]) => {
+          this.updating = false;
           this.processResponse(userPermissions);
+        },
+        (e) => {
+          this.updating = false;
+          this.snackBar.open(`Error adding user ${value}. Please make sure ${value} is registered with FireCloud`,
+            'Dismiss', {duration: 5000});
         }
       );
     }
