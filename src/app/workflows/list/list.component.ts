@@ -42,6 +42,7 @@ export class ListWorkflowsComponent extends ToolLister {
   dtOptions = {
     /* No ordering applied by DataTables during initialisation */
     order: [],
+    scrollX: true,
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
       const self = this;
       $('td', row).unbind('click');
