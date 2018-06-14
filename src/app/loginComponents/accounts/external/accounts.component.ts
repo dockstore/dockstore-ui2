@@ -34,6 +34,7 @@ import { AccountsService } from './accounts.service';
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
 
+  // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
       name: 'GitHub',
@@ -62,13 +63,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: 'Optional',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false
-    },
-    {
-      name: 'GitLab',
-      source: TokenSource.GITLAB,
-      bold: 'Optional',
-      message: 'GitLab credentials are used for pulling source code from GitLab.',
-      show: false
+    // },
+    // {
+    //   name: 'GitLab',
+    //   source: TokenSource.GITLAB,
+    //   bold: 'Optional',
+    //   message: 'GitLab credentials are used for pulling source code from GitLab.',
+    //   show: false
     }
   ];
 
