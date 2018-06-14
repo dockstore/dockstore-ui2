@@ -40,6 +40,7 @@ import { ContainersService } from './../shared/swagger/api/containers.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-container',
@@ -56,6 +57,7 @@ export class ContainerComponent extends Entry {
   public tool: ExtendedDockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
 

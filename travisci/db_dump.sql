@@ -1996,7 +1996,7 @@ INSERT INTO public.tool (id, author, defaultversion, description, email, giturl,
 INSERT INTO public.tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (4, NULL, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', false, 'quay.io', '', NULL, NULL, NULL, NULL);
 INSERT INTO public.tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (3, NULL, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '/Dockstore.cwl', '/testDir/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', false, 'quay.io', '', NULL, NULL, NULL, NULL);
 INSERT INTO public.tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'amazon.dkr.ecr.test.amazonaws.com', 'test@email.com', NULL, NULL, NULL, NULL);
-
+INSERT INTO public.tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (100, 'testuser2', NULL, 'Whalesay deep quotes', NULL, NULL, false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'HOSTED', 'ht', 'hosted-tool', false, 'quay.io', '', NULL, NULL, NULL, NULL);
 
 --
 -- Data for Name: tool_tag; Type: TABLE DATA; Schema: public; Owner: dockstore
@@ -2040,6 +2040,7 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (1, 18);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 19);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 20);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 21);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 100);
 INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
 
 

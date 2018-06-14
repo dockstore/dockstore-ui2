@@ -1,35 +1,31 @@
-describe('Dockstore my workflows', function() {
+describe('Dockstore my tools', function() {
     require('./helper.js')
 
     beforeEach(function() {
-        cy.visit(String(global.baseUrl) + "/my-workflows")
+        cy.visit(String(global.baseUrl) + "/my-tools")
     });
 
-    // Ensure tabs are correct for the hosted workflow, try adding a version
-    describe('Should be able to register a hosted workflow and add files to it', function() {
-      it('Register the workflow', function() {
-        // Select the hosted workflow
+    // Ensure tabs are correct for the hosted tool, try adding a version
+    describe('Should be able to register a hosted tool and add files to it', function() {
+      it('Register the tool', function() {
+        // Select the hosted tool
         cy
-          .contains('dockstore.org/A')
+          .contains('quay.io/hosted-tool')
           .invoke('width').should('be.gt', 0)
         cy
           .get('accordion')
           .click()
         cy
-          .contains('dockstore.org/A')
+          .contains('quay.io/hosted-tool')
           .click()
         cy
-          .contains('hosted-workflow')
+          .contains('ht')
           .click()
 
         // Should not be able to publish (No valid versions)
         cy
-          .get('#publishButton')
+          .get('#publishToolButton')
           .should('have.class', 'disabled')
-
-        // Check content of the info tab
-        cy
-          .contains('Mode: HOSTED')
 
         // Check content of the version tab
         cy
@@ -39,9 +35,9 @@ describe('Dockstore my workflows', function() {
           .click()
           .get('table > tbody')
           .find('tr')
-          .should('have.length', 2)
+          .should('have.length', 1)
 
-        // Add a new version with one descriptor
+        // Add a new version with one descriptor and dockerfile
         cy
           .get('.nav-link')
           .contains('Files')
@@ -50,14 +46,32 @@ describe('Dockstore my workflows', function() {
         cy
           .get('#editFilesButton')
           .click()
+
         cy
           .contains('Add File')
           .click()
         cy.window().then(function (window) {
           cy.document().then((doc) => {
             const editors = doc.getElementsByClassName('ace_editor');
-            const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
-            window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
+            const dockerfile = `FROM ubuntu:latest`;
+            window.ace.edit(editors[0]).setValue(dockerfile, -1);
+          })
+        });
+
+        cy
+          .get('#descriptorFilesTab-link')
+          .click()
+        cy.wait(500)
+
+        cy
+          .get('#descriptorFilesTab')
+          .contains('Add File')
+          .click()
+        cy.window().then(function (window) {
+          cy.document().then((doc) => {
+            const editors = doc.getElementsByClassName('ace_editor');
+            const cwlDescriptor = `#!/usr/bin/env cwl-runner cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []`;
+            window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
           })
         });
 
@@ -85,13 +99,18 @@ describe('Dockstore my workflows', function() {
             .get('#editFilesButton')
             .click()
           cy
+            .get('#descriptorFilesTab-link')
+            .click()
+          cy.wait(500)
+          cy
+            .get('#descriptorFilesTab')
             .contains('Add File')
             .click()
           cy.window().then(function (window) {
             cy.document().then((doc) => {
               const editors = doc.getElementsByClassName('ace_editor');
-              const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
-              window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
+              const cwlDescriptor = `#!/usr/bin/env cwl-runner cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []`;
+              window.ace.edit(editors[2]).setValue(cwlDescriptor, -1);
             })
           });
 
@@ -107,7 +126,7 @@ describe('Dockstore my workflows', function() {
             cy.document().then((doc) => {
               const editors = doc.getElementsByClassName('ace_editor');
               const testParameterFile = '{}';
-              window.ace.edit(editors[2]).setValue(testParameterFile, -1);
+              window.ace.edit(editors[3]).setValue(testParameterFile, -1);
             })
           });
 
@@ -130,7 +149,7 @@ describe('Dockstore my workflows', function() {
             .get('#publishButton')
             .should('not.have.class', 'disabled')
 
-          // Try deleting a file (.wdl file)
+          // Try deleting a file (.cwl file)
           cy
             .get('.nav-link')
             .contains('Files')
@@ -140,17 +159,22 @@ describe('Dockstore my workflows', function() {
             .get('#editFilesButton')
             .click()
           cy
-            .get('.delete-editor-file')
+            .get('#descriptorFilesTab-link')
+            .click()
+          cy.wait(500)
+          cy
+            .get('#descriptorFilesTab')
+            .find('.delete-editor-file')
             .first()
             .click()
           cy
             .get('#saveNewVersionButton')
             .click()
 
-          // Should now only be two ace editors
+          // Should now only be three ace editors
           cy
             .get('.ace_editor')
-            .should('have.length', 2)
+            .should('have.length', 3)
 
           // New version should be added
           cy

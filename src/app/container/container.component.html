@@ -75,9 +75,9 @@
       </div>
     </h3>
   </div>
-  <div *ngIf="!publicPage">
+  <div *ngIf="!publicPage" class="small-side-padding">
     <h3>
-      <div class="pull-right">
+      <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
           <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published"
             [disabled]="!thisisValid" btnCheckbox>
@@ -146,8 +146,14 @@
       </tab>
       <tab heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions">
-          <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
-          </app-files-container>
+          <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+            <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+            </app-files-container>
+          </div>
+          <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+            <app-tool-file-editor *ngIf="currentTab === 'files'" [entrypath]="tool.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+            </app-tool-file-editor>
+          </div>
         </div>
       </tab>
     </tabset>

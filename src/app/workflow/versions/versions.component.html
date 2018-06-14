@@ -14,8 +14,8 @@
   ~    limitations under the License.
   -->
 
-<div>
-  <table class="table table-bordered table-condensed table-striped" [ngClass]="workflow?.mode !== WorkflowType.ModeEnum.HOSTED ? 'workflow-versions-grid' : 'hosted-workflow-versions-grid'">
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped" style="overflow: auto;" [ngClass]="workflow?.mode !== WorkflowType.ModeEnum.HOSTED ? 'workflow-versions-grid' : 'hosted-workflow-versions-grid'">
     <thead>
     <tr>
       <th>

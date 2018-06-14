@@ -19,10 +19,13 @@ import { StateService } from './../../shared/state.service';
 import { VersionModalService } from './../version-modal/version-modal.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AfterViewChecked, AfterViewInit, Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { View } from '../../shared/view';
 import { DateService } from '../../shared/date.service';
 import { WorkflowService } from '../../shared/workflow.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -33,11 +36,15 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
   @Input() workflowId: number;
   items: any[];
   isPublic: boolean;
+  private workflow: Workflow;
+  public WorkflowType = Workflow;
+
   constructor(
               private workflowService: WorkflowService,
               private versionModalService: VersionModalService,
               private stateService: StateService,
               private workflowsService: WorkflowsService,
+              private hostedService: HostedService,
               dateService: DateService) {
     super(dateService);
   }
@@ -67,5 +74,21 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
 
   ngOnInit() {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
+    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+  }
+
+  deleteHostedVersion() {
+    const deleteMessage = 'Are you sure you want to delete version ' +
+      this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
+    const confirmDelete = confirm(deleteMessage);
+    if (confirmDelete) {
+      this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
+        result => {
+            this.workflowService.setWorkflow(result);
+          }, (error: HttpErrorResponse) => {
+            console.log(error);
+          }
+        );
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule,
-  MatSnackBarModule, MatRadioModule, MatStepperModule, MatDialogModule, MatChipsModule } from '@angular/material';
+  MatSnackBarModule, MatRadioModule, MatStepperModule, MatDialogModule, MatSelectModule, MatChipsModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 
 @NgModule({
@@ -14,6 +14,7 @@ import { NgModule } from '@angular/core';
     MatRadioModule,
     MatStepperModule,
     MatDialogModule,
+    MatSelectModule,
     MatChipsModule
   ],
   exports: [
@@ -27,6 +28,7 @@ import { NgModule } from '@angular/core';
     MatRadioModule,
     MatStepperModule,
     MatDialogModule,
+    MatSelectModule,
     MatChipsModule
   ]
 })

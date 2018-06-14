@@ -411,7 +411,7 @@ img.site-icons-tab {
 }
 
 .search-home {
-  width: 475px;
+  width: 100% !important;
 }
 
 input[type=text]:focus,
@@ -1190,4 +1190,12 @@ tabset.homeComponent {
 
 .footer-link:hover {
   text-decoration: underline;
+}
+
+.my-entry-button-group {
+  margin-bottom: 5px;
+}
+
+.nav-tabs.nav-justified > li > a {
+  margin: 0px !important;
 }

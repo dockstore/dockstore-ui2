@@ -35,10 +35,25 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public showCustomDockerRegistryPath: boolean;
   public refreshMessage: string;
   public isModalShown: boolean;
+  public hostedTool = {
+    path: '',
+    registry: 'quay.io',
+    registryProvider: 'Quay.io'
+  };
+  public options = [
+    {
+      label: 'Use CWL, WDL or NextFlow from GitHub, BitBucket, etc.',
+      value: 0
+    },
+    {
+      label: 'Create and save CWL or WDL on Dockstore.org',
+      value: 1
+    }
+  ];
+  public selectedOption = this.options[0];
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
-
   constructor(private registerToolService: RegisterToolService, private stateService: StateService) { }
 
   isInvalidCustomRegistry() {
@@ -63,6 +78,14 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
 
   registerTool() {
     this.registerToolService.registerTool(this.tool, this.customDockerRegistryPath);
+  }
+
+  registerHostedTool() {
+    this.registerToolService.registerHostedTool(this.hostedTool);
+  }
+
+  getToolRegistry(registry: string, customDockerRegistryPath: string): string {
+    return this.registerToolService.getToolRegistry(registry, customDockerRegistryPath);
   }
 
   checkForSpecialDockerRegistry() {

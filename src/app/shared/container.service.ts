@@ -116,6 +116,7 @@ export class ContainerService {
       case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
         return 'Partially-Automated';
       case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
+      case DockstoreTool.ModeEnum.HOSTED:
         return 'Manual';
       default:
         return 'Unknown';
@@ -129,6 +130,7 @@ export class ContainerService {
       case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
         return 'Partially-Automated: At least one version is an automated build';
       case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
+      case DockstoreTool.ModeEnum.HOSTED:
         return 'Manual: No versions are automated builds';
       default:
         return 'Unknown: Build information not known';
