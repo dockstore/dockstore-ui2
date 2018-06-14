@@ -68,15 +68,9 @@ export class FileEditing extends Files {
 
     // Deal with file renames
     for (const originalSourceFile of originalSourceFiles) {
-      let toDelete = true;
-      for (const newSourceFile of newSourceFiles) {
-        if (newSourceFile.path === originalSourceFile.path) {
-          toDelete = false;
-          break;
-        }
-      }
-
-      if (toDelete) {
+      const matchingPath = newSourceFiles.find(x => x.path === originalSourceFile.path);
+      console.log(matchingPath);
+      if (matchingPath === undefined) {
         const sourceFileCopy = originalSourceFile;
         sourceFileCopy.content = null;
         sourceFilesToDelete.push(sourceFileCopy);

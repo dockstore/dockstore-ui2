@@ -4,6 +4,7 @@ import { Tag } from './../../shared/swagger/model/tag';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
+import { SourceFile } from './../../shared/swagger/model/sourceFile';
 
 @Component({
   selector: 'app-tool-file-editor',
@@ -31,7 +32,7 @@ export class ToolFileEditorComponent extends FileEditing {
   /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
-  loadVersionSourcefiles() {
+  loadVersionSourcefiles(): void {
     this.descriptorFiles = this.getDescriptorFiles(this.currentVersion.sourceFiles);
     this.testParameterFiles = this.getTestFiles(this.currentVersion.sourceFiles);
     this.dockerFile = this.getDockerFile(this.currentVersion.sourceFiles);
@@ -41,7 +42,7 @@ export class ToolFileEditorComponent extends FileEditing {
    * Combines sourcefiles into one array
    * @return {Array<SourceFile>} Array of sourcefiles
    */
-  getCombinedSourceFiles() {
+  getCombinedSourceFiles(): Array<SourceFile> {
     let baseFiles = [];
     if (this.descriptorFiles) {
       baseFiles = baseFiles.concat(this.descriptorFiles);
@@ -58,7 +59,7 @@ export class ToolFileEditorComponent extends FileEditing {
   /**
    * Creates a new version based on changes made
    */
-  saveVersion() {
+  saveVersion(): void {
     const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
@@ -80,7 +81,7 @@ export class ToolFileEditorComponent extends FileEditing {
   /**
    * Resets the files back to their original state
    */
-  resetFiles() {
+  resetFiles(): void {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);
     this.testParameterFiles = this.getTestFiles(this.originalSourceFiles);
     this.dockerFile = this.getDockerFile(this.originalSourceFiles);

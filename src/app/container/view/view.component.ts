@@ -62,7 +62,7 @@ export class ViewContainerComponent extends View implements OnInit {
     }
   }
 
-  deleteHostedTag() {
+  deleteHostedTag(): void {
     const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {

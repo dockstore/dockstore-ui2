@@ -114,7 +114,7 @@ export class RegisterToolService {
      * Registers a hosted tool
      * @param  hostedTool hosted tool object
      */
-    registerHostedTool(hostedTool): void {
+    registerHostedTool(hostedTool: any): void {
       const splitPath = hostedTool.path.split('/');
       const namespace = splitPath[0];
       const name = splitPath[1];
