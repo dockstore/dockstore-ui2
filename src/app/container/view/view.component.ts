@@ -67,7 +67,7 @@ export class ViewContainerComponent extends View implements OnInit {
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
-        result => {
+        (result: DockstoreTool) => {
             this.containerService.setTool(result);
           }, (error: HttpErrorResponse) => {
             console.log(error);
