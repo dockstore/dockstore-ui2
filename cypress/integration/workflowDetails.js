@@ -40,13 +40,13 @@ describe('Dockstore Workflow Details', function() {
         .should("not.exist")
   });
 
-  it('Change tab to labels', function() {
+  it('Change tab to launch', function() {
     cy
     .get('.nav-link')
-    .contains('Labels')
+    .contains('Launch')
     .parent()
     .click()
-    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=labels')
+    cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=launch')
   });
 
   it('Change tab to versions', function() {

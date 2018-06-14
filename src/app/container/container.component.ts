@@ -16,6 +16,8 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ListContainersService } from '../containers/list/list.service';
@@ -54,7 +56,9 @@ export class ContainerComponent extends Entry {
   public tool: ExtendedDockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
-  validTabs = ['info', 'labels', 'versions', 'files'];
+  validTabs = ['info', 'launch', 'versions', 'files'];
+  separatorKeysCodes = [ENTER, COMMA];
+
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
     urlResolverService: UrlResolverService,
@@ -96,7 +100,6 @@ export class ContainerComponent extends Entry {
    */
   setProperties() {
     let toolRef: ExtendedDockstoreTool = this.tool;
-    this.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     if (this.selectedVersion === null) {
       this.dockerPullCmd = null;
     } else {
@@ -235,7 +238,7 @@ export class ContainerComponent extends Entry {
 
   resetContainerEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.tool.labels);
-    const toolLabels = labelArray.join(', ');
+    const toolLabels = labelArray;
     this.containerEditData = {
       labels: toolLabels,
       is_published: this.tool.is_published
@@ -253,7 +256,7 @@ export class ContainerComponent extends Entry {
     }
   }
   setContainerLabels(): any {
-    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels).
+    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).
       subscribe(
       tool => {
         this.tool.labels = tool.labels;
@@ -269,7 +272,6 @@ export class ContainerComponent extends Entry {
   onTagChange(tag: Tag): void {
     this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.tool_path, tag.name);
   }
-
 
   /**
    * Called when the selected version is changed
@@ -310,4 +312,24 @@ export class ContainerComponent extends Entry {
      }
      return pageIndex;
    }
+
+   addToLabels(event: MatChipInputEvent): void {
+     const input = event.input;
+     const value = event.value;
+     if ((value || '').trim()) {
+       this.containerEditData.labels.push(value.trim());
+     }
+
+     if (input) {
+       input.value = '';
+     }
+   }
+
+   removeLabel(label: any): void {
+    const index = this.containerEditData.labels.indexOf(label);
+
+    if (index >= 0) {
+      this.containerEditData.labels.splice(index, 1);
+    }
+  }
 }

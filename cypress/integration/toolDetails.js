@@ -40,13 +40,13 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
         cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
     });
 
-    it('Change tab to labels', function() {
+    it('Change tab to launch', function() {
         cy
             .get('.nav-link')
-            .contains('Labels')
+            .contains('Launch')
             .parent()
             .click()
-        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=labels')
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=launch')
     });
 
     it('Change tab to versions', function() {

@@ -56,7 +56,7 @@ describe('Dockstore my workflows', function() {
                 .and('not.have.class', 'disabled')
             cy
                 .get('.nav-link')
-                .contains('Labels')
+                .contains('Launch')
                 .parent()
                 .should('not.have.class', 'disabled')
             cy

@@ -431,6 +431,7 @@ div.container-sharing {
   div {
     line-height: 1em;
   }
+  text-align: center;
 }
 
 form.edit-container {
@@ -733,6 +734,10 @@ div.contact-button {
   margin-bottom: 15px;
 }
 
+.small-bottom-margin {
+  margin-bottom: 5px;
+}
+
 .full-width {
   width: 100%;
 }
@@ -770,4 +775,12 @@ div.contact-button {
   top: 50%;
   max-width:350px;
   padding: 10px;
+}
+
+.mat-standard-chip {
+  padding: 5px 8px !important;
+}
+
+.mat-chip-list-wrapper .mat-standard-chip, .mat-chip-list-wrapper input.mat-input-element {
+  margin: 2px !important;
 }
