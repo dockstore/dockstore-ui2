@@ -7,7 +7,7 @@
     "start": "ng serve",
     "prebuild.prod": "ts-node git.version.ts",
     "prebuild": "ts-node git.version.ts",
-    "build.prod": "ng build --progress false -prod",
+    "build.prod": "ng build --progress false --prod",
     "build": "ng build --progress false",
     "test": "ng test",
     "lint": "ng lint",
