@@ -219,7 +219,7 @@ export class SearchService {
       ['Labels', 'labels.value.keyword'],
       ['VerifiedSourceTool', 'tags.verifiedSource'],
       ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
-      ['CheckerWorkflow', 'is_checker'], 
+      ['CheckerWorkflow', 'is_checker'],
       ['HasCheckerWorkflow', 'has_checker'],
       ['Organization', 'organization']
     ]);
