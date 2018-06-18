@@ -391,4 +391,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param  label label to remove
    */
   abstract removeLabel(label: any): void;
+
+  /**
+   * Cancels any unsaved label changes
+   */
+  abstract cancelLabelChanges(): void;
 }

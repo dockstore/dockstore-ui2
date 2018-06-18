@@ -252,6 +252,12 @@ export class WorkflowComponent extends Entry {
       this.setWorkflowLabels();
     }
   }
+
+  cancelLabelChanges(): void {
+    this.workflowEditData.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
+    this.labelsEditMode = false;
+  }
+
   setWorkflowLabels(): any {
     return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', '))
       .subscribe(workflow => {

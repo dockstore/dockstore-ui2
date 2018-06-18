@@ -267,6 +267,11 @@ export class ContainerComponent extends Entry {
       });
   }
 
+  cancelLabelChanges(): void {
+    this.containerEditData.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
+    this.labelsEditMode = false;
+  }
+
   public toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
   }
