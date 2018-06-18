@@ -39,7 +39,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['tags.verified', 'private_access', '_type'];
+  public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'is_checker', 'has_checker'];
   setSearchInfo(searchInfo) {
     this.searchInfoSource.next(searchInfo);
   }
@@ -219,6 +219,8 @@ export class SearchService {
       ['Labels', 'labels.value.keyword'],
       ['VerifiedSourceTool', 'tags.verifiedSource'],
       ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
+      ['CheckerWorkflow', 'is_checker'], 
+      ['HasCheckerWorkflow', 'has_checker'],
       ['Organization', 'organization']
     ]);
   }
@@ -237,6 +239,9 @@ export class SearchService {
       ['tags.verifiedSource', 'Tool: Verified Source'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
+      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
+      ['is_checker', 'Checker workflows'],
+      ['has_checker', 'Has Checker Workflows'],
       ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
       ['organization', 'Workflow: Organization']
     ]);
@@ -258,7 +263,8 @@ export class SearchService {
       ['workflowVersions.verifiedSource.keyword', new SubBucket],
       ['input_file_formats.value.keyword', new SubBucket],
       ['output_file_formats.value.keyword', new SubBucket],
-      ['workflowVersions.verifiedSource.keyword', new SubBucket]
+      ['is_checker', new SubBucket],
+      ['has_checker', new SubBucket]
     ]);
   }
 
