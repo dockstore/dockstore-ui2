@@ -14,9 +14,11 @@
   ~    limitations under the License.
   -->
 
+<div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see launch with, please refresh the workflow.
+</div>
 <div *ngIf="_selectedVersion">
   <div *ngIf="!_selectedVersion.valid">
-    <label tooltip="Commands to launch tool from the command line">Launch With</label>
     <div class="alert alert-warning" role="alert">
       This section is only available for valid versions.
     </div>
@@ -24,8 +26,7 @@
   <div *ngIf="_selectedVersion.valid">
     <span>
       <div class="form-inline">
-        <label tooltip="Commands to launch workflow from the command line">Launch With</label>
-        <div class="pull-right">
+        <div class="text-right small-bottom-margin">
           <select id="launchWithDescriptor" class="form-control input-sm" [(ngModel)]="currentDescriptor" (change)="reactToDescriptor()">
             <option *ngFor="let descriptor of validDescriptors" [ngValue]="descriptor.value">
               {{ descriptor.value }}

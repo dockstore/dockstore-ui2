@@ -35,6 +35,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   versionTag: Tag;
+  public DockstoreToolType = DockstoreTool;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this.versionTag = value;

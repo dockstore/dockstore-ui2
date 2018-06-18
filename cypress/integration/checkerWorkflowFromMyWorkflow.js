@@ -29,8 +29,11 @@ describe('Checker workflow test from my-workflows', function() {
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#viewParentEntryButton').should('not.be.visible')
-            cy.get('#addCheckerWorkflowButton').should('be.visible').click()
+            cy.get('#addCheckerWorkflowButton').should('be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
+            cy.goToTab('Info')
+            cy.get('#addCheckerWorkflowButton').should('be.visible').click()
             cy
                 .get('#checkerWorkflowPath')
                 .type('/Dockstore.cwl')
@@ -47,21 +50,27 @@ describe('Checker workflow test from my-workflows', function() {
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('be.visible')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l/_cwl_checker')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
+            cy.goToTab('Info')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent workflow right now
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('be.visible')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible')
         })
         it('visit the workflow and have its publish/unpublish reflected in the checker workflow', function() {

@@ -29,7 +29,9 @@ export class CodeEditorComponent implements AfterViewInit {
     if (this.editorContent == null || this.readOnly) {
       this.editorContent = content;
       if (this.editor !== undefined) {
-        this.editor.setValue(this.editorContent, -1);
+        if (this.editorContent != null) {
+            this.editor.setValue(this.editorContent, -1);
+        }
       }
     }
   }
@@ -50,7 +52,7 @@ export class CodeEditorComponent implements AfterViewInit {
         showLineNumbers: true,
         maxLines: 60,
         theme: 'ace/theme/idle_fingers',
-        fontSize: '14pt'
+        fontSize: '12pt'
       }
     );
 

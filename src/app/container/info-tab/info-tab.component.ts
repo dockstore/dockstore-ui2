@@ -21,6 +21,7 @@ import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-info-tab',
@@ -32,6 +33,7 @@ export class InfoTabComponent implements OnInit {
   @Input() privateOnlyRegistry;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
+  public DockstoreToolType = DockstoreTool;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
