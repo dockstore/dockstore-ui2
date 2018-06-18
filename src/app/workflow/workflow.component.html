@@ -90,7 +90,7 @@
   <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
-        <mat-chip color="primary" *ngFor="let label of workflowEditData.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <mat-chip color="primary" *ngFor="let label of workflowEditData" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
           Manage labels
         </button>
@@ -112,8 +112,11 @@
                  (matChipInputTokenEnd)="addToLabels($event)"/>
         </mat-chip-list>
       </mat-form-field>
+      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <span class="glyphicon glyphicon-remove"></span> Cancel
+      </button>
       <button type="button"(click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-        <span class="glyphicon glyphicon-floppy-save"></span>Save
+        <span class="glyphicon glyphicon-floppy-save"></span> Save
       </button>
     </span>
   </div>
