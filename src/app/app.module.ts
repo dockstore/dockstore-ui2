@@ -41,6 +41,8 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
+import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
+import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
@@ -104,6 +106,8 @@ import { StarringModule } from './starring/starring.module';
     AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
+    GetTokenUsernamePipe,
+    GetTokenContentPipe,
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
