@@ -206,7 +206,7 @@
           <p>
             Git Repository:
             <span *ngIf="tool.provider">
-              <a [href]="tool.providerUrl">
+              <a [href]="tool.providerUrl" target="_blank">
                 {{tool.provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
@@ -216,14 +216,14 @@
             Docker Registry:
             <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
             <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
-              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl">
+              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl" target="_blank">
                 {{tool?.imgProvider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
               <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
             </span>
             <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')" class="pull-right">
-              <a href="{{tool.imgProviderUrl}}">
+              <a href="{{tool.imgProviderUrl}}" target="_blank">
                 <img src="{{tool.imgProviderUrl}}/status">
               </a>
             </span>
