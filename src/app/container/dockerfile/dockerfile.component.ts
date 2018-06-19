@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
@@ -51,7 +51,7 @@ export class DockerfileComponent {
   reactToVersion(): void {
     if (this._selectedVersion) {
       this.nullContent = false;
-      this.containersService.dockerfile(this.id, this._selectedVersion.name).first()
+      this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first())
         .subscribe(file => {
             this.content = file.content;
             this.filepath = file.path;

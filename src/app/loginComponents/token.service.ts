@@ -1,9 +1,10 @@
+
+import {map} from 'rxjs/operators';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Observable } from 'rxjs';
 
 import { Configuration, TokensService } from '../shared/swagger';
 import { UsersService } from './../shared/swagger/api/users.service';
@@ -23,7 +24,7 @@ export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);
   tokens: Token[];
   user: User;
-  hasGitHubToken$ = this.tokens$.map(tokens => this.hasGitHubTokenFunction(tokens));
+  hasGitHubToken$ = this.tokens$.pipe(map(tokens => this.hasGitHubTokenFunction(tokens)));
   constructor(private usersService: UsersService, private userService: UserService,
     private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {

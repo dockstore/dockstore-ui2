@@ -1,6 +1,7 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import fs = require('fs');
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
+
 
 const exec = require('child_process').exec;
 
@@ -26,8 +27,7 @@ const tag$ = new Observable<string>(s => {
     });
 });
 
-Observable
-  .combineLatest(revision$, tag$)
+observableCombineLatest(revision$, tag$)
   .subscribe(([revision, tag]) => {
     console.log(`tag: '${tag}', version: '${process.env.WEBSERVICE_VERSION}', revision: '${revision}'`);
 

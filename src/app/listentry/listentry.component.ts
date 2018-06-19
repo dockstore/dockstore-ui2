@@ -13,11 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import 'rxjs/add/operator/takeUntil';
-
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -48,12 +47,12 @@ export class ListentryComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateResultsTable = false;
     this.dtOptions = { searching: false };
     if (this.entryType === 'tool') {
-      this.searchService.toolhit$.takeUntil(this.ngUnsubscribe).subscribe(
+      this.searchService.toolhit$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         hits => {
           this.setHitSubscribe(hits);
         });
     } else if (this.entryType === 'workflow') {
-      this.searchService.workflowhit$.takeUntil(this.ngUnsubscribe).subscribe(
+      this.searchService.workflowhit$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         hits => {
           this.setHitSubscribe(hits);
         });
