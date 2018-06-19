@@ -59,6 +59,7 @@ export class AccountsInternalComponent implements OnInit {
       if (user) {
         this.setProperty();
         const userProfiles = user.userProfile;
+        if (userProfiles) {
         this.googleProfile = userProfiles['google.com'];
         // Using gravatar for Google also, may result in two identical pictures if both accounts use the same email address
         if (this.googleProfile && this.googleProfile.avatarURL) {
@@ -68,6 +69,7 @@ export class AccountsInternalComponent implements OnInit {
         if (this.gitHubProfile && this.gitHubProfile.avatarURL) {
           this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
         }
+      }
       }
     }
     );
