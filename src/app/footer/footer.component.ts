@@ -18,7 +18,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MetadataService } from '../metadata/metadata.service';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from './versions';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-footer',

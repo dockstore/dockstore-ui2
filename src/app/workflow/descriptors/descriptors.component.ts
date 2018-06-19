@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';

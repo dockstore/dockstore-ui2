@@ -1,5 +1,5 @@
 import { ExpandService } from './expand.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
 /*
  *    Copyright 2017 OICR
  *
@@ -20,8 +20,6 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router/';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
 import { Dockstore } from './../shared/dockstore.model';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';

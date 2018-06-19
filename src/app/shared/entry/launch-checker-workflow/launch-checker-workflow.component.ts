@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 

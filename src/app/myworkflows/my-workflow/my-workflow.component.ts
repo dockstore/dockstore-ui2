@@ -34,6 +34,7 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
+import { first, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-workflow',
@@ -61,7 +62,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      * It is the only section of code that does not exist in my-tools
      */
-    this.router.events.takeUntil(this.ngUnsubscribe).subscribe(event => {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (this.groupEntriesObject) {
           const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
@@ -83,12 +84,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userWorkflows(user.id).first().subscribe(workflows => {
+        this.usersService.userWorkflows(user.id).pipe(first()).subscribe(workflows => {
           this.workflowService.setWorkflows(workflows);
         });
       }
     });
-    this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
+    this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflows => {
       if (workflows) {
         this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');

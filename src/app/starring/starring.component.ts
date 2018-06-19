@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 import { UserService } from '../loginComponents/user.service';
 import { ContainerService } from '../shared/container.service';
@@ -125,7 +126,7 @@ export class StarringComponent implements OnInit {
   }
   getStarredUsers(): any {
     if (this.entry && this.entryType) {
-      this.starringService.getStarring(this.entry.id, this.entryType).first().subscribe(
+      this.starringService.getStarring(this.entry.id, this.entryType).pipe(first()).subscribe(
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.starredUsers = starring;

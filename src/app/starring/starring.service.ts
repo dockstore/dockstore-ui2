@@ -16,7 +16,7 @@ import { StarRequest } from './../shared/swagger/model/starRequest';
  */
 
 import { User } from './../shared/swagger/model/user';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { ContainersService, WorkflowsService } from '../shared/swagger';

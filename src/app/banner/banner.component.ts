@@ -4,7 +4,7 @@ import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from '../footer/versions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MetadataService } from '../metadata/metadata.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-banner',

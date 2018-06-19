@@ -15,7 +15,7 @@
  */
 
 import { Injectable, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
 

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';

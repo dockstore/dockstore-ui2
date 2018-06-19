@@ -15,7 +15,7 @@
  */
 import { Injectable, OnDestroy } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
 import { TokenService } from '../loginComponents/token.service';
