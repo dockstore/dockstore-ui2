@@ -73,7 +73,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     }
   ];
 
-  private tokens: Token[];
+  public tokens: Token[];
   private userId;
   private ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -137,15 +137,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.tokens = tokens;
     if (tokens) {
       this.setAvailableTokens(tokens);
-    }
-  }
-
-  public getTokenFromSource(source: string): string {
-    const tokenFound: Token = this.tokens.find(token => token.tokenSource === source);
-    if (tokenFound) {
-      return tokenFound.content;
-    } else {
-      return null;
     }
   }
 
