@@ -19,7 +19,7 @@ import { Configuration } from './../shared/swagger/configuration';
 import { UsersStubService, ConfigurationStub } from './../test/service-stubs';
 import { UsersService } from '../shared/swagger';
 import { AuthStubService } from '../test/service-stubs';
-import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { AuthService } from 'ng2-ui-auth';
 import { TestBed, inject } from '@angular/core/testing';
 
 describe('LoginService', () => {
