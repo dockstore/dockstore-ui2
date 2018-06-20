@@ -79,6 +79,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (tools) {
         this.tools = tools;
         const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
+        this.setGroupEntriesObject(sortedContainers);
         this.selectInitialEntry(sortedContainers);
       }
     });

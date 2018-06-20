@@ -28,9 +28,6 @@
   <div class="row containers-rsb" style="height: 100%">
     <mat-sidenav-container autosize style="height: 100%">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-        <h3>Shared with me</h3>
-        <p>You have no workflows shared with you</p>
-
         <h3>My workflows</h3>
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject.length == 0">You have not registered any workflows</p>
         <accordion [closeOthers]="oneAtATime">
@@ -77,10 +74,51 @@
         <div *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
           <button mat-raised-button color="primary" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
         </div>
+        <h3>Shared with me</h3>
+        <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
+        <accordion [closeOthers]="oneAtATime">
+            <accordion-group *ngFor="let orgObj of groupSharedEntriesObject"  panelClass="containers-accordion"
+              [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.sourceControl + '/' + orgObj?.organization">
+              <div accordion-heading class="no-wrap">
+                {{orgObj?.sourceControl + '/' + orgObj?.organization}}
+              </div>
+              <tabset [justified]="true">
+                <tab heading="Published" [active]="orgObj.activeTab === 'published'">
+                  <div *ngFor="let workflowObj of orgObj?.published">
+                    <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
+                      <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
+                        (click)="selectEntry(workflowObj)">
+                        {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="orgObj?.published.length == 0" class="text-center">
+                    <p>No published workflows.</p>
+                  </div>
+                </tab>
+                <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
+                  <div *ngFor="let workflowObj of orgObj?.unpublished">
+                    <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
+                      <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
+                        (click)="selectEntry(workflowObj)">
+                        {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
+                    <p>No unpublished workflows.</p>
+                  </div>
+                </tab>
+              </tabset>
+              <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
+                <app-refresh-workflow-organization class="pull-right" [organization]="orgObj?.organization"></app-refresh-workflow-organization>
+              </span>
+            </accordion-group>
+        </accordion>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12">
         <app-alert></app-alert>
-        <div *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
+        <div *ngIf="(groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject)">
             <div class="col-md-12">
               <div class="alert alert-info" role="alert">
                 <p>

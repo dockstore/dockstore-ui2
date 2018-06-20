@@ -34,6 +34,8 @@ export abstract class MyEntry implements OnDestroy {
     user: any;
     public hasGitHubToken = true;
     public groupEntriesObject: Array<any>;
+    public groupSharedEntriesObject: Array<any>;
+
     protected ngUnsubscribe: Subject<{}> = new Subject();
     constructor(protected accountsService: AccountsService, protected authService: AuthService, protected configuration: Configuration,
         protected tokenService: TokenService, protected urlResolverService: UrlResolverService) { }
@@ -113,14 +115,35 @@ export abstract class MyEntry implements OnDestroy {
     }
 
     /**
+     * Returns the concatenation of two arrays (properly deals with undefined)
+     * @param arr1 Array 1
+     * @param arr2  Array 2
+     */
+    combineArrays(arr1: Array<any>, arr2: Array<any>): Array<any> {
+      if (arr1 === undefined) {
+       if (arr2 === undefined) {
+         return null;
+       }  else {
+         return arr2;
+       }
+      } else {
+        if (arr2 === undefined) {
+          return arr1;
+        } else {
+          return arr1.concat(arr2);
+        }
+      }
+    }
+
+    /**
      * Select the initially selected entry
      * @param sortedEntries Array of sorted entries
      */
     selectInitialEntry(sortedEntries: any): void {
       /* For the first initial time, set the first entry to be the selected one */
       if (sortedEntries && sortedEntries.length > 0) {
-        this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
-        const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+        const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+          this.combineArrays(this.groupEntriesObject, this.groupSharedEntriesObject));
         if (foundEntry) {
           this.selectEntry(foundEntry);
         } else {
@@ -134,6 +157,12 @@ export abstract class MyEntry implements OnDestroy {
         }
       } else {
         this.selectEntry(null);
+      }
+    }
+
+    setGroupEntriesObject(sortedEntries: any): void {
+      if (sortedEntries && sortedEntries.length > 0) {
+        this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
       }
     }
 }

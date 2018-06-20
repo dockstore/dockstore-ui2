@@ -29,6 +29,7 @@ import { ProviderService } from './../../shared/provider.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { StateService } from './../../shared/state.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Configuration } from './../../shared/swagger/configuration';
 import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -46,14 +47,16 @@ import { MyWorkflowsService } from './../myworkflows.service';
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
   workflows: any;
+  sharedWorkflows: any;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
   public showSidebar = true;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
-    private workflowService: WorkflowService, protected authService: AuthService, protected accountsService: AccountsService,
-    private refreshService: RefreshService, private stateService: StateService, private router: Router, private location: Location,
-    private registerWorkflowModalService: RegisterWorkflowModalService, protected urlResolverService: UrlResolverService) {
+    private workflowService: WorkflowService, protected authService: AuthService,
+    protected accountsService: AccountsService, private refreshService: RefreshService, private stateService: StateService,
+    private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
+    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService) {
     super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
@@ -64,8 +67,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      */
     this.router.events.takeUntil(this.ngUnsubscribe).subscribe(event => {
       if (event instanceof NavigationEnd) {
-        if (this.groupEntriesObject) {
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+        if (this.groupEntriesObject && this.groupSharedEntriesObject) {
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+            this.groupEntriesObject.concat(this.groupSharedEntriesObject));
           this.selectEntry(foundWorkflow);
         }
       }
@@ -81,11 +85,17 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
       }
     );
+
+
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
         this.usersService.userWorkflows(user.id).first().subscribe(workflows => {
           this.workflowService.setWorkflows(workflows);
+        });
+
+        this.workflowsService.sharedWorkflows().first().subscribe(workflows => {
+          this.workflowService.setSharedWorkflows(workflows);
         });
       }
     });
@@ -93,10 +103,29 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       if (workflows) {
         this.workflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+        this.setGroupEntriesObject(sortedWorkflows);
         this.selectInitialEntry(sortedWorkflows);
       }
     });
+    this.workflowService.sharedWorkflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
+      if (workflows) {
+        this.sharedWorkflows = workflows;
+        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+        this.setSortedSharedWorkflows(sortedWorkflows);
+        if (this.workflow === undefined || this.workflow === null) {
+          this.selectInitialEntry(sortedWorkflows);
+        }
+      }
+    });
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+  }
+
+  /**
+   * Sets the sorted entries for display in dropdowns
+   * @param sortedEntries Array of sorted entries
+   */
+  public setSortedSharedWorkflows(sortedEntries: any): void {
+    this.groupSharedEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
   }
 
   public toggleSidebar(): void {
@@ -187,6 +216,19 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
         if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
           this.groupEntriesObject[i].isFirstOpen = true;
+          break;
+        }
+      }
+    }
+
+    if (this.groupSharedEntriesObject && this.workflow) {
+      for (let i = 0; i < this.groupSharedEntriesObject.length; i++) {
+        if (this.groupSharedEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupSharedEntriesObject[i].isFirstOpen = true;
+          break;
+        }
+        if (this.groupSharedEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupSharedEntriesObject[i].isFirstOpen = true;
           break;
         }
       }

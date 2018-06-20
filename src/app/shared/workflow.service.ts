@@ -26,6 +26,8 @@ export class WorkflowService {
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
   workflowId$: Observable<number>;
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
+  sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted shared workflows
+  nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   workflowIsPublished$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -52,6 +54,10 @@ export class WorkflowService {
 
   setWorkflows(workflows: any) {
     this.workflows$.next(workflows);
+  }
+
+  setSharedWorkflows(workflows: any) {
+    this.sharedWorkflows$.next(workflows);
   }
 
   /**
@@ -91,6 +97,11 @@ export class WorkflowService {
   setNsWorkflows(nsWorkflows: any) {
     this.nsWorkflows$.next(nsWorkflows);
   }
+
+  setNsSharedWorkflows(nsWorkflows: any) {
+    this.nsSharedWorkflows$.next(nsWorkflows);
+  }
+
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }
