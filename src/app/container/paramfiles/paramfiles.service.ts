@@ -28,7 +28,7 @@ export class ParamfilesService {
 
   constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) { }
 
-  getFiles(id: number, type: string, versionName?: string, descriptor?: string) {
+  getFiles(id: number, type: string, versionName?: string, descriptor?: ('CWL' | 'WDL' | 'NFL')) {
     if (type === 'workflows') {
       return this.workflowsService.getTestParameterFiles(id, versionName);
     } else {

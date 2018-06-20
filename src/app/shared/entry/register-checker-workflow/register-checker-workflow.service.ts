@@ -46,7 +46,7 @@ export class RegisterCheckerWorkflowService {
         });
     }
 
-    registerCheckerWorkflow(workflowPath: string, descriptorType: string, testParameterFilePath: string): void {
+    registerCheckerWorkflow(workflowPath: string, descriptorType: string, testParameterFilePath: ('cwl' | 'wdl')): void {
         if (this.entryId) {
             const message = 'Registering checker workflow';
             this.stateService.setRefreshMessage(message);

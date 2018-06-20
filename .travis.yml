@@ -31,8 +31,8 @@ install:
 
 before_script:
   - pwd
-  - wget --no-verbose http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.3.1/swagger-codegen-cli-2.3.1.jar -O swagger-codegen-cli.jar
-  - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
+  - wget --no-verbose http://central.maven.org/maven2/org/openapitools/openapi-generator-cli/3.0.2/openapi-generator-cli-3.0.2.jar -O swagger-codegen-cli.jar
+  - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json --additional-properties ngVersion=6
   - psql -c "create user dockstore with password 'dockstore' createdb;" -U postgres
   - psql -c "ALTER USER dockstore WITH superuser;" -U postgres
   - psql -c 'create database webservice_test with owner = dockstore;' -U postgres
