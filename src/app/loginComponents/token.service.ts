@@ -4,7 +4,7 @@ import { TokenSource } from '../shared/enum/token-source.enum';
 import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { BehaviorSubject ,  Observable } from 'rxjs';
+import { BehaviorSubject ,  Observable, throwError } from 'rxjs';
 
 import { Configuration, TokensService } from '../shared/swagger';
 import { UsersService } from './../shared/swagger/api/users.service';
@@ -69,7 +69,7 @@ export class TokenService {
         return this.tokensService.addGitlabToken(token);
       default: {
         console.log('Unknown provider: ' + provider);
-        return Observable.throwError('Unknown provider.');
+        return throwError('Unknown provider.');
       }
 
     }
