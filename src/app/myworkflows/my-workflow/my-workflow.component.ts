@@ -51,6 +51,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
   public showSidebar = true;
+  private user: any;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
     private workflowService: WorkflowService, protected authService: AuthService,

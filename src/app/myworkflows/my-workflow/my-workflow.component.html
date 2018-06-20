@@ -23,10 +23,10 @@
     </button>
   </div>
 </app-header>
-<div class="container-fluid padding-top" style="height: 1000px;">
+<div class="container-fluid padding-top" style="min-height: 1000px; height:100%;">
   <!--Tool Content Page-->
-  <div class="row containers-rsb" style="height: 100%">
-    <mat-sidenav-container autosize style="height: 100%">
+  <div class="row containers-rsb" style="height:100%;">
+    <mat-sidenav-container autosize style="min-height: 1000px; height:100%;">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
         <h3>My workflows</h3>
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject.length == 0">You have not registered any workflows</p>
@@ -74,6 +74,7 @@
         <div *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
           <button mat-raised-button color="primary" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
         </div>
+        <br>
         <h3>Shared with me</h3>
         <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
         <accordion [closeOthers]="oneAtATime">
@@ -116,7 +117,7 @@
             </accordion-group>
         </accordion>
       </mat-sidenav>
-      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12">
+      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12" style="min-height: 1000px; height:100%;">
         <app-alert></app-alert>
         <div *ngIf="(groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject)">
             <div class="col-md-12">
@@ -144,7 +145,7 @@
             </div>
           </div>
         <div *ngIf="workflow" class="background-color: white !important">
-          <app-workflow [isWorkflowPublic]="false"></app-workflow>
+          <app-workflow [isWorkflowPublic]="false" [user]="user"></app-workflow>
         </div>
       </mat-sidenav-content>
     </mat-sidenav-container>

@@ -34,6 +34,9 @@ import { HostedService } from './../../shared/swagger/api/hosted.service';
 })
 export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit {
   @Input() workflowId: number;
+  @Input() canRead: boolean;
+  @Input() canWrite: boolean;
+  @Input() isOwner: boolean;
   items: any[];
   isPublic: boolean;
   private workflow: Workflow;

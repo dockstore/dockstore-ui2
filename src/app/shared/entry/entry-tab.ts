@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,13 +15,11 @@
  */
 
 import { Input } from '@angular/core';
-import { EntryTab } from '../shared/entry/entry-tab';
 
-export class Files extends EntryTab {
-  @Input() id: number;
-  @Input() versions: Array<any>;
-  @Input() default: any;
-  @Input() entrypath: string;
-  @Input() publicPage: boolean;
-  editing = false;
+export abstract class EntryTab {
+  @Input() canRead: boolean;
+  @Input() canWrite: boolean;
+  @Input() isOwner: boolean;
+
+  constructor() {}
 }

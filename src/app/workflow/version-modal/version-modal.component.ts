@@ -50,6 +50,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public refreshMessage: string;
   public WorkflowType = Workflow;
   workflowSubscription: Subscription;
+  @Input() canRead: boolean;
+  @Input() canWrite: boolean;
+  @Input() isOwner: boolean;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,

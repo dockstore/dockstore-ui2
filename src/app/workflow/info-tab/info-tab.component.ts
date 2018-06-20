@@ -23,13 +23,14 @@ import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { EntryTab } from '../../shared/entry/entry-tab';
 
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css']
 })
-export class InfoTabComponent implements OnInit {
+export class InfoTabComponent extends EntryTab implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
   @Input() selectedVersion: WorkflowVersion;
@@ -41,7 +42,9 @@ export class InfoTabComponent implements OnInit {
   isPublic: boolean;
   public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
-  private infoTabService: InfoTabService) { }
+  private infoTabService: InfoTabService) {
+    super();
+  }
 
   ngOnInit() {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
