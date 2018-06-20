@@ -17,6 +17,7 @@ import { Injectable } from '@angular/core';
 import { zip as observableZip } from 'rxjs';
 
 import { SourceFile } from './swagger';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export abstract class DescriptorService {
@@ -37,14 +38,14 @@ export abstract class DescriptorService {
         } else if (descriptor === 'nextflow') {
             observable = this.getNextflowFiles(id, versionName);
         }
-        return observable.map(filesArray => {
+        return observable.pipe(map(filesArray => {
             const files = [];
             files.push(filesArray[0]);
             for (const file of filesArray[1]) {
                 files.push(file);
             }
             return files;
-        });
+        }));
     }
 
     private getCwlFiles(id: number, versionName: string) {

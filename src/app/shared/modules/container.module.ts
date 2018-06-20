@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
+import { NgxMdModule } from 'ngx-md';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -25,7 +25,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ShareButtonsModule } from 'ngx-sharebuttons';
+import { ShareButtonsModule } from '@ngx-share/buttons';
 import { CustomMaterialModule } from './../modules/material.module';
 
 import { ContainerComponent } from '../../container/container.component';
@@ -62,6 +62,7 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,7 @@ import { SelectModule } from './select.module';
     ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     DataTablesModule.forRoot(),
     HeaderModule,
     SelectModule,
@@ -93,6 +94,7 @@ import { SelectModule } from './select.module';
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
+    HttpClientModule,
     ShareButtonsModule.forRoot(),
     OrderByModule,
     PrivateIconModule,

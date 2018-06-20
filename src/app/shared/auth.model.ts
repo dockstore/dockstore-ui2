@@ -14,22 +14,26 @@
  *    limitations under the License.
  */
 
-import { CustomConfig } from 'ng2-ui-auth';
-
 import { Dockstore } from '../shared/dockstore.model';
 
-export class AuthConfig extends CustomConfig {
-  defaultHeaders = {'Content-Type': 'application/json'};
-  providers = {
+export const AuthConfig = {
+  defaultHeaders: { 'Content-Type': 'application/json' },
+  providers: {
     github: {
       url: Dockstore.API_URI + '/auth/tokens/github',
       clientId: Dockstore.GITHUB_CLIENT_ID,
-      scope: Dockstore.GITHUB_SCOPE
+      scope: [Dockstore.GITHUB_SCOPE]
     },
     google: {
+      additionalUrlParams: {
+        access_type: 'offline',
+        approval_prompt: 'force'
+      },
       url: Dockstore.API_URI + '/auth/tokens/google',
       clientId: Dockstore.GOOGLE_CLIENT_ID,
-      scope: Dockstore.GOOGLE_SCOPE + '&access_type=offline&approval_prompt=force'
+      scope: [Dockstore.GOOGLE_SCOPE],
+      access_type: 'offline',
+      approval_prompt: 'force'
     }
-  };
-}
+  }
+};

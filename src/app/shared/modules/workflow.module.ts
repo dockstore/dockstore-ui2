@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
+import { NgxMdModule } from 'ngx-md';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -25,7 +25,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ShareButtonsModule } from 'ngx-sharebuttons';
+import { ShareButtonsModule } from '@ngx-share/buttons';
 import { CustomMaterialModule } from './../modules/material.module';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
@@ -59,6 +59,7 @@ import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,7 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     CommonModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     DataTablesModule,
     HeaderModule,
     ListWorkflowsModule,
@@ -88,6 +89,7 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
+    HttpClientModule,
     ShareButtonsModule.forRoot(),
     StarringModule,
     OrderByModule,
