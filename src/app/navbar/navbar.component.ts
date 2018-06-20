@@ -47,6 +47,10 @@ export class NavbarComponent extends Logout implements OnInit {
     this.userService.user$.subscribe(user => this.user = user);
   }
 
+  toExtendSite() {
+    return this.router.url.startsWith('/my-workflows');
+  }
+
   resetPageNumber() {
     const toolPageInfo: PageInfo = new PageInfo();
     toolPageInfo.pgNumber = 0;

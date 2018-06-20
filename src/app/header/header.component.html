@@ -14,14 +14,12 @@
   ~    limitations under the License.
   -->
 
-<div class="container-fluid">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h3>
-          <ng-content></ng-content>
-        </h3>
-      </div>
+<div [className]="toExtendSite() ? 'container-fluid' : 'container'">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>
+        <ng-content></ng-content>
+      </h3>
     </div>
   </div>
 </div>

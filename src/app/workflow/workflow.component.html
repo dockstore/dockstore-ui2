@@ -51,11 +51,11 @@
     </h3>
 
     <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
-      <div class="form-group">
-        <select name="workflowVersions" class="form-control" [(ngModel)]="selectedVersion">
-          <option *ngFor="let workflowVersion of workflow.workflowVersions" [ngValue]="workflowVersion">{{workflowVersion.name}}</option>
-        </select>
-      </div>
+      <mat-form-field>
+          <mat-select [(value)]="selectedVersion">
+            <mat-option *ngFor="let workflowVersion of workflow.workflowVersions" [value]="workflowVersion">{{workflowVersion.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
     </div>
 
     <p class="update">

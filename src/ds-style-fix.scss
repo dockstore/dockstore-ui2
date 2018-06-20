@@ -813,3 +813,7 @@ div.contact-button {
 .mat-chip-list-wrapper .mat-standard-chip, .mat-chip-list-wrapper input.mat-input-element {
   margin: 2px !important;
 }
+
+.mat-drawer-container {
+  z-index: unset !important;
+}

@@ -60,7 +60,6 @@ import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
 import { PermissionsComponent } from '../../workflow/permissions/permissions.component';
-import { MatChipsModule, MatFormFieldModule, MatIconModule, MatProgressBarModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -95,10 +94,6 @@ import { MatChipsModule, MatFormFieldModule, MatIconModule, MatProgressBarModule
     StarringModule,
     OrderByModule,
     FormsModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatProgressBarModule,
     DagModule,
     StargazersModule,
     ClipboardModule,

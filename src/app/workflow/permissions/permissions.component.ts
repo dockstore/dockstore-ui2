@@ -41,7 +41,7 @@ export class PermissionsComponent implements OnInit {
 
   ngOnInit() {
     this.tokenService.tokens$.subscribe(tokens => {
-      this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE)
+      this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });
   }
 

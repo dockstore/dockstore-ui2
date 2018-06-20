@@ -14,7 +14,7 @@ export class Logout implements OnDestroy {
 
   constructor(private trackLoginService: TrackLoginService,
               private logoutService: LogoutService,
-              private router: Router) {
+              protected router: Router) {
     this.loginStateSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
   }
 
