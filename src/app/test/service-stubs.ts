@@ -28,6 +28,8 @@ import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+import { Permission } from './../shared/swagger';
+import RoleEnum = Permission.RoleEnum;
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -263,9 +265,11 @@ export class HttpStubService {
 
 export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
+    nsSharedWorkflows$ = Observable.of([]);
     workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
     workflowId$ = Observable.of(1);
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
+    sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
     setWorkflow(thing: Workflow) {
         this.workflow$.next(thing);
@@ -273,7 +277,12 @@ export class WorkflowStubService {
     setWorkflows(thing: any) {
         this.workflows$.next(thing);
     }
+    setSharedWorkflows(thing: any) {
+      this.sharedWorkflows$.next(thing);
+   }
     setNsWorkflows(thing: any) {
+    }
+    setSharedNsWorkflows(thing: any) {
     }
     getDescriptors() {
     }
@@ -411,6 +420,7 @@ export class UserStubService {
 }
 
 export class TokenStubService {
+    tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
     hasGitHubToken$ = Observable.of(false);
     updateTokens(): void {
     }
@@ -620,6 +630,15 @@ export class WorkflowsStubService {
       return Observable.of({});
     }
     secondaryWdl(workflowId: number, tag: string) {
+      return Observable.of([]);
+    }
+    removeWorkflowRole(workflowPath: string, entity: string, permission: RoleEnum) {
+      return Observable.of([]);
+    }
+    addWorkflowPermission(workflowPath: string, object: any) {
+      return Observable.of([]);
+    }
+    getWorkflowPermissions(workflowPath: string) {
       return Observable.of([]);
     }
 }

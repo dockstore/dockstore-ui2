@@ -42,10 +42,13 @@ import {
   UsersStubService,
   UserStubService,
   WorkflowStubService,
+  WorkflowsStubService
 } from './../test/service-stubs';
 import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
+import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+
 
 
 describe('MyWorkflowComponent', () => {
@@ -69,6 +72,7 @@ describe('MyWorkflowComponent', () => {
         { provide: StateService, useClass: StateStubService },
         { provide: TokenService, useClass: TokenStubService },
         { provide: AccountsService, useClass: AccountsStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService
       ]
     })
