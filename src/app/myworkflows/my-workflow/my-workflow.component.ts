@@ -16,7 +16,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router/';
-import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { AuthService } from 'ng2-ui-auth';
 
 import { MyEntry } from '../../shared/my-entry';
 import { Workflow } from '../../shared/swagger';
