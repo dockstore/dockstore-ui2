@@ -23,6 +23,8 @@ import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Dockstore } from '../../shared/dockstore.model';
+import { ga4ghPath } from './../../shared/constants';
 
 @Component({
   selector: 'app-info-tab',
@@ -32,13 +34,21 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
-  @Input() selectedVersion: WorkflowVersion;
+  currentVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
+    if (value != null) {
+      this.currentVersion = value;
+      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, value.name);
+    }
+  }
+
   public validationPatterns = validationDescriptorPatterns;
   public WorkflowType = Workflow;
   public tooltip = Tooltip;
   workflowPathEditing: boolean;
   defaultTestFilePathEditing: boolean;
   isPublic: boolean;
+  trsLink: string;
   public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
   private infoTabService: InfoTabService) { }
@@ -100,5 +110,15 @@ export class InfoTabComponent implements OnInit {
 
   descriptorLanguages(): Array<string> {
     return this.infoTabService.descriptorLanguageMap;
+  }
+
+  /**
+   * Returns a link to the primary descriptor for the given workflow version
+   * @param path full workflow path
+   * @param versionName name of version
+   */
+  getTRSLink(path: string, versionName: string): string {
+    return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent('#workflow/' + path)}` +
+      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor`;
   }
 }

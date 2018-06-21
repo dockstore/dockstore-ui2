@@ -22,6 +22,8 @@ import { ContainersService } from './../../shared/swagger/api/containers.service
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { Dockstore } from '../../shared/dockstore.model';
+import { ga4ghPath } from './../../shared/constants';
 
 @Component({
   selector: 'app-info-tab',
@@ -29,7 +31,13 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
   styleUrls: ['./info-tab.component.css']
 })
 export class InfoTabComponent implements OnInit {
-  @Input() selectedVersion;
+  currentVersion;
+  @Input() set selectedVersion(value) {
+    if (value != null) {
+      this.currentVersion = value;
+      this.trsLink = this.getTRSLink(this.tool.tool_path, value.name);
+    }
+  }
   @Input() privateOnlyRegistry;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
@@ -40,6 +48,7 @@ export class InfoTabComponent implements OnInit {
   cwlTestPathEditing: boolean;
   wdlTestPathEditing: boolean;
   isPublic: boolean;
+  trsLink: string;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) {
     }
@@ -102,5 +111,16 @@ export class InfoTabComponent implements OnInit {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
+  }
+
+
+  /**
+   * Returns a link to the primary descriptor for the given tool version
+   * @param path tool path
+   * @param versionName name of version
+   */
+  getTRSLink(path: string, versionName: string): string {
+    return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
+      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor`;
   }
 }
