@@ -32,8 +32,8 @@ export class ExtendedToolService {
      */
     extendTool(tool: DockstoreTool): ExtendedDockstoreTool {
         if (tool) {
-            let extendedTool: ExtendedDockstoreTool = this.providerService.setUpProvider(tool);
-              extendedTool = this.providerService.setUpProvider(tool);
+            let extendedTool: ExtendedDockstoreTool = this.providerService.setUpProvider(tool, null);
+              extendedTool = this.providerService.setUpProvider(tool, null);
               extendedTool.buildMode = this.containerService.getBuildMode(extendedTool.mode);
               extendedTool.buildModeTooltip = this.containerService.getBuildModeTooltip(extendedTool.mode);
               extendedTool = this.imageProviderService.setUpImageProvider(extendedTool);

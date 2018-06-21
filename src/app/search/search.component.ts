@@ -604,7 +604,7 @@ export class SearchComponent implements OnInit {
        */
       // Do not add 201st result if it exists
       if (!(counter === this.hits.length - 1 && this.hits.length === this.query_size)) {
-        hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+        hit['_source'] = this.providerService.setUpProvider(hit['_source'], null);
         if (hit['_type'] === 'tool') {
           this.toolHits.push(hit);
         } else if (hit['_type'] === 'workflow') {
