@@ -306,7 +306,7 @@ div.panel-container-label.selected {
   }
 }
 .panel {
-  border-radius: 0;
+  border-radius: 0 !important;
   border-color: #ddd;
 }
 .panel.containers-accordion {

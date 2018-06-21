@@ -14,14 +14,8 @@
   ~    limitations under the License.
   -->
 <app-header>
-    <button mat-icon-button (click)="toggleSidebar()"><mat-icon>menu</mat-icon></button>
-
+  <button mat-icon-button (click)="toggleSidebar()"><mat-icon>menu</mat-icon></button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
-  <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
-      Refresh All Workflows
-    </button>
-  </div>
 </app-header>
 <div class="container-fluid padding-top" style="min-height: 1000px; height:100%;">
   <!--Tool Content Page-->
