@@ -376,7 +376,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {string} searchValue Value to search for
    */
   goToSearch(searchValue: string): void {
-    window.location.href = '/search?search=' + searchValue;
+    window.location.href = '/search?labels.value.keyword=' + searchValue + '&searchMode=files';
   }
 
   /**
