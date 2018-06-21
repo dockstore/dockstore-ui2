@@ -75,7 +75,7 @@
     <h3>
       <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
-          <button id="publishButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable()" btnCheckbox>
+          <button id="publishButton" type="button" [ngClass]="{'disabled': publishDisable() || !canWrite}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable() || !canWrite" btnCheckbox>
             {{workflow?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
         </div>

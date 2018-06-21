@@ -28,7 +28,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  toExtendSite() {
+  /**
+   * True if site should be in extended mode, false otherwise
+   */
+  toExtendSite(): boolean {
     return this.router.url.startsWith('/my-workflows');
   }
 

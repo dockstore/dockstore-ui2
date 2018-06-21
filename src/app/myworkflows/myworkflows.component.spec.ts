@@ -50,7 +50,6 @@ import { MyWorkflowsService } from './myworkflows.service';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 
 
-
 describe('MyWorkflowComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;

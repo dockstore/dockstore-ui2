@@ -128,6 +128,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.groupSharedEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
   }
 
+  /**
+   * Toggles the sidebar
+   */
   public toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
   }

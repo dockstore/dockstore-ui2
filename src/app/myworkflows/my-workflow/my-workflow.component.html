@@ -28,7 +28,13 @@
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize style="min-height: 1000px; height:100%;">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-        <h3>My workflows</h3>
+        <div class="clearfix sidebar-header">
+            <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
+                <mat-icon>refresh</mat-icon>
+              </button>
+          <h3 class="sidebar-header">My workflows</h3>
+        </div>
+
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject.length == 0">You have not registered any workflows</p>
         <accordion [closeOthers]="oneAtATime">
           <accordion-group *ngFor="let orgObj of groupEntriesObject"  panelClass="containers-accordion"
@@ -72,10 +78,12 @@
           </accordion-group>
         </accordion>
         <div *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
-          <button mat-raised-button color="primary" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
+          <button mat-raised-button color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
         </div>
         <br>
-        <h3>Shared with me</h3>
+        <div class="clearfix sidebar-header">
+          <h3 class="sidebar-header">Shared with me</h3>
+        </div>
         <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
         <accordion [closeOthers]="oneAtATime">
             <accordion-group *ngFor="let orgObj of groupSharedEntriesObject"  panelClass="containers-accordion"

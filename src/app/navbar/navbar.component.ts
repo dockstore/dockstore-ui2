@@ -47,7 +47,10 @@ export class NavbarComponent extends Logout implements OnInit {
     this.userService.user$.subscribe(user => this.user = user);
   }
 
-  toExtendSite() {
+  /**
+   * True if site should be in extended mode, false otherwise
+   */
+  toExtendSite(): boolean {
     return this.router.url.startsWith('/my-workflows');
   }
 
