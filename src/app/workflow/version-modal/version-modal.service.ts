@@ -121,14 +121,14 @@ export class VersionModalService {
         const toAdd: boolean = newCWL && newCWL.length > 0;
         const toDelete: boolean = missingCWL && missingCWL.length > 0;
         if (toDelete && toAdd) {
-            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, workflowVersion.name).pipe(concatMap(() =>
+            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).pipe(concatMap(() =>
                 this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name)));
         }
         if (toDelete && !toAdd) {
             return this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name);
         }
         if (toAdd && !toDelete) {
-            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, workflowVersion.name);
+            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name);
         }
         if (!toAdd && !toDelete) {
             return observableOf({});

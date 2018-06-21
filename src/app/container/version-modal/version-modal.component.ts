@@ -115,6 +115,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.stateService.setRefreshMessage(message + '...');
     const id = this.tool.id;
     const tagName = this.version.name;
+
     // Store the unsaved test files if valid and exist
     if (this.unsavedTestCWLFile.length > 0) {
       this.addTestParameterFile(DescriptorType.CWL);
@@ -127,7 +128,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     const CWL = 'CWL';
     const WDL = 'WDL';
     if (newCWL && newCWL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newCWL, CWL, tagName).subscribe(response => {},
+      this.containersService.addTestParameterFiles(id, newCWL, CWL, null, tagName).subscribe(response => {},
         err => this.refreshService.handleError(message, err) );
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
@@ -137,7 +138,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newWDL, WDL, tagName).subscribe(response => {},
+      this.containersService.addTestParameterFiles(id, newWDL, WDL, null, tagName).subscribe(response => {},
         err => this.refreshService.handleError(message, err) );
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
