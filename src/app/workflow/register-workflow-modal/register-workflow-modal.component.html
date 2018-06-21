@@ -139,7 +139,7 @@
               <button mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
                 Close
               </button>
-              <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid || savingActive || refreshing}}">
+              <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid}}">
                 Register Workflow
               </button>
             </div>
