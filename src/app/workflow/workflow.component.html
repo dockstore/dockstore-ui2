@@ -90,7 +90,7 @@
   <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
-        <mat-chip color="primary" *ngFor="let label of workflowEditData" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <mat-chip color="primary" *ngFor="let label of workflowEditData.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
           Manage labels
         </button>
