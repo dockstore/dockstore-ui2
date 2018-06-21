@@ -17,10 +17,10 @@
   <button mat-icon-button (click)="toggleSidebar()"><mat-icon>menu</mat-icon></button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
 </app-header>
-<div class="container-fluid padding-top" style="min-height: 1000px; height:100%;">
+<div class="container-fluid padding-top sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
-    <mat-sidenav-container autosize style="min-height: 1000px; height:100%;">
+    <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
         <div class="clearfix sidebar-header">
             <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
@@ -41,7 +41,7 @@
         <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
         <app-sidebar-accordion [oneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject" (entrySelected)="selectEntry($event)"></app-sidebar-accordion>
       </mat-sidenav>
-      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12" style="min-height: 1000px; height:100%;">
+      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
         <app-alert></app-alert>
         <div *ngIf="(groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject)">
             <div class="col-md-12">
@@ -68,7 +68,7 @@
               </div>
             </div>
           </div>
-        <div *ngIf="workflow" class="background-color: white !important">
+        <div *ngIf="workflow">
           <app-workflow [isWorkflowPublic]="false" [user]="user"></app-workflow>
         </div>
       </mat-sidenav-content>
