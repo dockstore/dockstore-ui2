@@ -33,13 +33,15 @@ import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
+import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
 
 @NgModule({
   declarations: [
     MyWorkflowsComponent,
     RegisterWorkflowModalComponent,
     RefreshWorkflowOrganizationComponent,
-    MyWorkflowComponent
+    MyWorkflowComponent,
+    SidebarAccordionComponent
 ],
   imports: [
     CommonModule,
