@@ -113,7 +113,7 @@
       <span *ngIf="(version.commitID && (version.commitID | commitUrl: workflow?.providerUrl)); else noCommitID" [tooltip]="version.commitID? 'Commit ID: ' + version.commitID : ''">
         <a [href]="version.commitID | commitUrl: workflow?.providerUrl">{{version?.name}}</a>
       </span>
-      <ng-template #noCommitID>{{version?.name}}</ng-template>
+      <ng-template #noCommitID><span>{{version?.name}}</span></ng-template>
     </td>
       <td *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
       <td>{{ version.workflow_path }}</td>

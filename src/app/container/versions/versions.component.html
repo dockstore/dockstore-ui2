@@ -99,7 +99,7 @@
           <span *ngIf="(version.commitID && (version.commitID | commitUrl: tool?.providerUrl)); else noCommitID" [tooltip]="version.commitID? 'Commit ID: ' + version.commitID : ''">
             <a [href]="version.commitID | commitUrl: tool?.providerUrl">{{ version.reference || 'n/a' }}</a>
           </span>
-          <ng-template #noCommitID>{{ version.reference || 'n/a' }}</ng-template>
+          <ng-template #noCommitID><span>{{ version.reference || 'n/a' }}</span></ng-template>
         </td>
         <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
           <div>
