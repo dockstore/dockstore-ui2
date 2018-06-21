@@ -17,8 +17,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Dockstore } from '../../../shared/dockstore.model';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 interface QueueResponse {
   /**
@@ -111,21 +111,23 @@ export class CwlViewerService {
     const pollFrequencyMs = 500;
     const maxPolls = 30000 / pollFrequencyMs; // Poll for a maximum of 30 seconds
     return Observable.interval(pollFrequencyMs)
-      .switchMap(() => this.httpClient.get(queueUrl, {observe: 'response'}))
-      .takeUntil(onDestroy$)
-      .take(maxPolls)
-      // When the job is complete, polling the job sends a 302 which Angular Http client follows, giving the job output
-      .filter((p: HttpResponse<any>) => p.body && (p.body.visualisationSvg || (p.body.cwltoolStatus && p.body.cwltoolStatus === 'ERROR')))
-      .take(1)
-      .map((resp: HttpResponse<QueueResponse>) => {
-        if ('ERROR' === resp.body.cwltoolStatus) {
-          throw resp.body.message;
-        }
-        return (<CwlViewerDescriptor>{
-            svgUrl: Dockstore.CWL_VISUALIZER_URI + resp.body.visualisationSvg,
-            webPageUrl: resp.url
+      .pipe(
+        switchMap(() => this.httpClient.get(queueUrl, {observe: 'response'})),
+        takeUntil(onDestroy$),
+        take(maxPolls),
+        // When the job is complete, polling the job sends a 302 which Angular Http client follows, giving the job output
+        filter((p: HttpResponse<any>) => p.body && (p.body.visualisationSvg
+          || (p.body.cwltoolStatus && p.body.cwltoolStatus === 'ERROR'))),
+        take(1),
+        map((resp: HttpResponse<QueueResponse>) => {
+          if ('ERROR' === resp.body.cwltoolStatus) {
+            throw resp.body.message;
           }
-        );
-      });
+          return (<CwlViewerDescriptor>{
+              svgUrl: Dockstore.CWL_VISUALIZER_URI + resp.body.visualisationSvg,
+              webPageUrl: resp.url
+            }
+          );
+        }));
   }
 }

@@ -35,9 +35,13 @@ describe('Service: CWLViewer', () => {
     'roBundle': '/robundle/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
   };
 
+  const message = 'Tool definition failed initialization:\nTool definition file:///data/git/e9cccbaa54f2e73180'
+    + 'bf13e2ae02cf2af4df51f7/tools/picard-CreateSequenceDictionary.cwl failed validation:\n  The CWL reference runner'
+    + ' no longer supports pre CWL v1.0 documents. Supported versions are: \n  v1.0\n  v1.1.0-dev1 '
+    + '(with --enable-dev flag only)\n';
   const cwlViewerError = {
     'cwltoolStatus': 'ERROR',
-    'message': 'Tool definition failed initialization:\nTool definition file:///data/git/e9cccbaa54f2e73180bf13e2ae02cf2af4df51f7/tools/picard-CreateSequenceDictionary.cwl failed validation:\n  The CWL reference runner no longer supports pre CWL v1.0 documents. Supported versions are: \n  v1.0\n  v1.1.0-dev1 (with --enable-dev flag only)\n'
+    'message': message
   };
 
 
