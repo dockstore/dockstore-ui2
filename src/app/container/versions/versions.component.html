@@ -85,18 +85,22 @@
           <div class="text-center">No Records Found</div>
         </td>
       </tr>
-      <tr *ngFor="let version of versions | orderBy : convertSorting()" [ngClass]="{'info': versionTag != null && version != null && versionTag.id == version.id}">
+      <tr (click)="setVersion(version)" *ngFor="let version of versions | orderBy : convertSorting()" [ngClass]="{'info': versionTag != null && version != null && versionTag.id == version.id}">
         <td class="break">
           <span *ngIf="publicPage && defaultVersion ===version.name" class="label label-primary">Default</span>
           <input class="radio-button-reference" *ngIf="version.name !== 'latest' && !publicPage " type="radio" name="defaultVersion" [(ngModel)]="defaultVersion"
             [value]="version.name" (click)="updateDefaultVersion(version.name)" [tooltip]="getDefaultTooltip(publicPage)"/>
-          <a (click)="setVersion(version)">{{version?.name}}</a>
+          <span>{{version?.name}}</span>
         </td>
         <td *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
         <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
           <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
           <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
-          {{ version.reference || 'n/a' }}</td>
+          <span *ngIf="(version.commitID && (version.commitID | commitUrl: tool?.providerUrl)); else noCommitID" [tooltip]="version.commitID? 'Commit ID: ' + version.commitID : ''">
+            <a [href]="version.commitID | commitUrl: tool?.providerUrl">{{ version.reference || 'n/a' }}</a>
+          </span>
+          <ng-template #noCommitID><span>{{ version.reference || 'n/a' }}</span></ng-template>
+        </td>
         <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
           <div>
             {{ version.cwl_path }}
