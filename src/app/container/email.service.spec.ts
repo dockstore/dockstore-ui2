@@ -14,13 +14,12 @@ describe('Service: Email', () => {
     });
   });
 
-  const tool: ExtendedDockstoreTool = sampleTool1;
+  const tool: ExtendedDockstoreTool = Object.assign({}, sampleTool1, {tool_path: 'registry.hub.docker.com/postgres/postgres'});
   tool.tool_maintainer_email = 'fake@maintainer.email.ca';
   tool.email = 'fake@email.ca';
   tool.registry_string = 'registry.hub.docker.com';
   tool.registry = DockstoreTool.RegistryEnum.DOCKERHUB;
   tool.imgProvider = 'Docker Hub';
-  tool.tool_path = 'registry.hub.docker.com/postgres/postgres';
 
   it('should get the right request access email href', inject([EmailService], (service: EmailService) => {
     expect(service).toBeTruthy();

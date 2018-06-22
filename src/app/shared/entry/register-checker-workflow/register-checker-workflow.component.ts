@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
@@ -47,7 +47,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
   public validationMessages = validationMessages;
   public refreshMessage$: Observable<string>;
   public mode$: Observable<'add' | 'edit'>;
-  public descriptorType: string;
+  public descriptorType: ('cwl' | 'wdl');
   public descriptorLanguages: Array<string>;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
@@ -86,7 +86,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
    * @returns {string} The default test parameter file to populate the form
    * @memberof RegisterCheckerWorkflowComponent
    */
-  private getTestParameterFileDefault(entry: Entry, descriptorType: string): string {
+  private getTestParameterFileDefault(entry: Entry, descriptorType: ('cwl' | 'wdl')): string {
     if (this.checkerWorkflowService.isEntryAWorkflow(entry)) {
       return (<Workflow>entry).defaultTestParameterFilePath;
     } else {
@@ -120,7 +120,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
    * Handles the event where the descriptor type in the form has changed
    * @param descriptorType The descriptor type current selected in the form
    */
-  public onDescriptorTypeChange(descriptorType: string): void {
+  public onDescriptorTypeChange(descriptorType: ('cwl' | 'wdl')): void {
     this.testParameterFilePath = this.getTestParameterFileDefault(this.entry, descriptorType);
   }
 

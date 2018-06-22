@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Workflow } from './swagger/model/workflow';
 import { ContainerService } from './container.service';
 import { DockstoreService } from './dockstore.service';
@@ -5,7 +7,7 @@ import { DateService } from './date.service';
 import { ImageProviderService } from './image-provider.service';
 import { ProviderService } from './provider.service';
 import { WorkflowService } from './workflow.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { Injectable } from '@angular/core';
 
@@ -21,7 +23,7 @@ export class ExtendedWorkflowService {
     constructor(private workflowService: WorkflowService, private providerService: ProviderService,
         private imageProviderService: ImageProviderService, private dateService: DateService,
         private dockstoreService: DockstoreService) {
-            this.extendedWorkflow$ = this.workflowService.workflow$.map((workflow: Workflow) => this.extendWorkflow(workflow));
+            this.extendedWorkflow$ = this.workflowService.workflow$.pipe(map((workflow: Workflow) => this.extendWorkflow(workflow)));
         }
 
     /**
