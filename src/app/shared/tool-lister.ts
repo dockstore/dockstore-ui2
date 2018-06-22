@@ -38,7 +38,7 @@ export abstract class ToolLister implements OnInit {
   ngOnInit() {
     this.listService.getPublishedTools(this._toolType)
       .subscribe(tools => {
-        this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool, null));
+        this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool));
         this.initToolLister();
         this.displayTable = true;
       });

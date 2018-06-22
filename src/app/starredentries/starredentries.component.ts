@@ -39,7 +39,7 @@ export class StarredEntriesComponent implements OnInit {
         this.starredTools.forEach(
           tool => {
             if (!tool.providerUrl) {
-              this.providerService.setUpProvider(tool, null);
+              this.providerService.setUpProvider(tool);
             }
             if (!tool.imgProviderUrl) {
               tool = this.imageProviderService.setUpImageProvider(tool);
@@ -52,7 +52,7 @@ export class StarredEntriesComponent implements OnInit {
         this.starredWorkflows.forEach(
           workflow => {
             if (!workflow.providerUrl) {
-              this.providerService.setUpProvider(workflow, null);
+              this.providerService.setUpProvider(workflow);
             }
         });
       });

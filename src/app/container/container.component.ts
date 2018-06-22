@@ -149,7 +149,7 @@ export class ContainerComponent extends Entry {
     if (tool) {
       this.tool = tool;
       if (!tool.providerUrl) {
-        this.providerService.setUpProvider(tool, null);
+        this.providerService.setUpProvider(tool, this.selectedVersion);
       }
       this.tool = Object.assign(tool, this.tool);
       const toolRef: ExtendedDockstoreTool = this.tool;

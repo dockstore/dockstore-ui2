@@ -17,7 +17,7 @@
 export class ProviderService {
 
   /* set up project provider */
-  setUpProvider(tool, version) {
+  setUpProvider(tool, version = null) {
     const gitUrl = tool.gitUrl;
 
     tool.provider = this.getProvider(gitUrl);
