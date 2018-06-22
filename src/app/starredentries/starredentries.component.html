@@ -11,7 +11,7 @@
 
 <div class="container" *ngIf="!starGazersClicked">
   <div *ngIf="starredTools">
-    <div class="container" style="margin-top: 20px;">
+    <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Tools</h3>
           <div class="alert alert-info" role="alert" *ngIf="starredTools.length == 0">
@@ -41,7 +41,7 @@
       </div>
   </div>
   <div *ngIf="starredWorkflows">
-    <div class="container" style="margin-top: 20px;">
+    <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Workflows</h3>
           <div class="alert alert-info" role="alert" *ngIf="starredWorkflows.length==0">
