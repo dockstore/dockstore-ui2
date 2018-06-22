@@ -44,7 +44,7 @@ export class DateService {
 
   /*Note: change this link if necessary */
   getVerifiedLink() {
-    return '/docs/faq#what-is-a-verified-tool-or-workflow-';
+    return 'https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow';
   }
 
   getAgoMessage(timestamp: number) {
