@@ -59,7 +59,7 @@
               </h3>
               <span mat-line>
                 <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
-                <span class="spacing" *ngFor="let type of workflow?.descriptorType">{{type | uppercase}}</span>
+                <span class="spacing">{{workflow?.descriptorType | uppercase}}</span>
                 <a class="spacing" *ngIf="workflow?.provider" href="{{workflow?.providerUrl}}">{{workflow?.provider}}</a>
               </span>
               <app-starring class="pull-right" style="width: 100px;" [workflow]="workflow" (change)="starGazersChange()"></app-starring>
