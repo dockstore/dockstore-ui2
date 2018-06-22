@@ -114,7 +114,7 @@ export class WorkflowComponent extends Entry {
     if (workflow) {
       this.workflow = workflow;
       if (!workflow.providerUrl) {
-        this.providerService.setUpProvider(workflow, null);
+        this.providerService.setUpProvider(workflow, this.selectedVersion);
       }
       this.workflow = Object.assign(workflow, this.workflow);
       this.title = this.workflow.full_workflow_path;

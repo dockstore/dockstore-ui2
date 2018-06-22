@@ -33,12 +33,13 @@ import { ga4ghPath } from './../../shared/constants';
 export class InfoTabComponent implements OnInit {
   currentVersion;
   @Input() set selectedVersion(value) {
-    if (value != null) {
+    if (value != null && this.tool != null) {
       this.currentVersion = value;
       this.trsLink = this.getTRSLink(this.tool.tool_path, value.name);
     }
   }
   @Input() privateOnlyRegistry;
+  @Input() tool;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
@@ -60,10 +61,6 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
-  }
-
-  get tool(): ExtendedDockstoreTool {
-    return this.infoTabService.tool;
   }
 
   toggleEditDockerFile() {

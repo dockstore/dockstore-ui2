@@ -34,6 +34,7 @@ import { ga4ghPath } from './../../shared/constants';
 export class InfoTabComponent implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
+  @Input() workflow;
   currentVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
@@ -58,10 +59,6 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.defaultTestFilePathEditing$.subscribe(editing => this.defaultTestFilePathEditing = editing);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-  }
-
-  get workflow(): any {
-    return this.infoTabService.workflow;
   }
 
   /**
