@@ -1,11 +1,11 @@
-import { MarkdownModule } from 'angular2-markdown/markdown';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
-import { AuthService } from 'ng2-ui-auth';
-import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
-import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
-import { ClipboardModule } from 'ngx-clipboard';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AuthService } from 'ng2-ui-auth';
+import { ClipboardModule } from 'ngx-clipboard';
+import { NgxMdModule } from 'ngx-md';
 
+import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
+import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
+import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
 
 describe('DownloadCLIClientComponent', () => {
@@ -16,7 +16,7 @@ describe('DownloadCLIClientComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DownloadCLIClientComponent,
         RouterLinkStubDirective, RouterOutletStubComponent ],
-      imports: [ClipboardModule, MarkdownModule.forRoot()],
+      imports: [ClipboardModule, NgxMdModule.forRoot()],
       providers: [ {provide: AuthService, useClass: AuthStubService},
       {provide: GA4GHService, useClass: GA4GHStubService}]
     })
