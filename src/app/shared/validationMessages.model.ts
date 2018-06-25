@@ -44,6 +44,7 @@ export const validationDescriptorPatterns = {
   'gitPath': '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
   'cwlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)',
   'wdlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$',
+  'nflPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(config)',
   'dockerfilePath': '^/([^\/?:*|<>]+/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
   'testFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   'imagePath': '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
@@ -144,7 +145,8 @@ export const validationMessages = {
     'minlength': 'Workflow Path is too short. (Min. 3 characters.)',
     'maxlength': 'Workflow Path is too long. (Max 256 characters.)',
     'pattern': 'Invalid Workflow Path format. ' +
-    'Workflow Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', or\'*.wdl\'.'
+    'Workflow Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', \'*.config\', or\'*.wdl\' ' +
+    'depending on the descriptor type.'
   },
   'workflowName': {
     'maxlength': 'Workflow Name is too long. (Max 256 characters.)',
