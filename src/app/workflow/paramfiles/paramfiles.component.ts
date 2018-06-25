@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { FileService } from '../../shared/file.service';

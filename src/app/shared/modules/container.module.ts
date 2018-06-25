@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
+import { NgxMdModule } from 'ngx-md';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -83,7 +83,7 @@ import { SelectModule } from './select.module';
     ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     DataTablesModule.forRoot(),
     HeaderModule,
     SelectModule,

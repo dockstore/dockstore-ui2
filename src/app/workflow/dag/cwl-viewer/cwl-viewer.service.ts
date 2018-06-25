@@ -13,12 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Dockstore } from '../../../shared/dockstore.model';
-import { Observable, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of as observableOf, Subject } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+
+import { Dockstore } from '../../../shared/dockstore.model';
 
 interface QueueResponse {
   /**
@@ -76,10 +76,10 @@ export class CwlViewerService {
 
     const url = this.cwlViewerEndpoint(providerUrl, reference, workflow_path);
 
-    return this.httpClient.post(url, null, {observe: 'response'})
-      .switchMap((res: HttpResponse<QueueResponse>) => {
+    return this.httpClient.post(url, null, {observe: 'response'}).pipe(
+      switchMap((res: HttpResponse<QueueResponse>) => {
         if (res.status === 200) {
-          return Observable.of(<CwlViewerDescriptor>{
+          return observableOf(<CwlViewerDescriptor>{
             svgUrl: Dockstore.CWL_VISUALIZER_URI + res.body.visualisationSvg,
             webPageUrl: res.url});
         } else if (res.status === 202) {
@@ -90,7 +90,7 @@ export class CwlViewerService {
           }
         }
         throw new Error(`Error posting ${workflow_path}`);
-      });
+      }));
   }
 
   /**

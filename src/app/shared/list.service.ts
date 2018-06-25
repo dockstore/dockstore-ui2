@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {Injectable} from '@angular/core';
 
 import {ContainersService} from './swagger';
@@ -27,6 +27,8 @@ export class ListService {
   constructor(private containersService: ContainersService, private workflowsService: WorkflowsService,
     private usersService: UsersService) { }
 
+  //TODO: need someone to pick up here to connect this to the data tables pagination for
+  // public tools and workflows
   getPublishedToolsByPage(toolType: any, offset: string, limit: number): Observable<any> {
     if (toolType === 'workflows') {
         return this.workflowsService.allPublishedWorkflows(offset, limit);

@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { ContainerService } from './../../shared/container.service';
 import { Repository } from './../../shared/enum/Repository.enum';

@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
+import { NgxMdModule } from 'ngx-md';
 
 import { ContainersComponent } from './containers.component';
 import { ContainerModule } from '../shared/modules/container.module';
@@ -36,7 +36,7 @@ import { ModalModule} from 'ngx-bootstrap/modal';
   ],
   imports: [
     CommonModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     DataTablesModule.forRoot(),
     HeaderModule,
     SelectModule,
