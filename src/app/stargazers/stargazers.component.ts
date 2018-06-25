@@ -17,7 +17,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { StarringService } from '../starring/starring.service';
 import { UserService } from '../loginComponents/user.service';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import { StarentryService } from '../shared/starentry.service';
 @Component({
   selector: 'app-stargazers',

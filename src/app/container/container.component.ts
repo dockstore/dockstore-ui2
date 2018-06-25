@@ -18,7 +18,8 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
@@ -123,7 +124,7 @@ export class ContainerComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.containerService.tool$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       tool => {
         this.tool = tool;
         if (tool) {
@@ -138,7 +139,7 @@ export class ContainerComponent extends Entry {
         this.setUpTool(tool);
       }
     );
-    this.containerService.copyBtn$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       toolCopyBtn => {
         this.toolCopyBtn = toolCopyBtn;
       }

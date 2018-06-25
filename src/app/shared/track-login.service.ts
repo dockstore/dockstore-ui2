@@ -15,8 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject ,  BehaviorSubject } from 'rxjs';
 import { AuthService } from 'ng2-ui-auth';
 
 @Injectable()
