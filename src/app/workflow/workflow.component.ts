@@ -346,9 +346,11 @@ export class WorkflowComponent extends Entry {
    */
   canUserRead(): boolean {
     const email = this.user.email;
-    const match = this.workflow.users.find((user) => user.email === email);
-    if (match !== undefined) {
-      return true;
+    if (this.workflow.users) {
+      const match = this.workflow.users.find((user) => user.email === email);
+      if (match !== undefined) {
+        return true;
+      }
     }
 
     return this.readers.includes(email) || this.writers.includes(email) || this.owners.includes(email);
@@ -359,9 +361,11 @@ export class WorkflowComponent extends Entry {
    */
   canUserWrite(): boolean {
     const email = this.user.email;
-    const match = this.workflow.users.find((user) => user.email === email);
-    if (match !== undefined) {
-      return true;
+    if (this.workflow.users) {
+      const match = this.workflow.users.find((user) => user.email === email);
+      if (match !== undefined) {
+        return true;
+      }
     }
 
     return this.writers.includes(email) || this.owners.includes(email);
@@ -372,10 +376,14 @@ export class WorkflowComponent extends Entry {
    */
   isUserOwner(): boolean {
     const email = this.user.email;
-    const match = this.workflow.users.find((user) => user.email === email);
-    if (match !== undefined) {
-      return true;
+    if (this.workflow.users) {
+      const match = this.workflow.users.find((user) => user.email === email);
+      if (match !== undefined) {
+        return true;
+      }
     }
+
+    console.log(this.workflow.users);
 
     return this.owners.includes(email);
   }

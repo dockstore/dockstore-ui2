@@ -75,7 +75,7 @@
     <h3>
       <div class="pull-right my-entry-button-group">
         <button mat-raised-button id="publishButton" color="basic" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable() || !canWrite" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Publish/unpublish the workflow" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
-        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage !== null" *ngIf="!isHosted() || !canWrite" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the workflow">Refresh</button>
+        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage !== null" *ngIf="!isHosted() && canWrite" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the workflow">Refresh</button>
       </div>
     </h3>
   </div>
