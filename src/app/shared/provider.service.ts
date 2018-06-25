@@ -21,7 +21,8 @@ import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 export class ProviderService {
 
   /* set up project provider */
-  setUpProvider(tool: (ExtendedDockstoreTool | ExtendedWorkflow), version: (Tag | WorkflowVersion) = null) {
+  setUpProvider(tool: (ExtendedDockstoreTool | ExtendedWorkflow),
+    version: (Tag | WorkflowVersion) = null): (ExtendedDockstoreTool | ExtendedWorkflow) {
     const gitUrl = tool.gitUrl;
 
     tool.provider = this.getProvider(gitUrl);
