@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
+              <button id="closeRegisterWorkflowModalButton" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
                 Close
               </button>
               <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid || refreshMessage !== null}}">

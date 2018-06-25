@@ -45,6 +45,87 @@ describe('Dockstore my workflows', function() {
         });
     });
 
+    function haveAlert() {
+        cy
+            .get('.alert')
+            .should('be.visible')
+    }
+
+
+    function notHaveAlert() {
+        cy
+            .get('.alert')
+            .should('not.be.visible')
+    }
+
+    describe('test register workflow form validation', function() {
+        it('It should have 3 seperate descriptor path validation patterns', function() {
+            cy
+                .get('#registerWorkflowButton')
+                .should('be.visible')
+                .should('be.enabled')
+                .click()
+            cy
+                .contains('button', 'Next')
+                .click()
+            cy
+                .get('#sourceCodeRepositoryInput')
+                .clear()
+                .type('beef/stew')
+            haveAlert()
+            cy
+                .get('#sourceCodeRepositoryWorkflowPathInput')
+                .clear()
+                .type('/Dockstore.cwl')
+            notHaveAlert()
+            cy
+                .get('.dropdown-toggle')
+                .contains('button', 'cwl')
+                .click()
+            cy
+                .contains('li', 'wdl')
+                .click()
+            haveAlert()
+            cy
+                .get('#sourceCodeRepositoryWorkflowPathInput')
+                .clear()
+                .type('/Dockstore.wdl')
+            notHaveAlert()
+            cy
+                .get('.dropdown-toggle')
+                .contains('button', 'wdl')
+                .click()
+            cy
+                .contains('li', 'nextflow')
+                .click()
+            haveAlert()
+            cy
+                .get('#sourceCodeRepositoryWorkflowPathInput')
+                .clear()
+                .type('/Dockstore.config')
+            notHaveAlert()
+            cy
+                .get('.dropdown-toggle')
+                .contains('button', 'nextflow')
+                .click()
+            cy
+                .contains('li', 'cwl')
+                .click()
+            haveAlert()
+            cy
+                .get('#sourceCodeRepositoryWorkflowPathInput')
+                .clear()
+                .type('/Dockstore.cwl')
+            notHaveAlert()
+            cy
+                .get('#closeRegisterWorkflowModalButton')
+                .contains('button', 'Close')
+                .should('be.visible')
+                .should('be.enabled')
+                .click()
+        });
+    });
+
     describe('Look at a published workflow', function() {
         it('Look at each tab', function() {
             cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/l")
