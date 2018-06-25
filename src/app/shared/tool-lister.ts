@@ -21,6 +21,7 @@ import { ProviderService } from './provider.service';
 
 export abstract class ToolLister implements OnInit {
 
+  protected previewMode = false;
   protected displayTable = false;
   protected publishedTools = [];
   protected _toolType: string;
@@ -36,7 +37,7 @@ export abstract class ToolLister implements OnInit {
   abstract initToolLister(): void;
 
   ngOnInit() {
-    this.listService.getPublishedTools(this._toolType)
+    this.listService.getPublishedTools(this._toolType, this.previewMode)
       .subscribe(tools => {
         this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool));
         this.initToolLister();

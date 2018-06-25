@@ -14,12 +14,12 @@
  *    limitations under the License.
  */
 
-import { Observable } from 'rxjs/Observable';
-import { Injectable } from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
 
-import { ContainersService } from './swagger';
-import { UsersService } from './swagger/api/users.service';
-import { WorkflowsService } from './swagger/api/workflows.service';
+import {ContainersService} from './swagger';
+import {UsersService} from './swagger/api/users.service';
+import {WorkflowsService} from './swagger/api/workflows.service';
 
 @Injectable()
 export class ListService {
@@ -27,10 +27,24 @@ export class ListService {
   constructor(private containersService: ContainersService, private workflowsService: WorkflowsService,
     private usersService: UsersService) { }
 
-  getPublishedTools(toolType: any): Observable<any> {
+  getPublishedToolsByPage(toolType: any, offset: string, limit: number): Observable<any> {
     if (toolType === 'workflows') {
+        return this.workflowsService.allPublishedWorkflows(offset, limit);
+    } else {
+        return this.containersService.allPublishedContainers(offset, limit);
+    }
+  }
+
+  getPublishedTools(toolType: any, preview: boolean): Observable<any> {
+    if (toolType === 'workflows') {
+      if (preview) {
+        return this.workflowsService.allPublishedWorkflows("0", 10);
+      }
       return this.workflowsService.allPublishedWorkflows();
     } else {
+      if (preview) {
+        return this.containersService.allPublishedContainers("0", 10);
+      }
       return this.containersService.allPublishedContainers();
     }
   }
