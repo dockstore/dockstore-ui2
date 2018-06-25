@@ -72,8 +72,7 @@ describe('Dockstore my workflows', function() {
           .parent()
           .click()
           .get('table')
-          .find('a')
-          .contains('1')
+          .contains('span', /\b1\b/)
 
           // Add a new version with a second descriptor and a test json
           cy
@@ -122,8 +121,7 @@ describe('Dockstore my workflows', function() {
             .parent()
             .click()
             .get('table')
-            .find('a')
-            .contains('2')
+          .contains('span', /\b2\b/)
 
           // Should be able to publish
           cy
@@ -159,8 +157,7 @@ describe('Dockstore my workflows', function() {
             .parent()
             .click()
             .get('table')
-            .find('a')
-            .contains('3')
+          .contains('span', /\b3\b/)
 
           // Delete a version
           cy

@@ -27,6 +27,7 @@ import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
+import { CommitUrlPipe } from './commit-url.pipe';
 
 @NgModule({
   imports: [
@@ -41,14 +42,16 @@ import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.
     RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
-    CodeEditorListComponent
-  ],
+    CodeEditorListComponent,
+    CommitUrlPipe
+],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
     CodeEditorListComponent,
-    CustomMaterialModule
+    CustomMaterialModule,
+    CommitUrlPipe
   ]
 })
 export class EntryModule { }

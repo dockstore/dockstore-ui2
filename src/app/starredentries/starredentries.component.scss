@@ -62,7 +62,13 @@
   .columns figure { width: 100%; }
 }
 
-.entry-heading {
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+.starred-header {
+  margin-left:30px;
+  margin-right:30px;
+}
+
+.spacing {
+  margin-left: 15px !important;
+  margin-right: 15px !important;
 }
