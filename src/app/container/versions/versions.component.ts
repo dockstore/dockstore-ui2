@@ -82,7 +82,9 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     this.stateService.setRefreshMessage(message + '...');
     this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
       this.refreshService.handleSuccess(message);
-      this.refreshService.refreshTool();
+      if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
+        this.refreshService.refreshTool();
+      }
     }, error => this.refreshService.handleError(message, error)
     );
   }
