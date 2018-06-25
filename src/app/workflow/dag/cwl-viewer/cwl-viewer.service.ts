@@ -15,10 +15,10 @@
  */
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { interval as observableInterval, Observable, of as observableOf } from 'rxjs';
-import { Dockstore } from '../../../shared/dockstore.model';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of as observableOf, Subject } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+
+import { Dockstore } from '../../../shared/dockstore.model';
 
 interface QueueResponse {
   /**
