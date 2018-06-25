@@ -39,7 +39,7 @@ export class InfoTabComponent implements OnInit {
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this.currentVersion = value;
-      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, value.name);
+      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, value.name, this.workflow.descriptorType);
     }
   }
 
@@ -113,9 +113,11 @@ export class InfoTabComponent implements OnInit {
    * Returns a link to the primary descriptor for the given workflow version
    * @param path full workflow path
    * @param versionName name of version
+   * @param descriptorType descriptor type (CWL or WDL)
    */
-  getTRSLink(path: string, versionName: string): string {
+  getTRSLink(path: string, versionName: string, descriptorType: string): string {
     return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent('#workflow/' + path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor`;
+      `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType.toUpperCase() +
+      `/descriptor`;
   }
 }

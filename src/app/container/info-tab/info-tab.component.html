@@ -46,12 +46,18 @@
         {{ tool?.imgProviderUrl }}
       </span>
     </li>
-    <li>
-        <strong tooltip="TRS link to the main descriptor for the selected tool version">TRS</strong>:
-        <a [href]="trsLink">
-          {{tool?.tool_path}}
-        </a>
-      </li>
+    <li *ngIf="trsLinkCWL">
+      <strong tooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
+      <a [href]="trsLinkCWL">
+        {{tool?.tool_path}}
+      </a>
+    </li>
+    <li *ngIf="trsLinkWDL">
+      <strong tooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
+      <a [href]="trsLinkWDL">
+        {{tool?.tool_path}}
+      </a>
+    </li>
     <li *ngIf="(tool?.default_dockerfile_path || !isPublic)">
       <form #editDockerfileForm="ngForm" class="form-inline">
         <div class="form-group">

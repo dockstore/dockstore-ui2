@@ -35,7 +35,12 @@ export class InfoTabComponent implements OnInit {
   @Input() set selectedVersion(value) {
     if (value != null && this.tool != null) {
       this.currentVersion = value;
-      this.trsLink = this.getTRSLink(this.tool.tool_path, value.name);
+      if (this.tool.descriptorType.includes('cwl')) {
+        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, value.name, 'cwl');
+      }
+      if (this.tool.descriptorType.includes('wdl')) {
+        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, value.name, 'wdl');
+      }
     }
   }
   @Input() privateOnlyRegistry;
@@ -49,7 +54,8 @@ export class InfoTabComponent implements OnInit {
   cwlTestPathEditing: boolean;
   wdlTestPathEditing: boolean;
   isPublic: boolean;
-  trsLink: string;
+  trsLinkCWL: string;
+  trsLinkWDL: string;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) {
     }
@@ -115,9 +121,11 @@ export class InfoTabComponent implements OnInit {
    * Returns a link to the primary descriptor for the given tool version
    * @param path tool path
    * @param versionName name of version
+   * @param descriptorType descriptor type (CWL or WDL)
    */
-  getTRSLink(path: string, versionName: string): string {
+  getTRSLink(path: string, versionName: string, descriptorType: string): string {
     return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor`;
+      `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType.toUpperCase() +
+      `/descriptor`;
   }
 }
