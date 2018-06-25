@@ -24,6 +24,7 @@ import { InfoTabService } from './info-tab.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ga4ghPath } from './../../shared/constants';
+import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-info-tab',
@@ -32,7 +33,7 @@ import { ga4ghPath } from './../../shared/constants';
 })
 export class InfoTabComponent implements OnInit {
   currentVersion;
-  @Input() set selectedVersion(value) {
+  @Input() set selectedVersion(value: Tag) {
     if (value != null && this.tool != null) {
       this.currentVersion = value;
       if (this.tool.descriptorType.includes('cwl')) {
