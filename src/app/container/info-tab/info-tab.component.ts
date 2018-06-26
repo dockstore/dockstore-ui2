@@ -32,7 +32,7 @@ import { Tag } from './../../shared/swagger/model/tag';
   styleUrls: ['./info-tab.component.css']
 })
 export class InfoTabComponent implements OnInit {
-  currentVersion;
+  currentVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
     if (value != null && this.tool != null) {
       this.currentVersion = value;
