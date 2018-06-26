@@ -70,6 +70,7 @@
   </div>
   <div class="col-md-5">
     <app-starring [workflow]="workflow" class="pull-right starring-button" *ngIf="isWorkflowPublic && workflow" (change)="starGazersChange()"></app-starring>
+    <a mat-button *ngIf="publicPage" class="pull-right" style="margin-top: 20px;" [href]="downloadZipLink" target="_blank">Download as ZIP</a>
   </div>
   <div *ngIf="!publicPage" class="col-md-5">
     <h3>
