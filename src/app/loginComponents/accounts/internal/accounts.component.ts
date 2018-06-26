@@ -13,7 +13,7 @@ import { UsersService } from './../../../shared/swagger/api/users.service';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsInternalComponent implements OnInit {
-  user;
+  user: User;
   googleProfile: Profile;
   gitHubProfile: Profile;
   hasGitHubToken$: Observable<boolean>;
@@ -57,16 +57,15 @@ export class AccountsInternalComponent implements OnInit {
     this.userService.user$.subscribe((user: User) => {
       this.user = user;
       if (user) {
-        this.setProperty();
-        const userProfiles = user.userProfile;
+        const userProfiles = user.userProfiles;
         if (userProfiles) {
         this.googleProfile = userProfiles['google.com'];
         // Using gravatar for Google also, may result in two identical pictures if both accounts use the same email address
-        if (this.googleProfile && this.googleProfile.avatarURL) {
+        if (this.googleProfile && !this.googleProfile.avatarURL) {
           this.googleProfile.avatarURL = this.userService.gravatarUrl(this.googleProfile.email, this.googleProfile.avatarURL);
         }
         this.gitHubProfile = userProfiles['github.com'];
-        if (this.gitHubProfile && this.gitHubProfile.avatarURL) {
+        if (this.gitHubProfile && !this.gitHubProfile.avatarURL) {
           this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
         }
       }
@@ -75,9 +74,7 @@ export class AccountsInternalComponent implements OnInit {
     );
 
   }
-  private setProperty() {
-    this.user.avatarUrl = this.userService.gravatarUrl(this.user.email, this.user.avatarUrl);
-  }
+
   ngOnInit() {
     this.getUser();
   }
