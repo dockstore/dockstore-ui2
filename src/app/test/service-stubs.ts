@@ -58,7 +58,7 @@ export class ContainerStubService {
     }
 }
 export class ProviderStubService {
-    setUpProvider(tool) {
+    setUpProvider(tool, version = null) {
         tool.provider = 'a provider';
         tool.providerUrl = 'a provider url';
         return tool;

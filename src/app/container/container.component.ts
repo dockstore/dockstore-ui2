@@ -150,7 +150,7 @@ export class ContainerComponent extends Entry {
     if (tool) {
       this.tool = tool;
       if (!tool.providerUrl) {
-        this.providerService.setUpProvider(tool);
+        this.providerService.setUpProvider(tool, this.selectedVersion);
       }
       this.tool = Object.assign(tool, this.tool);
       const toolRef: ExtendedDockstoreTool = this.tool;
@@ -176,6 +176,7 @@ export class ContainerComponent extends Entry {
           if (this.tool != null) {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
+          this.providerService.setUpProvider(this.tool, this.selectedVersion);
         }, error => {
           this.router.navigate(['../']);
         });
@@ -284,6 +285,7 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+      this.providerService.setUpProvider(this.tool, tag);
     }
     this.onTagChange(tag);
   }
