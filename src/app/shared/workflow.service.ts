@@ -62,21 +62,27 @@ export class WorkflowService {
 
   /**
    * Upsert the new workflow into the current list of workflows (depends on the workflow id)
+   * If not found will add to the workflows list (not shared workflows)
    * @param workflow Workflow to be upserted
    */
   upsertWorkflowToWorkflow(workflow: Workflow) {
     const workflows = this.workflows$.getValue();
-    if (!workflow || !workflows) {
-      return;
+    const sharedWorkflows = this.sharedWorkflows$.getValue();
+    if (workflow && workflows && sharedWorkflows) {
+      const oldWorkflow = workflows.find(x => x.id === workflow.id);
+      const oldSharedWorkflow = sharedWorkflows.find(x => x.id === workflow.id);
+      if (oldWorkflow) {
+        const index = workflows.indexOf(oldWorkflow);
+        workflows[index] = workflow;
+      } else if (oldSharedWorkflow) {
+        const index = workflows.indexOf(oldWorkflow);
+        sharedWorkflows[index] = workflow;
+      } else {
+        workflows.push(workflow);
+      }
+      this.setWorkflows(workflows);
+      this.setSharedWorkflows(sharedWorkflows);
     }
-    const oldWorkflow = workflows.find(x => x.id === workflow.id);
-    if (oldWorkflow) {
-      const index = workflows.indexOf(oldWorkflow);
-      workflows[index] = workflow;
-    } else {
-      workflows.push(workflow);
-    }
-    this.setWorkflows(workflows);
   }
 
   /**
