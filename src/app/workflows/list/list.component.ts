@@ -16,8 +16,7 @@
 
 import { Component, Input, ViewChild} from '@angular/core';
 import { CommunicatorService } from '../../shared/communicator.service';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 import { ToolLister } from '../../shared/tool-lister';
 import { DataTableDirective } from 'angular-datatables';
 import { ListService } from '../../shared/list.service';

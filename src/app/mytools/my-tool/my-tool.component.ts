@@ -34,6 +34,7 @@ import { TokenService } from './../../loginComponents/token.service';
 import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { Configuration } from './../../shared/swagger/configuration';
+import { first, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-tool',
@@ -70,12 +71,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userContainers(user.id).first().subscribe(tools => {
+        this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
           this.containerService.setTools(tools);
         });
       }
     });
-    this.containerService.tools$.takeUntil(this.ngUnsubscribe).subscribe(tools => {
+    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       if (tools) {
         this.tools = tools;
         const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');

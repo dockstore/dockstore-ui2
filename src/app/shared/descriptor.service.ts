@@ -13,11 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { zip as observableZip } from 'rxjs';
 
-import {SourceFile} from './swagger';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/zip';
-import {Injectable} from '@angular/core';
+import { SourceFile } from './swagger';
 
 @Injectable()
 export abstract class DescriptorService {
@@ -49,21 +48,21 @@ export abstract class DescriptorService {
     }
 
     private getCwlFiles(id: number, versionName: string) {
-        return Observable.zip(
+        return observableZip(
             this.getCwl(id, versionName),
             this.getSecondaryCwl(id, versionName)
         );
     }
 
     private getWdlFiles(id: number, versionName: string) {
-        return Observable.zip(
+        return observableZip(
             this.getWdl(id, versionName),
             this.getSecondaryWdl(id, versionName)
         );
     }
 
     private getNextflowFiles(id: number, versionName: string) {
-      return Observable.zip(
+      return observableZip(
         this.getNextFlow(id, versionName),
         this.getSecondaryNextFlow(id, versionName)
       );

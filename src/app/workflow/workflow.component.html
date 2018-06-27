@@ -84,7 +84,7 @@
   <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
-        <mat-chip color="primary" *ngFor="let label of workflowEditData.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <mat-chip color="primary" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
           Manage labels
         </button>
@@ -94,7 +94,7 @@
     <span *ngIf="labelsEditMode && !isWorkflowPublic">
       <mat-form-field style="width: 100%;">
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let label of workflowEditData.labels" [removable]="true"
+          <mat-chip *ngFor="let label of workflowEditData?.labels" [removable]="true"
             (removed)="removeLabel(label)">
             {{label}}
             <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
@@ -106,8 +106,11 @@
                  (matChipInputTokenEnd)="addToLabels($event)"/>
         </mat-chip-list>
       </mat-form-field>
+      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <span class="glyphicon glyphicon-remove"></span> Cancel
+      </button>
       <button type="button"(click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-        <span class="glyphicon glyphicon-floppy-save"></span>Save
+        <span class="glyphicon glyphicon-floppy-save"></span> Save
       </button>
     </span>
   </div>
@@ -116,7 +119,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
+        <app-info-tab [validVersions]="validVersions" [workflow]="workflow" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
@@ -197,7 +200,7 @@
         <div class="container-source-repos">
           <p>
             <span *ngIf="workflow.provider">
-              <a [href]="workflow.providerUrl">
+              <a [href]="workflow.providerUrl" target="_blank">
                 {{workflow.provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>

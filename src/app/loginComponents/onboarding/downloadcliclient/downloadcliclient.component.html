@@ -1,9 +1,9 @@
-<markdown [data]="textData1"></markdown>
+<ngx-md [data]="textData1"></ngx-md>
 <a *ngIf="downloadCli" class="btn btn-primary hori-offset-12 indent" [attr.href]="downloadCli">
   <span class=" glyphicon glyphicon-download"></span>
   Download CLI
 </a>
-<markdown [data]="textData2"></markdown>
+<ngx-md [data]="textData2"></ngx-md>
 <div class="input-group textarea indent">
   <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>
     token: {{dsToken}} 
@@ -14,4 +14,4 @@
     </button>
   </span>
 </div>
-<markdown [data]="textData3"></markdown>
+<ngx-md [data]="textData3"></ngx-md>

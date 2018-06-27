@@ -39,7 +39,7 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
   @Input() isOwner: boolean;
   items: any[];
   isPublic: boolean;
-  private workflow: Workflow;
+  public workflow: Workflow;
   public WorkflowType = Workflow;
 
   constructor(

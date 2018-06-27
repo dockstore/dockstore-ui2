@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Workflow } from './swagger/model/workflow';
 
@@ -33,20 +33,20 @@ export class WorkflowService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor() {
-    this.workflowId$ = this.workflow$.map((workflow: Workflow) => {
+    this.workflowId$ = this.workflow$.pipe(map((workflow: Workflow) => {
       if (workflow) {
         return workflow.id;
       } else {
         return null;
       }
-    });
-    this.workflowIsPublished$ = this.workflow$.map((workflow: Workflow) => {
+    }));
+    this.workflowIsPublished$ = this.workflow$.pipe(map((workflow: Workflow) => {
       if (workflow) {
         return workflow.is_published;
       } else {
         return null;
       }
-    });
+    }));
   }
   setWorkflow(workflow: any) {
     this.workflowSource.next(workflow);

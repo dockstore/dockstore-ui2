@@ -15,7 +15,7 @@
  */
 
 import {AdvancedSearchObject} from './../../shared/models/AdvancedSearchObject';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Injectable} from '@angular/core';
 
 @Injectable()

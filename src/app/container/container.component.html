@@ -99,7 +99,7 @@
   <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
-        <mat-chip color="primary" *ngFor="let label of containerEditData.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
           Manage labels
         </button>
@@ -109,7 +109,7 @@
     <span *ngIf="labelsEditMode && !isToolPublic">
       <mat-form-field style="width: 100%;">
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let label of containerEditData.labels" [removable]="true"
+          <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true"
            (removed)="removeLabel(label)">
             {{label}}
             <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
@@ -121,6 +121,9 @@
                  (matChipInputTokenEnd)="addToLabels($event)"/>
         </mat-chip-list>
       </mat-form-field>
+      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+         <span class="glyphicon glyphicon-remove"></span> Cancel
+      </button>
       <button type="button"(click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
         <span class="glyphicon glyphicon-floppy-save"></span>Save
       </button>
@@ -131,7 +134,7 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" (select)="setEntryTab('info')">
-        <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry"></app-info-tab>
+        <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [tool]="tool"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
@@ -206,7 +209,7 @@
           <p>
             Git Repository:
             <span *ngIf="tool.provider">
-              <a [href]="tool.providerUrl">
+              <a [href]="tool.providerUrl" target="_blank">
                 {{tool.provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
@@ -216,14 +219,14 @@
             Docker Registry:
             <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
             <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
-              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl">
+              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl" target="_blank">
                 {{tool?.imgProvider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
               <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
             </span>
             <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')" class="pull-right">
-              <a href="{{tool.imgProviderUrl}}">
+              <a href="{{tool.imgProviderUrl}}" target="_blank">
                 <img src="{{tool.imgProviderUrl}}/status">
               </a>
             </span>

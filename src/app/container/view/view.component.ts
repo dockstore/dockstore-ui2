@@ -34,7 +34,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 // This is actually the tag edtior
 export class ViewContainerComponent extends View implements OnInit {
   public TagEditorMode = TagEditorMode;
-  private tool: DockstoreTool;
+  public tool: DockstoreTool;
   public DockstoreToolType = DockstoreTool;
   isPublic: boolean;
   constructor(dateService: DateService, private versionModalService: VersionModalService, private stateService: StateService,

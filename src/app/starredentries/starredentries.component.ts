@@ -4,7 +4,7 @@ import { StarringService } from '../starring/starring.service';
 import { ProviderService } from '../shared/provider.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { UserService } from '../loginComponents/user.service';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import { StarentryService } from '../shared/starentry.service';
 
 @Component({

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version

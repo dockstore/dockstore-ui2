@@ -32,7 +32,7 @@
         </p>
         <p class="error-output">{{workflowRegisterError.errorDetails}}</p>
       </div>
-      <div class="alert alert-info" role="alert" *ngIf="refreshing">
+      <div class="alert alert-info" role="alert" *ngIf="refreshMessage !== null">
         <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
         </span>
         Please wait, retrieving workflow...
@@ -104,16 +104,17 @@
                         <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li *ngFor="let descriptorType of getDescriptorTypes()">
-                          <a class="dropdown-item" (click)="workflow.descriptorType = descriptorType.toLowerCase()">
+                        <li *ngFor="let descriptorType of (descriptorLanguages$ | async)">
+                          <a class="dropdown-item" (click)="changeDescriptorType(descriptorType.toLowerCase())">
                             {{descriptorType | lowercase}}
                           </a>
                         </li>
                       </ul>
                     </div>
-                    <input id="sourceCodeRepositoryWorkflowPathInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath" required tooltip="Git Repository path." placeholder='{{ examplePatterns[workflow.descriptorType] }}' />
+                    <input id="sourceCodeRepositoryWorkflowPathInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="descriptorValidationPattern" required tooltip="Git Repository path." placeholder='{{ examplePatterns[workflow.descriptorType] }}' />
                   </div>
-                  <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
+                  <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
+                  <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }}</div>
                 </div>
               </div>
               <div class="form-group form-group-sm">
@@ -136,10 +137,10 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
+              <button id="closeRegisterWorkflowModalButton" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
                 Close
               </button>
-              <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid || savingActive || refreshing}}">
+              <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid || refreshMessage !== null}}">
                 Register Workflow
               </button>
             </div>
@@ -158,7 +159,7 @@
                         <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li *ngFor="let descriptorType of getDescriptorTypes()">
+                        <li *ngFor="let descriptorType of (descriptorLanguages$ | async)">
                           <a class="dropdown-item" (click)="hostedWorkflow.descriptorType = descriptorType.toLowerCase()">
                             {{descriptorType | lowercase}}
                           </a>

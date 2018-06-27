@@ -1,20 +1,19 @@
 /*
- *    Copyright 2017 OICR
+ *     Copyright 2018 OICR
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
  */
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
@@ -35,7 +34,7 @@ export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
     copyBtn$ = this.copyBtnSource.asObservable();
     tool$: BehaviorSubject<any> = new BehaviorSubject({});
-    toolId$ = Observable.of(1);
+    toolId$ = observableOf(1);
     tools$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     getDescriptors() {
         return null;
@@ -51,7 +50,7 @@ export class ContainerStubService {
         this.tool$.next(tools);
     }
     replaceTool(tools: any, newTool: any) {
-        return Observable.of(tools);
+        return observableOf(tools);
     }
     getBuildMode(mode: DockstoreTool.ModeEnum) {
         return 'Fully-Automated';
@@ -61,7 +60,7 @@ export class ContainerStubService {
     }
 }
 export class ProviderStubService {
-    setUpProvider(tool) {
+    setUpProvider(tool, version = null) {
         tool.provider = 'a provider';
         tool.providerUrl = 'a provider url';
         return tool;
@@ -100,16 +99,16 @@ export class GA4GHStubService {
             version: '3',
             api_version: '3',
         };
-        return Observable.of(metadata);
+        return observableOf(metadata);
     }
 }
 
 export class SearchStubService {
-    workflowhit$ = Observable.of([]);
-    toolhit$ = Observable.of([]);
-    searchInfo$ = Observable.of({});
-    toSaveSearch$ = Observable.of(false);
-    values$ = Observable.of('');
+    workflowhit$ = observableOf([]);
+    toolhit$ = observableOf([]);
+    searchInfo$ = observableOf({});
+    toSaveSearch$ = observableOf(false);
+    values$ = observableOf('');
     joinComma(searchTerm: string): string {
         return searchTerm.trim().split(' ').join(', ');
     }
@@ -204,7 +203,7 @@ export class ListContainersStubService {
 }
 
 export class TrackLoginStubService {
-    isLoggedIn$ = Observable.of(true);
+    isLoggedIn$ = observableOf(true);
 }
 
 export class LoginStubService {
@@ -216,7 +215,7 @@ export class AuthStubService {
         return 'asdf';
     }
     authenticate() {
-        return Observable.of({});
+        return observableOf({});
     }
 }
 
@@ -235,25 +234,25 @@ export class ConfigurationStub {
 
 export class UsersStubService {
     getUser() {
-        return Observable.of({});
+        return observableOf({});
     }
     userWorkflows() {
-        return Observable.of([]);
+        return observableOf([]);
     }
     getStarredTools() {
-        return Observable.of([]);
+        return observableOf([]);
     }
     getStarredWorkflows() {
-        return Observable.of([]);
+        return observableOf([]);
     }
     refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
     refreshWorkflows(userId: number, extraHttpRequestParams?: any): Observable<Array<Workflow>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
     getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<Token>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 }
 
@@ -267,7 +266,7 @@ export class WorkflowStubService {
     nsWorkflows$ = Observable.of([]);
     nsSharedWorkflows$ = Observable.of([]);
     workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
-    workflowId$ = Observable.of(1);
+    workflowId$ = observableOf(1);
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = Observable.of({});
@@ -287,7 +286,7 @@ export class WorkflowStubService {
     getDescriptors() {
     }
     getTestJson() {
-        return Observable.of({});
+        return observableOf({});
     }
     replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
     get full_workflow_path() { return ''; }
@@ -296,20 +295,20 @@ export class WorkflowStubService {
 
 export class HostedStubService {
     deleteHostedWorkflowVersion(id: string, version: string) {
-      return Observable.of({});
+      return observableOf({});
     }
 
     editHostedWorkflow(id: string, sourceFiles: any) {
-      return Observable.of({});
+      return observableOf({});
     }
 
     createHostedWorkflow(name: string, descriptorType: string) {
-      return Observable.of({});
+      return observableOf({});
     }
 }
 
 export class MetadataStubService {
-    sourceControlList = Observable.of([
+    sourceControlList = observableOf([
         {
             'value': 'github.com',
             'friendlyName': 'GitHub'
@@ -324,7 +323,7 @@ export class MetadataStubService {
         }
     ]);
 
-    dockerRegistriesList = Observable.of([
+    dockerRegistriesList = observableOf([
         {
             'dockerPath': 'quay.io',
             'friendlyName': 'Quay.io',
@@ -359,7 +358,7 @@ export class MetadataStubService {
         }
     ]);
 
-    descriptorLanguageList = Observable.of([
+    descriptorLanguageList = observableOf([
         {
             'value': 'CWL',
             'friendlyName': 'Common Workflow Language'
@@ -415,8 +414,8 @@ export class LogoutStubService {
 }
 
 export class UserStubService {
-    userId$ = Observable.of(5);
-    user$ = Observable.of({});
+    userId$ = observableOf(5);
+    user$ = observableOf({});
 }
 
 export class TokenStubService {
@@ -428,50 +427,50 @@ export class TokenStubService {
 
 export class TokensStubService {
     public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
-        return Observable.of(quayToken);
+        return observableOf(quayToken);
     }
     public addBitbucketToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
-        return Observable.of(bitbucketToken);
+        return observableOf(bitbucketToken);
     }
     public addGithubToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
-        return Observable.of(gitHubToken);
+        return observableOf(gitHubToken);
     }
     public addGitlabToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
-        return Observable.of(gitLabToken);
+        return observableOf(gitLabToken);
     }
     public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {
-        return Observable.of({});
+        return observableOf({});
     }
 }
 
 export class AdvancedSearchStubService {
-    showModal$ = Observable.of(true);
-    advancedSearch$ = Observable.of({});
+    showModal$ = observableOf(true);
+    advancedSearch$ = observableOf({});
 }
 
 export class StarringStubService {
     getStarring(id: any, type: any): Observable<Array<User>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 }
 
 export class CheckerWorkflowStubService {
-    entry$ = Observable.of({id: 1});
-    checkerWorkflow$ = Observable.of(null);
-    checkerWorkflowPath$ = Observable.of({});
-    checkerWorkflowDefaultWorkflowPath$ = Observable.of('checkerWorkflowDefaultWorkflowPath');
-    checkerWorkflowVersionName$ = Observable.of({});
+    entry$ = observableOf({id: 1});
+    checkerWorkflow$ = observableOf(null);
+    checkerWorkflowPath$ = observableOf({});
+    checkerWorkflowDefaultWorkflowPath$ = observableOf('checkerWorkflowDefaultWorkflowPath');
+    checkerWorkflowVersionName$ = observableOf({});
     isEntryAWorkflow() {
         return true;
     }
 }
 
 export class DescriptorLanguageStubService {
-    descriptorLanguages$ = Observable.of(['cwl', 'wdl', 'nextflow']);
+    descriptorLanguages$ = observableOf(['cwl', 'wdl', 'nextflow']);
 }
 
 export class RegisterCheckerWorkflowStubService {
-    errorObj$ = Observable.of(null);
+    errorObj$ = observableOf(null);
     public isModalShown$ = new BehaviorSubject<boolean>(false);
     public refreshMessage$ = new BehaviorSubject<string>(null);
     public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
@@ -488,7 +487,7 @@ export class UrlResolverStubService {
 }
 
 export class StarEntryStubService {
-    starEntry$ = Observable.of({});
+    starEntry$ = observableOf({});
 }
 
 export class ImageProviderStubService {
@@ -522,10 +521,10 @@ export class DescriptorsStubService {
 
 export class ParamFilesStubService {
     getVersions(version) {
-        return Observable.of([]);
+        return observableOf([]);
     }
     getDescriptors(id, type, versionName, descriptor) {
-        return Observable.of({});
+        return observableOf({});
     }
 }
 
@@ -561,7 +560,7 @@ export class DockstoreStubService {
 
 export class DateStubService {
     getVerifiedLink() {
-        return '/docs/faq#what-is-a-verified-tool-or-workflow-';
+        return 'https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow';
     }
     getDateTimeMessage() {
         return 'a date time message';
@@ -573,24 +572,24 @@ export class DateStubService {
 
 export class WorkflowsStubService {
     getTestParameterFiles(workflowId: number, version?: string, extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 
     starEntry(workflowId: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
-        return Observable.of({});
+        return observableOf({});
     }
 
     unstarEntry(workflowId: number, extraHttpRequestParams?: any): Observable<{}> {
-        return Observable.of({});
+        return observableOf({});
     }
 
     getStarredUsers(workflowId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 
     manualRegister(workflowRegistry: string, workflowPath: string, defaultWorkflowPath: string, workflowName: string,
         descriptorType: string, extraHttpRequestParams?: any): Observable<Workflow> {
-        return Observable.of(sampleWorkflow1);
+        return observableOf(sampleWorkflow1);
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
@@ -605,32 +604,32 @@ export class WorkflowsStubService {
             'sourceControl': 'github.com',
             'source_control_provider': 'GITHUB'
         };
-        return Observable.of(refreshedWorkflow);
+        return observableOf(refreshedWorkflow);
     }
     updateWorkflow(workflowId: number, body: Workflow, extraHttpRequestParams?: any): Observable<Workflow> {
-        return Observable.of(updatedWorkflow);
+        return observableOf(updatedWorkflow);
     }
     updateWorkflowVersion(workflowId: number, body: Array<WorkflowVersion>, extraHttpRequestParams?: any):
         Observable<Array<WorkflowVersion>> {
         const updatedWorkflowVersions: WorkflowVersion[] = [];
-        return Observable.of(updatedWorkflowVersions);
+        return observableOf(updatedWorkflowVersions);
     }
     addTestParameterFiles(workflowId: number, testParameterPaths: Array<string>, body?: string, version?: string,
         extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
     deleteTestParameterFiles(workflowId: number, testParameterPaths: Array<string>, version?: string, extraHttpRequestParams?: any):
         Observable<Array<SourceFile>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
     getWorkflowDag(workflowId: number, workflowVersionId: number, extraHttpRequestParams?: any): Observable<string> {
-        return Observable.of('someDAG');
+        return observableOf('someDAG');
     }
     wdl(workflowId: number, tag: string ) {
-      return Observable.of({});
+      return observableOf({});
     }
     secondaryWdl(workflowId: number, tag: string) {
-      return Observable.of([]);
+      return observableOf([]);
     }
     removeWorkflowRole(workflowPath: string, entity: string, permission: RoleEnum) {
       return Observable.of([]);
@@ -646,23 +645,23 @@ export class WorkflowsStubService {
 export class ContainersStubService {
     getTestParameterFiles(containerId: number, tag?: string, descriptorType?: string, extraHttpRequestParams?: any):
         Observable<Array<SourceFile>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 
     starEntry(containerId: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
-        return Observable.of({});
+        return observableOf({});
     }
 
     unstarEntry(containerId: number, extraHttpRequestParams?: any): Observable<{}> {
-        return Observable.of({});
+        return observableOf({});
     }
 
     getStarredUsers(containerId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 
     getDockerRegistries(extraHttpRequestParams?: any): Observable<Array<{ [key: string]: any; }>> {
-        return Observable.of([
+        return observableOf([
             {
                 'dockerPath': 'quay.io',
                 'customDockerPath': 'false',
@@ -713,7 +712,7 @@ export class ContainersStubService {
             defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
             defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
         };
-        return Observable.of(tool);
+        return observableOf(tool);
     }
 }
 
@@ -726,6 +725,6 @@ export class WorkflowVersionStubService {
 }
 
 export class StateStubService {
-    publicPage$ = Observable.of(false);
+    publicPage$ = observableOf(false);
     refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 }

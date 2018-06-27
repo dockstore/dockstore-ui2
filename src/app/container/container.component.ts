@@ -18,7 +18,8 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
@@ -123,7 +124,7 @@ export class ContainerComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.containerService.tool$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       tool => {
         this.tool = tool;
         if (tool) {
@@ -138,7 +139,7 @@ export class ContainerComponent extends Entry {
         this.setUpTool(tool);
       }
     );
-    this.containerService.copyBtn$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       toolCopyBtn => {
         this.toolCopyBtn = toolCopyBtn;
       }
@@ -149,7 +150,7 @@ export class ContainerComponent extends Entry {
     if (tool) {
       this.tool = tool;
       if (!tool.providerUrl) {
-        this.providerService.setUpProvider(tool);
+        this.providerService.setUpProvider(tool, this.selectedVersion);
       }
       this.tool = Object.assign(tool, this.tool);
       const toolRef: ExtendedDockstoreTool = this.tool;
@@ -159,9 +160,6 @@ export class ContainerComponent extends Entry {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedVersions(this.tool.tags, this.defaultVersion);
-      if (this.publicPage) {
-        this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
-      }
     }
   }
 
@@ -178,6 +176,7 @@ export class ContainerComponent extends Entry {
           if (this.tool != null) {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
+          this.providerService.setUpProvider(this.tool, this.selectedVersion);
         }, error => {
           this.router.navigate(['../']);
         });
@@ -203,9 +202,6 @@ export class ContainerComponent extends Entry {
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
-    if (this.publicPage) {
-      this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
-    }
   }
 
   publishDisable() {
@@ -267,6 +263,11 @@ export class ContainerComponent extends Entry {
       });
   }
 
+  cancelLabelChanges(): void {
+    this.containerEditData.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
+    this.labelsEditMode = false;
+  }
+
   public toolCopyBtnClick(copyBtn): void {
     this.containerService.setCopyBtn(copyBtn);
   }
@@ -284,6 +285,7 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+      this.providerService.setUpProvider(this.tool, tag);
     }
     this.onTagChange(tag);
   }

@@ -16,7 +16,7 @@
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { MatChipInputEvent } from '@angular/material';
 
@@ -30,7 +30,7 @@ import { ProviderService } from './provider.service';
 import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -73,7 +73,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.subscriptions();
-    this.router.events.takeUntil(this.ngUnsubscribe).subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.parseURL(event.url);
       }
@@ -181,7 +181,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
     let useFirstTag = true;
     let urlTagExists = false;
-    versions = versions.filter(version => !version.hidden);
     // Determine which tag to select
     for (const item of versions) {
       // If a tag is specified in the URL then use it
@@ -377,7 +376,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {string} searchValue Value to search for
    */
   goToSearch(searchValue: string): void {
-    window.location.href = '/search?search=' + searchValue;
+    window.location.href = '/search?labels.value.keyword=' + searchValue + '&searchMode=files';
   }
 
   /**
@@ -391,4 +390,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param  label label to remove
    */
   abstract removeLabel(label: any): void;
+
+  /**
+   * Cancels any unsaved label changes
+   */
+  abstract cancelLabelChanges(): void;
 }

@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
@@ -40,7 +41,7 @@ export class ToolTabComponent extends EntryTab implements OnInit {
   }
 
   ngOnInit() {
-    this.workflowService.workflow$.distinctUntilChanged().subscribe(workflow => {
+    this.workflowService.workflow$.pipe(distinctUntilChanged()).subscribe(workflow => {
       if (workflow) {
         this.workflow = workflow;
         if (workflow.workflowVersions) {
