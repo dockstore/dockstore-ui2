@@ -4,6 +4,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RefreshService } from './../../shared/refresh.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -23,7 +24,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
       this.loadVersionSourcefiles();
     }
   }
-  constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService) {
+  constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
+    private workflowsService: WorkflowsService) {
     super();
   }
 
@@ -60,10 +62,12 @@ export class WorkflowFileEditorComponent extends FileEditing {
 
     this.hostedService.editHostedWorkflow(
         this.id,
-        newSourceFiles).subscribe(result => {
+        newSourceFiles).subscribe(workflow => {
           this.toggleEdit();
-          this.workflowService.setWorkflow(result);
           this.refreshService.handleSuccess(message);
+          this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2) => {
+            this.workflowService.setWorkflow(workflow2);
+          });
         }, error =>  {
           if (error) {
             this.refreshService.handleError(message, error);

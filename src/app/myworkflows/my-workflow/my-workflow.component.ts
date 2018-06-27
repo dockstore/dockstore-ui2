@@ -70,7 +70,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         if (this.groupEntriesObject && this.groupSharedEntriesObject) {
           const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
             this.groupEntriesObject.concat(this.groupSharedEntriesObject));
-          this.selectEntry(foundWorkflow);
+            this.selectEntry(foundWorkflow);
         }
       }
     });
@@ -85,7 +85,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
       }
     );
-
 
     this.userService.user$.subscribe(user => {
       if (user) {
@@ -112,7 +111,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         this.sharedWorkflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
         this.setSortedSharedWorkflows(sortedWorkflows);
-        if (this.workflow === undefined || this.workflow === null) {
+        if (this.workflows === undefined || this.workflows === null || this.workflows.length === 0) {
           this.selectInitialEntry(sortedWorkflows);
         }
       }
@@ -239,9 +238,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   selectEntry(workflow: ExtendedWorkflow): void {
-    this.workflowService.setWorkflow(workflow);
-    if (workflow) {
-      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+    if (workflow !== null) {
+      this.workflowsService.getWorkflow(workflow.id).subscribe((result) => {
+        this.workflowService.setWorkflow(result);
+        if (result) {
+          this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+        }
+      });
     }
   }
 

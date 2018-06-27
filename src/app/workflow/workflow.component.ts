@@ -353,7 +353,7 @@ export class WorkflowComponent extends Entry {
       }
     }
 
-    return this.readers.includes(email) || this.writers.includes(email) || this.owners.includes(email);
+    return this.readers.includes(email) || this.writers.includes(email) || this.owners.includes(email) ;
   }
 
   /**
@@ -382,8 +382,6 @@ export class WorkflowComponent extends Entry {
         return true;
       }
     }
-
-    console.log(this.workflow.users);
 
     return this.owners.includes(email);
   }
