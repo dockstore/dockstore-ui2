@@ -146,9 +146,8 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
-<<<<<<< HEAD
       if (this.publicPage) {
-        this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
+        this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
       this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).subscribe(
         (userPermissions: Permission[]) => {
@@ -157,8 +156,6 @@ export class WorkflowComponent extends Entry {
         () => {
         }
       );
-=======
->>>>>>> develop
     }
   }
 

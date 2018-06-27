@@ -94,7 +94,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           this.workflowService.setWorkflows(workflows);
         });
 
-        this.workflowsService.sharedWorkflows().first().subscribe(workflows => {
+        this.workflowsService.sharedWorkflows().pipe(first()).subscribe(workflows => {
           this.workflowService.setSharedWorkflows(workflows);
         });
       }
@@ -107,7 +107,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         this.selectInitialEntry(sortedWorkflows);
       }
     });
-    this.workflowService.sharedWorkflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
+    this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflows => {
       if (workflows) {
         this.sharedWorkflows = workflows;
         const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
