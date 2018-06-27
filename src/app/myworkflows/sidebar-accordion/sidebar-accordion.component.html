@@ -1,4 +1,4 @@
-<accordion [closeOthers]="oneAtATime">
+<accordion [closeOthers]="openOneAtATime">
   <accordion-group *ngFor="let orgObj of groupEntriesObject"  panelClass="containers-accordion"
     [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.sourceControl + '/' + orgObj?.organization">
     <div accordion-heading class="no-wrap">

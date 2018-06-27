@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+// import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
 import { TabsModule } from 'ngx-bootstrap';
@@ -8,7 +9,8 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInp
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RefreshService } from './../../shared/refresh.service';
-import { HostedStubService, WorkflowStubService, RefreshStubService } from './../../test/service-stubs';
+import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 
 describe('WorkflowFileEditorComponent', () => {
   let component: WorkflowFileEditorComponent;
@@ -21,6 +23,7 @@ describe('WorkflowFileEditorComponent', () => {
         CodeEditorListComponent,
         CodeEditorComponent
       ],
+      // schemas: [ NO_ERRORS_SCHEMA ],
       imports: [
         TabsModule.forRoot(),
         MatButtonModule,
@@ -33,6 +36,7 @@ describe('WorkflowFileEditorComponent', () => {
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: RefreshService, useClass: RefreshStubService }
       ]
     })
