@@ -13,13 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-
 import { FileService } from '../../shared/file.service';
+import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
@@ -40,8 +39,8 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   public downloadFilePath: string;
 
   constructor(private paramfilesService: ParamfilesService,
-              public fileService: FileService,
-              private workflowService: WorkflowService) {
+    public fileService: FileService,
+    private workflowService: WorkflowService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -64,5 +63,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   // Get the path of the file
   getFilePath(file): string {
     return this.fileService.getFilePath(file);
+  }
+
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
   }
 }

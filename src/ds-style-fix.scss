@@ -75,7 +75,7 @@ table.tokens-grid {
     }
 }
 
-table.versions-grid {
+table.tool-versions-grid {
   th:nth-child(1) {
     width: 17.5%;
   }
@@ -149,6 +149,31 @@ table.hosted-workflow-versions-grid {
   }
   th:nth-child(6) {
     width: 10%;
+  }
+  div.git-ref {
+    width: 124px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  margin-bottom: 10px;
+}
+
+table.hosted-tool-versions-grid {
+  th:nth-child(1) {
+    width: 15%;
+  }
+  th:nth-child(2) {
+    width: 35%;
+  }
+  th:nth-child(3) {
+    width: 17.5%;
+  }
+  th:nth-child(4) {
+    width: 17.5%;
+  }
+  th:nth-child(5) {
+    width: 15%;
   }
   div.git-ref {
     width: 124px;
@@ -431,6 +456,7 @@ div.container-sharing {
   div {
     line-height: 1em;
   }
+  text-align: center;
 }
 
 form.edit-container {
@@ -733,6 +759,10 @@ div.contact-button {
   margin-bottom: 15px;
 }
 
+.small-bottom-margin {
+  margin-bottom: 5px;
+}
+
 .full-width {
   width: 100%;
 }
@@ -770,4 +800,16 @@ div.contact-button {
   top: 50%;
   max-width:350px;
   padding: 10px;
+}
+
+.small-side-padding {
+  padding-left:15px;
+  padding-right: 15px;
+}
+.mat-standard-chip {
+  padding: 5px 8px !important;
+}
+
+.mat-chip-list-wrapper .mat-standard-chip, .mat-chip-list-wrapper input.mat-input-element {
+  margin: 2px !important;
 }

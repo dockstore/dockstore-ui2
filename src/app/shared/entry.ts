@@ -16,8 +16,9 @@
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { MatChipInputEvent } from '@angular/material';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -29,12 +30,11 @@ import { ProviderService } from './provider.service';
 import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('entryTabs') entryTabs: TabsetComponent;
-  protected labels: string[];
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;
@@ -73,7 +73,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.subscriptions();
-    this.router.events.takeUntil(this.ngUnsubscribe).subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.parseURL(event.url);
       }
@@ -181,7 +181,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
     let useFirstTag = true;
     let urlTagExists = false;
-    versions = versions.filter(version => !version.hidden);
     // Determine which tag to select
     for (const item of versions) {
       // If a tag is specified in the URL then use it
@@ -371,4 +370,29 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @return {number}
    */
   abstract getPageIndex(): number;
+
+  /**
+   * Go to the search page with a query preloaded
+   * @param {string} searchValue Value to search for
+   */
+  goToSearch(searchValue: string): void {
+    window.location.href = '/search?labels.value.keyword=' + searchValue + '&searchMode=files';
+  }
+
+  /**
+   * Adds a label to the labels list
+   * @param  event Add chip event
+   */
+  abstract addToLabels(event: MatChipInputEvent): void;
+
+  /**
+   * Removes a label from the list of labels (does not update in database)
+   * @param  label label to remove
+   */
+  abstract removeLabel(label: any): void;
+
+  /**
+   * Cancels any unsaved label changes
+   */
+  abstract cancelLabelChanges(): void;
 }

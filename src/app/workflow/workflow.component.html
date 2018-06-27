@@ -49,11 +49,6 @@
       </span>
       {{ title }}<span *ngIf="workflow?.workflowVersions.length > 0">:<span class="ds-green">{{ selectedVersion?.name }}</span></span>
     </h3>
-    <div *ngIf="workflow">
-      <span class="label label-default container-label" *ngFor="let label of labels">
-        {{label}}
-      </span>
-    </div>
 
     <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
       <div class="form-group">
@@ -78,7 +73,7 @@
   </div>
   <div *ngIf="!publicPage" class="col-md-5">
     <h3>
-      <div class="pull-right">
+      <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
           <button id="publishButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable()" btnCheckbox>
             {{workflow?.is_published ? 'Unpublish' : 'Publish'}}
@@ -91,46 +86,51 @@
     </h3>
   </div>
 </div>
+<div class="row" *ngIf="!showRedirect">
+  <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
+    <span *ngIf="!labelsEditMode">
+      <mat-chip-list>
+        <mat-chip color="primary" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+          Manage labels
+        </button>
+      </mat-chip-list>
+    </span>
+
+    <span *ngIf="labelsEditMode && !isWorkflowPublic">
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let label of workflowEditData?.labels" [removable]="true"
+            (removed)="removeLabel(label)">
+            {{label}}
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New label..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="true"
+                 (matChipInputTokenEnd)="addToLabels($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <span class="glyphicon glyphicon-remove"></span> Cancel
+      </button>
+      <button type="button"(click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <span class="glyphicon glyphicon-floppy-save"></span> Save
+      </button>
+    </span>
+  </div>
+</div>
 <div class="row" *ngIf="!starGazersClicked && !showRedirect">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
+        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [workflow]="workflow"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
-      <tab id="labelsTab" heading="Labels" (select)="setEntryTab('labels')">
-        <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
-          <span class="glyphicon glyphicon-edit"></span>Edit
-        </button>
-        <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
-          <li *ngIf="workflow">
-            <strong>Labels:</strong>
-            <span *ngIf="workflow?.labels.length === 0">n/a</span>
-            <span class="label label-default container-label" *ngFor="let label of labels">
-              {{label}}
-            </span>
-          </li>
-        </ul>
-        <form name="editWorkflowForm" class="edit-container form-inline" (ngSubmit)="submitWorkflowEdits()" #labelForm="ngForm" novalidate>
-          <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isWorkflowPublic">
-            <span class="glyphicon glyphicon-floppy-save"></span>Save
-          </button>
-          <div *ngIf="labelsEditMode && !isWorkflowPublic">
-            <div class="form-group">
-              <label>Workflow Labels:</label>
-              <input id="workflowLabels" type="text" class="input-sm form-control" name="workflowLabels" [(ngModel)]="workflowEditData.labels" #name="ngModel" maxlength="512" [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-            </div>
-            <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-              <div [hidden]="!name.errors.maxlength">
-                {{ validationMessage.label.maxlength }}
-              </div>
-              <div [hidden]="!name.errors.pattern">
-                  {{ validationMessage.label.pattern }}
-              </div>
-            </div>
-          </div>
-        </form>
+      <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
+        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType"></app-launch>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">
@@ -186,7 +186,7 @@
                   <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
                 </a>
               </span>
-              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}}</a>
+              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}} </a>
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
             <hr class="no-margin">
@@ -203,7 +203,7 @@
         <div class="container-source-repos">
           <p>
             <span *ngIf="workflow.provider">
-              <a [href]="workflow.providerUrl">
+              <a [href]="workflow.providerUrl" target="_blank">
                 {{workflow.provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
@@ -236,7 +236,7 @@
       </div>
       <div class="panel-body">
         <div class="container-sharing">
-          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
+          <share-buttons class="withCount" [url]="shareURL" [google]="false" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
           </share-buttons>
         </div>
       </div>

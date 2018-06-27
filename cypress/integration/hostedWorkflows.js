@@ -48,9 +48,6 @@ describe('Dockstore my workflows', function() {
           .parent()
           .click()
         cy
-          .get('#deleteVersionButton')
-          .should('be.disabled')
-        cy
           .get('#editFilesButton')
           .click()
         cy
@@ -68,15 +65,14 @@ describe('Dockstore my workflows', function() {
           .get('#saveNewVersionButton')
           .click()
 
-        // Should have a version 0
+        // Should have a version 1
         cy
           .get('.nav-link')
           .contains('Versions')
           .parent()
           .click()
           .get('table')
-          .find('a')
-          .contains('0')
+          .contains('span', /\b1\b/)
 
           // Add a new version with a second descriptor and a test json
           cy
@@ -118,15 +114,14 @@ describe('Dockstore my workflows', function() {
             .get('#saveNewVersionButton')
             .click()
 
-          // Should have a version 1
+          // Should have a version 2
           cy
             .get('.nav-link')
             .contains('Versions')
             .parent()
             .click()
             .get('table')
-            .find('a')
-            .contains('1')
+          .contains('span', /\b2\b/)
 
           // Should be able to publish
           cy
@@ -162,17 +157,13 @@ describe('Dockstore my workflows', function() {
             .parent()
             .click()
             .get('table')
-            .find('a')
-            .contains('2')
+          .contains('span', /\b3\b/)
 
-          // Try deleting a version
+          // Delete a version
           cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
-          cy
-            .get('#deleteVersionButton')
+            .get('table')
+            .find('.deleteVersionButton')
+            .first()
             .click()
 
           // Version should no longer exist
@@ -183,7 +174,7 @@ describe('Dockstore my workflows', function() {
             .click()
             .get('table')
             .find('a')
-            .should('not.contain', '2')
+            .should('not.contain', '1')
       });
     });
 

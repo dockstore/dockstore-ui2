@@ -20,6 +20,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 
 import {
   RefreshToolOrganizationComponent,
@@ -52,7 +53,8 @@ import { mytoolsRouting } from './mytools.routing';
     ModalModule.forRoot(),
     RefreshAlertModule,
     TabsModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    CustomMaterialModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

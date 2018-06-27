@@ -14,22 +14,6 @@
   ~    limitations under the License.
   -->
 
-<ul class="list-unstyled container-info" *ngIf="workflow">
-  <li *ngIf="workflow.full_workflow_path">
-    <strong tooltip="Complete path of workflow, used as a unique identifier">
-      Path
-    </strong>: {{ workflow.full_workflow_path }}
-  </li>
-  <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-    <li *ngIf="workflow?.provider && workflow?.providerUrl">
-      <strong tooltip="Git repository for the associated descriptors">
-        {{ workflow?.provider}}
-      </strong>:
-      <a [href]="workflow?.providerUrl">
-        {{ workflow?.providerUrl }}
-      </a>
-    </li>
-  </span>
   <li *ngIf="workflow?.author">
     <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
   </li>
@@ -39,7 +23,28 @@
       {{ workflow?.email }}
     </a>
   </li>
-  <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+  <ul class="list-unstyled container-info" *ngIf="workflow">
+      <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+        <li *ngIf="workflow?.provider && workflow?.providerUrl">
+          <strong tooltip="Git repository for the associated descriptors">
+            {{ workflow?.provider}}
+          </strong>:
+          <a [href]="workflow?.providerUrl">
+            {{ workflow?.providerUrl }}
+          </a>
+        </li>
+      </span>
+      <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
+          <strong tooltip="The source code for this workflow is stored on Dockstore.org">Dockstore.org</strong>:
+          <i>The source code for this workflow is stored on Dockstore.org</i>
+      </li>
+      <li>
+        <strong tooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
+        <a [href]="trsLink">
+          #workflow/{{workflow?.full_workflow_path}}
+        </a>
+      </li>
+  <span>
     <li *ngIf="workflow?.workflow_path || !isPublic">
       <form #editWorkflowPathForm="ngForm" class="form-inline">
         <div class="form-group">
@@ -48,7 +53,7 @@
           <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
             name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
         </div>
-        <div class="btn-group push-right" role="group" aria-label="Basic example">
+        <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group push-right" role="group" aria-label="Basic example">
           <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
             <span class="glyphicon glyphicon-remove"></span> Cancel
           </button>
@@ -66,11 +71,13 @@
           <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
             name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath" placeholder="e.g. /Dockstore.cwl" />
         </div>
-        <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)" class="btn btn-link push-right"
-          (click)="toggleEditDefaultTestFilePath()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !defaultTestFilePathEditing, 'glyphicon-save': defaultTestFilePathEditing }"></span>
-          {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
-        </button>
+        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+          <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)" class="btn btn-link push-right"
+            (click)="toggleEditDefaultTestFilePath()">
+            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !defaultTestFilePathEditing, 'glyphicon-save': defaultTestFilePathEditing }"></span>
+            {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
+          </button>
+        </span>
       </form>
     </li>
 </span>
@@ -99,7 +106,7 @@
       Description
     </label>
     <div *ngIf="workflow?.description" class="well well-sm">
-      <markdown [data]="workflow?.description"></markdown>
+      <ngx-md [data]="workflow?.description"></ngx-md>
     </div>
     <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
       <span class="glyphicon glyphicon-warning-sign"></span>
@@ -110,5 +117,4 @@
       </span>
     </div>
   </div>
-  <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow.path" [path]="workflow.full_workflow_path" [currentDescriptor]="workflow?.descriptorType"></app-launch>
 </div>

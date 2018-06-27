@@ -1,3 +1,5 @@
+
+import {first} from 'rxjs/operators';
 import { Links } from './links.model';
 import { TokenSource } from './../../../shared/enum/token-source.enum';
 import { Injectable } from '@angular/core';
@@ -33,7 +35,7 @@ export class AccountsService {
                 this.openWindow(Links.QUAY);
                 break;
             case TokenSource.GOOGLE:
-                this.loginService.authenticate('google').first().subscribe(response => {
+                this.loginService.authenticate('google').pipe(first()).subscribe(response => {
                   // TODO: Hook up to snackbar
                 }, error => {
                   // TODO: Hook up to snackbar

@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { TrackLoginService } from '../shared/track-login.service';
 import { LogoutService } from '../shared/logout.service';

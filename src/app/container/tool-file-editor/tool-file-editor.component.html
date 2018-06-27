@@ -1,0 +1,54 @@
+<!--
+  ~    Copyright 2018 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<tabset [justified]="true">
+  <tab heading="Dockerfile" id="dockerfileTab">
+    <app-code-editor-list [sourcefiles]="dockerFile" [editing]="editing" [fileType]="'dockerfile'"></app-code-editor-list>
+  </tab>
+  <tab heading="Descriptor Files" id="descriptorFilesTab">
+    <mat-form-field>
+      <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
+        <mat-option value="cwl">cwl</mat-option>
+        <mat-option value="wdl">wdl</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [fileType]="'descriptor'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
+  </tab>
+  <tab heading="Test Parameter Files" id="testParameterFilesTab">
+    <mat-form-field>
+      <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
+        <mat-option value="cwl">cwl</mat-option>
+        <mat-option value="wdl">wdl</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
+  </tab>
+</tabset>
+<div class="editor-button-container" *ngIf="!publicPage">
+  <span *ngIf="!editing">
+    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
+      Edit Files
+    </button>
+  </span>
+  <span *ngIf="editing">
+    <button id="cancelButton" mat-raised-button color="secondary" (click)="toggleEdit();resetFiles()">
+      Cancel
+    </button>
+    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">
+      Save as New Version
+    </button>
+  </span>
+</div>

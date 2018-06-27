@@ -16,7 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
+import { NgxMdModule } from 'ngx-md';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -43,7 +43,7 @@ import { workflowsRouting } from './workflows.routing';
     DataTablesModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     SelectModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),

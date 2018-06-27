@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';

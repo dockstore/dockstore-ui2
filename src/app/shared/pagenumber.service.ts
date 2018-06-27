@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject ,  Subscription } from 'rxjs';
 import {Injectable, OnInit} from '@angular/core';
 import { Router } from '@angular/router/';
-import { Subscription } from 'rxjs/Subscription';
 import { PageInfo } from './../shared/models/PageInfo';
 
 @Injectable()
