@@ -175,34 +175,37 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
-    let useFirstTag = true;
-    let urlTagExists = false;
-    // Determine which tag to select
-    for (const item of versions) {
-      // If a tag is specified in the URL then use it
-      if (urlVersion !== null) {
-        if (item.name === urlVersion) {
-          selectedVersion = item;
-          useFirstTag = false;
-          urlTagExists = true;
-          break;
-        }
-      } else if (defaultVersion !== null && !urlTagExists) {
-        // If the tool has a default version then use it
-        if (item.name === defaultVersion) {
-          selectedVersion = item;
-          useFirstTag = false;
-          break;
-        }
+  /**
+   * Given an array of WorkflowVersions or Tag, decide which one to return (displayed to the user)
+   * 1. If the URL specifies a specific Tag or WorkflowVersion, choose to display that one.  Otherwise,
+   * 2. If the default version is specified, choose to display the default version.  Otherwise,
+   * 3. Choose the last version in the array (the last updated version?)
+   * @param {((Array<WorkflowVersion | Tag>))} versions
+   * @param {string} urlVersion
+   * @param {string} defaultVersion
+   * @param {((WorkflowVersion | Tag))} selectedVersion
+   * @returns {((WorkflowVersion | Tag))}
+   * @memberof Entry
+   */
+  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string,
+    selectedVersion: (WorkflowVersion | Tag)): (WorkflowVersion | Tag) {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
+    let foundVersion: (WorkflowVersion | Tag);
+    if (urlVersion) {
+      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === urlVersion);
+      if (foundVersion) {
+        return foundVersion;
       }
     }
-
-    // If no url tag or default version, select first element in the dropdown
-    if (useFirstTag && versions.length > 0) {
-      selectedVersion = versions[0];
+    if (defaultVersion) {
+      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === defaultVersion);
+      if (foundVersion) {
+        return foundVersion;
+      }
     }
-    return selectedVersion;
+    return versions[0];
   }
 
   public getEntryPathFromURL(): string {
