@@ -175,37 +175,37 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  public selectVersion(versions, urlVersion, defaultVersion, selectedVersion): any {
+  /**
+   * Given an array of WorkflowVersions or Tag, decide which one to return (displayed to the user)
+   * 1. If the URL specifies a specific Tag or WorkflowVersion, choose to display that one.  Otherwise,
+   * 2. If the default version is specified, choose to display the default version.  Otherwise,
+   * 3. Choose the first version in the array (the last updated version?)
+   * @param {((Array<WorkflowVersion | Tag>))} versions    All versions of an entry.
+   * This is supposed to be (Array<WorkflowVersion> | Array<Tag>).
+   * No idea why errors appear when attempted to do so.
+   * @param {string} urlVersion  The version of the entry specified in the URL (possibly null or undefined)
+   * @param {string} defaultVersion  The default version of an entry (possibly null or undefined)
+   * @returns {((WorkflowVersion | Tag))}  The version to display to the user
+   * @memberof Entry
+   */
+  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag) {
     if (!versions || versions.length === 0) {
       return null;
     }
-    let useFirstTag = true;
-    let urlTagExists = false;
-    // Determine which tag to select
-    for (const item of versions) {
-      // If a tag is specified in the URL then use it
-      if (urlVersion !== null) {
-        if (item.name === urlVersion) {
-          selectedVersion = item;
-          useFirstTag = false;
-          urlTagExists = true;
-          break;
-        }
-      } else if (defaultVersion !== null && !urlTagExists) {
-        // If the tool has a default version then use it
-        if (item.name === defaultVersion) {
-          selectedVersion = item;
-          useFirstTag = false;
-          break;
-        }
+    let foundVersion: (WorkflowVersion | Tag);
+    if (urlVersion) {
+      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === urlVersion);
+      if (foundVersion) {
+        return foundVersion;
       }
     }
-
-    // If no url tag or default version, select last element in the dropdown
-    if (useFirstTag && versions.length > 0) {
-      selectedVersion = versions[versions.length - 1];
+    if (defaultVersion) {
+      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === defaultVersion);
+      if (foundVersion) {
+        return foundVersion;
+      }
     }
-    return selectedVersion;
+    return versions[0];
   }
 
   public getEntryPathFromURL(): string {

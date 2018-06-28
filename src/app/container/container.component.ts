@@ -132,7 +132,7 @@ export class ContainerComponent extends Entry {
           if (this.tool.tags.length === 0) {
             this.selectedVersion = null;
           } else {
-            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
+            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion);
           }
         }
         // Select version
@@ -170,7 +170,7 @@ export class ContainerComponent extends Entry {
       this.containersService.getPublishedContainerByToolPath(this.title)
         .subscribe(tool => {
           this.containerService.setTool(tool);
-          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.tool != null) {
