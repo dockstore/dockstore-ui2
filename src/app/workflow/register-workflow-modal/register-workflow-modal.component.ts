@@ -65,11 +65,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    // TODO: Remove this section when GitLab is enabled
-    const friendlyRepositoryKeys = this.registerWorkflowModalService.friendlyRepositoryKeys();
-    return friendlyRepositoryKeys.filter(key => key !== 'GitLab');
-    // TODO: Uncomment this section when GitLab is enabled
-    // return this.registerWorkflowModalService.friendlyRepositoryKeys();
+    return this.registerWorkflowModalService.friendlyRepositoryKeys();
   }
 
   clearWorkflowRegisterError(): void {
