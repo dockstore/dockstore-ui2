@@ -36,6 +36,7 @@ import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
 import { first, takeUntil } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-my-workflow',
@@ -87,36 +88,41 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       }
     );
 
+    // Retrieve the user and then grab all workflows and shared with me workflows from the backend
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userWorkflows(user.id).pipe(first()).subscribe(workflows => {
-          this.workflowService.setWorkflows(workflows);
-        });
+        combineLatest(this.usersService.userWorkflows(user.id).pipe(first()), this.workflowsService.sharedWorkflows().pipe(first()))
+          .subscribe(([workflows, sharedWorkflows]) => {
+            this.workflowService.setWorkflows(workflows);
+            this.workflowService.setSharedWorkflows(sharedWorkflows);
+          });
+      }
+    });
 
-        this.workflowsService.sharedWorkflows().pipe(first()).subscribe(workflows => {
-          this.workflowService.setSharedWorkflows(workflows);
-        });
-      }
-    });
-    this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflows => {
-      if (workflows) {
-        this.workflows = workflows;
-        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
-        this.setGroupEntriesObject(sortedWorkflows);
-        this.selectInitialEntry(sortedWorkflows);
-      }
-    });
-    this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflows => {
-      if (workflows) {
-        this.sharedWorkflows = workflows;
-        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
-        this.setSortedSharedWorkflows(sortedWorkflows);
-        if (this.workflows === undefined || this.workflows === null || this.workflows.length === 0) {
-          this.selectInitialEntry(sortedWorkflows);
+    // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
+    combineLatest(this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)),
+      this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)))
+      .subscribe(([workflows, sharedWorkflows]) => {
+        if (workflows && sharedWorkflows) {
+          if (workflows) {
+            this.workflows = workflows;
+            const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+            this.setGroupEntriesObject(sortedWorkflows);
+            this.selectInitialEntry(sortedWorkflows);
+          }
+
+          if (sharedWorkflows) {
+            this.sharedWorkflows = sharedWorkflows;
+            const sortedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
+            this.setSortedSharedWorkflows(sortedWorkflows);
+            if (!this.workflow) {
+              this.selectInitialEntry(sortedWorkflows);
+            }
+          }
         }
-      }
-    });
+      });
+
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
@@ -137,24 +143,37 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   protected updateActiveTab(): void {
     if (this.groupEntriesObject) {
-      for (let i = 0; i < this.groupEntriesObject.length; i++) {
-        if (this.workflow) {
-          if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.groupEntriesObject[i].activeTab = 'unpublished';
-            continue;
-          }
-          if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.groupEntriesObject[i].activeTab = 'published';
-            continue;
-          }
-          if (this.groupEntriesObject[i].published.length > 0) {
-            this.groupEntriesObject[i].activeTab = 'published';
-          } else {
-            this.groupEntriesObject[i].activeTab = 'unpublished';
-          }
+      this.groupEntriesObject = this.updateActiveTabHelper(this.groupEntriesObject);
+    }
+
+    if (this.groupSharedEntriesObject) {
+      this.groupSharedEntriesObject = this.updateActiveTabHelper(this.groupSharedEntriesObject);
+    }
+  }
+
+  /**
+   * Helper class for creating a new instance of grouped entries with correct active tabs
+   * @param groupEntriesObject
+   */
+  protected updateActiveTabHelper(groupEntriesObject: any): any {
+    for (let i = 0; i < groupEntriesObject.length; i++) {
+      if (this.workflow) {
+        if (groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          groupEntriesObject[i].activeTab = 'unpublished';
+          continue;
+        }
+        if (groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          groupEntriesObject[i].activeTab = 'published';
+          continue;
+        }
+        if (groupEntriesObject[i].published.length > 0) {
+          groupEntriesObject[i].activeTab = 'published';
+        } else {
+          groupEntriesObject[i].activeTab = 'unpublished';
         }
       }
     }
+    return groupEntriesObject;
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
@@ -211,20 +230,23 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   setIsFirstOpen(): void {
+    let setFirstMyWorkflow = false;
     if (this.groupEntriesObject && this.workflow) {
       for (let i = 0; i < this.groupEntriesObject.length; i++) {
         if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
           this.groupEntriesObject[i].isFirstOpen = true;
+          setFirstMyWorkflow = true;
           break;
         }
         if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
           this.groupEntriesObject[i].isFirstOpen = true;
+          setFirstMyWorkflow = true;
           break;
         }
       }
     }
 
-    if (this.groupSharedEntriesObject && this.workflow) {
+    if (!setFirstMyWorkflow && this.groupSharedEntriesObject && this.workflow) {
       for (let i = 0; i < this.groupSharedEntriesObject.length; i++) {
         if (this.groupSharedEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
           this.groupSharedEntriesObject[i].isFirstOpen = true;
