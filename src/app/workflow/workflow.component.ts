@@ -351,44 +351,44 @@ export class WorkflowComponent extends Entry {
    * True if user is in users list, or username is in read,write,owner permissions, false otherwise
    */
   canUserRead(): boolean {
-    const email = this.user.email;
+    const username = this.user.username;
     if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.email === email);
+      const match = this.workflow.users.find((user) => user.username === username);
       if (match !== undefined) {
         return true;
       }
     }
 
-    return this.readers.includes(email) || this.writers.includes(email) || this.owners.includes(email) ;
+    return this.readers.includes(username) || this.writers.includes(username) || this.owners.includes(username) ;
   }
 
   /**
    * True if user is in users list, or username is in write or owner permissions, false otherwise
    */
   canUserWrite(): boolean {
-    const email = this.user.email;
+    const username = this.user.username;
     if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.email === email);
+      const match = this.workflow.users.find((user) => user.username === username);
       if (match !== undefined) {
         return true;
       }
     }
 
-    return this.writers.includes(email) || this.owners.includes(email);
+    return this.writers.includes(username) || this.owners.includes(username);
   }
 
   /**
    * True if user is in users list, or username is in owner permissions, false otherwise
    */
   isUserOwner(): boolean {
-    const email = this.user.email;
+    const username = this.user.username;
     if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.email === email);
+      const match = this.workflow.users.find((user) => user.username === username);
       if (match !== undefined) {
         return true;
       }
     }
 
-    return this.owners.includes(email);
+    return this.owners.includes(username);
   }
 }
