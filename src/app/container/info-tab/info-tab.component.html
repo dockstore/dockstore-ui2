@@ -148,7 +148,7 @@
         </button>
       </form>
     </li>
-    <app-info-tab-checker-workflow-path></app-info-tab-checker-workflow-path>
+    <app-info-tab-checker-workflow-path [canRead]="true" [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
     <li *ngIf="tool?.buildMode">
       <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
