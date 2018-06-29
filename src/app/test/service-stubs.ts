@@ -571,6 +571,9 @@ export class DateStubService {
 }
 
 export class WorkflowsStubService {
+    sharedWorkflows() {
+      return observableOf([]);
+    }
     getTestParameterFiles(workflowId: number, version?: string, extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
         return observableOf([]);
     }
