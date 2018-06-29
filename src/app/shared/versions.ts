@@ -36,9 +36,10 @@ export abstract class Versions extends EntryTab {
 
   constructor(protected dockstoreService: DockstoreService,
     private dateService: DateService, protected stateService: StateService) {
-      super();
-      this.sortColumn = 'name';
-      this.sortReverse = false;
+    // By default, sort by last_modified, latest first
+    super();
+    this.sortColumn = 'last_modified';
+    this.sortReverse = true;
   }
 
   publicPageSubscription() {

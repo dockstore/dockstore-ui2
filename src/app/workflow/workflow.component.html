@@ -128,7 +128,7 @@
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">
-          <app-versions-workflow [versions]="sortedVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+          <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-versions-workflow>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
