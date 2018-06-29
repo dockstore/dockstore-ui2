@@ -242,7 +242,6 @@ export class SearchService {
       ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
       ['is_checker', 'Checker workflows'],
       ['has_checker', 'Has Checker Workflows'],
-      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
       ['organization', 'Workflow: Organization']
     ]);
   }
