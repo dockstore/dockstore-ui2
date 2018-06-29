@@ -13,6 +13,12 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['workflowVersions.verified', new Map([
       ['1', 'verified'], ['0', 'non-verified']
     ])],
+    ['is_checker', new Map([
+      ['1', 'checker workflows'], ['0', 'non-checker workflows']
+    ])],
+    ['has_checker', new Map([
+      ['1', 'has a checker workflow'], ['0', 'unchecked workflow']
+    ])],
     ['tags.verified', new Map([
       ['1', 'verified'], ['0', 'non-verified']
     ])],
