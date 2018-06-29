@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
+import { NgxMdModule } from 'ngx-md';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -41,6 +41,8 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
+import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
+import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
@@ -104,6 +106,8 @@ import { StarringModule } from './starring/starring.module';
     AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
+    GetTokenUsernamePipe,
+    GetTokenContentPipe,
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
@@ -133,7 +137,7 @@ import { StarringModule } from './starring/starring.module';
     ModalModule.forRoot(),
     StargazersModule,
     ListentryModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     SearchModule,
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule

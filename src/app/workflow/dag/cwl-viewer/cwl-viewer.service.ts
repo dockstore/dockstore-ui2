@@ -13,17 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Dockstore } from '../../../shared/dockstore.model';
-import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable, of as observableOf, Subject } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
-interface WorkflowDetails {
+import { Dockstore } from '../../../shared/dockstore.model';
+
+interface QueueResponse {
   /**
    * A relative path link to the svg format visualisation image
    */
-  visualisationSvg: string;
+  visualisationSvg?: string;
+  cwltoolStatus?: string;
+  message?: string;
 }
 
 /**
@@ -60,32 +63,34 @@ export class CwlViewerService {
    *    it's as if it returned a 200.
    *    2. If image generation needs to be queued up, response is 202 with link to job in Location header
    *      1. Follow location header and poll job queue
-   *      2. When job is finished, polling job queue redirects and returns a response with details in body
+   *      2a. If successful, when job is finished, polling job queue redirects and returns a response with details in body
+   *      2b. If there is an error, polling the queue returns a 200 with an error in the body.
    *
    * @param {string} providerUrl, e.g., `https://github.com/dockstore-testing/Metaphlan-ISBCGC`
    * @param {string} reference, a branch name, e.g., `master`
    * @param {string} workflow_path, path to CWL, e.g., `/metaphlan_wfl.cwl`
    * @returns {Observable<CwlViewerDescriptor>}
    */
-  getVisualizationUrls(providerUrl: string, reference: string, workflow_path: string): Observable<CwlViewerDescriptor> {
+  getVisualizationUrls(providerUrl: string, reference: string, workflow_path: string, onDestroy$: Subject<void>):
+    Observable<CwlViewerDescriptor> {
 
     const url = this.cwlViewerEndpoint(providerUrl, reference, workflow_path);
 
-    return this.httpClient.post(url, null, {observe: 'response'})
-      .switchMap((res: HttpResponse<WorkflowDetails>) => {
+    return this.httpClient.post(url, null, {observe: 'response'}).pipe(
+      switchMap((res: HttpResponse<QueueResponse>) => {
         if (res.status === 200) {
-          return Observable.of(<CwlViewerDescriptor>{
+          return observableOf(<CwlViewerDescriptor>{
             svgUrl: Dockstore.CWL_VISUALIZER_URI + res.body.visualisationSvg,
             webPageUrl: res.url});
         } else if (res.status === 202) {
           const locationHeader = res.headers.get('Location');
           if (locationHeader) {
             const queueUrl = locationHeader.startsWith('/') ? Dockstore.CWL_VISUALIZER_URI + locationHeader : locationHeader;
-            return this.pollJobQueue(queueUrl);
+            return this.pollJobQueue(queueUrl, onDestroy$);
           }
         }
         throw new Error(`Error posting ${workflow_path}`);
-      });
+      }));
   }
 
   /**
@@ -102,18 +107,27 @@ export class CwlViewerService {
         + workflow_path);
   }
 
-  private pollJobQueue(queueUrl: string): Observable<CwlViewerDescriptor> {
-    const pollFrequencyMs = 250;
+  private pollJobQueue(queueUrl: string, onDestroy$: Subject<void>): Observable<CwlViewerDescriptor> {
+    const pollFrequencyMs = 500;
     const maxPolls = 30000 / pollFrequencyMs; // Poll for a maximum of 30 seconds
     return Observable.interval(pollFrequencyMs)
-      .switchMap(() => this.httpClient.get(queueUrl, {observe: 'response'}))
-      .take(maxPolls)
-      // When the job is complete, polling the job sends a 302 which Angular Http client follows, giving the job output
-      .filter((p: HttpResponse<any>) => p.body && p.body.visualisationSvg)
-      .take(1)
-      .map((resp: HttpResponse<WorkflowDetails>) => (<CwlViewerDescriptor>{
-        svgUrl: Dockstore.CWL_VISUALIZER_URI + resp.body.visualisationSvg,
-        webPageUrl: resp.url
-      }));
+      .pipe(
+        switchMap(() => this.httpClient.get(queueUrl, {observe: 'response'})),
+        takeUntil(onDestroy$),
+        take(maxPolls),
+        // When the job is complete, polling the job sends a 302 which Angular Http client follows, giving the job output
+        filter((p: HttpResponse<any>) => p.body && (p.body.visualisationSvg
+          || (p.body.cwltoolStatus && p.body.cwltoolStatus === 'ERROR'))),
+        take(1),
+        map((resp: HttpResponse<QueueResponse>) => {
+          if ('ERROR' === resp.body.cwltoolStatus) {
+            throw resp.body.message;
+          }
+          return (<CwlViewerDescriptor>{
+              svgUrl: Dockstore.CWL_VISUALIZER_URI + resp.body.visualisationSvg,
+              webPageUrl: resp.url
+            }
+          );
+        }));
   }
 }

@@ -1,11 +1,12 @@
+
+import {map} from 'rxjs/operators';
 import { DockstoreService } from './dockstore.service';
 import { DateService } from './date.service';
 import { ImageProviderService } from './image-provider.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ProviderService } from './provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ContainerService } from './container.service';
 import { Injectable } from '@angular/core';
 
@@ -20,7 +21,7 @@ export class ExtendedToolService {
     extendedDockstoreTool$: Observable<ExtendedDockstoreTool>;
     constructor(private containerService: ContainerService, private providerService: ProviderService,
         private imageProviderService: ImageProviderService, private dateService: DateService, private dockstoreService: DockstoreService) {
-        this.extendedDockstoreTool$ = this.containerService.tool$.map((tool: DockstoreTool) => this.extendTool(tool));
+        this.extendedDockstoreTool$ = this.containerService.tool$.pipe(map((tool: DockstoreTool) => this.extendTool(tool)));
     }
 
     /**
@@ -32,8 +33,7 @@ export class ExtendedToolService {
      */
     extendTool(tool: DockstoreTool): ExtendedDockstoreTool {
         if (tool) {
-            let extendedTool: ExtendedDockstoreTool = this.providerService.setUpProvider(tool);
-              extendedTool = this.providerService.setUpProvider(tool);
+            let extendedTool: ExtendedDockstoreTool = <ExtendedDockstoreTool>this.providerService.setUpProvider(tool);
               extendedTool.buildMode = this.containerService.getBuildMode(extendedTool.mode);
               extendedTool.buildModeTooltip = this.containerService.getBuildModeTooltip(extendedTool.mode);
               extendedTool = this.imageProviderService.setUpImageProvider(extendedTool);

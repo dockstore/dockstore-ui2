@@ -129,7 +129,7 @@ export const gitLabToken: Token = {
     'id': 4,
     'tokenSource': 'gitlab.com',
     'content': 'fakeGitLabToken',
-    'username': 'garyluu',
+    'username': 'fakeGitLabUsername',
     'refreshToken': null,
     'userId': 2,
 };
@@ -138,7 +138,7 @@ export const gitHubToken: Token = {
     'id': 3,
     'tokenSource': 'github.com',
     'content': 'fakeGitHubToken',
-    'username': 'garyluu',
+    'username': 'fakeGitHubUsername',
     'refreshToken': null,
     'userId': 2,
 };
@@ -147,7 +147,7 @@ export const bitbucketToken: Token = {
     'id': 2,
     'tokenSource': 'bitbucket.org',
     'content': 'fakeBitbucketToken',
-    'username': 'garyluu',
+    'username': 'fakeBitbucketUsername',
     'refreshToken': null,
     'userId': 2,
 };
@@ -156,7 +156,7 @@ export const quayToken: Token = {
     'id': 1,
     'tokenSource': 'quay.io',
     'content': 'fakeQuayToken',
-    'username': 'garyluu',
+    'username': 'fakeQuayUsername',
     'refreshToken': null,
     'userId': 2,
 };

@@ -16,7 +16,7 @@
 
 import { ContainerService } from './../../shared/container.service';
 import {AfterViewInit, Component, Input, ViewChild, ViewChildren} from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { DataTableDirective } from 'angular-datatables';
 import { CommunicatorService } from '../../shared/communicator.service';

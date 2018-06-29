@@ -2,7 +2,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { Configuration } from '../../../shared/swagger';
 import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 
 import { UserService } from '../../user.service';
 

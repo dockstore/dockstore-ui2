@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowsStubService, WorkflowStubService, WorkflowVersionStubService } from '../../test/service-stubs';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { Observable } from 'rxjs/Observable';
 import { wdlSourceFile } from '../../test/mocked-objects';
 
 describe('LaunchThirdPartyComponent', () => {
@@ -55,7 +56,7 @@ describe('LaunchThirdPartyComponent', () => {
     spyOnProperty(workflow, 'full_workflow_path', 'get').and
       .returnValue('github.com/DataBiosphere/topmed-workflows/Functional_Equivalence');
     spyOnProperty(workflow, 'descriptorType', 'get').and.returnValue('wdl');
-    spyOn(workflowsService, 'wdl').and.returnValue(Observable.of(wdlSourceFile));
+    spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFile));
     component.workflow = workflow;
     expect(component.dnastackURL)
       // tslint:disable-next-line:max-line-length
@@ -71,8 +72,8 @@ describe('LaunchThirdPartyComponent', () => {
     spyOnProperty(workflow, 'full_workflow_path', 'get').and
       .returnValue('github.com/DataBiosphere/topmed-workflows/Functional_Equivalence');
     spyOnProperty(workflow, 'descriptorType', 'get').and.returnValue('wdl');
-    spyOn(workflowsService, 'wdl').and.returnValue(Observable.of(wdlSourceFile));
-    spyOn(workflowsService, 'secondaryWdl').and.returnValue(Observable.of([wdlSourceFile]));
+    spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFile));
+    spyOn(workflowsService, 'secondaryWdl').and.returnValue(observableOf([wdlSourceFile]));
     component.workflow = workflow;
     expect(component.dnastackURL)
       // tslint:disable-next-line:max-line-length

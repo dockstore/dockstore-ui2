@@ -16,9 +16,7 @@
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { DynamicPopover } from './dynamicPopover.model';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  BehaviorSubject ,  Subject } from 'rxjs';
 import { Dockstore } from './../../shared/dockstore.model';
 import { Injectable } from '@angular/core';
 

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { ContainerService } from './../../shared/container.service';
 import { ExtendedToolService } from './../../shared/extended-tool.service';

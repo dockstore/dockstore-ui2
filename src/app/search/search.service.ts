@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { URLSearchParams} from '@angular/http';
 import { Dockstore } from '../shared/dockstore.model';
 import { SubBucket } from '../shared/models/SubBucket';
