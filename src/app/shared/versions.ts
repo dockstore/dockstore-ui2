@@ -35,8 +35,9 @@ export abstract class Versions {
 
   constructor(protected dockstoreService: DockstoreService,
     private dateService: DateService, protected stateService: StateService) {
-    this.sortColumn = 'name';
-    this.sortReverse = false;
+    // By default, sort by last_modified, latest first
+    this.sortColumn = 'last_modified';
+    this.sortReverse = true;
   }
 
   publicPageSubscription() {
