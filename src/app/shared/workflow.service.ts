@@ -57,7 +57,13 @@ export class WorkflowService {
   }
 
   setSharedWorkflows(workflows: any) {
-    this.sharedWorkflows$.next(workflows);
+    this.sharedWorkflows$.next(this.convertSharedWorkflowsToWorkflowsList(workflows));
+  }
+
+  convertSharedWorkflowsToWorkflowsList(workflows: any): any {
+    let sharedWorkflows = workflows.map(workflow => workflow.workflows);
+    sharedWorkflows = [].concat.apply([], sharedWorkflows);
+    return sharedWorkflows;
   }
 
   /**
