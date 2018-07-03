@@ -61,9 +61,13 @@ export class WorkflowService {
   }
 
   convertSharedWorkflowsToWorkflowsList(workflows: any): any {
-    let sharedWorkflows = workflows.map(workflow => workflow.workflows);
-    sharedWorkflows = [].concat.apply([], sharedWorkflows);
-    return sharedWorkflows;
+    if (workflows) {
+      let sharedWorkflows = workflows.map(workflow => workflow.workflows);
+      sharedWorkflows = [].concat.apply([], sharedWorkflows);
+      return sharedWorkflows;
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -80,14 +84,15 @@ export class WorkflowService {
       if (oldWorkflow) {
         const index = workflows.indexOf(oldWorkflow);
         workflows[index] = workflow;
+        this.setWorkflows(workflows);
       } else if (oldSharedWorkflow) {
         const index = workflows.indexOf(oldWorkflow);
         sharedWorkflows[index] = workflow;
+        this.setSharedWorkflows(sharedWorkflows);
       } else {
         workflows.push(workflow);
+        this.setWorkflows(workflows);
       }
-      this.setWorkflows(workflows);
-      this.setSharedWorkflows(sharedWorkflows);
     }
   }
 

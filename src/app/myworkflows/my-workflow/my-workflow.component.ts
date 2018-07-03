@@ -78,7 +78,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     });
     this.commonMyEntriesOnInit();
     this.workflowService.setWorkflow(null);
-    this.workflowService.workflow$.subscribe(
+    this.workflowService.setWorkflows(null);
+    this.workflowService.setSharedWorkflows(null);
+    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
         if (workflow) {
@@ -89,13 +91,15 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     );
 
     // Retrieve the user and then grab all workflows and shared with me workflows from the backend
-    this.userService.user$.subscribe(user => {
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         combineLatest(this.usersService.userWorkflows(user.id).pipe(first()), this.workflowsService.sharedWorkflows().pipe(first()))
           .subscribe(([workflows, sharedWorkflows]) => {
-            this.workflowService.setWorkflows(workflows);
-            this.workflowService.setSharedWorkflows(sharedWorkflows);
+            if (workflows && sharedWorkflows) {
+              this.workflowService.setWorkflows(workflows);
+              this.workflowService.setSharedWorkflows(sharedWorkflows);
+            }
           });
       }
     });
@@ -105,20 +109,18 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)))
       .subscribe(([workflows, sharedWorkflows]) => {
         if (workflows && sharedWorkflows) {
-          if (workflows) {
-            this.workflows = workflows;
-            const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
-            this.setGroupEntriesObject(sortedWorkflows);
-            this.selectInitialEntry(sortedWorkflows);
-          }
+          this.workflows = workflows;
+          const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+          this.setGroupEntriesObject(sortedWorkflows);
 
-          if (sharedWorkflows) {
-            this.sharedWorkflows = sharedWorkflows;
-            const sortedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
-            this.setSortedSharedWorkflows(sortedWorkflows);
-            if (!this.workflow) {
-              this.selectInitialEntry(sortedWorkflows);
-            }
+          this.sharedWorkflows = sharedWorkflows;
+          const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
+          this.setGroupSharedEntriesObject(sortedSharedWorkflows);
+
+          if (this.workflows.length > 0) {
+            this.selectInitialEntry(sortedWorkflows);
+          } else if (this.sharedWorkflows.length > 0) {
+            this.selectInitialEntry(sortedSharedWorkflows);
           }
         }
       });
@@ -130,7 +132,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Sets the sorted entries for display in dropdowns
    * @param sortedEntries Array of sorted entries
    */
-  public setSortedSharedWorkflows(sortedEntries: any): void {
+  public setGroupSharedEntriesObject(sortedEntries: any): void {
     this.groupSharedEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
   }
 
@@ -262,10 +264,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   selectEntry(workflow: ExtendedWorkflow): void {
     if (workflow !== null) {
-      this.workflowsService.getWorkflow(workflow.id).subscribe((result) => {
+      this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
         this.workflowService.setWorkflow(result);
         if (result) {
-          this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+          this.router.navigateByUrl('/my-workflows/' + result.full_workflow_path);
         }
       });
     }

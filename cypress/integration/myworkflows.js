@@ -18,6 +18,7 @@ describe('Dockstore my workflows', function() {
             // to become click-able
             cy
                 .get('accordion')
+                .first()
                 .click()
             cy.contains('github.com/A')
                 .parentsUntil('accordion-group')
@@ -38,10 +39,10 @@ describe('Dockstore my workflows', function() {
             cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
             cy
                 .get('#publishButton')
-                .should('have.class', 'disabled')
+                .should('be.disabled')
             cy
                 .get('#refreshButton')
-                .should('not.have.class', 'disabled')
+                .should('not.be.disabled')
         });
     });
 

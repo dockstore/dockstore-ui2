@@ -7,7 +7,6 @@ describe('Checker workflow test from my-tools', function() {
     });
 
     function goToB3() {
-        cy.wait(5000)
         cy.contains('quay.io/A2')
             .parentsUntil('accordion-group')
             .contains('div .no-wrap', /\bb3\b/)
@@ -24,17 +23,17 @@ describe('Checker workflow test from my-tools', function() {
             cy.get('#addCheckerWorkflowButton').should('be.visible').click()
 
             cy
-                .get('#checkerWorkflowPath')
-                .type('/Dockstore.cwl')
+              .get('#checkerWorkflowPath')
+              .type('/Dockstore.cwl')
 
             cy
-                .get('#checkerWorkflowTestParameterFilePath')
-                .type('/test.json')
+              .get('#checkerWorkflowTestParameterFilePath')
+              .type('/test.json')
 
             cy.get('#submitButton').click()
         });
         it('visit the tool and its checker workflow and have the correct buttons', function() {
-           goToB3();
+            goToB3();
             // In the parent tool right now
             // Didn't change the tool path upon entry or select
             // cy.url().should('eq', 'http://localhost:4200/my-tools/quay.io/A2/b3')

@@ -16,14 +16,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -92,11 +92,7 @@ ALTER TABLE public.databasechangeloglock OWNER TO dockstore;
 CREATE TABLE public.enduser (
     id bigint NOT NULL,
     avatarurl character varying(255),
-    bio character varying(255),
-    company character varying(255),
-    email character varying(255),
     isadmin boolean,
-    location character varying(255),
     username character varying(255) NOT NULL,
     dbcreatedate timestamp without time zone,
     dbupdatedate timestamp without time zone,
@@ -138,6 +134,21 @@ CREATE TABLE public.endusergroup (
 
 
 ALTER TABLE public.endusergroup OWNER TO dockstore;
+
+--
+-- Name: entry_alias; Type: TABLE; Schema: public; Owner: dockstore
+--
+
+CREATE TABLE public.entry_alias (
+    id bigint NOT NULL,
+    content text,
+    alias text NOT NULL,
+    dbcreatedate timestamp without time zone,
+    dbupdatedate timestamp without time zone
+);
+
+
+ALTER TABLE public.entry_alias OWNER TO dockstore;
 
 --
 -- Name: entry_label; Type: TABLE; Schema: public; Owner: dockstore
@@ -266,7 +277,9 @@ CREATE TABLE public.sourcefile_verified (
     id bigint NOT NULL,
     metadata text,
     verified boolean NOT NULL,
-    source text NOT NULL
+    source text NOT NULL,
+    dbcreatedate timestamp without time zone,
+    dbupdatedate timestamp without time zone
 );
 
 
@@ -429,6 +442,26 @@ CREATE TABLE public.user_entry (
 
 
 ALTER TABLE public.user_entry OWNER TO dockstore;
+
+--
+-- Name: user_profile; Type: TABLE; Schema: public; Owner: dockstore
+--
+
+CREATE TABLE public.user_profile (
+    id bigint NOT NULL,
+    avatarurl text,
+    bio text,
+    company text,
+    email text,
+    location text,
+    name text,
+    token_type text NOT NULL,
+    dbcreatedate timestamp without time zone,
+    dbupdatedate timestamp without time zone
+);
+
+
+ALTER TABLE public.user_profile OWNER TO dockstore;
 
 --
 -- Name: usergroup; Type: TABLE; Schema: public; Owner: dockstore
@@ -741,6 +774,9 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('version editor', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.974563', 111, 'EXECUTED', '7:e6acc1adbb76fe5fdfaa9ee927365400', 'addColumn tableName=tag; addColumn tableName=workflowversion; addForeignKeyConstraint baseTableName=workflowversion, constraintName=versionEditorForWorkflows, referencedTableName=enduser; addForeignKeyConstraint baseTableName=tag, constraintName=v...', '', NULL, '3.5.4', NULL, NULL, '8135173906');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add commit ids to versions', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.980369', 112, 'EXECUTED', '7:257d2e22ca5374e9536359aa3625ca44', 'addColumn tableName=tag; addColumn tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '8135173906');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('verification_metadata', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-13 13:56:14.527219', 113, 'EXECUTED', '7:b2f0b9e12b5c019e948128be040066ec', 'createTable tableName=sourcefile_verified; addColumn tableName=enduser; addForeignKeyConstraint baseTableName=sourcefile_verified, constraintName=foreign_key, referencedTableName=sourcefile', '', NULL, '3.5.4', NULL, NULL, '8912574484');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('move-github-profile-to-user_profile-table', 'gluu (generated)', 'migrations.1.5.0.xml', '2018-06-28 16:22:39.588035', 114, 'EXECUTED', '7:d7d327ebe0b53dca63c34e072b0bc104', 'createTable tableName=user_profile; sql; addForeignKeyConstraint baseTableName=user_profile, constraintName=fk_id_with_user_profile, referencedTableName=enduser; dropColumn columnName=bio, tableName=enduser; dropColumn columnName=company, tableNam...', '', NULL, '3.5.4', NULL, NULL, '0217359545');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('entry aliases', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-28 16:22:39.609116', 115, 'EXECUTED', '7:d28e3807f0ee8bb32bc1b11b37386b93', 'createTable tableName=entry_alias; addUniqueConstraint constraintName=aliases_are_unique, tableName=entry_alias', '', NULL, '3.5.4', NULL, NULL, '0217359545');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('date_more_tables', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-28 16:22:39.664918', 116, 'EXECUTED', '7:2c73d7239aec9ca4321593a585684bfe', 'addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias; addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias', '', NULL, '3.5.4', NULL, NULL, '0217359545');
 
 
 --
@@ -754,8 +790,8 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A', NULL, NULL, false);
-INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (2, '', NULL, '', '', false, NULL, 'potato', NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator) VALUES (1, NULL, false, 'user_A', NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator) VALUES (2, '', false, 'potato', NULL, NULL, false);
 
 
 --
@@ -767,6 +803,12 @@ SELECT pg_catalog.setval('public.enduser_id_seq', 2, true);
 
 --
 -- Data for Name: endusergroup; Type: TABLE DATA; Schema: public; Owner: dockstore
+--
+
+
+
+--
+-- Data for Name: entry_alias; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
 
@@ -1998,6 +2040,7 @@ INSERT INTO public.tool (id, author, defaultversion, description, email, giturl,
 INSERT INTO public.tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (1, 'testuser', NULL, 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-02-16 17:04:59', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A', true, 'amazon.dkr.ecr.test.amazonaws.com', 'test@email.com', NULL, NULL, NULL, NULL);
 INSERT INTO public.tool (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaultcwlpath, defaultdockerfilepath, defaulttestcwlparameterfile, defaulttestwdlparameterfile, defaultwdlpath, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate) VALUES (100, 'testuser2', NULL, 'Whalesay deep quotes', NULL, NULL, false, NULL, '2016-11-28 15:00:43.873', '/Dockstore.cwl', '/Dockerfile', NULL, NULL, '/Dockstore.wdl', '2016-03-15 15:35:29', 'HOSTED', 'ht', 'hosted-tool', false, 'quay.io', '', NULL, NULL, NULL, NULL);
 
+
 --
 -- Data for Name: tool_tag; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
@@ -2042,6 +2085,14 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (1, 20);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 21);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 100);
 INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
+
+
+--
+-- Data for Name: user_profile; Type: TABLE DATA; Schema: public; Owner: dockstore
+--
+
+INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate) VALUES (1, NULL, NULL, NULL, NULL, NULL, '', 'github.com', NULL, NULL);
+INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate) VALUES (2, '', NULL, '', '', NULL, '', 'github.com', NULL, NULL);
 
 
 --
@@ -2152,6 +2203,14 @@ INSERT INTO public.workflowversion (id, dirtybit, hidden, lastmodified, name, re
 
 
 --
+-- Name: entry_alias aliases_are_unique; Type: CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY public.entry_alias
+    ADD CONSTRAINT aliases_are_unique UNIQUE (alias);
+
+
+--
 -- Name: enduser enduser_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
@@ -2165,6 +2224,14 @@ ALTER TABLE ONLY public.enduser
 
 ALTER TABLE ONLY public.endusergroup
     ADD CONSTRAINT endusergroup_pkey PRIMARY KEY (userid, groupid);
+
+
+--
+-- Name: entry_alias entry_alias_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY public.entry_alias
+    ADD CONSTRAINT entry_alias_pkey PRIMARY KEY (id, alias);
 
 
 --
@@ -2328,6 +2395,14 @@ ALTER TABLE ONLY public.user_entry
 
 
 --
+-- Name: user_profile user_profile_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY public.user_profile
+    ADD CONSTRAINT user_profile_pkey PRIMARY KEY (id, token_type);
+
+
+--
 -- Name: usergroup usergroup_pkey; Type: CONSTRAINT; Schema: public; Owner: dockstore
 --
 
@@ -2441,6 +2516,14 @@ ALTER TABLE ONLY public.version_input_fileformat
 
 ALTER TABLE ONLY public.version_output_fileformat
     ADD CONSTRAINT fk_fileformatid_with_version_output_fileformat FOREIGN KEY (fileformatid) REFERENCES public.fileformat(id);
+
+
+--
+-- Name: user_profile fk_id_with_user_profile; Type: FK CONSTRAINT; Schema: public; Owner: dockstore
+--
+
+ALTER TABLE ONLY public.user_profile
+    ADD CONSTRAINT fk_id_with_user_profile FOREIGN KEY (id) REFERENCES public.enduser(id);
 
 
 --

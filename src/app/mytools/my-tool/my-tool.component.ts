@@ -68,7 +68,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.updateActiveTab();
       }
     });
-    this.userService.user$.subscribe(user => {
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {

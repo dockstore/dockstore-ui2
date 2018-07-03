@@ -5,27 +5,25 @@ describe('Dockstore my workflows', function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")
     });
 
+    function getWorkflow() {
+      cy.contains('dockstore.org/A')
+        .click()
+      cy.contains('dockstore.org/A')
+          .parentsUntil('accordion-group')
+          .contains('div .no-wrap', /\hosted/)
+          .should('be.visible').click()
+  }
+
     // Ensure tabs are correct for the hosted workflow, try adding a version
     describe('Should be able to register a hosted workflow and add files to it', function() {
       it('Register the workflow', function() {
         // Select the hosted workflow
-        cy
-          .contains('dockstore.org/A')
-          .invoke('width').should('be.gt', 0)
-        cy
-          .get('accordion')
-          .click()
-        cy
-          .contains('dockstore.org/A')
-          .click()
-        cy
-          .contains('hosted-workflow')
-          .click()
+        getWorkflow();
 
         // Should not be able to publish (No valid versions)
         cy
           .get('#publishButton')
-          .should('have.class', 'disabled')
+          .should('be.disabled')
 
         // Check content of the info tab
         cy
@@ -126,7 +124,7 @@ describe('Dockstore my workflows', function() {
           // Should be able to publish
           cy
             .get('#publishButton')
-            .should('not.have.class', 'disabled')
+            .should('not.be.disabled')
 
           // Try deleting a file (.wdl file)
           cy
