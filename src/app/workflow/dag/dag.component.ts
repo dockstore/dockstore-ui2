@@ -44,11 +44,9 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
     }
   }
 
-  private currentWorkflowId;
   private element: any;
   public dagResult: any;
   private cy: any;
-  public notFound: boolean;
 
   public expanded: Boolean = false;
   @ViewChild('cy') el: ElementRef;

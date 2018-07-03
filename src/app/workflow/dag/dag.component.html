@@ -15,7 +15,7 @@
   -->
 <div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
-    <div [ngClass]="{'fullscreen-dropdown': expanded}" *ngIf="dagResult && !notFound && !missingTool">
+    <div [ngClass]="{'fullscreen-dropdown': expanded}">
       <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl'" style="line-height: 20px;">
         <label class="radio-inline">
           <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
@@ -25,8 +25,9 @@
         </label>
       </div>
       <div>
-        <a *ngIf="dagType === 'classic'" href id="exportLink" (click)="download()">
-          <span *ngIf="dagType === 'classic'" class="glyphicon glyphicon-export"></span>Export to PNG</a>
+        <a *ngIf="dagType === 'classic' && dagResult" href id="exportLink" (click)="download()">
+          <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
+        <!-- This following div is shared by both viewers -->
         <div class="btn-group pull-right" role="group" style="width:auto">
           <button id="dag_fullscreen" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
             <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
@@ -38,27 +39,29 @@
         </div>
       </div>
     </div>
-    <div class="alert alert-warning" role="alert" *ngIf="notFound || !dagResult">
-      <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
-      <span *ngIf="workflow?.descriptorType === 'wdl'">
+
+    <div *ngIf="dagType === 'classic'">
+      <div class="alert alert-warning" role="alert" *ngIf="!dagResult">
+        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+        <span *ngIf="workflow?.descriptorType === 'wdl'">
         A Descriptor associated with this workflow could not be found.
-      </span>
-      <span *ngIf="workflow?.descriptorType === 'cwl'">
+        </span>
+        <span *ngIf="workflow?.descriptorType === 'cwl'">
         Please ensure that the Descriptor is a valid CWL 1.0 workflow.
-      </span>
-      <span *ngIf="workflow?.descriptorType === 'nextflow'">
+        </span>
+        <span *ngIf="workflow?.descriptorType === 'nextflow'">
         DAG display is still experimental for Nextflow.
-      </span>
-    </div>
+        </span>
+      </div>
 
-    <div class="alert alert-warning" role="alert" *ngIf="workflow?.descriptorType === 'cwl' && missingTool">
-      <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools are missing from Github repo.
+      <div class="alert alert-warning" role="alert" *ngIf="workflow?.descriptorType === 'cwl' && missingTool">
+        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools
+        are missing from Github repo.
+      </div>
     </div>
-
 
     <app-cwl-viewer *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl'" [hidden]="dagType !== 'cwlviewer'"
                     [workflow]="workflow" [selectedVersion]="_selectedVersion" [refresh]="refreshCounter" [expanded]="expanded">
-
     </app-cwl-viewer>
 
     <div #cy id="cy" *ngIf="dagResult !== null && !missingTool" [hidden]="dagType !== 'classic'" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>

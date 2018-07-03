@@ -80,7 +80,7 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
             this.resetZoom();
           },
           (error) => {
-            this.errorMessage = error;
+            this.errorMessage = error.message || 'Unknown error';
             this.cwlViewerDescriptor = null;
             this.cwlViewerError = true;
             this.loading = false;
