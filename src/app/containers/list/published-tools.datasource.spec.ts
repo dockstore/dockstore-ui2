@@ -17,11 +17,16 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { PublishedToolsDataSource } from './published-tools.datasource';
+import { ImageProviderService } from '../../shared/image-provider.service';
+import { ProviderService } from '../../shared/provider.service';
+import { ContainersService } from '../../shared/swagger';
+import { ContainersStubService } from './../../test/service-stubs';
 
 describe('Service: PublishedToolsDataSource', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PublishedToolsDataSource]
+      providers: [PublishedToolsDataSource, ImageProviderService, ProviderService,
+        { provide: ContainersService, useClass: ContainersStubService} ],
     });
   });
 
