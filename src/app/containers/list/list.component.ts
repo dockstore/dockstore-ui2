@@ -15,8 +15,8 @@
  */
 
 import { ContainerService } from './../../shared/container.service';
-import {AfterViewInit, Component, Input, ViewChild, ViewChildren} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterViewInit, Component, Input, ViewChild, ViewChildren, ElementRef, OnInit } from '@angular/core';
+import { Subscription, fromEvent } from 'rxjs';
 
 import { DataTableDirective } from 'angular-datatables';
 import { CommunicatorService } from '../../shared/communicator.service';
@@ -31,17 +31,34 @@ import { PageInfo } from '../../shared/models/PageInfo';
 
 
 import { ListContainersService } from './list.service';
+import { ActivatedRoute } from '../../test';
+import { ContainersService } from '../../shared/swagger';
+import { PublishedToolsDataSource } from './published-tools.datasource';
+import { MatPaginator, MatSort } from '@angular/material';
+import { debounceTime, distinctUntilChanged, tap, merge, filter, startWith, delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-containers',
   templateUrl: './list.component.html'
 })
-export class ListContainersComponent extends ToolLister {
+export class ListContainersComponent extends ToolLister implements AfterViewInit {
   @Input() previewMode: boolean;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   public verifiedLink: string;
   toolsTable: any[] = [];
+
   private pageNumberSubscription: Subscription;
+  public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
+  public loading$: Observable<boolean>;
+  dataSource: PublishedToolsDataSource;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  @ViewChild(MatSort) sort: MatSort;
+
+  @ViewChild('input') input: ElementRef;
+  public length$: Observable<number>;
   // TODO: make an API endpoint to retrieve only the necessary properties for the containers table
   // name, author, path, registry, gitUrl
   dtOptions = {
@@ -51,7 +68,7 @@ export class ListContainersComponent extends ToolLister {
     columnDefs: [
       {
         orderable: false,
-        targets: [ 2, 3 ]
+        targets: [2, 3]
       },
     ],
     rowCallback: (row: Node, data: any[] | Object, index: number) => {
@@ -64,21 +81,61 @@ export class ListContainersComponent extends ToolLister {
     }
   };
   constructor(private listContainersService: ListContainersService,
-              private communicatorService: CommunicatorService,
-              private dockstoreService: DockstoreService,
-              private imageProviderService: ImageProviderService,
-              private dateService: DateService,
-              private containerService: ContainerService,
-              private pagenumberService: PagenumberService,
-              listService: ListService,
-              providerService: ProviderService) {
+    private communicatorService: CommunicatorService,
+    private dockstoreService: DockstoreService,
+    private imageProviderService: ImageProviderService,
+    private dateService: DateService,
+    private containerService: ContainerService,
+    private pagenumberService: PagenumberService,
+    private containersService: ContainersService,
+    private privateProviderService: ProviderService,
+    providerService: ProviderService,
+    listService: ListService) {
 
     super(listService, providerService, 'containers');
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
+  privateOnInit() {
+    this.dataSource = new PublishedToolsDataSource(this.containersService, this.privateProviderService, this.imageProviderService);
+    this.length$ = this.dataSource.lessonsLengthSubject$;
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.sort.sortChange.pipe(merge(this.paginator.page, this.paginator.pageSize))
+      .pipe(distinctUntilChanged(),
+        tap(() => this.loadLessonsPage())
+      )
+      .subscribe();
+      this.loadLessonsPage();
+      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+      fromEvent(this.input.nativeElement, 'keyup')
+        .pipe(
+          debounceTime(250),
+          distinctUntilChanged(),
+          tap(() => {
+            this.paginator.pageIndex = 0;
+
+            this.loadLessonsPage();
+          })
+        )
+        .subscribe();
+    });
+  }
+
+  loadLessonsPage() {
+    this.dataSource.loadLessons(
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.paginator.pageIndex * this.paginator.pageSize,
+      this.paginator.pageSize,
+      this.sort.active);
+  }
+
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10);
+      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index) / 10);
       const pageInfo: PageInfo = new PageInfo();
       pageInfo.pgNumber = realPgNumber;
       pageInfo.searchQuery = dtInstance.search();

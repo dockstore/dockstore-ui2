@@ -25,10 +25,14 @@ import {
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSnackBarModule,
+  MatSortModule,
   MatStepperModule,
+  MatTableModule,
   MatTabsModule,
   MatToolbarModule,
 } from '@angular/material';
@@ -50,7 +54,11 @@ import {
     MatChipsModule,
     MatCardModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatButtonModule,
@@ -68,7 +76,11 @@ import {
     MatChipsModule,
     MatCardModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ]
 })
 export class CustomMaterialModule { }

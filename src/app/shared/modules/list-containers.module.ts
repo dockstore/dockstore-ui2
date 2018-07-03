@@ -24,9 +24,12 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
+import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
 import { PrivateIconModule } from '../private-icon/private-icon.module';
 import { getTooltipConfig } from './../tooltip';
 import { HeaderModule } from './header.module';
+import { CustomMaterialModule } from './material.module';
+import { ContainersService } from '../swagger';
 
 @NgModule({
   declarations: [
@@ -39,11 +42,13 @@ import { HeaderModule } from './header.module';
     ClipboardModule,
     HeaderModule,
     TooltipModule.forRoot(),
-    PrivateIconModule
+    PrivateIconModule,
+    CustomMaterialModule
   ],
   providers: [
+    PublishedToolsDataSource,
     ListContainersService,
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    {provide: TooltipConfig, useFactory: getTooltipConfig}
   ],
   exports: [
     ListContainersComponent

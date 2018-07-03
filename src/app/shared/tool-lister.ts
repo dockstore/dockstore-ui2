@@ -35,6 +35,7 @@ export abstract class ToolLister implements OnInit {
   }
 
   abstract initToolLister(): void;
+  abstract privateOnInit(): void;
 
   ngOnInit() {
     this.listService.getPublishedTools(this._toolType, this.previewMode)
@@ -43,6 +44,7 @@ export abstract class ToolLister implements OnInit {
         this.initToolLister();
         this.displayTable = true;
       });
+    this.privateOnInit();
   }
 
 }

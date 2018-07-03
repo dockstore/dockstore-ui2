@@ -59,6 +59,9 @@ export class ListWorkflowsComponent extends ToolLister {
     super(listService, providerService, 'workflows');
   }
 
+  privateOnInit() {
+}
+
   sendWorkflowInfo(workflow) {
     this.communicatorService.setWorkflow(workflow);
     this.workflowService.setWorkflow(workflow);
