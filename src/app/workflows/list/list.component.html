@@ -30,10 +30,10 @@
         <mat-cell *matCellDef="let workflow: Workflow">
           <span id="verifiedIcon" *ngIf="getVerified(workflow)">
             <a href= {{verifiedLink}}>
-              <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+              <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
             </a>
           </span>
-          <a (click)="sendWorkflowInfo(workflow)" [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+          <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="stars">

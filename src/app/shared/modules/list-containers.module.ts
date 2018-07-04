@@ -38,10 +38,8 @@ import { ContainersService } from '../swagger';
   imports: [
     CommonModule,
     RouterModule,
-    DataTablesModule.forRoot(),
     ClipboardModule,
     HeaderModule,
-    TooltipModule.forRoot(),
     PrivateIconModule,
     CustomMaterialModule
   ],

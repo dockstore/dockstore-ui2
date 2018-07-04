@@ -38,11 +38,8 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 })
 export class ListContainersComponent extends ToolLister {
   @Input() previewMode: boolean;
-  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   public verifiedLink: string;
-  toolsTable: any[] = [];
 
-  private pageNumberSubscription: Subscription;
   public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
   public loading$: Observable<boolean>;
   dataSource: PublishedToolsDataSource;
@@ -53,27 +50,7 @@ export class ListContainersComponent extends ToolLister {
 
   @ViewChild('input') input: ElementRef;
   public length$: Observable<number>;
-  // TODO: make an API endpoint to retrieve only the necessary properties for the containers table
-  // name, author, path, registry, gitUrl
-  dtOptions = {
-    /* No ordering applied by DataTables during initialisation */
-    order: [],
-    scrollX: true,
-    columnDefs: [
-      {
-        orderable: false,
-        targets: [2, 3]
-      },
-    ],
-    rowCallback: (row: Node, data: any[] | Object, index: number) => {
-      const self = this;
-      $('td', row).off('click');
-      $('td', row).on('click', () => {
-        self.findPageNumber(index);
-      });
-      return row;
-    }
-  };
+
   constructor(private listContainersService: ListContainersService,
     private communicatorService: CommunicatorService,
     private dockstoreService: DockstoreService,
@@ -93,56 +70,8 @@ export class ListContainersComponent extends ToolLister {
     this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
-  findPageNumber(index: any) {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index) / 10);
-      const pageInfo: PageInfo = new PageInfo();
-      pageInfo.pgNumber = realPgNumber;
-      pageInfo.searchQuery = dtInstance.search();
-      this.pagenumberService.setToolsPageInfo(pageInfo);
-      this.pagenumberService.setBackRoute('containers');
-    });
-  }
-  sendToolInfo(tool) {
-    this.communicatorService.setTool(tool);
-    this.containerService.setTool(tool);
-  }
-
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
     return this.listContainersService.getDockerPullCmd(path, tagName);
-  }
-
-  initToolLister(): void {
-    this.publishedTools = this.publishedTools.map(tool =>
-      this.imageProviderService.setUpImageProvider(tool)
-    );
-    if (this.previewMode) {
-      this.setPreviewTable();
-    }
-    this.toolsTable = this.publishedTools;
-    this.dtTrigger.next();
-    this.setupPageNumber();
-  }
-  setPreviewTable() {
-    this.dtOptions['searching'] = false;
-    this.dtOptions['paging'] = true;
-    this.dtOptions['bInfo'] = false;
-    this.dtOptions['lengthChange'] = false;
-    this.dtOptions['pageLength'] = 10;
-    this.dtOptions['dom'] = 'lfrti';
-  }
-  setupPageNumber() {
-    this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
-      pageInfo => {
-        if (pageInfo) {
-          if (this.dtElement) {
-            this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.search(pageInfo.searchQuery).draw(false);
-              dtInstance.page(pageInfo.pgNumber).draw(false);
-            });
-          }
-        }
-      });
   }
 
   getVerified(tool) {

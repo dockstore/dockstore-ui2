@@ -30,7 +30,6 @@ import { CustomMaterialModule } from './material.module';
   imports: [
     CommonModule,
     RouterModule,
-    DataTablesModule.forRoot(),
     HeaderModule,
     CustomMaterialModule
   ],

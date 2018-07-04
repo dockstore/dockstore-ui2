@@ -35,6 +35,7 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 @NgModule({
@@ -58,7 +59,8 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTooltipModule
   ],
   exports: [
     MatButtonModule,
@@ -80,7 +82,8 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTooltipModule
   ]
 })
 export class CustomMaterialModule { }

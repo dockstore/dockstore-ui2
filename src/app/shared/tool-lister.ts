@@ -28,15 +28,11 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
   protected previewMode = false;
   protected displayTable = false;
   protected publishedTools = [];
-  protected _toolType: string;
   protected verifiedLink: string;
-  dtTrigger: Subject<any> = new Subject();
 
   constructor(private listService: ListService,
     private providerService: ProviderService,
     private toolType: string, private dateService: DateService) {
-
-    this._toolType = toolType;
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
@@ -44,16 +40,9 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
   abstract paginator;
   abstract sort;
   abstract input;
-  abstract initToolLister(): void;
   abstract privateOnInit(): void;
 
   ngOnInit() {
-    this.listService.getPublishedTools(this._toolType, this.previewMode)
-      .subscribe(tools => {
-        this.publishedTools = tools.map(tool => this.providerService.setUpProvider(tool));
-        this.initToolLister();
-        this.displayTable = true;
-      });
     this.privateOnInit();
   }
 
