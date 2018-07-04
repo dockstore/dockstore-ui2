@@ -2091,8 +2091,8 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
 -- Data for Name: user_profile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate) VALUES (1, NULL, NULL, NULL, NULL, NULL, '', 'github.com', NULL, NULL);
-INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate) VALUES (2, '', NULL, '', '', NULL, '', 'github.com', NULL, NULL);
+INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate) VALUES (1, NULL, NULL, NULL, 'user_A', NULL, 'user_A', 'github.com', NULL, NULL);
+INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate) VALUES (2, '', NULL, '', 'user_B', NULL, 'user_B', 'github.com', NULL, NULL);
 
 
 --
