@@ -521,14 +521,17 @@ th {
   text-align: left;
 }
 
-td.browse-all {
-  background-color: #f4f4f4;
-  text-align: center;
+// Material Datatable for both tool and workflow list components
+.mat-column-stars {
+  max-width: 75px;
 }
-
-.browse-all .button {
-  width: 280px;
+.mat-column-format {
+  max-width: 100px;
 }
+.mat-column-projectLinks {
+  max-width: 175px;
+}
+// End
 
 #container-pagination {
   width: 100%;
