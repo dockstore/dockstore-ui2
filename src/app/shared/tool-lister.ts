@@ -13,13 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { AfterViewInit, OnInit } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, merge, tap } from 'rxjs/operators';
 
-import { Injectable, OnInit, AfterViewInit } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { DateService } from './date.service';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
-import { merge, distinctUntilChanged, tap, debounceTime } from 'rxjs/operators';
-import { DateService } from './date.service';
+import { PublishedToolsDataSource } from '../containers/list/published-tools.datasource';
+import { PublishedWorkflowsDataSource } from '../workflows/list/published-workflows.datasource';
 
 export abstract class ToolLister implements OnInit, AfterViewInit {
 
@@ -31,14 +33,14 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
   dtTrigger: Subject<any> = new Subject();
 
   constructor(private listService: ListService,
-              private providerService: ProviderService,
-              private toolType: string, private dateService: DateService) {
+    private providerService: ProviderService,
+    private toolType: string, private dateService: DateService) {
 
     this._toolType = toolType;
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
-  abstract dataSource;
+  abstract dataSource: (PublishedWorkflowsDataSource | PublishedToolsDataSource);
   abstract paginator;
   abstract sort;
   abstract input;
@@ -57,21 +59,29 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.sort.sortChange.pipe(merge(this.paginator.page, this.paginator.pageSize))
+      // Initial load
+      this.loadPublishedEntries();
+
+      // Handle paginator changes
+      this.paginator.page.pipe(merge(this.paginator.pageSize))
         .pipe(distinctUntilChanged(),
           tap(() => this.loadPublishedEntries())
         )
         .subscribe();
-      this.loadPublishedEntries();
-      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
+      // Handle sort changes
+      this.sort.sortChange.pipe(tap(() => {
+        this.paginator.pageIndex = 0;
+        this.loadPublishedEntries();
+      })).subscribe();
+
+      // Handle input text field changes
       fromEvent(this.input.nativeElement, 'keyup')
         .pipe(
           debounceTime(250),
           distinctUntilChanged(),
           tap(() => {
             this.paginator.pageIndex = 0;
-
             this.loadPublishedEntries();
           })
         )
@@ -79,9 +89,8 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
     });
   }
 
-
   loadPublishedEntries() {
-    this.dataSource.loadLessons(
+    this.dataSource.loadEntries(
       this.input.nativeElement.value,
       this.sort.direction,
       this.paginator.pageIndex * this.paginator.pageSize,

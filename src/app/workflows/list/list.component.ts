@@ -78,7 +78,7 @@ export class ListWorkflowsComponent extends ToolLister {
 
   privateOnInit() {
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.privateProviderService);
-    this.length$ = this.dataSource.lessonsLengthSubject$;
+    this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
   sendWorkflowInfo(workflow) {

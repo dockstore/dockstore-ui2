@@ -90,7 +90,7 @@ export class ListContainersComponent extends ToolLister {
   }
   privateOnInit() {
     this.dataSource = new PublishedToolsDataSource(this.containersService, this.privateProviderService, this.imageProviderService);
-    this.length$ = this.dataSource.lessonsLengthSubject$;
+    this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
   findPageNumber(index: any) {

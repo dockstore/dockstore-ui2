@@ -14,61 +14,56 @@
  *     limitations under the License.
  */
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import { DockstoreTool, ContainersService } from '../../shared/swagger';
-import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ProviderService } from '../../shared/provider.service';
-import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { catchError, finalize } from 'rxjs/operators';
+
 import { ImageProviderService } from '../../shared/image-provider.service';
+import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { ProviderService } from '../../shared/provider.service';
+import { ContainersService, DockstoreTool } from '../../shared/swagger';
 
 @Injectable()
-export class PublishedToolsDataSource {
+export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {
 
   private lessonsSubject = new BehaviorSubject<ExtendedDockstoreTool[]>([]);
-
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  public lessonsLengthSubject$ = new BehaviorSubject<number>(0);
-  public loading$ = this.loadingSubject.asObservable();
+  private entriesSubject$ = new BehaviorSubject<boolean>(false);
+  public entriesLengthSubject$ = new BehaviorSubject<number>(0);
+  public loading$ = this.entriesSubject$.asObservable();
 
   constructor(private containersService: ContainersService, private providersService: ProviderService,
     private imageProviderService: ImageProviderService) {
   }
 
-  loadLessons(filter: string,
+  loadEntries(filter: string,
     sortDirection: string,
     pageIndex: number,
     pageSize: number,
     sortCol: string) {
-
-    this.loadingSubject.next(true);
-
+    this.entriesSubject$.next(true);
     this.containersService.allPublishedContainers(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, 'response').pipe(
       catchError(() => of([])),
-      finalize(() => this.loadingSubject.next(false))
+      finalize(() => this.entriesSubject$.next(false))
     )
       .subscribe((lessons: HttpResponse<Array<DockstoreTool>>) => {
         this.lessonsSubject.next(lessons.body.map(tool => {
           tool = this.imageProviderService.setUpImageProvider(tool);
           return <ExtendedDockstoreTool>this.providersService.setUpProvider(tool);
         }));
-        this.lessonsLengthSubject$.next(Number(lessons.headers.get('X-total-count')));
+        this.entriesLengthSubject$.next(Number(lessons.headers.get('X-total-count')));
       });
 
   }
 
   connect(collectionViewer: CollectionViewer): Observable<DockstoreTool[]> {
-    console.log('Connecting data source');
     return this.lessonsSubject.asObservable();
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
     this.lessonsSubject.complete();
-    this.loadingSubject.complete();
+    this.entriesSubject$.complete();
   }
-
-
 }
