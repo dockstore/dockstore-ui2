@@ -13,36 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainerService } from './../../shared/container.service';
-import { AfterViewInit, Component, Input, ViewChild, ViewChildren, ElementRef, OnInit } from '@angular/core';
-import { Subscription, fromEvent } from 'rxjs';
-
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDirective } from 'angular-datatables';
+import { Observable, Subscription } from 'rxjs';
+
 import { CommunicatorService } from '../../shared/communicator.service';
-import { DockstoreService } from '../../shared/dockstore.service';
 import { DateService } from '../../shared/date.service';
+import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
-import { ProviderService } from '../../shared/provider.service';
-import { ToolLister } from '../../shared/tool-lister';
-import { PagenumberService } from '../../shared/pagenumber.service';
 import { PageInfo } from '../../shared/models/PageInfo';
-
-
-import { ListContainersService } from './list.service';
-import { ActivatedRoute } from '../../test';
+import { PagenumberService } from '../../shared/pagenumber.service';
+import { ProviderService } from '../../shared/provider.service';
 import { ContainersService } from '../../shared/swagger';
+import { ToolLister } from '../../shared/tool-lister';
+import { ContainerService } from './../../shared/container.service';
+import { ListContainersService } from './list.service';
 import { PublishedToolsDataSource } from './published-tools.datasource';
-import { MatPaginator, MatSort } from '@angular/material';
-import { debounceTime, distinctUntilChanged, tap, merge, filter, startWith, delay } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-containers',
   templateUrl: './list.component.html'
 })
-export class ListContainersComponent extends ToolLister implements AfterViewInit {
+export class ListContainersComponent extends ToolLister {
   @Input() previewMode: boolean;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   public verifiedLink: string;
@@ -84,53 +78,19 @@ export class ListContainersComponent extends ToolLister implements AfterViewInit
     private communicatorService: CommunicatorService,
     private dockstoreService: DockstoreService,
     private imageProviderService: ImageProviderService,
-    private dateService: DateService,
     private containerService: ContainerService,
     private pagenumberService: PagenumberService,
     private containersService: ContainersService,
     private privateProviderService: ProviderService,
     providerService: ProviderService,
-    listService: ListService) {
-
-    super(listService, providerService, 'containers');
-    this.verifiedLink = this.dateService.getVerifiedLink();
+    listService: ListService,
+    dateService: DateService
+  ) {
+    super(listService, providerService, 'containers', dateService);
   }
   privateOnInit() {
     this.dataSource = new PublishedToolsDataSource(this.containersService, this.privateProviderService, this.imageProviderService);
     this.length$ = this.dataSource.lessonsLengthSubject$;
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.sort.sortChange.pipe(merge(this.paginator.page, this.paginator.pageSize))
-      .pipe(distinctUntilChanged(),
-        tap(() => this.loadLessonsPage())
-      )
-      .subscribe();
-      this.loadLessonsPage();
-      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-      fromEvent(this.input.nativeElement, 'keyup')
-        .pipe(
-          debounceTime(250),
-          distinctUntilChanged(),
-          tap(() => {
-            this.paginator.pageIndex = 0;
-
-            this.loadLessonsPage();
-          })
-        )
-        .subscribe();
-    });
-  }
-
-  loadLessonsPage() {
-    this.dataSource.loadLessons(
-      this.input.nativeElement.value,
-      this.sort.direction,
-      this.paginator.pageIndex * this.paginator.pageSize,
-      this.paginator.pageSize,
-      this.sort.active);
   }
 
   findPageNumber(index: any) {

@@ -14,26 +14,34 @@
  *    limitations under the License.
  */
 
-import { Injectable, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, OnInit, AfterViewInit } from '@angular/core';
+import { Subject, fromEvent } from 'rxjs';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
+import { merge, distinctUntilChanged, tap, debounceTime } from 'rxjs/operators';
+import { DateService } from './date.service';
 
-export abstract class ToolLister implements OnInit {
+export abstract class ToolLister implements OnInit, AfterViewInit {
 
   protected previewMode = false;
   protected displayTable = false;
   protected publishedTools = [];
   protected _toolType: string;
+  protected verifiedLink: string;
   dtTrigger: Subject<any> = new Subject();
 
   constructor(private listService: ListService,
               private providerService: ProviderService,
-              private toolType: string) {
+              private toolType: string, private dateService: DateService) {
 
     this._toolType = toolType;
+    this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
+  abstract dataSource;
+  abstract paginator;
+  abstract sort;
+  abstract input;
   abstract initToolLister(): void;
   abstract privateOnInit(): void;
 
@@ -45,6 +53,40 @@ export abstract class ToolLister implements OnInit {
         this.displayTable = true;
       });
     this.privateOnInit();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.sort.sortChange.pipe(merge(this.paginator.page, this.paginator.pageSize))
+        .pipe(distinctUntilChanged(),
+          tap(() => this.loadPublishedEntries())
+        )
+        .subscribe();
+      this.loadPublishedEntries();
+      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+      fromEvent(this.input.nativeElement, 'keyup')
+        .pipe(
+          debounceTime(250),
+          distinctUntilChanged(),
+          tap(() => {
+            this.paginator.pageIndex = 0;
+
+            this.loadPublishedEntries();
+          })
+        )
+        .subscribe();
+    });
+  }
+
+
+  loadPublishedEntries() {
+    this.dataSource.loadLessons(
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.paginator.pageIndex * this.paginator.pageSize,
+      this.paginator.pageSize,
+      this.sort.active);
   }
 
 }

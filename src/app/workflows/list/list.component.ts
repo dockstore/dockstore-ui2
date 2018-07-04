@@ -13,18 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Component, Input, ViewChild} from '@angular/core';
-import { CommunicatorService } from '../../shared/communicator.service';
-import { Subject ,  Subscription } from 'rxjs';
-import { ToolLister } from '../../shared/tool-lister';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDirective } from 'angular-datatables';
-import { ListService } from '../../shared/list.service';
-import { ProviderService } from '../../shared/provider.service';
-import { PagenumberService } from '../../shared/pagenumber.service';
-import { WorkflowService } from '../../shared/workflow.service';
+import { Observable, Subject, Subscription } from 'rxjs';
+
+import { CommunicatorService } from '../../shared/communicator.service';
+import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { ListService } from '../../shared/list.service';
 import { PageInfo } from '../../shared/models/PageInfo';
+import { PagenumberService } from '../../shared/pagenumber.service';
+import { ProviderService } from '../../shared/provider.service';
+import { WorkflowsService } from '../../shared/swagger';
+import { ToolLister } from '../../shared/tool-lister';
+import { WorkflowService } from '../../shared/workflow.service';
+import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 
 @Component({
   selector: 'app-list-workflows',
@@ -36,6 +40,16 @@ export class ListWorkflowsComponent extends ToolLister {
   dtTrigger: Subject<any> = new Subject();
   workflowsTable: Array<any> = [];
   private pageNumberSubscription: Subscription;
+  dataSource: PublishedWorkflowsDataSource;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  public verifiedLink: string;
+  @ViewChild(MatSort) sort: MatSort;
+
+  @ViewChild('input') input: ElementRef;
+
+  public displayedColumns = ['repository', 'stars', 'author', 'format', 'projectLinks'];
+  public length$: Observable<number>;
   @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   // TODO: make an API endpoint to retrieve only the necessary properties for the workflows table
   dtOptions = {
@@ -52,15 +66,20 @@ export class ListWorkflowsComponent extends ToolLister {
     }
   };
   constructor(private communicatorService: CommunicatorService,
-              private workflowService: WorkflowService,
-              private dockstoreService: DockstoreService,
-              private pagenumberService: PagenumberService,
-              listService: ListService, providerService: ProviderService) {
-    super(listService, providerService, 'workflows');
+    private workflowService: WorkflowService,
+    private dockstoreService: DockstoreService,
+    private pagenumberService: PagenumberService,
+    private workflowsService: WorkflowsService,
+    dateService: DateService,
+    private privateProviderService: ProviderService,
+    listService: ListService, providerService: ProviderService) {
+    super(listService, providerService, 'workflows', dateService);
   }
 
   privateOnInit() {
-}
+    this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.privateProviderService);
+    this.length$ = this.dataSource.lessonsLengthSubject$;
+  }
 
   sendWorkflowInfo(workflow) {
     this.communicatorService.setWorkflow(workflow);
@@ -69,7 +88,7 @@ export class ListWorkflowsComponent extends ToolLister {
 
   findPageNumber(index: any) {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10);
+      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index) / 10);
       const pageInfo: PageInfo = new PageInfo();
       pageInfo.pgNumber = realPgNumber;
       pageInfo.searchQuery = dtInstance.search();
