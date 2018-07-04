@@ -26,7 +26,7 @@ import {
   MatInputModule,
   MatListModule,
   MatPaginatorModule,
-  MatProgressSpinnerModule,
+  MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
   MatSnackBarModule,
@@ -58,7 +58,7 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressBarModule
   ],
   exports: [
     MatButtonModule,
@@ -80,7 +80,7 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressBarModule
   ]
 })
 export class CustomMaterialModule { }
