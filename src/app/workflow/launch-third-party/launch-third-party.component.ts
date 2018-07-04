@@ -23,7 +23,7 @@ export class LaunchThirdPartyComponent {
 
   private _workflow: Workflow;
   private _selectedVersion: WorkflowVersion;
-  private isWdl: boolean;
+  public isWdl: boolean;
 
   @Input() set workflow(value: Workflow) {
     this._workflow = value;
