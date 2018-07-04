@@ -174,6 +174,13 @@ export const wdlSourceFile: SourceFile = {
   type: undefined
 };
 
+export const wdlSourceFileWithHttpImport: SourceFile = {
+  content: 'import "https://foo.com/some.wdl',
+  id: 1,
+  path: '',
+  type: undefined
+};
+
 export const sampleSourceFile: SourceFile = {
   content: 'potato',
   id: 1,

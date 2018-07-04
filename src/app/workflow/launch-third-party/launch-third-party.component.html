@@ -1,4 +1,4 @@
-<div *ngIf="dnastackURL || fireCloudURL" class="panel panel-default">
+<div *ngIf="isWdl" class="panel panel-default">
   <div class="panel-heading">
     <h3>Launch with</h3>
   </div>
@@ -6,13 +6,14 @@
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div class="button-wrap">
-          <div *ngIf="dnastackURL" class="button">
-            <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a>
+          <div class="button" [style.background-color]="dnastackErrorMessage ? '#d3d3d3' : '#487980'">
+            <p><button (click)="gotoDnastack()" [title]="dnastackErrorMessage" class="third-party dnastack"
+                       [disabled]="dnastackErrorMessage"> DNAstack &raquo;</button>
             </p>
           </div>
-          <div *ngIf="fireCloudURL" class="button">
-            <p><a href="{{fireCloudURL}}"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud
-              &raquo;</a></p>
+          <div class="button" [style.background-color]="fireCloudErrorMessage ? '#d3d3d3' : '#487980'">
+            <p><button (click)="gotoFirecloud()" class="third-party firecloud" [title]="fireCloudErrorMessage"
+                       [disabled]="fireCloudErrorMessage"> FireCloud &raquo;</button></p>
           </div>
         </div>
       </div>

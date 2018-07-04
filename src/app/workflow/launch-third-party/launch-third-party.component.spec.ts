@@ -6,7 +6,7 @@ import { LaunchThirdPartyComponent } from './launch-third-party.component';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowsStubService, WorkflowStubService, WorkflowVersionStubService } from '../../test/service-stubs';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { wdlSourceFile } from '../../test/mocked-objects';
+import { wdlSourceFile, wdlSourceFileWithHttpImport } from '../../test/mocked-objects';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
@@ -66,7 +66,7 @@ describe('LaunchThirdPartyComponent', () => {
       .toEqual('https://portal.firecloud.org/#import/dockstore/github.com/DataBiosphere/topmed-workflows/Functional_Equivalence:master');
   });
 
-  it('should set dnastack but not Firecloud if WDL with secondary files', () => {
+  it('should also not set dnastack if WDL with secondary files', () => {
     spyOnProperty(workflowVersion, 'name', 'get').and.returnValue('master');
     component.selectedVersion = workflowVersion;
     spyOnProperty(workflow, 'full_workflow_path', 'get').and
@@ -75,9 +75,20 @@ describe('LaunchThirdPartyComponent', () => {
     spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFile));
     spyOn(workflowsService, 'secondaryWdl').and.returnValue(observableOf([wdlSourceFile]));
     component.workflow = workflow;
-    expect(component.dnastackURL)
-      // tslint:disable-next-line:max-line-length
-      .toEqual('https://app.dnastack.com/#/app/workflow/import/dockstore?path=github.com/DataBiosphere/topmed-workflows/Functional_Equivalence&descriptorType=wdl');
+    expect(component.dnastackURL).toBeFalsy();
     expect(component.fireCloudURL).toBeFalsy();
+  });
+
+  it('should set firecloud but not dnastack if http imports', () => {
+    spyOnProperty(workflowVersion, 'name', 'get').and.returnValue('master');
+    component.selectedVersion = workflowVersion;
+    spyOnProperty(workflow, 'full_workflow_path', 'get').and
+      .returnValue('github.com/DataBiosphere/topmed-workflows/Functional_Equivalence');
+    spyOnProperty(workflow, 'descriptorType', 'get').and.returnValue('wdl');
+    spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFileWithHttpImport));
+    spyOn(workflowsService, 'secondaryWdl').and.returnValue(observableOf([]));
+    component.workflow = workflow;
+    expect(component.dnastackURL).toBeFalsy();
+    expect(component.fireCloudURL).toBeTruthy();
   });
 });
