@@ -110,6 +110,7 @@ describe('Dockstore my workflows', function() {
                 .contains('button', 'nextflow')
                 .click()
             cy
+                .get('ul.dropdown-menu')
                 .contains('li', 'cwl')
                 .click()
             haveAlert()
@@ -130,6 +131,7 @@ describe('Dockstore my workflows', function() {
     describe('Look at a published workflow', function() {
         it('Look at each tab', function() {
             cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/l")
+            cy.wait(3000)
             cy
                 .get('.nav-link')
                 .contains('Info')

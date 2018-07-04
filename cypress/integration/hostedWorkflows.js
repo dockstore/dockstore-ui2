@@ -1,4 +1,4 @@
-describe('Dockstore my workflows', function() {
+describe('Dockstore hosted workflows', function() {
     require('./helper.js')
 
     beforeEach(function() {

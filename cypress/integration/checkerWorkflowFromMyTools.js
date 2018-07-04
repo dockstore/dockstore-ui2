@@ -48,6 +48,7 @@ describe('Checker workflow test from my-tools', function() {
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A2/b3/_cwl_checker')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.wait(3000)
             cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
             cy.goToTab('Info')
