@@ -9,3 +9,21 @@
 .button-wrap > .button:not(:last-child) {
   margin-bottom: 10px;
 }
+
+button.third-party {
+  background-color:  transparent;
+  border-radius: 8px;
+  background-repeat: no-repeat;
+  background-size: auto 20px;
+  background-position: left;
+  vertical-align: middle;
+  font-weight: bold;
+  padding-left: 45px;
+  color: white;
+  &.firecloud {
+    background-image: url('../../../assets/images/thirdparty/FireCloud-white-icon.svg');
+  }
+  &.dnastack {
+    background-image: url('../../../assets/images/thirdparty/dnastack.png');
+  }
+}
