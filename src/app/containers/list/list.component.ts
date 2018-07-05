@@ -13,20 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDirective } from 'angular-datatables';
-import { Observable, Subscription } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { CommunicatorService } from '../../shared/communicator.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
-import { PageInfo } from '../../shared/models/PageInfo';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
 import { ContainerService } from './../../shared/container.service';
 import { ListContainersService } from './list.service';
@@ -36,20 +32,10 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
   selector: 'app-list-containers',
   templateUrl: './list.component.html'
 })
-export class ListContainersComponent extends ToolLister {
+export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
-  public verifiedLink: string;
 
   public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
-  public loading$: Observable<boolean>;
-  dataSource: PublishedToolsDataSource;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @ViewChild(MatSort) sort: MatSort;
-
-  @ViewChild('input') input: ElementRef;
-  public length$: Observable<number>;
 
   constructor(private listContainersService: ListContainersService,
     private communicatorService: CommunicatorService,
@@ -58,15 +44,14 @@ export class ListContainersComponent extends ToolLister {
     private containerService: ContainerService,
     private pagenumberService: PagenumberService,
     private containersService: ContainersService,
-    private privateProviderService: ProviderService,
-    providerService: ProviderService,
+    protected providerService: ProviderService,
     listService: ListService,
     dateService: DateService
   ) {
-    super(listService, providerService, 'containers', dateService);
+    super(listService, providerService, dateService);
   }
-  privateOnInit() {
-    this.dataSource = new PublishedToolsDataSource(this.containersService, this.privateProviderService, this.imageProviderService);
+  ngOnInit() {
+    this.dataSource = new PublishedToolsDataSource(this.containersService, this.providerService, this.imageProviderService);
     this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
@@ -74,7 +59,7 @@ export class ListContainersComponent extends ToolLister {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
 
-  getVerified(tool) {
+  getVerified(tool: DockstoreTool) {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
 }

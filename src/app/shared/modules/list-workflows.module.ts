@@ -16,7 +16,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DataTablesModule } from 'angular-datatables';
 
 import { ListWorkflowsComponent } from '../../workflows/list/list.component';
 import { PublishedWorkflowsDataSource } from '../../workflows/list/published-workflows.datasource';

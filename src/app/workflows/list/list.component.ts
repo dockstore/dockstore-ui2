@@ -13,19 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDirective } from 'angular-datatables';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { CommunicatorService } from '../../shared/communicator.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ListService } from '../../shared/list.service';
-import { PageInfo } from '../../shared/models/PageInfo';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
-import { WorkflowsService } from '../../shared/swagger';
+import { Workflow, WorkflowsService } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
 import { WorkflowService } from '../../shared/workflow.service';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
@@ -34,37 +30,28 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
   selector: 'app-list-workflows',
   templateUrl: './list.component.html'
 })
-export class ListWorkflowsComponent extends ToolLister {
+export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
-  @Input() entryType: string;
-  dataSource: PublishedWorkflowsDataSource;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  public verifiedLink: string;
-  @ViewChild(MatSort) sort: MatSort;
-
-  @ViewChild('input') input: ElementRef;
 
   public displayedColumns = ['repository', 'stars', 'author', 'format', 'projectLinks'];
-  public length$: Observable<number>;
 
   constructor(private communicatorService: CommunicatorService,
     private workflowService: WorkflowService,
     private dockstoreService: DockstoreService,
     private pagenumberService: PagenumberService,
     private workflowsService: WorkflowsService,
+    protected providerService: ProviderService,
     dateService: DateService,
-    private privateProviderService: ProviderService,
-    listService: ListService, providerService: ProviderService) {
-    super(listService, providerService, 'workflows', dateService);
+    listService: ListService) {
+    super(listService, providerService, dateService);
   }
 
-  privateOnInit() {
-    this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.privateProviderService);
+  ngOnInit() {
+    this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);
     this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
-  getVerified(workflow) {
+  getVerified(workflow: Workflow) {
     return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
 }

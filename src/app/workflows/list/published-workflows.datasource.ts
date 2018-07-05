@@ -16,9 +16,7 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
@@ -36,6 +34,7 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
   constructor(private workflowsService: WorkflowsService, private providersService: ProviderService) {
   }
 
+  // Updates the datasource from the endpoint
   loadEntries(filter: string,
     sortDirection: string,
     pageIndex: number,
@@ -46,11 +45,11 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
       catchError(() => of([])),
       finalize(() => this.loadingSubject$.next(false))
     )
-      .subscribe((lessons: HttpResponse<Array<Workflow>>) => {
-        this.entriesSubject$.next(lessons.body.map(tool => {
+      .subscribe((entries: HttpResponse<Array<Workflow>>) => {
+        this.entriesSubject$.next(entries.body.map(tool => {
           return <ExtendedWorkflow>this.providersService.setUpProvider(tool);
         }));
-        this.entriesLengthSubject$.next(Number(lessons.headers.get('X-total-count')));
+        this.entriesLengthSubject$.next(Number(entries.headers.get('X-total-count')));
       });
   }
 

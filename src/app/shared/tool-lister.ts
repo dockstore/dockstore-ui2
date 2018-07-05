@@ -13,38 +13,36 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, OnInit } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, merge, tap } from 'rxjs/operators';
+import { AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
+import { fromEvent, Observable, Subject, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 
+import { PublishedToolsDataSource } from '../containers/list/published-tools.datasource';
+import { PublishedWorkflowsDataSource } from '../workflows/list/published-workflows.datasource';
 import { DateService } from './date.service';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
-import { PublishedToolsDataSource } from '../containers/list/published-tools.datasource';
-import { PublishedWorkflowsDataSource } from '../workflows/list/published-workflows.datasource';
+import { DockstoreTool, Workflow } from './swagger';
 
-export abstract class ToolLister implements OnInit, AfterViewInit {
-
+export abstract class ToolLister implements AfterViewInit, OnDestroy {
+  private ngUnsubscribe: Subject<{}> = new Subject();
   protected previewMode = false;
   protected displayTable = false;
   protected publishedTools = [];
   protected verifiedLink: string;
-
+  public length$: Observable<number>;
   constructor(private listService: ListService,
-    private providerService: ProviderService,
-    private toolType: string, private dateService: DateService) {
+    protected providerService: ProviderService, private dateService: DateService) {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
-  abstract dataSource: (PublishedWorkflowsDataSource | PublishedToolsDataSource);
-  abstract paginator;
-  abstract sort;
-  abstract input;
-  abstract privateOnInit(): void;
-
-  ngOnInit() {
-    this.privateOnInit();
-  }
+  abstract displayedColumns: Array<string>;
+  public dataSource: (PublishedWorkflowsDataSource | PublishedToolsDataSource);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('input') input: ElementRef;
+  abstract getVerified(tool: (DockstoreTool | Workflow)): void;
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -52,17 +50,20 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
       this.loadPublishedEntries();
 
       // Handle paginator changes
-      this.paginator.page.pipe(merge(this.paginator.pageSize))
-        .pipe(distinctUntilChanged(),
-          tap(() => this.loadPublishedEntries())
-        )
+      merge(this.paginator.page, this.paginator.pageSize).pipe(
+        distinctUntilChanged(),
+        tap(() => this.loadPublishedEntries()),
+        takeUntil(this.ngUnsubscribe)
+      )
         .subscribe();
 
       // Handle sort changes
       this.sort.sortChange.pipe(tap(() => {
         this.paginator.pageIndex = 0;
         this.loadPublishedEntries();
-      })).subscribe();
+      }),
+        takeUntil(this.ngUnsubscribe)
+      ).subscribe();
 
       // Handle input text field changes
       fromEvent(this.input.nativeElement, 'keyup')
@@ -72,12 +73,18 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
           tap(() => {
             this.paginator.pageIndex = 0;
             this.loadPublishedEntries();
-          })
+          }),
+          takeUntil(this.ngUnsubscribe)
         )
         .subscribe();
     });
   }
 
+  /**
+   * Loads the published entries (either ExtendedDockstoreTools or ExtendedWorkflows)
+   * from the paginated published entries endpoint
+   * @memberof ToolLister
+   */
   loadPublishedEntries() {
     this.dataSource.loadEntries(
       this.input.nativeElement.value,
@@ -87,4 +94,8 @@ export abstract class ToolLister implements OnInit, AfterViewInit {
       this.sort.active);
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

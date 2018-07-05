@@ -16,9 +16,7 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
 import { ImageProviderService } from '../../shared/image-provider.service';
@@ -29,7 +27,7 @@ import { ContainersService, DockstoreTool } from '../../shared/swagger';
 @Injectable()
 export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {
 
-  private lessonsSubject = new BehaviorSubject<ExtendedDockstoreTool[]>([]);
+  private entriesSubject = new BehaviorSubject<ExtendedDockstoreTool[]>([]);
   private entriesSubject$ = new BehaviorSubject<boolean>(false);
   public entriesLengthSubject$ = new BehaviorSubject<number>(0);
   public loading$ = this.entriesSubject$.asObservable();
@@ -38,6 +36,7 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
     private imageProviderService: ImageProviderService) {
   }
 
+  // Updates the datasource from the endpoint
   loadEntries(filter: string,
     sortDirection: string,
     pageIndex: number,
@@ -48,22 +47,22 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
       catchError(() => of([])),
       finalize(() => this.entriesSubject$.next(false))
     )
-      .subscribe((lessons: HttpResponse<Array<DockstoreTool>>) => {
-        this.lessonsSubject.next(lessons.body.map(tool => {
+      .subscribe((entries: HttpResponse<Array<DockstoreTool>>) => {
+        this.entriesSubject.next(entries.body.map(tool => {
           tool = this.imageProviderService.setUpImageProvider(tool);
           return <ExtendedDockstoreTool>this.providersService.setUpProvider(tool);
         }));
-        this.entriesLengthSubject$.next(Number(lessons.headers.get('X-total-count')));
+        this.entriesLengthSubject$.next(Number(entries.headers.get('X-total-count')));
       });
 
   }
 
   connect(collectionViewer: CollectionViewer): Observable<DockstoreTool[]> {
-    return this.lessonsSubject.asObservable();
+    return this.entriesSubject.asObservable();
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
-    this.lessonsSubject.complete();
+    this.entriesSubject.complete();
     this.entriesSubject$.complete();
   }
 }
