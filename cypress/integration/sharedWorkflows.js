@@ -96,8 +96,6 @@ describe('Shared with me workflow test from my-workflows', function() {
       .should('be.visible').click()
   }
 
-
-
   describe('Should be able to perform operations on shared with me workflows based on permissions', function() {
       it('select a workflow you are a READER of and try to perform actions', function() {
         cy.wait('@getSharedWorkflows')

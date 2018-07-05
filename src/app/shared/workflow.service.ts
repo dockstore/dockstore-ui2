@@ -60,6 +60,10 @@ export class WorkflowService {
     this.sharedWorkflows$.next(this.convertSharedWorkflowsToWorkflowsList(workflows));
   }
 
+  /**
+   * Converts the mapping of roles to workflows to a concatentation of all the workflows
+   * @param workflows mapping returned by shared workflows endpoint
+   */
   convertSharedWorkflowsToWorkflowsList(workflows: any): any {
     if (workflows) {
       let sharedWorkflows = workflows.map(workflow => workflow.workflows);

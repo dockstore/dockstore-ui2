@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
 import { TabsModule } from 'ngx-bootstrap';
@@ -23,7 +22,6 @@ describe('WorkflowFileEditorComponent', () => {
         CodeEditorListComponent,
         CodeEditorComponent
       ],
-      // schemas: [ NO_ERRORS_SCHEMA ],
       imports: [
         TabsModule.forRoot(),
         MatButtonModule,
