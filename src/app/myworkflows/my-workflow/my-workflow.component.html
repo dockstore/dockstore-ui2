@@ -29,7 +29,7 @@
           <h3 class="sidebar-header">My workflows</h3>
         </div>
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject.length == 0">You have not registered any workflows</p>
-        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" (entrySelected)="selectEntry($event)"></app-sidebar-accordion>
+        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" (entrySelected)="goToEntry($event)"></app-sidebar-accordion>
         <div *ngIf="(groupEntriesObject?.length > 0 && groupEntriesObject) || (groupSharedEntriesObject?.length > 0 && groupSharedEntriesObject) ">
           <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
         </div>
@@ -39,7 +39,7 @@
           <h3 class="sidebar-header">Shared with me</h3>
         </div>
         <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
-        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject" (entrySelected)="selectEntry($event)"></app-sidebar-accordion>
+        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject" (entrySelected)="goToEntry($event)"></app-sidebar-accordion>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
         <app-alert></app-alert>

@@ -84,9 +84,10 @@ export class WorkflowComponent extends Entry {
     this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
     this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
 
-    this.canRead = this.canUserRead();
-    this.canWrite = this.canUserWrite();
-    this.isOwner = this.isUserOwner();
+    const username = this.user.username;
+    this.canRead = this.canUserRead(username);
+    this.canWrite = this.canUserWrite(username);
+    this.isOwner = this.isUserOwner(username);
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
@@ -350,45 +351,44 @@ export class WorkflowComponent extends Entry {
   /**
    * True if user is in users list, or username is in read,write,owner permissions, false otherwise
    */
-  canUserRead(): boolean {
-    const username = this.user.username;
-    if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.username === username);
-      if (match !== undefined) {
-        return true;
-      }
+  canUserRead(username: string): boolean {
+    if (this.isInUserArray(username)) {
+      return true;
     }
-
     return this.readers.includes(username) || this.writers.includes(username) || this.owners.includes(username) ;
   }
 
   /**
    * True if user is in users list, or username is in write or owner permissions, false otherwise
    */
-  canUserWrite(): boolean {
-    const username = this.user.username;
-    if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.username === username);
-      if (match !== undefined) {
-        return true;
-      }
+  canUserWrite(username: string): boolean {
+    if (this.isInUserArray(username)) {
+      return true;
     }
-
     return this.writers.includes(username) || this.owners.includes(username);
   }
 
   /**
    * True if user is in users list, or username is in owner permissions, false otherwise
    */
-  isUserOwner(): boolean {
-    const username = this.user.username;
+  isUserOwner(username: string): boolean {
+    if (this.isInUserArray(username)) {
+      return true;
+    }
+    return this.owners.includes(username);
+  }
+
+  /**
+   * True if username is in the workflow user array, false otherwise
+   * @param username
+   */
+  isInUserArray(username: string): boolean {
     if (this.workflow.users) {
       const match = this.workflow.users.find((user) => user.username === username);
       if (match !== undefined) {
         return true;
       }
     }
-
-    return this.owners.includes(username);
+    return false;
   }
 }

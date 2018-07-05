@@ -50,6 +50,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
   workflows: any;
   sharedWorkflows: any;
+  hasLoadedWorkflows = false;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
   public showSidebar = true;
@@ -64,8 +65,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     /**
-     * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
-     * It is the only section of code that does not exist in my-tools
+     * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
+     * due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      */
     this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -80,6 +81,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.setWorkflow(null);
     this.workflowService.setWorkflows(null);
     this.workflowService.setSharedWorkflows(null);
+
+    // Updates selected workflow from service and selects in sidebar
     this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
@@ -90,7 +93,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       }
     );
 
-    // Retrieve the user and then grab all workflows and shared with me workflows from the backend
+    // Retrieve all of the workflows for the user and update the workflow service
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
@@ -117,10 +120,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
           this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
-          if (this.workflows.length > 0) {
-            this.selectInitialEntry(sortedWorkflows);
-          } else if (this.sharedWorkflows.length > 0) {
-            this.selectInitialEntry(sortedSharedWorkflows);
+          if (!this.hasLoadedWorkflows) {
+            if (this.workflows.length > 0) {
+              this.selectInitialEntry(sortedWorkflows);
+            } else if (this.sharedWorkflows.length > 0) {
+              this.selectInitialEntry(sortedSharedWorkflows);
+            }
           }
         }
       });
@@ -262,14 +267,25 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     }
   }
 
+  /**
+   * Grabs the workflow from the webservice and loads it
+   * @param workflow Selected workflow
+   */
   selectEntry(workflow: ExtendedWorkflow): void {
     if (workflow !== null) {
       this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
         this.workflowService.setWorkflow(result);
-        if (result) {
-          this.router.navigateByUrl('/my-workflows/' + result.full_workflow_path);
-        }
       });
+    }
+  }
+
+  /**
+   * Triggers a URL change, which will select the appropriate workflow
+   * @param workflow Selected workflow
+   */
+  goToEntry(workflow: ExtendedWorkflow): void {
+    if (workflow !== null) {
+      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
     }
   }
 
