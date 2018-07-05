@@ -80,6 +80,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-spec-reporter": "0.0.32",
     "protractor": "~5.3.0",
+    "rxjs-tslint-rules": "^4.5.1",
     "tslint": "~5.9.1"
   }
 }
