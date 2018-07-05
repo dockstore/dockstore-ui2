@@ -150,7 +150,7 @@ export class WorkflowComponent extends Entry {
       if (this.publicPage) {
         this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
-      this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).subscribe(
+      this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         (userPermissions: Permission[]) => {
           this.processResponse(userPermissions);
         },

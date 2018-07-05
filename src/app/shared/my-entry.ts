@@ -120,19 +120,9 @@ export abstract class MyEntry implements OnDestroy {
      * @param arr2  Array 2
      */
     combineArrays(arr1: Array<any>, arr2: Array<any>): Array<any> {
-      if (arr1 === undefined) {
-       if (arr2 === undefined) {
-         return null;
-       }  else {
-         return arr2;
-       }
-      } else {
-        if (arr2 === undefined) {
-          return arr1;
-        } else {
-          return arr1.concat(arr2);
-        }
-      }
+      arr1 = arr1 || [];
+      arr2 = arr2 || [];
+      return arr1.concat(arr2);
     }
 
     /**

@@ -64,7 +64,7 @@ export class WorkflowService {
    * Converts the mapping of roles to workflows to a concatentation of all the workflows
    * @param workflows mapping returned by shared workflows endpoint
    */
-  convertSharedWorkflowsToWorkflowsList(workflows: any): any {
+  convertSharedWorkflowsToWorkflowsList(workflows: any): Array<Workflow> {
     if (workflows) {
       let sharedWorkflows = workflows.map(workflow => workflow.workflows);
       sharedWorkflows = [].concat.apply([], sharedWorkflows);

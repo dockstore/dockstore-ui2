@@ -6,6 +6,8 @@ import RoleEnum = Permission.RoleEnum;
 import { TokenService } from '../../loginComponents/token.service';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { Dockstore } from '../../shared/dockstore.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-permissions',
@@ -23,6 +25,7 @@ export class PermissionsComponent implements OnInit {
   public hasGoogleAccount = false;
   public firecloudUrl = Dockstore.FIRECLOUD_IMPORT_URL.substr(0, Dockstore.FIRECLOUD_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   separatorKeysCodes = [ENTER, COMMA];
   addOnBlur = true;
@@ -40,7 +43,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tokenService.tokens$.subscribe(tokens => {
+    this.tokenService.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
       this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });
   }

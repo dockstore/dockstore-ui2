@@ -48,8 +48,8 @@ import { combineLatest } from 'rxjs';
 
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
-  workflows: any;
-  sharedWorkflows: any;
+  workflows: Array<Workflow>;
+  sharedWorkflows: Array<Workflow>;
   hasLoadedWorkflows = false;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
@@ -162,7 +162,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Helper class for creating a new instance of grouped entries with correct active tabs
    * @param groupEntriesObject
    */
-  protected updateActiveTabHelper(groupEntriesObject: any): any {
+  protected updateActiveTabHelper(groupEntriesObject: Array<any>): Array<any> {
     for (let i = 0; i < groupEntriesObject.length; i++) {
       if (this.workflow) {
         if (groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
