@@ -41,3 +41,10 @@ a.disabled {
 a.disabled > img {
     filter: brightness(90%);
 }
+p.import-warning {
+  font-size: 11px;
+  font-style: italic;
+  text-align: left;
+  line-height: 1em;
+  margin-bottom: 4px;
+}

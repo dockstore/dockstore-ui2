@@ -38,6 +38,8 @@ import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { SourceFile } from '../shared/swagger/model/sourceFile';
 
+const importHttpRegEx: RegExp = new RegExp(/^\s*import\s+"https?/, 'm');
+
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -47,7 +49,9 @@ export class WorkflowComponent extends Entry {
   workflowEditData: any;
   dnastackURL: string;
   fireCloudURL: string;
-  fireCloudDisabledMessage: string;
+  public wdlHasHttpImports: boolean;
+  public wdlHasFileImports: boolean;
+  public enableLaunchWithFireCloud = Dockstore.FEATURES.enableLaunchWithFireCloud;
   public workflow;
   public missingWarning: boolean;
   public title: string;
@@ -121,18 +125,35 @@ export class WorkflowComponent extends Entry {
     }
   }
 
-  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
-    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
-      this.fireCloudURL = null;
-      this.fireCloudDisabledMessage = '';
+  /**
+   * Checks WDL for import statements, setting wdlHasFileImports and wdlHasHttpImports properties
+   * accordingly. If the WDL has file imports, doesn't bother to check if there are http imports, to save
+   * an Ajax call.
+   *
+   * Also sets the fireCloudURL property if the WDL has no file imports.
+   *
+   * This can be done more cleanly, but since code has been moved and substantially changed in develop branch,
+   * leaving like this for hot fix.
+   *
+   * @param {ExtendedWorkflow} workflowRef
+   */
+  private checkWdlForImportsAndSetFirecloudUrl(workflowRef: ExtendedWorkflow) {
+    this.fireCloudURL = null;
+    this.wdlHasFileImports = false;
+    this.wdlHasHttpImports = false;
+    if (this.isWdl(workflowRef)) {
       const version: WorkflowVersion = this.selectedVersion;
       if (version) {
         this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
           if (!sourceFiles || sourceFiles.length === 0) {
-            this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
+            this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile) => {
+              this.wdlHasHttpImports = importHttpRegEx.test(sourceFile.content);
+            });
+            if (this.enableLaunchWithFireCloud) {
+              this.fireCloudURL = `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
+            }
           } else {
-            this.fireCloudDisabledMessage = 'FireCloud does not support file-path imports in WDL. '
-              + 'It only supports http(s) imports.';
+            this.wdlHasFileImports = true;
           }
         });
       }
@@ -153,7 +174,7 @@ export class WorkflowComponent extends Entry {
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
-      this.setupFireCloudUrl(this.workflow);
+      this.checkWdlForImportsAndSetFirecloudUrl(this.workflow);
     }
   }
 
@@ -308,7 +329,7 @@ export class WorkflowComponent extends Entry {
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
     }
-    this.setupFireCloudUrl(this.workflow);
+    this.checkWdlForImportsAndSetFirecloudUrl(this.workflow);
   }
 
   setEntryTab(tabName: string): void {

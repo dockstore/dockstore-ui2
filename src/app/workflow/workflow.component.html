@@ -218,11 +218,12 @@
         <div class="container-source-repos">
           <div class="container-launch-with">
             <div class="button-wrap">
+              <p *ngIf="dnastackURL && (wdlHasFileImports || wdlHasHttpImports)" class="import-warning" >Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports in DNAstack.</p>
               <div *ngIf="dnastackURL" class="button">
                 <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a></p>
               </div>
-              <div *ngIf="fireCloudURL || fireCloudDisabledMessage" class="button" [title]="fireCloudDisabledMessage">
-                <p><a [class.disabled]="!!fireCloudDisabledMessage" (click)="gotoFirecloud()"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud &raquo;</a></p>
+              <div *ngIf="enableLaunchWithFireCloud" class="button" [title]="wdlHasFileImports ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : ''">
+                <p><a [class.disabled]="wdlHasFileImports" (click)="gotoFirecloud()"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud &raquo;</a></p>
               </div>
             </div>
           </div>
