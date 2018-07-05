@@ -47,6 +47,7 @@ export class WorkflowComponent extends Entry {
   workflowEditData: any;
   dnastackURL: string;
   fireCloudURL: string;
+  fireCloudDisabledMessage: string;
   public workflow;
   public missingWarning: boolean;
   public title: string;
@@ -110,18 +111,28 @@ export class WorkflowComponent extends Entry {
     }
   }
 
-  private isWdl(workflowRef: ExtendedWorkflow) {
-    return workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
+  public isWdl(workflowRef: ExtendedWorkflow) {
+    return workflowRef && workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
+  }
+
+  public gotoFirecloud() {
+    if (this.fireCloudURL) {
+      window.open(this.fireCloudURL);
+    }
   }
 
   private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
     if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
       this.fireCloudURL = null;
+      this.fireCloudDisabledMessage = '';
       const version: WorkflowVersion = this.selectedVersion;
-      if (version && this.isWdl(workflowRef)) {
+      if (version) {
         this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
           if (!sourceFiles || sourceFiles.length === 0) {
             this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
+          } else {
+            this.fireCloudDisabledMessage = 'FireCloud does not support file-path imports in WDL. '
+              + 'It only supports http(s) imports.';
           }
         });
       }

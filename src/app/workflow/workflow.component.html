@@ -210,7 +210,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default" *ngIf="workflow && (dnastackURL || fireCloudURL)">
+    <div class="panel panel-default" *ngIf="isWdl(workflow)">
       <div class="panel-heading">
         <h3>Launch with</h3>
       </div>
@@ -221,8 +221,8 @@
               <div *ngIf="dnastackURL" class="button">
                 <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a></p>
               </div>
-              <div *ngIf="fireCloudURL" class="button">
-                <p><a href="{{fireCloudURL}}"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud &raquo;</a></p>
+              <div *ngIf="fireCloudURL || fireCloudDisabledMessage" class="button" [title]="fireCloudDisabledMessage">
+                <p><a [class.disabled]="!!fireCloudDisabledMessage" (click)="gotoFirecloud()"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud &raquo;</a></p>
               </div>
             </div>
           </div>

@@ -34,3 +34,10 @@ pre {
 .button-wrap > .button:not(:last-child) {
   margin-bottom: 10px;
 }
+a.disabled {
+  color: gray;
+  cursor: not-allowed;
+}
+a.disabled > img {
+    filter: brightness(90%);
+}
