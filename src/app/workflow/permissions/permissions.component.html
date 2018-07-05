@@ -1,12 +1,12 @@
 <div *ngIf="!hasGoogleAccount">
   <p>You need to link your account with Google in order to share this workflow. Please go to the accounts
   page to link your account with Google.</p>
-  <p>Your Google account must also be registered with <a [href]="firecloudUrl" target="_blank">FireCloud</a>.</p>
+  <p>During the limited beta of sharing functionality, your Google account must also be registered with <a [href]="firecloudUrl" target="_blank">FireCloud</a>.</p>
   <p>Any emails that you share the workflow with must also be registered with FireCloud.</p>
 </div>
 <div *ngIf="hasGoogleAccount">
   <div *ngIf="!canViewPermissions">
-      In order to share this workflow, you must register your Google account with FireCloud.
+      <p>During the limited beta of sharing functionality, your Google account must also be registered with <a [href]="firecloudUrl" target="_blank">FireCloud</a>.</p>
   </div>
   <div style="font-style: italic; font-size: smaller; line-height: 1.5" *ngIf="canViewPermissions">
     Workflows can only be shared with users and user groups who are
