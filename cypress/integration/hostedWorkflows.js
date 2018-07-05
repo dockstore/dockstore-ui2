@@ -10,7 +10,7 @@ describe('Dockstore hosted workflows', function() {
         .click()
       cy.contains('dockstore.org/A')
           .parentsUntil('accordion-group')
-          .contains('div .no-wrap', /\hosted/)
+          .contains('div .no-wrap', /hosted/)
           .should('be.visible').click()
   }
 
