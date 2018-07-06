@@ -249,7 +249,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
          currentPath += ':' + this.selectedVersion.name;
        }
        currentPath += '?tab=' + this.currentTab;
-       this.location.go(currentPath);
+       this.location.replaceState(currentPath);
      }
    }
 
@@ -318,7 +318,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     const url = decodeURIComponent(window.location.href);
     const containersIndex = this.getIndexInURL('/' + type);
     const newPath = url.substring(containersIndex);
-    this.location.go(newPath);
+    this.location.replaceState(newPath);
   }
 
   /**
