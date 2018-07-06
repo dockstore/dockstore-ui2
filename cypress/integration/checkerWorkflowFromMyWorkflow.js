@@ -70,7 +70,6 @@ describe('Checker workflow test from my-workflows', function() {
         })
         it('visit the workflow and have its publish/unpublish reflected in the checker workflow', function() {
             // The url should automatically change to include the workflow full path
-            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             getWorkflow();
             // The url should automatically change to include the workflow full path
             // In the parent tool right now
