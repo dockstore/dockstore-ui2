@@ -38,7 +38,7 @@
         <div class="clearfix sidebar-header">
           <h3 class="sidebar-header">Shared with me</h3>
         </div>
-        <p *ngIf="groupSharedEntriesObject == undefined || groupEntriesObject == null || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
+        <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
         <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject" (entrySelected)="goToEntry($event)"></app-sidebar-accordion>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
