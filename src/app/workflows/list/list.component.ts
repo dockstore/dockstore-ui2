@@ -51,7 +51,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
     this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
-  getVerified(workflow: Workflow) {
+  getVerified(workflow: Workflow): boolean {
     return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
 }

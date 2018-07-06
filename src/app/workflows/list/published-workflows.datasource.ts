@@ -34,7 +34,15 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
   constructor(private workflowsService: WorkflowsService, private providersService: ProviderService) {
   }
 
-  // Updates the datasource from the endpoint
+  /**
+   * Updates the datasource from the endpoint
+   * @param {string} filter  A string to filter path by ("cgpmap")
+   * @param {string} sortDirection  "asc" or "desc"
+   * @param {number} pageIndex  The entry number to start listing from (page size * page number)
+   * @param {number} pageSize  The page size (number of tools to return)
+   * @param {string} sortCol  The column to sort by ("stars")
+   * @memberof PublishedWorkflowsDataSource
+   */
   loadEntries(filter: string,
     sortDirection: string,
     pageIndex: number,

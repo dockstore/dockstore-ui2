@@ -28,24 +28,32 @@ import { ContainersService, DockstoreTool } from '../../shared/swagger';
 export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {
 
   private entriesSubject = new BehaviorSubject<ExtendedDockstoreTool[]>([]);
-  private entriesSubject$ = new BehaviorSubject<boolean>(false);
+  private loadingSubject$ = new BehaviorSubject<boolean>(false);
   public entriesLengthSubject$ = new BehaviorSubject<number>(0);
-  public loading$ = this.entriesSubject$.asObservable();
+  public loading$ = this.loadingSubject$.asObservable();
 
   constructor(private containersService: ContainersService, private providersService: ProviderService,
     private imageProviderService: ImageProviderService) {
   }
 
-  // Updates the datasource from the endpoint
+  /**
+   * Updates the datasource from the endpoint
+   * @param {string} filter  A string to filter path by ("cgpmap")
+   * @param {string} sortDirection  "asc" or "desc"
+   * @param {number} pageIndex  The entry number to start listing from (page size * page number)
+   * @param {number} pageSize  The page size (number of tools to return)
+   * @param {string} sortCol  The column to sort by ("stars")
+   * @memberof PublishedToolsDataSource
+   */
   loadEntries(filter: string,
     sortDirection: string,
     pageIndex: number,
     pageSize: number,
     sortCol: string) {
-    this.entriesSubject$.next(true);
+    this.loadingSubject$.next(true);
     this.containersService.allPublishedContainers(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, 'response').pipe(
       catchError(() => of([])),
-      finalize(() => this.entriesSubject$.next(false))
+      finalize(() => this.loadingSubject$.next(false))
     )
       .subscribe((entries: HttpResponse<Array<DockstoreTool>>) => {
         this.entriesSubject.next(entries.body.map(tool => {
@@ -63,6 +71,6 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
 
   disconnect(collectionViewer: CollectionViewer): void {
     this.entriesSubject.complete();
-    this.entriesSubject$.complete();
+    this.loadingSubject$.complete();
   }
 }

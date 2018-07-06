@@ -1,4 +1,4 @@
-describe('Dockstore workflow search page', function () {
+describe('Dockstore workflow list page', function () {
   require('./helper.js')
   describe('Select a workflow', function () {
     it('Should be able to go to the workflows search page', function () {

@@ -42,7 +42,15 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('input') input: ElementRef;
-  abstract getVerified(tool: (DockstoreTool | Workflow)): void;
+
+  /**
+   * Get whether the entry is considered verified or not
+   * @abstract
+   * @param {((DockstoreTool | Workflow))} entry  The entry to get verified status
+   * @returns {boolean}  True if entry is verified, false otherwise
+   * @memberof ToolLister
+   */
+  abstract getVerified(entry: (DockstoreTool | Workflow)): boolean;
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -50,7 +58,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
       this.loadPublishedEntries();
 
       // Handle paginator changes
-      merge(this.paginator.page, this.paginator.pageSize).pipe(
+      merge(this.paginator.page).pipe(
         distinctUntilChanged(),
         tap(() => this.loadPublishedEntries()),
         takeUntil(this.ngUnsubscribe)
@@ -58,24 +66,24 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
         .subscribe();
 
       // Handle sort changes
-      this.sort.sortChange.pipe(tap(() => {
-        this.paginator.pageIndex = 0;
-        this.loadPublishedEntries();
-      }),
+      this.sort.sortChange.pipe(
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadPublishedEntries();
+        }),
         takeUntil(this.ngUnsubscribe)
       ).subscribe();
 
       // Handle input text field changes
-      fromEvent(this.input.nativeElement, 'keyup')
-        .pipe(
-          debounceTime(250),
-          distinctUntilChanged(),
-          tap(() => {
-            this.paginator.pageIndex = 0;
-            this.loadPublishedEntries();
-          }),
-          takeUntil(this.ngUnsubscribe)
-        )
+      fromEvent(this.input.nativeElement, 'keyup').pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadPublishedEntries();
+        }),
+        takeUntil(this.ngUnsubscribe)
+      )
         .subscribe();
     });
   }

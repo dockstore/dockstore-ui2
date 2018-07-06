@@ -1,4 +1,4 @@
-describe('Dockstore tool search page', function () {
+describe('Dockstore tool list page', function () {
   require('./helper.js')
   describe('Select a tool', function () {
     it('Should be able to go to the tools search page', function () {
