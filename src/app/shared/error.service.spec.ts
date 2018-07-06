@@ -38,8 +38,10 @@ describe('ErrorService', () => {
           errorDetails: '[HTTP ' + '400' + '] ' + 'statusText' + ': ' +
           'error'
         };
-        console.log(service.errorObj$.getValue());
-        console.log(errorObj);
+        console.log('actual message:'+ service.errorObj$.getValue().message);
+        console.log('expected message:' + errorObj.message);
+        console.log('actual errorDetails:'+ service.errorObj$.getValue().errorDetails);
+        console.log('expected errorDetails:' + errorObj.errorDetails);
         expect(service.errorObj$.getValue()).toEqual(errorObj);
     }));
 });
