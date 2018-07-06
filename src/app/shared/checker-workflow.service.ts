@@ -97,7 +97,7 @@ export class CheckerWorkflowService {
                 }, error => this.checkerWorkflow$.next(null));
             } else {
                 this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
-                    this.checkerWorkflow$.next(workflow);
+                  this.checkerWorkflow$.next(workflow);
                 }, error => this.checkerWorkflow$.next(null));
             }
         });

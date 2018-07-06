@@ -48,15 +48,15 @@ export class WorkflowService {
       }
     }));
   }
-  setWorkflow(workflow: any) {
+  setWorkflow(workflow: Workflow) {
     this.workflowSource.next(workflow);
   }
 
-  setWorkflows(workflows: any) {
+  setWorkflows(workflows: Array<Workflow>) {
     this.workflows$.next(workflows);
   }
 
-  setSharedWorkflows(workflows: any) {
+  setSharedWorkflows(workflows: Array<any>) {
     this.sharedWorkflows$.next(this.convertSharedWorkflowsToWorkflowsList(workflows));
   }
 
@@ -64,7 +64,7 @@ export class WorkflowService {
    * Converts the mapping of roles to workflows to a concatentation of all the workflows
    * @param workflows mapping returned by shared workflows endpoint
    */
-  convertSharedWorkflowsToWorkflowsList(workflows: any): Array<Workflow> {
+  convertSharedWorkflowsToWorkflowsList(workflows: Array<any>): Array<Workflow> {
     if (workflows) {
       let sharedWorkflows = workflows.map(workflow => workflow.workflows);
       sharedWorkflows = [].concat.apply([], sharedWorkflows);

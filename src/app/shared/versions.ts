@@ -21,10 +21,12 @@ import { DateService } from './date.service';
 import { StateService } from './state.service';
 import { Tooltip } from './tooltip';
 import { EntryTab } from '../shared/entry/entry-tab';
+import { Tag } from './../shared/swagger/model/tag';
+import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 
 export abstract class Versions extends EntryTab {
 
-  @Input() versions: Array<any>;
+  @Input() versions: Array<(Tag | WorkflowVersion)>;
   sortColumn: string;
   sortReverse: boolean;
   publicPage: boolean;

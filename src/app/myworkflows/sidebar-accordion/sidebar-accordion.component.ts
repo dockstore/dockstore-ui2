@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { Workflow } from '../../shared/swagger';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -12,7 +13,7 @@ export class SidebarAccordionComponent {
   @Output() entrySelected = new EventEmitter<any>();
   constructor(private registerWorkflowModalService: RegisterWorkflowModalService) { }
 
-  selectEntry(entry: any): void {
+  selectEntry(entry: Workflow): void {
     this.entrySelected.emit(entry);
   }
 

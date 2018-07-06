@@ -16,6 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { toExtendSite } from '../shared/helpers';
 
 @Component({
   selector: 'app-header',
@@ -28,11 +29,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  /**
-   * True if site should be in extended mode, false otherwise
-   */
   toExtendSite(): boolean {
-    return this.router.url.startsWith('/my-workflows');
+    return toExtendSite(this.router.url);
   }
 
 }

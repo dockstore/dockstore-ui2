@@ -84,10 +84,9 @@ export class WorkflowComponent extends Entry {
     this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
     this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
 
-    const username = this.user.username;
-    this.canRead = this.canUserRead(username);
-    this.canWrite = this.canUserWrite(username);
-    this.isOwner = this.isUserOwner(username);
+    this.canRead = this.canUserRead();
+    this.canWrite = this.canUserWrite();
+    this.isOwner = this.isUserOwner();
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
@@ -351,7 +350,8 @@ export class WorkflowComponent extends Entry {
   /**
    * True if user is in users list, or username is in read,write,owner permissions, false otherwise
    */
-  canUserRead(username: string): boolean {
+  canUserRead(): boolean {
+    const username = this.user.username;
     if (this.isInUserArray(username)) {
       return true;
     }
@@ -361,7 +361,8 @@ export class WorkflowComponent extends Entry {
   /**
    * True if user is in users list, or username is in write or owner permissions, false otherwise
    */
-  canUserWrite(username: string): boolean {
+  canUserWrite(): boolean {
+    const username = this.user.username;
     if (this.isInUserArray(username)) {
       return true;
     }
@@ -371,7 +372,8 @@ export class WorkflowComponent extends Entry {
   /**
    * True if user is in users list, or username is in owner permissions, false otherwise
    */
-  isUserOwner(username: string): boolean {
+  isUserOwner(): boolean {
+    const username = this.user.username;
     if (this.isInUserArray(username)) {
       return true;
     }

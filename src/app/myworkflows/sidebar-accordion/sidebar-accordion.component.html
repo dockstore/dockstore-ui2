@@ -27,7 +27,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
+        <div *ngIf="!orgObj || orgObj?.unpublished.length === 0" class="text-center">
           <p>No unpublished workflows.</p>
         </div>
       </tab>

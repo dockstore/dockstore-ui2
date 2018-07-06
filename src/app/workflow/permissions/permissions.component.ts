@@ -60,7 +60,6 @@ export class PermissionsComponent implements OnInit {
     this.add(event, RoleEnum.READER);
   }
 
-
   remove(entity: string, permission: RoleEnum) {
     this.updating = true;
     this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, entity, permission).subscribe(

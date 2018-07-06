@@ -20,6 +20,7 @@ import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { WorkflowVersion } from '../../shared/swagger';
 
 @Component({
   selector: 'app-tool-tab',
@@ -29,8 +30,8 @@ import { EntryTab } from '../../shared/entry/entry-tab';
 export class ToolTabComponent extends EntryTab implements OnInit {
   workflow: Workflow;
   toolsContent: any;
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
       this.onChange();

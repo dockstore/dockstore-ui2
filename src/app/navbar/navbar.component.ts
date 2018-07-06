@@ -26,7 +26,7 @@ import { TrackLoginService } from './../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { PageInfo } from './../shared/models/PageInfo';
-
+import { toExtendSite } from '../shared/helpers';
 
 @Component({
   selector: 'app-navbar',
@@ -47,11 +47,8 @@ export class NavbarComponent extends Logout implements OnInit {
     this.userService.user$.subscribe(user => this.user = user);
   }
 
-  /**
-   * True if site should be in extended mode, false otherwise
-   */
   toExtendSite(): boolean {
-    return this.router.url.startsWith('/my-workflows');
+    return toExtendSite(this.router.url);
   }
 
   resetPageNumber() {

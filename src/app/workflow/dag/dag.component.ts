@@ -33,8 +33,8 @@ import { EntryTab } from '../../shared/entry/entry-tab';
   providers: [DagService]
 })
 export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
-  @Input() validVersions: any;
-  @Input() defaultVersion: any;
+  @Input() validVersions: Array<WorkflowVersion>;
+  @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
