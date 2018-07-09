@@ -1,8 +1,14 @@
 /* tslint:disable:no-unused-variable */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ListContainersService } from '../../containers/list/list.service';
+import { DateService } from '../../shared/date.service';
+import { DockstoreService } from '../../shared/dockstore.service';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
+import { SearchService } from '../search.service';
 import { SearchToolTableComponent } from './search-tool-table.component';
 
 describe('SearchToolTableComponent', () => {
@@ -11,9 +17,14 @@ describe('SearchToolTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchToolTableComponent ]
+      declarations: [SearchToolTableComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [CustomMaterialModule, BrowserAnimationsModule],
+      providers: [{ provide: DockstoreService, useClass: DockstoreStubService }, DateService,
+      { provide: ListContainersService, useClass: ListContainersStubService },
+      { provide: SearchService, useClass: SearchStubService }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
