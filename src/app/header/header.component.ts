@@ -15,22 +15,28 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { toExtendSite } from '../shared/helpers';
+import { takeUntil } from 'rxjs/operators';
+import { Subscription ,  Subject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
+  isExtended = false;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private router: Router) { }
-
-  ngOnInit() {
+  constructor(private router: Router) {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isExtended = toExtendSite(this.router.url);
+      }
+    });
   }
 
-  toExtendSite(): boolean {
-    return toExtendSite(this.router.url);
+  ngOnInit() {
   }
 
 }

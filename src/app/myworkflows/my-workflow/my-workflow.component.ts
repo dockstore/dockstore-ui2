@@ -35,7 +35,7 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-import { first, takeUntil } from 'rxjs/operators';
+import { first, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 @Component({
@@ -121,11 +121,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
           if (!this.hasLoadedWorkflows) {
+            this.hasLoadedWorkflows = true;
             if (this.workflows.length > 0) {
               this.selectInitialEntry(sortedWorkflows);
             } else if (this.sharedWorkflows.length > 0) {
               this.selectInitialEntry(sortedSharedWorkflows);
             }
+          } else {
+            this.selectEntry(this.workflow);
           }
         }
       });

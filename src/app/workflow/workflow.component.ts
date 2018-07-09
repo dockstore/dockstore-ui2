@@ -231,6 +231,11 @@ export class WorkflowComponent extends Entry {
       this.workflowsService.publish(this.workflow.id, request).subscribe(
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
+          if (response.checker_id !== null && response.checker_id !== undefined) {
+            this.workflowsService.getWorkflow(response.checker_id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
+              this.workflowService.upsertWorkflowToWorkflow(workflow);
+            }, err => this.refreshService.handleError('publish error', err));
+          }
         }, err => {
           this.published = !this.published;
           this.refreshService.handleError('publish error', err);
