@@ -263,13 +263,13 @@ export class HttpStubService {
 }
 
 export class WorkflowStubService {
-    nsWorkflows$ = Observable.of([]);
-    nsSharedWorkflows$ = Observable.of([]);
+    nsWorkflows$ = observableOf([]);
+    nsSharedWorkflows$ = observableOf([]);
     workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
     workflowId$ = observableOf(1);
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
-    copyBtn$ = Observable.of({});
+    copyBtn$ = observableOf({});
     setWorkflow(thing: Workflow) {
         this.workflow$.next(thing);
     }
@@ -420,7 +420,7 @@ export class UserStubService {
 
 export class TokenStubService {
     tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
-    hasGitHubToken$ = Observable.of(false);
+    hasGitHubToken$ = observableOf(false);
     updateTokens(): void {
     }
 }
@@ -635,13 +635,13 @@ export class WorkflowsStubService {
       return observableOf([]);
     }
     removeWorkflowRole(workflowPath: string, entity: string, permission: RoleEnum) {
-      return Observable.of([]);
+      return observableOf([]);
     }
     addWorkflowPermission(workflowPath: string, object: any) {
-      return Observable.of([]);
+      return observableOf([]);
     }
     getWorkflowPermissions(workflowPath: string) {
-      return Observable.of([]);
+      return observableOf([]);
     }
 }
 
