@@ -13,10 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpErrorResponse } from '@angular/common/http';
-import { inject, TestBed } from '@angular/core/testing';
+import {HttpErrorResponse} from '@angular/common/http';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { ErrorService } from './error.service';
+import {ErrorService} from './error.service';
 
 describe('ErrorService', () => {
     beforeEach(() => {
@@ -38,8 +38,10 @@ describe('ErrorService', () => {
           errorDetails: '[HTTP ' + '400' + '] ' + 'statusText' + ': ' +
           'error'
         };
-        console.log(service.errorObj$.getValue());
-        console.log(errorObj);
+      console.log('actual message:' + service.errorObj$.getValue().message);
+      console.log('expected message:' + errorObj.message);
+      console.log('actual errorDetails:' + service.errorObj$.getValue().errorDetails);
+      console.log('expected errorDetails:' + errorObj.errorDetails);
         expect(service.errorObj$.getValue()).toEqual(errorObj);
     }));
 });
