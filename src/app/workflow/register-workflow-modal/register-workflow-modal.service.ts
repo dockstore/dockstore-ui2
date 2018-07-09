@@ -89,7 +89,6 @@ export class RegisterWorkflowModalService {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
-                    this.workflowService.setWorkflow(refreshResult);
                     this.stateService.setRefreshMessage(null);
                     this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
@@ -122,7 +121,6 @@ export class RegisterWorkflowModalService {
           hostedWorkflow.descriptorType).subscribe(result => {
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);
-            this.workflowService.setWorkflow(result);
             this.stateService.setRefreshMessage(null);
             this.setIsModalShown(false);
             this.clearWorkflowRegisterError();

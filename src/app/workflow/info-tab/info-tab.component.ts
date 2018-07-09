@@ -23,6 +23,7 @@ import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { EntryTab } from '../../shared/entry/entry-tab';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ga4ghPath } from './../../shared/constants';
 
@@ -31,7 +32,7 @@ import { ga4ghPath } from './../../shared/constants';
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css']
 })
-export class InfoTabComponent implements OnInit {
+export class InfoTabComponent extends EntryTab implements OnInit {
   @Input() validVersions;
   @Input() defaultVersion;
   @Input() workflow;
@@ -52,7 +53,9 @@ export class InfoTabComponent implements OnInit {
   trsLink: string;
   public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
-  private infoTabService: InfoTabService) { }
+  private infoTabService: InfoTabService) {
+    super();
+  }
 
   ngOnInit() {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);

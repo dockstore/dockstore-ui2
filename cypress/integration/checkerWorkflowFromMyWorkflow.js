@@ -10,16 +10,10 @@ describe('Checker workflow test from my-workflows', function() {
      * This specifically gets the 'l' workflow, not something containing the 'l', but exactly 'l'
      */
     function getWorkflow() {
-        cy.contains('github.com')
-        // Apparently you need to click the accordion in order for the other components inside
-        // to become click-able
-        cy
-            .get('accordion')
-            .click()
-        cy.get('accordion')
+        cy.contains('github.com/A')
+            .first()
+            .parentsUntil('accordion-group')
             .contains('div .no-wrap', /\l\b/)
-            .should('be.visible')
-            .parent()
             .should('be.visible').click()
     }
 
@@ -56,6 +50,7 @@ describe('Checker workflow test from my-workflows', function() {
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
+
             cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l/_cwl_checker')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
@@ -75,7 +70,6 @@ describe('Checker workflow test from my-workflows', function() {
         })
         it('visit the workflow and have its publish/unpublish reflected in the checker workflow', function() {
             // The url should automatically change to include the workflow full path
-            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
             getWorkflow();
             // The url should automatically change to include the workflow full path
             // In the parent tool right now

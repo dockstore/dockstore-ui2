@@ -103,7 +103,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.setIsModalShown(false);
   }
 
-
   // Validation starts here, should move most of these to a service somehow
   ngAfterViewChecked() {
     this.formChanged();
@@ -117,6 +116,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         .subscribe(data => this.onValueChanged(data));
     }
   }
+
   onValueChanged(data?: any) {
     if (!this.registerWorkflowForm) { return; }
     const form = this.registerWorkflowForm.form;

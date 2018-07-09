@@ -59,6 +59,7 @@ import { EntryModule } from './../entry/entry.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
+import { PermissionsComponent } from '../../workflow/permissions/permissions.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
     VersionsWorkflowComponent,
     LaunchThirdPartyComponent,
     LaunchWorkflowComponent,
+    PermissionsComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
     InfoTabComponent,

@@ -31,6 +31,9 @@ import {
   MatStepperModule,
   MatTabsModule,
   MatToolbarModule,
+  MatProgressBarModule,
+  MatSidenavModule,
+  MatTooltipModule
 } from '@angular/material';
 
 @NgModule({
@@ -48,9 +51,15 @@ import {
     MatExpansionModule,
     MatSelectModule,
     MatChipsModule,
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatTooltipModule,
     MatCardModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatTooltipModule
   ],
   exports: [
     MatButtonModule,
@@ -66,9 +75,15 @@ import {
     MatExpansionModule,
     MatSelectModule,
     MatChipsModule,
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatTooltipModule,
     MatCardModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatTooltipModule
   ]
 })
 export class CustomMaterialModule { }
