@@ -64,6 +64,6 @@ export class LaunchWorkflowComponent {
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
-    this.wgetTestJsonDescription = this.launchService.getNxtTestJsonString(workflowPath, versionName);
+    this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName, this.currentDescriptor);
   }
 }
