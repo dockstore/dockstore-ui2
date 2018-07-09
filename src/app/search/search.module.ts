@@ -35,10 +35,14 @@ import { ExpandService } from './expand.service';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
+import { SearchToolTableComponent } from './search-tool-table/search-tool-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './search.service';
 import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collapse.component';
+import { CustomMaterialModule } from '../shared/modules/material.module';
+import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 
 @NgModule({
   declarations: [
@@ -46,10 +50,13 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     ExpandCollapseComponent,
     SearchComponent,
     SearchResultsComponent,
+    SearchToolTableComponent,
+    SearchWorkflowTableComponent,
     MapFriendlyValuesPipe
 ],
   imports: [
     CommonModule,
+    CustomMaterialModule,
     ListentryModule,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
@@ -62,7 +69,8 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     PopoverModule.forRoot(),
     ClipboardModule,
     searchRouting,
-    HttpClientModule
+    HttpClientModule,
+    PrivateIconModule
   ],
   providers: [AdvancedSearchService, ExpandService,
     SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
