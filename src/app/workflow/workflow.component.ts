@@ -52,6 +52,8 @@ export class WorkflowComponent extends Entry {
   public wdlHasHttpImports: boolean;
   public wdlHasFileImports: boolean;
   public enableLaunchWithFireCloud = Dockstore.FEATURES.enableLaunchWithFireCloud;
+  private lastWorkflow: ExtendedWorkflow;
+  private lastVersion: WorkflowVersion;
   public workflow;
   public missingWarning: boolean;
   public title: string;
@@ -144,18 +146,22 @@ export class WorkflowComponent extends Entry {
     if (this.isWdl(workflowRef)) {
       const version: WorkflowVersion = this.selectedVersion;
       if (version) {
-        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
-          if (!sourceFiles || sourceFiles.length === 0) {
-            this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile) => {
-              this.wdlHasHttpImports = importHttpRegEx.test(sourceFile.content);
-            });
-            if (this.enableLaunchWithFireCloud) {
-              this.fireCloudURL = `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
+        if (version !== this.lastVersion || this.lastWorkflow !== workflowRef) {
+          this.lastVersion = version;
+          this.lastWorkflow = this.lastWorkflow;
+          this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
+            if (!sourceFiles || sourceFiles.length === 0) {
+              this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile) => {
+                this.wdlHasHttpImports = importHttpRegEx.test(sourceFile.content);
+              });
+              if (this.enableLaunchWithFireCloud) {
+                this.fireCloudURL = `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
+              }
+            } else {
+              this.wdlHasFileImports = true;
             }
-          } else {
-            this.wdlHasFileImports = true;
-          }
-        });
+          });
+        }
       }
     }
   }
@@ -206,6 +212,7 @@ export class WorkflowComponent extends Entry {
           this.workflowService.setWorkflow(workflow);
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion);
+            this.checkWdlForImportsAndSetFirecloudUrl(workflow);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.workflow != null) {
