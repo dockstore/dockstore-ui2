@@ -68,7 +68,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.updateActiveTab();
       }
     });
-    this.userService.user$.subscribe(user => {
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
@@ -80,6 +80,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (tools) {
         this.tools = tools;
         const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
+        this.setGroupEntriesObject(sortedContainers);
         this.selectInitialEntry(sortedContainers);
       }
     });

@@ -37,6 +37,7 @@ import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/lau
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
 import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
+import { PermissionsComponent } from '../../workflow/permissions/permissions.component';
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
@@ -69,6 +70,7 @@ import { getTooltipConfig } from './../tooltip';
     VersionsWorkflowComponent,
     LaunchThirdPartyComponent,
     LaunchWorkflowComponent,
+    PermissionsComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
     InfoTabComponent,

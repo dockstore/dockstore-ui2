@@ -15,8 +15,8 @@
   -->
 
 <button type="button" class="btn btn-primary btn-block" (click)="showVersionModal()">
-  {{ isPublic ? 'View' : 'Edit'}}
+  {{ isPublic || !canWrite ? 'View' : 'Edit'}}
 </button>
-<button type="button" class="btn btn-danger btn-block deleteVersionButton" *ngIf="!isPublic && workflow?.mode === WorkflowType.ModeEnum.HOSTED" (click)="deleteHostedVersion(); false">
+<button type="button" class="btn btn-danger btn-block deleteVersionButton" *ngIf="!isPublic && workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite" (click)="deleteHostedVersion(); false">
   Delete
 </button>

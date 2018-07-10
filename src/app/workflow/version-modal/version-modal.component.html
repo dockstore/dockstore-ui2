@@ -19,7 +19,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{isPublic ? 'View' : 'Edit'}} Version Tag</h4>
+        <h4 class="modal-title">{{isPublic || !canWrite ? 'View' : 'Edit'}} Version Tag</h4>
       </div>
       <div class="alert alert-danger alert-dismissable" role="alert" *ngIf="VersionEditError">
         <button type="button" class="close" data-dismiss="alert" (click)="clearVersionEditError()">
@@ -52,7 +52,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input type="text" class="form-control" name="workflow_path" [(ngModel)]="version.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath"
-                required [tooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" [readonly]="isPublic || workflow?.mode === WorkflowType.ModeEnum.HOSTED"/>
+                required [tooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" [readonly]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED"/>
               <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
             </div>
           </div>
@@ -75,12 +75,12 @@
               <div class="input-group full-width">
                 <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
                   [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json"
-                  [disabled]="isPublic || workflow?.mode === WorkflowType.ModeEnum.HOSTED" ng-class="!isPublic ? 'test_parameter_input' : ''"/>
+                  [disabled]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED" ng-class="!isPublic ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
-                  <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED" (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
+                  <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite" (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
-                  <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED" *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
+                  <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite" *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -105,7 +105,7 @@
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div>
                 <label>
-                  <input type="checkbox" name="checkbox" [disabled]="isPublic" [(ngModel)]="version.hidden" tooltip="Hide tag from public view." />
+                  <input type="checkbox" name="checkbox" [disabled]="isPublic || !canWrite" [(ngModel)]="version.hidden" tooltip="Hide tag from public view." />
                 </label>
               </div>
             </div>
@@ -133,7 +133,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" (click)="hideModal()">Close</button>
-          <button type="button" (click)="saveChanges()" class="btn btn-primary" *ngIf="!isPublic" [disabled]="!versionEditorForm.form.valid" data-dismiss="modal">
+          <button type="button" (click)="saveChanges()" class="btn btn-primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid" data-dismiss="modal">
             Save Changes
           </button>
         </div>

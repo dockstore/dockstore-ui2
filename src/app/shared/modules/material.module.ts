@@ -29,6 +29,7 @@ import {
   MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
+  MatSidenavModule,
   MatSnackBarModule,
   MatSortModule,
   MatStepperModule,
@@ -54,13 +55,14 @@ import {
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
+    MatSidenavModule,
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   exports: [
     MatButtonModule,
@@ -77,13 +79,14 @@ import {
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
+    MatSidenavModule,
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
   ]
 })
 export class CustomMaterialModule { }
