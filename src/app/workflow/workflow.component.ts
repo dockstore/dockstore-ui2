@@ -148,7 +148,7 @@ export class WorkflowComponent extends Entry {
       if (version) {
         if (version !== this.lastVersion || this.lastWorkflow !== workflowRef) {
           this.lastVersion = version;
-          this.lastWorkflow = this.lastWorkflow;
+          this.lastWorkflow = workflowRef;
           this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
             if (!sourceFiles || sourceFiles.length === 0) {
               this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile) => {
