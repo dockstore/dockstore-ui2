@@ -32,7 +32,7 @@ import { HostedService } from './../../shared/swagger/api/hosted.service';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css']
 })
-export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit {
+export class ViewWorkflowComponent extends View implements OnInit {
   @Input() workflowId: number;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
@@ -43,36 +43,25 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
   public WorkflowType = Workflow;
 
   constructor(
-              private workflowService: WorkflowService,
-              private versionModalService: VersionModalService,
-              private stateService: StateService,
-              private workflowsService: WorkflowsService,
-              private hostedService: HostedService,
-              dateService: DateService) {
+    private workflowService: WorkflowService,
+    private versionModalService: VersionModalService,
+    private stateService: StateService,
+    private workflowsService: WorkflowsService,
+    private hostedService: HostedService,
+    dateService: DateService) {
     super(dateService);
   }
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
     this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name)
-        .subscribe(items => {
-            this.items = items;
-            this.versionModalService.setTestParameterFiles(this.items);
-          });
-    this.versionModalService.setIsModalShown(true);
-  }
-
-  initItems() {
-    if (this.version) {
-      this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name)
-        .subscribe(items => {
-            this.items = items;
-          });
-    }
-  }
-
-  ngAfterViewInit() {
-    this.initItems();
+      .subscribe(items => {
+        this.items = items;
+        this.versionModalService.setTestParameterFiles(this.items);
+        this.versionModalService.setIsModalShown(true);
+      }, error => {
+        this.versionModalService.setIsModalShown(true);
+      });
   }
 
   ngOnInit() {
@@ -87,11 +76,11 @@ export class ViewWorkflowComponent extends View implements OnInit, AfterViewInit
     if (confirmDelete) {
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
         result => {
-            this.workflowService.setWorkflow(result);
-          }, (error: HttpErrorResponse) => {
-            console.log(error);
-          }
-        );
+          this.workflowService.setWorkflow(result);
+        }, (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      );
     }
   }
 }
