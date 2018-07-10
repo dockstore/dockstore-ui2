@@ -46,7 +46,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
       value: 0
     },
     {
-      label: 'Create and save CWL or WDL on Dockstore.org',
+      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
       value: 1
     }
   ];
