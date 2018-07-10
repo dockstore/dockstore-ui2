@@ -13,21 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { DataTablesModule } from 'angular-datatables';
 import { NgxMdModule } from 'ngx-md';
 
-import { ContainersComponent } from './containers.component';
 import { ContainerModule } from '../shared/modules/container.module';
-import { containersRouting } from './containers.routing';
 import { HeaderModule } from '../shared/modules/header.module';
 import { ListContainersModule } from '../shared/modules/list-containers.module';
-import { SearchContainersComponent } from './search/search.component';
 import { SelectModule } from '../shared/modules/select.module';
-import { ModalModule} from 'ngx-bootstrap/modal';
+import { ContainersComponent } from './containers.component';
+import { containersRouting } from './containers.routing';
+import { SearchContainersComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +33,6 @@ import { ModalModule} from 'ngx-bootstrap/modal';
   imports: [
     CommonModule,
     NgxMdModule.forRoot(),
-    DataTablesModule.forRoot(),
     HeaderModule,
     SelectModule,
     ListContainersModule,

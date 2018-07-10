@@ -16,10 +16,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DataTablesModule } from 'angular-datatables';
 
 import { ListWorkflowsComponent } from '../../workflows/list/list.component';
+import { PublishedWorkflowsDataSource } from '../../workflows/list/published-workflows.datasource';
 import { HeaderModule } from './header.module';
+import { CustomMaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,11 @@ import { HeaderModule } from './header.module';
   imports: [
     CommonModule,
     RouterModule,
-    DataTablesModule.forRoot(),
-    HeaderModule
+    HeaderModule,
+    CustomMaterialModule
+  ],
+  providers: [
+    PublishedWorkflowsDataSource
   ],
   exports: [
     ListWorkflowsComponent
