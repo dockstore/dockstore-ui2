@@ -21,7 +21,6 @@ import { MyWorkflowsComponent } from './myworkflows.component';
 const MYTOOLS_ROUTES: Routes = [
   {
     path: '', component: MyWorkflowsComponent, children: [
-      { path: '', component: MyWorkflowComponent},
       { path: '**', component: MyWorkflowComponent}
     ]
   }

@@ -17,7 +17,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Files } from '../../shared/files';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({

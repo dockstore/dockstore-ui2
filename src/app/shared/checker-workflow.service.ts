@@ -97,10 +97,7 @@ export class CheckerWorkflowService {
                 }, error => this.checkerWorkflow$.next(null));
             } else {
                 this.workflowsService.getWorkflow(id).subscribe((workflow: Workflow) => {
-                    this.checkerWorkflow$.next(workflow);
-                    if (this.router.url.includes('workflows')) {
-                        this.workflowService.upsertWorkflowToWorkflow(workflow);
-                    }
+                  this.checkerWorkflow$.next(workflow);
                 }, error => this.checkerWorkflow$.next(null));
             }
         });

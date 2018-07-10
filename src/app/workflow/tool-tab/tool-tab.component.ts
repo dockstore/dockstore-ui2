@@ -19,23 +19,27 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
+import { EntryTab } from '../../shared/entry/entry-tab';
+import { WorkflowVersion } from '../../shared/swagger';
 
 @Component({
   selector: 'app-tool-tab',
   templateUrl: './tool-tab.component.html',
   styleUrls: ['./tool-tab.component.css']
 })
-export class ToolTabComponent implements OnInit {
+export class ToolTabComponent extends EntryTab implements OnInit {
   workflow: Workflow;
   toolsContent: any;
-  _selectedVersion: any;
-  @Input() set selectedVersion(value: any) {
+  _selectedVersion: WorkflowVersion;
+  @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
       this.onChange();
     }
   }
-  constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService) { }
+  constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService) {
+    super();
+  }
 
   ngOnInit() {
     this.workflowService.workflow$.pipe(distinctUntilChanged()).subscribe(workflow => {

@@ -24,15 +24,17 @@ import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Dockstore } from '../../shared/dockstore.model';
+import { EntryTab } from '../../shared/entry/entry-tab';
+
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, AfterViewChecked {
-  @Input() validVersions: any;
-  @Input() defaultVersion: any;
+export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
+  @Input() validVersions: Array<WorkflowVersion>;
+  @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -174,6 +176,7 @@ export class DagComponent implements OnInit, AfterViewChecked {
   }
 
   constructor(private dagService: DagService, private workflowService: WorkflowService) {
+    super();
   }
 
   toggleExpand() {

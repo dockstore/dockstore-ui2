@@ -1,4 +1,4 @@
-describe('Dockstore my tools', function() {
+describe('Dockstore hosted tools', function() {
     require('./helper.js')
 
     beforeEach(function() {

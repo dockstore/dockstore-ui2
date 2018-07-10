@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { RouterModule, Routes } from '@angular/router';
 
-import { MyToolComponent } from './my-tool/my-tool.component';
-import { MyToolsComponent } from './mytools.component';
+import { Input } from '@angular/core';
 
-const MYTOOLS_ROUTES: Routes = [
-  {
-    path: '', component: MyToolsComponent, children: [
-      { path: '**', component: MyToolComponent}
-    ]
-  }
-];
-export const mytoolsRouting = RouterModule.forChild(MYTOOLS_ROUTES);
+export abstract class EntryTab {
+  @Input() canRead: boolean;
+  @Input() canWrite: boolean;
+  @Input() isOwner: boolean;
+
+  constructor() {}
+}
