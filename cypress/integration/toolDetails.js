@@ -2,31 +2,31 @@ describe('Variations of URL', function() {
   require('./helper.js')
   it('Should redirect to canonical url (encoding)', function() {
     cy.visit(String(global.baseUrl) + "/containers/quay.io%2FA2%2Fa")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
   });
   it('Should redirect to canonical url (tools)', function() {
     cy.visit(String(global.baseUrl) + "/tools/quay.io/A2/a")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
   });
   it('Should redirect to canonical url (encoding + tools)', function() {
     cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
   });
   it('Should redirect to canonical url (version)', function() {
-    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:master")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:latest")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
   });
   it('Should redirect to canonical url (tab)', function() {
     cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a?tab=files")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
   });
   it('Should redirect to canonical url (tab + version)', function() {
-    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:master?tab=files")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:latest?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
   });
   it('Should redirect to canonical url (tools + encoding + tab + version)', function() {
-    cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa:master?tab=files")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+    cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa:latest?tab=files")
+    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
   });
 });
 
@@ -37,7 +37,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
         cy
             .get('tab')
             .should('have.length', 7)
-        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=info')
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
     });
 
     it('Change tab to launch', function() {
@@ -46,7 +46,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
             .contains('Launch')
             .parent()
             .click()
-        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=launch')
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=launch')
     });
 
     it('Change tab to versions', function() {
@@ -55,7 +55,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
             .contains('Versions')
             .parent()
             .click()
-        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=versions')
+        cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=versions')
     });
 
     describe('Change tab to files', function() {
@@ -65,7 +65,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
                 .contains('Files')
                 .parent()
                 .click()
-            cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:master?tab=files')
+            cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
         });
 
         it('Should have Dockerfile tab selected', function() {

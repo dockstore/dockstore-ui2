@@ -166,7 +166,7 @@ export class WorkflowComponent extends Entry {
         if (workflow) {
           this.published = this.workflow.is_published;
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion, this.selectedVersion);
+            this.workflow.defaultVersion);
         }
         this.setUpWorkflow(workflow);
       }
@@ -186,7 +186,7 @@ export class WorkflowComponent extends Entry {
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion, this.selectedVersion);
+            this.workflow.defaultVersion);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.workflow != null) {
