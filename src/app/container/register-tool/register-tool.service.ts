@@ -26,6 +26,8 @@ import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tool } from './tool';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
+// This line is super important for jQuery to work across the website for some reason
+import * as $ from 'jquery';
 
 @Injectable()
 export class RegisterToolService {
