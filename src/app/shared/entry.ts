@@ -205,7 +205,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
         return foundVersion;
       }
     }
-    return versions[0];
+
+    // Select newest last_modified version, if it's the same, choose the top
+    return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a);
   }
 
   public getEntryPathFromURL(): string {
