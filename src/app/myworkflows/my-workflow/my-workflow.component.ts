@@ -73,7 +73,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         if (this.groupEntriesObject && this.groupSharedEntriesObject) {
           const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
             this.groupEntriesObject.concat(this.groupSharedEntriesObject));
-            this.selectEntry(foundWorkflow);
+          this.selectEntry(foundWorkflow);
         }
       }
     });
@@ -120,15 +120,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
           this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
-          if (!this.hasLoadedWorkflows) {
-            this.hasLoadedWorkflows = true;
+          // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+          if (!this.workflow) {
             if (this.workflows.length > 0) {
               this.selectInitialEntry(sortedWorkflows);
             } else if (this.sharedWorkflows.length > 0) {
               this.selectInitialEntry(sortedSharedWorkflows);
             }
-          } else {
-            this.selectEntry(this.workflow);
           }
         }
       });
@@ -277,6 +275,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   selectEntry(workflow: ExtendedWorkflow): void {
     if (workflow !== null) {
       this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+        this.location.go('/my-workflows/' + result.full_workflow_path);
         this.workflowService.setWorkflow(result);
       });
     }
