@@ -18,7 +18,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-cwl-viewer',
