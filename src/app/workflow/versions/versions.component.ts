@@ -1,6 +1,3 @@
-import { RefreshService } from '../../shared/refresh.service';
-import { ErrorService } from '../../shared/error.service';
-import { StateService } from './../../shared/state.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,18 +13,19 @@ import { StateService } from './../../shared/state.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
-
-import { Versions } from '../../shared/versions';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { ErrorService } from '../../shared/error.service';
+import { RefreshService } from '../../shared/refresh.service';
+import { SourceFile } from '../../shared/swagger';
+import { Versions } from '../../shared/versions';
+import { StateService } from './../../shared/state.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
-
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -104,5 +102,16 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   setVersion(version: WorkflowVersion): void {
     this._selectedVersion = version;
     this.selectedVersionChange.emit(this._selectedVersion);
+  }
+
+  getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
+    // const sourcefiles = version.sourceFiles;
+    const platforms = new Set<string>();
+    sourcefiles.forEach(sourcefile => {
+      Object.keys(sourcefile.verifiedBySource).forEach(platform => {
+        platforms.add(platform);
+      });
+    });
+    return Array.from(platforms).join(', ');
   }
 }
