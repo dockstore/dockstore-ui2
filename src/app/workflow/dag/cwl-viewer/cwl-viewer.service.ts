@@ -15,7 +15,7 @@
  */
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of as observableOf, Subject, interval } from 'rxjs';
+import { Observable, of as observableOf, Subject } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../../../shared/dockstore.model';
@@ -110,9 +110,10 @@ export class CwlViewerService {
   private pollJobQueue(queueUrl: string, onDestroy$: Subject<void>): Observable<CwlViewerDescriptor> {
     const pollFrequencyMs = 500;
     const maxPolls = 30000 / pollFrequencyMs; // Poll for a maximum of 30 seconds
-    return interval(pollFrequencyMs)
+    return Observable.interval(pollFrequencyMs)
       .pipe(
         switchMap(() => this.httpClient.get(queueUrl, {observe: 'response'})),
+        takeUntil(onDestroy$),
         take(maxPolls),
         // When the job is complete, polling the job sends a 302 which Angular Http client follows, giving the job output
         filter((p: HttpResponse<any>) => p.body && (p.body.visualisationSvg
@@ -127,7 +128,6 @@ export class CwlViewerService {
               webPageUrl: resp.url
             }
           );
-        }),
-        takeUntil(onDestroy$));
+        }));
   }
 }
