@@ -7,7 +7,7 @@ describe('Dockstore my workflows', function() {
 
     const cwlDescriptorType = 'CWL';
     const wdlDescriptorType = 'WDL';
-    const nextflowDescriptorType = 'NEXTFLOW';
+    const nextflowDescriptorType = 'Nextflow';
 
     describe('Should contain extended Workflow properties', function() {
         it('visit another page then come back', function() {

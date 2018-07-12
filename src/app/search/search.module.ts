@@ -28,11 +28,11 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListentryModule } from '../listentry/listentry.module';
 import { HeaderModule } from './../shared/modules/header.module';
+import { PipeModule } from './../shared/pipe/pipe.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
 import { ExpandService } from './expand.service';
-import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchComponent } from './search.component';
@@ -45,8 +45,7 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     AdvancedSearchComponent,
     ExpandCollapseComponent,
     SearchComponent,
-    SearchResultsComponent,
-    MapFriendlyValuesPipe
+    SearchResultsComponent
 ],
   imports: [
     CommonModule,
@@ -60,6 +59,7 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
+    PipeModule,
     ClipboardModule,
     searchRouting,
     HttpClientModule

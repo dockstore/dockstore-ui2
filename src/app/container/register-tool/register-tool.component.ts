@@ -42,7 +42,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   };
   public options = [
     {
-      label: 'Use CWL, WDL or NextFlow from GitHub, BitBucket, etc.',
+      label: 'Use CWL, WDL or Nextflow from GitHub, BitBucket, etc.',
       value: 0
     },
     {
