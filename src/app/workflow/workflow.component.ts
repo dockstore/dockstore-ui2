@@ -55,7 +55,6 @@ export class WorkflowComponent extends Entry {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
-  downloadZipLink: string;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
 
@@ -158,7 +157,6 @@ export class WorkflowComponent extends Entry {
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-            this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.selectedVersion.id;
           }
           this.providerService.setUpProvider(this.workflow, this.selectedVersion);
         }, error => {
@@ -280,7 +278,6 @@ export class WorkflowComponent extends Entry {
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
       this.providerService.setUpProvider(this.workflow, version);
-      this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.selectedVersion.id;
     }
   }
 
@@ -288,7 +285,6 @@ export class WorkflowComponent extends Entry {
      this.currentTab = tabName;
      if (this.workflow != null) {
        this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.selectedVersion.id;
      }
    }
 

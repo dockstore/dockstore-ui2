@@ -100,6 +100,9 @@
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ workflow?.descriptorType }}</div>
   </li>
 </ul>
+
+<a id="zipDownloadButton" *ngIf="isValidVersion" [href]="downloadZipLink" target="_blank">Export as ZIP</a>
+
 <div *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB">
   <div *ngIf="workflow?.description || !isPublic">
     <label tooltip="Description of workflow obtained from workflow descriptor">

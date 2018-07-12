@@ -36,10 +36,20 @@ export class InfoTabComponent implements OnInit {
   @Input() defaultVersion;
   @Input() workflow;
   currentVersion: WorkflowVersion;
+  downloadZipLink: string;
+  isValidVersion = false;
+
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this.currentVersion = value;
+      const found = this.validVersions.find((version: WorkflowVersion) => {
+        return version.id === value.id;
+      });
+      if (found) {
+        this.isValidVersion = true;
+      }
       this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, value.name, this.workflow.descriptorType);
+      this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
     }
   }
 
