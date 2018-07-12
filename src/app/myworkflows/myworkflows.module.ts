@@ -20,11 +20,12 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { CustomMaterialModule } from './../shared/modules/material.module';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
+import { PipeModule } from '../shared/pipe/pipe.module';
 import { RefreshAlertModule } from './../shared/alert/alert.module';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import {
   RefreshWorkflowOrganizationComponent,
@@ -54,7 +55,8 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    CustomMaterialModule
+    CustomMaterialModule,
+    PipeModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

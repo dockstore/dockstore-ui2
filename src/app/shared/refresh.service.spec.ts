@@ -17,6 +17,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { sampleWorkflow1 } from '../test/mocked-objects';
 import { ErrorService } from './../shared/error.service';
 import {
   ContainersStubService,
@@ -24,7 +25,6 @@ import {
   ErrorStubService,
   UsersStubService,
   WorkflowsStubService,
-  WorkflowStubService,
 } from './../test/service-stubs';
 import { ContainerService } from './container.service';
 import { RefreshService } from './refresh.service';
@@ -36,7 +36,6 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
 import { WorkflowService } from './workflow.service';
 
-
 describe('RefreshService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -46,7 +45,7 @@ describe('RefreshService', () => {
                 { provide: ErrorService, useClass: ErrorStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
-                { provide: WorkflowService, useClass: WorkflowStubService },
+                { provide: WorkflowService, useClass: WorkflowService },
                 { provide: UsersService, useClass: UsersStubService }
             ]
         });
@@ -95,6 +94,8 @@ describe('RefreshService', () => {
                 'sourceControl': 'github.com',
                 'source_control_provider': 'GITHUB'
             };
+            workflowService.setWorkflows([]);
+            workflowService.setWorkflow(sampleWorkflow1);
         service.refreshWorkflow();
         stateService.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();

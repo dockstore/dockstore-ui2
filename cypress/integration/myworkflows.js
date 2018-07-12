@@ -5,6 +5,10 @@ describe('Dockstore my workflows', function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")
     });
 
+    const cwlDescriptorType = 'CWL';
+    const wdlDescriptorType = 'WDL';
+    const nextflowDescriptorType = 'Nextflow';
+
     describe('Should contain extended Workflow properties', function() {
         it('visit another page then come back', function() {
             cy.get('a#home-nav-button').click()
@@ -81,10 +85,10 @@ describe('Dockstore my workflows', function() {
             notHaveAlert()
             cy
                 .get('.dropdown-toggle')
-                .contains('button', 'cwl')
+                .contains('button', cwlDescriptorType)
                 .click()
             cy
-                .contains('li', 'wdl')
+                .contains('li', wdlDescriptorType)
                 .click()
             haveAlert()
             cy
@@ -94,10 +98,10 @@ describe('Dockstore my workflows', function() {
             notHaveAlert()
             cy
                 .get('.dropdown-toggle')
-                .contains('button', 'wdl')
+                .contains('button', wdlDescriptorType)
                 .click()
             cy
-                .contains('li', 'nextflow')
+                .contains('li', nextflowDescriptorType)
                 .click()
             haveAlert()
             cy
@@ -107,11 +111,11 @@ describe('Dockstore my workflows', function() {
             notHaveAlert()
             cy
                 .get('.dropdown-toggle')
-                .contains('button', 'nextflow')
+                .contains('button', nextflowDescriptorType)
                 .click()
             cy
                 .get('ul.dropdown-menu')
-                .contains('li', 'cwl')
+                .contains('li', cwlDescriptorType)
                 .click()
             haveAlert()
             cy

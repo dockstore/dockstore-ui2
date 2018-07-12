@@ -1,20 +1,23 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { Workflow } from '../../shared/swagger';
 
 @Component({
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss']
 })
-export class SidebarAccordionComponent {
+export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
   @Input() groupEntriesObject;
-  @Output() entrySelected = new EventEmitter<any>();
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService) { }
+  public workflowId$: Observable<number>;
 
-  selectEntry(entry: Workflow): void {
-    this.entrySelected.emit(entry);
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private workflowService: WorkflowService) { }
+
+  ngOnInit(): void {
+    this.workflowId$ = this.workflowService.workflowId$;
   }
 
   setRegisterEntryModalInfo(gitURL: string): void {

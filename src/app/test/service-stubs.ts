@@ -288,7 +288,6 @@ export class WorkflowStubService {
     getTestJson() {
         return observableOf({});
     }
-    replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
     get full_workflow_path() { return ''; }
     get descriptorType() { return ''; }
 }
