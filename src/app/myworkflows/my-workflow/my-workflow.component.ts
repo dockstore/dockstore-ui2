@@ -37,7 +37,22 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 import { MyWorkflowsService } from './../myworkflows.service';
 import { first, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-
+/**
+ * How the workflow selection works:
+ * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
+ * workflows$ is completely seperate from URL and workflow$ (none of them should update the other)
+ * URL change is tied to workflow$ change
+ *
+ * To update (refresh, publish, etc) a currently selected workflow, update workflows$ first then
+ * update workflow$ (URL is presumed to already be correct)
+ *
+ * Register a new workflow which is not currently selected because it doesn't exist yet involves updating workflows$ and then
+ * going to the new URL (this should exist now) which triggers a workflow$ change
+ * @export
+ * @class MyWorkflowComponent
+ * @extends {MyEntry}
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
