@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { Configuration, Profile, User } from '../../../shared/swagger';
 import { TokenService } from '../../token.service';

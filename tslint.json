@@ -3,7 +3,8 @@
     "rxjs-tslint-rules"
   ],
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/rxjs-tslint"
   ],
   "rules": {
     "arrow-return-shorthand": true,
@@ -11,6 +12,10 @@
     "class-name": true,
     "rxjs-add": { "severity": "error" },
     "rxjs-no-unused-add": { "severity": "error" },
+    "rxjs-proper-imports": true,
+    "rxjs-no-static-observable-methods": true,
+    "rxjs-pipeable-operators-only": true,
+    "rxjs-collapse-imports": true,
     "comment-format": [
       true,
       "check-space"
