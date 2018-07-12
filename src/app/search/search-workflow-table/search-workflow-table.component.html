@@ -1,0 +1,41 @@
+<div class="row">
+  <div *ngIf="!dataSource">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <mat-table [hidden]="!dataSource" class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
+    <ng-container matColumnDef="repository">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell *matCellDef="let workflow: Workflow">
+        <span id="verifiedIcon" *ngIf="getVerified(workflow)">
+          <a href= {{verifiedLink}}>
+            <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+          </a>
+        </span>
+        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="starredUsers">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="author">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let workflow: Workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="descriptorType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
+      <mat-cell *matCellDef="let workflow: Workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="projectLinks">
+      <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-cell *matCellDef="let entry: Workflow">
+        <a [href]="entry?.providerUrl">
+          {{ entry?.provider }}
+        </a>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+</div>

@@ -26,7 +26,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 
-import { ListentryModule } from '../listentry/listentry.module';
+import { CustomMaterialModule } from '../shared/modules/material.module';
+import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 import { HeaderModule } from './../shared/modules/header.module';
 import { PipeModule } from './../shared/pipe/pipe.module';
 import { getTooltipConfig } from './../shared/tooltip';
@@ -35,6 +36,8 @@ import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.compone
 import { ExpandService } from './expand.service';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { SearchToolTableComponent } from './search-tool-table/search-tool-table.component';
+import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './search.service';
@@ -45,11 +48,13 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     AdvancedSearchComponent,
     ExpandCollapseComponent,
     SearchComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    SearchToolTableComponent,
+    SearchWorkflowTableComponent
 ],
   imports: [
     CommonModule,
-    ListentryModule,
+    CustomMaterialModule,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,
@@ -62,7 +67,8 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     PipeModule,
     ClipboardModule,
     searchRouting,
-    HttpClientModule
+    HttpClientModule,
+    PrivateIconModule
   ],
   providers: [AdvancedSearchService, ExpandService,
     SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
