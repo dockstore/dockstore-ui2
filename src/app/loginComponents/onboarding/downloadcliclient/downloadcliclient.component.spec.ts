@@ -3,6 +3,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
 
+import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
@@ -14,13 +15,15 @@ describe('DownloadCLIClientComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DownloadCLIClientComponent,
-        RouterLinkStubDirective, RouterOutletStubComponent ],
+      declarations: [DownloadCLIClientComponent,
+        RouterLinkStubDirective, RouterOutletStubComponent],
       imports: [ClipboardModule, NgxMdModule.forRoot()],
-      providers: [ {provide: AuthService, useClass: AuthStubService},
-      {provide: GA4GHService, useClass: GA4GHStubService}]
+      providers: [
+        { provide: AuthService, useClass: AuthStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService },
+        MetadataService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
