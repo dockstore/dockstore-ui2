@@ -140,7 +140,7 @@ export class WorkflowComponent extends Entry {
     if (workflow) {
       this.workflow = workflow;
       if (!workflow.providerUrl) {
-        this.providerService.setUpProvider(workflow, this.selectedVersion);
+        this.providerService.setUpProvider(workflow);
       }
       this.workflow = Object.assign(workflow, this.workflow);
       this.title = this.workflow.full_workflow_path;
@@ -192,7 +192,7 @@ export class WorkflowComponent extends Entry {
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
           }
-          this.providerService.setUpProvider(this.workflow, this.selectedVersion);
+          this.providerService.setUpProvider(this.workflow);
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -317,7 +317,7 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-      this.providerService.setUpProvider(this.workflow, version);
+      this.providerService.setUpProvider(this.workflow);
     }
   }
 

@@ -1,4 +1,3 @@
-import { Tooltip } from '../../shared/tooltip';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,35 +13,31 @@ import { Tooltip } from '../../shared/tooltip';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { InfoTabService } from './info-tab.service';
+import { Dockstore } from '../../shared/dockstore.model';
+import { EntryTab } from '../../shared/entry/entry-tab';
+import { Tooltip } from '../../shared/tooltip';
+import { ga4ghPath } from './../../shared/constants';
 import { StateService } from './../../shared/state.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
-import { Component, OnInit, Input } from '@angular/core';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { EntryTab } from '../../shared/entry/entry-tab';
-import { Dockstore } from '../../shared/dockstore.model';
-import { ga4ghPath } from './../../shared/constants';
+import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { WorkflowService } from './../../shared/workflow.service';
+import { InfoTabService } from './info-tab.service';
 
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css']
 })
-export class InfoTabComponent extends EntryTab implements OnInit {
+export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
   @Input() workflow;
   currentVersion: WorkflowVersion;
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    if (value != null) {
-      this.currentVersion = value;
-      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, value.name, this.workflow.descriptorType);
-    }
-  }
+  @Input() selectedVersion: WorkflowVersion;
 
   public validationPatterns = validationDescriptorPatterns;
   public WorkflowType = Workflow;
@@ -53,8 +48,15 @@ export class InfoTabComponent extends EntryTab implements OnInit {
   trsLink: string;
   public refreshMessage: string;
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
-  private infoTabService: InfoTabService) {
+    private infoTabService: InfoTabService) {
     super();
+  }
+
+  ngOnChanges() {
+    if (this.selectedVersion && this.workflow) {
+      this.currentVersion = this.selectedVersion;
+      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, this.selectedVersion.name, this.workflow.descriptorType);
+    }
   }
 
   ngOnInit() {
@@ -99,11 +101,11 @@ export class InfoTabComponent extends EntryTab implements OnInit {
     this.infoTabService.update(this.workflow);
   }
 
- /**
-   * Cancel button function
-   *
-   * @memberof InfoTabComponent
-   */
+  /**
+    * Cancel button function
+    *
+    * @memberof InfoTabComponent
+    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
   }
