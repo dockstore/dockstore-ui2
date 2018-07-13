@@ -159,6 +159,9 @@
       <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
     </li>
   </ul>
+
+  <a id="zipDownloadButton" *ngIf="isValidVersion" [href]="downloadZipLink" target="_blank">Export as ZIP</a>
+
   <div *ngIf="tool?.description || !isPublic">
     <label tooltip="Description of tool obtained from tool descriptor">
       Description

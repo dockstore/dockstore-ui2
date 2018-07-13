@@ -33,9 +33,18 @@ import { Tag } from './../../shared/swagger/model/tag';
 })
 export class InfoTabComponent implements OnInit {
   currentVersion: Tag;
+  @Input() validVersions;
   @Input() set selectedVersion(value: Tag) {
     if (value != null && this.tool != null) {
       this.currentVersion = value;
+      const found = this.validVersions.find((version: Tag) => {
+        return version.id === value.id;
+      });
+      if (found) {
+        this.isValidVersion = true;
+      }
+      this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
+
       if (this.tool.descriptorType.includes('cwl')) {
         this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, value.name, 'cwl');
       }
@@ -57,6 +66,8 @@ export class InfoTabComponent implements OnInit {
   isPublic: boolean;
   trsLinkCWL: string;
   trsLinkWDL: string;
+  downloadZipLink: string;
+  isValidVersion = false;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) {
     }
