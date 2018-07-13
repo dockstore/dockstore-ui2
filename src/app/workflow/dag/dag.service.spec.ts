@@ -15,7 +15,7 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowsStubService } from './../../test/service-stubs';

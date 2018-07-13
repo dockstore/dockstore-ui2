@@ -133,10 +133,10 @@
         <a href="https://zenodo.org/record/">Placeholder</a>
       </td> -->
       <td *ngIf="version">
-        <app-view-workflow [version]="version" [workflowId]="this.workflowId"></app-view-workflow>
+        <app-view-workflow [version]="version" [workflowId]="this.workflowId" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-view-workflow>
       </td>
     </tr>
     </tbody>
   </table>
-  <app-version-modal></app-version-modal>
+  <app-version-modal [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-version-modal>
 </div>

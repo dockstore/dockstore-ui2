@@ -51,11 +51,11 @@
     </h3>
 
     <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
-      <div class="form-group">
-        <select name="workflowVersions" class="form-control" [(ngModel)]="selectedVersion">
-          <option *ngFor="let workflowVersion of workflow.workflowVersions" [ngValue]="workflowVersion">{{workflowVersion.name}}</option>
-        </select>
-      </div>
+      <mat-form-field>
+          <mat-select [(value)]="selectedVersion">
+            <mat-option *ngFor="let workflowVersion of workflow.workflowVersions" [value]="workflowVersion">{{workflowVersion.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
     </div>
 
     <p class="update">
@@ -74,14 +74,8 @@
   <div *ngIf="!publicPage" class="col-md-5">
     <h3>
       <div class="pull-right my-entry-button-group">
-        <div class="btn-group" role="group">
-          <button id="publishButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable()" btnCheckbox>
-            {{workflow?.is_published ? 'Unpublish' : 'Publish'}}
-          </button>
-        </div>
-        <button type="button" class="btn btn-primary" (click)="refresh()" [disabled]="refreshMessage !== null" *ngIf="!isHosted()">
-          Refresh
-        </button>
+        <button mat-raised-button id="publishButton" color="basic" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable() || !isOwner" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Publish/unpublish the workflow" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
+        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage !== null" *ngIf="!isHosted() && canWrite" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the workflow">Refresh</button>
       </div>
     </h3>
   </div>
@@ -125,16 +119,16 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
-        <app-info-tab [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-info-tab>
+        <app-info-tab [validVersions]="validVersions" [workflow]="workflow" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType"></app-launch>
+        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-launch>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">
-          <app-versions-workflow [versions]="sortedVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion">
+          <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-versions-workflow>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
@@ -143,11 +137,11 @@
       </tab>
       <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions && !isStub() && !isHosted()">
-          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-files-workflow>
         </div>
         <div *ngIf="validVersions && isHosted()">
-          <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage" [descriptorType]="workflow?.descriptorType">
+          <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage" [descriptorType]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-workflow-file-editor>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
@@ -156,7 +150,7 @@
       </tab>
       <tab id="toolsTab"  heading="Tools" (select)="setEntryTab('tools')">
         <div *ngIf="validVersions && !isStub()">
-          <app-tool-tab [selectedVersion]="selectedVersion"></app-tool-tab>
+          <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-tool-tab>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
@@ -164,11 +158,14 @@
       </tab>
       <tab id="dagTab" heading="DAG" (select)="setEntryTab('dag')">
         <div *ngIf="validVersions && !isStub() && currentTab == 'dag'">
-          <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion"></app-dag>
+          <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
         </div>
+      </tab>
+      <tab *ngIf="!isPublic() && isHosted() && isUserOwner()" id="permissionsTab" heading="Permissions" (select)="setEntryTab('permissions')">
+        <app-permissions [workflow]="workflow"></app-permissions>
       </tab>
     </tabset>
   </div>

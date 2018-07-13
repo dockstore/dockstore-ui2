@@ -18,13 +18,14 @@ import { Component, Input } from '@angular/core';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
+import { EntryTab } from '../../shared/entry/entry-tab';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchWorkflowComponent {
+export class LaunchWorkflowComponent extends EntryTab {
   @Input() basePath;
   @Input() path;
   @Input() currentDescriptor;
@@ -51,6 +52,7 @@ export class LaunchWorkflowComponent {
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
   constructor(private launchService: WorkflowLaunchService) {
+    super();
   }
   reactToDescriptor(): void {
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name);

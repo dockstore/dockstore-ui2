@@ -14,16 +14,16 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { StateService } from './../../shared/state.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -34,6 +34,7 @@ export class RegisterWorkflowModalService {
     private sourceControlMap = [];
     workflows: any;
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public descriptorLanguages$: Observable<Array<string>>;
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
@@ -45,6 +46,7 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow.workflowName = '';
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
+        this.descriptorLanguages$ = this.descriptorLanguageService.descriptorLanguages$;
         this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -87,7 +89,6 @@ export class RegisterWorkflowModalService {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
-                    this.workflowService.setWorkflow(refreshResult);
                     this.stateService.setRefreshMessage(null);
                     this.setIsModalShown(false);
                     this.clearWorkflowRegisterError();
@@ -120,7 +121,6 @@ export class RegisterWorkflowModalService {
           hostedWorkflow.descriptorType).subscribe(result => {
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);
-            this.workflowService.setWorkflow(result);
             this.stateService.setRefreshMessage(null);
             this.setIsModalShown(false);
             this.clearWorkflowRegisterError();

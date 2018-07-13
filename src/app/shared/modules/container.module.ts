@@ -16,8 +16,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -25,8 +23,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgxMdModule } from 'ngx-md';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
-import { CustomMaterialModule } from './../modules/material.module';
 
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
@@ -57,6 +55,7 @@ import { VersionModalService } from './../../container/version-modal/version-mod
 import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
 import { ExtendedToolService } from './../extended-tool.service';
+import { CustomMaterialModule } from './../modules/material.module';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
@@ -83,8 +82,7 @@ import { SelectModule } from './select.module';
     ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
-    MarkdownModule.forRoot(),
-    DataTablesModule.forRoot(),
+    NgxMdModule.forRoot(),
     HeaderModule,
     SelectModule,
     ListContainersModule,

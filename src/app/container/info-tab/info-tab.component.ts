@@ -22,6 +22,9 @@ import { ContainersService } from './../../shared/swagger/api/containers.service
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { Dockstore } from '../../shared/dockstore.model';
+import { ga4ghPath } from './../../shared/constants';
+import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-info-tab',
@@ -29,8 +32,20 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
   styleUrls: ['./info-tab.component.css']
 })
 export class InfoTabComponent implements OnInit {
-  @Input() selectedVersion;
+  currentVersion: Tag;
+  @Input() set selectedVersion(value: Tag) {
+    if (value != null && this.tool != null) {
+      this.currentVersion = value;
+      if (this.tool.descriptorType.includes('cwl')) {
+        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, value.name, 'cwl');
+      }
+      if (this.tool.descriptorType.includes('wdl')) {
+        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, value.name, 'wdl');
+      }
+    }
+  }
   @Input() privateOnlyRegistry;
+  @Input() tool;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
@@ -40,6 +55,8 @@ export class InfoTabComponent implements OnInit {
   cwlTestPathEditing: boolean;
   wdlTestPathEditing: boolean;
   isPublic: boolean;
+  trsLinkCWL: string;
+  trsLinkWDL: string;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ContainersService) {
     }
@@ -51,10 +68,6 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
-  }
-
-  get tool(): ExtendedDockstoreTool {
-    return this.infoTabService.tool;
   }
 
   toggleEditDockerFile() {
@@ -102,5 +115,18 @@ export class InfoTabComponent implements OnInit {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
+  }
+
+
+  /**
+   * Returns a link to the primary descriptor for the given tool version
+   * @param path tool path
+   * @param versionName name of version
+   * @param descriptorType descriptor type (CWL or WDL)
+   */
+  getTRSLink(path: string, versionName: string, descriptorType: string): string {
+    return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
+      `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType.toUpperCase() +
+      `/descriptor`;
   }
 }

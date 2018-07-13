@@ -28,8 +28,8 @@
       <div class="form-inline">
         <div class="text-right small-bottom-margin">
           <select id="launchWithDescriptor" class="form-control input-sm" [(ngModel)]="currentDescriptor" (change)="reactToDescriptor()">
-            <option *ngFor="let descriptor of validDescriptors" [ngValue]="descriptor.value">
-              {{ descriptor.value }}
+            <option *ngFor="let descriptor of validDescriptors" [ngValue]="descriptor">
+              {{ descriptor }}
             </option>
           </select>
         </div>

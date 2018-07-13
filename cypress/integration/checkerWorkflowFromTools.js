@@ -9,8 +9,7 @@ describe('Checker workflow test from tools', function() {
 
     describe('Should be able to see the checker workflow from a tool', function() {
         it('visit the tool with a checker workflow and have the correct buttons', function() {
-            cy.get('tbody')
-                .children('tr')
+            cy.get('mat-cell')
                 .find('a')
                 .contains('b3')
                 .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')

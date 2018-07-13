@@ -22,7 +22,6 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
               "node_modules/jquery-colorbox/example1/colorbox.css",
               "src/jquery.qtip.css",
               "node_modules/font-awesome/css/font-awesome.css",
@@ -42,8 +41,6 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js",
-              "node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
               "node_modules/jquery-colorbox/jquery.colorbox.js",
               "node_modules/cytoscape/dist/cytoscape.js",
               "node_modules/dagre/dist/dagre.min.js",
@@ -118,8 +115,6 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js",
-              "node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
               "node_modules/jquery-colorbox/jquery.colorbox.js",
               "node_modules/cytoscape/dist/cytoscape.js",
               "node_modules/dagre/dist/dagre.min.js",
@@ -129,7 +124,6 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/datatables.net-bs/css/dataTables.bootstrap.css",
               "node_modules/jquery-colorbox/example1/colorbox.css",
               "src/jquery.qtip.css",
               "node_modules/font-awesome/css/font-awesome.css",

@@ -8,7 +8,8 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInp
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RefreshService } from './../../shared/refresh.service';
-import { HostedStubService, WorkflowStubService, RefreshStubService } from './../../test/service-stubs';
+import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 
 describe('WorkflowFileEditorComponent', () => {
   let component: WorkflowFileEditorComponent;
@@ -33,6 +34,7 @@ describe('WorkflowFileEditorComponent', () => {
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: RefreshService, useClass: RefreshStubService }
       ]
     })

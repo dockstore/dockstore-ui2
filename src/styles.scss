@@ -397,6 +397,10 @@ img.site-icons-tab {
   line-height: 2.2em;
 }
 
+.pt-1 {
+  padding-top: 5px;
+}
+
 .search {
   width: 200px;
   position: relative;
@@ -521,14 +525,18 @@ th {
   text-align: left;
 }
 
-td.browse-all {
-  background-color: #f4f4f4;
-  text-align: center;
+// Material Datatable for both tool and workflow list components
+.mat-column-starredUsers, .mat-column-stars {
+  max-width: 75px;
+}
+.mat-column-descriptorType, .mat-column-format {
+  max-width: 100px;
 }
 
-.browse-all .button {
-  width: 280px;
+.mat-column-projectLinks {
+  max-width: 175px;
 }
+// End
 
 #container-pagination {
   width: 100%;

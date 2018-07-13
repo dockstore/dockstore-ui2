@@ -1,8 +1,9 @@
-import { Observable } from 'rxjs/Observable';
+
+import {map} from 'rxjs/operators';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Md5 } from 'ts-md5/dist/md5';
 
 import { UsersService } from '../shared/swagger';
@@ -27,7 +28,7 @@ export class UserService {
   constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration,
     private router: Router) {
     this.updateUser();
-    this.userId$ = this.userSource.map((user: User) => user.id);
+    this.userId$ = this.userSource.pipe(map((user: User) => user.id));
    }
 
   setUser(user) {

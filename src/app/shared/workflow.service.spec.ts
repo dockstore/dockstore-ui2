@@ -33,6 +33,7 @@ describe('WorkflowService', () => {
     it('should replace workflow', inject([WorkflowService], (service: WorkflowService) => {
         const workflows: Workflow[] = [sampleWorkflow1, sampleWorkflow2, sampleWorkflow3];
         service.setWorkflows(workflows);
+        service.setSharedWorkflows([]);
         const newSampleWorkflow1: Workflow = {
             id: 1,
             'descriptorType': 'cwl',
@@ -46,7 +47,7 @@ describe('WorkflowService', () => {
             'sourceControl': 'github.com',
             'source_control_provider': 'GITHUB'
         };
-        service.replaceWorkflow(workflows, newSampleWorkflow1);
+        service.upsertWorkflowToWorkflow(newSampleWorkflow1);
         expect(service.workflows$.getValue()).toEqual([newSampleWorkflow1, sampleWorkflow2, sampleWorkflow3]);
     }));
 

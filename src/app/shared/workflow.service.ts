@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Workflow } from './swagger/model/workflow';
 
@@ -26,71 +26,88 @@ export class WorkflowService {
   workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
   workflowId$: Observable<number>;
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
+  sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted shared workflows
+  nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   workflowIsPublished$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor() {
-    this.workflowId$ = this.workflow$.map((workflow: Workflow) => {
+    this.workflowId$ = this.workflow$.pipe(map((workflow: Workflow) => {
       if (workflow) {
         return workflow.id;
       } else {
         return null;
       }
-    });
-    this.workflowIsPublished$ = this.workflow$.map((workflow: Workflow) => {
+    }));
+    this.workflowIsPublished$ = this.workflow$.pipe(map((workflow: Workflow) => {
       if (workflow) {
         return workflow.is_published;
       } else {
         return null;
       }
-    });
+    }));
   }
-  setWorkflow(workflow: any) {
+  setWorkflow(workflow: Workflow) {
     this.workflowSource.next(workflow);
   }
 
-  setWorkflows(workflows: any) {
+  setWorkflows(workflows: Array<Workflow>) {
     this.workflows$.next(workflows);
+  }
+
+  setSharedWorkflows(workflows: Array<any>) {
+    this.sharedWorkflows$.next(this.convertSharedWorkflowsToWorkflowsList(workflows));
+  }
+
+  /**
+   * Converts the mapping of roles to workflows to a concatentation of all the workflows
+   * @param workflows mapping returned by shared workflows endpoint
+   */
+  convertSharedWorkflowsToWorkflowsList(workflows: Array<any>): Array<Workflow> {
+    if (workflows) {
+      let sharedWorkflows = workflows.map(workflow => workflow.workflows);
+      sharedWorkflows = [].concat.apply([], sharedWorkflows);
+      return sharedWorkflows;
+    } else {
+      return null;
+    }
   }
 
   /**
    * Upsert the new workflow into the current list of workflows (depends on the workflow id)
+   * If not found will add to the workflows list (not shared workflows)
    * @param workflow Workflow to be upserted
    */
   upsertWorkflowToWorkflow(workflow: Workflow) {
     const workflows = this.workflows$.getValue();
-    if (!workflow || !workflows) {
-      return;
+    const sharedWorkflows = this.sharedWorkflows$.getValue();
+    if (workflow && workflows && sharedWorkflows) {
+      const oldWorkflow = workflows.find(x => x.id === workflow.id);
+      const oldSharedWorkflow = sharedWorkflows.find(x => x.id === workflow.id);
+      if (oldWorkflow) {
+        const index = workflows.indexOf(oldWorkflow);
+        workflows[index] = workflow;
+        this.setWorkflows(workflows);
+      } else if (oldSharedWorkflow) {
+        const index = workflows.indexOf(oldWorkflow);
+        sharedWorkflows[index] = workflow;
+        this.setSharedWorkflows(sharedWorkflows);
+      } else {
+        workflows.push(workflow);
+        this.setWorkflows(workflows);
+      }
     }
-    const oldWorkflow = workflows.find(x => x.id === workflow.id);
-    if (oldWorkflow) {
-      const index = workflows.indexOf(oldWorkflow);
-      workflows[index] = workflow;
-    } else {
-      workflows.push(workflow);
-    }
-    this.setWorkflows(workflows);
-  }
-
-  /**
-   * This function replaces the workflow inside of workflows with an updated workflow
-   *
-   * @param {*} workflows the current set of workflows
-   * @param {*} newWorkflow the new workflow we are replacing
-   * @memberof WorkflowService
-   */
-  replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) {
-    workflows = this.workflows$.getValue();
-    const oldTool = workflows.find(x => x.id === newWorkflow.id);
-    const index = workflows.indexOf(oldTool);
-    workflows[index] = newWorkflow;
-    this.setWorkflows(workflows);
   }
 
   setNsWorkflows(nsWorkflows: any) {
     this.nsWorkflows$.next(nsWorkflows);
   }
+
+  setNsSharedWorkflows(nsWorkflows: any) {
+    this.nsSharedWorkflows$.next(nsWorkflows);
+  }
+
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }

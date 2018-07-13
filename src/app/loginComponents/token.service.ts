@@ -1,9 +1,10 @@
+
+import {map} from 'rxjs/operators';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Observable, throwError } from 'rxjs';
 
 import { Configuration, TokensService } from '../shared/swagger';
 import { UsersService } from './../shared/swagger/api/users.service';
@@ -23,7 +24,8 @@ export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);
   tokens: Token[];
   user: User;
-  hasGitHubToken$ = this.tokens$.map(tokens => this.hasGitHubTokenFunction(tokens));
+  hasGitHubToken$ = this.tokens$.pipe(map(tokens => this.hasGitHubTokenFunction(tokens)));
+  hasGoogleToken$ = this.tokens$.pipe(map(tokens => this.hasGoogleTokenFunction(tokens)));
   constructor(private usersService: UsersService, private userService: UserService,
     private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {
@@ -41,6 +43,18 @@ export class TokenService {
       return false;
     }
     const githubToken = tokens.find(token => token.tokenSource === 'github.com');
+    if (githubToken) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  hasGoogleTokenFunction(tokens: Token[]) {
+    if (!tokens) {
+      return false;
+    }
+    const githubToken = tokens.find(token => token.tokenSource === 'google.com');
     if (githubToken) {
       return true;
     } else {
@@ -68,7 +82,7 @@ export class TokenService {
         return this.tokensService.addGitlabToken(token);
       default: {
         console.log('Unknown provider: ' + provider);
-        return Observable.throwError('Unknown provider.');
+        return throwError('Unknown provider.');
       }
 
     }

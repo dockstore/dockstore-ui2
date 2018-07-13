@@ -16,7 +16,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TrackLoginService } from '../../../shared/track-login.service';
@@ -63,13 +64,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: 'Optional',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false
-    // },
-    // {
-    //   name: 'GitLab',
-    //   source: TokenSource.GITLAB,
-    //   bold: 'Optional',
-    //   message: 'GitLab credentials are used for pulling source code from GitLab.',
-    //   show: false
+    },
+    {
+      name: 'GitLab',
+      source: TokenSource.GITLAB,
+      bold: 'Optional',
+      message: 'GitLab credentials are used for pulling source code from GitLab.',
+      show: false
     }
   ];
 
@@ -80,7 +81,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
     private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService) {
-    this.trackLoginService.isLoggedIn$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       state => {
         if (!state) {
           this.router.navigate(['']);
@@ -113,8 +114,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   // Delete a token and unlink service in the UI
   unlink(source: string) {
-    this.deleteToken(source)
-      .first().subscribe(() => {
+    this.deleteToken(source).pipe(
+      first()).subscribe(() => {
         this.tokenService.updateTokens();
         this.unlinkToken(source);
       });

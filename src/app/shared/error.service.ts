@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ErrorService {
@@ -33,7 +33,7 @@ export class ErrorService {
             errorObj = {
               message: 'The webservice encountered an error trying to create/modify.',
               errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-              error.error
+              (error.error && error.error.message ? error.error.message : error.error)
             };
           }
         }

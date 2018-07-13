@@ -9,10 +9,8 @@ describe('Checker workflow test from workflows', function() {
 
     describe('Should be able to see the checker workflow from a workflow', function() {
         it('visit the tool with a checker workflow and have the correct buttons', function() {
-            cy.get('tbody')
-                .children('tr')
+            cy.get('mat-cell')
                 .find('a')
-
                 // Grabbing the checker because couldn't figure out how to grab the 'l' workflow, it's not specific enough
                 .contains('l/_cwl_checker')
                 .should('not.have.attr', 'href', '/workflows/github.com%20A%20l')

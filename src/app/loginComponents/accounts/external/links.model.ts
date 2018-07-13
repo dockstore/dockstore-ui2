@@ -18,9 +18,11 @@ export class Links {
                                ?client_id=${ Dockstore.BITBUCKET_CLIENT_ID }
                                &response_type=code`;
 
+  /** need this strange construction since gitlab scopes are space-separated */
   static readonly GITLAB = `${ Dockstore.GITLAB_AUTH_URL }
                             ?client_id=${ Dockstore.GITLAB_CLIENT_ID }
                             &redirect_uri=${ Dockstore.GITLAB_REDIRECT_URI }
-                            &response_type=code`;
+                            &response_type=code`.replace(/\s/g, '') +
+                            `&scope=${ Dockstore.GITLAB_SCOPE }`;
 
 }

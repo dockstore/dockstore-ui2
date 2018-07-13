@@ -20,11 +20,12 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { CustomMaterialModule } from './../shared/modules/material.module';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
+import { PipeModule } from '../shared/pipe/pipe.module';
 import { RefreshAlertModule } from './../shared/alert/alert.module';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import {
   RefreshWorkflowOrganizationComponent,
@@ -33,13 +34,15 @@ import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
 import { myworkflowRouting } from './myworkflows.routing';
+import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
 
 @NgModule({
   declarations: [
     MyWorkflowsComponent,
     RegisterWorkflowModalComponent,
     RefreshWorkflowOrganizationComponent,
-    MyWorkflowComponent
+    MyWorkflowComponent,
+    SidebarAccordionComponent
 ],
   imports: [
     CommonModule,
@@ -52,7 +55,8 @@ import { myworkflowRouting } from './myworkflows.routing';
     RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    CustomMaterialModule
+    CustomMaterialModule,
+    PipeModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

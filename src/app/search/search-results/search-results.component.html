@@ -36,7 +36,7 @@
       </div>
     </div>
     <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-    <app-listentry (userUpdated)="saveSearchFilter()" [entryType]="'tool'"></app-listentry>
+    <app-search-tool-table></app-search-tool-table>
   </tab>
 
   <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
@@ -60,6 +60,6 @@
       Browse Workflows
     </ng-template>
     <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-    <app-listentry (userUpdated)="saveSearchFilter()" [entryType]="'workflow'"></app-listentry>
+    <app-search-workflow-table></app-search-workflow-table>
   </tab>
 </tabset>

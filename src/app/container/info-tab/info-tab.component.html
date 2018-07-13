@@ -46,6 +46,18 @@
         {{ tool?.imgProviderUrl }}
       </span>
     </li>
+    <li *ngIf="trsLinkCWL">
+      <strong tooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
+      <a [href]="trsLinkCWL">
+        {{tool?.tool_path}}
+      </a>
+    </li>
+    <li *ngIf="trsLinkWDL">
+      <strong tooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
+      <a [href]="trsLinkWDL">
+        {{tool?.tool_path}}
+      </a>
+    </li>
     <li *ngIf="(tool?.default_dockerfile_path || !isPublic)">
       <form #editDockerfileForm="ngForm" class="form-inline">
         <div class="form-group">
@@ -136,7 +148,7 @@
         </button>
       </form>
     </li>
-    <app-info-tab-checker-workflow-path></app-info-tab-checker-workflow-path>
+    <app-info-tab-checker-workflow-path [canRead]="true" [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
     <li *ngIf="tool?.buildMode">
       <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
@@ -152,7 +164,7 @@
       Description
     </label>
     <div *ngIf="tool?.description" class="well well-sm">
-      <markdown [data]="tool?.description"></markdown>
+      <ngx-md [data]="tool?.description"></ngx-md>
     </div>
     <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
       <span class="glyphicon glyphicon-warning-sign"></span>

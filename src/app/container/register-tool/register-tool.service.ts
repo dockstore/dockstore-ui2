@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { ContainerService } from './../../shared/container.service';
 import { Repository } from './../../shared/enum/Repository.enum';
@@ -26,6 +26,8 @@ import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tool } from './tool';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
+// This line is super important for jQuery to work across the website for some reason
+import * as $ from 'jquery';
 
 @Injectable()
 export class RegisterToolService {

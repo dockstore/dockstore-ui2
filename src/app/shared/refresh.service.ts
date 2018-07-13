@@ -93,7 +93,7 @@ export class RefreshService {
         const message = 'Refreshing ' +  this.workflow.full_workflow_path;
         this.stateService.setRefreshMessage(message + ' ...');
         this.workflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
-            this.workflowService.replaceWorkflow(this.workflows, response);
+            this.workflowService.upsertWorkflowToWorkflow(response);
             this.workflowService.setWorkflow(response);
             this.handleSuccess(message);
         }, error => this.handleError(message, error));

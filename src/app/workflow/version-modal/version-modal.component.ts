@@ -26,7 +26,7 @@ import { VersionModalService } from './version-modal.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-version-modal',
@@ -50,6 +50,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public refreshMessage: string;
   public WorkflowType = Workflow;
   workflowSubscription: Subscription;
+  @Input() canRead: boolean;
+  @Input() canWrite: boolean;
+  @Input() isOwner: boolean;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
