@@ -30,7 +30,7 @@
         {{ tool?.provider}}
       </strong>:
       <a [href]="tool?.providerUrl">
-        {{ tool?.providerUrl }}
+        {{ tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '') }}
       </a>
     </li>
     <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
