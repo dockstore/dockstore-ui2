@@ -60,7 +60,7 @@ export class ContainerStubService {
     }
 }
 export class ProviderStubService {
-    setUpProvider(tool, version = null) {
+    setUpProvider(tool) {
         tool.provider = 'a provider';
         tool.providerUrl = 'a provider url';
         return tool;
