@@ -79,13 +79,13 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 1. Run this to verify that pip has been installed \`pip --version\`
 2. Run these commands to install cwltool
 \`\`\`
-curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
+curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
 pip install -r requirements.txt
 \`\`\`
 <!-- Workaround until https://github.com/common-workflow-language/cwltool/issues/524 is resolved -->
 If using Python 3, install cwl-avro instead of avro.  Do this by running these commands:
 \`\`\`
-curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
+curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
 pip install -r requirements.txt
 \`\`\`
 Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
