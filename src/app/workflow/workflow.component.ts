@@ -25,7 +25,7 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ProviderService } from '../shared/provider.service';
 import { Tag } from '../shared/swagger/model/tag';
-import {WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ErrorService } from './../shared/error.service';
@@ -36,8 +36,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
-import { Permission } from './../shared/swagger';
-import RoleEnum = Permission.RoleEnum;
+import { HostedService } from './../shared/swagger';
 
 @Component({
   selector: 'app-workflow',
@@ -61,14 +60,11 @@ export class WorkflowComponent extends Entry {
   protected canRead = false;
   protected canWrite = false;
   protected isOwner = false;
-  protected readers = [];
-  protected writers = [];
-  protected owners = [];
   @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService, private hostedService: HostedService, trackLoginService: TrackLoginService,
+    providerService: ProviderService,  router: Router, private workflowService: WorkflowService,
     stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
     location: Location, activatedRoute: ActivatedRoute) {
     super(trackLoginService, providerService, router,
@@ -77,22 +73,6 @@ export class WorkflowComponent extends Entry {
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
-  }
-
-  private processResponse(userPermissions: Permission[]): void {
-    this.owners = this.specificPermissionEmails(userPermissions, RoleEnum.OWNER);
-    this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
-    this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
-
-    this.canRead = this.canUserRead();
-    this.canWrite = this.canUserWrite();
-    this.isOwner = this.isUserOwner();
-  }
-
-  private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions
-      .filter(u => u.role === role)
-      .map(c => c.email);
   }
 
   isPublic(): boolean {
@@ -150,13 +130,36 @@ export class WorkflowComponent extends Entry {
         this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
       this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-        (userPermissions: Permission[]) => {
-          this.processResponse(userPermissions);
+        () => {
+          // If we can fetch permissions, we are the owner.
+          this.isOwner = true;
+          this.canWrite = true;
+          this.canRead = true;
         },
         () => {
+          // If we can't fetch permissions, we're not the owner. Check the corresponding endpoints to see what we can do.
+          if (this.isHosted()) {
+            this.hostedService.hostedWorkflowOptions(this.workflow.id, 'response')
+              .pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+              this.configurePermissions(response.headers.get('Allow') || '');
+            });
+          } else {
+            this.workflowsService.getWorkflowByPathOptions(this.workflow.full_workflow_path, 'response')
+              .pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+              (response => {
+                this.configurePermissions(response.headers.get('Allow') || '');
+              })
+            );
+          }
         }
       );
     }
+  }
+
+  private configurePermissions(allowHeader: string) {
+    const allowMethods = allowHeader.split(',').map(method => method.trim());
+    this.canRead = allowMethods.indexOf('GET') !== -1;
+    this.canWrite = allowMethods.indexOf('PATCH') !== -1;
   }
 
   public subscriptions(): void {
@@ -353,50 +356,4 @@ export class WorkflowComponent extends Entry {
     }
   }
 
-  /**
-   * True if user is in users list, or username is in read,write,owner permissions, false otherwise
-   */
-  canUserRead(): boolean {
-    const username = this.user.username;
-    if (this.isInUserArray(username)) {
-      return true;
-    }
-    return this.readers.includes(username) || this.writers.includes(username) || this.owners.includes(username) ;
-  }
-
-  /**
-   * True if user is in users list, or username is in write or owner permissions, false otherwise
-   */
-  canUserWrite(): boolean {
-    const username = this.user.username;
-    if (this.isInUserArray(username)) {
-      return true;
-    }
-    return this.writers.includes(username) || this.owners.includes(username);
-  }
-
-  /**
-   * True if user is in users list, or username is in owner permissions, false otherwise
-   */
-  isUserOwner(): boolean {
-    const username = this.user.username;
-    if (this.isInUserArray(username)) {
-      return true;
-    }
-    return this.owners.includes(username);
-  }
-
-  /**
-   * True if username is in the workflow user array, false otherwise
-   * @param username
-   */
-  isInUserArray(username: string): boolean {
-    if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.username === username);
-      if (match !== undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
 }
