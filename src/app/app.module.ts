@@ -90,6 +90,8 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { ExtendedWorkflowsService } from './shared/extended-workflows.service';
+import { ExtendedToolsService } from './shared/extended-tools.service';
 
 @NgModule({
   declarations: [
@@ -171,7 +173,9 @@ import { StarringModule } from './starring/starring.module';
     ErrorService,
     DescriptorLanguageService,
     UrlResolverService,
-    MetadataService
+    MetadataService,
+    ExtendedWorkflowsService,
+    ExtendedToolsService
   ],
   bootstrap: [ AppComponent ]
 })

@@ -18,13 +18,14 @@ import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { ExtendedWorkflowsService } from './../../shared/extended-workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ga4ghPath } from './../../shared/constants';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-info-tab',
@@ -45,9 +46,7 @@ export class InfoTabComponent implements OnInit {
       const found = this.validVersions.find((version: WorkflowVersion) => {
         return version.id === value.id;
       });
-      if (found) {
-        this.isValidVersion = true;
-      }
+      this.isValidVersion = found ? true : false;
       this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, value.name, this.workflow.descriptorType);
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
     }
@@ -61,8 +60,8 @@ export class InfoTabComponent implements OnInit {
   isPublic: boolean;
   trsLink: string;
   public refreshMessage: string;
-  constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
-  private infoTabService: InfoTabService) { }
+  constructor(private workflowService: WorkflowService, private workflowsService: ExtendedWorkflowsService,
+    private stateService: StateService, private infoTabService: InfoTabService) { }
 
   ngOnInit() {
     this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
@@ -81,6 +80,14 @@ export class InfoTabComponent implements OnInit {
     this.workflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
       this.workflowService.setWorkflow(restubbedWorkflow);
       this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
+    });
+  }
+
+  downloadZip() {
+    this.workflowsService.getWorkflowZip(this.workflow.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
+      const b = new Blob([data.body], { type: 'application/zip'});
+      const url = window.URL.createObjectURL(b);
+      window.open(url);
     });
   }
 

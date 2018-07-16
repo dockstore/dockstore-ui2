@@ -101,7 +101,8 @@
   </li>
 </ul>
 
-<a id="zipDownloadButton" *ngIf="isValidVersion" [href]="downloadZipLink" target="_blank">Export as ZIP</a>
+<!-- <a id="zipDownloadButton" *ngIf="isValidVersion" [href]="downloadZipLink" target="_self">Export as ZIP</a> -->
+<button mat-raised-button (click)="downloadZip()">Export as ZIP</button>
 
 <div *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB">
   <div *ngIf="workflow?.description || !isPublic">

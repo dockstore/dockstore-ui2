@@ -18,13 +18,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ContainerService } from './../../shared/container.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { StateService } from './../../shared/state.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ga4ghPath } from './../../shared/constants';
 import { Tag } from './../../shared/swagger/model/tag';
+import { ExtendedToolsService } from './../../shared/extended-tools.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-info-tab',
@@ -40,9 +41,7 @@ export class InfoTabComponent implements OnInit {
       const found = this.validVersions.find((version: Tag) => {
         return version.id === value.id;
       });
-      if (found) {
-        this.isValidVersion = true;
-      }
+      this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
 
       if (this.tool.descriptorType.includes('cwl')) {
@@ -69,7 +68,7 @@ export class InfoTabComponent implements OnInit {
   downloadZipLink: string;
   isValidVersion = false;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
-    private containersService: ContainersService) {
+    private containersService: ExtendedToolsService) {
     }
 
   ngOnInit() {
@@ -79,6 +78,14 @@ export class InfoTabComponent implements OnInit {
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
+  }
+
+  downloadZip() {
+    this.containersService.getToolZip(this.tool.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
+      const b = new Blob([data.body], { type: 'application/zip' });
+      const url = window.URL.createObjectURL(b);
+        window.open(url);
+    });
   }
 
   toggleEditDockerFile() {

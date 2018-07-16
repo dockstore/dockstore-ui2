@@ -160,7 +160,8 @@
     </li>
   </ul>
 
-  <a id="zipDownloadButton" *ngIf="isValidVersion" [href]="downloadZipLink" target="_blank">Export as ZIP</a>
+  <!-- <a id="zipDownloadButton" *ngIf="isValidVersion" [href]="downloadZipLink" target="_blank">Export as ZIP</a> -->
+  <button mat-raised-button (click)="downloadZip()">Export as ZIP</button>
 
   <div *ngIf="tool?.description || !isPublic">
     <label tooltip="Description of tool obtained from tool descriptor">
