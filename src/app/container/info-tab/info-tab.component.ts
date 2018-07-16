@@ -69,6 +69,8 @@ export class InfoTabComponent implements OnInit, OnChanges {
       if (this.tool.descriptorType.includes('wdl')) {
         this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'wdl');
       }
+    } else {
+      this.isValidVersion = false;
     }
   }
 
@@ -83,9 +85,9 @@ export class InfoTabComponent implements OnInit, OnChanges {
 
   downloadZip() {
     this.containersService.getToolZip(this.tool.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
-      const b = new Blob([data.body], { type: 'application/zip' });
-      const url = window.URL.createObjectURL(b);
-        window.open(url);
+      const blob = new Blob([data.body], { type: 'application/zip' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
     });
   }
 

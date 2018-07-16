@@ -64,6 +64,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       });
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
+    } else {
+      this.isValidVersion = false;
     }
   }
 
@@ -89,8 +91,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
 
   downloadZip() {
     this.workflowsService.getWorkflowZip(this.workflow.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
-      const b = new Blob([data.body], { type: 'application/zip'});
-      const url = window.URL.createObjectURL(b);
+      const blob = new Blob([data.body], { type: 'application/zip'});
+      const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
   }
