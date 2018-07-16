@@ -19,13 +19,14 @@ import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ErrorService } from '../../shared/error.service';
 import { RefreshService } from '../../shared/refresh.service';
+import { StateService } from '../../shared/state.service';
 import { SourceFile } from '../../shared/swagger';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { VerifiedByService } from '../../shared/verified-by.service';
 import { Versions } from '../../shared/versions';
-import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -51,7 +52,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
 
   constructor(dockstoreService: DockstoreService, dateService: DateService, protected stateService: StateService,
     private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService) {
+    private refreshService: RefreshService, private verifiedByService: VerifiedByService) {
     super(dockstoreService, dateService, stateService);
   }
 
@@ -105,13 +106,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   }
 
   getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
-    // const sourcefiles = version.sourceFiles;
-    const platforms = new Set<string>();
-    sourcefiles.forEach(sourcefile => {
-      Object.keys(sourcefile.verifiedBySource).forEach(platform => {
-        platforms.add(platform);
-      });
-    });
-    return Array.from(platforms).join(', ');
+    return this.verifiedByService.getVerifiedPlatformsFromSourceFiles(sourcefiles);
   }
 }

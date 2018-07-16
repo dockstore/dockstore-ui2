@@ -21,10 +21,11 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { StateService } from '../../shared/state.service';
 import { SourceFile } from '../../shared/swagger';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { VerifiedByService } from '../../shared/verified-by.service';
 
 @Component({
   selector: 'app-versions-container',
@@ -45,7 +46,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService, private refreshService: RefreshService,
+    dateService: DateService, private refreshService: RefreshService, private verifiedByService: VerifiedByService,
     protected stateService: StateService,
     private containerService: ContainerService) {
     super(dockstoreService, dateService, stateService);
@@ -98,13 +99,6 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
-        // const sourcefiles = version.sourceFiles;
-        const platforms = new Set<string>();
-        sourcefiles.forEach(sourcefile => {
-          Object.keys(sourcefile.verifiedBySource).forEach(platform => {
-            platforms.add(platform);
-          });
-        });
-        return Array.from(platforms).join(', ');
-      }
+    return this.verifiedByService.getVerifiedPlatformsFromSourceFiles(sourcefiles);
+  }
 }

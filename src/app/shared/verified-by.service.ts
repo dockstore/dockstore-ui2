@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WorkflowVersion, Tag, VerificationInformation } from './swagger';
+
+import { SourceFile, Tag, WorkflowVersion } from './swagger';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,6 @@ export class VerifiedByService {
               verifiedSourceArray[platform] = new Set<string>();
             }
             verifiedSourceArray[platform].add(arrayElement[1].metadata);
-            console.log(typeof(verifiedSourceArray[platform]));
           });
         }
       });
@@ -38,6 +38,15 @@ export class VerifiedByService {
     }
   }
 
+  getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
+    const platforms = new Set<string>();
+    sourcefiles.forEach(sourcefile => {
+      Object.keys(sourcefile.verifiedBySource).forEach(platform => {
+        platforms.add(platform);
+      });
+    });
+    return Array.from(platforms).join(', ');
+  }
 }
 
 
