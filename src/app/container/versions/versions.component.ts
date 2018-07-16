@@ -79,7 +79,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     }
     const message = 'Updating default tool version';
     this.stateService.setRefreshMessage(message + '...');
-    this.containersService.updateDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
+    this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
       this.refreshService.handleSuccess(message);
       if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
         this.refreshService.refreshTool();

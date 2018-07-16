@@ -82,7 +82,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     }
     const message = 'Updating default workflow version';
     this.stateService.setRefreshMessage(message + '...');
-    this.workflowsService.updateDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
+    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
         this.refreshService.handleSuccess(message);
         if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {
           this.refreshService.refreshWorkflow();
