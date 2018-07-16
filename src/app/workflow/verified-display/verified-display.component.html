@@ -10,21 +10,21 @@
         The actual rendered columns are set as a property on the row definition" -->
       <!-- Name Column -->
       <ng-container matColumnDef="path">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Parameter File </th>
-        <td mat-cell *matCellDef="let thing"> {{thing.path}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Test Parameter File </mat-header-cell>
+        <mat-cell  *matCellDef="let thing"> {{thing.path}} </mat-cell>
       </ng-container>
       <!-- Weight Column -->
       <ng-container matColumnDef="platform">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Platform </th>
-        <td mat-cell *matCellDef="let thing"> {{thing.platform}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Platform </mat-header-cell>
+        <mat-cell *matCellDef="let thing"> {{thing.platform}} </mat-cell>
       </ng-container>
       <!-- Symbol Column -->
       <ng-container matColumnDef="metadata">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Metadata </th>
-        <td mat-cell *matCellDef="let thing"> {{thing.metadata}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Metadata </mat-header-cell>
+        <mat-cell *matCellDef="let thing"> {{thing.metadata}} </mat-cell>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </table>
   </mat-expansion-panel>
 </div>

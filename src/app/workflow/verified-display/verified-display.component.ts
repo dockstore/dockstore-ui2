@@ -12,7 +12,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
   public thingythings: Array<any> = new Array();
   @ViewChild(MatSort) sort: MatSort;
   dataSource: MatTableDataSource<any>;
-  displayedColumns = ['path', 'platform', 'metadata'];
+  displayedColumns = ['platform', 'metadata', 'path'];
   constructor() {
     this.dataSource = new MatTableDataSource([]);
   }
@@ -29,7 +29,8 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
         const platform: string = arrayElement[0];
         const verifiedInformation: VerificationInformation = arrayElement[1];
         const thing = {
-          path: sourceFile.path,
+          // This allows the string to break after every slash for word-wrapping purposes
+          path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
           platform: platform,
           metadata: verifiedInformation.metadata
         };
