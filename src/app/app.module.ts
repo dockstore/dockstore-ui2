@@ -83,6 +83,7 @@ import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
+import { VerifiedByService } from './shared/verified-by.service';
 import { WorkflowService } from './shared/workflow.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
@@ -167,7 +168,8 @@ import { StarringModule } from './starring/starring.module';
     ErrorService,
     DescriptorLanguageService,
     UrlResolverService,
-    MetadataService
+    MetadataService,
+    VerifiedByService
   ],
   bootstrap: [ AppComponent ]
 })
