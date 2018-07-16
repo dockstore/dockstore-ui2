@@ -18,7 +18,8 @@ import { UsersService } from './../shared/swagger/api/users.service';
 import { User } from './../shared/swagger/model/user';
 import { AuthService } from 'ng2-ui-auth';
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription ,  Subject } from 'rxjs';
 
 import { LogoutService } from './../shared/logout.service';
 import { Logout } from '../loginComponents/logout';
@@ -26,7 +27,8 @@ import { TrackLoginService } from './../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { PageInfo } from './../shared/models/PageInfo';
-
+import { toExtendSite } from '../shared/helpers';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -35,12 +37,20 @@ import { PageInfo } from './../shared/models/PageInfo';
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;
+  isExtended = false;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+
   constructor(private pagenumberService: PagenumberService,
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
     router: Router,
     private userService: UserService) {
     super(trackLoginService, logoutService, router);
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isExtended = toExtendSite(this.router.url);
+      }
+    });
   }
 
   ngOnInit() {

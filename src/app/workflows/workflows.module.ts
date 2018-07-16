@@ -15,12 +15,11 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DataTablesModule } from 'angular-datatables';
-import { NgxMdModule } from 'ngx-md';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { NgxMdModule } from 'ngx-md';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
@@ -40,7 +39,6 @@ import { workflowsRouting } from './workflows.routing';
     CommonModule,
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
-    DataTablesModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
     NgxMdModule.forRoot(),

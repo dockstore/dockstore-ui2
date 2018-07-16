@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,3 +14,12 @@
  *    limitations under the License.
  */
 
+import { Input } from '@angular/core';
+
+export abstract class EntryTab {
+  @Input() canRead: boolean;
+  @Input() canWrite: boolean;
+  @Input() isOwner: boolean;
+
+  constructor() {}
+}

@@ -21,12 +21,11 @@ import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 export class ProviderService {
 
   /* set up project provider */
-  setUpProvider(tool: (ExtendedDockstoreTool | ExtendedWorkflow),
-    version: (Tag | WorkflowVersion) = null): (ExtendedDockstoreTool | ExtendedWorkflow) {
+  setUpProvider(tool: (ExtendedDockstoreTool | ExtendedWorkflow)): (ExtendedDockstoreTool | ExtendedWorkflow) {
     const gitUrl = tool.gitUrl;
 
     tool.provider = this.getProvider(gitUrl);
-    tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider, version);
+    tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
     return tool;
   }
 
@@ -47,7 +46,7 @@ export class ProviderService {
     return null;
   }
 
-  private getProviderUrl(gitUrl: string, provider: string, version: (Tag | WorkflowVersion)): string {
+  private getProviderUrl(gitUrl: string, provider: string): string {
       if (!gitUrl) {
         return null;
       }
@@ -76,11 +75,6 @@ export class ProviderService {
       }
 
       providerUrl += matchRes[1] + '/' + matchRes[2];
-      if (provider === 'GitHub') {
-        if (version) {
-          providerUrl += '/tree/' + version.name;
-        }
-      }
       return providerUrl;
   }
 

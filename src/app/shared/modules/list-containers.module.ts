@@ -13,20 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DataTablesModule } from 'angular-datatables';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
+import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
 import { PrivateIconModule } from '../private-icon/private-icon.module';
 import { getTooltipConfig } from './../tooltip';
 import { HeaderModule } from './header.module';
+import { CustomMaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -35,15 +34,14 @@ import { HeaderModule } from './header.module';
   imports: [
     CommonModule,
     RouterModule,
-    DataTablesModule.forRoot(),
     ClipboardModule,
+    CustomMaterialModule,
     HeaderModule,
-    TooltipModule.forRoot(),
     PrivateIconModule
   ],
   providers: [
-    ListContainersService,
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    PublishedToolsDataSource,
+    ListContainersService
   ],
   exports: [
     ListContainersComponent

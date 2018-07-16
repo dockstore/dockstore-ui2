@@ -9,7 +9,7 @@ jdk:
   - oraclejdk8
 env:
   global:
-    - WEBSERVICE_VERSION="1.5.0-alpha.4"
+    - WEBSERVICE_VERSION="1.5.0-alpha.5"
   matrix:
     - RUN_PROD=false
     - RUN_PROD=true
@@ -37,6 +37,7 @@ before_script:
   - psql -c "ALTER USER dockstore WITH superuser;" -U postgres
   - psql -c 'create database webservice_test with owner = dockstore;' -U postgres
   - psql -f travisci/db_dump.sql webservice_test
+  - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar db migrate -i 1.5.0 travisci/web.yml
   - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
   - 'sleep 20'
 

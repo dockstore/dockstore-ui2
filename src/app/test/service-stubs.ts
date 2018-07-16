@@ -27,6 +27,8 @@ import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+import { Permission } from './../shared/swagger';
+import RoleEnum = Permission.RoleEnum;
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -58,7 +60,7 @@ export class ContainerStubService {
     }
 }
 export class ProviderStubService {
-    setUpProvider(tool, version = null) {
+    setUpProvider(tool) {
         tool.provider = 'a provider';
         tool.providerUrl = 'a provider url';
         return tool;
@@ -262,9 +264,11 @@ export class HttpStubService {
 
 export class WorkflowStubService {
     nsWorkflows$ = observableOf([]);
+    nsSharedWorkflows$ = observableOf([]);
     workflow$: BehaviorSubject<any> = new BehaviorSubject({}); // This is the selected workflow
     workflowId$ = observableOf(1);
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
+    sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = observableOf({});
     setWorkflow(thing: Workflow) {
         this.workflow$.next(thing);
@@ -272,14 +276,18 @@ export class WorkflowStubService {
     setWorkflows(thing: any) {
         this.workflows$.next(thing);
     }
+    setSharedWorkflows(thing: any) {
+      this.sharedWorkflows$.next(thing);
+   }
     setNsWorkflows(thing: any) {
+    }
+    setSharedNsWorkflows(thing: any) {
     }
     getDescriptors() {
     }
     getTestJson() {
         return observableOf({});
     }
-    replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
     get full_workflow_path() { return ''; }
     get descriptorType() { return ''; }
 }
@@ -410,6 +418,7 @@ export class UserStubService {
 }
 
 export class TokenStubService {
+    tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
     hasGitHubToken$ = observableOf(false);
     updateTokens(): void {
     }
@@ -561,6 +570,9 @@ export class DateStubService {
 }
 
 export class WorkflowsStubService {
+    sharedWorkflows() {
+      return observableOf([]);
+    }
     getTestParameterFiles(workflowId: number, version?: string, extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
         return observableOf([]);
     }
@@ -619,6 +631,15 @@ export class WorkflowsStubService {
       return observableOf({});
     }
     secondaryWdl(workflowId: number, tag: string) {
+      return observableOf([]);
+    }
+    removeWorkflowRole(workflowPath: string, entity: string, permission: RoleEnum) {
+      return observableOf([]);
+    }
+    addWorkflowPermission(workflowPath: string, object: any) {
+      return observableOf([]);
+    }
+    getWorkflowPermissions(workflowPath: string) {
       return observableOf([]);
     }
 }

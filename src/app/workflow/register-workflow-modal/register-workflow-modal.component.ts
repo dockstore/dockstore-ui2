@@ -48,11 +48,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   };
   public options = [
     {
-      label: 'Use CWL, WDL or NextFlow from GitHub, BitBucket, etc.',
+      label: 'Use CWL, WDL or Nextflow from GitHub, BitBucket, etc.',
       value: 0
     },
     {
-      label: 'Create and save CWL or WDL on Dockstore.org',
+      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
       value: 1
     }
   ];
@@ -65,11 +65,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    // TODO: Remove this section when GitLab is enabled
-    const friendlyRepositoryKeys = this.registerWorkflowModalService.friendlyRepositoryKeys();
-    return friendlyRepositoryKeys.filter(key => key !== 'GitLab');
-    // TODO: Uncomment this section when GitLab is enabled
-    // return this.registerWorkflowModalService.friendlyRepositoryKeys();
+    return this.registerWorkflowModalService.friendlyRepositoryKeys();
   }
 
   clearWorkflowRegisterError(): void {
@@ -107,7 +103,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.setIsModalShown(false);
   }
 
-
   // Validation starts here, should move most of these to a service somehow
   ngAfterViewChecked() {
     this.formChanged();
@@ -121,6 +116,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         .subscribe(data => this.onValueChanged(data));
     }
   }
+
   onValueChanged(data?: any) {
     if (!this.registerWorkflowForm) { return; }
     const form = this.registerWorkflowForm.form;

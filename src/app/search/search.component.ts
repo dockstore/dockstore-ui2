@@ -378,7 +378,7 @@ export class SearchComponent implements OnInit {
     this.filters.forEach(filter => {
       count += filter.size;
     });
-    // Seperating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
+    // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(this.query_size, this.values, this.advancedSearchObject,

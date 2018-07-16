@@ -20,10 +20,13 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { DateService } from './date.service';
 import { StateService } from './state.service';
 import { Tooltip } from './tooltip';
+import { EntryTab } from '../shared/entry/entry-tab';
+import { Tag } from './../shared/swagger/model/tag';
+import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 
-export abstract class Versions {
+export abstract class Versions extends EntryTab {
 
-  @Input() versions: Array<any>;
+  @Input() versions: Array<(Tag | WorkflowVersion)>;
   sortColumn: string;
   sortReverse: boolean;
   publicPage: boolean;
@@ -35,8 +38,10 @@ export abstract class Versions {
 
   constructor(protected dockstoreService: DockstoreService,
     private dateService: DateService, protected stateService: StateService) {
-    this.sortColumn = 'name';
-    this.sortReverse = false;
+    // By default, sort by last_modified, latest first
+    super();
+    this.sortColumn = 'last_modified';
+    this.sortReverse = true;
   }
 
   publicPageSubscription() {

@@ -5,6 +5,10 @@ describe('Dockstore my workflows', function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")
     });
 
+    const cwlDescriptorType = 'CWL';
+    const wdlDescriptorType = 'WDL';
+    const nextflowDescriptorType = 'Nextflow';
+
     describe('Should contain extended Workflow properties', function() {
         it('visit another page then come back', function() {
             cy.get('a#home-nav-button').click()
@@ -18,6 +22,7 @@ describe('Dockstore my workflows', function() {
             // to become click-able
             cy
                 .get('accordion')
+                .first()
                 .click()
             cy.contains('github.com/A')
                 .parentsUntil('accordion-group')
@@ -38,10 +43,10 @@ describe('Dockstore my workflows', function() {
             cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
             cy
                 .get('#publishButton')
-                .should('have.class', 'disabled')
+                .should('be.disabled')
             cy
                 .get('#refreshButton')
-                .should('not.have.class', 'disabled')
+                .should('not.be.disabled')
         });
     });
 
@@ -80,10 +85,10 @@ describe('Dockstore my workflows', function() {
             notHaveAlert()
             cy
                 .get('.dropdown-toggle')
-                .contains('button', 'cwl')
+                .contains('button', cwlDescriptorType)
                 .click()
             cy
-                .contains('li', 'wdl')
+                .contains('li', wdlDescriptorType)
                 .click()
             haveAlert()
             cy
@@ -93,10 +98,10 @@ describe('Dockstore my workflows', function() {
             notHaveAlert()
             cy
                 .get('.dropdown-toggle')
-                .contains('button', 'wdl')
+                .contains('button', wdlDescriptorType)
                 .click()
             cy
-                .contains('li', 'nextflow')
+                .contains('li', nextflowDescriptorType)
                 .click()
             haveAlert()
             cy
@@ -106,10 +111,11 @@ describe('Dockstore my workflows', function() {
             notHaveAlert()
             cy
                 .get('.dropdown-toggle')
-                .contains('button', 'nextflow')
+                .contains('button', nextflowDescriptorType)
                 .click()
             cy
-                .contains('li', 'cwl')
+                .get('ul.dropdown-menu')
+                .contains('li', cwlDescriptorType)
                 .click()
             haveAlert()
             cy
@@ -129,6 +135,7 @@ describe('Dockstore my workflows', function() {
     describe('Look at a published workflow', function() {
         it('Look at each tab', function() {
             cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/l")
+            cy.wait(3000)
             cy
                 .get('.nav-link')
                 .contains('Info')

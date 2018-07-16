@@ -18,16 +18,17 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { CustomMaterialModule } from './../modules/material.module';
 
+import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
+import { CodeEditorComponent } from './../code-editor/code-editor.component';
+import { CustomMaterialModule } from './../modules/material.module';
+import { CommitUrlPipe } from './commit-url.pipe';
 import {
   InfoTabCheckerWorkflowPathComponent,
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
-import { CodeEditorComponent } from './../code-editor/code-editor.component';
-import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
-import { CommitUrlPipe } from './commit-url.pipe';
+import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { CommitUrlPipe } from './commit-url.pipe';
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
     CodeEditorListComponent,
-    CommitUrlPipe
+    CommitUrlPipe,
+    VersionProviderUrlPipe
 ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
@@ -51,7 +53,8 @@ import { CommitUrlPipe } from './commit-url.pipe';
     CodeEditorComponent,
     CodeEditorListComponent,
     CustomMaterialModule,
-    CommitUrlPipe
+    CommitUrlPipe,
+    VersionProviderUrlPipe
   ]
 })
 export class EntryModule { }

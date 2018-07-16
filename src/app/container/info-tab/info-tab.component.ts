@@ -13,47 +13,31 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
+import { Dockstore } from '../../shared/dockstore.model';
+import { ga4ghPath } from './../../shared/constants';
 import { ContainerService } from './../../shared/container.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { StateService } from './../../shared/state.service';
-import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { InfoTabService } from './info-tab.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { Dockstore } from '../../shared/dockstore.model';
-import { ga4ghPath } from './../../shared/constants';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ExtendedToolsService } from './../../shared/extended-tools.service';
 import { HttpResponse } from '@angular/common/http';
+import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { InfoTabService } from './info-tab.service';
 
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css']
 })
-export class InfoTabComponent implements OnInit {
+export class InfoTabComponent implements OnInit, OnChanges {
   currentVersion: Tag;
   @Input() validVersions;
-  @Input() set selectedVersion(value: Tag) {
-    if (value != null && this.tool != null) {
-      this.currentVersion = value;
-      const found = this.validVersions.find((version: Tag) => {
-        return version.id === value.id;
-      });
-      this.isValidVersion = found ? true : false;
-      this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
-
-      if (this.tool.descriptorType.includes('cwl')) {
-        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, value.name, 'cwl');
-      }
-      if (this.tool.descriptorType.includes('wdl')) {
-        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, value.name, 'wdl');
-      }
-    }
-  }
+  @Input() selectedVersion: Tag;
   @Input() privateOnlyRegistry;
-  @Input() tool;
+  @Input() tool: ExtendedDockstoreTool;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
@@ -69,7 +53,24 @@ export class InfoTabComponent implements OnInit {
   isValidVersion = false;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
     private containersService: ExtendedToolsService) {
+  }
+
+  ngOnChanges() {
+    if (this.selectedVersion && this.tool) {
+      this.currentVersion = this.selectedVersion;
+      const found = this.validVersions.find((version: Tag) => {
+        return version.id === this.selectedVersion.id;
+      });
+      this.isValidVersion = found ? true : false;
+      this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
+      if (this.tool.descriptorType.includes('cwl')) {
+        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'cwl');
+      }
+      if (this.tool.descriptorType.includes('wdl')) {
+        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'wdl');
+      }
     }
+  }
 
   ngOnInit() {
     this.infoTabService.dockerFileEditing$.subscribe(editing => this.dockerFileEditing = editing);

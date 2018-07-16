@@ -33,7 +33,7 @@ export class ErrorService {
             errorObj = {
               message: 'The webservice encountered an error trying to create/modify.',
               errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-              error.error
+              (error.error && error.error.message ? error.error.message : error.error)
             };
           }
         }

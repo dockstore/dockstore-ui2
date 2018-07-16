@@ -1,37 +1,29 @@
-
-describe('Dockstore tool search page', function() {
+describe('Dockstore tool list page', function () {
   require('./helper.js')
-	beforeEach(function () {
-     cy.visit(String(global.baseUrl) + "/search-containers")
-  });
-
-  describe('Select a tool', function() {
-    it('Should display the correct url', function() {
-      cy.get('tbody')
-      .children('tr')
-      .find('a')
-      .contains(/\ba\b/)
-      .should('have.attr', 'href', '/containers/quay.io/A2/a')
-      .should('not.have.attr', 'href', '/containers/quay.io%20A2%20a')
-      cy.get('tbody')
-      .children('tr')
-      .find('a')
-      .contains('b3')
-      .should('have.attr', 'href', '/containers/quay.io/A2/b3')
-      .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
+  describe('Select a tool', function () {
+    it('Should be able to go to the tools search page', function () {
+      cy.visit(String(global.baseUrl) + "/search-containers")
     });
-
-    it('Should have 4 tools', function() {
+    it('Should display the correct url', function () {
+      cy.get('mat-cell')
+        .find('a')
+        .contains(/\ba\b/)
+        .should('have.attr', 'href', '/containers/quay.io/A2/a')
+        .should('not.have.attr', 'href', '/containers/quay.io%20A2%20a')
+      cy.get('mat-cell')
+        .find('a')
+        .contains('b3')
+        .should('have.attr', 'href', '/containers/quay.io/A2/b3')
+        .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
+    });
+    it('Should have 4 tools', function () {
       cy
-        .get('tbody')
-        .children('tr')
+        .get('mat-row')
         .should('have.length', 4)
     });
-
-    it('Select dockstore-tool-imports', function() {
+    it('Should be able to go to the quay.io/A2/a tool', function () {
       cy
-        .get('tbody')
-        .children('tr')
+        .get('mat-cell')
         .find('a')
         .contains(/\ba\b/)
         .first()

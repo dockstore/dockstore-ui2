@@ -132,7 +132,7 @@ export class ContainerComponent extends Entry {
           if (this.tool.tags.length === 0) {
             this.selectedVersion = null;
           } else {
-            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
+            this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion);
           }
         }
         // Select version
@@ -150,7 +150,7 @@ export class ContainerComponent extends Entry {
     if (tool) {
       this.tool = tool;
       if (!tool.providerUrl) {
-        this.providerService.setUpProvider(tool, this.selectedVersion);
+        this.providerService.setUpProvider(tool);
       }
       this.tool = Object.assign(tool, this.tool);
       const toolRef: ExtendedDockstoreTool = this.tool;
@@ -170,13 +170,13 @@ export class ContainerComponent extends Entry {
       this.containersService.getPublishedContainerByToolPath(this.title)
         .subscribe(tool => {
           this.containerService.setTool(tool);
-          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion, this.selectedVersion);
+          this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.tool != null) {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
-          this.providerService.setUpProvider(this.tool, this.selectedVersion);
+          this.providerService.setUpProvider(this.tool);
         }, error => {
           this.router.navigate(['../']);
         });
@@ -285,7 +285,7 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
-      this.providerService.setUpProvider(this.tool, tag);
+      this.providerService.setUpProvider(this.tool);
     }
     this.onTagChange(tag);
   }

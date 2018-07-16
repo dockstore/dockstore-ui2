@@ -14,23 +14,23 @@
   ~    limitations under the License.
   -->
 
-  <li *ngIf="workflow?.author">
-    <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
-  </li>
-  <li *ngIf="workflow?.email">
-    <strong tooltip="E-mail of corresponding author for workflow">E-mail</strong>:
-    <a href="mailto:{{workflow?.email}}">
-      {{ workflow?.email }}
-    </a>
-  </li>
   <ul class="list-unstyled container-info" *ngIf="workflow">
+      <li *ngIf="workflow?.author">
+          <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
+        </li>
+        <li *ngIf="workflow?.email">
+          <strong tooltip="E-mail of corresponding author for workflow">E-mail</strong>:
+          <a href="mailto:{{workflow?.email}}">
+            {{ workflow?.email }}
+          </a>
+        </li>
       <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
         <li *ngIf="workflow?.provider && workflow?.providerUrl">
           <strong tooltip="Git repository for the associated descriptors">
             {{ workflow?.provider}}
           </strong>:
           <a [href]="workflow?.providerUrl">
-            {{ workflow?.providerUrl }}
+            {{ workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')}}
           </a>
         </li>
       </span>
@@ -81,7 +81,11 @@
       </form>
     </li>
 </span>
-  <app-info-tab-checker-workflow-path></app-info-tab-checker-workflow-path>
+  <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
+  <!-- TODO: Remove once hosted workflows support checker workflows -->
+  <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
+    <strong tooltip="Currently disabled for Hosted Workflows">Checker Workflow</strong>: n/a
+  </div>
   <li *ngIf="!isPublic">
     <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
@@ -93,11 +97,11 @@
     <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
       <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
       <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
-        <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{descriptorLanguage | lowercase}}</option>
+        <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option>
       </select>
     </div>
     <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB">
-      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ workflow?.descriptorType }}</div>
+      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' | mapFriendlyValue : workflow?.descriptorType }}</div>
   </li>
 </ul>
 

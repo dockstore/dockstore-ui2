@@ -25,6 +25,7 @@ export class TokenService {
   tokens: Token[];
   user: User;
   hasGitHubToken$ = this.tokens$.pipe(map(tokens => this.hasGitHubTokenFunction(tokens)));
+  hasGoogleToken$ = this.tokens$.pipe(map(tokens => this.hasGoogleTokenFunction(tokens)));
   constructor(private usersService: UsersService, private userService: UserService,
     private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {
@@ -42,6 +43,18 @@ export class TokenService {
       return false;
     }
     const githubToken = tokens.find(token => token.tokenSource === 'github.com');
+    if (githubToken) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  hasGoogleTokenFunction(tokens: Token[]) {
+    if (!tokens) {
+      return false;
+    }
+    const githubToken = tokens.find(token => token.tokenSource === 'google.com');
     if (githubToken) {
       return true;
     } else {

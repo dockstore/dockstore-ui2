@@ -15,8 +15,9 @@
  */
 
 import { Input } from '@angular/core';
+import { EntryTab } from '../shared/entry/entry-tab';
 
-export class Files {
+export class Files extends EntryTab {
   @Input() id: number;
   @Input() versions: Array<any>;
   @Input() default: any;
