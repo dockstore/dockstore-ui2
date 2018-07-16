@@ -57,7 +57,7 @@ export class ExtendedToolsService extends ContainersService {
                 headers: headers,
                 observe: observe,
                 reportProgress: reportProgress,
-                responseType: 'blob'
+                responseType: 'blob' as 'json'
             }
         );
     }
