@@ -13,18 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-
+import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { Versions } from '../../shared/versions';
-import { ContainerService } from './../../shared/container.service';
-import { StateService } from './../../shared/state.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { StateService } from '../../shared/state.service';
+import { SourceFile } from '../../shared/swagger';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
+import { Versions } from '../../shared/versions';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
 
 @Component({
   selector: 'app-versions-container',
@@ -96,4 +96,15 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     this.versionTag = version;
     this.selectedVersionChange.emit(this.versionTag);
   }
+
+  getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
+        // const sourcefiles = version.sourceFiles;
+        const platforms = new Set<string>();
+        sourcefiles.forEach(sourcefile => {
+          Object.keys(sourcefile.verifiedBySource).forEach(platform => {
+            platforms.add(platform);
+          });
+        });
+        return Array.from(platforms).join(', ');
+      }
 }

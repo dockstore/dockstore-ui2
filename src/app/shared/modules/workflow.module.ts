@@ -54,7 +54,6 @@ import { InfoTabService } from './../../workflow/info-tab/info-tab.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
-import { VerifiedDisplayComponent } from './../../workflow/verified-display/verified-display.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
@@ -74,7 +73,6 @@ import { getTooltipConfig } from './../tooltip';
     PermissionsComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
-    VerifiedDisplayComponent,
     InfoTabComponent,
     ToolTabComponent
   ],

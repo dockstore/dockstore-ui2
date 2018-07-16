@@ -43,11 +43,6 @@
           </span>
         </th>
         <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-          <label placement="top" tooltip="Tool paths for given version">Tool Path</label>
-          <span class="glyphicon pull-right" [ngClass]="getIconClass('name')" (click)="clickSortColumn('name')">
-          </span>
-        </th>
-        <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
           <label placement="top" tooltip="Date of last build of the Docker image">Date Built</label>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('last_modified')" (click)="clickSortColumn('last_modified')">
           </span>
@@ -61,7 +56,7 @@
         </th>
         <th>
           <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
-            Verified
+            Verified Platforms
           </label>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('verified')" (click)="clickSortColumn('verified')">
           </span>
@@ -101,13 +96,6 @@
           </span>
           <ng-template #noCommitID><span>{{ version.reference || 'n/a' }}</span></ng-template>
         </td>
-        <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-          <div>
-            {{ version.cwl_path }}
-            {{ version.wdl_path }}
-            {{ version.dockerfile_path }}
-          </div>
-        </td>
         <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ getDateTimeString(version.last_modified) }}</td>
         <td>
           <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
@@ -117,6 +105,7 @@
           <a href= {{verifiedLink}}>
             <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
           </a>
+          {{getVerifiedPlatformsFromSourceFiles(version?.sourceFiles)}}
           <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
         </td>
         <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->

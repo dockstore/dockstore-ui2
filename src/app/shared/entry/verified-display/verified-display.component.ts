@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
-import { SourceFile, VerificationInformation } from '../../shared/swagger';
+import { SourceFile, VerificationInformation } from '../../swagger';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
