@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { GA4GHService, ToolFile } from '../swagger';
 import { DescriptorType } from '../enum/descriptorType.enum';
@@ -72,15 +72,15 @@ export class GA4GHFilesStateService {
     this.ga4ghService.defaultHeaders = this.ga4ghService.defaultHeaders.set('Authorization',
     this.ga4ghService.configuration.apiKeys['Authorization']);
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.CWL, id, version).first().subscribe(files => {
+      DescriptorType.CWL, id, version).subscribe(files => {
         this.cwlToolFiles$.next(files);
       });
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.WDL, id, version).first().subscribe(files => {
+      DescriptorType.WDL, id, version).subscribe(files => {
         this.wdlToolFiles$.next(files);
       });
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.NFL, id, version).first().subscribe(files => {
+      DescriptorType.NFL, id, version).subscribe(files => {
         this.nflToolFiles$.next(files);
       });
     // TODO: Grab from all descriptor types (CWL, WDL, NFL) to get all test parameter files
