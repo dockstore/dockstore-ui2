@@ -69,6 +69,8 @@ export class GA4GHFilesStateService {
     });
   }
   update(id: string, version: string) {
+    this.ga4ghService.defaultHeaders = this.ga4ghService.defaultHeaders.set('Authorization',
+    this.ga4ghService.configuration.apiKeys['Authorization']);
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
       DescriptorType.CWL, id, version).first().subscribe(files => {
         this.cwlToolFiles$.next(files);

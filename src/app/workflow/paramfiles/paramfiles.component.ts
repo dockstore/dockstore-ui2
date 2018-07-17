@@ -58,6 +58,8 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
 
   reactToFile(): void {
     // TODO: Memoize this
+    this.gA4GHService.defaultHeaders = this.gA4GHService.defaultHeaders.set('Authorization',
+    this.gA4GHService.configuration.apiKeys['Authorization']);
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
       this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolTests) => {
         this.content = file.test;

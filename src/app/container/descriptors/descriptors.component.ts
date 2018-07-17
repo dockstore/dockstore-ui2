@@ -91,6 +91,8 @@ export class DescriptorsComponent extends EntryFileSelector {
 
   reactToFile(): void {
     // TODO: Memoize this
+    this.gA4GHService.defaultHeaders = this.gA4GHService.defaultHeaders.set('Authorization',
+    this.gA4GHService.configuration.apiKeys['Authorization']);
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
       this._selectedVersion.name, this.currentFile.path).first().subscribe((file: ToolDescriptor) => {
         this.content = file.descriptor;
