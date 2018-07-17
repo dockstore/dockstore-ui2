@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 /*
  *    Copyright 2017 OICR
  *
@@ -50,9 +52,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   }
 
   getFiles(descriptor): Observable<any> {
-    return this.gA4GHFilesStateService.testToolFiles$.map((toolFiles: Array<ToolFile>) => {
+    return this.gA4GHFilesStateService.testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
-    });
+    }));
   }
 
   reactToFile(): void {

@@ -1,3 +1,7 @@
+
+import {of as observableOf,  BehaviorSubject, Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,7 +18,6 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ContainerService } from '../../shared/container.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
@@ -74,17 +77,17 @@ export class DescriptorsComponent extends EntryFileSelector {
       }
       default: {
         console.log('Unknown descriptor type: ' + descriptor);
-        return Observable.of([]);
+        return observableOf([]);
       }
     }
-    return descriptorToolFiles$.map((toolFiles: Array<ToolFile>) => {
+    return descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       if (toolFiles) {
         return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
           toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
       } else {
         return [];
       }
-    });
+    }));
   }
 
   reactToFile(): void {

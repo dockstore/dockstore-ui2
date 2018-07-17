@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 /*
  *    Copyright 2017 OICR
  *
@@ -55,10 +57,10 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
    * @memberof DescriptorsWorkflowComponent
    */
   getFiles(descriptor): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesStateService.descriptorToolFiles$.map((toolFiles: Array<ToolFile>) => {
+    return this.gA4GHFilesStateService.descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
         toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
-    });
+    }));
 
   }
 

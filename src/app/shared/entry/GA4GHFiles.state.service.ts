@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 /*
  *     Copyright 2018 OICR
  *
@@ -14,8 +16,7 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest ,  Observable } from 'rxjs';
 
 import { GA4GHService, ToolFile } from '../swagger';
 import { DescriptorType } from '../enum/descriptorType.enum';
@@ -42,15 +43,15 @@ export class GA4GHFilesStateService {
       (cwlToolFiles, wdlToolFiles, nflToolFiles) => {
         return this.mergeArray(cwlToolFiles, wdlToolFiles, nflToolFiles);
       });
-    this.containerToolFiles$ = this.toolFiles$.map((toolFiles: Array<ToolFile>) => {
+    this.containerToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       if (!toolFiles) {
         toolFiles = [];
       }
       return toolFiles.filter((toolFile: ToolFile) => {
         return toolFile.file_type === ToolFile.FileTypeEnum.CONTAINERFILE;
       });
-    });
-    this.descriptorToolFiles$ = this.toolFiles$.map((toolFiles: Array<ToolFile>) => {
+    }));
+    this.descriptorToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       if (!toolFiles) {
         toolFiles = [];
       }
@@ -58,15 +59,15 @@ export class GA4GHFilesStateService {
         return (toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
           toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
       });
-    });
-    this.testToolFiles$ = this.toolFiles$.map((toolFiles: Array<ToolFile>) => {
+    }));
+    this.testToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       if (!toolFiles) {
         toolFiles = [];
       }
       return toolFiles.filter((toolFile: ToolFile) => {
         return toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE;
       });
-    });
+    }));
   }
   update(id: string, version: string) {
     this.ga4ghService.defaultHeaders = this.ga4ghService.defaultHeaders.set('Authorization',
