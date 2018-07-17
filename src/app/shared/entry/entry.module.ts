@@ -19,9 +19,9 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
-import { CodeEditorComponent } from './../code-editor/code-editor.component';
-import { CustomMaterialModule } from './../modules/material.module';
+import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
+import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
 import {
   InfoTabCheckerWorkflowPathComponent,

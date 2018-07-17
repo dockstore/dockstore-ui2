@@ -9,43 +9,41 @@ export class VerifiedByService {
 
   constructor() { }
 
+  /**
+   * This converts the verified source in a version's sourcefiles into a an array of strings
+   * to be display in the right sidebar of an entry component
+   *
+   * @param {((WorkflowVersion | Tag))} version  The versions of an entry
+   * @returns {Array<string>}                    An array of strings to be displayed seperated by newlines
+   * @memberof VerifiedByService
+   */
   getVerifiedByString(version: (WorkflowVersion | Tag)): Array<string> {
-    const verifiedSourceArray = new Map<string, Set<string>>();
+    const verifiedSourceMap = new Map<string, Set<string>>();
     if (version && version.sourceFiles) {
       version.sourceFiles.forEach(sourceFile => {
         const verifiedBySource = sourceFile.verifiedBySource;
         if (verifiedBySource) {
-          const array = Object.entries(verifiedBySource);
-          array.forEach(arrayElement => {
+          const verifiedBySourceArray = Object.entries(verifiedBySource);
+          verifiedBySourceArray.forEach(arrayElement => {
             const platform: string = arrayElement[0];
-            if (!verifiedSourceArray[platform]) {
-              verifiedSourceArray[platform] = new Set<string>();
+            if (!verifiedSourceMap[platform]) {
+              verifiedSourceMap[platform] = new Set<string>();
             }
-            verifiedSourceArray[platform].add(arrayElement[1].metadata);
+            verifiedSourceMap[platform].add(arrayElement[1].metadata);
           });
         }
       });
-      const array2 = Object.entries(verifiedSourceArray);
+      const verifiedSourceArray = Object.entries(verifiedSourceMap);
       const verifiedByStringArray: Array<string> = [];
-      array2.forEach(arrayElement => {
-        const thing: Set<string> = arrayElement[1];
-        const arrayOfVerifiers = Array.from(thing);
+      verifiedSourceArray.forEach(arrayElement => {
+        const verifiers: Set<string> = arrayElement[1];
+        const arrayOfVerifiers = Array.from(verifiers);
         verifiedByStringArray.push(arrayElement[0] + ' via ' + arrayOfVerifiers.join(', '));
       });
       return verifiedByStringArray;
     } else {
       return null;
     }
-  }
-
-  getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
-    const platforms = new Set<string>();
-    sourcefiles.forEach(sourcefile => {
-      Object.keys(sourcefile.verifiedBySource).forEach(platform => {
-        platforms.add(platform);
-      });
-    });
-    return Array.from(platforms).join(', ');
   }
 }
 

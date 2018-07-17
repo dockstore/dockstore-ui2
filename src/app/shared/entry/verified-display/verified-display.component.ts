@@ -1,6 +1,22 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
-import { SourceFile, VerificationInformation } from '../../swagger';
+/*
+ *     Copyright 2018 OICR
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
+
+import { SourceFile, VerificationInformation } from '../../swagger';
 
 @Component({
   selector: 'app-verified-display',
@@ -9,10 +25,9 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() sourceFiles: SourceFile[];
-  public thingythings: Array<any> = new Array();
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<any>;
-  displayedColumns = ['platform', 'metadata', 'path'];
+  public dataSource: MatTableDataSource<any>;
+  public displayedColumns = ['platform', 'metadata', 'path'];
   constructor() {
     this.dataSource = new MatTableDataSource([]);
   }
@@ -22,22 +37,45 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.sourceFiles.forEach((sourceFile: SourceFile) => {
+    // Update the dataSource's data
+    this.dataSource.data = this.getCustomVerificationInformationArray(this.sourceFiles);
+  }
+
+  /**
+   * Extracts the custom verification information object array from the sourcefiles
+   *
+   * @param {Array<SourceFile>} sourceFiles  The list of sourcefiles from an entry's version
+   * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, metadata, platform)
+   * @memberof VerifiedDisplayComponent
+   */
+  getCustomVerificationInformationArray(sourceFiles: Array<SourceFile>): Array<any> {
+    const customVerificationInformationArray: Array<CustomVerificationInformationObject> = new Array();
+    sourceFiles.forEach((sourceFile: SourceFile) => {
       const verifiedBySource = sourceFile.verifiedBySource;
-      const array = Object.entries(verifiedBySource);
-      array.forEach(arrayElement => {
+      const verifiedBySourceArray = Object.entries(verifiedBySource);
+      verifiedBySourceArray.forEach(arrayElement => {
         const platform: string = arrayElement[0];
         const verifiedInformation: VerificationInformation = arrayElement[1];
-        const thing = {
+        const customVerificationInformationObject = {
           // This allows the string to break after every slash for word-wrapping purposes
           path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
           platform: platform,
           metadata: verifiedInformation.metadata
         };
-        this.thingythings.push(thing);
+        customVerificationInformationArray.push(customVerificationInformationObject);
       });
     });
-    this.dataSource.data = this.thingythings;
+    return customVerificationInformationArray;
   }
+}
 
+/**
+ * Custom Verification Information Object that is to be displayed in a table
+ *
+ * @class CustomVerificationInformationObject
+ */
+class CustomVerificationInformationObject {
+  path: string;
+  platform: string;
+  metadata: string;
 }
