@@ -38,11 +38,7 @@
       </span>
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
     </h3>
-    <div *ngIf="tool">
-      <span class="label label-default container-label" *ngFor="let label of labels">
-        {{label}}
-      </span>
-    </div>
+
     <div *ngIf="!publicPage && tool?.tags.length > 0" class="input-group">
       <div class="form-group">
         <select class="form-control" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
@@ -79,9 +75,9 @@
       </div>
     </h3>
   </div>
-  <div *ngIf="!publicPage">
+  <div *ngIf="!publicPage" class="small-side-padding">
     <h3>
-      <div class="pull-right">
+      <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
           <button id="publishToolButton" type="button" [ngClass]="{'disabled': publishDisable()}" class="btn btn-warning" (click)="publish()" [(ngModel)]="published"
             [disabled]="!thisisValid" btnCheckbox>
@@ -99,60 +95,68 @@
     </h3>
   </div>
 </div>
+<div class="row">
+  <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
+    <span *ngIf="!labelsEditMode">
+      <mat-chip-list>
+        <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
+        <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+          Manage labels
+        </button>
+      </mat-chip-list>
+    </span>
+
+    <span *ngIf="labelsEditMode && !isToolPublic">
+      <mat-form-field style="width: 100%;">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true"
+           (removed)="removeLabel(label)">
+            {{label}}
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New label..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="true"
+                 (matChipInputTokenEnd)="addToLabels($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+         <span class="glyphicon glyphicon-remove"></span> Cancel
+      </button>
+      <button type="button"(click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+        <span class="glyphicon glyphicon-floppy-save"></span>Save
+      </button>
+    </span>
+  </div>
+</div>
 <div class="row" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" (select)="setEntryTab('info')">
-        <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry"></app-info-tab>
+        <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [tool]="tool"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
-      <tab id="labelsTab" heading="Labels" (select)="setEntryTab('labels')">
-        <div *ngIf="tool">
-          <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link pull-right" (click)="toggleLabelsEditMode()">
-            <span class="glyphicon glyphicon-edit"></span>Edit
-          </button>
-          <ul class="list-unstyled container-info" *ngIf="!labelsEditMode">
-            <li *ngIf="tool">
-              <strong>Labels:</strong>
-              <span *ngIf="tool?.labels.length === 0">n/a</span>
-              <span class="label label-default container-label" *ngFor="let label of labels">
-                {{label}}
-              </span>
-            </li>
-          </ul>
-          <form name="editContainerForm" class="edit-container form-inline" (ngSubmit)="submitContainerEdits()" #labelForm="ngForm" novalidate>
-            <button type="submit" class="btn btn-link pull-right" [disabled]="!labelForm.form.valid" *ngIf="labelsEditMode && !isToolPublic">
-              <span class="glyphicon glyphicon-floppy-save"></span>Save
-            </button>
-            <div *ngIf="labelsEditMode && !isToolPublic">
-              <div class="form-group">
-                <label>Tool Labels:</label>
-                <input id="toolLabels" type="text" class="input-sm form-control" name="toolLabels" [(ngModel)]="containerEditData.labels" #name="ngModel" maxlength="512"
-                  [pattern]="labelPattern" placeholder="e.g. dockstore, oicr-icgc, pancancer" />
-              </div>
-              <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-                <div [hidden]="!name.errors.maxlength">
-                    {{ validationMessages.label.maxlength }}
-                </div>
-                <div [hidden]="!name.errors.pattern">
-                  {{ validationMessages.label.pattern }}
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+      <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
+        <app-launch *ngIf="tool?.tags.length > 0" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname"></app-launch>
       </tab>
       <tab id="versionTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions">
-          <app-versions-container [versions]="sortedVersions" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
+          <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
           </app-versions-container>
         </div>
       </tab>
       <tab heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions">
-          <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
-          </app-files-container>
+          <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+            <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+            </app-files-container>
+          </div>
+          <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+            <app-tool-file-editor *ngIf="currentTab === 'files'" [entrypath]="tool.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+            </app-tool-file-editor>
+          </div>
         </div>
       </tab>
     </tabset>
@@ -171,7 +175,7 @@
                   <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
                 </a>
               </span>
-              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}}</a>
+              <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}} </a>
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
             <hr class="no-margin">
@@ -205,7 +209,7 @@
           <p>
             Git Repository:
             <span *ngIf="tool.provider">
-              <a [href]="tool.providerUrl">
+              <a [href]="tool.providerUrl" target="_blank">
                 {{tool.provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
@@ -215,14 +219,14 @@
             Docker Registry:
             <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
             <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
-              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl">
+              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl" target="_blank">
                 {{tool?.imgProvider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
               <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
             </span>
             <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')" class="pull-right">
-              <a href="{{tool.imgProviderUrl}}">
+              <a href="{{tool.imgProviderUrl}}" target="_blank">
                 <img src="{{tool.imgProviderUrl}}/status">
               </a>
             </span>
@@ -253,7 +257,7 @@
       </div>
       <div class="panel-body">
         <div class="container-sharing">
-          <share-buttons class="withCount" [url]="shareURL" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true"
+          <share-buttons class="withCount" [url]="shareURL" [google]="false" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true"
             (count)="sumCounts($event)">
           </share-buttons>
         </div>

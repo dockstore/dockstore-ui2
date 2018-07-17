@@ -29,12 +29,30 @@ import { ProviderService } from './../../shared/provider.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { StateService } from './../../shared/state.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Configuration } from './../../shared/swagger/configuration';
 import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-
+import { first, takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+/**
+ * How the workflow selection works:
+ * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
+ * workflows$ is completely seperate from URL and workflow$ (none of them should update the other)
+ * URL change is tied to workflow$ change
+ *
+ * To update (refresh, publish, etc) a currently selected workflow, update workflows$ first then
+ * update workflow$ (URL is presumed to already be correct)
+ *
+ * Register a new workflow which is not currently selected because it doesn't exist yet involves updating workflows$ and then
+ * going to the new URL (this should exist now) which triggers a workflow$ change
+ * @export
+ * @class MyWorkflowComponent
+ * @extends {MyEntry}
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
@@ -45,33 +63,42 @@ import { MyWorkflowsService } from './../myworkflows.service';
 
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
-  workflows: any;
+  workflows: Array<Workflow>;
+  sharedWorkflows: Array<Workflow>;
+  hasLoadedWorkflows = false;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
+  public showSidebar = true;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
-    private workflowService: WorkflowService, protected authService: AuthService, protected accountsService: AccountsService,
-    private refreshService: RefreshService, private stateService: StateService, private router: Router, private location: Location,
-    private registerWorkflowModalService: RegisterWorkflowModalService, protected urlResolverService: UrlResolverService) {
+    private workflowService: WorkflowService, protected authService: AuthService,
+    protected accountsService: AccountsService, private refreshService: RefreshService, private stateService: StateService,
+    private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
+    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService) {
     super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
   ngOnInit() {
     /**
-     * This handles when the router changes url due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
-     * It is the only section of code that does not exist in my-tools
+     * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
+     * due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      */
-    this.router.events.takeUntil(this.ngUnsubscribe).subscribe(event => {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
       if (event instanceof NavigationEnd) {
-        if (this.groupEntriesObject) {
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+        if (this.groupEntriesObject && this.groupSharedEntriesObject) {
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+            this.groupEntriesObject.concat(this.groupSharedEntriesObject));
           this.selectEntry(foundWorkflow);
         }
       }
     });
     this.commonMyEntriesOnInit();
     this.workflowService.setWorkflow(null);
-    this.workflowService.workflow$.subscribe(
+    this.workflowService.setWorkflows(null);
+    this.workflowService.setSharedWorkflows(null);
+
+    // Updates selected workflow from service and selects in sidebar
+    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
         if (workflow) {
@@ -80,44 +107,96 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
       }
     );
-    this.userService.user$.subscribe(user => {
+
+    // Retrieve all of the workflows for the user and update the workflow service
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
-        this.usersService.userWorkflows(user.id).first().subscribe(workflows => {
-          this.workflowService.setWorkflows(workflows);
-        });
+        combineLatest(this.usersService.userWorkflows(user.id).pipe(first()), this.workflowsService.sharedWorkflows().pipe(first()))
+          .subscribe(([workflows, sharedWorkflows]) => {
+            if (workflows && sharedWorkflows) {
+              this.workflowService.setWorkflows(workflows);
+              this.workflowService.setSharedWorkflows(sharedWorkflows);
+            }
+          });
       }
     });
-    this.workflowService.workflows$.takeUntil(this.ngUnsubscribe).subscribe(workflows => {
-      if (workflows) {
-        this.workflows = workflows;
-        const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
-        this.selectInitialEntry(sortedWorkflows);
-      }
-    });
+
+    // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
+    combineLatest(this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)),
+      this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)))
+      .subscribe(([workflows, sharedWorkflows]) => {
+        if (workflows && sharedWorkflows) {
+          this.workflows = workflows;
+          const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+          this.setGroupEntriesObject(sortedWorkflows);
+
+          this.sharedWorkflows = sharedWorkflows;
+          const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
+          this.setGroupSharedEntriesObject(sortedSharedWorkflows);
+
+          // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+          if (!this.workflow) {
+            if (this.workflows.length > 0) {
+              this.selectInitialEntry(sortedWorkflows);
+            } else if (this.sharedWorkflows.length > 0) {
+              this.selectInitialEntry(sortedSharedWorkflows);
+            }
+          }
+        }
+      });
+
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+  }
+
+  /**
+   * Sets the sorted entries for display in dropdowns
+   * @param sortedEntries Array of sorted entries
+   */
+  public setGroupSharedEntriesObject(sortedEntries: any): void {
+    this.groupSharedEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
+  }
+
+  /**
+   * Toggles the sidebar
+   */
+  public toggleSidebar(): void {
+    this.showSidebar = !this.showSidebar;
   }
 
   protected updateActiveTab(): void {
     if (this.groupEntriesObject) {
-      for (let i = 0; i < this.groupEntriesObject.length; i++) {
-        if (this.workflow) {
-          if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.groupEntriesObject[i].activeTab = 'unpublished';
-            continue;
-          }
-          if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-            this.groupEntriesObject[i].activeTab = 'published';
-            continue;
-          }
-          if (this.groupEntriesObject[i].published.length > 0) {
-            this.groupEntriesObject[i].activeTab = 'published';
-          } else {
-            this.groupEntriesObject[i].activeTab = 'unpublished';
-          }
+      this.groupEntriesObject = this.updateActiveTabHelper(this.groupEntriesObject);
+    }
+
+    if (this.groupSharedEntriesObject) {
+      this.groupSharedEntriesObject = this.updateActiveTabHelper(this.groupSharedEntriesObject);
+    }
+  }
+
+  /**
+   * Helper class for creating a new instance of grouped entries with correct active tabs
+   * @param groupEntriesObject
+   */
+  protected updateActiveTabHelper(groupEntriesObject: Array<any>): Array<any> {
+    for (let i = 0; i < groupEntriesObject.length; i++) {
+      if (this.workflow) {
+        if (groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          groupEntriesObject[i].activeTab = 'unpublished';
+          continue;
+        }
+        if (groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          groupEntriesObject[i].activeTab = 'published';
+          continue;
+        }
+        if (groupEntriesObject[i].published.length > 0) {
+          groupEntriesObject[i].activeTab = 'published';
+        } else {
+          groupEntriesObject[i].activeTab = 'unpublished';
         }
       }
     }
+    return groupEntriesObject;
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
@@ -174,23 +253,55 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   setIsFirstOpen(): void {
+    let setFirstMyWorkflow = false;
     if (this.groupEntriesObject && this.workflow) {
       for (let i = 0; i < this.groupEntriesObject.length; i++) {
         if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
           this.groupEntriesObject[i].isFirstOpen = true;
+          setFirstMyWorkflow = true;
           break;
         }
         if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
           this.groupEntriesObject[i].isFirstOpen = true;
+          setFirstMyWorkflow = true;
+          break;
+        }
+      }
+    }
+
+    if (!setFirstMyWorkflow && this.groupSharedEntriesObject && this.workflow) {
+      for (let i = 0; i < this.groupSharedEntriesObject.length; i++) {
+        if (this.groupSharedEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupSharedEntriesObject[i].isFirstOpen = true;
+          break;
+        }
+        if (this.groupSharedEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
+          this.groupSharedEntriesObject[i].isFirstOpen = true;
           break;
         }
       }
     }
   }
 
+  /**
+   * Grabs the workflow from the webservice and loads it
+   * @param workflow Selected workflow
+   */
   selectEntry(workflow: ExtendedWorkflow): void {
-    this.workflowService.setWorkflow(workflow);
-    if (workflow) {
+    if (workflow !== null) {
+      this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+        this.location.go('/my-workflows/' + result.full_workflow_path);
+        this.workflowService.setWorkflow(result);
+      });
+    }
+  }
+
+  /**
+   * Triggers a URL change, which will select the appropriate workflow
+   * @param workflow Selected workflow
+   */
+  goToEntry(workflow: ExtendedWorkflow): void {
+    if (workflow !== null) {
       this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
     }
   }

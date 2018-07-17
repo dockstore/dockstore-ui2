@@ -16,8 +16,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -25,6 +23,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgxMdModule } from 'ngx-md';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ContainerComponent } from '../../container/container.component';
@@ -37,6 +36,7 @@ import { LaunchComponent } from '../../container/launch/launch.component';
 import { ToolLaunchService } from '../../container/launch/tool-launch.service';
 import { ParamfilesComponent } from '../../container/paramfiles/paramfiles.component';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { ToolFileEditorComponent } from '../../container/tool-file-editor/tool-file-editor.component';
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
 import { OrderByModule } from '../../shared/modules/orderby.module';
@@ -55,6 +55,7 @@ import { VersionModalService } from './../../container/version-modal/version-mod
 import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
 import { ExtendedToolService } from './../extended-tool.service';
+import { CustomMaterialModule } from './../modules/material.module';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
@@ -74,14 +75,14 @@ import { SelectModule } from './select.module';
     ModalComponent,
     AddTagComponent,
     VersionModalComponent,
-    InfoTabComponent
+    InfoTabComponent,
+    ToolFileEditorComponent
   ],
   imports: [
     ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
-    MarkdownModule.forRoot(),
-    DataTablesModule.forRoot(),
+    NgxMdModule.forRoot(),
     HeaderModule,
     SelectModule,
     ListContainersModule,
@@ -114,7 +115,8 @@ import { SelectModule } from './select.module';
     ExtendedToolService
   ],
   exports: [
-    ContainerComponent
+    ContainerComponent,
+    CustomMaterialModule
   ]
 })
 export class ContainerModule {

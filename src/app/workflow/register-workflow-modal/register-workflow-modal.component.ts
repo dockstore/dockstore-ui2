@@ -15,6 +15,8 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
 import {
@@ -38,17 +40,19 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public workflowRegisterError;
   public isModalShown: boolean;
   public refreshMessage: string;
+  public descriptorValidationPattern;
+  public descriptorLanguages$: Observable<Array<string>>;
   public hostedWorkflow = {
     name: '',
     descriptorType: 'cwl'
   };
   public options = [
     {
-      label: 'Use CWL, WDL or NextFlow from GitHub, BitBucket, etc.',
+      label: 'Use CWL, WDL or Nextflow from GitHub, BitBucket, etc.',
       value: 0
     },
     {
-      label: 'Create and save CWL or WDL on Dockstore.org',
+      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
       value: 1
     }
   ];
@@ -64,11 +68,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     return this.registerWorkflowModalService.friendlyRepositoryKeys();
   }
 
-  // TODO: This is called many times, needs to be optimized
-  getDescriptorTypes(): Array<string> {
-    return this.registerWorkflowModalService.getDescriptorLanguageKeys();
-  }
-
   clearWorkflowRegisterError(): void {
     this.registerWorkflowModalService.clearWorkflowRegisterError();
   }
@@ -79,11 +78,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
     this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-  }
-
-  // Validation starts here, should move most of these to a service somehow
-  ngAfterViewChecked() {
-    this.formChanged();
+    this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
+    // Using this to set the initial validation pattern.  TODO: find a better way
+    this.descriptorLanguages$.subscribe((languages: Array<string>) => {
+      if (languages && languages.length > 0) {
+        this.changeDescriptorType(languages[0].toLowerCase());
+      }
+    });
   }
 
   registerWorkflow() {
@@ -102,6 +103,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.setIsModalShown(false);
   }
 
+  // Validation starts here, should move most of these to a service somehow
+  ngAfterViewChecked() {
+    this.formChanged();
+  }
+
   formChanged() {
     if (this.currentForm === this.registerWorkflowForm) { return; }
     this.registerWorkflowForm = this.currentForm;
@@ -110,6 +116,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         .subscribe(data => this.onValueChanged(data));
     }
   }
+
   onValueChanged(data?: any) {
     if (!this.registerWorkflowForm) { return; }
     const form = this.registerWorkflowForm.form;
@@ -131,4 +138,33 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
   // Validation ends here
 
+  /**
+   * This is triggered when the descriptor type changes in the dropdown menu.
+   * Change the descriptor pattern required for validation when this happens.
+   * TODO: Also change the form error message and reset the others
+   *
+   * @param {string} descriptorType  The current selected descriptor type
+   * @memberof RegisterWorkflowModalComponent
+   */
+  changeDescriptorType(descriptorType: string): void {
+    this.workflow.descriptorType = descriptorType;
+    switch (descriptorType) {
+      case 'cwl': {
+        this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
+        break;
+      }
+      case 'wdl': {
+        this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
+        break;
+      }
+      case 'nextflow': {
+        this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
+        break;
+      }
+      default: {
+        console.log('Unrecognized descriptor type: ' + descriptorType);
+        this.descriptorValidationPattern = '.*';
+      }
+    }
+  }
 }

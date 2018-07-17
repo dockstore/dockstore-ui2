@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -66,5 +66,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
         this.filePath = this.fileService.getFilePath(this.currentFile);
       });
+  }
+
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
   }
 }

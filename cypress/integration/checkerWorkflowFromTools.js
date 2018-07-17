@@ -9,8 +9,7 @@ describe('Checker workflow test from tools', function() {
 
     describe('Should be able to see the checker workflow from a tool', function() {
         it('visit the tool with a checker workflow and have the correct buttons', function() {
-            cy.get('tbody')
-                .children('tr')
+            cy.get('mat-cell')
                 .find('a')
                 .contains('b3')
                 .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
@@ -20,14 +19,18 @@ describe('Checker workflow test from tools', function() {
             cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/b3:latest?tab=info')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('be.visible')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible').click()
 
             // In the checker workflow right now
             cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A2/b3/_cwl_checker?tab=info')
             cy.get('#viewCheckerWorkflowButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('not.be.visible')
+            cy.goToTab('Info')
             cy.get('#viewParentEntryButton').should('be.visible').click()
 
             // In the parent tool right now
@@ -35,7 +38,9 @@ describe('Checker workflow test from tools', function() {
             cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/b3:latest?tab=info')
             cy.get('#viewParentEntryButton').should('not.be.visible')
             cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.goToTab('Launch')
             cy.get('#launchCheckerWorkflow').should('be.visible')
+            cy.goToTab('Info')
             cy.get('#viewCheckerWorkflowButton').should('visible')
         })
     });

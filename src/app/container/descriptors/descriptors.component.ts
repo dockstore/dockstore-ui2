@@ -14,8 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ContainerService } from '../../shared/container.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';

@@ -13,27 +13,29 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Dockstore } from '../../shared/dockstore.model';
+import { EntryTab } from '../../shared/entry/entry-tab';
 import { Workflow } from './../../shared/swagger/model/workflow';
-declare var cytoscape: any;
-declare var window: any;
-import { Observable } from 'rxjs/Observable';
-import { CommunicatorService } from './../../shared/communicator.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { Dockstore } from '../../shared/dockstore.model';
+
+declare var cytoscape: any;
+declare var window: any;
+
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent implements OnInit, AfterViewChecked {
-  @Input() validVersions: any;
-  @Input() defaultVersion: any;
+export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
+  @Input() validVersions: Array<WorkflowVersion>;
+  @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
+
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
@@ -62,6 +64,14 @@ export class DagComponent implements OnInit, AfterViewChecked {
 
   setDagResult(dagResult: any) {
     this.dagResult = dagResult;
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+      this.expanded = false;
+      this.refreshDocument();
+    }
   }
 
   reset() {
@@ -152,13 +162,6 @@ export class DagComponent implements OnInit, AfterViewChecked {
         });
     });
 
-    $(document).on('keyup', function (e) {
-      // Keycode 27 is the ESC key
-      if (e.keyCode === 27) {
-        self.expanded = false;
-        self.refreshDocument();
-      }
-    });
     self.cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
       try { // your browser may block popups
         if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
@@ -174,6 +177,7 @@ export class DagComponent implements OnInit, AfterViewChecked {
   }
 
   constructor(private dagService: DagService, private workflowService: WorkflowService) {
+    super();
   }
 
   toggleExpand() {

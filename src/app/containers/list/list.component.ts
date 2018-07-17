@@ -13,121 +13,61 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input, OnInit } from '@angular/core';
 
-import { ContainerService } from './../../shared/container.service';
-import {AfterViewInit, Component, Input, ViewChild, ViewChildren} from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-
-import { DataTableDirective } from 'angular-datatables';
 import { CommunicatorService } from '../../shared/communicator.service';
-import { DockstoreService } from '../../shared/dockstore.service';
 import { DateService } from '../../shared/date.service';
+import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
-import { ProviderService } from '../../shared/provider.service';
-import { ToolLister } from '../../shared/tool-lister';
 import { PagenumberService } from '../../shared/pagenumber.service';
-import { PageInfo } from '../../shared/models/PageInfo';
-
-
+import { ProviderService } from '../../shared/provider.service';
+import { ContainersService, DockstoreTool } from '../../shared/swagger';
+import { ToolLister } from '../../shared/tool-lister';
+import { ContainerService } from './../../shared/container.service';
 import { ListContainersService } from './list.service';
+import { PublishedToolsDataSource } from './published-tools.datasource';
 
 @Component({
   selector: 'app-list-containers',
   templateUrl: './list.component.html'
 })
-export class ListContainersComponent extends ToolLister {
+export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
-  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
-  public verifiedLink: string;
-  toolsTable: any[] = [];
-  private pageNumberSubscription: Subscription;
-  // TODO: make an API endpoint to retrieve only the necessary properties for the containers table
-  // name, author, path, registry, gitUrl
-  dtOptions = {
-    /* No ordering applied by DataTables during initialisation */
-    order: [],
-    columnDefs: [
-      {
-        orderable: false,
-        targets: [ 2, 3 ]
-      },
-    ],
-    rowCallback: (row: Node, data: any[] | Object, index: number) => {
-      const self = this;
-      $('td', row).off('click');
-      $('td', row).on('click', () => {
-        self.findPageNumber(index);
-      });
-      return row;
-    }
-  };
+
+  public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
+
   constructor(private listContainersService: ListContainersService,
-              private communicatorService: CommunicatorService,
-              private dockstoreService: DockstoreService,
-              private imageProviderService: ImageProviderService,
-              private dateService: DateService,
-              private containerService: ContainerService,
-              private pagenumberService: PagenumberService,
-              listService: ListService,
-              providerService: ProviderService) {
-
-    super(listService, providerService, 'containers');
-    this.verifiedLink = this.dateService.getVerifiedLink();
+    private communicatorService: CommunicatorService,
+    private dockstoreService: DockstoreService,
+    private imageProviderService: ImageProviderService,
+    private containerService: ContainerService,
+    private pagenumberService: PagenumberService,
+    private containersService: ContainersService,
+    protected providerService: ProviderService,
+    listService: ListService,
+    dateService: DateService
+  ) {
+    super(listService, providerService, dateService);
   }
-  findPageNumber(index: any) {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      const realPgNumber = Math.floor(((dtInstance.page.info().length * dtInstance.page.info().page) + index ) / 10);
-      const pageInfo: PageInfo = new PageInfo();
-      pageInfo.pgNumber = realPgNumber;
-      pageInfo.searchQuery = dtInstance.search();
-      this.pagenumberService.setToolsPageInfo(pageInfo);
-      this.pagenumberService.setBackRoute('containers');
-    });
-  }
-  sendToolInfo(tool) {
-    this.communicatorService.setTool(tool);
-    this.containerService.setTool(tool);
+  ngOnInit() {
+    this.dataSource = new PublishedToolsDataSource(this.containersService, this.providerService, this.imageProviderService);
+    this.length$ = this.dataSource.entriesLengthSubject$;
   }
 
+  /**
+   * This gets the docker pull command
+   *
+   * @param {string} path The path of the tool (quay.io/namespace/toolname)
+   * @param {string} [tagName=''] The specific version of the docker image to get
+   * @returns {string} The docker pull command
+   * @memberof ListContainersComponent
+   */
   getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
     return this.listContainersService.getDockerPullCmd(path, tagName);
   }
 
-  initToolLister(): void {
-    this.publishedTools = this.publishedTools.map(tool =>
-      this.imageProviderService.setUpImageProvider(tool)
-    );
-    if (this.previewMode) {
-      this.setPreviewTable();
-    }
-    this.toolsTable = this.publishedTools;
-    this.dtTrigger.next();
-    this.setupPageNumber();
-  }
-  setPreviewTable() {
-    this.dtOptions['searching'] = false;
-    this.dtOptions['paging'] = true;
-    this.dtOptions['bInfo'] = false;
-    this.dtOptions['lengthChange'] = false;
-    this.dtOptions['pageLength'] = 10;
-    this.dtOptions['dom'] = 'lfrti';
-  }
-  setupPageNumber() {
-    this.pageNumberSubscription = this.pagenumberService.pgNumTools$.subscribe(
-      pageInfo => {
-        if (pageInfo) {
-          if (this.dtElement) {
-            this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.search(pageInfo.searchQuery).draw(false);
-              dtInstance.page(pageInfo.pgNumber).draw(false);
-            });
-          }
-        }
-      });
-  }
-
-  getVerified(tool) {
+  getVerified(tool: DockstoreTool): boolean {
     return this.dockstoreService.getVersionVerified(tool.tags);
   }
 }

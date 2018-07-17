@@ -1,0 +1,85 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+import { Input } from '@angular/core';
+import { Files } from './files';
+import { SourceFile } from './swagger/model/sourceFile';
+
+export class FileEditing extends Files {
+  /**
+   * Toggles edit mode
+   * @return
+   */
+  toggleEdit() {
+    this.editing = !this.editing;
+  }
+
+  /**
+   * Retrieves all dockerfiles from the list of sourcefiles
+   * @param  sourceFiles Array of sourcefiles
+   * @return {Array<SourceFile>}      Array of test parameter files
+   */
+  getDockerFile(sourceFiles: Array<SourceFile>): Array<SourceFile> {
+    return sourceFiles.filter(
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKERFILE);
+  }
+
+  /**
+   * Retrieves all descriptor files from the list of sourcefiles
+   * @param  sourceFiles Array of sourcefiles
+   * @return  {Array<SourceFile>}     Array of descriptor files
+   */
+  getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
+    return sourceFiles.filter(
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL || sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL);
+  }
+
+  /**
+   * Retrieves all test parameter files from the list of sourcefiles
+   * @param  sourceFiles Array of sourcefiles
+   * @return {Array<SourceFile>}      Array of test parameter files
+   */
+  getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
+    return sourceFiles.filter(
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON || sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON);
+  }
+
+  /**
+   * Common code between tools and workflows for saving
+   * @param originalSourceFiles Sourcefiles from previous version (unedited)
+   * @param newSourceFiles Current set of sourcefiles
+   * @return A list of sourcefiles for the version to be added
+   */
+  commonSaveVersion(originalSourceFiles: Array<SourceFile>, newSourceFiles: Array<SourceFile>): Array<SourceFile> {
+    const sourceFilesToDelete = [];
+
+    // Deal with file renames
+    for (const originalSourceFile of originalSourceFiles) {
+      const matchingPath = newSourceFiles.find(x => x.path === originalSourceFile.path);
+      if (matchingPath === undefined) {
+        const sourceFileCopy = originalSourceFile;
+        sourceFileCopy.content = null;
+        sourceFilesToDelete.push(sourceFileCopy);
+      }
+    }
+
+    if (sourceFilesToDelete.length > 0) {
+      newSourceFiles = newSourceFiles.concat(sourceFilesToDelete);
+    }
+
+    return newSourceFiles;
+  }
+}

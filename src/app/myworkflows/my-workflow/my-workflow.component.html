@@ -14,91 +14,67 @@
   ~    limitations under the License.
   -->
 <app-header>
+  <button mat-icon-button (click)="toggleSidebar()"><mat-icon>menu</mat-icon></button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
-  <div class="pull-right refresh-all-holder">
-    <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
-      Refresh All Workflows
-    </button>
-  </div>
 </app-header>
-<div class="container padding-top">
-  <app-alert></app-alert>
-  <div class="row" *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
-    <div class="col-md-12">
-      <div class="alert alert-info" role="alert">
-        <p>
-          <span class="glyphicon glyphicon-info-sign"></span>
-          There are currently no workflows registered under this account, to add your first workflow, do one of the following:
-        </p>
-        <ul>
-          <li>
-            Press the 'Refresh All Workflows' button to create workflow stubs for all of your source control repositories. Browse to the workflow stubs and
-            refresh/publish those that correspond to real workflows.
-          </li>
-          <li>
-            Press the 'Register Workflow' button to manually add a workflow.
-          </li>
-          <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
-        </ul>
-        <div *ngIf="!hasGitHubToken">
-          <a class="btn btn-block btn-social btn-github" (click)="link()">
-            <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container-fluid padding-top sidebar-set-height">
   <!--Tool Content Page-->
-  <div class="row">
-    <div class="col-md-3 containers-rsb">
-      <accordion [closeOthers]="oneAtATime">
-        <accordion-group *ngFor="let orgObj of groupEntriesObject"  panelClass="containers-accordion"
-          [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.sourceControl + '/' + orgObj?.organization">
-          <div accordion-heading class="no-wrap">
-            {{orgObj?.sourceControl + '/' + orgObj?.organization}}
+  <div class="row containers-rsb" style="height:100%;">
+    <mat-sidenav-container autosize class="sidebar-set-height">
+      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
+        <div class="clearfix sidebar-header">
+            <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
+              <mat-icon>refresh</mat-icon>
+            </button>
+          <h3 class="sidebar-header">My workflows</h3>
+        </div>
+        <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
+        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject"></app-sidebar-accordion>
+        <div *ngIf="(groupEntriesObject?.length > 0 && groupEntriesObject) || (groupSharedEntriesObject?.length > 0 && groupSharedEntriesObject) ">
+          <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
+        </div>
+        <br>
+
+        <div class="clearfix sidebar-header">
+          <h3 class="sidebar-header">Shared with me</h3>
+        </div>
+        <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
+        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+      </mat-sidenav>
+      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
+        <app-alert></app-alert>
+        <div *ngIf="(groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject)">
+            <div class="col-md-12">
+              <div class="alert alert-info" role="alert">
+                <p>
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                  There are currently no workflows registered under this account, to add your first workflow, do one of the following:
+                </p>
+                <ul>
+                  <li>
+                    Press the 'Refresh All Workflows' button to create workflow stubs for all of your source control repositories. Browse to the workflow stubs and
+                    refresh/publish those that correspond to real workflows.
+                  </li>
+                  <li>
+                    Press the 'Register Workflow' button to manually add a workflow.
+                  </li>
+                  <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
+                </ul>
+                <div *ngIf="!hasGitHubToken">
+                  <a class="btn btn-block btn-social btn-github" (click)="link()">
+                    <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-          <tabset [justified]="true">
-            <tab heading="Published" [active]="orgObj.activeTab === 'published'">
-              <div *ngFor="let workflowObj of orgObj?.published">
-                <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
-                  <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
-                    (click)="selectEntry(workflowObj)">
-                    {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="orgObj?.published.length == 0" class="text-center">
-                <p>No published workflows.</p>
-              </div>
-            </tab>
-            <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
-              <div *ngFor="let workflowObj of orgObj?.unpublished">
-                <div class="panel-container-label" [ngClass]="{selected: workflow?.id === workflowObj?.id}">
-                  <div style="cursor:pointer" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}"
-                    (click)="selectEntry(workflowObj)">
-                    {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
-                <p>No unpublished workflows.</p>
-              </div>
-            </tab>
-          </tabset>
-          <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
-            <app-refresh-workflow-organization class="pull-right" [organization]="orgObj?.organization"></app-refresh-workflow-organization>
-          </span>
-          <button type="button" class="glyphicon glyphicon-plus btn btn-primary btn-xs pull-right add-container-ns" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()">
-          </button>
-        </accordion-group>
-      </accordion>
-      <div *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
-        <button type="button" class="btn btn-primary btn-sm pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
-      </div>
-      <app-register-workflow-modal></app-register-workflow-modal>
-    </div>
-    <div *ngIf="workflow" class="col-md-9 containers-rsb">
-      <app-workflow [isWorkflowPublic]="false"></app-workflow>
-    </div>
+        <div *ngIf="workflow">
+          <app-workflow [isWorkflowPublic]="false" [user]="user"></app-workflow>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+    <app-register-workflow-modal></app-register-workflow-modal>
+
   </div>
+
 </div>

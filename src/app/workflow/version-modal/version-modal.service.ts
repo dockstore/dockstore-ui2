@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-import { RefreshService } from './../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -15,17 +13,16 @@ import { RefreshService } from './../../shared/refresh.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { RefreshService } from './../../shared/refresh.service';
 import { StateService } from './../../shared/state.service';
-import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/concatMap';
-import { Subject } from 'rxjs/Subject';
-import { Injectable } from '@angular/core';
+import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class VersionModalService {
@@ -124,8 +121,8 @@ export class VersionModalService {
         const toAdd: boolean = newCWL && newCWL.length > 0;
         const toDelete: boolean = missingCWL && missingCWL.length > 0;
         if (toDelete && toAdd) {
-            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).concatMap(() =>
-                this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name));
+            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).pipe(concatMap(() =>
+                this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name)));
         }
         if (toDelete && !toAdd) {
             return this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name);
@@ -134,7 +131,7 @@ export class VersionModalService {
             return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name);
         }
         if (!toAdd && !toDelete) {
-            return Observable.of({});
+            return observableOf({});
         }
     }
 }

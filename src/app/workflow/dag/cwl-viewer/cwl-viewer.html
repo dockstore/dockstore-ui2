@@ -1,8 +1,8 @@
 <div [ngClass]="{'fullscreen-element large-dag': expanded}" class="cwl-viewer" >
   <div *ngIf="cwlViewerError" class="alert alert-warning">
     <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
-    <span>The Common Workflow Language Viewer was unable to process the CWL. Note that the viewer only supports
-      branches and does not support tags.</span>
+    <div>The Common Workflow Language Viewer was unable to process the CWL. <span *ngIf="errorMessage">It returned the following error:</span></div>
+    <div>{{errorMessage}}</div>
   </div>
   <div>
     <span *ngIf="!cwlViewerError">See on <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <span class="glyphicon glyphicon-new-window"></span></a></span>

@@ -17,8 +17,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Files } from '../../shared/files';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import {Subscription} from 'rxjs/Subscription';
-import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 

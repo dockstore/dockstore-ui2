@@ -18,16 +18,18 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { CustomMaterialModule } from './../modules/material.module';
 
+import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
+import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { CustomMaterialModule } from '../modules/material.module';
+import { CommitUrlPipe } from './commit-url.pipe';
+import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
 import {
   InfoTabCheckerWorkflowPathComponent,
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
-import { CodeEditorComponent } from './../code-editor/code-editor.component';
-import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
-import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
+import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
 @NgModule({
   imports: [
@@ -42,7 +44,9 @@ import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.
     RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
-    CodeEditorListComponent
+    CodeEditorListComponent,
+    CommitUrlPipe,
+    VersionProviderUrlPipe
   ],
   providers: [
     GA4GHFilesStateService
@@ -52,7 +56,9 @@ import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
     CodeEditorListComponent,
-    CustomMaterialModule
+    CustomMaterialModule,
+    CommitUrlPipe,
+    VersionProviderUrlPipe
   ]
 })
 export class EntryModule { }

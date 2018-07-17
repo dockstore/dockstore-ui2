@@ -28,7 +28,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Workflow } from './../../shared/swagger/model/workflow';
 
-
 @Component({
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
@@ -82,14 +81,13 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default workflow version';
-    this.workflow.defaultVersion = newDefaultVersion;
     this.stateService.setRefreshMessage(message + '...');
-    this.workflowsService.updateWorkflow(this.workflowId, this.workflow).subscribe(
-      response => {
+    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
         this.refreshService.handleSuccess(message);
-        this.refreshService.refreshWorkflow();
-      },
-      error => this.refreshService.handleError(message, error));
+        if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {
+          this.refreshService.refreshWorkflow();
+        }
+      }, error => this.refreshService.handleError(message, error));
   }
 
   getVerifiedSource(name: string) {

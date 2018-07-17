@@ -15,8 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject ,  Subject } from 'rxjs';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Tag } from '../../shared/swagger';

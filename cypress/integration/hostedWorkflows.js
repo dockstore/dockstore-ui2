@@ -1,31 +1,29 @@
-describe('Dockstore my workflows', function() {
+describe('Dockstore hosted workflows', function() {
     require('./helper.js')
 
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")
     });
 
+    function getWorkflow() {
+      cy.contains('dockstore.org/A')
+        .click()
+      cy.contains('dockstore.org/A')
+          .parentsUntil('accordion-group')
+          .contains('div .no-wrap', /hosted/)
+          .should('be.visible').click()
+  }
+
     // Ensure tabs are correct for the hosted workflow, try adding a version
     describe('Should be able to register a hosted workflow and add files to it', function() {
       it('Register the workflow', function() {
         // Select the hosted workflow
-        cy
-          .contains('dockstore.org/A')
-          .invoke('width').should('be.gt', 0)
-        cy
-          .get('accordion')
-          .click()
-        cy
-          .contains('dockstore.org/A')
-          .click()
-        cy
-          .contains('hosted-workflow')
-          .click()
+        getWorkflow();
 
         // Should not be able to publish (No valid versions)
         cy
           .get('#publishButton')
-          .should('have.class', 'disabled')
+          .should('be.disabled')
 
         // Check content of the info tab
         cy
@@ -48,9 +46,6 @@ describe('Dockstore my workflows', function() {
           .parent()
           .click()
         cy
-          .get('#deleteVersionButton')
-          .should('be.disabled')
-        cy
           .get('#editFilesButton')
           .click()
         cy
@@ -68,15 +63,14 @@ describe('Dockstore my workflows', function() {
           .get('#saveNewVersionButton')
           .click()
 
-        // Should have a version 0
+        // Should have a version 1
         cy
           .get('.nav-link')
           .contains('Versions')
           .parent()
           .click()
           .get('table')
-          .find('a')
-          .contains('0')
+          .contains('span', /\b1\b/)
 
           // Add a new version with a second descriptor and a test json
           cy
@@ -118,20 +112,19 @@ describe('Dockstore my workflows', function() {
             .get('#saveNewVersionButton')
             .click()
 
-          // Should have a version 1
+          // Should have a version 2
           cy
             .get('.nav-link')
             .contains('Versions')
             .parent()
             .click()
             .get('table')
-            .find('a')
-            .contains('1')
+          .contains('span', /\b2\b/)
 
           // Should be able to publish
           cy
             .get('#publishButton')
-            .should('not.have.class', 'disabled')
+            .should('not.be.disabled')
 
           // Try deleting a file (.wdl file)
           cy
@@ -162,17 +155,13 @@ describe('Dockstore my workflows', function() {
             .parent()
             .click()
             .get('table')
-            .find('a')
-            .contains('2')
+          .contains('span', /\b3\b/)
 
-          // Try deleting a version
+          // Delete a version
           cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
-          cy
-            .get('#deleteVersionButton')
+            .get('table')
+            .find('.deleteVersionButton')
+            .first()
             .click()
 
           // Version should no longer exist
@@ -183,7 +172,7 @@ describe('Dockstore my workflows', function() {
             .click()
             .get('table')
             .find('a')
-            .should('not.contain', '2')
+            .should('not.contain', '1')
       });
     });
 

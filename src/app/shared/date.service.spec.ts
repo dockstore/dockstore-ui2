@@ -40,6 +40,6 @@ describe('DateService', () => {
         expect(service.getAgoMessage(1498675698000)).toContain(' days ago');
     }));
     it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
-        expect(service.getVerifiedLink()).toEqual('/docs/faq#what-is-a-verified-tool-or-workflow-');
+        expect(service.getVerifiedLink()).toEqual('https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow');
     }));
 });

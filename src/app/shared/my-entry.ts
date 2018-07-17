@@ -15,7 +15,7 @@
  */
 import { Injectable, OnDestroy } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
 import { TokenService } from '../loginComponents/token.service';
@@ -34,6 +34,8 @@ export abstract class MyEntry implements OnDestroy {
     user: any;
     public hasGitHubToken = true;
     public groupEntriesObject: Array<any>;
+    public groupSharedEntriesObject: Array<any>;
+
     protected ngUnsubscribe: Subject<{}> = new Subject();
     constructor(protected accountsService: AccountsService, protected authService: AuthService, protected configuration: Configuration,
         protected tokenService: TokenService, protected urlResolverService: UrlResolverService) { }
@@ -113,14 +115,25 @@ export abstract class MyEntry implements OnDestroy {
     }
 
     /**
+     * Returns the concatenation of two arrays (properly deals with undefined)
+     * @param arr1 Array 1
+     * @param arr2  Array 2
+     */
+    combineArrays(arr1: Array<any>, arr2: Array<any>): Array<any> {
+      arr1 = arr1 || [];
+      arr2 = arr2 || [];
+      return arr1.concat(arr2);
+    }
+
+    /**
      * Select the initially selected entry
      * @param sortedEntries Array of sorted entries
      */
     selectInitialEntry(sortedEntries: any): void {
       /* For the first initial time, set the first entry to be the selected one */
       if (sortedEntries && sortedEntries.length > 0) {
-        this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
-        const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+        const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+          this.combineArrays(this.groupEntriesObject, this.groupSharedEntriesObject));
         if (foundEntry) {
           this.selectEntry(foundEntry);
         } else {
@@ -134,6 +147,12 @@ export abstract class MyEntry implements OnDestroy {
         }
       } else {
         this.selectEntry(null);
+      }
+    }
+
+    setGroupEntriesObject(sortedEntries: any): void {
+      if (sortedEntries && sortedEntries.length > 0) {
+        this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
       }
     }
 }

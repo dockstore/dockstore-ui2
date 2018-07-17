@@ -35,6 +35,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() verifiedSource: Array<any>;
   versionTag: Tag;
+  public DockstoreToolType = DockstoreTool;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this.versionTag = value;
@@ -77,13 +78,13 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default tool version';
-    this.tool.defaultVersion = newDefaultVersion;
     this.stateService.setRefreshMessage(message + '...');
-    this.containersService.updateContainer(this.tool.id, this.tool).subscribe(response => {
+    this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
       this.refreshService.handleSuccess(message);
-      this.refreshService.refreshTool();
-    }, error => this.refreshService.handleError(message, error)
-    );
+      if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
+        this.refreshService.refreshTool();
+      }
+    }, error => this.refreshService.handleError(message, error));
   }
 
   getVerifiedSource(name: string) {

@@ -47,8 +47,8 @@ export class LaunchComponent {
   dockstoreSupportedCwlMakeTemplate: string;
   checkEntryCommand: string;
   consonance: string;
-  descriptors: Array<DescriptorLanguageBean>;
-  validDescriptors: Array<DescriptorLanguageBean>;
+  descriptors: Array<string>;
+  validDescriptors: Array<string>;
   currentDescriptor: string;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
@@ -56,14 +56,14 @@ export class LaunchComponent {
   constructor(private launchService: ToolLaunchService,
     private toolDescriptorService: ToolDescriptorService,
     private descriptorLanguageService: DescriptorLanguageService) {
-    this.descriptorLanguageService.descriptorLanguagesBean$.subscribe(map => {
+    this.descriptorLanguageService.descriptorLanguages$.subscribe(map => {
       this.descriptors = map;
       this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
   }
 
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<DescriptorLanguageBean>, version: Tag): Array<DescriptorLanguageBean> {
+  filterDescriptors(descriptors: Array<string>, version: Tag): Array<string> {
     const newDescriptors = [];
 
     // Return empty array if no descriptors present yet
@@ -85,14 +85,14 @@ export class LaunchComponent {
 
     // Create a list of valid descriptors
     for (const descriptor of descriptors) {
-      if ((descriptor.value === 'CWL' && hasCwl) || (descriptor.value === 'WDL' && hasWdl)) {
+      if ((descriptor === 'CWL' && hasCwl) || (descriptor === 'WDL' && hasWdl)) {
         newDescriptors.push(descriptor);
       }
     }
 
     // Preselect first descriptor in the list
     if (newDescriptors && newDescriptors.length > 0) {
-      this.currentDescriptor = newDescriptors[0].value;
+      this.currentDescriptor = newDescriptors[0];
     }
 
     return newDescriptors;

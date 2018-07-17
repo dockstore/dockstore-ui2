@@ -1,8 +1,10 @@
 // tslint:disable:max-line-length
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
+import { finalize } from 'rxjs/operators';
 
 import { Dockstore } from '../../../shared/dockstore.model';
+import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
 
@@ -20,7 +22,8 @@ export class DownloadCLIClientComponent implements OnInit {
   public textData1 = '';
   public textData2 = '';
   public textData3 = '';
-  constructor(private authService: AuthService,
+  private cwltoolVersion = '';
+  constructor(private authService: AuthService, private metadataService: MetadataService,
     private gA4GHService: GA4GHService) { }
 
   ngOnInit() {
@@ -35,7 +38,13 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
         this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;
-        this.generateMarkdown();
+        this.metadataService.getRunnerDependencies(apiVersion, '2', 'cwltool', 'json').pipe(finalize(() => this.generateMarkdown())).subscribe((json: any) => {
+          if (json) {
+            this.cwltoolVersion = json.cwltool;
+          }
+        }, err => {
+          console.log('Unable to retrieve requirements.txt file.');
+        });
       }, error => {
         this.generateMarkdown();
       });
@@ -79,13 +88,13 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 1. Run this to verify that pip has been installed \`pip --version\`
 2. Run these commands to install cwltool
 \`\`\`
-curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
+curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
 pip install -r requirements.txt
 \`\`\`
 <!-- Workaround until https://github.com/common-workflow-language/cwltool/issues/524 is resolved -->
 If using Python 3, install cwl-avro instead of avro.  Do this by running these commands:
 \`\`\`
-curl -o requirements.txt "${Dockstore.LOCAL_URI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
+curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
 pip install -r requirements.txt
 \`\`\`
 Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
@@ -99,8 +108,7 @@ exec newgrp docker
 \`\`\`
 
 #### Part 4
-1. Run our dependencies to verify that they have been installed properly. You should see something like the following.
-The cwltool version should match the version listed in the requirements.txt file.
+1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
 $ dockstore --version
 Dockstore version ${this.dockstoreVersion}
@@ -109,7 +117,7 @@ java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 $ cwltool --version
-/usr/local/bin/cwltool 1.0.20170828135420
+/usr/local/bin/cwltool ${this.cwltoolVersion}
 $ docker run hello-world
 Hello from Docker!
 ...

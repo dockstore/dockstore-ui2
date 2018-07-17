@@ -13,26 +13,31 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {Location} from '@angular/common';
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Location } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
-import {DateService} from '../shared/date.service';
-import {DockstoreService} from '../shared/dockstore.service';
-import {Entry} from '../shared/entry';
-import {ProviderService} from '../shared/provider.service';
-import {Tag} from '../shared/swagger/model/tag';
-import {WorkflowVersion} from '../shared/swagger/model/workflowVersion';
-import {TrackLoginService} from '../shared/track-login.service';
-import {WorkflowService} from '../shared/workflow.service';
-import {ErrorService} from './../shared/error.service';
-import {ExtendedWorkflow} from './../shared/models/ExtendedWorkflow';
-import {RefreshService} from './../shared/refresh.service';
-import {StateService} from './../shared/state.service';
-import {WorkflowsService} from './../shared/swagger/api/workflows.service';
-import {PublishRequest} from './../shared/swagger/model/publishRequest';
-import {Workflow} from './../shared/swagger/model/workflow';
-import {UrlResolverService} from './../shared/url-resolver.service';
+import { DateService } from '../shared/date.service';
+import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
+import { ProviderService } from '../shared/provider.service';
+import { Tag } from '../shared/swagger/model/tag';
+import {WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { TrackLoginService } from '../shared/track-login.service';
+import { WorkflowService } from '../shared/workflow.service';
+import { ErrorService } from './../shared/error.service';
+import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
+import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
+import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { Workflow } from './../shared/swagger/model/workflow';
+import { UrlResolverService } from './../shared/url-resolver.service';
+import { Permission } from './../shared/swagger';
+import RoleEnum = Permission.RoleEnum;
 
 @Component({
   selector: 'app-workflow',
@@ -51,7 +56,15 @@ export class WorkflowComponent extends Entry {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
-  validTabs = ['info', 'labels', 'versions', 'files', 'tools', 'dag'];
+  validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+  separatorKeysCodes = [ENTER, COMMA];
+  protected canRead = false;
+  protected canWrite = false;
+  protected isOwner = false;
+  protected readers = [];
+  protected writers = [];
+  protected owners = [];
+  @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
@@ -64,6 +77,22 @@ export class WorkflowComponent extends Entry {
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
+  }
+
+  private processResponse(userPermissions: Permission[]): void {
+    this.owners = this.specificPermissionEmails(userPermissions, RoleEnum.OWNER);
+    this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
+    this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
+
+    this.canRead = this.canUserRead();
+    this.canWrite = this.canUserWrite();
+    this.isOwner = this.isUserOwner();
+  }
+
+  private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
+    return permissions
+      .filter(u => u.role === role)
+      .map(c => c.email);
   }
 
   isPublic(): boolean {
@@ -95,7 +124,6 @@ export class WorkflowComponent extends Entry {
    */
   setProperties() {
     const workflowRef: ExtendedWorkflow = this.workflow;
-    this.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.shareURL = window.location.href;
     workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
     workflowRef.agoMessage = this.dateService.getAgoMessage(new Date(workflowRef.last_modified_date).getTime());
@@ -119,24 +147,31 @@ export class WorkflowComponent extends Entry {
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
       if (this.publicPage) {
-        this.sortedVersions = this.dockstoreService.getVisibleVersions(this.sortedVersions);
+        this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
+      this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        (userPermissions: Permission[]) => {
+          this.processResponse(userPermissions);
+        },
+        () => {
+        }
+      );
     }
   }
 
   public subscriptions(): void {
-    this.workflowService.workflow$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion, this.selectedVersion);
+            this.workflow.defaultVersion);
         }
         this.setUpWorkflow(workflow);
       }
     );
-    this.workflowService.copyBtn$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.workflowService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflowCopyBtn => {
         this.workflowCopyBtn = workflowCopyBtn;
       }
@@ -151,12 +186,13 @@ export class WorkflowComponent extends Entry {
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion, this.selectedVersion);
+            this.workflow.defaultVersion);
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
           }
+          this.providerService.setUpProvider(this.workflow);
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -179,9 +215,6 @@ export class WorkflowComponent extends Entry {
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
-    if (this.publicPage) {
-      this.validVersions = this.dockstoreService.getVisibleVersions(this.validVersions);
-    }
   }
 
   publishDisable() {
@@ -198,6 +231,12 @@ export class WorkflowComponent extends Entry {
       this.workflowsService.publish(this.workflow.id, request).subscribe(
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
+          this.workflowService.setWorkflow(response);
+          if (response.checker_id) {
+            this.workflowsService.getWorkflow(response.checker_id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
+              this.workflowService.upsertWorkflowToWorkflow(workflow);
+            }, err => this.refreshService.handleError('publish error', err));
+          }
         }, err => {
           this.published = !this.published;
           this.refreshService.handleError('publish error', err);
@@ -234,7 +273,7 @@ export class WorkflowComponent extends Entry {
 
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
-    const workflowLabels = labelArray.join(', ');
+    const workflowLabels = labelArray;
     this.workflowEditData = {
       labels: workflowLabels,
       is_published: this.workflow.is_published
@@ -250,8 +289,14 @@ export class WorkflowComponent extends Entry {
       this.setWorkflowLabels();
     }
   }
+
+  cancelLabelChanges(): void {
+    this.workflowEditData.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
+    this.labelsEditMode = false;
+  }
+
   setWorkflowLabels(): any {
-    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels)
+    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', '))
       .subscribe(workflow => {
         this.workflow.labels = workflow.labels;
         this.workflowService.setWorkflow(workflow);
@@ -272,6 +317,7 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+      this.providerService.setUpProvider(this.workflow);
     }
   }
 
@@ -286,4 +332,71 @@ export class WorkflowComponent extends Entry {
      const pageIndex = this.getIndexInURL('/workflows');
      return pageIndex;
    }
+
+  addToLabels(event: MatChipInputEvent): void {
+     const input = event.input;
+     const value = event.value;
+     if ((value || '').trim()) {
+       this.workflowEditData.labels.push(value.trim());
+     }
+
+     if (input) {
+       input.value = '';
+     }
+   }
+
+   removeLabel(label: any): void {
+    const index = this.workflowEditData.labels.indexOf(label);
+
+    if (index >= 0) {
+      this.workflowEditData.labels.splice(index, 1);
+    }
+  }
+
+  /**
+   * True if user is in users list, or username is in read,write,owner permissions, false otherwise
+   */
+  canUserRead(): boolean {
+    const username = this.user.username;
+    if (this.isInUserArray(username)) {
+      return true;
+    }
+    return this.readers.includes(username) || this.writers.includes(username) || this.owners.includes(username) ;
+  }
+
+  /**
+   * True if user is in users list, or username is in write or owner permissions, false otherwise
+   */
+  canUserWrite(): boolean {
+    const username = this.user.username;
+    if (this.isInUserArray(username)) {
+      return true;
+    }
+    return this.writers.includes(username) || this.owners.includes(username);
+  }
+
+  /**
+   * True if user is in users list, or username is in owner permissions, false otherwise
+   */
+  isUserOwner(): boolean {
+    const username = this.user.username;
+    if (this.isInUserArray(username)) {
+      return true;
+    }
+    return this.owners.includes(username);
+  }
+
+  /**
+   * True if username is in the workflow user array, false otherwise
+   * @param username
+   */
+  isInUserArray(username: string): boolean {
+    if (this.workflow.users) {
+      const match = this.workflow.users.find((user) => user.username === username);
+      if (match !== undefined) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

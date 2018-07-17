@@ -29,6 +29,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OrderBy } from '../../shared/orderBy';
 
 import { VersionsWorkflowComponent } from './versions.component';
+import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
@@ -36,7 +37,7 @@ describe('VersionsWorkflowComponent', () => {
   let workflowService: WorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionsWorkflowComponent, OrderBy ],
+      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
@@ -61,15 +62,7 @@ describe('VersionsWorkflowComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should update default version and then set current workflow based on response', () => {
-    const workflowVersion: WorkflowVersion = {id: 5, reference: 'stuff', name: 'name'};
-    component.publicPage = false;
-    component.updateDefaultVersion('name');
-    fixture.detectChanges();
-    workflowService.workflow$.subscribe(workflow => {
-      expect(workflow).toEqual(jasmine.objectContaining({defaultVersion: 'name'}));
-  });
-  });
+
 
   it('should get verified source', () => {
     const source1 = {version: '1', verifiedSource: 'a'};

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
@@ -76,7 +76,7 @@ export class InfoTabService {
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
             this.stateService.setRefreshMessage('Updating ' + message + '...');
             this.workflowsService.refresh(this.originalWorkflow.id).subscribe(refreshResponse => {
-                this.workflowService.replaceWorkflow(this.workflows, refreshResponse);
+                this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
                 this.refreshService.handleSuccess(message);
             }, error => {
@@ -97,7 +97,7 @@ export class InfoTabService {
         this.stateService.setRefreshMessage('Updating ' + message + '...');
         workflow = this.changeWorkflowPathToDefaults(workflow);
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe((updatedWorkflow: Workflow) => {
-            this.workflowService.replaceWorkflow(this.workflows, updatedWorkflow);
+            this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
             this.refreshService.handleSuccess(message);
         }, error => {
             this.refreshService.handleError(message, error);

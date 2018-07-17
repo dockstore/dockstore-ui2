@@ -14,8 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ContainerService } from '../../shared/container.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
@@ -98,5 +97,9 @@ export class ParamfilesComponent extends EntryFileSelector {
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
         this.filePath = this.fileService.getFilePath(this.currentFile);
       });
+  }
+
+  downloadFile(file, id): void {
+    this.fileService.downloadFile(file, id);
   }
 }

@@ -18,8 +18,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DataTablesModule } from 'angular-datatables';
-import { MarkdownModule } from 'angular2-markdown';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -27,7 +25,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { CustomMaterialModule } from './shared/modules/material.module';
+import { NgxMdModule } from 'ngx-md';
 
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
@@ -36,12 +34,13 @@ import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent } from './home/home.component';
-import { ListentryModule } from './listentry/listentry.module';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
+import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
+import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
@@ -71,6 +70,7 @@ import { LogoutService } from './shared/logout.service';
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
+import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
@@ -104,6 +104,8 @@ import { StarringModule } from './starring/starring.module';
     AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
+    GetTokenUsernamePipe,
+    GetTokenContentPipe,
     TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
@@ -115,7 +117,6 @@ import { StarringModule } from './starring/starring.module';
     BrowserAnimationsModule,
     MatSnackBarModule,
     FormsModule,
-    DataTablesModule.forRoot(),
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
     MatButtonModule,
@@ -132,8 +133,7 @@ import { StarringModule } from './starring/starring.module';
     routing,
     ModalModule.forRoot(),
     StargazersModule,
-    ListentryModule,
-    MarkdownModule.forRoot(),
+    NgxMdModule.forRoot(),
     SearchModule,
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule

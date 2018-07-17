@@ -21,7 +21,6 @@ import { MyToolsComponent } from './mytools.component';
 const MYTOOLS_ROUTES: Routes = [
   {
     path: '', component: MyToolsComponent, children: [
-      { path: '', component: MyToolComponent},
       { path: '**', component: MyToolComponent}
     ]
   }

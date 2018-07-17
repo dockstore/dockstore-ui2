@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-cwl-viewer',
@@ -26,7 +27,7 @@ import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
   styleUrls: ['./cwl-viewer.scss']
 })
 
-export class CwlViewerComponent implements OnInit {
+export class CwlViewerComponent implements OnInit, OnDestroy {
 
   @Input() workflow: ExtendedWorkflow;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -43,15 +44,21 @@ export class CwlViewerComponent implements OnInit {
   public cwlViewerError = false;
   public cwlViewerPercentageZoom = 100;
   public cwlViewerDescriptor: CwlViewerDescriptor;
+  public errorMessage;
   public loading = false;
 
   private version;
+  private onDestroy$ = new Subject<void>();
 
   constructor(private cwlViewerService: CwlViewerService) {
   }
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
   }
 
   resetZoom() {
@@ -62,8 +69,9 @@ export class CwlViewerComponent implements OnInit {
     if (this.version) {
       this.loading = true;
       this.cwlViewerDescriptor = null;
+      this.errorMessage = null;
       this.cwlViewerService.getVisualizationUrls(this.workflow.providerUrl, this.version.reference,
-        this.version.workflow_path)
+        this.version.workflow_path, this.onDestroy$)
         .subscribe(
           cwlViewerDescriptor => {
             this.cwlViewerDescriptor = cwlViewerDescriptor;
@@ -71,7 +79,8 @@ export class CwlViewerComponent implements OnInit {
             this.loading = false;
             this.resetZoom();
           },
-          () => {
+          (error) => {
+            this.errorMessage = error;
             this.cwlViewerDescriptor = null;
             this.cwlViewerError = true;
             this.loading = false;

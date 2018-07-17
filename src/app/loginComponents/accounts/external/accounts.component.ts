@@ -16,7 +16,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TrackLoginService } from '../../../shared/track-login.service';
@@ -34,6 +35,7 @@ import { AccountsService } from './accounts.service';
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
 
+  // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
       name: 'GitHub',
@@ -72,14 +74,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     }
   ];
 
-  private tokens: Token[];
+  public tokens: Token[];
   private userId;
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
     private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService) {
-    this.trackLoginService.isLoggedIn$.takeUntil(this.ngUnsubscribe).subscribe(
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       state => {
         if (!state) {
           this.router.navigate(['']);
@@ -112,8 +114,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   // Delete a token and unlink service in the UI
   unlink(source: string) {
-    this.deleteToken(source)
-      .first().subscribe(() => {
+    this.deleteToken(source).pipe(
+      first()).subscribe(() => {
         this.tokenService.updateTokens();
         this.unlinkToken(source);
       });
@@ -136,15 +138,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.tokens = tokens;
     if (tokens) {
       this.setAvailableTokens(tokens);
-    }
-  }
-
-  public getTokenFromSource(source: string): string {
-    const tokenFound: Token = this.tokens.find(token => token.tokenSource === source);
-    if (tokenFound) {
-      return tokenFound.content;
-    } else {
-      return null;
     }
   }
 

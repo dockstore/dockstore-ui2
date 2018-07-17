@@ -54,6 +54,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public unsavedTestCWLFile = '';
   public unsavedTestWDLFile = '';
   public dockerPullCommand = '';
+  public DockstoreToolType = DockstoreTool;
 
   public formErrors = formErrors;
   public version: Tag;

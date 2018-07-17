@@ -19,12 +19,15 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DateService } from './../../shared/date.service';
 import { StateService } from '../../shared/state.service';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+
 import {
     DateStubService,
     StateStubService,
     VersionModalStubService,
     WorkflowsStubService,
     WorkflowStubService,
+    HostedStubService
 } from './../../test/service-stubs';
 import { WorkflowService } from '../../shared/workflow.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -43,7 +46,8 @@ describe('ViewWorkflowComponent', () => {
         { provide: VersionModalService, useClass: VersionModalStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService},
         { provide: StateService, useClass: StateStubService },
-        { provide: DateService, useClass: DateStubService }
+        { provide: DateService, useClass: DateStubService },
+        { provide: HostedService, useClass: HostedStubService }
       ]
     })
       .compileComponents();

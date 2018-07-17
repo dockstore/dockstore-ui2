@@ -50,6 +50,9 @@ export class Dockstore {
   static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
   static readonly GITLAB_CLIENT_ID = 'fill_this_in';
   static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
+  // getting ready for gitlab scopes, this seems to request a token with the correct scope but it doesn't work to retrieve membership
+  // static readonly GITLAB_SCOPE = 'read_user openid';
+  static readonly GITLAB_SCOPE = 'api';
 
   static readonly GOOGLE_CLIENT_ID = 'fill_this_in';
   static readonly GOOGLE_SCOPE = 'profile email';
@@ -57,7 +60,7 @@ export class Dockstore {
   static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
   static readonly FEATURES = {
-    enableCwlViewer: false,
+    enableCwlViewer: true,
     enableLaunchWithFireCloud: true
   };
 }

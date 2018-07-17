@@ -35,10 +35,25 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public showCustomDockerRegistryPath: boolean;
   public refreshMessage: string;
   public isModalShown: boolean;
+  public hostedTool = {
+    path: '',
+    registry: 'quay.io',
+    registryProvider: 'Quay.io'
+  };
+  public options = [
+    {
+      label: 'Use CWL, WDL or Nextflow from GitHub, BitBucket, etc.',
+      value: 0
+    },
+    {
+      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
+      value: 1
+    }
+  ];
+  public selectedOption = this.options[0];
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
-
   constructor(private registerToolService: RegisterToolService, private stateService: StateService) { }
 
   isInvalidCustomRegistry() {
@@ -50,11 +65,19 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   friendlyRegistryKeys(): Array<string> {
-    return this.registerToolService.friendlyRegistryKeys();
+    // TODO: Remove this section when GitLab is enabled
+    const friendlyRegistryKeys = this.registerToolService.friendlyRegistryKeys();
+    return friendlyRegistryKeys.filter(key => key !== 'GitLab');
+    // TODO: Uncomment this section when GitLab is enabled
+    // return this.registerToolService.friendlyRegistryKeys();
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    return this.registerToolService.friendlyRepositoryKeys();
+    // TODO: Remove this section when GitLab is enabled
+    const friendlyRepositoryKeys = this.registerToolService.friendlyRepositoryKeys();
+    return friendlyRepositoryKeys.filter(key => key !== 'GitLab');
+    // TODO: Uncomment this section when GitLab is enabled
+    // return this.registerToolService.friendlyRepositoryKeys();
   }
 
   isInvalidPrivateTool() {
@@ -63,6 +86,14 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
 
   registerTool() {
     this.registerToolService.registerTool(this.tool, this.customDockerRegistryPath);
+  }
+
+  registerHostedTool() {
+    this.registerToolService.registerHostedTool(this.hostedTool);
+  }
+
+  getToolRegistry(registry: string, customDockerRegistryPath: string): string {
+    return this.registerToolService.getToolRegistry(registry, customDockerRegistryPath);
   }
 
   checkForSpecialDockerRegistry() {

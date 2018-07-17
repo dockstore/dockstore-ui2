@@ -14,10 +14,14 @@
  *    limitations under the License.
  */
 
+import { Tag, WorkflowVersion } from './swagger';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from './models/ExtendedWorkflow';
+
 export class ProviderService {
 
   /* set up project provider */
-  setUpProvider(tool) {
+  setUpProvider(tool: (ExtendedDockstoreTool | ExtendedWorkflow)): (ExtendedDockstoreTool | ExtendedWorkflow) {
     const gitUrl = tool.gitUrl;
 
     tool.provider = this.getProvider(gitUrl);

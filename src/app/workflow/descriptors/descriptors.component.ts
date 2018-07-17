@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 @Component({
