@@ -30,6 +30,7 @@ import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
+import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { VerifiedDisplayComponent } from './verified-display/verified-display.co
     CodeEditorListComponent,
     CommitUrlPipe,
     VerifiedByComponent,
-    VerifiedDisplayComponent
+    VerifiedDisplayComponent,
+    VerifiedPlatformsPipe
 ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
@@ -57,7 +59,8 @@ import { VerifiedDisplayComponent } from './verified-display/verified-display.co
     CustomMaterialModule,
     CommitUrlPipe,
     VerifiedByComponent,
-    VerifiedDisplayComponent
+    VerifiedDisplayComponent,
+    VerifiedPlatformsPipe
   ]
 })
 export class EntryModule { }

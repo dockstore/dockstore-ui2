@@ -105,7 +105,7 @@
           <a href= {{verifiedLink}}>
             <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
           </a>
-          {{getVerifiedPlatformsFromSourceFiles(version?.sourceFiles)}}
+          {{version?.sourceFiles | verifiedPlatforms }}
           <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
         </td>
         <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->

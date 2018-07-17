@@ -20,11 +20,9 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ErrorService } from '../../shared/error.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { StateService } from '../../shared/state.service';
-import { SourceFile } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { VerifiedByService } from '../../shared/verified-by.service';
 import { Versions } from '../../shared/versions';
 import { WorkflowService } from '../../shared/workflow.service';
 
@@ -52,7 +50,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
 
   constructor(dockstoreService: DockstoreService, dateService: DateService, protected stateService: StateService,
     private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService, private verifiedByService: VerifiedByService) {
+    private refreshService: RefreshService) {
     super(dockstoreService, dateService, stateService);
   }
 
@@ -103,9 +101,5 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   setVersion(version: WorkflowVersion): void {
     this._selectedVersion = version;
     this.selectedVersionChange.emit(this._selectedVersion);
-  }
-
-  getVerifiedPlatformsFromSourceFiles(sourcefiles: SourceFile[]): string {
-    return this.verifiedByService.getVerifiedPlatformsFromSourceFiles(sourcefiles);
   }
 }

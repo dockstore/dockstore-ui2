@@ -30,6 +30,7 @@ import { OrderBy } from '../../shared/orderBy';
 
 import { VersionsWorkflowComponent } from './versions.component';
 import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
+import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
@@ -37,7 +38,7 @@ describe('VersionsWorkflowComponent', () => {
   let workflowService: WorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe ],
+      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
