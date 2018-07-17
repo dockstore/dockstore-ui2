@@ -86,8 +86,14 @@ export class FileService {
       return null;
     }
 
-  // Downloads a file
-  // TODO: Temporary, need to update test param endpoint to return raw file based on path
+  /**
+   * Downloads a file when no TRS/Dockstore link is available
+   * Does it by setting t
+   * @param {string} content  The content of the file
+   * @param {string} path     The original full path of the file
+   * @param {string} id       The HTML ID of the button that will download the file
+   * @memberof FileService
+   */
   downloadFile(content: string, path: string, id: string): void {
     let filename = 'dockstore.txt';
     if (content != null) {

@@ -37,14 +37,14 @@ export class DockerfileComponent {
     this.reactToVersion();
   }
   content: string;
-  filepath: string;
+  filePath: string;
   nullContent: boolean;
   public published$: Observable<boolean>;
-  public containerFilePath: string;
+  public downloadFilePath: string;
   constructor(public fileService: FileService,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
-    this.filepath = '/Dockerfile';
+    this.filePath = '/Dockerfile';
     this.published$ = this.containerService.toolIsPublished$;
   }
 
@@ -54,8 +54,8 @@ export class DockerfileComponent {
       this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first())
         .subscribe(file => {
             this.content = file.content;
-            this.filepath = file.path;
-            this.containerFilePath = this.getContainerfilePath();
+            this.filePath = file.path;
+            this.downloadFilePath = this.getContainerfilePath();
           }, error => {
             this.nullContent = true;
             this.content = null;
@@ -72,6 +72,10 @@ export class DockerfileComponent {
     const customPath = encodeURIComponent(this.entrypath) + '/versions/' + encodeURIComponent(this._selectedVersion.name)
        + '/containerfile';
     return basepath + customPath;
+  }
+
+  downloadFile(id: string): void {
+    this.fileService.downloadFile(this.content, this.filePath, id);
   }
 
 }
