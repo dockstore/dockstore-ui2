@@ -100,13 +100,13 @@
                   <div class="input-group">
                     <div class="input-group-btn">
                       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                        {{workflow?.descriptorType}}
+                        {{'descriptor_type' | mapFriendlyValue : workflow?.descriptorType}}
                         <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
                         <li *ngFor="let descriptorType of (descriptorLanguages$ | async)">
                           <a class="dropdown-item" (click)="changeDescriptorType(descriptorType.toLowerCase())">
-                            {{descriptorType | lowercase}}
+                            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
                           </a>
                         </li>
                       </ul>
@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button id="closeRegisterWorkflowModalButton" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
+              <button type="button" id="closeRegisterWorkflowModalButton" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
                 Close
               </button>
               <button id="submitButton" type="submit" mat-raised-button color="primary" disabled="{{!registerWorkflowForm.form.valid || refreshMessage !== null}}">
@@ -155,13 +155,13 @@
                   <div class="input-group">
                     <div class="input-group-btn">
                       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                        {{hostedWorkflow?.descriptorType}}
+                        {{ 'descriptor_type' | mapFriendlyValue : hostedWorkflow?.descriptorType}}
                         <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
                         <li *ngFor="let descriptorType of (descriptorLanguages$ | async)">
                           <a class="dropdown-item" (click)="hostedWorkflow.descriptorType = descriptorType.toLowerCase()">
-                            {{descriptorType | lowercase}}
+                            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
                           </a>
                         </li>
                       </ul>
@@ -182,7 +182,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
+              <button type="button" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
                 Close
               </button>
               <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedWorkflowForm.form.valid">

@@ -37,7 +37,22 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 import { MyWorkflowsService } from './../myworkflows.service';
 import { first, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-
+/**
+ * How the workflow selection works:
+ * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
+ * workflows$ is completely seperate from URL and workflow$ (none of them should update the other)
+ * URL change is tied to workflow$ change
+ *
+ * To update (refresh, publish, etc) a currently selected workflow, update workflows$ first then
+ * update workflow$ (URL is presumed to already be correct)
+ *
+ * Register a new workflow which is not currently selected because it doesn't exist yet involves updating workflows$ and then
+ * going to the new URL (this should exist now) which triggers a workflow$ change
+ * @export
+ * @class MyWorkflowComponent
+ * @extends {MyEntry}
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
@@ -73,7 +88,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         if (this.groupEntriesObject && this.groupSharedEntriesObject) {
           const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
             this.groupEntriesObject.concat(this.groupSharedEntriesObject));
-            this.selectEntry(foundWorkflow);
+          this.selectEntry(foundWorkflow);
         }
       }
     });
@@ -120,15 +135,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
           this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
-          if (!this.hasLoadedWorkflows) {
-            this.hasLoadedWorkflows = true;
+          // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+          if (!this.workflow) {
             if (this.workflows.length > 0) {
               this.selectInitialEntry(sortedWorkflows);
             } else if (this.sharedWorkflows.length > 0) {
               this.selectInitialEntry(sortedSharedWorkflows);
             }
-          } else {
-            this.selectEntry(this.workflow);
           }
         }
       });
@@ -277,6 +290,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   selectEntry(workflow: ExtendedWorkflow): void {
     if (workflow !== null) {
       this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+        this.location.go('/my-workflows/' + result.full_workflow_path);
         this.workflowService.setWorkflow(result);
       });
     }

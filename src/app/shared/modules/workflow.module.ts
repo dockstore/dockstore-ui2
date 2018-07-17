@@ -48,6 +48,7 @@ import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
 import { SelectModule } from '../modules/select.module';
+import { PipeModule } from '../pipe/pipe.module';
 import { DagModule } from './../../workflow/dag/dag.module';
 import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
 import { InfoTabService } from './../../workflow/info-tab/info-tab.service';
@@ -85,6 +86,7 @@ import { getTooltipConfig } from './../tooltip';
     ListWorkflowsModule,
     ModalModule.forRoot(),
     SelectModule,
+    PipeModule,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),

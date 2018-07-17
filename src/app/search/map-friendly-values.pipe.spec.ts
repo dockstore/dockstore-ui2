@@ -6,5 +6,7 @@ describe('Pipe: MapFriendlyValuese', () => {
     expect(pipe).toBeTruthy();
     expect(pipe.transform('file_formats.keyword', 'potato')).toBe('potato');
     expect(pipe.transform('source_control_provider.keyword', 'BITBUCKET')).toBe('bitbucket.org');
+    expect(pipe.transform('descriptor_type', 'NEXTFLOW')).toBe('Nextflow');
+    expect(pipe.transform('descriptor_type', 'nextflow')).toBe('Nextflow');
   });
 });

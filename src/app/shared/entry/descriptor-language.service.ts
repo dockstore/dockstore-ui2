@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { MetadataService } from './../swagger/api/metadata.service';
@@ -22,15 +22,19 @@ import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBea
 
 @Injectable()
 export class DescriptorLanguageService {
-
-    descriptorLanguages$: Observable<Array<string>>;
-    descriptorLanguagesBean$: Observable<DescriptorLanguageBean[]>;
-    constructor(private metadataService: MetadataService) {
-        this.descriptorLanguagesBean$ = this.metadataService.getDescriptorLanguages();
-        this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(map(descriptorLanguageMap => {
-            if (descriptorLanguageMap) {
-                return descriptorLanguageMap.map((descriptorLanguage) => descriptorLanguage.value.toString());
-            }
-        }));
-    }
+  public descriptorLanguages$: Observable<Array<string>>;
+  private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
+  constructor(private metadataService: MetadataService) {
+      this.update();
+      this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(map(descriptorLanguageMap => {
+          if (descriptorLanguageMap) {
+              return descriptorLanguageMap.map((descriptorLanguage) => descriptorLanguage.value.toString());
+          }
+      }));
+  }
+  update() {
+    this.metadataService.getDescriptorLanguages().subscribe((languageBeans: Array<DescriptorLanguageBean>) => {
+      this.descriptorLanguagesBean$.next(languageBeans);
+    });
+  }
 }

@@ -60,7 +60,7 @@ export class ContainerStubService {
     }
 }
 export class ProviderStubService {
-    setUpProvider(tool, version = null) {
+    setUpProvider(tool) {
         tool.provider = 'a provider';
         tool.providerUrl = 'a provider url';
         return tool;
@@ -288,7 +288,6 @@ export class WorkflowStubService {
     getTestJson() {
         return observableOf({});
     }
-    replaceWorkflow(workflows: Workflow[], newWorkflow: Workflow) { }
     get full_workflow_path() { return ''; }
     get descriptorType() { return ''; }
 }
@@ -641,6 +640,9 @@ export class WorkflowsStubService {
       return observableOf([]);
     }
     getWorkflowPermissions(workflowPath: string) {
+      return observableOf([]);
+    }
+    updateWorkflowDefaultVersion(workflowId: number, tag: string) {
       return observableOf([]);
     }
 }
