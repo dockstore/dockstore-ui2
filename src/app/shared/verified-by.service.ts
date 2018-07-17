@@ -13,14 +13,14 @@ export class VerifiedByService {
    * This converts the verified source in a version's sourcefiles into a an array of strings
    * to be display in the right sidebar of an entry component
    *
-   * @param {((WorkflowVersion | Tag))} version  The versions of an entry
+   * @param {Array<SourceFile>} sourceFiles  The sourcesfiles of an entry's version
    * @returns {Array<string>}                    An array of strings to be displayed seperated by newlines
    * @memberof VerifiedByService
    */
-  getVerifiedByString(version: (WorkflowVersion | Tag)): Array<string> {
+  getVerifiedByString(sourceFiles: Array<SourceFile>): Array<string> {
     const verifiedSourceMap = new Map<string, Set<string>>();
-    if (version && version.sourceFiles) {
-      version.sourceFiles.forEach(sourceFile => {
+    if (sourceFiles) {
+      sourceFiles.forEach(sourceFile => {
         const verifiedBySource = sourceFile.verifiedBySource;
         if (verifiedBySource) {
           const verifiedBySourceArray = Object.entries(verifiedBySource);
@@ -42,7 +42,7 @@ export class VerifiedByService {
       });
       return verifiedByStringArray;
     } else {
-      return null;
+      return [];
     }
   }
 }

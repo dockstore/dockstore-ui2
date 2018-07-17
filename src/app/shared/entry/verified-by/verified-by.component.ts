@@ -10,11 +10,13 @@ import { VerifiedByService } from '../../verified-by.service';
 })
 export class VerifiedByComponent implements OnChanges {
   @Input() version: (WorkflowVersion | Tag);
-  public verifiedByStringArray: Array<string>;
+  public verifiedByStringArray: Array<string> = [];
   constructor(private verifiedByService: VerifiedByService) { }
 
   ngOnChanges() {
-    this.verifiedByStringArray = this.verifiedByService.getVerifiedByString(this.version);
+    if (this.version) {
+    this.verifiedByStringArray = this.verifiedByService.getVerifiedByString(this.version.sourceFiles);
+    }
   }
 
 }

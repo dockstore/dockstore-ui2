@@ -3,7 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CustomMaterialModule } from '../../modules/material.module';
+import { SourceFile } from '../../swagger';
 import { VerifiedDisplayComponent } from './verified-display.component';
+import { testSourceFiles } from '../../../test/mocked-objects';
 
 describe('VerifiedDisplayComponent', () => {
   let component: VerifiedDisplayComponent;
@@ -11,10 +13,10 @@ describe('VerifiedDisplayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerifiedDisplayComponent ],
+      declarations: [VerifiedDisplayComponent],
       imports: [CustomMaterialModule, BrowserAnimationsModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -25,5 +27,22 @@ describe('VerifiedDisplayComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  const expectedObject = [
+    {
+      'path': '/\u2028Dockstore-BTCA-SG.json',
+      'platform': 'Dockstore CLI',
+      'metadata': 'Docktesters group'
+    },
+    {
+      'path': '/\u2028Dockstore.json',
+      'platform': 'Dockstore CLI',
+      'metadata': 'Docktesters group'
+    }
+  ];
+
+  it('should create datasource data from sourcefiles', () => {
+    expect(component.getCustomVerificationInformationArray(testSourceFiles))
+      .toEqual(expectedObject);
   });
 });

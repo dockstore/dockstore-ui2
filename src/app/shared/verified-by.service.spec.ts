@@ -2,6 +2,7 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { VerifiedByService } from './verified-by.service';
+import { testSourceFiles } from '../test/mocked-objects';
 
 describe('Service: VerifiedBy', () => {
   beforeEach(() => {
@@ -10,7 +11,9 @@ describe('Service: VerifiedBy', () => {
     });
   });
 
-  it('should ...', inject([VerifiedByService], (service: VerifiedByService) => {
-    expect(service).toBeTruthy();
+  it('should get verified-by string', inject([VerifiedByService], (service: VerifiedByService) => {
+    expect(service.getVerifiedByString(null)).toEqual([]);
+    expect(service.getVerifiedByString([])).toEqual([]);
+    expect(service.getVerifiedByString(testSourceFiles)).toEqual(['Dockstore CLI via Docktesters group']);
   }));
 });

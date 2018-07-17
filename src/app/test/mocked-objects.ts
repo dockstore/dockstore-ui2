@@ -180,3 +180,48 @@ export const sampleSourceFile: SourceFile = {
   path: '/cwl.json',
   type: SourceFile.TypeEnum.CWLTESTJSON
 };
+
+export const testSourceFiles: Array<SourceFile> = [
+  {
+    'content': 'potato',
+    'id': 3071652,
+    'path': '\/Dockerfile',
+    'type': SourceFile.TypeEnum.DOCKERFILE,
+    'verifiedBySource': {
+
+    }
+  },
+  {
+    'content': 'potato',
+    'id': 3071752,
+    'path': '\/Dockstore-BTCA-SG.json',
+    'type': SourceFile.TypeEnum.CWLTESTJSON,
+    'verifiedBySource': {
+      'Dockstore CLI': {
+        'metadata': 'Docktesters group',
+        'verified': true
+      }
+    }
+  },
+  {
+    'content': 'potato',
+    'id': 3071602,
+    'path': '\/Dockstore.cwl',
+    'type': SourceFile.TypeEnum.DOCKSTORECWL,
+    'verifiedBySource': {
+
+    }
+  },
+  {
+    'content': 'potato',
+    'id': 3071702,
+    'path': '\/Dockstore.json',
+    'type': SourceFile.TypeEnum.CWLTESTJSON,
+    'verifiedBySource': {
+      'Dockstore CLI': {
+        'metadata': 'Docktesters group',
+        'verified': true
+      }
+    }
+  }
+];
