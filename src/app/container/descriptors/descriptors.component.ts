@@ -39,7 +39,6 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
 
-  public filePath: string;
   constructor(private containerService: ContainerService,
     private descriptorsService: ToolDescriptorService, private gA4GHService: GA4GHService,
     public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService) {

@@ -26,7 +26,7 @@ export abstract class EntryFileSelector {
   protected currentDescriptor;
   protected descriptors: Array<any>;
   public nullDescriptors: boolean;
-
+  public filePath: string;
   public currentFile;
   protected files: Array<any>;
   protected published$: Observable<boolean>;
@@ -97,4 +97,7 @@ export abstract class EntryFileSelector {
     this.content = null;
   }
 
+  downloadFile(id: string): void {
+    this.fileService.downloadFile(this.content, this.filePath, id);
+  }
 }

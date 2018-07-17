@@ -98,8 +98,4 @@ export class ParamfilesComponent extends EntryFileSelector {
         this.filePath = this.fileService.getFilePath(this.currentFile);
       });
   }
-
-  downloadFile(file, id): void {
-    this.fileService.downloadFile(file, id);
-  }
 }

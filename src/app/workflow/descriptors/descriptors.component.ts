@@ -37,7 +37,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   }
 
   public descriptorPath: string;
-  public filePath: string;
   constructor(private workflowDescriptorService: WorkflowDescriptorService, private gA4GHService: GA4GHService,
     public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
     private workflowService: WorkflowService) {

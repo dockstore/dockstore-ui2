@@ -88,12 +88,12 @@ export class FileService {
 
   // Downloads a file
   // TODO: Temporary, need to update test param endpoint to return raw file based on path
-  downloadFile(file, id): void {
+  downloadFile(content: string, path: string, id: string): void {
     let filename = 'dockstore.txt';
-    if (file != null) {
-      const splitFileName = (file.path).split('/');
+    if (content != null) {
+      const splitFileName = (path).split('/');
       filename = splitFileName[splitFileName.length - 1];
-      const data = 'data:text/plain,' + encodeURIComponent(file.content);
+      const data = 'data:text/plain,' + encodeURIComponent(content);
       $('#' + id).attr('href', data).attr('download', filename);
     }
   }

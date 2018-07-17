@@ -25,9 +25,14 @@
   </span>
   <div *ngIf="content && _selectedVersion?.valid" class="row no-margin">
     <div class="btn-group">
-      <a *ngIf="(published$ | async)" href id="downloadLinkParams" (click)="downloadFile(currentFile, 'downloadLinkParams')" class="btn btn-default" type="button" title="{{filePath}}">
+      <a *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
+      <ng-template #unpublishedDownloadLink>
+        <a href id="downloadLinkParams" (click)="downloadFile('downloadLinkParams')" class="btn btn-default" type="button" title="{{filePath}}">
+          <span class="glyphicon glyphicon-download"></span>
+        </a>
+      </ng-template>
       <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content">
         <span class="glyphicon glyphicon-copy"></span>
       </button>
