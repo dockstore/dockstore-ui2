@@ -29,7 +29,7 @@
       <strong tooltip="Source code repository for the associated tool descriptors and Dockerfile">
         {{ tool?.provider}}
       </strong>:
-      <a [href]="tool?.providerUrl">
+      <a [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
         {{ tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '') }}
       </a>
     </li>
