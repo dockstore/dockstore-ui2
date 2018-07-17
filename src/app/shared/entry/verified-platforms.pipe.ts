@@ -9,8 +9,8 @@ export class VerifiedPlatformsPipe implements PipeTransform {
 
   transform(sourcefiles: SourceFile[]): string {
     const platforms = new Set<string>();
-    sourcefiles.forEach(sourcefile => {
-      Object.keys(sourcefile.verifiedBySource).forEach(platform => {
+    sourcefiles.forEach((sourcefile: SourceFile) => {
+      Object.keys(sourcefile.verifiedBySource).forEach((platform: string) => {
         platforms.add(platform);
       });
     });
