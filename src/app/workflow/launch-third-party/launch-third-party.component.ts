@@ -1,10 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { URLSearchParams } from '@angular/http';
+import { LaunchThirdPartyService } from './launch-third-party.service';
 
 @Component({
   selector: 'app-launch-third-party',
@@ -36,43 +35,39 @@ export class LaunchThirdPartyComponent {
 
   dnastackURL: string;
   fireCloudURL: string;
+  dnanexusURL: string;
 
-  constructor(private workflowsService: WorkflowsService) { }
+  constructor(private workflowsService: WorkflowsService, private launchThirdPartyService: LaunchThirdPartyService) { }
 
   private onChange() {
-    this.setupFireCloudUrl(this.workflow);
-    this.setupDnaStackUrl(this.workflow);
+    this.fireCloudURL = null;
+    this.dnastackURL = null;
+    this.dnanexusURL = null;
+    if (this.isWdl(this.workflow)) {
+      this.dnastackURL = this.launchThirdPartyService.dnastackUrl(this.workflow.full_workflow_path, this.workflow.descriptorType);
+      const version = this.selectedVersion;
+      if (version && this.isWdl(this.workflow)) {
+        this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(version.workflow_path, version.name);
+        this.setupFireCloudUrl(this.workflow);
+      }
+    }
   }
 
   private isWdl(workflowRef: ExtendedWorkflow) {
     return workflowRef && workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
   }
 
-
   private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
-    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
-      this.fireCloudURL = null;
-      const version: WorkflowVersion = this.selectedVersion;
-      if (version && this.isWdl(workflowRef)) {
-        this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile: SourceFile) => {
-          if (sourceFile && sourceFile.content && sourceFile.content.length) {
-            this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
-              if (!sourceFiles || sourceFiles.length === 0) {
-                this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
-              }
-            });
+    const version: WorkflowVersion = this.selectedVersion;
+    this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile: SourceFile) => {
+      if (sourceFile && sourceFile.content && sourceFile.content.length) {
+        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
+          if (!sourceFiles || sourceFiles.length === 0) {
+            this.fireCloudURL = this.launchThirdPartyService.firecloudUrl(workflowRef.full_workflow_path, version.name);
           }
         });
       }
-    }
+    });
   }
 
-  private setupDnaStackUrl(workflow: ExtendedWorkflow) {
-    if (this.isWdl(workflow)) {
-      const myParams = new URLSearchParams();
-      myParams.set('path', workflow.full_workflow_path);
-      myParams.set('descriptorType', workflow.descriptorType);
-      this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
-    }
-  }
 }

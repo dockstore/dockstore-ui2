@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="23px" viewBox="0 0 19 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>DX_Logo_white_alpha</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="3.8e-05 0.375918033 18.9069 0.375918033 18.9069 22.9984164 3.8e-05 22.9984164"></polygon>
+        <polygon id="path-3" points="7.6e-05 0.000268333333 18.9069 0.000268333333 18.9069 22.999885 7.6e-05 22.999885"></polygon>
+    </defs>
+    <g id="Details:-Login/Signup/ExternalAccess" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-Copy-2" transform="translate(-25.000000, -18.000000)">
+            <g id="DX_Logo_white_alpha" transform="translate(25.000000, 18.000000)">
+                <g id="Group-6">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-5"></g>
+                    <path d="M14.465498,0.375842623 C14.465498,5.79592459 11.074758,8.15021967 7.232578,10.3197607 C3.533658,12.4089902 3.8e-05,17.107023 3.8e-05,22.9984164 L4.441478,22.9984164 C4.441478,17.107023 7.853498,14.1102361 11.677818,12.0526787 C15.050318,10.237941 18.906938,5.79592459 18.906938,0.375842623 L14.465498,0.375842623 Z" id="Fill-4" fill-opacity="0.64" fill="#FFFFFF" mask="url(#mask-2)"></path>
+                </g>
+                <g id="Group-3">
+                    <mask id="mask-4" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M4.441516,0.000268333333 C4.441516,5.510685 6.964336,8.37035167 10.806136,10.576435 C14.505436,12.6997183 18.906976,17.0103017 18.906976,22.999885 L14.465536,22.999885 C14.465536,17.0103017 11.839736,13.7703683 8.015796,11.6785183 C4.643296,9.833535 7.6e-05,5.510685 7.6e-05,0.000268333333 L4.441516,0.000268333333 Z" id="Fill-1" fill="#FFFFFF" mask="url(#mask-4)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
