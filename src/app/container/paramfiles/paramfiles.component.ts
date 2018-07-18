@@ -26,6 +26,7 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { ContainersService, GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from './paramfiles.service';
+import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -57,11 +58,11 @@ export class ParamfilesComponent extends EntryFileSelector {
   /**
    * Get all the language-specific test parameter files
    *
-   * @param {(('cwl' | 'wdl' | 'nfl'))} descriptor The descriptor language selected
+   * @param {WebserviceDescriptorType} descriptor The descriptor language selected
    * @returns {Observable<Array<ToolFile>>} The array of language-specific test parameter files
    * @memberof ParamfilesComponent
    */
-  getFiles(descriptor: ('cwl' | 'wdl' | 'nfl')): Observable<Array<ToolFile>> {
+  getFiles(descriptor: WebserviceDescriptorType): Observable<Array<ToolFile>> {
     let testToolFiles$: BehaviorSubject<Array<ToolFile>>;
     switch (descriptor) {
       case 'wdl': {

@@ -26,6 +26,7 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptorService } from './tool-descriptor.service';
+import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -56,11 +57,11 @@ export class DescriptorsComponent extends EntryFileSelector {
   /**
    * Get all the language-specific primary and secondary descriptors
    *
-   * @param {(('cwl' | 'wdl' | 'nfl'))} descriptor The descriptor language selected
+   * @param {WebserviceDescriptorType} descriptor The descriptor language selected
    * @returns {Observable<Array<ToolFile>>} The array of language-specific descriptors
    * @memberof DescriptorsComponent
    */
-  getFiles(descriptor: ('cwl' | 'wdl' | 'nfl')): Observable<Array<ToolFile>> {
+  getFiles(descriptor: WebserviceDescriptorType): Observable<Array<ToolFile>> {
     let descriptorToolFiles$: BehaviorSubject<Array<ToolFile>>;
     switch (descriptor) {
       case 'wdl': {
