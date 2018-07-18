@@ -13,15 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ParamFilesStubService, GA4GHStubService } from './../../test/service-stubs';
-import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FilesWorkflowComponent } from './files.component';
+import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { GA4GHService } from '../../shared/swagger';
+import { GA4GHStubService, ParamFilesStubService } from '../../test/service-stubs';
+import { FilesWorkflowComponent } from './files.component';
 
 describe('FilesWorkflowComponent', () => {
   let component: FilesWorkflowComponent;

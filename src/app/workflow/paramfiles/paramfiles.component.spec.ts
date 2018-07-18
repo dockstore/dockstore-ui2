@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ParamfilesService } from './../../container/paramfiles/paramfiles.service';
-import { FileService } from './../../shared/file.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { FileStubService, ParamFilesStubService, WorkflowStubService, GA4GHStubService } from './../../test/service-stubs';
-import { ParamfilesWorkflowComponent } from './paramfiles.component';
-import { GA4GHService } from '../../shared/swagger';
+
+import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { FileService } from '../../shared/file.service';
+import { GA4GHService } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/workflow.service';
+import { FileStubService, GA4GHStubService, ParamFilesStubService, WorkflowStubService } from '../../test/service-stubs';
+import { ParamfilesWorkflowComponent } from './paramfiles.component';
 
 describe('ParamfilesWorkflowComponent', () => {
   let component: ParamfilesWorkflowComponent;

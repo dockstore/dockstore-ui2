@@ -1,5 +1,3 @@
-
-import {map} from 'rxjs/operators';
 /*
  *     Copyright 2018 OICR
  *
@@ -16,10 +14,11 @@ import {map} from 'rxjs/operators';
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest ,  Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { GA4GHService, ToolFile } from '../swagger';
 import { DescriptorType } from '../enum/descriptorType.enum';
+import { GA4GHService, ToolFile } from '../swagger';
 
 /**
  * This file serves as the state for the GA4GH files endpoint response

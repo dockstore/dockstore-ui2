@@ -15,7 +15,7 @@
  */
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
-import { WorkflowVersion, Tag, SourceFile } from './swagger';
+import { SourceFile, Tag, WorkflowVersion } from './swagger';
 
 export class FileService {
 

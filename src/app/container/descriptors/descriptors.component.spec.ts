@@ -13,18 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 
 import { ContainersStubService, ContainerStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
+import { ContainerService } from '../../shared/container.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { FileService } from '../../shared/file.service';
 import { ContainersService, GA4GHService } from '../../shared/swagger';
-import { ContainerService } from './../../shared/container.service';
-import { FileService } from './../../shared/file.service';
 import { DescriptorsComponent } from './descriptors.component';
 import { ToolDescriptorService } from './tool-descriptor.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 
 describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;

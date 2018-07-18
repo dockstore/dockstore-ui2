@@ -1,7 +1,3 @@
-
-import {of as observableOf,  BehaviorSubject, Observable } from 'rxjs';
-
-import {map} from 'rxjs/operators';
 /*
  *    Copyright 2017 OICR
  *
@@ -18,15 +14,17 @@ import {map} from 'rxjs/operators';
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ContainerService } from '../../shared/container.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
+import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { ContainersService, GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from './paramfiles.service';
-import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 
 @Component({
   selector: 'app-paramfiles-container',

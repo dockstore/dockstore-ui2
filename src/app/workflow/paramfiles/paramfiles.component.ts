@@ -1,5 +1,3 @@
-
-import {map} from 'rxjs/operators';
 /*
  *    Copyright 2017 OICR
  *
@@ -17,6 +15,7 @@ import {map} from 'rxjs/operators';
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
