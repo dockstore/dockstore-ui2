@@ -22,6 +22,7 @@ import { FileService } from '../../shared/file.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ga4ghPath } from './../../shared/constants';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dockerfile',
@@ -41,6 +42,8 @@ export class DockerfileComponent {
   nullContent: boolean;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
+  public customDownloadHREF: SafeUrl;
+  public customDownloadPath: string;
   constructor(public fileService: FileService,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.nullContent = false;
@@ -56,6 +59,7 @@ export class DockerfileComponent {
             this.content = file.content;
             this.filePath = file.path;
             this.downloadFilePath = this.getContainerfilePath();
+            this.customDownloadFile();
           }, error => {
             this.nullContent = true;
             this.content = null;
@@ -74,8 +78,9 @@ export class DockerfileComponent {
     return basepath + customPath;
   }
 
-  downloadFile(id: string): void {
-    this.fileService.downloadFile(this.content, this.filePath, id);
+  customDownloadFile(): void {
+    this.customDownloadHREF = this.fileService.getFileData(this.content);
+    this.customDownloadPath = this.fileService.getFileName(this.filePath);
   }
 
 }

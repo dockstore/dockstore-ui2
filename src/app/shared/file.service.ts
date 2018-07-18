@@ -13,94 +13,113 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 import { SourceFile, Tag, WorkflowVersion } from './swagger';
 
+@Injectable()
 export class FileService {
-
-
-    /**
-     * Get the download path of a descriptor
-     * TODO: Convert to pipe
-     * @param {string} entryPath         the entry's path (e.g. "quay.io/pancancer/pcawg-dkfz-workflow")
-     * @param {string} entryVersion      the version object of the entry
-     * @param {string} sourceFile        the SourceFile object
-     * @param {string} descriptorType    the descriptor type (e.g. "cwl")
-     * @param {string} entryType         the entry type, either "tool" or "workflow"
-     * @returns {string}                 the url to download the test parameter file
-     * @memberof FileService
-     */
-    getDescriptorPath(entryPath: string, entryVersion: (Tag | WorkflowVersion), sourceFile: SourceFile,
-      descriptorType: string, entryType: string): string {
-      if (!entryPath || !entryVersion || !sourceFile || !descriptorType || !entryType) {
-        return null;
-      } else {
-        let type = '';
-        switch (descriptorType) {
-          case 'wdl':
-            type = 'PLAIN-WDL';
-            break;
-          case 'cwl':
-            type = 'PLAIN-CWL';
-            break;
-          default:
-            console.log('Unhandled type: ' + descriptorType);
-            return null;
-        }
-        return this.getDownloadFilePath(entryPath, entryVersion.name, sourceFile.path, type, entryType);
-      }
-    }
-
-    /**
-     * Get the download path of a test parameter file
-     * TODO: Convert to pipe
-     * @private
-     * @param {string} entryPath         the entry's path (e.g. "quay.io/pancancer/pcawg-dkfz-workflow")
-     * @param {string} version           the version of the entry (e.g. "2.0.1_cwl1.0")
-     * @param {string} filePath          path of the file (e.g. "/Dockstore.json")
-     * @param {string} type              the string used for the GA4GH type (e.g. "PLAIN_CWL", "PLAIN_TEST_WDL_FILE")
-     * @param {string} entryType         the entry type, either "tool" or "workflow"
-     * @returns {string}
-     * @memberof FileService
-     */
-    private getDownloadFilePath(entryPath: string, version: string, filePath: string, type: string, entryType: string): string {
-      const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
-      let entry = '';
-      if (entryType === 'workflow') {
-        entry = encodeURIComponent('#workflow/' + entryPath);
-      } else {
-        entry = encodeURIComponent(entryPath);
-      }
-      // Do not encode the filePath because webservice can handle an unencoded file path.  Also the default file name is prettier this way
-      const customPath =  entry + '/versions/' + encodeURIComponent(version) + '/'
-        + type + '/descriptor/' + filePath;
-      return basepath + customPath;
-    }
-
-    // Get the path of the file
-    getFilePath(file): string {
-      if (file != null) {
-        return file.path;
-      }
-      return null;
-    }
+  constructor(private sanitizer: DomSanitizer) { }
 
   /**
-   * Downloads a file when no TRS/Dockstore link is available
-   * Does it by setting t
-   * @param {string} content  The content of the file
-   * @param {string} path     The original full path of the file
-   * @param {string} id       The HTML ID of the button that will download the file
+   * Get the download path of a descriptor
+   * TODO: Convert to pipe
+   * @param {string} entryPath         the entry's path (e.g. "quay.io/pancancer/pcawg-dkfz-workflow")
+   * @param {string} entryVersion      the version object of the entry
+   * @param {string} sourceFile        the SourceFile object
+   * @param {string} descriptorType    the descriptor type (e.g. "cwl")
+   * @param {string} entryType         the entry type, either "tool" or "workflow"
+   * @returns {string}                 the url to download the test parameter file
    * @memberof FileService
    */
-  downloadFile(content: string, path: string, id: string): void {
-    let filename = 'dockstore.txt';
-    if (content != null) {
+  getDescriptorPath(entryPath: string, entryVersion: (Tag | WorkflowVersion), sourceFile: SourceFile,
+    descriptorType: string, entryType: string): string {
+    if (!entryPath || !entryVersion || !sourceFile || !descriptorType || !entryType) {
+      return null;
+    } else {
+      let type = '';
+      switch (descriptorType) {
+        case 'wdl':
+          type = 'PLAIN-WDL';
+          break;
+        case 'cwl':
+          type = 'PLAIN-CWL';
+          break;
+        default:
+          console.log('Unhandled type: ' + descriptorType);
+          return null;
+      }
+      return this.getDownloadFilePath(entryPath, entryVersion.name, sourceFile.path, type, entryType);
+    }
+  }
+
+  /**
+   * Get the download path of a test parameter file
+   * TODO: Convert to pipe
+   * @private
+   * @param {string} entryPath         the entry's path (e.g. "quay.io/pancancer/pcawg-dkfz-workflow")
+   * @param {string} version           the version of the entry (e.g. "2.0.1_cwl1.0")
+   * @param {string} filePath          path of the file (e.g. "/Dockstore.json")
+   * @param {string} type              the string used for the GA4GH type (e.g. "PLAIN_CWL", "PLAIN_TEST_WDL_FILE")
+   * @param {string} entryType         the entry type, either "tool" or "workflow"
+   * @returns {string}
+   * @memberof FileService
+   */
+  private getDownloadFilePath(entryPath: string, version: string, filePath: string, type: string, entryType: string): string {
+    const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
+    let entry = '';
+    if (entryType === 'workflow') {
+      entry = encodeURIComponent('#workflow/' + entryPath);
+    } else {
+      entry = encodeURIComponent(entryPath);
+    }
+    // Do not encode the filePath because webservice can handle an unencoded file path.  Also the default file name is prettier this way
+    const customPath = entry + '/versions/' + encodeURIComponent(version) + '/'
+      + type + '/descriptor/' + filePath;
+    return basepath + customPath;
+  }
+
+  // Get the path of the file
+  getFilePath(file): string {
+    if (file != null) {
+      return file.path;
+    }
+    return null;
+  }
+
+  /**
+   * Constructing the custom download link involves setting 2 attributes ('href' and 'download')
+   * This gets the 'href' attribute
+   * @param {string} content  The file contents
+   * @returns {SafeUrl}    What to set for the 'href' attribute
+   * @memberof FileService
+   */
+  getFileData(content: string): SafeUrl {
+    if (content) {
+      return this.sanitizer.bypassSecurityTrustUrl('data:text/plain,' + encodeURIComponent(content));
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Constructing the custom download link involves setting 2 attributes ('href' and 'download')
+   * This gets the 'download' attribute
+   * @param {string} path  Full path of the file
+   * @returns {string}     What to set for the 'download' attribute
+   * @memberof FileService
+   */
+  getFileName(path: string): string {
+    if (path) {
+      let filename = 'dockstore.txt';
       const splitFileName = (path).split('/');
       filename = splitFileName[splitFileName.length - 1];
-      const data = 'data:text/plain,' + encodeURIComponent(content);
-      $('#' + id).attr('href', data).attr('download', filename);
+      return filename;
+    } else {
+      return null;
     }
   }
 }

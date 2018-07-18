@@ -98,6 +98,7 @@ export class DescriptorsComponent extends EntryFileSelector {
         this.content = file.descriptor;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
         this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.customDownloadFile();
       });
   }
 }

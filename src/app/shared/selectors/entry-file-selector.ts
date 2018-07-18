@@ -16,6 +16,7 @@
 import { Observable } from 'rxjs';
 
 import { FileService } from '../file.service';
+import { SafeUrl } from '@angular/platform-browser';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -31,6 +32,8 @@ export abstract class EntryFileSelector {
   protected files: Array<any>;
   protected published$: Observable<boolean>;
   public downloadFilePath: string;
+  public customDownloadHREF: SafeUrl;
+  public customDownloadPath: string;
   content: string = null;
 
   abstract getDescriptors(version): Array<any>;
@@ -97,7 +100,8 @@ export abstract class EntryFileSelector {
     this.content = null;
   }
 
-  downloadFile(id: string): void {
-    this.fileService.downloadFile(this.content, this.filePath, id);
+  customDownloadFile(): void {
+    this.customDownloadHREF = this.fileService.getFileData(this.content);
+    this.customDownloadPath = this.fileService.getFileName(this.filePath);
   }
 }

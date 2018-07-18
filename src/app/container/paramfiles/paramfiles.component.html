@@ -36,7 +36,7 @@
         <span class="glyphicon glyphicon-download"></span>
       </a>
       <ng-template #unpublishedDownloadLink>
-        <a href id="downloadLinkParams" (click)="downloadFile('downloadLinkParams')" class="btn btn-default" type="button" title="{{filePath}}">
+        <a [href]="customDownloadHREF" [download]="customDownloadPath" class="btn btn-default" type="button" title="{{filePath}}">
           <span class="glyphicon glyphicon-download"></span>
         </a>
       </ng-template>

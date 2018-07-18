@@ -72,6 +72,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
         this.content = file.descriptor;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
         this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.customDownloadFile();
       });
   }
 }

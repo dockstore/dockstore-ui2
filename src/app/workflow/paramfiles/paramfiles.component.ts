@@ -65,6 +65,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
         this.content = file.test;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
         this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.customDownloadFile();
       });
   }
 }
