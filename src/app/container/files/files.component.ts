@@ -13,13 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { Component, OnInit, OnChanges, Input} from '@angular/core';
-
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 
 @Component({
   selector: 'app-files-container',

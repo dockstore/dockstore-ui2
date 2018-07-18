@@ -68,9 +68,22 @@ export class GA4GHFilesStateService {
       });
     }));
   }
+
+  /**
+   * Workaround.
+   * Since the swagger.yaml does not indicate the endpoints are optionally authenticated,
+   * the generated classes will not try and use authentication.  This manually injects it in for use.
+   *
+   * @param {GA4GHService} ga4ghService
+   * @memberof GA4GHFilesStateService
+   */
+  public injectAuthorizationToken(ga4ghService: GA4GHService) {
+    ga4ghService.defaultHeaders = ga4ghService.defaultHeaders.set('Authorization',
+    ga4ghService.configuration.apiKeys['Authorization']);
+  }
+
   update(id: string, version: string) {
-    this.ga4ghService.defaultHeaders = this.ga4ghService.defaultHeaders.set('Authorization',
-    this.ga4ghService.configuration.apiKeys['Authorization']);
+    this.injectAuthorizationToken(this.ga4ghService);
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
       DescriptorType.CWL, id, version).subscribe(files => {
         this.cwlToolFiles$.next(files);

@@ -14,15 +14,16 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+
+import { ga4ghPath } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
-import { ContainersService, DockstoreTool } from '../../shared/swagger';
+import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
-import { ga4ghPath } from './../../shared/constants';
-import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dockerfile',

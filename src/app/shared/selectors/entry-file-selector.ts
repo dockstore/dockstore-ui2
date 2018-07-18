@@ -100,7 +100,12 @@ export abstract class EntryFileSelector {
     this.content = null;
   }
 
-  customDownloadFile(): void {
+  /**
+   * Update the custom download button attributes ('href' and 'download')
+   *
+   * @memberof EntryFileSelector
+   */
+  updateCustomDownloadFileButtonAttributes(): void {
     this.customDownloadHREF = this.fileService.getFileData(this.content);
     this.customDownloadPath = this.fileService.getFileName(this.filePath);
   }

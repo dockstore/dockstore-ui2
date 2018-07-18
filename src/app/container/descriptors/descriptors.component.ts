@@ -90,15 +90,14 @@ export class DescriptorsComponent extends EntryFileSelector {
   }
 
   reactToFile(): void {
+    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
     // TODO: Memoize this
-    this.gA4GHService.defaultHeaders = this.gA4GHService.defaultHeaders.set('Authorization',
-    this.gA4GHService.configuration.apiKeys['Authorization']);
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
       this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolDescriptor) => {
         this.content = file.descriptor;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
         this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.customDownloadFile();
+        this.updateCustomDownloadFileButtonAttributes();
       });
   }
 }
