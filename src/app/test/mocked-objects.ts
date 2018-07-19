@@ -209,7 +209,7 @@ export const wdlSourceFileWithHttpImport: SourceFile = {
   id: 2,
   path: '/goo.wdl',
   type: 'DOCKSTORE_WDL'
-}
+};
 
 export const sampleSourceFile: SourceFile = {
   content: 'potato',
