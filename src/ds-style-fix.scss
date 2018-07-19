@@ -76,27 +76,6 @@ table.tokens-grid {
 }
 
 table.tool-versions-grid {
-  th:nth-child(1) {
-    width: 17.5%;
-  }
-  th:nth-child(2) {
-    width: 17.5%;
-  }
-  th:nth-child(3) {
-    width: 20%;
-  }
-  th:nth-child(4) {
-    width: 15%;
-  }
-  th:nth-child(5) {
-    width: 10%;
-  }
-  th:nth-child(6) {
-    width: 10%;
-  }
-  th:nth-child(7) {
-    width: 10%;
-  }
   div.git-ref {
     width: 124px;
     white-space: nowrap;
@@ -107,21 +86,6 @@ table.tool-versions-grid {
 }
 
 table.workflow-versions-grid {
-  th:nth-child(1) {
-    width: 22.5%;
-  }
-  th:nth-child(2) {
-    width: 35%;
-  }
-  th:nth-child(3) {
-    width: 22.5%;
-  }
-  th:nth-child(4) {
-    width: 10%;
-  }
-  th:nth-child(5) {
-    width: 10%;
-  }
   div.git-ref {
     width: 124px;
     white-space: nowrap;
