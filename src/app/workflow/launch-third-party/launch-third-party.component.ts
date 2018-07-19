@@ -28,6 +28,7 @@ export class LaunchThirdPartyComponent implements OnChanges {
   wdlHasHttpImports: boolean;
   wdlHasFileImports: boolean;
   wdlHasContent: boolean;
+  isWdl: boolean;
 
   constructor(private workflowsService: WorkflowsService,
               private launchThirdPartyService: LaunchThirdPartyService,
@@ -42,7 +43,8 @@ export class LaunchThirdPartyComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.fireCloudURL = this.dnastackURL = this.dnanexusURL = null;
     this.wdlHasContent = this.wdlHasFileImports = this.wdlHasHttpImports = false;
-    if (this.isWdl() && this.selectedVersion) {
+    this.isWdl = this.workflow && this.workflow && this.workflow.full_workflow_path && this.workflow.descriptorType === 'wdl';
+    if (this.isWdl && this.selectedVersion) {
       this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFile: SourceFile) => {
         if (sourceFile && sourceFile.content && sourceFile.content.length) {
           this.wdlHasContent = true;
@@ -61,14 +63,6 @@ export class LaunchThirdPartyComponent implements OnChanges {
         }
       });
     }
-  }
-
-  public isWdl() {
-    return this.workflow && this.workflow && this.workflow.full_workflow_path && this.workflow.descriptorType === 'wdl';
-  }
-
-  public goto(url: string) {
-    open(url, '_blank');
   }
 
 }

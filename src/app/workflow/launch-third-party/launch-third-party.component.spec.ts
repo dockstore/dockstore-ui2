@@ -4,16 +4,17 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import {
-  sampleWorkflow3,
+  emptyWdlSourceFile,
   sampleWdlWorkflow1,
+  sampleWorkflow3,
   sampleWorkflowVersion,
   wdlSourceFile,
-  emptyWdlSourceFile, wdlSourceFileWithHttpImport
+  wdlSourceFileWithHttpImport
 } from '../../test/mocked-objects';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { WorkflowsStubService } from '../../test/service-stubs';
-import { SourceFile } from 'typescript';
-import { from } from 'rxjs/internal/observable/from';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
@@ -23,6 +24,7 @@ describe('LaunchThirdPartyComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LaunchThirdPartyComponent ],
+      imports: [CustomMaterialModule, HttpClientModule],
       providers: [
         { provide: WorkflowsService, useClass: WorkflowsStubService}
       ],
