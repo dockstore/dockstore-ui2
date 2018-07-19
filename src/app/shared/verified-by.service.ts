@@ -26,10 +26,12 @@ export class VerifiedByService {
           const verifiedBySourceArray = Object.entries(verifiedBySource);
           verifiedBySourceArray.forEach(arrayElement => {
             const platform: string = arrayElement[0];
-            if (!verifiedSourceMap[platform]) {
-              verifiedSourceMap[platform] = new Set<string>();
+            if (arrayElement[1].verified === true) {
+              if (!verifiedSourceMap[platform]) {
+                verifiedSourceMap[platform] = new Set<string>();
+              }
+              verifiedSourceMap[platform].add(arrayElement[1].metadata);
             }
-            verifiedSourceMap[platform].add(arrayElement[1].metadata);
           });
         }
       });
