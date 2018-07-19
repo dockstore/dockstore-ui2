@@ -18,6 +18,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
+import { WorkflowVersion } from '../shared/swagger';
 
 export const updatedWorkflow: Workflow = {
     'descriptorType': 'cwl',
@@ -71,7 +72,29 @@ export const sampleWorkflow3: Workflow = {
     'workflowVersions': [],
     'defaultTestParameterFilePath': 'updatedTestParameterPath',
     'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+    'source_control_provider': 'GITHUB',
+    'full_workflow_path': 'github.com/sampleWorkflowPath'
+};
+
+export const sampleWdlWorkflow1: Workflow = {
+  id: 4,
+  'descriptorType': 'wdl',
+  'gitUrl': 'sampleGitUrl',
+  'mode': Workflow.ModeEnum.FULL,
+  'organization': 'sampleOrganization',
+  'repository': 'sampleRepository',
+  'workflow_path': 'sampleWorkflowPath',
+  'workflowVersions': [],
+  'defaultTestParameterFilePath': 'updatedTestParameterPath',
+  'sourceControl': 'github.com',
+  'source_control_provider': 'GITHUB',
+  'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence'
+};
+
+export const sampleWorkflowVersion: WorkflowVersion = {
+  'id': 1,
+  'reference': '',
+  'name': 'master'
 };
 
 export const sampleTool1: DockstoreTool = {
@@ -171,8 +194,22 @@ export const wdlSourceFile: SourceFile = {
   content: 'task foo {}',
   id: 0,
   path: '',
-  type: undefined
+  type: 'DOCKSTORE_WDL'
 };
+
+export const emptyWdlSourceFile: SourceFile = {
+  content: '',
+  id: 1,
+  path: '/foo.wdl',
+  type: 'DOCKSTORE_WDL'
+};
+
+export const wdlSourceFileWithHttpImport: SourceFile = {
+  content: 'import http://example.com/foo',
+  id: 2,
+  path: '/goo.wdl',
+  type: 'DOCKSTORE_WDL'
+}
 
 export const sampleSourceFile: SourceFile = {
   content: 'potato',

@@ -1,22 +1,34 @@
-<div *ngIf="dnastackURL || fireCloudURL" class="panel panel-default">
+<div *ngIf="isWdl()" class="panel panel-default">
   <div class="panel-heading">
     <h3>Launch with</h3>
   </div>
   <div class="panel-body">
     <div class="container-source-repos">
       <div class="container-launch-with">
-        <div class="button-wrap">
-          <div *ngIf="dnastackURL" class="button">
-            <p><a href="{{dnastackURL}}"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a>
-            </p>
+        <div fxLayout="row wrap">
+          <div fxFlex="100%">
+            <div *ngIf="wdlHasFileImports || wdlHasHttpImports" class="import-warning">
+              Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports in DNAstack.
+            </div>
+            <button mat-raised-button
+               title="{{!wdlHasContent ? 'The WDL has no content.' : ''}}"
+               (click)="goto(dnastackURL)"
+               [disabled]="!dnastackURL"
+               color="primary"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</button>
           </div>
-          <div *ngIf="fireCloudURL" class="button">
-            <p><a href="{{fireCloudURL}}"><img src="../../assets/images/thirdparty/FireCloud-white-icon.svg"> FireCloud
-              &raquo;</a></p>
+          <div fxFlex="100%">
+            <button mat-raised-button
+               title="{{!wdlHasContent ? 'The WDL has no content.' : (wdlHasFileImports ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : '')}}"
+               (click)="goto(fireCloudURL)"
+               [disabled]="!fireCloudURL"
+               color="primary"><mat-icon svgIcon="firecloud"></mat-icon> FireCloud &raquo;</button>
           </div>
-          <div *ngIf="dnanexusURL" class="button">
-            <p><a href="{{dnanexusURL}}"><img src="../../assets/images/thirdparty/DX_Logo_white_alpha.svg"> DNAnexus
-              &raquo;</a></p>
+          <div fxFlex="100%">
+            <button mat-raised-button
+               title="{{!wdlHasContent ? 'The WDL has no content.' : ''}}"
+               (click)="goto(dnanexusURL)"
+               [disabled]="!dnanexusURL"
+               color="primary"><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</button>
           </div>
         </div>
       </div>

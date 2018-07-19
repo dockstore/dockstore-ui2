@@ -1,28 +1,32 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { WorkflowsStubService, WorkflowStubService, WorkflowVersionStubService } from '../../test/service-stubs';
-import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { wdlSourceFile } from '../../test/mocked-objects';
+import {
+  sampleWorkflow3,
+  sampleWdlWorkflow1,
+  sampleWorkflowVersion,
+  wdlSourceFile,
+  emptyWdlSourceFile, wdlSourceFileWithHttpImport
+} from '../../test/mocked-objects';
+import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
+import { WorkflowsStubService } from '../../test/service-stubs';
+import { SourceFile } from 'typescript';
+import { from } from 'rxjs/internal/observable/from';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
   let fixture: ComponentFixture<LaunchThirdPartyComponent>;
-  let workflowVersion: WorkflowVersion;
-  let workflow: Workflow;
   let workflowsService: WorkflowsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LaunchThirdPartyComponent ],
       providers: [
-        { provide: WorkflowsService, useClass: WorkflowsStubService},
-        { provide: WorkflowVersion, useClass: WorkflowVersionStubService},
-        { provide: Workflow, useClass: WorkflowStubService}
-      ]
+        { provide: WorkflowsService, useClass: WorkflowsStubService}
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -31,8 +35,6 @@ describe('LaunchThirdPartyComponent', () => {
     fixture = TestBed.createComponent(LaunchThirdPartyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    workflowVersion = TestBed.get(WorkflowVersion);
-    workflow = TestBed.get(Workflow);
     workflowsService = TestBed.get(WorkflowsService);
   });
 
@@ -41,23 +43,29 @@ describe('LaunchThirdPartyComponent', () => {
   });
 
   it('should not set urls if CWL', () => {
-    spyOnProperty(workflowVersion, 'name', 'get').and.returnValue('master');
-    component.selectedVersion = workflowVersion;
-    spyOnProperty(workflow, 'full_workflow_path', 'get').and
-      .returnValue('github.com/DataBiosphere/topmed-workflows/Functional_Equivalence');
-    spyOnProperty(workflow, 'descriptorType', 'get').and.returnValue('cwl');
+    component.selectedVersion = sampleWorkflowVersion;
+    component.workflow = sampleWorkflow3;
+    // This will (should) not ever be fired, but putting in here in case it does get fired, which would expose a bug
+    spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFile));
+    component.ngOnChanges({
+      'workflow': new SimpleChange(null, sampleWorkflow3, true),
+      'selectedVersion': new SimpleChange(null, sampleWorkflowVersion, true)
+    });
+    fixture.detectChanges();
     expect(component.dnastackURL).toBeFalsy();
     expect(component.fireCloudURL).toBeFalsy();
   });
 
   it('should set urls if WDL with no secondary files', () => {
-    spyOnProperty(workflowVersion, 'name', 'get').and.returnValue('master');
-    component.selectedVersion = workflowVersion;
-    spyOnProperty(workflow, 'full_workflow_path', 'get').and
-      .returnValue('github.com/DataBiosphere/topmed-workflows/Functional_Equivalence');
-    spyOnProperty(workflow, 'descriptorType', 'get').and.returnValue('wdl');
+    component.selectedVersion = sampleWorkflowVersion;
+    component.workflow = sampleWdlWorkflow1;
     spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFile));
-    component.workflow = workflow;
+    spyOn(workflowsService, 'secondaryWdl').and.returnValue(observableOf([]));
+    component.ngOnChanges({
+        'workflow': new SimpleChange(null, sampleWdlWorkflow1, true),
+        'selectedVersion': new SimpleChange(null, sampleWorkflowVersion, true)
+    });
+    fixture.detectChanges();
     expect(component.dnastackURL)
       // tslint:disable-next-line:max-line-length
       .toEqual('https://app.dnastack.com/#/app/workflow/import/dockstore?path=github.com/DataBiosphere/topmed-workflows/Functional_Equivalence&descriptorType=wdl');
@@ -66,18 +74,32 @@ describe('LaunchThirdPartyComponent', () => {
       .toEqual('https://portal.firecloud.org/#import/dockstore/github.com/DataBiosphere/topmed-workflows/Functional_Equivalence:master');
   });
 
-  it('should set dnastack but not Firecloud if WDL with secondary files', () => {
-    spyOnProperty(workflowVersion, 'name', 'get').and.returnValue('master');
-    component.selectedVersion = workflowVersion;
-    spyOnProperty(workflow, 'full_workflow_path', 'get').and
-      .returnValue('github.com/DataBiosphere/topmed-workflows/Functional_Equivalence');
-    spyOnProperty(workflow, 'descriptorType', 'get').and.returnValue('wdl');
+  it('should set dnastack and dnanexus but not Firecloud if WDL with secondary files', () => {
+    component.selectedVersion = sampleWorkflowVersion;
+    component.workflow = sampleWdlWorkflow1;
     spyOn(workflowsService, 'wdl').and.returnValue(observableOf(wdlSourceFile));
-    spyOn(workflowsService, 'secondaryWdl').and.returnValue(observableOf([wdlSourceFile]));
-    component.workflow = workflow;
+    spyOn(workflowsService, 'secondaryWdl').and.returnValue(observableOf([wdlSourceFileWithHttpImport]));
+    component.ngOnChanges({
+      'workflow': new SimpleChange(null, sampleWdlWorkflow1, true),
+      'selectedVersion': new SimpleChange(null, sampleWorkflowVersion, true)
+    });
+    fixture.detectChanges();
     expect(component.dnastackURL)
       // tslint:disable-next-line:max-line-length
       .toEqual('https://app.dnastack.com/#/app/workflow/import/dockstore?path=github.com/DataBiosphere/topmed-workflows/Functional_Equivalence&descriptorType=wdl');
+    expect(component.dnanexusURL).toBeTruthy();
     expect(component.fireCloudURL).toBeFalsy();
+  });
+
+  it('should set wdlHasContent to false if source file is empty', () => {
+    component.selectedVersion = sampleWorkflowVersion;
+    component.workflow = sampleWdlWorkflow1;
+    spyOn(workflowsService, 'wdl').and.returnValue(observableOf(emptyWdlSourceFile));
+    component.ngOnChanges({
+      'workflow': new SimpleChange(null, sampleWdlWorkflow1, true),
+      'selectedVersion': new SimpleChange(null, sampleWorkflowVersion, true)
+    });
+    fixture.detectChanges();
+    expect(component.wdlHasContent).toBeFalsy();
   });
 });

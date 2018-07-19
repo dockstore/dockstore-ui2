@@ -1,73 +1,74 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { LaunchThirdPartyService } from './launch-third-party.service';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
+
+const importHttpRegEx: RegExp = new RegExp(/^\s*import\s+"https?/, 'm');
 
 @Component({
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss']
 })
-export class LaunchThirdPartyComponent {
+export class LaunchThirdPartyComponent implements OnChanges {
 
-  private _workflow: Workflow;
-  private _selectedVersion: WorkflowVersion;
+  @Input()
+  workflow: Workflow;
 
-  @Input() set workflow(value: Workflow) {
-    this._workflow = value;
-    this.onChange();
-  }
-
-  get workflow(): Workflow {
-    return this._workflow;
-  }
-
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    this._selectedVersion = value;
-    this.onChange();
-  }
-
-  get selectedVersion() {
-    return this._selectedVersion;
-  }
+  @Input()
+  selectedVersion: WorkflowVersion;
 
   dnastackURL: string;
   fireCloudURL: string;
   dnanexusURL: string;
+  wdlHasHttpImports: boolean;
+  wdlHasFileImports: boolean;
+  wdlHasContent: boolean;
 
-  constructor(private workflowsService: WorkflowsService, private launchThirdPartyService: LaunchThirdPartyService) { }
+  constructor(private workflowsService: WorkflowsService,
+              private launchThirdPartyService: LaunchThirdPartyService,
+              iconRegistry: MatIconRegistry,
+              sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon('firecloud',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/FireCloud-white-icon.svg'));
+    iconRegistry.addSvgIcon('dnanexus',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
+  }
 
-  private onChange() {
-    this.fireCloudURL = null;
-    this.dnastackURL = null;
-    this.dnanexusURL = null;
-    if (this.isWdl(this.workflow)) {
-      this.dnastackURL = this.launchThirdPartyService.dnastackUrl(this.workflow.full_workflow_path, this.workflow.descriptorType);
-      const version = this.selectedVersion;
-      if (version && this.isWdl(this.workflow)) {
-        this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(version.workflow_path, version.name);
-        this.setupFireCloudUrl(this.workflow);
-      }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.fireCloudURL = this.dnastackURL = this.dnanexusURL = null;
+    this.wdlHasContent = this.wdlHasFileImports = this.wdlHasHttpImports = false;
+    if (this.isWdl() && this.selectedVersion) {
+      this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFile: SourceFile) => {
+        if (sourceFile && sourceFile.content && sourceFile.content.length) {
+          this.wdlHasContent = true;
+          // DNAnexus handles file and http(s) imports, no need to check
+          this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(this.selectedVersion.workflow_path, this.selectedVersion.name);
+          // DNAstack doesn't get passed a specific version
+          this.dnastackURL = this.launchThirdPartyService.dnastackUrl(this.workflow.full_workflow_path, this.workflow.descriptorType);
+          this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFiles: Array<SourceFile>) => {
+            if (!sourceFiles || sourceFiles.length === 0) {
+              this.wdlHasHttpImports = importHttpRegEx.test(sourceFile.content);
+              this.fireCloudURL = this.launchThirdPartyService.firecloudUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
+            } else {
+              this.wdlHasFileImports = true;
+            }
+          });
+        }
+      });
     }
   }
 
-  private isWdl(workflowRef: ExtendedWorkflow) {
-    return workflowRef && workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
+  public isWdl() {
+    return this.workflow && this.workflow && this.workflow.full_workflow_path && this.workflow.descriptorType === 'wdl';
   }
 
-  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
-    const version: WorkflowVersion = this.selectedVersion;
-    this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile: SourceFile) => {
-      if (sourceFile && sourceFile.content && sourceFile.content.length) {
-        this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
-          if (!sourceFiles || sourceFiles.length === 0) {
-            this.fireCloudURL = this.launchThirdPartyService.firecloudUrl(workflowRef.full_workflow_path, version.name);
-          }
-        });
-      }
-    });
+  public goto(url: string) {
+    open(url, '_blank');
   }
 
 }
