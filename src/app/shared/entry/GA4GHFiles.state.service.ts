@@ -39,8 +39,8 @@ export class GA4GHFilesStateService {
   public testToolFiles$: Observable<Array<ToolFile>>;
   constructor(private ga4ghService: GA4GHService) {
     this.toolFiles$ = combineLatest(this.cwlToolFiles$, this.wdlToolFiles$, this.nflToolFiles$,
-      (cwlToolFiles, wdlToolFiles, nflToolFiles) => {
-        return this.mergeArray(cwlToolFiles, wdlToolFiles, nflToolFiles);
+      (cwlToolFiles: Array<ToolFile>, wdlToolFiles: Array<ToolFile>, nflToolFiles: Array<ToolFile>) => {
+        return this.mergeToolFileArrays(cwlToolFiles, wdlToolFiles, nflToolFiles);
       });
     this.containerToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       if (!toolFiles) {
@@ -110,11 +110,11 @@ export class GA4GHFilesStateService {
    * @returns {Array<ToolFile>}
    * @memberof GA4GHFilesStateService
    */
-  private mergeArray(array1: Array<ToolFile>, array2: Array<ToolFile>, array3: Array<ToolFile>): Array<ToolFile> {
-    let combinedArray = [];
-    Array.prototype.push.apply(combinedArray, array1);
-    Array.prototype.push.apply(combinedArray, array2);
-    Array.prototype.push.apply(combinedArray, array3);
+  private mergeToolFileArrays(...toolFileArrays: Array<Array<ToolFile>>): Array<ToolFile> {
+    let combinedArray: ToolFile[] = [];
+    toolFileArrays.forEach(array => {
+      Array.prototype.push.apply(combinedArray, array);
+    });
     combinedArray = combinedArray.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj['path']).indexOf(obj['path']) === pos;
     });
