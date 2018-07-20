@@ -1,78 +1,68 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { URLSearchParams } from '@angular/http';
+import { LaunchThirdPartyService } from './launch-third-party.service';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
+
+const importHttpRegEx: RegExp = new RegExp(/^\s*import\s+"https?/, 'm');
 
 @Component({
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss']
 })
-export class LaunchThirdPartyComponent {
+export class LaunchThirdPartyComponent implements OnChanges {
 
-  private _workflow: Workflow;
-  private _selectedVersion: WorkflowVersion;
+  @Input()
+  workflow: Workflow;
 
-  @Input() set workflow(value: Workflow) {
-    this._workflow = value;
-    this.onChange();
-  }
-
-  get workflow(): Workflow {
-    return this._workflow;
-  }
-
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    this._selectedVersion = value;
-    this.onChange();
-  }
-
-  get selectedVersion() {
-    return this._selectedVersion;
-  }
+  @Input()
+  selectedVersion: WorkflowVersion;
 
   dnastackURL: string;
   fireCloudURL: string;
+  dnanexusURL: string;
+  wdlHasHttpImports: boolean;
+  wdlHasFileImports: boolean;
+  wdlHasContent: boolean;
+  isWdl: boolean;
 
-  constructor(private workflowsService: WorkflowsService) { }
-
-  private onChange() {
-    this.setupFireCloudUrl(this.workflow);
-    this.setupDnaStackUrl(this.workflow);
+  constructor(private workflowsService: WorkflowsService,
+              private launchThirdPartyService: LaunchThirdPartyService,
+              iconRegistry: MatIconRegistry,
+              sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon('firecloud',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/FireCloud-white-icon.svg'));
+    iconRegistry.addSvgIcon('dnanexus',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
   }
 
-  private isWdl(workflowRef: ExtendedWorkflow) {
-    return workflowRef && workflowRef.full_workflow_path && workflowRef.descriptorType === 'wdl';
-  }
-
-
-  private setupFireCloudUrl(workflowRef: ExtendedWorkflow) {
-    if (Dockstore.FEATURES.enableLaunchWithFireCloud) {
-      this.fireCloudURL = null;
-      const version: WorkflowVersion = this.selectedVersion;
-      if (version && this.isWdl(workflowRef)) {
-        this.workflowsService.wdl(workflowRef.id, version.name).subscribe((sourceFile: SourceFile) => {
-          if (sourceFile && sourceFile.content && sourceFile.content.length) {
-            this.workflowsService.secondaryWdl(workflowRef.id, version.name).subscribe((sourceFiles: Array<SourceFile>) => {
-              if (!sourceFiles || sourceFiles.length === 0) {
-                this.fireCloudURL =  `${Dockstore.FIRECLOUD_IMPORT_URL}/${workflowRef.full_workflow_path}:${version.name}`;
-              }
-            });
-          }
-        });
-      }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.fireCloudURL = this.dnastackURL = this.dnanexusURL = null;
+    this.wdlHasContent = this.wdlHasFileImports = this.wdlHasHttpImports = false;
+    this.isWdl = this.workflow && this.workflow && this.workflow.full_workflow_path && this.workflow.descriptorType === 'wdl';
+    if (this.isWdl && this.selectedVersion) {
+      this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFile: SourceFile) => {
+        if (sourceFile && sourceFile.content && sourceFile.content.length) {
+          this.wdlHasContent = true;
+          // DNAnexus handles file and http(s) imports, no need to check
+          this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(this.selectedVersion.workflow_path, this.selectedVersion.name);
+          // DNAstack doesn't get passed a specific version
+          this.dnastackURL = this.launchThirdPartyService.dnastackUrl(this.workflow.full_workflow_path, this.workflow.descriptorType);
+          this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFiles: Array<SourceFile>) => {
+            if (!sourceFiles || sourceFiles.length === 0) {
+              this.wdlHasHttpImports = importHttpRegEx.test(sourceFile.content);
+              this.fireCloudURL = this.launchThirdPartyService.firecloudUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
+            } else {
+              this.wdlHasFileImports = true;
+            }
+          });
+        }
+      });
     }
   }
 
-  private setupDnaStackUrl(workflow: ExtendedWorkflow) {
-    if (this.isWdl(workflow)) {
-      const myParams = new URLSearchParams();
-      myParams.set('path', workflow.full_workflow_path);
-      myParams.set('descriptorType', workflow.descriptorType);
-      this.dnastackURL = Dockstore.DNASTACK_IMPORT_URL + '?' + myParams;
-    }
-  }
 }

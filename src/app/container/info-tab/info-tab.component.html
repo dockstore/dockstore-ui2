@@ -159,6 +159,9 @@
       <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
     </li>
   </ul>
+
+  <button id="downloadZipButton" *ngIf="isValidVersion"  mat-raised-button (click)="downloadZip()">Export as ZIP</button>
+
   <div *ngIf="tool?.description || !isPublic">
     <label tooltip="Description of tool obtained from tool descriptor">
       Description

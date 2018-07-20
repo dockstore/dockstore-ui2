@@ -87,7 +87,8 @@
     <strong tooltip="Currently disabled for Hosted Workflows">Checker Workflow</strong>: n/a
   </div>
   <li *ngIf="!isPublic">
-    <strong uib-tooltip-html="modeTooltip">Mode</strong>: {{workflow?.mode}}
+    <ng-template #modeTooltip><div [innerHtml]="modeTooltipContent"></div></ng-template>
+    <strong [tooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
       [disabled]="refreshMessage !== null">
       <span class="glyphicon glyphicon-remove"></span> Restub
@@ -95,15 +96,18 @@
   </li>
   <li>
     <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
-      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>
+      <Strong tooltip="Type of descriptor language used">Descriptor Type: </Strong>
       <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
         <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option>
       </select>
     </div>
     <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB">
-      <Strong uib-tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' | mapFriendlyValue : workflow?.descriptorType }}</div>
+      <Strong tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' | mapFriendlyValue : workflow?.descriptorType }}</div>
   </li>
 </ul>
+
+<button id="downloadZipButton" *ngIf="isValidVersion" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
+
 <div *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB">
   <div *ngIf="workflow?.description || !isPublic">
     <label tooltip="Description of workflow obtained from workflow descriptor">

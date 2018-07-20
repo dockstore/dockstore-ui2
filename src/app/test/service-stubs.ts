@@ -288,8 +288,6 @@ export class WorkflowStubService {
     getTestJson() {
         return observableOf({});
     }
-    get full_workflow_path() { return ''; }
-    get descriptorType() { return ''; }
 }
 
 export class HostedStubService {
@@ -725,9 +723,6 @@ export class VersionModalStubService {
 
 }
 
-export class WorkflowVersionStubService {
-  get name() {return ''; }
-}
 
 export class StateStubService {
     publicPage$ = observableOf(false);

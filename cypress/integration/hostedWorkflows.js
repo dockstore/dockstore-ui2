@@ -29,6 +29,11 @@ describe('Dockstore hosted workflows', function() {
         cy
           .contains('Mode: HOSTED')
 
+        // Should not be able to download zip
+        cy
+          .get('#downloadZipButton')
+          .should('not.be.visible')
+
         // Check content of the version tab
         cy
           .get('.nav-link')
@@ -71,6 +76,17 @@ describe('Dockstore hosted workflows', function() {
           .click()
           .get('table')
           .contains('span', /\b1\b/)
+
+        // Should be able to download zip
+        cy
+          .get('.nav-link')
+          .contains('Info')
+          .parent()
+          .click()
+
+        cy
+          .get('#downloadZipButton')
+          .should('be.visible')
 
           // Add a new version with a second descriptor and a test json
           cy

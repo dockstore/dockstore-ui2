@@ -16,7 +16,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -64,6 +64,8 @@ import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 import { ErrorService } from './shared/error.service';
+import { ExtendedToolsService } from './shared/extended-tools.service';
+import { ExtendedWorkflowsService } from './shared/extended-workflows.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
@@ -121,6 +123,7 @@ import { StarringModule } from './starring/starring.module';
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
     MatButtonModule,
+    MatIconModule,
     ListContainersModule,
     ListWorkflowsModule,
     BsDropdownModule.forRoot(),
@@ -169,6 +172,8 @@ import { StarringModule } from './starring/starring.module';
     DescriptorLanguageService,
     UrlResolverService,
     MetadataService,
+    ExtendedWorkflowsService,
+    ExtendedToolsService,
     VerifiedByService
   ],
   bootstrap: [ AppComponent ]
