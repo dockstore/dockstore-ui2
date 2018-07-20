@@ -817,3 +817,15 @@ div.contact-button {
 .mat-drawer-container {
   z-index: unset !important;
 }
+
+.selected {
+  background-color: #7987a5;
+  color: #ffffff;
+  a {
+    color: #ffffff;
+  }
+}
+
+mat-list.org-accordion > mat-list-item {
+  height: 30px !important;
+}
