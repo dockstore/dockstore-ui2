@@ -47,6 +47,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   isPublic: boolean;
   trsLink: string;
   public refreshMessage: string;
+  modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
+  <b>FULL:</b> Full content synced from source control.<br />
+  <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
+
+
   constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
     private infoTabService: InfoTabService) {
     super();
