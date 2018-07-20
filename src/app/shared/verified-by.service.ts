@@ -26,7 +26,7 @@ export class VerifiedByService {
           const verifiedBySourceArray = Object.entries(verifiedBySource);
           verifiedBySourceArray.forEach(arrayElement => {
             const platform: string = arrayElement[0];
-            if (arrayElement[1].verified === true) {
+            if (arrayElement[1].verified) {
               if (!verifiedSourceMap[platform]) {
                 verifiedSourceMap[platform] = new Set<string>();
               }

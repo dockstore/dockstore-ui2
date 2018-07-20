@@ -56,13 +56,15 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
       verifiedBySourceArray.forEach(arrayElement => {
         const platform: string = arrayElement[0];
         const verifiedInformation: VerificationInformation = arrayElement[1];
-        const customVerificationInformationObject = {
-          // This allows the string to break after every slash for word-wrapping purposes
-          path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
-          platform: platform,
-          verifier: verifiedInformation.metadata
-        };
-        customVerificationInformationArray.push(customVerificationInformationObject);
+        if (verifiedInformation.verified) {
+          const customVerificationInformationObject = {
+            // This allows the string to break after every slash for word-wrapping purposes
+            path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
+            platform: platform,
+            verifier: verifiedInformation.metadata
+          };
+          customVerificationInformationArray.push(customVerificationInformationObject);
+        }
       });
     });
     return customVerificationInformationArray;
