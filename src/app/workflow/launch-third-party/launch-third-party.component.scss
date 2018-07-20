@@ -1,11 +1,16 @@
-.button-wrap {
-  display: inline-block;
-}
-
-.button-wrap > .button {
-  display: block;
-}
-
-.button-wrap > .button:not(:last-child) {
+a {
   margin-bottom: 10px;
+  width: 150px;
+  max-width: 98%;
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+.import-warning {
+  font-size: 11px;
+  font-style: italic;
+  text-align: left;
+  line-height: 1em;
+  margin-bottom: 4px;
 }
