@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 import { DescriptorType } from '../enum/descriptorType.enum';
 import { GA4GHService, ToolFile } from '../swagger';
@@ -31,42 +31,27 @@ export class GA4GHFilesStateService {
   public toolFiles$: Observable<Array<ToolFile>>;
 
   // TODO: Don't use BehaviorSubject, there should be a cleaner way with some Observable cleverness
-  public cwlToolFiles$ = new BehaviorSubject<Array<ToolFile>>(null);
-  public wdlToolFiles$ = new BehaviorSubject<Array<ToolFile>>(null);
-  public nflToolFiles$ = new BehaviorSubject<Array<ToolFile>>(null);
+  public cwlToolFiles$ = new BehaviorSubject<Array<ToolFile>>([]);
+  public wdlToolFiles$ = new BehaviorSubject<Array<ToolFile>>([]);
+  public nflToolFiles$ = new BehaviorSubject<Array<ToolFile>>([]);
   public containerToolFiles$: Observable<Array<ToolFile>>;
   public descriptorToolFiles$: Observable<Array<ToolFile>>;
   public testToolFiles$: Observable<Array<ToolFile>>;
   constructor(private ga4ghService: GA4GHService) {
+    // Combines all the toolFiles and filters out null if for some reason that occurs
     this.toolFiles$ = combineLatest(this.cwlToolFiles$, this.wdlToolFiles$, this.nflToolFiles$,
-      (cwlToolFiles: Array<ToolFile>, wdlToolFiles: Array<ToolFile>, nflToolFiles: Array<ToolFile>) => {
-        return this.mergeToolFileArrays(cwlToolFiles, wdlToolFiles, nflToolFiles);
-      });
-    this.containerToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (!toolFiles) {
-        toolFiles = [];
-      }
-      return toolFiles.filter((toolFile: ToolFile) => {
-        return toolFile.file_type === ToolFile.FileTypeEnum.CONTAINERFILE;
-      });
-    }));
-    this.descriptorToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (!toolFiles) {
-        toolFiles = [];
-      }
-      return toolFiles.filter((toolFile: ToolFile) => {
-        return (toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
-          toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
-      });
-    }));
-    this.testToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (!toolFiles) {
-        toolFiles = [];
-      }
-      return toolFiles.filter((toolFile: ToolFile) => {
-        return toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE;
-      });
-    }));
+      (cwlToolFiles: Array<ToolFile>, wdlToolFiles: Array<ToolFile>, nflToolFiles: Array<ToolFile>) =>
+        this.mergeToolFileArrays(cwlToolFiles, wdlToolFiles, nflToolFiles)).pipe(filter((notNull: ToolFile[]) => notNull != null));
+
+    // The 3 below are mildly similar to each other (filters applied to 'this.toolFiles$')
+    // TODO: Somehow refactor?  Handle falsy when refactoring
+    this.containerToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) =>
+      toolFiles.filter((toolFile: ToolFile) => toolFile.file_type === ToolFile.FileTypeEnum.CONTAINERFILE)));
+    this.descriptorToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) =>
+      toolFiles.filter((toolFile: ToolFile) => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
+        toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR)));
+    this.testToolFiles$ = this.toolFiles$.pipe(map((toolFiles: Array<ToolFile>) =>
+      toolFiles.filter((toolFile: ToolFile) => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE)));
   }
 
   /**
@@ -79,7 +64,7 @@ export class GA4GHFilesStateService {
    */
   public injectAuthorizationToken(ga4ghService: GA4GHService) {
     ga4ghService.defaultHeaders = ga4ghService.defaultHeaders.set('Authorization',
-    ga4ghService.configuration.apiKeys['Authorization']);
+      ga4ghService.configuration.apiKeys['Authorization']);
   }
 
   update(id: string, version: string) {
@@ -96,18 +81,13 @@ export class GA4GHFilesStateService {
       DescriptorType.NFL, id, version).subscribe(files => {
         this.nflToolFiles$.next(files);
       });
-    // TODO: Grab from all descriptor types (CWL, WDL, NFL) to get all test parameter files
-
   }
 
   /**
-   * This merges the 3 ToolFile arrays together into one array with no duplicates
-   *
+   * This merges the ToolFile arrays together into one array with no duplicates
    * @private
-   * @param {Array<ToolFile>} array1
-   * @param {Array<ToolFile>} array2
-   * @param {Array<toolFile>} array3
-   * @returns {Array<ToolFile>}
+   * @param {...Array<Array<ToolFile>>} toolFileArrays  Array of array of tool files
+   * @returns {Array<ToolFile>}                         Merged array of tool files
    * @memberof GA4GHFilesStateService
    */
   private mergeToolFileArrays(...toolFileArrays: Array<Array<ToolFile>>): Array<ToolFile> {
