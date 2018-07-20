@@ -49,7 +49,7 @@ export class FileService {
           type = 'PLAIN-CWL';
           break;
         default:
-          console.log('Unhandled type: ' + descriptorType);
+          console.error('Unknown descriptor type: ' + descriptorType);
           return null;
       }
       return this.getDownloadFilePath(entryPath, entryVersion.name, sourceFile.path, type, entryType);

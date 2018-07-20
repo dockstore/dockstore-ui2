@@ -75,7 +75,7 @@ export class DescriptorsComponent extends EntryFileSelector {
         break;
       }
       default: {
-        console.log('Unknown descriptor type: ' + descriptor);
+        console.error('Unknown descriptor type: ' + descriptor);
         return observableOf([]);
       }
     }
