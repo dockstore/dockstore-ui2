@@ -13,6 +13,7 @@
             <a mat-raised-button
                title="{{!wdlHasContent ? 'The WDL has no content.' : ''}}"
                target="_blank"
+               rel="noopener"
                [attr.href]="dnastackURL"
                [disabled]="!dnastackURL"
                color="primary"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a>
@@ -21,6 +22,7 @@
             <a mat-raised-button
                title="{{!wdlHasContent ? 'The WDL has no content.' : (wdlHasFileImports ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : '')}}"
                target="_blank"
+               rel="noopener"
                [attr.href]="fireCloudURL"
                [disabled]="!fireCloudURL"
                color="primary"><mat-icon svgIcon="firecloud"></mat-icon> FireCloud &raquo;</a>
@@ -29,6 +31,7 @@
             <a mat-raised-button
                title="{{!wdlHasContent ? 'The WDL has no content.' : ''}}"
                target="_blank"
+               rel="noopener"
                [attr.href]="dnanexusURL"
                [disabled]="!dnanexusURL"
                color="primary"><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a>
