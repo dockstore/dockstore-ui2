@@ -58,9 +58,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.selectedVersion && this.tool) {
       this.currentVersion = this.selectedVersion;
-      const found = this.validVersions.find((version: Tag) => {
-        return version.id === this.selectedVersion.id;
-      });
+      const found = this.validVersions.find((version: Tag) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
       if (this.tool.descriptorType.includes('cwl')) {
