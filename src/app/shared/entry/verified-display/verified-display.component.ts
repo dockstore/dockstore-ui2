@@ -27,7 +27,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() sourceFiles: SourceFile[];
   @ViewChild(MatSort) sort: MatSort;
   public dataSource: MatTableDataSource<any>;
-  public displayedColumns = ['platform', 'metadata', 'path'];
+  public displayedColumns = ['platform', 'verifier', 'path'];
   constructor() {
     this.dataSource = new MatTableDataSource([]);
   }
@@ -45,7 +45,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
    * Extracts the custom verification information object array from the sourcefiles
    *
    * @param {Array<SourceFile>} sourceFiles  The list of sourcefiles from an entry's version
-   * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, metadata, platform)
+   * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, verifier, platform)
    * @memberof VerifiedDisplayComponent
    */
   getCustomVerificationInformationArray(sourceFiles: Array<SourceFile>): Array<any> {
@@ -60,7 +60,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
           // This allows the string to break after every slash for word-wrapping purposes
           path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
           platform: platform,
-          metadata: verifiedInformation.metadata
+          verifier: verifiedInformation.metadata
         };
         customVerificationInformationArray.push(customVerificationInformationObject);
       });
@@ -77,5 +77,5 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
 class CustomVerificationInformationObject {
   path: string;
   platform: string;
-  metadata: string;
+  verifier: string;
 }

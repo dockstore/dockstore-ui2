@@ -14,9 +14,9 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header> Platform </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.platform}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="metadata">
+      <ng-container matColumnDef="verifier">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Verified Source </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.metadata}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.verifier}} </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

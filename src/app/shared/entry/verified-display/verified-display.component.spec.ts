@@ -32,12 +32,12 @@ describe('VerifiedDisplayComponent', () => {
     {
       'path': '/\u2028Dockstore-BTCA-SG.json',
       'platform': 'Dockstore CLI',
-      'metadata': 'Docktesters group'
+      'verifier': 'Docktesters group'
     },
     {
       'path': '/\u2028Dockstore.json',
       'platform': 'Dockstore CLI',
-      'metadata': 'Docktesters group'
+      'verifier': 'Docktesters group'
     }
   ];
 
