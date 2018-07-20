@@ -50,7 +50,14 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
+  /**
+   * Get all the test parameter files
+   *
+   * @param {*} descriptor  This actually doesn't matter until workflows have multiple descriptor types
+   * @returns {Observable<Array<ToolFile>>}
+   * @memberof ParamfilesWorkflowComponent
+   */
+  getFiles(descriptor): Observable<Array<ToolFile>> {
     return this.gA4GHFilesStateService.testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
     }));
