@@ -357,7 +357,7 @@ export class WorkflowComponent extends Entry {
    * True if user is in users list, or username is in read,write,owner permissions, false otherwise
    */
   canUserRead(): boolean {
-    const username = this.user.username;
+    const username = this.user && this.user.username;
     if (this.isInUserArray(username)) {
       return true;
     }
@@ -368,7 +368,7 @@ export class WorkflowComponent extends Entry {
    * True if user is in users list, or username is in write or owner permissions, false otherwise
    */
   canUserWrite(): boolean {
-    const username = this.user.username;
+    const username = this.user && this.user.username;
     if (this.isInUserArray(username)) {
       return true;
     }
@@ -379,7 +379,7 @@ export class WorkflowComponent extends Entry {
    * True if user is in users list, or username is in owner permissions, false otherwise
    */
   isUserOwner(): boolean {
-    const username = this.user.username;
+    const username = this.user && this.user.username;
     if (this.isInUserArray(username)) {
       return true;
     }

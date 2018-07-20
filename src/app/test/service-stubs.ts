@@ -642,6 +642,9 @@ export class WorkflowsStubService {
     getWorkflowPermissions(workflowPath: string) {
       return observableOf([]);
     }
+    updateWorkflowDefaultVersion(workflowId: number, tag: string) {
+      return observableOf([]);
+    }
 }
 
 export class ContainersStubService {

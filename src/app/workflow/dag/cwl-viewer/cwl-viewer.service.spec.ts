@@ -2,7 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CwlViewerService } from './cwl-viewer.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Dockstore } from '../../../shared/dockstore.model';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 describe('Service: CWLViewer', () => {
 
