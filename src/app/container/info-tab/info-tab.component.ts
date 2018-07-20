@@ -20,9 +20,10 @@ import { ga4ghPath } from './../../shared/constants';
 import { ContainerService } from './../../shared/container.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { StateService } from './../../shared/state.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tag } from './../../shared/swagger/model/tag';
+import { ExtendedToolsService } from './../../shared/extended-tools.service';
+import { HttpResponse } from '@angular/common/http';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 
@@ -33,6 +34,7 @@ import { InfoTabService } from './info-tab.service';
 })
 export class InfoTabComponent implements OnInit, OnChanges {
   currentVersion: Tag;
+  @Input() validVersions;
   @Input() selectedVersion: Tag;
   @Input() privateOnlyRegistry;
   @Input() tool: ExtendedDockstoreTool;
@@ -47,19 +49,26 @@ export class InfoTabComponent implements OnInit, OnChanges {
   isPublic: boolean;
   trsLinkCWL: string;
   trsLinkWDL: string;
+  downloadZipLink: string;
+  isValidVersion = false;
   constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
-    private containersService: ContainersService) {
+    private containersService: ExtendedToolsService) {
   }
 
   ngOnChanges() {
     if (this.selectedVersion && this.tool) {
       this.currentVersion = this.selectedVersion;
+      const found = this.validVersions.find((version: Tag) => version.id === this.selectedVersion.id);
+      this.isValidVersion = found ? true : false;
+      this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
       if (this.tool.descriptorType.includes('cwl')) {
         this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'cwl');
       }
       if (this.tool.descriptorType.includes('wdl')) {
         this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'wdl');
       }
+    } else {
+      this.isValidVersion = false;
     }
   }
 
@@ -70,6 +79,14 @@ export class InfoTabComponent implements OnInit, OnChanges {
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
     this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
+  }
+
+  downloadZip() {
+    this.containersService.getToolZip(this.tool.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
+      const blob = new Blob([data.body], { type: 'application/zip' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
   }
 
   toggleEditDockerFile() {

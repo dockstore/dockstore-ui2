@@ -15,14 +15,15 @@
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { Tooltip } from '../../shared/tooltip';
 import { ga4ghPath } from './../../shared/constants';
 import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { ExtendedWorkflowsService } from './../../shared/extended-workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Dockstore } from '../../shared/dockstore.model';
+import { HttpResponse } from '@angular/common/http';
 import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { WorkflowService } from './../../shared/workflow.service';
 import { InfoTabService } from './info-tab.service';
@@ -37,6 +38,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() defaultVersion;
   @Input() workflow;
   currentVersion: WorkflowVersion;
+  downloadZipLink: string;
+  isValidVersion = false;
   @Input() selectedVersion: WorkflowVersion;
 
   public validationPatterns = validationDescriptorPatterns;
@@ -50,10 +53,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
   <b>FULL:</b> Full content synced from source control.<br />
   <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
-
-
-  constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService, private stateService: StateService,
-    private infoTabService: InfoTabService) {
+  constructor(private workflowService: WorkflowService, private workflowsService: ExtendedWorkflowsService,
+    private stateService: StateService, private infoTabService: InfoTabService) {
     super();
   }
 
@@ -61,6 +62,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
       this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, this.selectedVersion.name, this.workflow.descriptorType);
+      const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
+      this.isValidVersion = found ? true : false;
+      this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
+    } else {
+      this.isValidVersion = false;
     }
   }
 
@@ -81,6 +87,14 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.workflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
       this.workflowService.setWorkflow(restubbedWorkflow);
       this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
+    });
+  }
+
+  downloadZip() {
+    this.workflowsService.getWorkflowZip(this.workflow.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
+      const blob = new Blob([data.body], { type: 'application/zip'});
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
     });
   }
 
