@@ -1,5 +1,5 @@
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpResponse, HttpEvent } from '@angular/common/http';
 
 /**

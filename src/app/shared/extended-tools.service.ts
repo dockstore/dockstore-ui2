@@ -1,5 +1,5 @@
 import { ContainersService } from './../shared/swagger/api/containers.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpResponse, HttpEvent } from '@angular/common/http';
 
 /**
