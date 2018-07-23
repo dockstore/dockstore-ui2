@@ -13,13 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { StateService } from './../../shared/state.service';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+
+import { formInputDebounceTime } from '../../shared/constants';
+import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
+import { StateService } from './../../shared/state.service';
 import { RegisterToolService } from './register-tool.service';
-import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
-import { validationMessages, formErrors, validationDescriptorPatterns } from '../../shared/validationMessages.model';
-import { Repository } from './../../shared/enum/Repository.enum';
 
 @Component({
   selector: 'app-register-tool',
@@ -132,7 +133,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     if (this.currentForm === this.registerToolForm) { return; }
     this.registerToolForm = this.currentForm;
     if (this.registerToolForm) {
-      this.registerToolForm.valueChanges
+      this.registerToolForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }

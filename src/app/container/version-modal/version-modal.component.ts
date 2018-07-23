@@ -13,24 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
+import { ListContainersService } from '../../containers/list/list.service';
+import { formInputDebounceTime } from '../../shared/constants';
+import { ContainerService } from '../../shared/container.service';
+import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { RefreshService } from '../../shared/refresh.service';
-import { formErrors, validationMessages, validationDescriptorPatterns } from '../../shared/validationMessages.model';
-import { ListContainersService } from './../../containers/list/list.service';
-import { ContainerService } from './../../shared/container.service';
-import { DateService } from './../../shared/date.service';
-import { StateService } from './../../shared/state.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { Tag } from './../../shared/swagger/model/tag';
-import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { VersionModalService } from './version-modal.service';
+import { StateService } from '../../shared/state.service';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Tag } from '../../shared/swagger/model/tag';
+import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
+import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
+import { VersionModalService } from './version-modal.service';
 
 @Component({
   selector: 'app-version-modal',
@@ -85,7 +86,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     if (this.currentForm === this.tagEditorForm) { return; }
     this.tagEditorForm = this.currentForm;
     if (this.tagEditorForm) {
-      this.tagEditorForm.valueChanges
+      this.tagEditorForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }

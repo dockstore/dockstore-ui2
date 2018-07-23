@@ -13,16 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainersService } from '../../shared/swagger';
-import { Tag } from './../../shared/swagger/model/tag';
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
-import { ContainerService } from './../../shared/container.service';
-import { ParamfilesService } from './../paramfiles/paramfiles.service';
-import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
+import { formInputDebounceTime } from '../../shared/constants';
+import { ContainerService } from '../../shared/container.service';
+import { ContainersService } from '../../shared/swagger';
+import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
+import { Tag } from '../../shared/swagger/model/tag';
+import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
+import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
@@ -155,7 +156,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     if (this.currentForm === this.addTagForm) { return; }
     this.addTagForm = this.currentForm;
     if (this.addTagForm) {
-      this.addTagForm.valueChanges
+      this.addTagForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }

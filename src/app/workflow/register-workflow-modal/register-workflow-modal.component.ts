@@ -27,6 +27,8 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { debounceTime } from 'rxjs/operators';
+import { formInputDebounceTime } from '../../shared/constants';
 
 @Component({
   selector: 'app-register-workflow-modal',
@@ -113,7 +115,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     if (this.currentForm === this.registerWorkflowForm) { return; }
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
-      this.registerWorkflowForm.valueChanges
+      this.registerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }

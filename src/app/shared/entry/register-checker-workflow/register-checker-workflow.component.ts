@@ -17,14 +17,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
+import { CheckerWorkflowService } from '../../checker-workflow.service';
+import { formInputDebounceTime } from '../../constants';
+import { ErrorService } from '../../error.service';
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { ErrorService } from './../../error.service';
-import { Workflow } from './../../swagger/model/workflow';
-import { formErrors, validationDescriptorPatterns, validationMessages } from './../../validationMessages.model';
-import { DescriptorLanguageService } from './../descriptor-language.service';
+import { Workflow } from '../../swagger/model/workflow';
+import { formErrors, validationDescriptorPatterns, validationMessages } from '../../validationMessages.model';
+import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
 @Component({
@@ -133,7 +135,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
     if (this.currentForm === this.registerCheckerWorkflowForm) { return; }
     this.registerCheckerWorkflowForm = this.currentForm;
     if (this.registerCheckerWorkflowForm) {
-      this.registerCheckerWorkflowForm.valueChanges
+      this.registerCheckerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }

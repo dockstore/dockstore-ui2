@@ -15,11 +15,12 @@
  */
 import { AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
-import { fromEvent, Observable, Subject, merge } from 'rxjs';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 
 import { PublishedToolsDataSource } from '../containers/list/published-tools.datasource';
 import { PublishedWorkflowsDataSource } from '../workflows/list/published-workflows.datasource';
+import { formInputDebounceTime } from './constants';
 import { DateService } from './date.service';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
@@ -76,7 +77,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
 
       // Handle input text field changes
       fromEvent(this.input.nativeElement, 'keyup').pipe(
-        debounceTime(250),
+        debounceTime(formInputDebounceTime),
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
