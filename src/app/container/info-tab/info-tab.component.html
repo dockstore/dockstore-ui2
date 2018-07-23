@@ -46,7 +46,7 @@
         {{ tool?.imgProviderUrl }}
       </span>
     </li>
-    <span *ngIf="isPublic">
+    <span *ngIf="isPublic && isValidVersion">
       <li *ngIf="trsLinkCWL">
         <strong tooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
         <a [href]="trsLinkCWL">
