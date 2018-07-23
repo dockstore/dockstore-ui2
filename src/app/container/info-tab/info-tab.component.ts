@@ -69,6 +69,8 @@ export class InfoTabComponent implements OnInit, OnChanges {
       }
     } else {
       this.isValidVersion = false;
+      this.trsLinkCWL = null;
+      this.trsLinkWDL = null;
     }
   }
 
