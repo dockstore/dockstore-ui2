@@ -17,24 +17,9 @@ describe('Dockstore my workflows', function() {
 
         });
         it('Should contain the extended properties', function() {
-            cy.contains('github.com')
-            // Apparently you need to click the accordion in order for the other components inside
-            // to become click-able
             cy
-                .get('accordion')
-                .first()
-                .click()
-            cy.contains('github.com/A')
-                .parentsUntil('accordion-group')
-                .contains('Unpublished')
-                .should('be.visible')
-                .click()
-            cy.contains('github.com/A')
-                .parentsUntil('accordion-group')
-                .contains('div .no-wrap', /\bg\b/)
-                .should('be.visible').click()
-            cy.contains('GitHub')
-            cy.contains('https://github.com/A/g')
+              .contains('github.com/A')
+              .click()
         });
     });
 
