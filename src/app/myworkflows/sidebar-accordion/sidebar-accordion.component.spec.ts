@@ -11,6 +11,15 @@ import {
 } from './../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
+import {
+  MatButtonModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatExpansionModule,
+  MatListModule,
+  MatTooltipModule
+} from '@angular/material';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -19,7 +28,18 @@ describe('SidebarAccordionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SidebarAccordionComponent, RefreshWorkflowOrganizationComponent ],
-      imports: [ AccordionModule.forRoot(), ModalModule.forRoot(), TabsModule.forRoot(), RouterTestingModule],
+      imports: [
+        AccordionModule.forRoot(),
+        ModalModule.forRoot(),
+        TabsModule.forRoot(),
+        MatTabsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatExpansionModule,
+        MatListModule,
+        MatTooltipModule,
+        RouterTestingModule],
       providers: [
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
         { provide: WorkflowService, useClass: WorkflowStubService }
