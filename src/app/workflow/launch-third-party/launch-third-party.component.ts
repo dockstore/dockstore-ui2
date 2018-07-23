@@ -49,7 +49,7 @@ export class LaunchThirdPartyComponent implements OnChanges {
         if (sourceFile && sourceFile.content && sourceFile.content.length) {
           this.wdlHasContent = true;
           // DNAnexus handles file and http(s) imports, no need to check
-          this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(this.selectedVersion.workflow_path, this.selectedVersion.name);
+          this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
           // DNAstack doesn't get passed a specific version
           this.dnastackURL = this.launchThirdPartyService.dnastackUrl(this.workflow.full_workflow_path, this.workflow.descriptorType);
           this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFiles: Array<SourceFile>) => {
