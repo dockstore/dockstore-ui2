@@ -32,13 +32,13 @@
         </mat-list>
       </mat-tab>
     </mat-tab-group>
-    <span class="clearfix">
-      <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')" class="pull-right">
+    <mat-action-row>
+      <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
         <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
       </span>
-      <button mat-mini-fab color="accent" class="pull-right" matTooltip="Add new workflow" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()">
+      <button mat-mini-fab color="accent" matTooltip="Add new workflow" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()">
         <mat-icon>add</mat-icon>
       </button>
-    </span>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
