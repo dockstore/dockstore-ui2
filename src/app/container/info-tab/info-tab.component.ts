@@ -62,13 +62,15 @@ export class InfoTabComponent implements OnInit, OnChanges {
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
       if (this.tool.descriptorType.includes('cwl')) {
-        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'cwl');
+        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'cwl', this.currentVersion.cwl_path);
       }
       if (this.tool.descriptorType.includes('wdl')) {
-        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'wdl');
+        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, 'wdl', this.currentVersion.wdl_path);
       }
     } else {
       this.isValidVersion = false;
+      this.trsLinkCWL = null;
+      this.trsLinkWDL = null;
     }
   }
 
@@ -142,10 +144,12 @@ export class InfoTabComponent implements OnInit, OnChanges {
    * @param path tool path
    * @param versionName name of version
    * @param descriptorType descriptor type (CWL or WDL)
+   * @param descriptorPath primary descriptor path
    */
-  getTRSLink(path: string, versionName: string, descriptorType: string): string {
+  getTRSLink(path: string, versionName: string, descriptorType: string,
+    relativePath: string): string {
     return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType.toUpperCase() +
-      `/descriptor`;
+      `/descriptor/` + relativePath;
   }
 }
