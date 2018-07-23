@@ -53,8 +53,10 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   /**
    * Get all the test parameter files
    *
-   * @param {*} descriptor  This actually doesn't matter until workflows have multiple descriptor types
-   * @returns {Observable<Array<ToolFile>>}
+   * @param {*} descriptor  This actually doesn't matter for the workflow components.
+   * Both tool and workflows uses the same abstract method, but only tool can have multiple descriptor types.
+   * Workflows won't use this until it also supports having multiple descriptor types.
+   * @returns {Observable<Array<ToolFile>>}  The array of test parameter ToolFiles
    * @memberof ParamfilesWorkflowComponent
    */
   getFiles(descriptor): Observable<Array<ToolFile>> {
