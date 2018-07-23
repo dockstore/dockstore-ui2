@@ -29,7 +29,7 @@
           <strong tooltip="Git repository for the associated descriptors">
             {{ workflow?.provider}}
           </strong>:
-          <a [href]="workflow?.providerUrl">
+          <a [href]="workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
             {{ workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')}}
           </a>
         </li>

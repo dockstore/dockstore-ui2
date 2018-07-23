@@ -234,23 +234,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default" *ngIf="tool?.versionVerified">
-      <div class="panel-heading">
-        <h3>Verified</h3>
-      </div>
-      <div class="panel-body">
-        <div class="container-source-repos">
-          <ul class="list-unstyled container-info">
-            <li *ngFor="let source of tool?.verifiedSources">
-              <strong>{{source.version}} is verified by: </strong>
-              <p class="ellipsis-lines" [tooltip]="source.verifiedSource">
-                {{source.verifiedSource}}
-              </p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <app-verified-by [version]="selectedVersion"></app-verified-by>
     <div class="panel panel-default" *ngIf="tool">
       <div class="panel-heading">
         <h3>Sharing</h3>

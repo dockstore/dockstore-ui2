@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 import { UserService } from '../loginComponents/user.service';
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
+import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowService } from '../shared/workflow.service';
-import { User } from './../shared/swagger/model/user';
 import { StarringService } from './starring.service';
 
 @Component({
@@ -30,7 +30,7 @@ import { StarringService } from './starring.service';
   templateUrl: './starring.component.html',
   styleUrls: ['./starring.component.css']
 })
-export class StarringComponent implements OnInit {
+export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   @Input() tool: any;
   @Input() workflow: any;
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -41,6 +41,7 @@ export class StarringComponent implements OnInit {
   public rate = false;
   public total_stars = 0;
   public disable = false;
+  private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
   private workflowSubscription: Subscription;
   private toolSubscription: Subscription;
@@ -53,16 +54,24 @@ export class StarringComponent implements OnInit {
     private starentryService: StarentryService) { }
 
   ngOnInit() {
-    this.trackLoginService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     // get tool from the observer
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+      this.user = user;
+      this.rate = this.calculateRate(this.starredUsers);
+    });
+  }
+
+  ngOnChanges() {
     if (this.workflow || this.tool) {
       // get the tool from the input, used by the starred Page and entry components
       this.setupInputEntry();
     }
-    this.userService.user$.subscribe(user => {
-      this.user = user;
-      this.calculateRate(this.starredUsers);
-    });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   setupInputEntry() {

@@ -19,15 +19,18 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-import { CodeEditorListComponent } from './../code-editor-list/code-editor-list.component';
-import { CodeEditorComponent } from './../code-editor/code-editor.component';
-import { CustomMaterialModule } from './../modules/material.module';
+import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
+import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
 import {
   InfoTabCheckerWorkflowPathComponent,
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
+import { VerifiedByComponent } from './verified-by/verified-by.component';
+import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
+import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
 @NgModule({
@@ -45,6 +48,9 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     CodeEditorComponent,
     CodeEditorListComponent,
     CommitUrlPipe,
+    VerifiedByComponent,
+    VerifiedDisplayComponent,
+    VerifiedPlatformsPipe,
     VersionProviderUrlPipe
 ],
   exports: [
@@ -54,6 +60,9 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     CodeEditorListComponent,
     CustomMaterialModule,
     CommitUrlPipe,
+    VerifiedByComponent,
+    VerifiedDisplayComponent,
+    VerifiedPlatformsPipe,
     VersionProviderUrlPipe
   ]
 })

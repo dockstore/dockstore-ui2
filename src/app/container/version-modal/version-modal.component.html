@@ -229,6 +229,7 @@
               </div>
             </div>
           </div>
+          <app-verified-display *ngIf="version?.verified" [sourceFiles]=version?.sourceFiles></app-verified-display>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" (click)="onHidden()">Close</button>

@@ -47,15 +47,6 @@
         </span>
         <label placement="top" tooltip="The editing author as collected by Dockstore">Author</label>
       </th>
-
-      <th>
-        <span class="glyphicon pull-right"
-              [ngClass]="getIconClass('workflow_path')"
-              (click)="clickSortColumn('workflow_path')">
-        </span>
-        <label placement="top" tooltip="Workflow paths for given version">Workflow Path</label>
-      </th>
-
       <th>
         <span class="glyphicon pull-right"
               [ngClass]="getIconClass('last_modified')"
@@ -80,7 +71,7 @@
               (click)="clickSortColumn('verified')">
         </span>
         <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
-          Verified
+          Verified Platforms
         </label>
       </th>
       <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
@@ -116,7 +107,6 @@
       <ng-template #noCommitID><span>{{version?.name}}</span></ng-template>
     </td>
       <td *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
-      <td>{{ version.workflow_path }}</td>
       <td>{{ getDateTimeString(version.last_modified) }}</td>
       <td>
         <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
@@ -126,6 +116,7 @@
         <a href={{verifiedLink}}>
           <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
         </a>
+        {{version?.sourceFiles | verifiedPlatforms }}
         <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
       </td>
       <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->

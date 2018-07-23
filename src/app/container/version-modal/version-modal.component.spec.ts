@@ -23,6 +23,7 @@ import {
 } from './../../test/service-stubs';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;
@@ -30,7 +31,8 @@ describe('VersionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionModalComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ VersionModalComponent],
       imports: [ModalModule.forRoot(), FormsModule, ClipboardModule],
       providers: [
         {provide: ParamfilesService, useClass: ParamFilesStubService},

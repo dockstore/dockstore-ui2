@@ -13,18 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-
+import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { Versions } from '../../shared/versions';
-import { ContainerService } from './../../shared/container.service';
-import { StateService } from './../../shared/state.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { StateService } from '../../shared/state.service';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
+import { Versions } from '../../shared/versions';
 
 @Component({
   selector: 'app-versions-container',
