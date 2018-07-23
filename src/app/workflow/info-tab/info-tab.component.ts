@@ -61,7 +61,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
-      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, this.selectedVersion.name, this.workflow.descriptorType);
+      this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, this.selectedVersion.name, this.workflow.descriptorType,
+        this.selectedVersion.workflow_path);
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
@@ -139,10 +140,12 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    * @param path full workflow path
    * @param versionName name of version
    * @param descriptorType descriptor type (CWL or WDL)
+   * @param descriptorPath primary descriptor path
    */
-  getTRSLink(path: string, versionName: string, descriptorType: string): string {
+  getTRSLink(path: string, versionName: string, descriptorType: string,
+    descriptorPath: string): string {
     return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent('#workflow/' + path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType.toUpperCase() +
-      `/descriptor`;
+      `/descriptor/` + descriptorPath;
   }
 }
