@@ -24,6 +24,7 @@ import { ContainerService } from './../../shared/container.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { DescriptorType } from '../../shared/enum/descriptorType.enum';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'app-add-tag',
@@ -33,7 +34,7 @@ import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 export class AddTagComponent implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
   @ViewChild('addTagForm') currentForm: NgForm;
-  public DescriptorType = DescriptorType;
+  public DescriptorType = ToolDescriptor.TypeEnum;
   public tool;
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;

@@ -31,6 +31,7 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'app-version-modal',
@@ -39,7 +40,7 @@ import { VersionModalService } from './version-modal.service';
 })
 export class VersionModalComponent implements OnInit, AfterViewChecked {
   public TagEditorMode = TagEditorMode;
-  public DescriptorType = DescriptorType;
+  public DescriptorType = ToolDescriptor.TypeEnum;
   public isModalShown: boolean;
   public editMode: boolean;
   public mode: TagEditorMode;
