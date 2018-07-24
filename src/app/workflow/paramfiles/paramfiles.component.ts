@@ -15,12 +15,15 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -34,38 +37,43 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.clearContent();
     this.onVersionChange(value);
   }
-  public filePath: string;
   public entryType = 'workflow';
   public downloadFilePath: string;
 
-  constructor(private paramfilesService: ParamfilesService,
-    public fileService: FileService,
+  constructor(private paramfilesService: ParamfilesService, private gA4GHService: GA4GHService,
+    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
     private workflowService: WorkflowService) {
-    super();
+    super(fileService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
-    return this.paramfilesService.getFiles(this.id, 'workflows', this._selectedVersion.name, this.currentDescriptor);
+  /**
+   * Get all the test parameter files
+   *
+   * @param {*} descriptor  This actually doesn't matter for the workflow components.
+   * Both tool and workflows uses the same abstract method, but only tool can have multiple descriptor types.
+   * Workflows won't use this until it also supports having multiple descriptor types.
+   * @returns {Observable<Array<ToolFile>>}  The array of test parameter ToolFiles
+   * @memberof ParamfilesWorkflowComponent
+   */
+  getFiles(descriptor): Observable<Array<ToolFile>> {
+    return this.gA4GHFilesStateService.testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
+      return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
+    }));
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
-    this.filePath = this.getFilePath(this.currentFile);
-    this.filePath = this.getFilePath(this.currentFile);
-    this.downloadFilePath = this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion,
-      this.currentFile, this.currentDescriptor, this.entryType);
-  }
-
-  // Get the path of the file
-  getFilePath(file): string {
-    return this.fileService.getFilePath(file);
-  }
-
-  downloadFile(file, id): void {
-    this.fileService.downloadFile(file, id);
+    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
+    // TODO: Memoize this
+    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolTests) => {
+        this.content = file.test;
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
+        this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.updateCustomDownloadFileButtonAttributes();
+      });
   }
 }

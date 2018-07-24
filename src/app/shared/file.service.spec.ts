@@ -13,12 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Dockstore } from './dockstore.model';
-import { FileService} from './file.service';
 import { inject, TestBed } from '@angular/core/testing';
-import { SourceFile } from './swagger';
-import { sampleTag, sampleSourceFile } from '../test/mocked-objects';
+
+import { sampleSourceFile, sampleTag } from '../test/mocked-objects';
 import { ga4ghPath } from './constants';
+import { Dockstore } from './dockstore.model';
+import { FileService } from './file.service';
 
 describe('FileService', () => {
   beforeEach(() => {

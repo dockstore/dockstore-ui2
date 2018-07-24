@@ -13,8 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Input } from '@angular/core';
 import { Observable } from 'rxjs';
+
+import { FileService } from '../file.service';
+import { SafeUrl } from '@angular/platform-browser';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -25,16 +27,32 @@ export abstract class EntryFileSelector {
   protected currentDescriptor;
   protected descriptors: Array<any>;
   public nullDescriptors: boolean;
-
+  public filePath: string;
   public currentFile;
   protected files: Array<any>;
   protected published$: Observable<boolean>;
-
+  public downloadFilePath: string;
+  public customDownloadHREF: SafeUrl;
+  public customDownloadPath: string;
   content: string = null;
 
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
+  /**
+   * Get the file using the descriptor/{relative-path} endpoint
+   *
+   * @abstract
+   * @memberof EntryFileSelector
+   */
   abstract reactToFile(): void;
+
+  constructor(protected fileService: FileService) {
+
+  }
+
+  protected getDescriptorPath(path: string, entryType: ('tool' | 'workflow')): string {
+    return this.fileService.getDescriptorPath(path, this._selectedVersion, this.currentFile, this.currentDescriptor, entryType);
+  }
 
   reactToVersion(): void {
     this.descriptors = this.getDescriptors(this._selectedVersion);
@@ -59,13 +77,18 @@ export abstract class EntryFileSelector {
         this.files = files;
         if (this.files.length) {
           this.onFileChange(this.files[0]);
+        } else {
+          this.currentFile = null;
+          this.content = null;
         }}
       );
   }
 
   onFileChange(file) {
-    this.currentFile = file;
-    this.reactToFile();
+    if (this.currentFile !== file) {
+      this.currentFile = file;
+      this.reactToFile();
+    }
   }
 
   onVersionChange(value) {
@@ -77,4 +100,13 @@ export abstract class EntryFileSelector {
     this.content = null;
   }
 
+  /**
+   * Update the custom download button attributes ('href' and 'download')
+   *
+   * @memberof EntryFileSelector
+   */
+  updateCustomDownloadFileButtonAttributes(): void {
+    this.customDownloadHREF = this.fileService.getFileData(this.content);
+    this.customDownloadPath = this.fileService.getFileName(this.filePath);
+  }
 }

@@ -14,12 +14,15 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ContainerService } from '../../shared/container.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
+import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { DockstoreTool } from '../../shared/swagger';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptorService } from './tool-descriptor.service';
 
@@ -38,12 +41,10 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
 
-  public descriptorPath: string;
-  public filePath: string;
   constructor(private containerService: ContainerService,
-              private descriptorsService: ToolDescriptorService,
-              public fileService: FileService) {
-    super();
+    private descriptorsService: ToolDescriptorService, private gA4GHService: GA4GHService,
+    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService) {
+    super(fileService);
     this.published$ = this.containerService.toolIsPublished$;
   }
 
@@ -51,23 +52,52 @@ export class DescriptorsComponent extends EntryFileSelector {
     return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptor): Observable<any> {
-    return this.descriptorsService.getFiles(this.id, this._selectedVersion.name, this.currentDescriptor);
+  /**
+   * Get all the language-specific primary and secondary descriptors
+   *
+   * @param {WebserviceDescriptorType} descriptor The descriptor language selected
+   * @returns {Observable<Array<ToolFile>>} The array of language-specific descriptors
+   * @memberof DescriptorsComponent
+   */
+  getFiles(descriptor: WebserviceDescriptorType): Observable<Array<ToolFile>> {
+    let descriptorToolFiles$: BehaviorSubject<Array<ToolFile>>;
+    switch (descriptor) {
+      case 'wdl': {
+        descriptorToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
+        break;
+      }
+      case 'cwl': {
+        descriptorToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
+        break;
+      }
+      case 'nfl': {
+        descriptorToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
+        break;
+      }
+      default: {
+        console.error('Unknown descriptor type: ' + descriptor);
+        return observableOf([]);
+      }
+    }
+    return descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
+      if (toolFiles) {
+        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
+          toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
+      } else {
+        return [];
+      }
+    }));
   }
 
   reactToFile(): void {
-    this.content = this.currentFile.content;
-    this.descriptorPath = this.getDescriptorPath(this.currentDescriptor);
-    this.filePath = this.getFilePath(this.currentFile);
+    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
+    // TODO: Memoize this
+    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolDescriptor) => {
+        this.content = file.descriptor;
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
+        this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.updateCustomDownloadFileButtonAttributes();
+      });
   }
-
-  private getDescriptorPath(descType): string {
-    return this.fileService.getDescriptorPath(this.entrypath, this._selectedVersion, this.currentFile, this.currentDescriptor, 'tool');
-  }
-
-  // Get the path of the file
-  private getFilePath(file): string {
-    return this.fileService.getFilePath(file);
-  }
-
 }

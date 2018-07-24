@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { Files } from '../../shared/files';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { Files } from '../../shared/files';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-files-workflow',
@@ -27,7 +28,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: WorkflowVersion;
   versionsWithParamfiles: Array<any>;
-  constructor(private paramfilesService: ParamfilesService) {
+  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
     super();
   }
 
@@ -35,6 +36,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
+    this.gA4GHFilesStateService.update('#workflow/' + this.entrypath, this.selectedVersion.name);
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }

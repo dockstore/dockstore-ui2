@@ -13,8 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+/**
+ * This is mainly used as an enum replacement in the GA4GH endpoints until Swagger provides the enum
+ * @export
+ * @enum {number}
+ */
 export enum DescriptorType {
-  CWL,
-  WDL
+  CWL = 'CWL',
+  WDL = 'WDL',
+  NFL = 'NFL'
 }

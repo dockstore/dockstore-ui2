@@ -95,7 +95,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   calculateRate(starredUsers: User[]): boolean {
-    if (!this.user) {
+    if (!this.user || !starredUsers) {
       return false;
     } else {
       let matchingUser: User;
