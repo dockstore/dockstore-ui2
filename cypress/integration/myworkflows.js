@@ -20,6 +20,9 @@ describe('Dockstore my workflows', function() {
             cy
               .contains('github.com/A')
               .click()
+
+            cy.contains('GitHub')
+            cy.contains('https://github.com/A/g')
         });
     });
 
