@@ -23,7 +23,6 @@ import { NgForm } from '@angular/forms';
 import { ContainerService } from './../../shared/container.service';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
@@ -90,15 +89,15 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  addTestParameterFile(descriptorType: DescriptorType) {
+  addTestParameterFile(descriptorType: ToolDescriptor.TypeEnum) {
     switch (descriptorType) {
-      case DescriptorType.CWL: {
+      case this.DescriptorType.CWL: {
         const newTestFile = this.unsavedTestCWLFile;
         this.unsavedCWLTestParameterFilePaths.push(newTestFile);
         this.unsavedTestCWLFile = '';
         break;
       }
-      case DescriptorType.WDL: {
+      case this.DescriptorType.WDL: {
         const newTestFile = this.unsavedTestWDLFile;
         this.unsavedWDLTestParameterFilePaths.push(newTestFile);
         this.unsavedTestWDLFile = '';
@@ -110,13 +109,13 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  removeTestParameterFile(index: number, descriptorType: DescriptorType) {
+  removeTestParameterFile(index: number, descriptorType: ToolDescriptor.TypeEnum) {
     switch (descriptorType) {
-      case DescriptorType.CWL: {
+      case this.DescriptorType.CWL: {
         this.unsavedCWLTestParameterFilePaths.splice(index, 1);
         break;
       }
-      case DescriptorType.WDL: {
+      case this.DescriptorType.WDL: {
         this.unsavedWDLTestParameterFilePaths.splice(index, 1);
         break;
       }
@@ -133,10 +132,10 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       const tagName = this.unsavedVersion.name;
       // Store the unsaved test files if valid and exist
       if (this.unsavedTestCWLFile.length > 0) {
-        this.addTestParameterFile(DescriptorType.CWL);
+        this.addTestParameterFile(this.DescriptorType.CWL);
       }
       if (this.unsavedTestWDLFile.length > 0) {
-        this.addTestParameterFile(DescriptorType.WDL);
+        this.addTestParameterFile(this.DescriptorType.WDL);
       }
 
       this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', null, tagName).subscribe();
