@@ -45,8 +45,8 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let workflow: Workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="format">
-      <mat-header-cell *matHeaderCellDef>Format</mat-header-cell>
+    <ng-container matColumnDef="descriptorType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell *matCellDef="let workflow: Workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
