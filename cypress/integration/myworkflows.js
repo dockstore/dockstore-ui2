@@ -17,12 +17,9 @@ describe('Dockstore my workflows', function() {
 
         });
         it('Should contain the extended properties', function() {
-            cy
-              .contains('github.com/A')
-              .click()
-
-            cy.contains('GitHub')
-            cy.contains('https://github.com/A/g')
+          cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
+          cy.contains('GitHub')
+          cy.contains('https://github.com/A/g')
         });
     });
 
