@@ -96,7 +96,7 @@
                 <label class="col-sm-3 control-label">
                   Descriptor Type:
                 </label>
-                <mat-radio-group class="col-sm-9 radio-group" [(ngModel)]="workflow.descriptorType" name="potato" (change)="radioButtonChange($event)">
+                <mat-radio-group id="descriptorTypeRadioButtons" class="col-sm-9 radio-group" [(ngModel)]="workflow.descriptorType" name="descriptorTypes" (change)="radioButtonChange($event)">
                   <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
                     {{'descriptor_type' | mapFriendlyValue : descriptorType}}
                   </mat-radio-button>
