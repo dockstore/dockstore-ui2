@@ -1,38 +1,44 @@
-<accordion [closeOthers]="openOneAtATime">
-  <accordion-group *ngFor="let orgObj of groupEntriesObject" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.sourceControl + '/' + orgObj?.organization">
-    <div accordion-heading class="no-wrap">
-      {{orgObj?.sourceControl + '/' + orgObj?.organization}}
-    </div>
-    <tabset [justified]="true">
-      <tab heading="Published" [active]="orgObj.activeTab === 'published'">
-        <div *ngFor="let workflowObj of orgObj?.published">
-          <div class="panel-container-label" [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}">
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj?.isFirstOpen">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="org-accordion-header">
+          {{orgObj?.sourceControl + '/' + orgObj?.organization}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj.activeTab === 'published' ? 0 : 1">
+      <mat-tab label="Published">
+      <mat-list>
+          <mat-list-item *ngFor="let workflowObj of orgObj?.published" [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}">
+            <a [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}" [routerLink]="'/my-workflows/' + workflowObj.full_workflow_path">
+              {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
+            </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
+            <p class="text-center">No published workflows.</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+      <mat-tab label="Unpublished">
+        <mat-list class="org-accordion-list" >
+          <mat-list-item *ngFor="let workflowObj of orgObj?.unpublished" [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}">
             <a class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}" [routerLink]="'/my-workflows/' + workflowObj.full_workflow_path">
               {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
             </a>
-          </div>
-        </div>
-        <div *ngIf="orgObj?.published.length == 0" class="text-center">
-          <p>No published workflows.</p>
-        </div>
-      </tab>
-      <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
-        <div *ngFor="let workflowObj of orgObj?.unpublished">
-          <div class="panel-container-label" [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}">
-            <a class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}" [routerLink]="'/my-workflows/' + workflowObj.full_workflow_path">
-              {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
-            </a>
-          </div>
-        </div>
-        <div *ngIf="!orgObj || orgObj?.unpublished.length === 0" class="text-center">
-          <p>No unpublished workflows.</p>
-        </div>
-      </tab>
-    </tabset>
-    <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
-      <app-refresh-workflow-organization class="pull-right" [organization]="orgObj?.organization"></app-refresh-workflow-organization>
-    </span>
-    <button type="button" class="glyphicon glyphicon-plus btn btn-primary btn-xs pull-right add-container-ns" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()">
-    </button>
-  </accordion-group>
-</accordion>
+          </mat-list-item>
+          <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
+            <p class="text-center">No unpublished workflows.</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-action-row>
+      <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
+        <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
+      </span>
+      <button mat-mini-fab color="accent" class="add-workflow-button" matTooltip="Add new workflow" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -29,6 +29,12 @@ import {
     WorkflowStubService,
 } from './../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
+import {
+  MatButtonModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatTooltipModule
+} from '@angular/material';
 
 /* tslint:disable:no-unused-variable */
 describe('RefreshWorkflowOrganizationComponent', () => {
@@ -38,6 +44,12 @@ describe('RefreshWorkflowOrganizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RefreshWorkflowOrganizationComponent ],
+      imports: [
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule
+      ],
       providers: [
         { provide: UserService, useClass: UserStubService },
         { provide: StateService, useClass: StateStubService },

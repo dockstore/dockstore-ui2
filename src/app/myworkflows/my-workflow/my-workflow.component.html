@@ -31,7 +31,7 @@
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
         <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject"></app-sidebar-accordion>
         <div *ngIf="(groupEntriesObject?.length > 0 && groupEntriesObject) || (groupSharedEntriesObject?.length > 0 && groupSharedEntriesObject) ">
-          <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
+          <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right register-workflow-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Workflow</button>
         </div>
         <br>
 
