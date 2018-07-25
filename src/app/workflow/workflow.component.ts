@@ -64,7 +64,7 @@ export class WorkflowComponent extends Entry {
   protected readers = [];
   protected writers = [];
   protected owners = [];
-  protected schema;
+  public schema;
   @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,

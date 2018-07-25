@@ -59,7 +59,7 @@ export class ContainerComponent extends Entry {
   public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
-  protected schema;
+  public schema;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
