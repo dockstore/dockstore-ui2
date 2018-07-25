@@ -67,28 +67,28 @@
                 {{user?.username}}
                 <mat-icon>keyboard_arrow_down</mat-icon>
               </button>
-              <mat-menu #menu="matMenu" color="accent">
-                <a mat-menu-item id="dropdown-starred" routerLink="/starred">
-                  <mat-icon>stars</mat-icon>Starred
+              <mat-menu #menu="matMenu">
+                <a mat-menu-item id="dropdown-starred"  routerLink="/starred">
+                  <mat-icon color="accent">stars</mat-icon>Starred
                 </a>
 
                 <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
-                  <mat-icon>account_circle</mat-icon>Account
+                  <mat-icon color="accent">account_circle</mat-icon>Account
                 </a>
 
                 <a mat-menu-item id="dropdown-quickstart" routerLink="/quick-start">
-                  <mat-icon>flash_on</mat-icon>Quick Start
+                  <mat-icon color="accent">flash_on</mat-icon>Quick Start
                 </a>
 
                 <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding">
-                  <mat-icon>timeline</mat-icon>Setup
+                  <mat-icon color="accent">timeline</mat-icon>Setup
                 </a>
 
 
                 <mat-divider></mat-divider>
 
                 <a mat-menu-item id="dropdown-logout" (click)="logout()">
-                  <mat-icon>input</mat-icon>Log out
+                  <mat-icon color="accent">input</mat-icon>Log out
                 </a>
               </mat-menu>
           </li>
