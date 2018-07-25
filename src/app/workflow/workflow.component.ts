@@ -13,30 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import {Location} from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
 
-import { DateService } from '../shared/date.service';
-import { DockstoreService } from '../shared/dockstore.service';
-import { Entry } from '../shared/entry';
-import { ProviderService } from '../shared/provider.service';
-import { Tag } from '../shared/swagger/model/tag';
-import {WorkflowVersion } from '../shared/swagger/model/workflowVersion';
-import { TrackLoginService } from '../shared/track-login.service';
-import { WorkflowService } from '../shared/workflow.service';
-import { ErrorService } from './../shared/error.service';
-import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
-import { RefreshService } from './../shared/refresh.service';
-import { StateService } from './../shared/state.service';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
-import { Workflow } from './../shared/swagger/model/workflow';
-import { UrlResolverService } from './../shared/url-resolver.service';
-import { Permission } from './../shared/swagger';
+import {DateService} from '../shared/date.service';
+import {DockstoreService} from '../shared/dockstore.service';
+import {Entry} from '../shared/entry';
+import {ProviderService} from '../shared/provider.service';
+import {Tag} from '../shared/swagger/model/tag';
+import {WorkflowVersion} from '../shared/swagger/model/workflowVersion';
+import {TrackLoginService} from '../shared/track-login.service';
+import {WorkflowService} from '../shared/workflow.service';
+import {ErrorService} from './../shared/error.service';
+import {ExtendedWorkflow} from './../shared/models/ExtendedWorkflow';
+import {RefreshService} from './../shared/refresh.service';
+import {StateService} from './../shared/state.service';
+import {WorkflowsService} from './../shared/swagger/api/workflows.service';
+import {PublishRequest} from './../shared/swagger/model/publishRequest';
+import {Workflow} from './../shared/swagger/model/workflow';
+import {UrlResolverService} from './../shared/url-resolver.service';
+import {Permission} from './../shared/swagger';
 import RoleEnum = Permission.RoleEnum;
 
 @Component({
@@ -134,9 +134,9 @@ export class WorkflowComponent extends Entry {
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
     this.schema = {
-      "@type":"ListItem",
-      "position":this.workflow.id,
-      "url":this.shareURL
+      '@type': 'ListItem',
+      'position': this.workflow.id,
+      'url': this.shareURL
     };
   }
 
