@@ -19,3 +19,19 @@
   text-decoration: none;
   color: white;
 }
+
+.icon {
+  padding: 0 14px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-holder {
+  padding: 0px;
+}
