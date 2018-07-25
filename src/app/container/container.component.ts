@@ -61,6 +61,7 @@ export class ContainerComponent extends Entry {
   public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
+  protected schema;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -121,6 +122,13 @@ export class ContainerComponent extends Entry {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
     this.resetContainerEditData();
+    // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
+    // will need to be aggregated with a summary page
+    this.schema = {
+      "@type":"ListItem",
+      "position":this.tool.id,
+      "url":this.shareURL
+    };
   }
 
   public subscriptions(): void {

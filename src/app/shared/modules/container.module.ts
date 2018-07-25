@@ -61,6 +61,7 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
+import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { SelectModule } from './select.module';
     StarringModule,
     ModalModule,
     StargazersModule,
-    EntryModule
+    EntryModule,
+    NgxJsonLdModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

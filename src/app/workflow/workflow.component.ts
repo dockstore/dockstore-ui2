@@ -42,7 +42,7 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css']
+  styleUrls: ['./workflow.component.css'],
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
@@ -64,6 +64,7 @@ export class WorkflowComponent extends Entry {
   protected readers = [];
   protected writers = [];
   protected owners = [];
+  protected schema;
   @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
@@ -130,6 +131,13 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
+    // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
+    // will need to be aggregated with a summary page
+    this.schema = {
+      "@type":"ListItem",
+      "position":this.workflow.id,
+      "url":this.shareURL
+    };
   }
 
   public getDefaultVersionName(): string {
