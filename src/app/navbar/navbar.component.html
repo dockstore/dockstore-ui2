@@ -63,30 +63,31 @@
               <a mat-raised-button color="accent" routerLink="/login">Login</a>
           </li>
           <li *ngIf="isLoggedIn">
-              <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">
+              <button mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menu">
                 {{user?.username}}
                 <mat-icon>keyboard_arrow_down</mat-icon>
               </button>
               <mat-menu #menu="matMenu" color="accent">
-                <a mat-menu-item color="accent" routerLink="/accounts">
-                  <mat-icon>account_circle</mat-icon>Account
-                </a>
-
-                <a mat-menu-item color="accent" routerLink="/quick-start">
-                  <mat-icon>flash_on</mat-icon>Quick Start
-                </a>
-
-                <a mat-menu-item color="accent" routerLink="/onboarding">
-                  <mat-icon>timeline</mat-icon>Setup
-                </a>
-
-                <a mat-menu-item color="accent" routerLink="/starred">
+                <a mat-menu-item id="dropdown-starred" routerLink="/starred">
                   <mat-icon>stars</mat-icon>Starred
                 </a>
 
+                <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
+                  <mat-icon>account_circle</mat-icon>Account
+                </a>
+
+                <a mat-menu-item id="dropdown-quickstart" routerLink="/quick-start">
+                  <mat-icon>flash_on</mat-icon>Quick Start
+                </a>
+
+                <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding">
+                  <mat-icon>timeline</mat-icon>Setup
+                </a>
+
+
                 <mat-divider></mat-divider>
 
-                <a mat-menu-item color="accent" (click)="logout()">
+                <a mat-menu-item id="dropdown-logout" (click)="logout()">
                   <mat-icon>input</mat-icon>Log out
                 </a>
               </mat-menu>
