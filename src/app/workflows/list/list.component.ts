@@ -33,7 +33,7 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['repository', 'stars', 'author', 'format', 'projectLinks'];
+  public displayedColumns = ['repository', 'stars', 'author', 'descriptorType', 'projectLinks'];
 
   constructor(private communicatorService: CommunicatorService,
     private workflowService: WorkflowService,

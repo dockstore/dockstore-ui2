@@ -13,14 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowDescriptorService } from './workflow-descriptor.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { FileService } from './../../shared/file.service';
-import { DescriptorsStubService, FileStubService, WorkflowStubService } from './../../test/service-stubs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { FileService } from '../../shared/file.service';
+import { GA4GHService } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/workflow.service';
+import { DescriptorsStubService, FileStubService, GA4GHStubService, WorkflowStubService } from '../../test/service-stubs';
 import { DescriptorsWorkflowComponent } from './descriptors.component';
+import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 describe('DescriptorsWorkflowComponent', () => {
   let component: DescriptorsWorkflowComponent;
@@ -32,7 +34,9 @@ describe('DescriptorsWorkflowComponent', () => {
       providers: [
         { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService }
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService },
+        GA4GHFilesStateService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

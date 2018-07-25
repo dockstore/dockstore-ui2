@@ -97,7 +97,7 @@ export abstract class LaunchService {
           urlType = 'PLAIN_NFL';
           break;
         default:
-          console.log('Unknown descriptor type: ' + type);
+          console.error('Unknown descriptor type: ' + type);
           return null;
       }
 

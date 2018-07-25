@@ -13,14 +13,13 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
-  <div>
-    <span *ngIf="_selectedVersion?.valid" class="row no-margin">
-      <span class="form-group col-sm-4">
-        <strong>File:</strong>
-        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-      </span>
+<div>
+  <span *ngIf="_selectedVersion?.valid" class="row no-margin">
+    <span class="form-group col-sm-4">
+      <strong>File:</strong>
+      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
     </span>
+  </span>
   <div *ngIf="this.nullDescriptors || !_selectedVersion?.valid">
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
@@ -29,9 +28,14 @@
   </div>
   <div *ngIf="!this.nullDescriptors && _selectedVersion?.valid" class="row no-margin">
     <div class="btn-group" role="group">
-      <a *ngIf="(published$ | async)" download [href]="descriptorPath" class="btn btn-default" type="button" title="{{filePath}}">
+      <a *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
         <span class="glyphicon glyphicon-download"></span>
       </a>
+      <ng-template #unpublishedDownloadLink>
+        <a [href]="customDownloadHREF" [download]="customDownloadPath" class="btn btn-default" type="button" title="{{filePath}}">
+          <span class="glyphicon glyphicon-download"></span>
+        </a>
+      </ng-template>
       <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content">
         <span class="glyphicon glyphicon-copy"></span>
       </button>

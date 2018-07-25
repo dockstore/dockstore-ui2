@@ -14,6 +14,8 @@ export class SidebarAccordionComponent implements OnInit {
   @Input() groupEntriesObject;
   public workflowId$: Observable<number>;
 
+  activeTab = 0;
+
   constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private workflowService: WorkflowService) { }
 
   ngOnInit(): void {

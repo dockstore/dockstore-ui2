@@ -24,7 +24,11 @@ import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { ContainerStubService, UsersStubService, RefreshStubService } from './../../test/service-stubs';
 import { RefreshToolOrganizationComponent } from './refresh-tool-organization.component';
-
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatTooltipModule
+} from '@angular/material';
 /* tslint:disable:no-unused-variable */
 describe('RefreshToolOrganizationComponent', () => {
   let component: RefreshToolOrganizationComponent;
@@ -33,6 +37,11 @@ describe('RefreshToolOrganizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RefreshToolOrganizationComponent],
+      imports: [
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule
+      ],
       providers: [
         { provide: UserService, useClass: UserStubService },
         { provide: StateService, useClass: StateStubService },

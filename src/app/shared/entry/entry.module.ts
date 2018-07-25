@@ -23,6 +23,7 @@ import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.co
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
+import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
 import {
   InfoTabCheckerWorkflowPathComponent,
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
@@ -52,7 +53,10 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe
-],
+  ],
+  providers: [
+    GA4GHFilesStateService
+  ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
     LaunchCheckerWorkflowComponent,
