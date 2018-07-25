@@ -60,53 +60,34 @@
                   <img class="site-icons-small" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows</a>
           </li>
           <li *ngIf="!isLoggedIn">
-              <div class="button login">
-                  <p>
-                      <a routerLink="/login">Login</a>
-                  </p>
-              </div>
+              <a mat-raised-button color="accent" routerLink="/login">Login</a>
           </li>
-          <li *ngIf=isLoggedIn class="btn-group no-margin" dropdown>
-              <div class="button login">
-                  <a href dropdownToggle (click)="false" id="dropdown-main" class="account-dropdown dropdown-toggle">
-                      <span class="glyphicon glyphicon-user"></span>
-                      <span>{{user?.username}}</span>
-                      <span class="caret"></span>
-                  </a>
-              </div>
-              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                  <li role="menuitem">
-                      <a id="dropdown-starred" routerLink="/starred">
-                          <span class="glyphicon glyphicon-star"></span>&nbsp;
-                          <span class="item-label">Starred</span>
-                      </a>
-                  </li>
-                  <li role="menuitem">
-                      <a id="dropdown-accounts" routerLink="/accounts">
-                          <span class="glyphicon glyphicon-user"></span>&nbsp;
-                          <span class="item-label">Accounts</span>
-                      </a>
-                  </li>
-                <li role="menuitem">
-                      <a id="dropdown-quickstart" routerLink="/quick-start">
-                          <span class="glyphicon glyphicon-flash"></span>&nbsp;
-                          <span class="item-label">Quick Start</span>
-                      </a>
-                  </li>
-                  <li role="menuitem">
-                      <a id="dropdown-onboarding" routerLink="/onboarding">
-                          <span class="glyphicon glyphicon-tasks"></span>&nbsp;
-                          <span class="item-label">Setup</span>
-                      </a>
-                  </li>
-                  <li class="divider" role="separator"></li>
-                  <li role="menuitem">
-                      <a id="dropdown-logout" (click)="logout()">
-                          <span class="glyphicon glyphicon-log-out"></span>&nbsp;
-                          <span class="item-label">Log out</span>
-                      </a>
-                  </li>
-              </ul>
+          <li *ngIf="isLoggedIn">
+              <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">
+                {{user?.username}}
+                <mat-icon>keyboard_arrow_down</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" color="accent">
+                <a mat-menu-item color="accent" routerLink="/accounts">
+                  <mat-icon>account_circle</mat-icon>Account
+                </a>
+
+                <a mat-menu-item color="accent" routerLink="/quick-start">
+                  <mat-icon>flash_on</mat-icon>Quick Start
+                </a>
+
+                <a mat-menu-item color="accent" routerLink="/onboarding">
+                  <mat-icon>timeline</mat-icon>Setup
+                </a>
+
+                <a mat-menu-item color="accent" routerLink="/starred">
+                  <mat-icon>stars</mat-icon>Starred
+                </a>
+
+                <a mat-menu-item color="accent" (click)="logout()">
+                  <mat-icon>input</mat-icon>Log out
+                </a>
+              </mat-menu>
           </li>
         </ul>
       </div>

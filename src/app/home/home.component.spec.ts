@@ -21,7 +21,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
 import {UserService} from '../loginComponents/user.service';
 import {UserStubService} from '../test/service-stubs';
-
+import { MatButtonModule, MatIconModule } from '@angular/material';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -30,7 +30,11 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ HomeComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [ TabsModule.forRoot() ],
+      imports: [
+        TabsModule.forRoot(),
+        MatButtonModule,
+        MatIconModule
+      ],
       providers: [ TwitterService,
         { provide: UserService, useClass: UserStubService }],
     })
