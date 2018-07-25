@@ -13,33 +13,33 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {Location} from '@angular/common';
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material';
-import {takeUntil} from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
 
-import {ListContainersService} from '../containers/list/list.service';
-import {CommunicatorService} from '../shared/communicator.service';
-import {ContainerService} from '../shared/container.service';
-import {DateService} from '../shared/date.service';
-import {DockstoreService} from '../shared/dockstore.service';
-import {Entry} from '../shared/entry';
-import {ImageProviderService} from '../shared/image-provider.service';
-import {ProviderService} from '../shared/provider.service';
-import {Tag} from '../shared/swagger/model/tag';
-import {WorkflowVersion} from '../shared/swagger/model/workflowVersion';
-import {TrackLoginService} from '../shared/track-login.service';
-import {ErrorService} from './../shared/error.service';
-import {ExtendedDockstoreTool} from './../shared/models/ExtendedDockstoreTool';
-import {RefreshService} from './../shared/refresh.service';
-import {StateService} from './../shared/state.service';
-import {ContainersService} from './../shared/swagger/api/containers.service';
-import {PublishRequest} from './../shared/swagger/model/publishRequest';
-import {UrlResolverService} from './../shared/url-resolver.service';
-import {EmailService} from './email.service';
-import {DockstoreTool} from './../shared/swagger/model/dockstoreTool';
+import { ListContainersService } from '../containers/list/list.service';
+import { CommunicatorService } from '../shared/communicator.service';
+import { ContainerService } from '../shared/container.service';
+import { DateService } from '../shared/date.service';
+import { DockstoreService } from '../shared/dockstore.service';
+import { Entry } from '../shared/entry';
+import { ImageProviderService } from '../shared/image-provider.service';
+import { ProviderService } from '../shared/provider.service';
+import { Tag } from '../shared/swagger/model/tag';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { TrackLoginService } from '../shared/track-login.service';
+import { ErrorService } from './../shared/error.service';
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from './../shared/refresh.service';
+import { StateService } from './../shared/state.service';
+import { ContainersService } from './../shared/swagger/api/containers.service';
+import { PublishRequest } from './../shared/swagger/model/publishRequest';
+import { UrlResolverService } from './../shared/url-resolver.service';
+import { EmailService } from './email.service';
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-container',
