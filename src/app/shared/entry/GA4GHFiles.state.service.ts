@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { DescriptorType } from '../enum/descriptorType.enum';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { GA4GHService, ToolFile } from '../swagger';
 
 /**
@@ -70,15 +70,15 @@ export class GA4GHFilesStateService {
   update(id: string, version: string) {
     this.injectAuthorizationToken(this.ga4ghService);
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.CWL, id, version).subscribe(files => {
+      ToolDescriptor.TypeEnum.CWL, id, version).subscribe(files => {
         this.cwlToolFiles$.next(files);
       });
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.WDL, id, version).subscribe(files => {
+      ToolDescriptor.TypeEnum.WDL, id, version).subscribe(files => {
         this.wdlToolFiles$.next(files);
       });
     this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-      DescriptorType.NFL, id, version).subscribe(files => {
+      ToolDescriptor.TypeEnum.NFL, id, version).subscribe(files => {
         this.nflToolFiles$.next(files);
       });
   }
