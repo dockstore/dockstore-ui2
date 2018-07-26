@@ -13,9 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { StateService } from './../../shared/state.service';
@@ -59,13 +61,25 @@ export class RegisterWorkflowModalService {
         this.isModalShown$.next(isModalShown);
     }
 
-    setWorkflowRegisterError(message: any, errorDetails) {
-        const error = {
-            message: message,
-            errorDetails: errorDetails
-        };
-        this.workflowRegisterError$.next(error);
-        this.stateService.refreshMessage$.next(null);
+    setWorkflowRegisterError(error: HttpErrorResponse) {
+      let errorObj = null;
+      if (error) {
+        if (error.status === 0) {
+          errorObj = {
+            message: 'The webservice is currently down, possibly due to load. Please wait and try again later.',
+            errorDetails: ''
+          };
+        } else {
+          errorObj = {
+              message: 'The webservice encountered an error trying to create this ' +
+              'workflow, please ensure that the workflow attributes are ' +
+              'valid.',
+              errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+              error.error
+          };
+        }
+      }
+      this.workflowRegisterError$.next(errorObj);
     }
 
     setWorkflow(workflow: Workflow) {
@@ -78,7 +92,8 @@ export class RegisterWorkflowModalService {
     }
 
     registerWorkflow() {
-        this.stateService.setRefreshMessage('Registering workflow...');
+        this.clearWorkflowRegisterError();
+        this.stateService.setRefreshMessage('Registering new workflow...');
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
@@ -86,28 +101,19 @@ export class RegisterWorkflowModalService {
             this.actualWorkflow.workflowName,
             this.actualWorkflow.descriptorType,
             this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
-                this.workflowsService.refresh(result.id).subscribe(refreshResult => {
+              this.stateService.setRefreshMessage('Refreshing new workflow...');
+                this.workflowsService.refresh(result.id).pipe(finalize(() => {
+                  this.stateService.setRefreshMessage(null);
+                })).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
-                    this.stateService.setRefreshMessage(null);
                     this.setIsModalShown(false);
-                    this.clearWorkflowRegisterError();
                     this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
-                }, error => this.stateService.setRefreshMessage(null));
+                }, error => this.setWorkflowRegisterError(error));
             }, error =>  {
-              if (error) {
-                if (error.status === 0) {
-                  this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
-                  'Please wait and try again later.', '');
-                } else {
-                  this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
-                    'workflow, please ensure that the workflow attributes are ' +
-                    'valid and the same image has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                    error.error);
-                  }
-                }
-              }
-            );
+              this.stateService.setRefreshMessage(null);
+              this.setWorkflowRegisterError(error);
+            });
     }
 
     /**
@@ -115,30 +121,21 @@ export class RegisterWorkflowModalService {
      * @param  hostedWorkflow hosted workflow object
      */
     registerHostedWorkflow(hostedWorkflow) {
-      this.stateService.setRefreshMessage('Registering workflow...');
+      this.clearWorkflowRegisterError();
+      this.stateService.setRefreshMessage('Registering new workflow...');
       this.hostedService.createHostedWorkflow(
           hostedWorkflow.name,
-          hostedWorkflow.descriptorType).subscribe(result => {
+          hostedWorkflow.descriptorType).pipe(finalize(() => {
+            this.stateService.setRefreshMessage(null);
+          })).subscribe(result => {
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);
-            this.stateService.setRefreshMessage(null);
             this.setIsModalShown(false);
             this.clearWorkflowRegisterError();
             this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
           }, error =>  {
-            if (error) {
-              if (error.status === 0) {
-                this.setWorkflowRegisterError('The webservice is currently down, possibly due to load. ' +
-                'Please wait and try again later.', '');
-              } else {
-                this.setWorkflowRegisterError('The webservice encountered an error trying to create this ' +
-                  'workflow, please ensure that the workflow attributes are ' +
-                  'valid and the same workflow has not already been registered.', '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                  error.error);
-                }
-              }
-            }
-          );
+            this.setWorkflowRegisterError(error);
+          });
     }
 
     friendlyRepositoryKeys(): Array<string> {
