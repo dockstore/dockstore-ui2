@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 })
 export class PermissionsComponent implements OnInit {
 
+  public Role = RoleEnum;
   public canViewPermissions = false;
   public owners: string[] = [];
   public writers: string[] = [];

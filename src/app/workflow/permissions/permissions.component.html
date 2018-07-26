@@ -18,7 +18,7 @@
     <li>
       <mat-form-field style="width: 100%;">
         <mat-chip-list #ownerlist>
-          <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, 'OWNER')" [removable]="owners.length > 1">
+          <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
             {{owner}}
             <mat-icon matChipRemove *ngIf="owners.length > 1">cancel</mat-icon>
           </mat-chip>
@@ -26,14 +26,14 @@
                  [matChipInputFor]="ownerlist"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, 'OWNER')"/>
+                 (matChipInputTokenEnd)="add($event, Role.OWNER)"/>
         </mat-chip-list>
       </mat-form-field>
     </li>
     <li>
       <mat-form-field style="width: 100%;" >
         <mat-chip-list #writerlist>
-          <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, 'WRITER')" [removable]="true">
+          <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, Role.WRITER)" [removable]="true">
             {{writer}}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
@@ -41,14 +41,14 @@
                  [matChipInputFor]="writerlist"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, 'WRITER')"/>
+                 (matChipInputTokenEnd)="add($event, Role.WRITER)"/>
         </mat-chip-list>
       </mat-form-field>
     </li>
     <li>
       <mat-form-field style="width: 100%;" >
         <mat-chip-list #readerlist>
-          <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, 'READER')" [removable]="true">
+          <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, Role.READER)" [removable]="true">
             {{reader}}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
@@ -56,7 +56,7 @@
                  [matChipInputFor]="readerlist"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, 'READER')"/>
+                 (matChipInputTokenEnd)="add($event, Role.READER)"/>
         </mat-chip-list>
       </mat-form-field>
     </li>
