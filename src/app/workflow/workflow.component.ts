@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -25,7 +25,7 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ProviderService } from '../shared/provider.service';
 import { Tag } from '../shared/swagger/model/tag';
-import {WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ErrorService } from './../shared/error.service';
@@ -42,7 +42,7 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css']
+  styleUrls: ['./workflow.component.css'],
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
@@ -64,6 +64,7 @@ export class WorkflowComponent extends Entry {
   protected readers = [];
   protected writers = [];
   protected owners = [];
+  public schema;
   @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
@@ -130,6 +131,13 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
+    // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
+    // will need to be aggregated with a summary page
+    this.schema = {
+      '@type': 'ListItem',
+      'position': this.workflow.id,
+      'url': this.shareURL
+    };
   }
 
   public getDefaultVersionName(): string {

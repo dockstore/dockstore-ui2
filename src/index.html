@@ -1,5 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+<!-- note that this file is in two different places:
+https://github.com/dockstore/compose_setup/blob/develop/templates/index.html.template
+and
+https://github.com/dockstore/dockstore-ui2/blob/develop/src/index.html
+
+Please keep the two in sync when making changes, pending a better solution via git submodules
+-->
 
 <head>
   <meta charset="utf-8">
@@ -8,6 +15,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "url": "https://dockstore.org",
+  "logo": "https://raw.githubusercontent.com/dockstore/dockstore-ui2/develop/src/assets/images/dockstore/dockstore.png",
+  "sameAs": [
+    "https://twitter.com/DockstoreOrg"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://dockstore.org",
+  "sameAs": [
+    "https://twitter.com/DockstoreOrg"
+    ],
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://dockstore.org/search?search={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+  }
+  </script>
 
   <script>
   (function(w, d, s, l, i) {
@@ -23,7 +56,7 @@
     j.src =
       'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
     f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', 'SOM-EFAKEID');
+  })(window, document, 'script', 'dataLayer', '{{ TAG_MANAGER_ID }}');
   </script>
 </head>
 
