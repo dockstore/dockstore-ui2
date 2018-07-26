@@ -1,5 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+<!-- note that this file is in two different places:
+https://github.com/dockstore/compose_setup/blob/develop/templates/index.html.template
+and
+https://github.com/dockstore/dockstore-ui2/blob/develop/src/index.html
+
+Please keep the two in sync when making changes, pending a better solution via git submodules
+-->
 
 <head>
   <meta charset="utf-8">
@@ -49,7 +56,7 @@
     j.src =
       'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
     f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', 'SOM-EFAKEID');
+  })(window, document, 'script', 'dataLayer', '{{ TAG_MANAGER_ID }}');
   </script>
 </head>
 
