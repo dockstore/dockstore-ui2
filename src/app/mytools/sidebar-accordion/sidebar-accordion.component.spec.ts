@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { WorkflowService } from '../../shared/workflow.service';
-import { RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
+import { ContainerService } from './../../shared/container.service';
+import { RegisterToolService } from '../../container/register-tool/register-tool.service';
+import { RegisterToolStubService, ContainerStubService } from './../../test/service-stubs';
 import {
-  RefreshWorkflowOrganizationComponent,
-} from './../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
-import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
+  RefreshToolOrganizationComponent,
+} from './../../container/refresh-tool-organization/refresh-tool-organization.component';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
 import {
   MatButtonModule,
@@ -24,7 +24,7 @@ describe('SidebarAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarAccordionComponent, RefreshWorkflowOrganizationComponent ],
+      declarations: [ SidebarAccordionComponent, RefreshToolOrganizationComponent ],
       imports: [
         MatTabsModule,
         MatToolbarModule,
@@ -35,8 +35,8 @@ describe('SidebarAccordionComponent', () => {
         MatTooltipModule,
         RouterTestingModule],
       providers: [
-        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService }
+        { provide: RegisterToolService, useClass: RegisterToolStubService },
+        { provide: ContainerService, useClass: ContainerStubService }
       ]
     })
     .compileComponents();

@@ -83,7 +83,7 @@
             [disabled]="publishDisable()" btnCheckbox [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Publish/unpublish the tool">
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
-          <button *ngIf="tool?.is_published" mat-raised-button color="warn" [disabled]="tool?.is_published" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Delete a tool">
+          <button *ngIf="tool?.is_published" mat-raised-button color="warn" [disabled]="tool?.is_published" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Delete the tool">
             Delete
           </button>
           <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
