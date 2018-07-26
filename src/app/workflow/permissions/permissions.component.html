@@ -23,43 +23,40 @@
             <mat-icon matChipRemove *ngIf="owners.length > 1">cancel</mat-icon>
           </mat-chip>
           <input placeholder="Owners"
-                 [disabled]="updating"
                  [matChipInputFor]="ownerlist"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="addOwner($event)"/>
+                 (matChipInputTokenEnd)="add($event, 'OWNER')"/>
         </mat-chip-list>
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%;" >
         <mat-chip-list #writerlist>
           <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, 'WRITER')" [removable]="true">
             {{writer}}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input placeholder="Writers"
-                 [disabled]="updating"
                  [matChipInputFor]="writerlist"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="addWriter($event)"/>
+                 (matChipInputTokenEnd)="add($event, 'WRITER')"/>
         </mat-chip-list>
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%;" >
         <mat-chip-list #readerlist>
           <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, 'READER')" [removable]="true">
             {{reader}}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input placeholder="Readers"
-                 [disabled]="updating"
                  [matChipInputFor]="readerlist"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="addReader($event)"/>
+                 (matChipInputTokenEnd)="add($event, 'READER')"/>
         </mat-chip-list>
       </mat-form-field>
     </li>
