@@ -15,31 +15,31 @@
   -->
 <mat-toolbar color="primary">
   <div [className]="isExtended ? 'container-fluid;navbar-holder' : 'container'">
-    <mat-toolbar-row class="toolbar-holder">
+    <mat-toolbar-row class="toolbar-holder hidden-xs">
       <a id="home-nav-button" (click)="resetPageNumber()" routerLink="">
-        <img class="img-responsive" src="../assets/images/dockstore/logo.png">
+        <img src="../assets/images/dockstore/logo.png">
       </a>
       <a class="icon" (click)="resetPageNumber()" routerLink="/tools">
-          <img class="site-icons-small hidden-xs" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
       </a>
       <a class="icon" (click)="resetPageNumber()" routerLink="/workflows">
-          <img class="site-icons-small hidden-xs" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
       </a>
       <a class="icon" routerLink="/search">
-          <img class="site-icons-small hidden-xs" src="../assets/images/dockstore/search-button.png"> Search
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
       </a>
       <a class="icon" href="http://docs.dockstore.org/">
-          <img class="site-icons-small hidden-xs" src="../assets/images/dockstore/dockstore-documentation.png"> Documentation
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Documentation
       </a>
       <span class="spacer"></span>
       <a class="icon" id="my-tools-nav-button" *ngIf="isLoggedIn" routerLink="/my-tools">
-        <img class="site-icons-small hidden-xs" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
+        <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
       </a>
       <a class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
-        <img class="site-icons-small hidden-xs" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
+        <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
       </a>
       <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
-      <button mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menu">
+      <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menu">
         <mat-icon class="hidden-lg">account_circle</mat-icon>
         <span class="hidden-md hidden-sm hidden-xs">{{user?.username}}</span>
         <mat-icon>keyboard_arrow_down</mat-icon>
@@ -68,5 +68,57 @@
         </a>
       </mat-menu>
     </mat-toolbar-row>
+  </div>
+  <div class="container-fluid navbar-holder">
+      <mat-toolbar-row class="visible-xs toolbar-holder toolbar-holder-sm clearfix">
+          <a id="home-nav-button-xs" (click)="resetPageNumber()" routerLink="">
+            <img src="../assets/images/dockstore/logo.png">
+          </a>
+          <span class="spacer"></span>
+          <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+          <button class="pull-right" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main-xs" [matMenuTriggerFor]="menu">
+            <mat-icon class="hidden-lg">account_circle</mat-icon>
+            <span class="hidden-md hidden-sm hidden-xs">{{user?.username}}</span>
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item id="dropdown-starred-xs"  routerLink="/starred">
+              <mat-icon color="accent">stars</mat-icon>Starred
+            </a>
+
+            <a mat-menu-item id="dropdown-accounts-xs" routerLink="/accounts">
+              <mat-icon color="accent">account_circle</mat-icon>Account
+            </a>
+
+            <a mat-menu-item id="dropdown-quickstart-xs" routerLink="/quick-start">
+              <mat-icon color="accent">flash_on</mat-icon>Quick Start
+            </a>
+
+            <a mat-menu-item id="dropdown-onboarding-xs" routerLink="/onboarding">
+              <mat-icon color="accent">timeline</mat-icon>Setup
+            </a>
+
+            <mat-divider></mat-divider>
+
+            <a mat-menu-item id="dropdown-logout" (click)="logout()">
+              <mat-icon color="accent">input</mat-icon>Log out
+            </a>
+          </mat-menu>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
+          <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/tools">Tools</a>
+          <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/workflows">Workflows</a>
+          <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
+          <a mat-button class="icon icon-sm" href="http://docs.dockstore.org/">Docs</a>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
+          <span *ngIf="isLoggedIn">
+            <a mat-button class="icon my-icon-sm" id="my-tools-nav-button-xs" routerLink="/my-tools">My Tools</a>
+            <a mat-button class="icon my-icon-sm" id="my-workflows-nav-button-xs" routerLink="/my-workflows">My Workflows</a>
+          </span>
+        </mat-toolbar-row>
+
   </div>
   </mat-toolbar>

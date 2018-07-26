@@ -36,6 +36,11 @@
   padding: 0px;
 }
 
+.toolbar-holder-sm {
+  height: auto !important;
+  margin: 5px;
+}
+
 .navbar-holder {
   margin: 0px !important;
   padding-left: 15px;
@@ -44,4 +49,12 @@
 
 mat-menu {
   padding-right: 10px;
+}
+
+.my-icon-sm {
+  width: 50%;
+}
+
+.icon-sm {
+  width: 25%;
 }
