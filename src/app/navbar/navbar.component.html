@@ -39,12 +39,12 @@
         <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
       </a>
       <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
-      <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menu">
+      <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
         <mat-icon class="hidden-lg">account_circle</mat-icon>
         <span class="hidden-md hidden-sm hidden-xs">{{user?.username}}</span>
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #menuLarge="matMenu">
         <a mat-menu-item id="dropdown-starred"  routerLink="/starred">
           <mat-icon color="accent">stars</mat-icon>Starred
         </a>
@@ -75,13 +75,13 @@
             <img src="../assets/images/dockstore/logo.png">
           </a>
           <span class="spacer"></span>
-          <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
-          <button class="pull-right" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main-xs" [matMenuTriggerFor]="menu">
+          <a *ngIf="!isLoggedIn" class="pull-right" mat-raised-button color="accent" routerLink="/login">Login</a>
+          <button class="pull-right" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main-xs" [matMenuTriggerFor]="menuMobile">
             <mat-icon class="hidden-lg">account_circle</mat-icon>
             <span class="hidden-md hidden-sm hidden-xs">{{user?.username}}</span>
             <mat-icon>keyboard_arrow_down</mat-icon>
           </button>
-          <mat-menu #menu="matMenu">
+          <mat-menu #menuMobile="matMenu">
             <a mat-menu-item id="dropdown-starred-xs"  routerLink="/starred">
               <mat-icon color="accent">stars</mat-icon>Starred
             </a>
@@ -121,4 +121,4 @@
         </mat-toolbar-row>
 
   </div>
-  </mat-toolbar>
+</mat-toolbar>

@@ -1,0 +1,42 @@
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj?.isFirstOpen">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="org-accordion-header">
+          {{orgObj?.namespace}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj.activeTab === 'published' ? 0 : 1">
+      <mat-tab label="Published">
+      <mat-list>
+          <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{selected: (toolId$ | async) === toolObj?.id}">
+            <a [ngClass]="{selected: (toolId$ | async) === toolObj?.id}" class="no-wrap" title="{{toolObj?.repository + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}" [routerLink]="'/my-workflows/' + toolObj.full_workflow_path">
+              {{toolObj?.name + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}
+            </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
+            <p class="text-center">No published workflows.</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+      <mat-tab label="Unpublished">
+        <mat-list class="org-accordion-list" >
+          <mat-list-item *ngFor="let toolObj of orgObj?.unpublished" [ngClass]="{selected: (toolId$ | async) === toolObj?.id}">
+            <a class="no-wrap" title="{{toolObj?.name + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}" (click)="selectEntry(toolObj)">
+              {{toolObj?.name + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}
+            </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
+            <p class="text-center">No unpublished tools.</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-action-row>
+      <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
+      <button mat-mini-fab color="accent" class="add-tool-button" matTooltip="Add new tool" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.namespace); showRegisterEntryModal()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
