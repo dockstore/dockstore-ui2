@@ -60,7 +60,6 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
-import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 
 @NgModule({
   declarations: [
@@ -98,8 +97,7 @@ import { NgxJsonLdModule } from '@ngx-lite/json-ld';
     DagModule,
     StargazersModule,
     ClipboardModule,
-    EntryModule,
-    NgxJsonLdModule
+    EntryModule
   ],
   providers: [
     ExtendedWorkflowService,

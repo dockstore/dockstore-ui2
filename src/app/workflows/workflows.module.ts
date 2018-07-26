@@ -29,7 +29,6 @@ import { getTooltipConfig } from './../shared/tooltip';
 import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowsComponent } from './workflows.component';
 import { workflowsRouting } from './workflows.routing';
-import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 
 @NgModule({
   declarations: [
@@ -47,8 +46,7 @@ import { NgxJsonLdModule } from '@ngx-lite/json-ld';
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
     WorkflowModule,
-    workflowsRouting,
-    NgxJsonLdModule
+    workflowsRouting
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig}
