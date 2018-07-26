@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<button id="deregisterButton" type="button" class="btn btn-danger right-button" (click)="staticModal.show()">
+<button id="deregisterButton" mat-raised-button color="warn" (click)="staticModal.show()" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Delete a tool" [disabled]="refreshMessage !== null">
   Delete
 </button>
 <div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">

@@ -1,6 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tool } from './../../container/register-tool/tool';
 import { ContainerService } from './../../shared/container.service';
@@ -15,11 +13,14 @@ import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
   @Input() groupEntriesObject;
+  @Input() refreshMessage;
+  @Output() selectEntry: EventEmitter<any> = new EventEmitter();
+
   public toolId$: Observable<number>;
   private registerTool: Tool;
   activeTab = 0;
 
-  constructor(private toolService: ContainerService, private registerToolService: RegisterToolService, private router: Router) { }
+  constructor(private toolService: ContainerService, private registerToolService: RegisterToolService) { }
 
   ngOnInit(): void {
     this.toolId$ = this.toolService.toolId$;
@@ -38,10 +39,7 @@ export class SidebarAccordionComponent implements OnInit {
     this.registerToolService.setIsModalShown(true);
   }
 
-  selectEntry(tool: ExtendedDockstoreTool): void {
-    this.toolService.setTool(tool);
-    if (tool) {
-      this.router.navigateByUrl('/my-tools/' + tool.tool_path);
-    }
+  selectTool(tool: ExtendedDockstoreTool): void {
+    this.selectEntry.emit(tool);
   }
 }

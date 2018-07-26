@@ -8,7 +8,7 @@
 
     <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj.activeTab === 'published' ? 0 : 1">
       <mat-tab label="Published">
-      <mat-list>
+      <mat-list class="org-accordion-list">
           <mat-list-item *ngFor="let workflowObj of orgObj?.published" [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}">
             <a [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}" [routerLink]="'/my-workflows/' + workflowObj.full_workflow_path">
               {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
@@ -36,7 +36,7 @@
       <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
         <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
       </span>
-      <button mat-mini-fab color="accent" class="add-workflow-button" matTooltip="Add new workflow" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()">
+      <button mat-mini-fab color="accent" class="add-workflow-button" matTooltip="Add new workflow" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()" [disabled]="refreshMessage !== null">
         <mat-icon>add</mat-icon>
       </button>
     </mat-action-row>

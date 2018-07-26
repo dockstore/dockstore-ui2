@@ -30,7 +30,7 @@
               <h3 class="sidebar-header">My tools</h3>
             </div>
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any tools</p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject"></app-sidebar-accordion>
+            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
             <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
               <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-tool-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Tool</button>
             </span>

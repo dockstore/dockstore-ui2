@@ -12,8 +12,8 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
   @Input() groupEntriesObject;
+  @Input() refreshMessage;
   public workflowId$: Observable<number>;
-
   activeTab = 0;
 
   constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private workflowService: WorkflowService) { }
