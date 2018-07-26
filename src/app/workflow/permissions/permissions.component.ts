@@ -16,12 +16,13 @@ import { Subject } from 'rxjs';
 })
 export class PermissionsComponent implements OnInit {
 
+  public Role = RoleEnum;
   public canViewPermissions = false;
   public owners: string[] = [];
   public writers: string[] = [];
   public readers: string[] = [];
   public hosted = false;
-  public updating = false;
+  public updating = 0;
   public hasGoogleAccount = false;
   public firecloudUrl = Dockstore.FIRECLOUD_IMPORT_URL.substr(0, Dockstore.FIRECLOUD_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
@@ -48,26 +49,14 @@ export class PermissionsComponent implements OnInit {
     });
   }
 
-  addOwner(event: MatChipInputEvent): void {
-    this.add(event, RoleEnum.OWNER);
-  }
-
-  addWriter(event: MatChipInputEvent): void {
-    this.add(event, RoleEnum.WRITER);
-  }
-
-  addReader(event: MatChipInputEvent): void {
-    this.add(event, RoleEnum.READER);
-  }
-
   remove(entity: string, permission: RoleEnum) {
-    this.updating = true;
+    this.updating++;
     this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, entity, permission).subscribe(
       (userPermissions: Permission[]) => {
-        this.updating = false;
+        this.updating--;
         this.processResponse(userPermissions);
       },
-      () => this.updating = false
+      () => this.updating--
     );
   }
 
@@ -76,14 +65,14 @@ export class PermissionsComponent implements OnInit {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.updating = true;
+      this.updating++;
       this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, {email: value, role: permission}).subscribe(
         (userPermissions: Permission[]) => {
-          this.updating = false;
+          this.updating--;
           this.processResponse(userPermissions);
         },
         (e) => {
-          this.updating = false;
+          this.updating--;
           this.snackBar.open(`Error adding user ${value}. Please make sure ${value} is registered with FireCloud`,
             'Dismiss', {duration: 5000});
         }
