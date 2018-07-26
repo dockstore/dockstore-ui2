@@ -74,12 +74,7 @@ describe('Service: RegisterWorkflowModal', () => {
         service.setWorkflowRepository('asdf');
         service.workflow.subscribe(workflow => expect(workflow).toEqual(expectedWorkflow));
     }));
-    it('should set register error and clear refreshing state', inject([RegisterWorkflowModalService, StateService],
-        (service: RegisterWorkflowModalService, stateService: StateService) => {
-            service.setWorkflowRegisterError('oh no!', 'oh yes');
-            service.workflowRegisterError$.subscribe(error => expect(error).toEqual(expectedError));
-            stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toBeFalsy());
-        }));
+
     it('should set register workflow and clear refreshing state and error', inject([RegisterWorkflowModalService, StateService],
         (service: RegisterWorkflowModalService, stateService: StateService) => {
             service.registerWorkflow();
