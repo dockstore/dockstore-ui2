@@ -5,22 +5,22 @@ describe('Dockstore hosted tools', function() {
         cy.visit(String(global.baseUrl) + "/my-tools")
     });
 
+    function getWorkflow() {
+      cy.contains('quay.io/hosted-tool')
+        .click()
+      cy.contains('quay.io/hosted-tool')
+          .parentsUntil('mat-expansion-panel')
+          .contains('div .no-wrap', /hosted/)
+          .should('be.visible').click()
+          .contains('ht')
+          .click()
+  }
+
     // Ensure tabs are correct for the hosted tool, try adding a version
     describe('Should be able to register a hosted tool and add files to it', function() {
       it('Register the tool', function() {
         // Select the hosted tool
-        cy
-          .contains('quay.io/hosted-tool')
-          .invoke('width').should('be.gt', 0)
-        cy
-          .get('accordion')
-          .click()
-        cy
-          .contains('quay.io/hosted-tool')
-          .click()
-        cy
-          .contains('ht')
-          .click()
+        getWorkflow()
 
         // Should not be able to publish (No valid versions)
         cy

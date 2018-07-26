@@ -21,24 +21,21 @@ describe('Dockstore my tools', function() {
     });
 
     function goToB1() {
-      cy.wait(5000)
       cy.contains('quay.io/A2')
-      .parentsUntil('accordion-group')
-      .contains('Unpublished')
-      .should('be.visible')
-      .click()
+        .click()
       cy.contains('quay.io/A2')
-      .parentsUntil('accordion-group')
-      .contains('div .no-wrap', /\bb1\b/)
-      .should('be.visible').click()
+          .parentsUntil('mat-expansion-panel')
+          .contains('div .no-wrap', /\bb1\b/)
+          .should('be.visible').click()
     }
 
     function goToB3() {
-      cy.wait(5000)
       cy.contains('quay.io/A2')
-      .parentsUntil('accordion-group')
-      .contains('div .no-wrap', /\bb3\b/)
-      .should('be.visible').click()
+        .click()
+      cy.contains('quay.io/A2')
+          .parentsUntil('mat-expansion-panel')
+          .contains('div .no-wrap', /\bb3\b/)
+          .should('be.visible').click()
     }
 
     describe('Go to published tool A2/b3', function() {

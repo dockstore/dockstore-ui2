@@ -37,6 +37,8 @@
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
             <app-alert></app-alert>
+            <mat-progress-bar mode="indeterminate" *ngIf="refreshMessage !== null"></mat-progress-bar>
+
             <div *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
               <div class="col-md-12">
                 <div class="alert alert-info" role="alert">
