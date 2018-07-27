@@ -12,9 +12,14 @@ bitbucketClientSecret: <bitbucket secret here>
 googleClientID: <fill me in>
 googleClientSecret: <fill me in>
 googleRedirectURI: http://localhost:8080/auth/tokens/google.com
-hostname: localhost
-scheme: http
-port: 8080
+
+authorizerType: inmemory
+
+externalConfig:
+  basePath: /
+  hostname: localhost
+  scheme: http
+  port: 8080
 
 authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
 

@@ -165,7 +165,7 @@
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
         </div>
       </tab>
-      <tab *ngIf="!isPublic() && isHosted() && isUserOwner()" id="permissionsTab" heading="Permissions" (select)="setEntryTab('permissions')">
+      <tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" heading="Permissions" (select)="setEntryTab('permissions')">
         <app-permissions [workflow]="workflow"></app-permissions>
       </tab>
     </tabset>
