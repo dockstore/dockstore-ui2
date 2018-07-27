@@ -2,30 +2,28 @@ describe('Dockstore hosted tools', function() {
     require('./helper.js')
 
     beforeEach(function() {
-        cy.visit(String(global.baseUrl) + "/my-tools")
+      cy.visit(String(global.baseUrl) + "/my-tools")
     });
 
-    function getWorkflow() {
-      cy.contains('quay.io/hosted-tool')
-        .click()
-      cy.contains('quay.io/hosted-tool')
-          .parentsUntil('mat-expansion-panel')
-          .contains('div .no-wrap', /hosted/)
-          .should('be.visible').click()
-          .contains('ht')
-          .click()
+    function getTool() {
+    cy.contains('quay.io/hosted-tool')
+      .click()
+    cy
+      .contains('div .no-wrap', 'ht')
+      .should('be.visible')
+      .click()
   }
 
     // Ensure tabs are correct for the hosted tool, try adding a version
     describe('Should be able to register a hosted tool and add files to it', function() {
       it('Register the tool', function() {
         // Select the hosted tool
-        getWorkflow()
+        getTool()
 
         // Should not be able to publish (No valid versions)
         cy
           .get('#publishToolButton')
-          .should('have.class', 'disabled')
+          .should('be.disabled')
 
         // Should not be able to download zip
         cy
@@ -161,7 +159,7 @@ describe('Dockstore hosted tools', function() {
           // Should be able to publish
           cy
             .get('#publishButton')
-            .should('not.have.class', 'disabled')
+            .should('not.be.disabled')
 
           // Try deleting a file (.cwl file)
           cy

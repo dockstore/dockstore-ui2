@@ -17,30 +17,26 @@ describe('Dockstore my tools', function() {
     require('./helper.js')
 
     beforeEach(function() {
-        cy.visit(String(global.baseUrl) + "/my-tools")
+      cy.visit(String(global.baseUrl) + "/my-tools")
     });
 
-    function goToB1() {
-      cy.contains('quay.io/A2')
-        .click()
-      cy.contains('quay.io/A2')
-          .parentsUntil('mat-expansion-panel')
-          .contains('div .no-wrap', /\bb1\b/)
-          .should('be.visible').click()
+    function selectUnpublishedTab(org) {
+      cy.contains(org)
+          .parentsUntil('mat-accordion')
+          .contains("Unpublished")
+          .click()
     }
 
-    function goToB3() {
-      cy.contains('quay.io/A2')
+    function selectTool(tool) {
+      cy
+        .contains('div .no-wrap', tool)
+        .should('be.visible')
         .click()
-      cy.contains('quay.io/A2')
-          .parentsUntil('mat-expansion-panel')
-          .contains('div .no-wrap', /\bb3\b/)
-          .should('be.visible').click()
     }
 
     describe('Go to published tool A2/b3', function() {
       it('Should have two versions visible', function() {
-        goToB3();
+        selectTool('b3')
         cy
         .get('.nav-link')
         .contains('Versions')
@@ -58,9 +54,8 @@ describe('Dockstore my tools', function() {
         cy.contains('Browse Tools')
         cy.get('a#my-tools-nav-button').click()
         cy.contains('github.com')
-        // Apparently you need to click the accordion in order for the other components inside
-        // to become click-able
-        goToB1();
+        selectUnpublishedTab('quay.io/A2')
+        selectTool('b1')
         cy.contains('GitHub')
         cy.contains('https://github.com/A2/b1')
         cy.contains('Quay.io')
@@ -71,7 +66,8 @@ describe('Dockstore my tools', function() {
         cy.contains('Fully-Automated')
       });
       it('add and remove test parameter file', function() {
-        goToB1();
+        selectUnpublishedTab('quay.io/A2')
+        selectTool('b1')
         cy.contains('Versions').click();
         cy.get('td').find('button').contains('Edit').invoke('width').should('be.gt', 0)
         cy.get('td').find('button').contains('Edit').should('be.visible').click()
@@ -89,7 +85,8 @@ describe('Dockstore my tools', function() {
 
     describe('publish a tool', function() {
       it("publish and unpublish", function() {
-        goToB1();
+        selectUnpublishedTab('quay.io/A2')
+        selectTool('b1')
         cy
         .get('#publishToolButton')
         .should('contain', 'Publish')

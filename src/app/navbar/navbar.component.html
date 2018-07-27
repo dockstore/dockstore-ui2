@@ -19,23 +19,23 @@
       <a id="home-nav-button" (click)="resetPageNumber()" routerLink="">
         <img src="../assets/images/dockstore/logo.png">
       </a>
-      <a class="icon" (click)="resetPageNumber()" routerLink="/tools">
+      <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/tools">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
       </a>
-      <a class="icon" (click)="resetPageNumber()" routerLink="/workflows">
+      <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/workflows">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
       </a>
-      <a class="icon" routerLink="/search">
+      <a mat-button class="icon" routerLink="/search">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
       </a>
-      <a class="icon" href="http://docs.dockstore.org/">
+      <a mat-button class="icon" href="http://docs.dockstore.org/">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Documentation
       </a>
       <span class="spacer"></span>
-      <a class="icon" id="my-tools-nav-button" *ngIf="isLoggedIn" routerLink="/my-tools">
+      <a mat-button class="icon" id="my-tools-nav-button" *ngIf="isLoggedIn" routerLink="/my-tools">
         <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
       </a>
-      <a class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
+      <a mat-button class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
         <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
       </a>
       <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
