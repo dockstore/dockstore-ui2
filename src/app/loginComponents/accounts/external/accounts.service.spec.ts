@@ -1,17 +1,18 @@
-/* tslint:disable:no-unused-variable */
+import { inject, TestBed } from '@angular/core/testing';
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { AccountsService } from './accounts.service';
 import { LoginService } from '../../../login/login.service';
-import { LoginStubService, TokenStubService } from '../../../test/service-stubs';
+import { LoginStubService, TokenStubService, UserStubService } from '../../../test/service-stubs';
 import { TokenService } from '../../token.service';
+import { UserService } from '../../user.service';
+import { AccountsService } from './accounts.service';
 
 describe('Service: Accounts', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AccountsService,
-        { provide: LoginService, useClass: LoginStubService},
-        {provide: TokenService, useClass: TokenStubService}
+        { provide: LoginService, useClass: LoginStubService },
+        { provide: TokenService, useClass: TokenStubService },
+        { provide: UserService, useClass: UserStubService }
       ]
     });
   });

@@ -66,7 +66,7 @@ export class TokenService {
     this.tokens$.next(tokens);
   }
 
-  updateTokens() {
+  private updateTokens() {
     this.usersService.getUserTokens(this.user.id).subscribe(token => this.setTokens(token));
   }
 
