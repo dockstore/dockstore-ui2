@@ -13,6 +13,8 @@ googleClientID: <fill me in>
 googleClientSecret: <fill me in>
 googleRedirectURI: http://localhost:8080/auth/tokens/google.com
 
+authorizerType: inmemory
+
 externalConfig:
   basePath: /
   hostname: localhost
