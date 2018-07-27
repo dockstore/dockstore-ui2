@@ -39,12 +39,12 @@
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
     </h3>
 
-    <div *ngIf="!publicPage && tool?.tags.length > 0" class="input-group">
-      <div class="form-group">
-        <select class="form-control" name="toolVersions" [(ngModel)]="selectedVersion" (ngModelChange)="onTagChange($event)">
-          <option *ngFor="let tag of tool.tags" [ngValue]="tag">{{tag.name}}</option>
-        </select>
-      </div>
+    <div *ngIf="!publicPage && tool?.tags.length > 0" >
+      <mat-form-field>
+        <mat-select name="toolVersions" [(value)]="selectedVersion" (selectionChange)="onTagChange($event)">
+          <mat-option *ngFor="let tag of tool.tags" [value]="tag">{{tag.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <p class="update">
       Last build: {{ tool?.agoMessage || 'n/a' }}

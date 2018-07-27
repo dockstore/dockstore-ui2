@@ -22,6 +22,7 @@
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
+        <mat-progress-bar mode="indeterminate" class="xs-visible" *ngIf="refreshMessage !== null"></mat-progress-bar><br />
         <div class="clearfix sidebar-header">
             <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
               <mat-icon>refresh</mat-icon>
