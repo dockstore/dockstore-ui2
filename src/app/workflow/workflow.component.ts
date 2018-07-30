@@ -218,7 +218,8 @@ export class WorkflowComponent extends Entry {
   }
 
   publishDisable() {
-    return this.refreshMessage !== null || !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB;
+    return (this.refreshMessage !== null && this.refreshMessage !== undefined) || !this.isValid() ||
+    this.workflow.mode === Workflow.ModeEnum.STUB;
   }
 
   publish() {

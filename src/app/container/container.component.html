@@ -88,7 +88,7 @@
           </button>
           <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
         </div>
-        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage !== null" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the tool">
+        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage !== null && refreshMessage !== undefined" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the tool">
           Refresh
         </button>
       </div>

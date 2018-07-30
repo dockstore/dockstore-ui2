@@ -59,19 +59,19 @@
       <div class="col-md-3 col-sm-12 row-center">
         <div class="row">
             <div class="button-row">
-              <div>
+              <div class="col-sm-6 col-xs-12 col-md-12">
                   <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
               </div>
-              <div *ngIf=!user>
+              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=!user>
                   <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
               </div>
-              <div *ngIf=user>
+              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=user>
                 <a mat-raised-button color="accent" routerLink="onboarding">Full Tutorial <mat-icon>chevron_right</mat-icon></a>
               </div>
-              <div>
+              <div class="col-sm-6 col-xs-12 col-md-12">
                 <a mat-raised-button color="accent" href="https://docs.dockstore.org/news/">News and Events <mat-icon>chevron_right</mat-icon></a>
               </div>
-              <div style="margin-bottom: 20px">
+              <div class="col-sm-6 col-xs-12 col-md-12" style="margin-bottom: 20px">
                 <a mat-raised-button color="accent" href="https://discuss.dockstore.org/">Discuss <mat-icon>chevron_right</mat-icon></a>
               </div>
             </div>

@@ -23,11 +23,11 @@
       <div class="row containers-rsb" style="height:100%;">
         <mat-sidenav-container autosize class="sidebar-set-height">
           <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-            <span class="visible-xs" *ngIf="refreshMessage !== null">
+            <span class="visible-xs" *ngIf="refreshMessage !== null && refreshMessage !== undefined">
               <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
             </span>
             <div class="clearfix sidebar-header">
-                <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
+                <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">
                   <mat-icon>refresh</mat-icon>
                 </button>
               <h3 class="sidebar-header">My tools</h3>
@@ -35,11 +35,11 @@
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any tools</p>
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
             <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
-              <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-tool-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null">Register Tool</button>
+              <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-tool-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">Register Tool</button>
             </span>
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-            <span *ngIf="refreshMessage !== null">
+            <span *ngIf="refreshMessage !== null && refreshMessage !== undefined">
               <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
             </span>
             <app-alert></app-alert>
@@ -58,7 +58,7 @@
                     <li>
                       Press the 'Add Tool' button to manually add a tool.
                     </li>
-                    <button (click)="showRegisterEntryModal()" type="button" class="btn btn-primary btn-smq" [disabled]="refreshMessage !== null">
+                    <button (click)="showRegisterEntryModal()" type="button" class="btn btn-primary btn-smq" [disabled]="refreshMessage !== null && refreshMessage !== undefined">
                       Add Tool
                     </button>
                   </ul>

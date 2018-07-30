@@ -33,7 +33,7 @@ export class RefreshOrganizationComponent implements OnInit {
   }
 
   toDisable(): boolean {
-    return this.refreshMessage !== null;
+    return this.refreshMessage !== null && this.refreshMessage !== undefined;
   }
 
 }
