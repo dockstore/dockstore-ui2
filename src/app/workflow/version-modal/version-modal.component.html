@@ -75,7 +75,7 @@
                 </div>
               </div>
               <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
-                <div class="input-group full-width">
+                <div class="input-group">
                   <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="testParameterFilePath"
                     minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json" [disabled]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                     ng-class="!isPublic ? 'test_parameter_input' : ''" />

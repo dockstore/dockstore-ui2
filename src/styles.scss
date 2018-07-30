@@ -15,7 +15,7 @@
  */
 
 @import "ds-style-fix.scss";
-
+@import "bootstrap4.scss";
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
 
@@ -395,10 +395,6 @@ img.site-icons-tab {
 
 .button.login p {
   line-height: 2.2em;
-}
-
-.pt-1 {
-  padding-top: 5px;
 }
 
 .search {
@@ -1051,11 +1047,6 @@ div.tabs>div:target>div,
 
 .search-date {
   color: #808080;
-}
-
-.my-1 {
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 .ellipsis-lines {
