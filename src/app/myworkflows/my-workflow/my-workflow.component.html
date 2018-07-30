@@ -22,7 +22,9 @@
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-        <mat-progress-bar mode="indeterminate" class="xs-visible" *ngIf="refreshMessage !== null"></mat-progress-bar><br />
+        <span class="visible-xs" *ngIf="refreshMessage !== null">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
+        </span>
         <div class="clearfix sidebar-header">
             <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
               <mat-icon>refresh</mat-icon>
@@ -43,7 +45,9 @@
         <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <mat-progress-bar mode="indeterminate" *ngIf="refreshMessage !== null"></mat-progress-bar><br />
+        <span *ngIf="refreshMessage !== null">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
+        </span>
         <app-alert></app-alert>
         <div *ngIf="(groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject)">
             <div class="col-md-12">
