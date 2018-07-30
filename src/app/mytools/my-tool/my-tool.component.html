@@ -35,7 +35,7 @@
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any tools</p>
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
             <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
-              <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-tool-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">Register Tool</button>
+              <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-entry-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">Register Tool</button>
             </span>
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
