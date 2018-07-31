@@ -423,6 +423,8 @@ export class LogoutStubService {
 export class UserStubService {
     userId$ = observableOf(5);
     user$ = observableOf({});
+    updateUser() {
+    }
 }
 
 export class TokenStubService {

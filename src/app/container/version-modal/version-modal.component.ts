@@ -17,7 +17,6 @@
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { DescriptorType } from '../../shared/enum/descriptorType.enum';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { RefreshService } from '../../shared/refresh.service';
 import { formErrors, validationMessages, validationDescriptorPatterns } from '../../shared/validationMessages.model';
@@ -31,6 +30,7 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ParamfilesService } from './../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'app-version-modal',
@@ -39,7 +39,7 @@ import { VersionModalService } from './version-modal.service';
 })
 export class VersionModalComponent implements OnInit, AfterViewChecked {
   public TagEditorMode = TagEditorMode;
-  public DescriptorType = DescriptorType;
+  public DescriptorType = ToolDescriptor.TypeEnum;
   public isModalShown: boolean;
   public editMode: boolean;
   public mode: TagEditorMode;
@@ -118,10 +118,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
     // Store the unsaved test files if valid and exist
     if (this.unsavedTestCWLFile.length > 0) {
-      this.addTestParameterFile(DescriptorType.CWL);
+      this.addTestParameterFile(this.DescriptorType.CWL);
     }
     if (this.unsavedTestWDLFile.length > 0) {
-      this.addTestParameterFile(DescriptorType.WDL);
+      this.addTestParameterFile(this.DescriptorType.WDL);
     }
 
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
@@ -184,15 +184,15 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  addTestParameterFile(descriptorType: DescriptorType) {
+  addTestParameterFile(descriptorType: ToolDescriptor.TypeEnum) {
     switch (descriptorType) {
-      case DescriptorType.CWL: {
+      case this.DescriptorType.CWL: {
         const newTestFile = this.unsavedTestCWLFile;
         this.unsavedCWLTestParameterFilePaths.push(newTestFile);
         this.unsavedTestCWLFile = '';
         break;
       }
-      case DescriptorType.WDL: {
+      case this.DescriptorType.WDL: {
         const newTestFile = this.unsavedTestWDLFile;
         this.unsavedWDLTestParameterFilePaths.push(newTestFile);
         this.unsavedTestWDLFile = '';
@@ -208,13 +208,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     console.log('Unrecognized descriptor type.');
   }
 
-  removeTestParameterFile(index: number, descriptorType: DescriptorType) {
+  removeTestParameterFile(index: number, descriptorType: ToolDescriptor.TypeEnum) {
     switch (descriptorType) {
-      case DescriptorType.CWL: {
+      case this.DescriptorType.CWL: {
         this.unsavedCWLTestParameterFilePaths.splice(index, 1);
         break;
       }
-      case DescriptorType.WDL: {
+      case this.DescriptorType.WDL: {
         this.unsavedWDLTestParameterFilePaths.splice(index, 1);
         break;
       }
@@ -278,13 +278,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   // Checks if the currently edited test parameter file already exists
   hasDuplicateTestJson(type) {
-    if (type === DescriptorType.CWL) {
+    if (type === this.DescriptorType.CWL) {
       if (this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
         return true;
       } else {
         return false;
       }
-    } else if (type === DescriptorType.WDL) {
+    } else if (type === this.DescriptorType.WDL) {
       if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
         return true;
       } else {

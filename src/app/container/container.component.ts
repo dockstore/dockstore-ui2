@@ -15,17 +15,15 @@
  */
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { ActivatedRoute, Router } from '@angular/router';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
-import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
 import { CommunicatorService } from '../shared/communicator.service';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
-import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ImageProviderService } from '../shared/image-provider.service';
@@ -61,6 +59,7 @@ export class ContainerComponent extends Entry {
   public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
+  public schema;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -121,6 +120,13 @@ export class ContainerComponent extends Entry {
       toolRef = this.imageProviderService.setUpImageProvider(toolRef);
     }
     this.resetContainerEditData();
+    // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
+    // will need to be aggregated with a summary page
+    this.schema = {
+      '@type': 'ListItem',
+      'position': this.tool.id,
+      'url': this.shareURL
+    };
   }
 
   public subscriptions(): void {

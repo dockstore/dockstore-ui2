@@ -1,9 +1,10 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TokensStubService, TokenStubService } from './../../test/service-stubs';
-import { TokenService } from '../token.service';
-import { AuthComponent } from './auth.component';
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 
+import { TokenService } from '../token.service';
+import { UserService } from '../user.service';
+import { TokenStubService, UserStubService } from './../../test/service-stubs';
+import { AuthComponent } from './auth.component';
 
 describe('AuthComponent', () => {
   let component: AuthComponent;
@@ -11,11 +12,14 @@ describe('AuthComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthComponent],
-      imports: [ RouterTestingModule.withRoutes([{path: '**', component: AuthComponent}]) ],
-      providers: [{provide: TokenService, useClass: TokenStubService}]
+      declarations: [AuthComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }])],
+      providers: [
+        { provide: TokenService, useClass: TokenStubService },
+        { provide: UserService, useClass: UserStubService }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

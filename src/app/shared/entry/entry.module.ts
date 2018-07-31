@@ -16,6 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -34,13 +35,15 @@ import { VerifiedDisplayComponent } from './verified-display/verified-display.co
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
+
 @NgModule({
   imports: [
     CommonModule,
     TooltipModule.forRoot(),
     FormsModule,
     ModalModule,
-    CustomMaterialModule
+    CustomMaterialModule,
+    NgxJsonLdModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -67,7 +70,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedByComponent,
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
-    VersionProviderUrlPipe
+    VersionProviderUrlPipe,
+    NgxJsonLdModule
   ]
 })
 export class EntryModule { }

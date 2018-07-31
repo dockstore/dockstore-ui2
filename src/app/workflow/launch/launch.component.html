@@ -52,7 +52,7 @@
           <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
         </div>
       </div>
-      <app-launch-checker-workflow [command]="checkEntryCommand"></app-launch-checker-workflow>
+      <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
     </div>
   </div>
 </div>

@@ -10,23 +10,23 @@ describe('Shared with me workflow test from my-workflows', function() {
       cy
       .route({
         method: "GET",
-        url: /readertest\/permissions/,
-        response: [{"email":"user_A","role":"READER"}]
-      }).as('readerPermissions')
+        url: /readertest\/actions/,
+        response: ["READ"]
+      }).as('readerActions')
 
       cy
       .route({
         method: "GET",
-        url: /writertest\/permissions/,
-        response: [{"email":"user_A","role":"WRITER"}]
-      }).as('writerPermissions')
+        url: /writertest\/actions/,
+        response: ["READ", "WRITE"]
+      }).as('writerActions')
 
       cy
       .route({
         method: "GET",
-        url: /ownertest\/permissions/,
-        response: [{"email":"user_A","role":"OWNER"}]
-      }).as('ownerPermissions')
+        url: /ownertest\/actions/,
+        response: ["READ", "WRITE", "SHARE", "DELETE"]
+      }).as('ownerActions')
 
       let readerWorkflow = createHostedWorkflow('readertest', 200)
       let writerWorkflow = createHostedWorkflow('writertest', 201);

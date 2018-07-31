@@ -40,6 +40,7 @@
   </div>
 </div>
 <div class="row" *ngIf="!showRedirect">
+  <ngx-json-ld [json]="schema"></ngx-json-ld>
   <div class="col-md-7">
     <h3 id="workflow-path">
       <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
@@ -164,7 +165,7 @@
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
         </div>
       </tab>
-      <tab *ngIf="!isPublic() && isHosted() && isUserOwner()" id="permissionsTab" heading="Permissions" (select)="setEntryTab('permissions')">
+      <tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" heading="Permissions" (select)="setEntryTab('permissions')">
         <app-permissions [workflow]="workflow"></app-permissions>
       </tab>
     </tabset>
@@ -177,7 +178,7 @@
       <div class="panel-body">
         <div>
           <span *ngFor="let sortedVersion of sortedVersions">
-            <p class="top-down-padding no-margin">
+            <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
                   <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
@@ -186,7 +187,7 @@
               <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}} </a>
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
-            <hr class="no-margin">
+            <hr class="m-0">
           </span>
           <a (click)="selectTab(2)">See all versions</a>
         </div>

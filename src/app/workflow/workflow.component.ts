@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -25,7 +25,7 @@ import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ProviderService } from '../shared/provider.service';
 import { Tag } from '../shared/swagger/model/tag';
-import {WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { WorkflowService } from '../shared/workflow.service';
 import { ErrorService } from './../shared/error.service';
@@ -42,7 +42,7 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css']
+  styleUrls: ['./workflow.component.css'],
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
@@ -64,6 +64,7 @@ export class WorkflowComponent extends Entry {
   protected readers = [];
   protected writers = [];
   protected owners = [];
+  public schema;
   @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
@@ -79,14 +80,10 @@ export class WorkflowComponent extends Entry {
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
   }
 
-  private processResponse(userPermissions: Permission[]): void {
+  private processPermissions(userPermissions: Permission[]): void {
     this.owners = this.specificPermissionEmails(userPermissions, RoleEnum.OWNER);
     this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
     this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
-
-    this.canRead = this.canUserRead();
-    this.canWrite = this.canUserWrite();
-    this.isOwner = this.isUserOwner();
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
@@ -130,6 +127,13 @@ export class WorkflowComponent extends Entry {
     workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
     workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
+    // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
+    // will need to be aggregated with a summary page
+    this.schema = {
+      '@type': 'ListItem',
+      'position': this.workflow.id,
+      'url': this.shareURL
+    };
   }
 
   public getDefaultVersionName(): string {
@@ -149,13 +153,22 @@ export class WorkflowComponent extends Entry {
       if (this.publicPage) {
         this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
-      this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-        (userPermissions: Permission[]) => {
-          this.processResponse(userPermissions);
-        },
-        () => {
-        }
-      );
+      this.canRead = this.canWrite = this.isOwner = false;
+      this.readers = this.writers = this.owners = [];
+      this.workflowsService.getWorkflowActions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((actions: Array<string>) => {
+          // Alas, Swagger codegen does not generate a type for the actions
+          this.canRead = actions.indexOf('READ') !== -1;
+          this.canWrite = actions.indexOf('WRITE') !== -1;
+          this.isOwner = actions.indexOf('SHARE') !== -1;
+          if (this.isOwner) {
+            this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe((userPermissions: Permission[]) => {
+                this.processPermissions(userPermissions);
+              }
+            );
+          }
+        });
     }
   }
 
@@ -354,50 +367,4 @@ export class WorkflowComponent extends Entry {
     }
   }
 
-  /**
-   * True if user is in users list, or username is in read,write,owner permissions, false otherwise
-   */
-  canUserRead(): boolean {
-    const username = this.user && this.user.username;
-    if (this.isInUserArray(username)) {
-      return true;
-    }
-    return this.readers.includes(username) || this.writers.includes(username) || this.owners.includes(username) ;
-  }
-
-  /**
-   * True if user is in users list, or username is in write or owner permissions, false otherwise
-   */
-  canUserWrite(): boolean {
-    const username = this.user && this.user.username;
-    if (this.isInUserArray(username)) {
-      return true;
-    }
-    return this.writers.includes(username) || this.owners.includes(username);
-  }
-
-  /**
-   * True if user is in users list, or username is in owner permissions, false otherwise
-   */
-  isUserOwner(): boolean {
-    const username = this.user && this.user.username;
-    if (this.isInUserArray(username)) {
-      return true;
-    }
-    return this.owners.includes(username);
-  }
-
-  /**
-   * True if username is in the workflow user array, false otherwise
-   * @param username
-   */
-  isInUserArray(username: string): boolean {
-    if (this.workflow.users) {
-      const match = this.workflow.users.find((user) => user.username === username);
-      if (match !== undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
 }

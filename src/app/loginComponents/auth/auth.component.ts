@@ -6,6 +6,7 @@ import { Provider } from '../../shared/enum/provider.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TokenService } from '../token.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +16,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   tokenSubscription: ISubscription;
 
-  constructor(private tokenService: TokenService,
+  constructor(private tokenService: TokenService, private userService: UserService,
               private activatedRoute: ActivatedRoute,
               private router: Router) { }
 
@@ -69,9 +70,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     const prevPage = localStorage.getItem('page');
 
     this.tokenSubscription = this.addToken().subscribe(token => {
-      if (token) {
-        this.tokenService.updateTokens();
-      }
+      this.userService.updateUser();
       this.router.navigate([`${ prevPage }`]);
     }, error => {
       this.router.navigate([`${ prevPage }`]);

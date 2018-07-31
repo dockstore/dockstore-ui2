@@ -16,18 +16,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+// This line is super important for jQuery to work across the website for some reason
+import * as $ from 'jquery';
 import { BehaviorSubject } from 'rxjs';
 
 import { ContainerService } from './../../shared/container.service';
 import { Repository } from './../../shared/enum/Repository.enum';
 import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tool } from './tool';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-// This line is super important for jQuery to work across the website for some reason
-import * as $ from 'jquery';
+import { finalize } from 'rxjs/operators';
 
 @Injectable()
 export class RegisterToolService {
@@ -95,21 +96,25 @@ export class RegisterToolService {
     }
 
     registerTool(newTool: Tool, customDockerRegistryPath) {
-        this.setTool(newTool);
-        const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
-        this.containersService.registerManual(normalizedToolObj).subscribe(response => {
-            this.setToolRegisterError(null);
-            this.stateService.setRefreshMessage('Registering new tool...');
-            this.containersService.refresh(response.id).subscribe((refreshResponse: DockstoreTool) => {
-                this.stateService.setRefreshMessage(null);
-                this.setIsModalShown(false);
-                this.containerService.addToTools(this.tools, refreshResponse);
-                this.containerService.setTool(refreshResponse);
-                this.router.navigateByUrl('/my-tools' + '/' + refreshResponse.tool_path);
-            });
-            // Use types instead
-        }, error => this.setToolRegisterError(error)
-        );
+      this.setToolRegisterError(null);
+      this.setTool(newTool);
+      this.stateService.setRefreshMessage('Registering new tool...');
+      const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
+      this.containersService.registerManual(normalizedToolObj)
+        .subscribe((registeredDockstoreTool: DockstoreTool) => {
+          this.stateService.setRefreshMessage('Refreshing new tool...');
+          this.containersService.refresh(registeredDockstoreTool.id).pipe(finalize(() => {
+            this.stateService.setRefreshMessage(null);
+          })).subscribe((refreshedDockstoreTool: DockstoreTool) => {
+            this.setIsModalShown(false);
+            this.containerService.addToTools(this.tools, refreshedDockstoreTool);
+            this.containerService.setTool(refreshedDockstoreTool);
+            this.router.navigateByUrl('/my-tools' + '/' + refreshedDockstoreTool.tool_path);
+          }, (error: HttpErrorResponse) => this.setToolRegisterError(error));
+        }, (error: HttpErrorResponse) => {
+          this.stateService.setRefreshMessage(null);
+          this.setToolRegisterError(error);
+        });
     }
 
     /**

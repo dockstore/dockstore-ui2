@@ -99,15 +99,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Unlink account in accountsInfo
-  private unlinkToken(source) {
-    for (const account of this.accountsInfo) {
-      if (account.source === source) {
-        account.isLinked = false;
-      }
-    }
-  }
-
   link(source: string): void {
     this.accountsService.link(source);
   }
@@ -116,8 +107,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   unlink(source: string) {
     this.deleteToken(source).pipe(
       first()).subscribe(() => {
-        this.tokenService.updateTokens();
-        this.unlinkToken(source);
+        this.userService.updateUser();
       });
   }
 
