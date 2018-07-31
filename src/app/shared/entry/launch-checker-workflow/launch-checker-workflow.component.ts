@@ -25,6 +25,7 @@ import { CheckerWorkflowService } from './../../checker-workflow.service';
 })
 export class LaunchCheckerWorkflowComponent implements OnInit {
   @Input() command: string;
+  @Input() versionName: string;
   command$: Observable<string>;
   checkerWorkflowPath$: Observable<string>;
   constructor(private checkerWorkflowService: CheckerWorkflowService) {
