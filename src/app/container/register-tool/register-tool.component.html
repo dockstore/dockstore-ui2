@@ -31,7 +31,7 @@
         </p>
         <p class="error-output">{{toolRegisterError.errorDetails}}</p>
       </div>
-      <div class="alert alert-info" role="alert" *ngIf="refreshMessage !== null && refreshMessage !== undefined">
+      <div class="alert alert-info" role="alert" *ngIf="refreshMessage">
         <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
         </span>
         Please wait, retrieving tool...
@@ -211,7 +211,7 @@
               <button mat-raised-button color="secondary" data-dismiss="modal" (click)="hideModal()">
                 Close
               </button>
-              <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerToolForm.form.valid || savingActive || (refreshMessage !== null && refreshMessage !== undefined) || isInvalidCustomRegistry() || isInvalidPrivateTool()">
+              <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerToolForm.form.valid || savingActive || (refreshMessage) || isInvalidCustomRegistry() || isInvalidPrivateTool()">
                 Add Tool
               </button>
             </div>

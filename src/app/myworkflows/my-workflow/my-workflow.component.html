@@ -22,11 +22,11 @@
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-        <span class="visible-xs" *ngIf="refreshMessage !== null && refreshMessage !== undefined">
+        <span class="visible-xs" *ngIf="refreshMessage">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
         </span>
         <div class="clearfix sidebar-header">
-            <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">
+            <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
               <mat-icon>refresh</mat-icon>
             </button>
           <h3 class="sidebar-header">My workflows</h3>
@@ -34,7 +34,7 @@
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
         <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage"></app-sidebar-accordion>
         <div *ngIf="(groupEntriesObject?.length > 0 && groupEntriesObject) || (groupSharedEntriesObject?.length > 0 && groupSharedEntriesObject) ">
-          <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right register-entry-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">Register Workflow</button>
+          <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right register-entry-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
         </div>
         <br>
 
@@ -45,7 +45,7 @@
         <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <span *ngIf="refreshMessage !== null && refreshMessage !== undefined">
+        <span *ngIf="refreshMessage">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
         </span>
         <app-alert></app-alert>
@@ -64,7 +64,7 @@
                   <li>
                     Press the 'Register Workflow' button to manually add a workflow.
                   </li>
-                  <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage !== null && refreshMessage !== undefined">Register Workflow</button>
+                  <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
                 </ul>
                 <div *ngIf="!hasGitHubToken">
                   <a class="btn btn-block btn-social btn-github" (click)="link()">

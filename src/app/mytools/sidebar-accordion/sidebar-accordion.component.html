@@ -35,7 +35,7 @@
     <mat-action-row>
       <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
       <button mat-mini-fab color="accent" class="add-entry-button" matTooltip="Add new tool" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'"
-        type="button" (click)="setRegisterEntryModalInfo(orgObj?.namespace); showRegisterEntryModal()"  [disabled]="refreshMessage !== null && refreshMessage !== undefined">
+        type="button" (click)="setRegisterEntryModalInfo(orgObj?.namespace); showRegisterEntryModal()"  [disabled]="refreshMessage">
         <mat-icon>add</mat-icon>
       </button>
     </mat-action-row>
