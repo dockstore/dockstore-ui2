@@ -56,7 +56,12 @@ export class PermissionsComponent implements OnInit {
         this.updating--;
         this.processResponse(userPermissions);
       },
-      () => this.updating--
+      (e) => {
+        this.updating--;
+        const message = e.error || `Error removing user ${entity}.`;
+        this.snackBar.open(message,
+          'Dismiss', {duration: 5000});
+      }
     );
   }
 
@@ -73,7 +78,8 @@ export class PermissionsComponent implements OnInit {
         },
         (e) => {
           this.updating--;
-          this.snackBar.open(`Error adding user ${value}. Please make sure ${value} is registered with FireCloud`,
+          const message = e.error || `Error adding user ${value}. Please make sure ${value} is registered with FireCloud`;
+          this.snackBar.open(message,
             'Dismiss', {duration: 5000});
         }
       );
