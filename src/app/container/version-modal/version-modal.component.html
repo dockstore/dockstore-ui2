@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : unsavedCWLTestParameterFilePaths.length > 0}" *ngIf="editMode">
-              <div class="input-group full-width">
+              <div class="input-group">
                 <input id="addCWLField" [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" ng-class="editMode ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
                   <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson(DescriptorType.CWL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="addTestParameterFile(DescriptorType.CWL)" *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)">
@@ -139,7 +139,7 @@
               </div>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : unsavedWDLTestParameterFilePaths.length > 0}" *ngIf="editMode">
-              <div class="input-group full-width">
+              <div class="input-group">
                 <input id="addWDLField" [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" ng-class="editMode ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
                   <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button"[disabled]="hasDuplicateTestJson(DescriptorType.WDL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="addTestParameterFile(DescriptorType.WDL)" *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)">
