@@ -15,7 +15,7 @@
   -->
 
 <div>
-  <span *ngIf="_selectedVersion?.valid && !nullDescriptors" class="row no-margin">
+  <span *ngIf="_selectedVersion?.valid && !nullDescriptors" class="row m-0">
     <span class="form-group col-sm-4">
       <strong>Descriptor Type:</strong>
       <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
@@ -33,7 +33,7 @@
     </alert>
   </div>
 
-  <div *ngIf="content && _selectedVersion?.valid" class="row no-margin">
+  <div *ngIf="content && _selectedVersion?.valid" class="row m-0">
     <div class="btn-group">
       <a *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
         <span class="glyphicon glyphicon-download"></span>
