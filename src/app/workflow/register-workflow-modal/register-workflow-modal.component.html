@@ -69,7 +69,7 @@
           <form *ngIf="selectedOption?.value == 0" #registerWorkflowForm="ngForm" name="registerWorkflowForm" class="form-horizontal" (submit)="registerWorkflow()" novalidate>
             <div class="modal-body">
               <div class="form-group">
-                <label class="col-sm-3 control-label mt-0">
+                <label class="col-sm-3 control-label pt-0">
                   Source Code Repository:
                 </label>
                 <div class="col-sm-9">
@@ -93,7 +93,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-3 control-label">
+                <label class="col-sm-3 control-label pt-0">
                   Descriptor Type:
                 </label>
                 <mat-radio-group id="descriptorTypeRadioButtons" class="col-sm-9 radio-group" [(ngModel)]="workflow.descriptorType" name="descriptorTypes" (change)="radioButtonChange($event)">
@@ -103,7 +103,7 @@
                 </mat-radio-group>
               </div>
               <div class="form-group">
-                <label class="col-sm-3 control-label">
+                <label class="col-sm-3 control-label pt-0">
                   Workflow Path:
                 </label>
                 <div class="col-sm-9">
@@ -115,7 +115,7 @@
                 <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
               </div>
               <div class="form-group">
-                <label class="col-sm-3 control-label">
+                <label class="col-sm-3 control-label pt-0">
                   Test Parameter File Path:
                 </label>
                 <div class="col-sm-9">
@@ -124,7 +124,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-3 control-label">
+                <label class="col-sm-3 control-label pt-0">
                   Workflow Name:
                 </label>
                 <div class="col-sm-9">
