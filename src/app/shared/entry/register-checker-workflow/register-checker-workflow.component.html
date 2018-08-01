@@ -43,7 +43,7 @@
                 <div *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </div>
               </div>
             </div>
-            <div class="form-group form-group-sm">
+            <div class="form-group form-group-sm" *ngIf="!isWorkflow">
               <label class="col-sm-3 control-label" tooltip="Type of descriptor language used">Descriptor Type:
               </label>
               <div class="col-sm-9">

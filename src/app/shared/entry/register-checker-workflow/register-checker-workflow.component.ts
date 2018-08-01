@@ -51,6 +51,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
   public descriptorLanguages: Array<string>;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
+  isWorkflow = false;
   @ViewChild('registerCheckerWorkflowForm') currentForm: NgForm;
 
   ngOnInit() {
@@ -58,6 +59,10 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
     this.checkerWorkflowService.entry$.subscribe((entry: Entry) => {
       this.entry = entry;
       this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
+      this.isWorkflow = this.checkerWorkflowService.isEntryAWorkflow(entry);
+      if (this.isWorkflow) {
+        this.descriptorType = (<Workflow>this.entry).descriptorType;
+      }
     });
     this.registerCheckerWorkflowService.errorObj$.subscribe((error: HttpErrorResponse) => {
       this.registerError = error;
@@ -87,7 +92,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
    * @memberof RegisterCheckerWorkflowComponent
    */
   private getTestParameterFileDefault(entry: Entry, descriptorType: string): string {
-    if (this.checkerWorkflowService.isEntryAWorkflow(entry)) {
+    if (this.isWorkflow) {
       return (<Workflow>entry).defaultTestParameterFilePath;
     } else {
       switch (descriptorType) {
