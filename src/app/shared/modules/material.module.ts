@@ -37,6 +37,7 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
+  MatMenuModule
 } from '@angular/material';
 
 @NgModule({
@@ -63,6 +64,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatMenuModule
   ],
   exports: [
     MatButtonModule,
@@ -87,6 +89,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatMenuModule
   ]
 })
 export class CustomMaterialModule { }

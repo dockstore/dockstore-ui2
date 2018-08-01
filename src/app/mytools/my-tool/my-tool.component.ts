@@ -48,6 +48,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   public refreshMessage: string;
   private registerTool: Tool;
+  public showSidebar = true;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
@@ -198,6 +199,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   refreshAllEntries(): void {
     this.refreshService.refreshAllTools(this.user.id);
+  }
+
+  /**
+   * Toggles the sidebar
+   */
+  public toggleSidebar(): void {
+    this.showSidebar = !this.showSidebar;
   }
 }
 

@@ -404,6 +404,16 @@ export class RegisterWorkflowModalStubService {
     }
 }
 
+export class RegisterToolStubService {
+  tool: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  setIsModalShown() {
+
+  }
+  setToolRepository(repository) {
+  }
+}
+
+
 export class PageNumberStubService {
 }
 

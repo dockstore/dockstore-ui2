@@ -28,12 +28,12 @@ describe('Dockstore Home', function() {
   describe('Navigation', function() {
     it ('My Tools visible', function() {
       cy
-        .get('#myToolsNav')
+        .get('#my-tools-nav-button')
           .should("visible")
     });
     it ('My Workflows visible', function() {
       cy
-        .get('#myWorkflowsNav')
+        .get('#my-workflows-nav-button')
           .should("visible")
     });
   });

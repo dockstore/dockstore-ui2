@@ -35,13 +35,15 @@ import { getTooltipConfig } from './../shared/tooltip';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
+import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
 
 @NgModule({
   declarations: [
     MyToolsComponent,
     RegisterToolComponent,
     RefreshToolOrganizationComponent,
-    MyToolComponent
+    MyToolComponent,
+    SidebarAccordionComponent
 ],
   imports: [
     CommonModule,

@@ -25,10 +25,10 @@
           (keyup.enter)="goToSearch(search.value)">
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 hidden-xs">
         <img id="ship" src="../assets/images/dockstore/ship.png">
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 hidden-xs">
         <img id="truck" src="../assets/images/dockstore/truck.png">
       </div>
     </div>
@@ -58,21 +58,23 @@
       </div>
       <div class="col-md-3 col-sm-12 row-center">
         <div class="row">
-          <div class="button">
-            <p><a routerLink="quick-start">Quick Start &raquo;</a></p>
-          </div>
-          <div *ngIf=!user class="button">
-            <p><a routerLink="login">Sign up to Contribute &raquo;</a></p>
-          </div>
-          <div *ngIf=user class="button">
-            <p><a routerLink="onboarding">Full Tutorial &raquo;</a></p>
-          </div>
-          <div class="button">
-            <p><a href="https://docs.dockstore.org/news/">News and Events &raquo;</a></p>
-          </div>
-          <div class="button" style="margin-bottom: 20px">
-            <p><a href="https://discuss.dockstore.org/">Discuss &raquo;</a></p>
-          </div>
+            <div class="button-row">
+              <div class="col-sm-6 col-xs-12 col-md-12">
+                  <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
+              </div>
+              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=!user>
+                  <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
+              </div>
+              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=user>
+                <a mat-raised-button color="accent" routerLink="onboarding">Full Tutorial <mat-icon>chevron_right</mat-icon></a>
+              </div>
+              <div class="col-sm-6 col-xs-12 col-md-12">
+                <a mat-raised-button color="accent" href="https://docs.dockstore.org/news/">News and Events <mat-icon>chevron_right</mat-icon></a>
+              </div>
+              <div class="col-sm-6 col-xs-12 col-md-12" style="margin-bottom: 20px">
+                <a mat-raised-button color="accent" href="https://discuss.dockstore.org/">Discuss <mat-icon>chevron_right</mat-icon></a>
+              </div>
+            </div>
         </div>
       </div>
     </div>

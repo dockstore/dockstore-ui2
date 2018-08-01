@@ -14,94 +14,67 @@
   ~    limitations under the License.
   -->
   <app-header>
+    <button mat-icon-button (click)="toggleSidebar()"><mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon></button>
     <img src="../assets/images/dockstore/dockstore-tools-blue.png"> My Tools
-    <div class="pull-right refresh-all-holder">
-      <button type="button" class="refresh-all-button btn btn-primary" (click)="refreshAllEntries()" [disabled]="refreshMessage !== null">
-        Refresh All Tools
-      </button>
-    </div>
   </app-header>
-  <div class="container pt-3">
-    <app-alert></app-alert>
-    <!--Msg/Warning Page, this should be a Component-->
-    <div class="row" *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
-      <div class="col-md-12">
-        <div class="alert alert-info" role="alert">
-          <p>
-            <span class="glyphicon glyphicon-info-sign"></span>
-            There are currently no tools registered under this account, to add your first tool, do one of the following:
-          </p>
-          <ul>
-            <li>
-              Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized
-              in the linking process.
-            </li>
-            <li>
-              Press the 'Add Tool' button to manually add a tool.
-            </li>
-            <button (click)="showRegisterEntryModal()" type="button" class="btn btn-primary btn-smq" [disabled]="refreshMessage !== null">
-              Add Tool
-            </button>
-          </ul>
-          <div *ngIf="!hasGitHubToken">
-              <a class="btn btn-block btn-social btn-github" (click)="link()">
-                <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
-              </a>
+
+  <div class="container-fluid pt-3 sidebar-set-height">
+      <!--Tool Content Page-->
+      <div class="row containers-rsb" style="height:100%;">
+        <mat-sidenav-container autosize class="sidebar-set-height">
+          <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
+            <span class="visible-xs" *ngIf="refreshMessage">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
+            </span>
+            <div class="clearfix sidebar-header">
+                <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
+                  <mat-icon>refresh</mat-icon>
+                </button>
+              <h3 class="sidebar-header">My tools</h3>
             </div>
-        </div>
-      </div>
-    </div>
-    <!--Tool Content Page, this should be a Component-->
-    <div class="row">
-      <div class="col-md-3 containers-rsb">
-        <accordion [closeOthers]="oneAtATime">
-          <accordion-group *ngFor="let orgObj of groupEntriesObject" panelClass="containers-accordion" [isOpen]="orgObj?.isFirstOpen" [title]="orgObj?.namespace">
-            <div accordion-heading class="no-wrap">
-              {{orgObj?.namespace}}
+            <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
+            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
+            <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
+              <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-entry-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Tool</button>
+            </span>
+          </mat-sidenav>
+          <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
+            <span *ngIf="refreshMessage">
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
+            </span>
+            <app-alert></app-alert>
+            <div *ngIf="groupEntriesObject?.length == 0 || !groupEntriesObject">
+              <div class="col-md-12">
+                <div class="alert alert-info" role="alert">
+                  <p>
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    There are currently no tools registered under this account, to add your first tool, do one of the following:
+                  </p>
+                  <ul>
+                    <li>
+                      Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized
+                      in the linking process.
+                    </li>
+                    <li>
+                      Press the 'Add Tool' button to manually add a tool.
+                    </li>
+                    <button (click)="showRegisterEntryModal()" type="button" class="btn btn-primary btn-smq" [disabled]="refreshMessage">
+                      Add Tool
+                    </button>
+                  </ul>
+                  <div *ngIf="!hasGitHubToken">
+                      <a class="btn btn-block btn-social btn-github" (click)="link()">
+                        <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
+                      </a>
+                    </div>
+                </div>
+              </div>
             </div>
-            <tabset [justified]="true">
-                <tab heading="Published" [active]="orgObj.activeTab === 'published'">
-                  <div *ngFor="let entryObj of orgObj?.published">
-                    <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolName ? '/' + entryObj?.toolName : '')}}"
-                        (click)="selectEntry(entryObj)">
-                        {{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="orgObj?.published.length == 0" class="text-center">
-                    <p>No published tools.</p>
-                  </div>
-                </tab>
-                <tab heading="Unpublished" [active]="orgObj.activeTab === 'unpublished'">
-                  <div *ngFor="let entryObj of orgObj?.unpublished">
-                    <div class="panel-container-label" [ngClass]="{selected: tool?.id === entryObj?.id}">
-                      <div style="cursor:pointer" class="no-wrap" title="{{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}"
-                        (click)="selectEntry(entryObj)">
-                        {{entryObj?.name + (entryObj?.toolname ? '/' + entryObj?.toolname : '')}}
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="orgObj?.unpublished.length == 0" class="text-center">
-                    <p>No unpublished tools.</p>
-                  </div>
-                </tab>
-              </tabset>
-            <app-refresh-tool-organization class="pull-right" [organization]="orgObj.namespace"></app-refresh-tool-organization>
-            <button tooltip="Refresh organization" placement="right" type="button" type="button" class="btn btn-primary btn-xs pull-right add-container-ns" (click)="setRegisterEntryModalInfo(orgObj?.namespace); showRegisterEntryModal()">
-              <span class="glyphicon glyphicon-plus"></span>
-            </button>
-          </accordion-group>
-        </accordion>
-        <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
-          <button (click)="showRegisterEntryModal()" id="register_tool_button" type="button" class="btn btn-primary btn-sm pull-right" [disabled]="refreshMessage !== null">
-            Add Tool
-          </button>
-        </span>
+            <div *ngIf="tool">
+              <app-container [isToolPublic]="false"></app-container>
+            </div>
+          </mat-sidenav-content>
+        </mat-sidenav-container>
         <app-register-tool></app-register-tool>
       </div>
-      <div *ngIf="tool" class="col-md-9 containers-rsb">
-        <app-container [isToolPublic]="false"></app-container>
-      </div>
     </div>
-  </div>

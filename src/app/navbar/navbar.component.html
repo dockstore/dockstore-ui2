@@ -1,5 +1,5 @@
 <!--
-  ~    Copyright 2017 OICR
+  ~    Copyright 2018 OICR
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -13,102 +13,112 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
-<nav class="main-menu navbar navbar-default">
-    <div [className]="isExtended ? 'container-fluid' : 'container'">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" class="navbar-brand">
-            <img class="img-responsive" src="../assets/images/dockstore/logo.png">
+<mat-toolbar color="primary">
+  <div [className]="isExtended ? 'container-fluid navbar-holder navbar-fluid' : 'container navbar-fluid'">
+    <mat-toolbar-row class="toolbar-holder hidden-xs">
+      <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" alt="dockstore logo">
+        <img src="../assets/images/dockstore/logo.png">
+      </a>
+      <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/tools">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
+      </a>
+      <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/workflows">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
+      </a>
+      <a mat-button class="icon" routerLink="/search">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
+      </a>
+      <a mat-button class="icon" href="http://docs.dockstore.org/">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Docs
+      </a>
+      <span class="spacer"></span>
+      <a mat-button class="icon" id="my-tools-nav-button" *ngIf="isLoggedIn" routerLink="/my-tools">
+        <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
+      </a>
+      <a mat-button class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
+        <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
+      </a>
+      <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+      <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
+        <mat-icon class="hidden-lg">account_circle</mat-icon>
+        <span class="hidden-md hidden-sm">{{user?.username}}</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #menuLarge="matMenu">
+        <a mat-menu-item id="dropdown-starred" routerLink="/starred">
+          <mat-icon color="accent">stars</mat-icon>Starred
         </a>
-      </div>
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="nav navbar-nav nav-item-text">
-          <li>
-              <a (click)="resetPageNumber()" routerLink="/tools">
-                  <img class="site-icons-small" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
-              </a>
-          </li>
-          <li>
-              <a  (click)="resetPageNumber()" routerLink="/workflows">
-                  <img class="site-icons-small" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
-              </a>
-          </li>
-          <li>
-              <a routerLink="/search">
-                  <img class="site-icons-small" src="../assets/images/dockstore/search-button.png"> Search
-              </a>
-          </li>
-          <li>
-              <a href="http://docs.dockstore.org/">
-                  <img class="site-icons-small" src="../assets/images/dockstore/dockstore-documentation.png"> Documentation
-              </a>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li id="myToolsNav" *ngIf="isLoggedIn">
-              <a id="my-tools-nav-button" routerLink="/my-tools">
-                  <img class="site-icons-small" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools</a>
-          </li>
-          <li id="myWorkflowsNav" *ngIf="isLoggedIn">
-              <a id="my-workflows-nav-button" routerLink="/my-workflows">
-                  <img class="site-icons-small" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows</a>
-          </li>
-          <li *ngIf="!isLoggedIn">
-              <div class="button login">
-                  <p>
-                      <a routerLink="/login">Login</a>
-                  </p>
-              </div>
-          </li>
-          <li *ngIf=isLoggedIn class="btn-group m-0" dropdown>
-              <div class="button login">
-                  <a href dropdownToggle (click)="false" id="dropdown-main" class="account-dropdown dropdown-toggle">
-                      <span class="glyphicon glyphicon-user"></span>
-                      <span>{{user?.username}}</span>
-                      <span class="caret"></span>
-                  </a>
-              </div>
-              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                  <li role="menuitem">
-                      <a id="dropdown-starred" routerLink="/starred">
-                          <span class="glyphicon glyphicon-star"></span>&nbsp;
-                          <span class="item-label">Starred</span>
-                      </a>
-                  </li>
-                  <li role="menuitem">
-                      <a id="dropdown-accounts" routerLink="/accounts">
-                          <span class="glyphicon glyphicon-user"></span>&nbsp;
-                          <span class="item-label">Accounts</span>
-                      </a>
-                  </li>
-                <li role="menuitem">
-                      <a id="dropdown-quickstart" routerLink="/quick-start">
-                          <span class="glyphicon glyphicon-flash"></span>&nbsp;
-                          <span class="item-label">Quick Start</span>
-                      </a>
-                  </li>
-                  <li role="menuitem">
-                      <a id="dropdown-onboarding" routerLink="/onboarding">
-                          <span class="glyphicon glyphicon-tasks"></span>&nbsp;
-                          <span class="item-label">Setup</span>
-                      </a>
-                  </li>
-                  <li class="divider" role="separator"></li>
-                  <li role="menuitem">
-                      <a id="dropdown-logout" (click)="logout()">
-                          <span class="glyphicon glyphicon-log-out"></span>&nbsp;
-                          <span class="item-label">Log out</span>
-                      </a>
-                  </li>
-              </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-</nav>
+
+        <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
+          <mat-icon color="accent">account_circle</mat-icon>Account
+        </a>
+
+        <a mat-menu-item id="dropdown-quickstart" routerLink="/quick-start">
+          <mat-icon color="accent">flash_on</mat-icon>Quick Start
+        </a>
+
+        <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding">
+          <mat-icon color="accent">timeline</mat-icon>Setup
+        </a>
+
+        <mat-divider></mat-divider>
+
+        <a mat-menu-item id="dropdown-logout" (click)="logout()">
+          <mat-icon color="accent">input</mat-icon>Log out
+        </a>
+      </mat-menu>
+    </mat-toolbar-row>
+  </div>
+  <div class="container-fluid navbar-holder">
+      <mat-toolbar-row class="visible-xs toolbar-holder toolbar-holder-sm clearfix">
+        <a id="home-nav-button-mobile" (click)="resetPageNumber()" routerLink="">
+          <img src="../assets/images/dockstore/logo.png">
+        </a>
+        <span class="spacer"></span>
+        <a *ngIf="!isLoggedIn" class="pull-right" mat-raised-button color="accent" routerLink="/login">Login</a>
+        <button class="pull-right" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main-xs" [matMenuTriggerFor]="menuMobile">
+          <mat-icon class="hidden-lg">account_circle</mat-icon>
+          <span class="hidden-md hidden-sm hidden-xs">{{user?.username}}</span>
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+        <mat-menu #menuMobile="matMenu">
+          <a mat-menu-item id="dropdown-starred-mobile"  routerLink="/starred">
+            <mat-icon color="accent">stars</mat-icon>Starred
+          </a>
+
+          <a mat-menu-item id="dropdown-accounts-mobile" routerLink="/accounts">
+            <mat-icon color="accent">account_circle</mat-icon>Account
+          </a>
+
+          <a mat-menu-item id="dropdown-quickstart-mobile" routerLink="/quick-start">
+            <mat-icon color="accent">flash_on</mat-icon>Quick Start
+          </a>
+
+          <a mat-menu-item id="dropdown-onboarding-mobile" routerLink="/onboarding">
+            <mat-icon color="accent">timeline</mat-icon>Setup
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a mat-menu-item id="dropdown-logout-mobile" (click)="logout()">
+            <mat-icon color="accent">input</mat-icon>Log out
+          </a>
+        </mat-menu>
+      </mat-toolbar-row>
+
+        <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
+          <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/tools">Tools</a>
+          <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/workflows">Workflows</a>
+          <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
+          <a mat-button class="icon icon-sm" href="http://docs.dockstore.org/">Docs</a>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
+          <span *ngIf="isLoggedIn">
+            <a mat-button class="icon my-icon-sm" id="my-tools-nav-button-xs" routerLink="/my-tools">My Tools</a>
+            <a mat-button class="icon my-icon-sm" id="my-workflows-nav-button-xs" routerLink="/my-workflows">My Workflows</a>
+          </span>
+        </mat-toolbar-row>
+
+  </div>
+</mat-toolbar>

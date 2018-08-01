@@ -74,80 +74,9 @@ span {
   flex-direction: column;
 }
 
-/* Text */
-/*h1 {
-  font-size: 56px;
-  color: white;
-  font-weight: normal;
-  padding-top: 50px;
-  line-height: 56px;
+.button-row > div > a {
+  width: 90%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: 700;
 }
-
-h4 {
-  font-size: 20px;
-  color: #a0adcc;
-  font-style: italic;
-  font-weight: normal;
-  margin: 0;
-}*/
-
-/* Images */
-/*#rectangle {
-  position: absolute;
-  right: 0px;
-}
-
-#ship, #truck {
-  position: absolute;
-  bottom: -300px;
-}*/
-
-/*#truck {
-  padding-left: 45px;
-}*/
-
-/*@media (max-width: 992px) {
-  #ship, #truck {
-    bottom: 0;
-    right: 22%;
-  }
-
-  #truck {
-    padding-left: 0;
-        right: 2%;
-  }
-}*/
-
-/* Green Buttons */
-/*.green {
-  width: 250px;
-}*/
-
-/* General */
-/*.center {
-  text-align: center;
-}
-
-.container-fluid {
-  background-color: #21335B;
-}
-
-.upper {
-  background-color: #21335B;
-  position: relative;
-}
-
-.lower {
-  min-height: 144px;
-  background-color: #2a3e6b;
-  height: 100%;
-}
-
-.row.lower {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.info {
-  height: 300px;
-}*/
