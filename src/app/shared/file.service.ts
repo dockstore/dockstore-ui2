@@ -48,6 +48,9 @@ export class FileService {
         case 'cwl':
           type = 'PLAIN-CWL';
           break;
+        case 'nfl':
+          type = 'nfl';
+          break;
         default:
           console.error('Unhandled descriptor type: ' + descriptorType);
           return null;
