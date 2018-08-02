@@ -1,4 +1,3 @@
-import { Tooltip } from '../../shared/tooltip';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,19 +13,21 @@ import { Tooltip } from '../../shared/tooltip';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, AfterViewChecked, OnDestroy } from '@angular/core';
-import { WorkflowService } from './../../shared/workflow.service';
-
-import { StateService } from './../../shared/state.service';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
-import { DateService } from './../../shared/date.service';
-import { VersionModalService } from './version-modal.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { formErrors, validationMessages, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
+import { formInputDebounceTime } from '../../shared/constants';
+import { DateService } from '../../shared/date.service';
+import { StateService } from '../../shared/state.service';
+import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { Tooltip } from '../../shared/tooltip';
+import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
+import { WorkflowService } from '../../shared/workflow.service';
+import { VersionModalService } from './version-modal.service';
 
 @Component({
   selector: 'app-version-modal',
@@ -112,7 +113,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.currentForm === this.versionEditorForm) { return; }
     this.versionEditorForm = this.currentForm;
     if (this.versionEditorForm) {
-      this.versionEditorForm.valueChanges
+      this.versionEditorForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }

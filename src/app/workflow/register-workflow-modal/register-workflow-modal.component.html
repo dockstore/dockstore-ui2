@@ -68,14 +68,14 @@
           <ng-template matStepLabel>Create a workflow</ng-template>
           <form *ngIf="selectedOption?.value == 0" #registerWorkflowForm="ngForm" name="registerWorkflowForm" class="form-horizontal" (submit)="registerWorkflow()" novalidate>
             <div class="modal-body">
-              <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">
+              <div class="form-group">
+                <label class="col-sm-3 control-label pt-0">
                   Source Code Repository:
                 </label>
                 <div class="col-sm-9">
                   <div class="input-group">
                     <div class="input-group-btn">
-                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         {{workflow?.repository}}
                         <span class="caret"></span>
                       </button>
@@ -92,33 +92,30 @@
                   <div *ngIf="formErrors.gitPath" class="alert alert-danger"> {{ formErrors.gitPath }} </div>
                 </div>
               </div>
-              <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">
+              <div class="form-group">
+                <label class="col-sm-3 control-label pt-0">
+                  Descriptor Type:
+                </label>
+                <mat-radio-group id="descriptorTypeRadioButtons" class="col-sm-9 radio-group" [(ngModel)]="workflow.descriptorType" name="descriptorTypes" (change)="radioButtonChange($event)">
+                  <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
+                    {{'descriptor_type' | mapFriendlyValue : descriptorType}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label pt-0">
                   Workflow Path:
                 </label>
                 <div class="col-sm-9">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                        {{'descriptor_type' | mapFriendlyValue : workflow?.descriptorType}}
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li *ngFor="let descriptorType of (descriptorLanguages$ | async)">
-                          <a class="dropdown-item" (click)="changeDescriptorType(descriptorType.toLowerCase())">
-                            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <input id="sourceCodeRepositoryWorkflowPathInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3" maxlength="128" [pattern]="descriptorValidationPattern" required tooltip="Git Repository path." placeholder='{{ examplePatterns[workflow.descriptorType] }}' />
-                  </div>
-                  <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
+                  <input id="sourceCodeRepositoryWorkflowPathInput" type="text" class="form-control" name="workflow_path" [(ngModel)]="workflow.workflow_path"
+                    minlength="3" maxlength="128" [pattern]="descriptorValidationPattern" required tooltip="Git Repository path." placeholder='{{ examplePatterns[workflow.descriptorType] }}'
+                  />
                   <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }}</div>
                 </div>
+                <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
               </div>
-              <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">
+              <div class="form-group">
+                <label class="col-sm-3 control-label pt-0">
                   Test Parameter File Path:
                 </label>
                 <div class="col-sm-9">
@@ -126,8 +123,8 @@
                   <div *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </div>
                 </div>
               </div>
-              <div class="form-group form-group-sm">
-                <label class="col-sm-3 control-label">
+              <div class="form-group">
+                <label class="col-sm-3 control-label pt-0">
                   Workflow Name:
                 </label>
                 <div class="col-sm-9">
@@ -147,7 +144,7 @@
           </form>
           <form *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm" class="form-horizontal" (ngSubmit)="registerHostedWorkflow()" novalidate>
             <div class="modal-body">
-              <div class="form-group form-group-sm">
+              <div class="form-group">
                 <label class="col-sm-3 control-label">
                   Descriptor Type:
                 </label>
@@ -169,7 +166,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group form-group-sm">
+              <div class="form-group">
                 <label class="col-sm-3 control-label">
                   Workflow Name:
                 </label>

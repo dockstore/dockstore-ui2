@@ -15,6 +15,7 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatRadioChange } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { StateService } from '../../shared/state.service';
@@ -26,6 +27,8 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { debounceTime } from 'rxjs/operators';
+import { formInputDebounceTime } from '../../shared/constants';
 
 @Component({
   selector: 'app-register-workflow-modal',
@@ -112,7 +115,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     if (this.currentForm === this.registerWorkflowForm) { return; }
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
-      this.registerWorkflowForm.valueChanges
+      this.registerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
         .subscribe(data => this.onValueChanged(data));
     }
   }
@@ -139,7 +142,17 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   // Validation ends here
 
   /**
-   * This is triggered when the descriptor type changes in the dropdown menu.
+   * This is triggered when a descriptor type radio button is triggered
+   *
+   * @param {MatRadioChange} event
+   * @memberof RegisterWorkflowModalComponent
+   */
+  radioButtonChange(event: MatRadioChange): void {
+    this.changeDescriptorType(event.value);
+  }
+
+  /**
+   * For when the descriptor type changes.
    * Change the descriptor pattern required for validation when this happens.
    * TODO: Also change the form error message and reset the others
    *
@@ -147,7 +160,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
    * @memberof RegisterWorkflowModalComponent
    */
   changeDescriptorType(descriptorType: string): void {
-    this.workflow.descriptorType = descriptorType;
     switch (descriptorType) {
       case 'cwl': {
         this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;

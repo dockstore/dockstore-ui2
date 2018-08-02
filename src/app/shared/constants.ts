@@ -15,3 +15,4 @@
  */
 
 export const ga4ghPath = '/api/ga4gh/v2';
+export const formInputDebounceTime = 250;
