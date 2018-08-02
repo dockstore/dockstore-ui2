@@ -58,7 +58,6 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
    * @memberof DescriptorsWorkflowComponent
    */
   getFiles(descriptor): Observable<Array<ToolFile>> {
-    console.log(descriptor);
     return this.gA4GHFilesStateService.descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
         toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
