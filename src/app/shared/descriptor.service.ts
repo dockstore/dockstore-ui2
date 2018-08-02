@@ -86,7 +86,7 @@ export abstract class DescriptorService {
                 } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
                     descriptorTypes.push('wdl');
                 } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
-                    descriptorTypes.push('nextflow');
+                    descriptorTypes.push('nfl');
                 }
             });
             return descriptorTypes;
