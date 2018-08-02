@@ -21,9 +21,12 @@ export class TwitterService {
 
   constructor() { }
   runScript() {
+    const id = 'twitter-wjs';
+    if (document.getElementById(id)) {
+      return;
+    }
     const doc = document;
     const script = 'script';
-    const id = 'twitter-wjs';
     let js: any;
     const scriptElement = doc.getElementsByTagName(script)[0];
     js = doc.createElement(script);
@@ -31,5 +34,4 @@ export class TwitterService {
     js.src = 'https://platform.twitter.com/widgets.js';
     scriptElement.parentNode.insertBefore(js, scriptElement);
   }
-
 }
