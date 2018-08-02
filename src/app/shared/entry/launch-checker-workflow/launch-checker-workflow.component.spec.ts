@@ -18,7 +18,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckerWorkflowStubService } from './../../../test/service-stubs';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow.component';
-
+import { MatCardModule } from '@angular/material';
 describe('LaunchCheckerWorkflowComponent', () => {
   let component: LaunchCheckerWorkflowComponent;
   let fixture: ComponentFixture<LaunchCheckerWorkflowComponent>;
@@ -26,7 +26,8 @@ describe('LaunchCheckerWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LaunchCheckerWorkflowComponent],
-      providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }]
+      providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
+      imports: [MatCardModule]
     })
       .compileComponents();
   }));

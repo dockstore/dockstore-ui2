@@ -24,34 +24,35 @@
     </div>
   </div>
   <div *ngIf="_selectedVersion.valid">
-    <div class="well">
-      <div class="well well-sm" tooltip="Commands for creating a runtime JSON template">
+    <div>
+      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nextflow'" class="m-2" tooltip="Commands for creating a runtime JSON template">
         Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
         <pre>{{ params }}</pre>
         or grab one that the workflow author has provided (if applicable)
         <pre>{{ wgetTestJsonDescription }}</pre>
-      </div>
-      <div class="well well-sm" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+      </mat-card>
+      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nextflow'" class="m-2" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
         Run locally with the Dockstore CLI
         <pre>{{ cli }}</pre>
-      </div>
-      <div *ngIf="(currentDescriptor | lowercase) === 'nextflow'">
-        <div class="well well-sm" tooltip="Nextflow can conveniently run a workflow off of source control">
+      </mat-card>
+      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nextflow'" class="m-2">
+        <div tooltip="Nextflow can conveniently run a workflow off of source control">
           Run with nextflow
           <pre>{{ nextflowNativeLaunchDescription }}</pre>
+          <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
         </div>
-      </div>
-      <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
-        <div class="well well-sm" [tooltip]="cwlrunnerTooltip">
+      </mat-card>
+      <mat-card *ngIf="(currentDescriptor | lowercase) === 'cwl'"  class="m-2">
+        <div [tooltip]="cwlrunnerTooltip">
           {{cwlrunnerDescription}}
           <pre>{{ cwl }}</pre>
         </div>
-        <div class="well well-sm" [tooltip]="cwltoolTooltip">
+        <div [tooltip]="cwltoolTooltip">
           Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
           <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
           <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
         </div>
-      </div>
+      </mat-card>
       <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
     </div>
   </div>
