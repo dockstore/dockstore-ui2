@@ -23,16 +23,16 @@
   </div>
   <div *ngIf="!nullContent && _selectedVersion?.valid" class="row m-0">
     <div class="btn-group" role="group">
-      <a *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" class="btn btn-default" type="button" title="{{filePath}}">
-        <span class="glyphicon glyphicon-download"></span>
+      <a mat-mini-fab color="primary" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+        <mat-icon>save_alt</mat-icon>
       </a>
       <ng-template #unpublishedDownloadLink>
-        <a [href]="customDownloadHREF" [download]="customDownloadPath" class="btn btn-default" type="button" title="{{filePath}}">
-          <span class="glyphicon glyphicon-download"></span>
+        <a mat-mini-fab color="primary" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+          <mat-icon>save_alt</mat-icon>
         </a>
       </ng-template>
-      <button class="btn btn-default" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
-        <span class="glyphicon glyphicon-copy"></span>
+      <button mat-mini-fab color="primary" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
+        <mat-icon>file_copy</mat-icon>
       </button>
     </div>
   </div>
