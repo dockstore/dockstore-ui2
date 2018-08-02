@@ -8,6 +8,7 @@ import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
+import { MatIconModule, MatButtonModule } from '@angular/material';
 
 describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
@@ -17,7 +18,7 @@ describe('DownloadCLIClientComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DownloadCLIClientComponent,
         RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [ClipboardModule, NgxMdModule.forRoot()],
+      imports: [ClipboardModule, NgxMdModule.forRoot(), MatIconModule, MatButtonModule],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
