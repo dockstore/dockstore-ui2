@@ -13,15 +13,12 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div>
-  <div *ngIf="nullContent || !_selectedVersion?.valid">
-    <alert type="warning">
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      &nbsp;A Dockerfile associated with this Docker container could not be found.
-    </alert>
-  </div>
-  <div *ngIf="!nullContent && _selectedVersion?.valid" class="row m-0">
+  <alert *ngIf="!_selectedVersion?.valid" type="warning">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp;This version of the tool is invalid.
+  </alert>
+  <div *ngIf="content; else noContent" class="row m-0">
     <div class="btn-group" role="group">
       <a mat-mini-fab color="primary" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
         <mat-icon>save_alt</mat-icon>
@@ -36,6 +33,12 @@
       </button>
     </div>
   </div>
+  <ng-template #noContent>
+    <alert type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;A Dockerfile associated with this Docker container could not be found.
+    </alert>
+  </ng-template>
   <div [hidden]="!content || !_selectedVersion?.valid">
     <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
   </div>

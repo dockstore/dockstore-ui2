@@ -47,14 +47,12 @@ export class DockerfileComponent {
   public customDownloadPath: string;
   constructor(public fileService: FileService,
               private containerService: ContainerService, private containersService: ContainersService) {
-    this.nullContent = false;
     this.filePath = '/Dockerfile';
     this.published$ = this.containerService.toolIsPublished$;
   }
 
   reactToVersion(): void {
     if (this._selectedVersion) {
-      this.nullContent = false;
       this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first())
         .subscribe(file => {
             this.content = file.content;
@@ -62,12 +60,10 @@ export class DockerfileComponent {
             this.downloadFilePath = this.getContainerfilePath();
             this.customDownloadFile();
           }, error => {
-            this.nullContent = true;
             this.content = null;
           }
         );
     } else {
-      this.nullContent = true;
       this.content = null;
     }
   }
