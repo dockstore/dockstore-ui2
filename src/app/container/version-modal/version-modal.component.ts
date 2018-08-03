@@ -280,13 +280,15 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   // Checks if the currently edited test parameter file already exists
   hasDuplicateTestJson(type) {
     if (type === this.DescriptorType.CWL) {
-      if (this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
+      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestCWLFile) ||
+      this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
         return true;
       } else {
         return false;
       }
     } else if (type === this.DescriptorType.WDL) {
-      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
+      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile) ||
+        this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
         return true;
       } else {
         return false;
