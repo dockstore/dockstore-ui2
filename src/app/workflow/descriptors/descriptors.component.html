@@ -27,12 +27,12 @@
     </alert>
   </div>
   <div *ngIf="!this.nullDescriptors && _selectedVersion?.valid" class="row m-0">
-    <div class="btn-group" role="group">
-      <a mat-mini-fab color="primary" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+    <div class="btn-group pull-right" role="group">
+      <a mat-mini-fab color="primary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
         <mat-icon>save_alt</mat-icon>
       </a>
       <ng-template #unpublishedDownloadLink>
-        <a mat-mini-fab color="primary" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+        <a mat-mini-fab color="primary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
             <mat-icon>save_alt</mat-icon>
         </a>
       </ng-template>
