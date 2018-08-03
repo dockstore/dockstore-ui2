@@ -145,26 +145,14 @@
           <form *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm" class="form-horizontal" (ngSubmit)="registerHostedWorkflow()" novalidate>
             <div class="modal-body">
               <div class="form-group">
-                <label class="col-sm-3 control-label">
+                <label class="col-sm-3 control-label pt-0">
                   Descriptor Type:
                 </label>
-                <div class="col-sm-9">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                        {{ 'descriptor_type' | mapFriendlyValue : hostedWorkflow?.descriptorType}}
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li *ngFor="let descriptorType of (descriptorLanguages$ | async)">
-                          <a class="dropdown-item" (click)="hostedWorkflow.descriptorType = descriptorType.toLowerCase()">
-                            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <mat-radio-group id="descriptorTypeRadioButtons" class="col-sm-9 radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes" (change)="radioButtonChange($event)">
+                  <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
+                    {{'descriptor_type' | mapFriendlyValue : descriptorType}}
+                  </mat-radio-button>
+                </mat-radio-group>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label">
