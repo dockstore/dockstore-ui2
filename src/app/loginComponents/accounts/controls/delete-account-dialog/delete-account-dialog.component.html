@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>
+  Are you sure you want to delete this Dockstore user account?
+</h1>
+<div mat-dialog-content>
+  <mat-list role="list">
+    <mat-list-item role="listitem">All workflows and tools will be deleted alongside it.</mat-list-item>
+    <mat-list-item role="listitem">The dockstore token for this Dockstore user account will no longer work.</mat-list-item>
+    <mat-list-item role="listitem">All third party accounts will be unlinked from the Dockstore user account.</mat-list-item>
+  </mat-list>
+  <div class="btn-group pull-right">
+    <button mat-raised-button (click)="onNoClick()">No</button>
+    <button mat-raised-button (click)="onNoClick(); deleteAccount()" color="warn">Yes, delete my account</button>
+  </div>
+</div>

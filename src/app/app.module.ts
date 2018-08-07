@@ -37,6 +37,10 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
+import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
+import {
+  DeleteAccountDialogComponent,
+} from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
@@ -95,6 +99,8 @@ import { StarringModule } from './starring/starring.module';
 @NgModule({
   declarations: [
     AppComponent,
+    ControlsComponent,
+    DeleteAccountDialogComponent,
     SponsorsComponent,
     NavbarComponent,
     HomeComponent,
@@ -115,7 +121,7 @@ import { StarringModule } from './starring/starring.module';
     MaintenanceComponent,
     FundingComponent,
     BannerComponent
-],
+  ],
   imports: [
     BrowserAnimationsModule,
     MatSnackBarModule,
@@ -144,7 +150,7 @@ import { StarringModule } from './starring/starring.module';
   ],
   providers: [
     AccountsService,
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     AuthService,
     LoginService,
     LogoutService,
@@ -176,7 +182,8 @@ import { StarringModule } from './starring/starring.module';
     ExtendedToolsService,
     VerifiedByService
   ],
-  bootstrap: [ AppComponent ]
+  entryComponents: [DeleteAccountDialogComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
