@@ -26,7 +26,7 @@ export class RegisterService {
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
-      return this.auth.authenticate(provider, { "register" : true}).subscribe(user => {
+      return this.auth.authenticate(provider, { 'register' : true}).subscribe(user => {
         this.onLoginSuccess(user);
         observable.next(user);
         observable.complete();
