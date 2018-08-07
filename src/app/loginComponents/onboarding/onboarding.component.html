@@ -2,32 +2,47 @@
   <span class="glyphicon glyphicon-tasks"></span>
   Onboarding Wizard
 </app-header>
-<div class="container">
-  <div *ngIf="curStep == 1">
-    <h3>Step 1: Link External Accounts</h3>
 
-    <ngx-md>Dockstore is powered by:
-- [Quay.io](https://quay.io/), [Docker Hub](https://hub.docker.com/) and [GitLab](https://gitlab.com/) for storing Docker images
-- [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/), and [GitLab](https://gitlab.com) for storing the build file (`Dockerfile`) and metadata descriptor file (`Dockstore.cwl` or `Dockstore.wdl`) that are used by this site
+<mat-horizontal-stepper #stepper class="container">
+  <ng-template matStepperIcon="edit">
+    <mat-icon>check</mat-icon>
+  </ng-template>
+  <mat-step>
+      <ng-template matStepLabel>Link External Accounts</ng-template>
 
-Since the Dockstore does not permanently store your Docker images, your Dockerfile, or your Dockstore metadata descriptor file, you are free to use all the excellent features of Quay.io/Docker Hub/GitLab and GitHub/Bitbucket/GitLab.  If you are already using these services then you will appreciate the fact that registering your Docker images on Dockstore is extremely easy and requires very little interruption to the way you work already.
+      <h3>External Accounts and Dockstore</h3>
+      <hr>
 
-For those of you that use [Docker Hub](https://hub.docker.com/) and [GitLab](https://gitlab.com/), extremely popular Docker registries, we are planning on adding enhanced support for features in the near future.  For now, we recommend users of Dockstore sign up for both Quay.io and GitHub/Bitbucket/GitLab accounts to host their Docker images and build/metadata files respectively.  Partial support for Docker Hub and GitLab is available, but it requires manual entry of image and tag data on Dockstore. If you are already building your Docker images on Docker Hub and GitLab automatically it takes just minutes to setup a comparable build on Quay.io.</ngx-md>
+      <h5>Logging in to Dockstore</h5>
+      <p>
+        We use both GitHub and Google OAUTH to authenticate users. If you connect both a GitHub and a Google account to your Dockstore account, you can login to Dockstore with either.
+      </p>
 
-    <app-accounts-external></app-accounts-external>
-  </div>
-  <div *ngIf="curStep == 2">
+      <h5>Dockstore External Services</h5>
+
+      <p>Dockstore is powered by:</p>
+      <ul>
+        <li><a href="https://quay.io/" target="_blank">Quay.io</a>, <a href="https://hub.docker.com/" target="_blank">DockerHub</a>, and <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing Docker images</li>
+        <li><a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://bitbucket.org/" target="_blank">Bitbucket</a>, and <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing the build file and descriptor files</li>
+      </ul>
+
+      <p>
+        By using these extrenal services to store your tool and workflow files, you can take advantage of a lot of great features.
+        For the best Dockstore experience, we recommend using Quay.io to store Docker images because we are able to communicate with them in ways we can't yet with DockerHub and GitLab.
+      </p>
+
+      <strong>Note:</strong>
+      <p>
+        You can now store your tools and workflows directly on Dockstore using Hosted Entries.
+        These tools and workflows must be edited through Dockstore, so you will lose out on any extra features offered by services like GitHub.
+      </p>
+      <app-accounts-external></app-accounts-external>
+    <button mat-raised-button color="primary" matStepperNext class="pull-right">Next<mat-icon>navigate_next</mat-icon></button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Setup Dockstore CLI</ng-template>
     <app-downloadcliclient></app-downloadcliclient>
-  </div>
-  <nav class="pull-right">
-    <ul class="pager">
-      <li *ngIf="curStep > 1">
-        <button class="changePage" (click)="prevStep()"><span class="glyphicon glyphicon-chevron-left"></span>Previous</button>
-      </li>
-      <li *ngIf="tokenSetComplete">
-        <button class="changePage" (click)="nextStep()" id="next_step" *ngIf="curStep < 2">Next<span class="glyphicon glyphicon-chevron-right"></span></button>
-        <a href="https://docs.dockstore.org/docs/prereqs/getting-started-with-docker/" *ngIf="curStep >= 2">Finish<span class="glyphicon glyphicon-chevron-right"></span></a>
-      </li>
-    </ul>
-  </nav>
-</div>
+    <a mat-raised-button color="primary" href="https://docs.dockstore.org/docs/prereqs/getting-started-with-docker/" class="pull-right ml-1">Finish<mat-icon>navigate_next</mat-icon></a>
+    <button mat-raised-button color="primary" matStepperPrevious class="pull-right"><mat-icon>navigate_before</mat-icon>Back</button>
+  </mat-step>
+</mat-horizontal-stepper>
