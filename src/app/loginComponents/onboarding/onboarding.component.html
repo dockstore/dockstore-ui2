@@ -8,41 +8,44 @@
     <mat-icon>check</mat-icon>
   </ng-template>
   <mat-step>
-      <ng-template matStepLabel>Link External Accounts</ng-template>
+    <ng-template matStepLabel>Link External Accounts</ng-template>
 
-      <h3>External Accounts and Dockstore</h3>
-      <hr>
+    <h3>External Accounts and Dockstore</h3>
+    <hr>
 
-      <h5>Logging in to Dockstore</h5>
-      <p>
-        We use both GitHub and Google OAUTH to authenticate users. If you connect both a GitHub and a Google account to your Dockstore account, you can login to Dockstore with either.
-      </p>
+    <h5>Logging in to Dockstore</h5>
+    <p>
+      We use both GitHub and Google OAUTH to authenticate users. If you connect both a GitHub and a Google account to your Dockstore account, you can login to Dockstore with either.
+      Whichever service you initially use to login to Dockstore with, the associated email will be used for Dockstore sharing features.
+    </p>
 
-      <h5>Dockstore External Services</h5>
+    <h5>Dockstore External Services</h5>
 
-      <p>Dockstore is powered by:</p>
-      <ul>
-        <li><a href="https://quay.io/" target="_blank">Quay.io</a>, <a href="https://hub.docker.com/" target="_blank">DockerHub</a>, and <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing Docker images</li>
-        <li><a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://bitbucket.org/" target="_blank">Bitbucket</a>, and <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing the build file and descriptor files</li>
-      </ul>
+    <p>Dockstore is powered by:</p>
+    <ul>
+      <li><a href="https://quay.io/" target="_blank">Quay.io</a>, <a href="https://hub.docker.com/" target="_blank">DockerHub</a>, and <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing Docker images</li>
+      <li><a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://bitbucket.org/" target="_blank">Bitbucket</a>, and <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing the build file and descriptor files</li>
+    </ul>
 
-      <p>
-        By using these extrenal services to store your tool and workflow files, you can take advantage of a lot of great features.
-        For the best Dockstore experience, we recommend using Quay.io to store Docker images because we are able to communicate with them in ways we can't yet with DockerHub and GitLab.
-      </p>
+    <p>
+      By using these extrenal services to store your tool and workflow files, you can take advantage of all of the great features they offer.
+      For the best Dockstore experience, we recommend using Quay.io to store Docker images because we are able to communicate with them in ways we can't yet with DockerHub and GitLab.
+    </p>
 
-      <strong>Note:</strong>
-      <p>
-        You can now store your tools and workflows directly on Dockstore using Hosted Entries.
-        These tools and workflows must be edited through Dockstore, so you will lose out on any extra features offered by services like GitHub.
-      </p>
-      <app-accounts-external></app-accounts-external>
-    <button mat-raised-button color="primary" matStepperNext class="pull-right">Next<mat-icon>navigate_next</mat-icon></button>
+    <strong>Note:</strong>
+    <p>
+      You can now store your tools and workflows directly on Dockstore using Hosted Entries.
+      These tools and workflows must be edited through Dockstore, so you will lose out on any extra features offered by services like GitHub.
+    </p>
+    <app-accounts-external></app-accounts-external>
+    <button mat-raised-button color="primary" matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next</mat-icon></button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Setup Dockstore CLI</ng-template>
     <app-downloadcliclient></app-downloadcliclient>
-    <a mat-raised-button color="primary" href="https://docs.dockstore.org/docs/prereqs/getting-started-with-docker/" class="pull-right ml-1">Finish<mat-icon>navigate_next</mat-icon></a>
-    <button mat-raised-button color="primary" matStepperPrevious class="pull-right"><mat-icon>navigate_before</mat-icon>Back</button>
+    <span class="mt-2">
+      <a mat-raised-button color="primary" href="https://docs.dockstore.org/docs/prereqs/getting-started-with-docker/" class="pull-right ml-1">Finish<mat-icon>navigate_next</mat-icon></a>
+      <button mat-raised-button color="primary" matStepperPrevious class="pull-right"><mat-icon>navigate_before</mat-icon>Back</button>
+    </span>
   </mat-step>
 </mat-horizontal-stepper>
