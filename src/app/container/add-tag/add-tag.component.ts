@@ -179,24 +179,20 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       }
     }
   }
+
   // Validation ends here
   // Checks if the currently edited test parameter file already exists
   // TODO: This code is repeated in version-modal.component.ts for tools, move it somewhere common
-  hasDuplicateTestJson(type) {
+  // TODO: This is also executed a bajillion times
+  hasDuplicateTestJson(type: ToolDescriptor.TypeEnum) {
     if (type === this.DescriptorType.CWL) {
-      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestCWLFile) ||
-      this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestCWLFile) ||
+        this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile) ||
+        (this.unsavedTestCWLFile === this.unsavedTestWDLFile && this.unsavedTestCWLFile);
     } else if (type === this.DescriptorType.WDL) {
-      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile) ||
-        this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile) ||
+        this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestWDLFile) ||
+        (this.unsavedTestCWLFile === this.unsavedTestWDLFile && this.unsavedTestWDLFile);
     } else {
       return false;
     }
