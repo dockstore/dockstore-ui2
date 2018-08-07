@@ -91,6 +91,8 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { RegisterComponent } from './register/register.component';
+import { RegisterService } from './register/register.service';
 
 @NgModule({
   declarations: [
@@ -101,6 +103,7 @@ import { StarringModule } from './starring/starring.module';
     FooterComponent,
     HomeFootNoteComponent,
     LoginComponent,
+    RegisterComponent,
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,
@@ -147,6 +150,7 @@ import { StarringModule } from './starring/starring.module';
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     AuthService,
     LoginService,
+    RegisterService,
     LogoutService,
     DockstoreService,
     DateService,
