@@ -28,6 +28,7 @@ import { SearchComponent } from './search/search.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { FundingComponent } from './funding/funding.component';
+import { RegisterComponent } from './register/register.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
@@ -42,6 +43,7 @@ const APP_ROUTES: Routes = [
   { path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard] },
   { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard] },
   { path: 'search*', component: SearchComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'quick-start', component: QuickStartComponent },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },

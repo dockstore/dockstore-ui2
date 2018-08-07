@@ -92,6 +92,8 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
+import { RegisterComponent } from './register/register.component';
+import { RegisterService } from './register/register.service';
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import { ChangeUsernameComponent } from './loginComponents/accounts/internal/cha
     FooterComponent,
     HomeFootNoteComponent,
     LoginComponent,
+    RegisterComponent,
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,
@@ -149,6 +152,7 @@ import { ChangeUsernameComponent } from './loginComponents/accounts/internal/cha
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     AuthService,
     LoginService,
+    RegisterService,
     LogoutService,
     DockstoreService,
     DateService,
