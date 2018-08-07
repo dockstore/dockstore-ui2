@@ -120,7 +120,7 @@ export class InfoTabService {
             case 'wdl':
                 workflow.workflow_path = '/Dockstore.wdl';
                 break;
-            case 'nextflow':
+            case 'nfl':
                 workflow.workflow_path = '/nextflow.config';
                 break;
             default:

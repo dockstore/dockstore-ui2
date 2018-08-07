@@ -44,7 +44,8 @@ export class FileEditing extends Files {
    */
   getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL || sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL);
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL || sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL
+        || sourcefile.type === SourceFile.TypeEnum.NEXTFLOWCONFIG || sourcefile.type === SourceFile.TypeEnum.NEXTFLOW);
   }
 
   /**
@@ -54,7 +55,8 @@ export class FileEditing extends Files {
    */
   getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON || sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON);
+      sourcefile => sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON || sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON
+        || sourcefile.type === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
   }
 
   /**

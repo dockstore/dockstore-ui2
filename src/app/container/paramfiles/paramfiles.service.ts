@@ -46,8 +46,8 @@ export class ParamfilesService {
           descriptorsWithParamfiles.push('cwl');
         } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl')) {
           descriptorsWithParamfiles.push('wdl');
-        } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes('nextflow')) {
-          descriptorsWithParamfiles.push('nextflow');
+        } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes('nfl')) {
+          descriptorsWithParamfiles.push('nfl');
         }
       }
     }

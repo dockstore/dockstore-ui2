@@ -34,7 +34,7 @@ export abstract class DescriptorService {
             observable = this.getCwlFiles(id, versionName);
         } else if (descriptor === 'wdl') {
             observable = this.getWdlFiles(id, versionName);
-        } else if (descriptor === 'nextflow') {
+        } else if (descriptor === 'nfl') {
             observable = this.getNextflowFiles(id, versionName);
         }
         return observable.map(filesArray => {
@@ -70,10 +70,10 @@ export abstract class DescriptorService {
 
 
     /**
-     * Gets the descriptor types (cwl and or wdl) that the version has a sourcefile of
+     * Gets the descriptor types (cwl/wdl/nfl) that the version has a sourcefile of
      *
      * @param {any} version the current selected version of the workflow or tool
-     * @returns an array that may contain 'cwl' or 'wdl'
+     * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
      * @memberof DescriptorService
      */
     getDescriptors(version) {

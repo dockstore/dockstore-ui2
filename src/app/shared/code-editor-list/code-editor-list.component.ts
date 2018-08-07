@@ -11,28 +11,43 @@ export class CodeEditorListComponent {
   @Input() editing: boolean;
   @Input() fileType: string;
   @Input() descriptorType: string;
+  NEXTFLOW_CONFIG_PATH = '/nextflow.config';
+  NEXTFLOW_PATH = '/main.nf';
   constructor() { }
 
   /**
    * Adds a new file editor
    */
   addFile() {
-    let newFilePath = this.getDefaultPath();
+    const filesToAdd = [];
+    const newFilePath = this.getDefaultPath();
     if (!this.hasPrimaryDescriptor() && this.fileType === 'descriptor') {
-      newFilePath = '/Dockstore' + newFilePath;
+      if (this.descriptorType === 'nfl') {
+        filesToAdd.push(this.createFileObject(this.NEXTFLOW_PATH));
+        filesToAdd.push(this.createFileObject(this.NEXTFLOW_CONFIG_PATH));
+      } else {
+        filesToAdd.push(this.createFileObject('/Dockstore' + newFilePath));
+      }
     } else if (!this.hasPrimaryTestParam() && this.fileType === 'testParam') {
-      newFilePath = 'test.' + this.descriptorType + newFilePath;
+      filesToAdd.push(this.createFileObject('test.' + this.descriptorType + newFilePath));
+    } else {
+      filesToAdd.push(this.createFileObject(newFilePath));
     }
-    const newSourceFile = {
-      content: '',
-      path: newFilePath,
-      type: this.getFileType()
-    };
 
     if (this.sourcefiles === undefined) {
       this.sourcefiles = [];
     }
-    this.sourcefiles.push(newSourceFile);
+    filesToAdd.forEach((file) => {
+      this.sourcefiles.push(file);
+    });
+  }
+
+  createFileObject(newFilePath) {
+    return {
+      content: '',
+      path: newFilePath,
+      type: this.getFileType(newFilePath)
+    };
   }
 
   /**
@@ -47,16 +62,28 @@ export class CodeEditorListComponent {
    * Get the file type enum
    * @return {string} The file type enum
    */
-  getFileType() {
+  getFileType(filepath) {
     if (this.fileType === 'descriptor') {
       if (this.descriptorType) {
-        return 'DOCKSTORE_' + this.descriptorType.toUpperCase();
+        if (this.descriptorType === 'nfl') {
+          if (filepath === this.NEXTFLOW_CONFIG_PATH) {
+            return 'NEXTFLOW_CONFIG';
+          } else {
+            return 'NEXTFLOW';
+          }
+        } else {
+          return 'DOCKSTORE_' + this.descriptorType.toUpperCase();
+        }
       } else {
         return 'DOCKSTORE_CWL';
       }
     } else if (this.fileType === 'testParam') {
       if (this.descriptorType) {
-        return this.descriptorType.toUpperCase() + '_TEST_JSON';
+        if (this.descriptorType === 'nfl') {
+          return 'NEXTFLOW_TEST_PARAMS';
+        } else {
+          return this.descriptorType.toUpperCase() + '_TEST_JSON';
+        }
       } else {
         return 'CWL_TEST_JSON';
       }
@@ -74,7 +101,11 @@ export class CodeEditorListComponent {
   getDefaultPath() {
     if (this.fileType === 'descriptor') {
       if (this.descriptorType) {
-        return '.' + this.descriptorType.toLowerCase();
+        if (this.descriptorType === 'nfl') {
+          return '.nf';
+        } else {
+          return '.' + this.descriptorType.toLowerCase();
+        }
       } else {
         return '.cwl';
       }
@@ -91,7 +122,7 @@ export class CodeEditorListComponent {
    * @return {boolean}      Is path for primary descriptor
    */
   isPrimaryDescriptor(path: string): boolean {
-    return path === '/Dockstore.cwl' || path === '/Dockstore.wdl';
+    return path === '/Dockstore.cwl' || path === '/Dockstore.wdl' || path === this.NEXTFLOW_CONFIG_PATH || path === this.NEXTFLOW_PATH;
   }
 
   /**
@@ -114,9 +145,11 @@ export class CodeEditorListComponent {
     } else if (this.fileType === 'dockerfile') {
       return true;
     } else if (this.fileType === 'descriptor') {
-      return (this.descriptorType === 'cwl' && type === 'DOCKSTORE_CWL') || (this.descriptorType === 'wdl' && type === 'DOCKSTORE_WDL');
+      return (this.descriptorType === 'cwl' && type === 'DOCKSTORE_CWL') || (this.descriptorType === 'wdl' && type === 'DOCKSTORE_WDL')
+        || (this.descriptorType === 'nfl' && (type === 'NEXTFLOW' || type === 'NEXTFLOW_CONFIG'));
     } else if (this.fileType === 'testParam') {
-      return (this.descriptorType === 'cwl' && type === 'CWL_TEST_JSON') || (this.descriptorType === 'wdl' && type === 'WDL_TEST_JSON');
+      return (this.descriptorType === 'cwl' && type === 'CWL_TEST_JSON') || (this.descriptorType === 'wdl' && type === 'WDL_TEST_JSON')
+        || (this.descriptorType === 'nfl' && type === 'NEXTFLOW_TEST_PARAMS');
     } else {
       return true;
     }
@@ -127,10 +160,14 @@ export class CodeEditorListComponent {
    * @return {boolean} whether or not version has a primary descriptor
    */
   hasPrimaryDescriptor(): boolean {
-    if (this.descriptorType === null || this.descriptorType === undefined) {
+    if (!this.descriptorType === null || this.descriptorType === undefined) {
       return false;
     }
+
     const pathToFind = '/Dockstore.' + this.descriptorType;
+    if (this.descriptorType === 'nfl') {
+      return this.hasFilePath(this.NEXTFLOW_PATH) && this.hasFilePath(this.NEXTFLOW_CONFIG_PATH);
+    }
     return this.hasFilePath(pathToFind);
   }
 

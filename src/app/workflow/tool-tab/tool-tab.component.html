@@ -33,7 +33,7 @@
             <span class="glyphicon pull-right">
             </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'nextflow'">
+          <th *ngIf="workflow.descriptorType === 'nfl'">
             Process Excerpt
             <span class="glyphicon pull-right">
             </span>
@@ -77,11 +77,11 @@
             <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
           </td>
 
-          <td *ngIf="workflow.descriptorType === 'nextflow'">
+          <td *ngIf="workflow.descriptorType === 'nfl'">
             <strong>process name</strong>: {{tool?.id}}
             <br>
           </td>
-          <td *ngIf="workflow.descriptorType === 'nextflow'">
+          <td *ngIf="workflow.descriptorType === 'nfl'">
             <strong>docker</strong>: {{tool?.docker}}
             <br>
             <strong>link</strong>:
