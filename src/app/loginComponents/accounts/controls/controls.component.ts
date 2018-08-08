@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
+import { User } from '../../../shared/swagger';
+import { UserService } from '../../user.service';
 import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-account-dialog.component';
 
 @Component({
@@ -9,10 +11,19 @@ import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-acc
   styleUrls: ['./controls.component.scss']
 })
 export class ControlsComponent implements OnInit {
-
-  constructor(public dialog: MatDialog) { }
+  public isDisabled = false;
+  constructor(public dialog: MatDialog, public userService: UserService) { }
 
   ngOnInit() {
+    this.userService.user$.subscribe((user: User) => {
+      if (user) {
+        if (user.isAdmin) {
+          this.isDisabled = false;
+        } else {
+          this.isDisabled = true;
+        }
+      }
+    });
   }
 
   deleteAccount() {

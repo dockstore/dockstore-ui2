@@ -5,5 +5,5 @@
       Dockstore account controls have wide overreaching consequences and should be used with extreme caution
     </mat-card-subtitle>
   </mat-card-header>
-  <button mat-raised-button color="warn" (click)="deleteAccount()">Delete Dockstore Account</button>
+  <button mat-raised-button color="warn" (click)="deleteAccount()" [disabled]="isDisabled">Delete Dockstore Account</button>  Only available for accounts with no published tools/workflows
 </mat-card>
