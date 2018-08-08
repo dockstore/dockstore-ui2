@@ -1,0 +1,15 @@
+.change-username-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.updateUsernameButton {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#updateUsername {
+  width: 200px;
+}

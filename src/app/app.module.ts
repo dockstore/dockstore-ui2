@@ -91,6 +91,7 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { StarringModule } from './starring/starring.module';
     DownloadCLIClientComponent,
     MaintenanceComponent,
     FundingComponent,
-    BannerComponent
+    BannerComponent,
+    ChangeUsernameComponent
 ],
   imports: [
     BrowserAnimationsModule,

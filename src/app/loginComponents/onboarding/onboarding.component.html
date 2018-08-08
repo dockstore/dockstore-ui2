@@ -8,6 +8,15 @@
     <mat-icon>check</mat-icon>
   </ng-template>
   <mat-step>
+    <ng-template matStepLabel>Confirm Your Username</ng-template>
+
+    <h3>Choose Your Username</h3>
+    <hr>
+
+    <app-change-username></app-change-username>
+    <button mat-raised-button color="primary" matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next</mat-icon></button>
+  </mat-step>
+  <mat-step>
     <ng-template matStepLabel>Link External Accounts</ng-template>
 
     <h3>External Accounts and Dockstore</h3>
@@ -38,7 +47,8 @@
       These tools and workflows must be edited through Dockstore, so you will lose out on any extra features offered by services like GitHub.
     </p>
     <app-accounts-external></app-accounts-external>
-    <button mat-raised-button color="primary" matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next</mat-icon></button>
+    <button mat-raised-button color="primary" matStepperNext class="pull-right mt-2 ml-1">Next<mat-icon>navigate_next</mat-icon></button>
+    <button mat-raised-button color="primary" matStepperPrevious class="pull-right mt-2"><mat-icon>navigate_before</mat-icon>Back</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Setup Dockstore CLI</ng-template>
