@@ -7,7 +7,11 @@
             <span class="glyphicon glyphicon-link"></span>
             <span>Linked</span>
           </span>
-          <button class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
+          <button class="btn btn-default btn-xs" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="row.source | getTokenContent: tokens"
+            (cbOnSuccess)="isCopied1 = true">
+            <span class="glyphicon glyphicon-copy"></span>
+          </button>
+          <button [matTooltip]="row.show ? 'Hide token' : 'Show token'" class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
             <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
             <span *ngIf="!row.show" class="glyphicon glyphicon-eye-open"></span>
           </button>
@@ -15,11 +19,6 @@
             <span class="input-group">
               <!-- TODO: Only have 1 pipe here -->
               <span class="form-control input-xs">{{row.source | getTokenContent: tokens}}</span>
-              <span class="input-group-btn">
-                <button class="btn btn-default btn-xs" type="button" ngxClipboard [cbContent]="row.source | getTokenContent: tokens" (cbOnSuccess)="isCopied1 = true">
-                  <span class="glyphicon glyphicon-copy"></span>
-                </button>
-              </span>
             </span>
           </span>
         </span>
