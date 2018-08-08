@@ -27,14 +27,9 @@ export class LoginService {
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
       return this.auth.authenticate(provider).subscribe(user => {
-        this.onLoginSuccess(user);
         observable.next(user);
         observable.complete();
       });
     });
-  }
-
-  private onLoginSuccess(user) {
-    return user;
   }
 }

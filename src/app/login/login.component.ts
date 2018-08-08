@@ -45,19 +45,23 @@ export class LoginComponent {
     );
   }
 
-  loginWithGitHub() {
-    this.login(this.loginService.authenticate('github'));
+  /**
+   * Log in to Dockstore account with a third party service
+   *
+   * @param {string} service 'github' or 'google'
+   * @memberof LoginComponent
+   */
+  loginWith(service: string): void {
+    this.login(this.loginService.authenticate(service));
   }
 
-  public loginWithGoogle() {
-    this.login(this.loginService.authenticate('google'));
-  }
-
-  registerWithGitHub() {
-    this.login(this.registerService.authenticate('github'));
-  }
-
-  registerWithGoogle() {
-    this.login(this.registerService.authenticate('google'));
+  /**
+   * Register a new Dockstore account with a third party service
+   *
+   * @param {string} service 'github' or 'google'
+   * @memberof LoginComponent
+   */
+  registerWith(service: string): void {
+    this.login(this.registerService.authenticate(service));
   }
 }
