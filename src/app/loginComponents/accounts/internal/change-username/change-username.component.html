@@ -11,10 +11,10 @@
 
     <span *ngIf="!checkingIfValid">
       <span *ngIf="validUsername" class="vertical-center">
-        <mat-icon style="color: green">check</mat-icon>&nbsp;Valid username
+        <mat-icon style="color: green">check</mat-icon>&nbsp;Username available
       </span>
       <span *ngIf="!validUsername" class="vertical-center">
-        <mat-icon style="color: red">clear</mat-icon>&nbsp;Not a valid username
+        <mat-icon style="color: red">clear</mat-icon>&nbsp;Username not available
       </span>
     </span>
     <span *ngIf="checkingIfValid" class="vertical-center">

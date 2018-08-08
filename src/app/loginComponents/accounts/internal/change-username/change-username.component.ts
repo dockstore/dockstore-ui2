@@ -45,4 +45,11 @@ export class ChangeUsernameComponent implements OnInit {
       });
   }
 
+  /**
+   * Attempts to update the username to the new value given by the user
+   */
+  updateUsername() {
+
+  }
+
 }

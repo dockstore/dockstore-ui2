@@ -51,16 +51,21 @@ export class DownloadCLIClientComponent implements OnInit {
   }
   generateMarkdown(): void {
     this.textData1 = `
-### Setup Command Line Interface
+### Setup Command Line Interface (Ubuntu)
 ------------------------------
-#### Part 1
-1. We recommend Linux (the Dockstore CLI should also work on Mac OS X). The rest of these instructions focus on Ubuntu, although the setup for other distributions should be fairly similar.
-2. The Dockstore CLI uses Java, please install Java if you have not already by adding the Oracle Java repo and then installing Java. Note that if you are installing Java by some other mechanism, you will need to install at least Java 8, Update 101 (1.8.0_101-b13) and we have not tested with Java 9:
+#### Requirements
+1. Linux/Ubuntu (Recommended) or Mac OS X machine
+2. Java 8 (Oracle)
+3. Python and pip (Optional)
+
+#### Part 1 - Install dependencies and Dockstore CLI
+1. Add the Oracle Java repo and install:
 \`\`\`
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update && sudo apt-get install -y oracle-java8-set-default
 \`\`\`
-3. Install the dockstore command-line program and add it to the path
+**Note:** that if you are installing Java by some other mechanism, you will need to install at least Java 8, Update 101 (1.8.0_101-b13). We have not tested with Java 9.
+2. Install the dockstore command-line program and add it to the path.
 \`\`\`
 mkdir -p ~/bin
 curl -L -o ~/bin/dockstore ${this.downloadCli}
@@ -68,21 +73,24 @@ chmod +x ~/bin/dockstore
 echo 'export PATH=~/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 \`\`\`
-4. Alternatively, click here to download and configure the cli yourself
+3. Alternatively, click here to download and configure the CLI yourself.
 
 `;
     this.textData2 = `
-#### Part 2
+#### Part 2 - Setup Dockstore CLI Config
 1. Create the folder <code>~/.dockstore</code> and create a configuration file \`~/.dockstore/config\`:
 \`\`\`
 mkdir -p ~/.dockstore
 printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockstore/config
 \`\`\`
-2. Alternatively, copy this content to your config file directly
+2. Alternatively, copy this content to your config file directly.
 `;
     this.textData3 = `
-#### Part 3
-If you want to launch CWL tools and workflows, Dockstore relies upon [cwltool](https://github.com/common-workflow-language/cwltool) being available on your PATH.  This will require [pip](https://pip.pypa.io/en/latest/installing/) if it is not already installed.
+#### Part 3 - Install cwltool (Optional)
+Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) -a reference implementation of CWL- for local execution of tools and workflows described with CWL.
+You'll need to have Python and [pip](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
+
+**Note:** cwltool must be available on your PATH.
 
 You can install the version of cwltool that we've tested for use with Dockstore using the following commands:
 1. Run this to verify that pip has been installed \`pip --version\`
@@ -107,7 +115,7 @@ sudo usermod -aG docker $USER
 exec newgrp docker
 \`\`\`
 
-#### Part 4
+#### Part 4 - Confirm installation
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
 $ dockstore --version
@@ -122,7 +130,6 @@ $ docker run hello-world
 Hello from Docker!
 ...
 \`\`\`
-In addition to the tools mentioned above you can install an editor capable of syntax highlighting Dockerfiles such as [Atom](https://atom.io/).
 `;
   }
 }
