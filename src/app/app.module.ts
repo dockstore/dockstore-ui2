@@ -15,7 +15,7 @@
  */
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatIconModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -144,6 +144,7 @@ import { StarringModule } from './starring/starring.module';
     ModalModule.forRoot(),
     StargazersModule,
     NgxMdModule.forRoot(),
+    ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule
