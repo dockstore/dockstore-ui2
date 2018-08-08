@@ -1,9 +1,13 @@
 <div class="container separation">
-  <h3>Dockstore Account</h3>
-  <app-accounts-internal></app-accounts-internal>
-  <h3>External Accounts</h3>
-  <app-accounts-external></app-accounts-external>
-  <h3>Dockstore Account Controls</h3>
-  <app-controls></app-controls>
+  <mat-tab-group>
+    <mat-tab label="Dockstore Account Information">
+      <app-accounts-internal></app-accounts-internal>
+    </mat-tab>
+    <mat-tab label="External Accounts">
+      <app-accounts-external></app-accounts-external>
+    </mat-tab>
+    <mat-tab label="Dockstore Account Controls">
+      <app-controls></app-controls>
+    </mat-tab>
+  </mat-tab-group>
 </div>
-
