@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../../../loginComponents/user.service';
 import { User } from '../../../../shared/swagger/model/user';
 import { UsersService } from './../../../../shared/swagger/api/users.service';
@@ -9,6 +9,7 @@ import { UsersService } from './../../../../shared/swagger/api/users.service';
   styleUrls: ['./change-username.component.scss']
 })
 export class ChangeUsernameComponent implements OnInit {
+  @Input() showText;
   username: string;
   user: User;
   validUsername = true;

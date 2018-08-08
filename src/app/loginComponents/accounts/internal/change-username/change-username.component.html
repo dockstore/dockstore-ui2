@@ -1,4 +1,4 @@
-<p>
+<p *ngIf="showText">
   The username <strong>{{user?.username}}</strong> has been auto generated when you initially created a Dockstore account.
   You can update your username only if you meet certain conditions.
 </p>
@@ -6,18 +6,18 @@
   <mat-form-field>
     <input matInput placeholder="Username" name="username" [(ngModel)]="username" [value]="username" (keyup)="checkIfUsernameExists($event)">
   </mat-form-field>
-  <span class="updateUsernameButton">
+  <span class="change-username-form-buttons">
     <button mat-raised-button color="primary" id="updateUsername" [disabled]="!validUsername">Update Username</button>
 
     <span *ngIf="!checkingIfValid">
-      <span *ngIf="validUsername">
+      <span *ngIf="validUsername" class="vertical-center">
         <mat-icon style="color: green">check</mat-icon>&nbsp;Valid username
       </span>
-      <span *ngIf="!validUsername">
+      <span *ngIf="!validUsername" class="vertical-center">
         <mat-icon style="color: red">clear</mat-icon>&nbsp;Not a valid username
       </span>
     </span>
-    <span *ngIf="checkingIfValid">
+    <span *ngIf="checkingIfValid" class="vertical-center">
       <mat-spinner diameter="24"></mat-spinner>
     </span>
   </span>
