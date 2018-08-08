@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef, MatFormFieldControl } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { map } from 'rxjs/operators';
 
 import { User } from '../../../../shared/swagger';

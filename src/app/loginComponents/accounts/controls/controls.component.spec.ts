@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CustomMaterialModule } from '../../../shared/modules/material.module';
 import { ControlsComponent } from './controls.component';
 
 describe('ControlsComponent', () => {
@@ -8,7 +9,8 @@ describe('ControlsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ControlsComponent ]
+      declarations: [ ControlsComponent ],
+      imports: [CustomMaterialModule]
     })
     .compileComponents();
   }));
