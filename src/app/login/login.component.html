@@ -13,7 +13,6 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div id="container-header">
   <div class="container">
     <div class="row">
@@ -27,20 +26,43 @@
 </div>
 <div class="container separation">
   <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <div class="panel login-panel panel-primary ds-login-panel">
-        <div class="panel-heading">
-          Authentication Options
-        </div>
-        <div class="panel-body">
-          <a class="btn btn-block btn-social btn-github" (click)="loginWithGitHub()">
-            <span class="fa fa-github"></span> Sign in with GitHub
-          </a>
-          <a class="btn btn-block btn-social btn-github" (click)="loginWithGoogle()">
-            <span class="fa fa-google"></span> Sign in with Google
-          </a>
-        </div>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="mt-5">
+      <mat-tab-group mat-stretch-tabs fxFlex="50%">
+        <mat-tab isActive="true" label="Login">
+          <div class="panel panel-primary ds-login-panel mx-0">
+            <div class="panel-heading text-center">
+              Login Authentication Options
+            </div>
+            <div class="panel-body">
+              <a class="btn btn-block btn-social btn-github" (click)="loginWithGitHub()">
+                <span class="fa fa-github"></span> Sign in with GitHub
+              </a>
+              <a class="btn btn-block btn-social btn-github" (click)="loginWithGoogle()">
+                <span class="fa fa-google"></span> Sign in with Google
+              </a>
+              <p>Login to your existing Dockstore account with any third party applications that have been previously linked.
+                  To register a new Dockstore account, go to the register tab.</p>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Register">
+          <div class="panel panel-primary ds-login-panel mx-0">
+            <div class="panel-heading text-center">
+              Registration Authentication Options
+            </div>
+            <div class="panel-body">
+              <a class="btn btn-block btn-social btn-github" (click)="registerWithGitHub()">
+                <span class="fa fa-github"></span> Register with GitHub
+              </a>
+              <a class="btn btn-block btn-social btn-github" (click)="registerWithGoogle()">
+                <span class="fa fa-google"></span> Register with Google
+              </a>
+              <p>Register a new Dockstore account with any third party applications currently logged in with.
+                If you already have a Dockstore account, go to the login tab.</p>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
 </div>

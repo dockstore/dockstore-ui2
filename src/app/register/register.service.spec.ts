@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { LoginService } from './login.service';
+import { RegisterService } from './register.service';
 import { Configuration } from './../shared/swagger/configuration';
 import { UsersStubService, ConfigurationStub } from './../test/service-stubs';
 import { UsersService } from '../shared/swagger';

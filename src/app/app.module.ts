@@ -91,7 +91,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { RegisterComponent } from './register/register.component';
 import { RegisterService } from './register/register.service';
 
 @NgModule({
@@ -103,7 +102,6 @@ import { RegisterService } from './register/register.service';
     FooterComponent,
     HomeFootNoteComponent,
     LoginComponent,
-    RegisterComponent,
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,

@@ -13,24 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { UserService } from './../loginComponents/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LoginService } from './login.service';
+import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
+import { UserService } from './../loginComponents/user.service';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
 
   constructor(private trackLoginService: TrackLoginService,
-              private authService: LoginService,
-              private router: Router, private userService: UserService) { }
+    private loginService: LoginService, private registerService: RegisterService,
+    private router: Router, private userService: UserService) { }
 
   private login(observable) {
     observable.subscribe(
@@ -46,10 +46,18 @@ export class LoginComponent {
   }
 
   loginWithGitHub() {
-    this.login(this.authService.authenticate('github'));
+    this.login(this.loginService.authenticate('github'));
   }
 
   public loginWithGoogle() {
-    this.login(this.authService.authenticate('google'));
+    this.login(this.loginService.authenticate('google'));
+  }
+
+  registerWithGitHub() {
+    this.login(this.registerService.authenticate('github'));
+  }
+
+  registerWithGoogle() {
+    this.login(this.registerService.authenticate('google'));
   }
 }
