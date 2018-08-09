@@ -76,7 +76,9 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button class="pull-right" mat-button color="primary" [disabled]="syncingWithGitHub" (click)="syncGitHub()">Sync with GitHub</button>
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with GitHub" [disabled]="syncingWithGitHub" (click)="syncGitHub()">
+        <mat-icon aria-label="Sync profile with GitHub">sync</mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card>
   <mat-card fxFlex="30%" fxFlex.sm="80%" fxFlex.md="45%" fxFlex.xs="80%" class="my-2  mx-2" *ngIf="(hasGoogleToken$ | async)">
@@ -106,7 +108,9 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button class="pull-right" mat-button color="primary" [disabled]="syncingWithGoogle" (click)="syncGoogle()">Sync with Google</button>
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with Google" [disabled]="syncingWithGoogle" (click)="syncGoogle()">
+        <mat-icon aria-label="Sync profile with Google">sync</mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>
