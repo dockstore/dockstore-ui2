@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { map } from 'rxjs/operators';
 
+import { LogoutService } from '../../../../shared/logout.service';
 import { User } from '../../../../shared/swagger';
 import { UserService } from '../../../user.service';
 
@@ -16,7 +17,8 @@ export class DeleteAccountDialogComponent {
   usernameFormControl: FormControl;
   usernameForm: FormGroup;
 
-  constructor(public userService: UserService, public form: FormBuilder, public dialogRef: MatDialogRef<DeleteAccountDialogComponent>) {
+  constructor(public userService: UserService, public form: FormBuilder, public dialogRef: MatDialogRef<DeleteAccountDialogComponent>,
+    private logoutService: LogoutService, private matSnackBar: MatSnackBar) {
     this.userService.user$.pipe(map((user: User) => {
       return user.username;
     })).subscribe((username: string) => {
@@ -49,17 +51,31 @@ export class DeleteAccountDialogComponent {
    * @memberof DeleteAccountDialogComponent
    */
   deleteAccount(): void {
-    console.log('Deleting your account!!!');
+    this.deleteAccountSuccess();
+  }
+
+  private deleteAccountSuccess(): void {
+    this.logoutService.logout();
+    this.matSnackBar.open('Deleting Dockstore account succeeded', 'Dismiss', {
+      duration: 5000,
+    });
+  }
+
+  private deleteAccountFailure(): void {
+    this.matSnackBar.open('Deleting Dockstore account failed', 'Dismiss', {
+      duration: 5000,
+    });
   }
 
   /**
    * Custom validator to validate that the username entered into the form field is actually the user's username
    *
+   * @private
    * @param {string} username  The user's actual username
    * @returns {ValidatorFn}  The custom validator function to be use for a form control
    * @memberof DeleteAccountDialogComponent
    */
-  validateUsername(username: string): ValidatorFn {
+  private validateUsername(username: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== username) {
         return { 'username': true };
