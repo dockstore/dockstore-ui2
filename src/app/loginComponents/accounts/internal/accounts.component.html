@@ -13,7 +13,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<mat-accordion class="example-headers-align">
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -54,17 +53,16 @@
     <mat-action-row>
     </mat-action-row>
   </mat-expansion-panel>
-  <mat-expansion-panel *ngIf="(hasGitHubToken$ | async)">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
+  <div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
+  <mat-card fxFlex="30%" fxFlex.sm="80%" fxFlex.md="45%" fxFlex.xs="80%" class="my-2 mx-2" *ngIf="(hasGitHubToken$ | async)">
+    <mat-card-header>
+      <mat-card-title>
         GitHub Profile
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="col-sm-12">
-      <div class="col-md-3 col-sm-4">
-        <img *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL" height="175">
-      </div>
-      <mat-list class="col-md-9 col-sm-8">
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL">
+    <mat-card-content>
+      <mat-list>
         <mat-list-item *ngIf="gitHubProfile?.name">
           <strong>Name</strong>:&nbsp;{{gitHubProfile.name}}
         </mat-list-item>
@@ -81,22 +79,20 @@
           <strong>Location</strong>:&nbsp;{{gitHubProfile.location}}
         </mat-list-item>
       </mat-list>
-    </div>
-    <mat-action-row>
-      <button mat-button color="primary" [disabled]="syncingWithGitHub" (click)="syncGitHub()">Sync with GitHub</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-  <mat-expansion-panel *ngIf="(hasGoogleToken$ | async)">
-    <mat-expansion-panel-header>
-      <mat-panel-title class="flex-vert-center">
+    </mat-card-content>
+    <mat-card-actions>
+      <button class="pull-right" mat-button color="primary" [disabled]="syncingWithGitHub" (click)="syncGitHub()">Sync with GitHub</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card fxFlex="30%" fxFlex.sm="80%" fxFlex.md="45%" fxFlex.xs="80%" class="my-2  mx-2" *ngIf="(hasGoogleToken$ | async)">
+    <mat-card-header>
+      <mat-card-title>
         Google Profile
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="col-sm-12">
-      <div class="col-lg-3 col-md-3 col-sm-4">
-        <img *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL" height="175">
-      </div>
-      <mat-list class="col-lg-9 col-md-9 col-sm-8">
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL">
+    <mat-card-content>
+      <mat-list>
         <mat-list-item *ngIf="googleProfile?.name">
           <strong>Name</strong>:&nbsp;{{googleProfile.name}}
         </mat-list-item>
@@ -113,9 +109,10 @@
           <strong>Location</strong>:&nbsp;{{googleProfile.location}}
         </mat-list-item>
       </mat-list>
-    </div>
-    <mat-action-row>
-      <button mat-button color="primary" [disabled]="syncingWithGoogle" (click)="syncGoogle()">Sync with Google</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
+    </mat-card-content>
+    <mat-card-actions>
+      <button class="pull-right" mat-button color="primary" [disabled]="syncingWithGoogle" (click)="syncGoogle()">Sync with Google</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
