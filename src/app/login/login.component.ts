@@ -17,7 +17,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { RegisterService } from '../register/register.service';
-import { tooltipDelay } from '../shared/constants';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
 import { LoginService } from './login.service';
@@ -28,7 +27,6 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  tooltipDelay = tooltipDelay;
   constructor(private trackLoginService: TrackLoginService,
     private loginService: LoginService, private registerService: RegisterService,
     private router: Router, private userService: UserService) { }
