@@ -13,17 +13,16 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-  <mat-expansion-panel class="my-2" [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
+<div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
+  <mat-card fxFlex="30%" fxFlex.sm="80%" fxFlex.md="45%" fxFlex.xs="80%" class="my-2 mx-2">
+    <mat-card-header>
+      <mat-card-title>
         Dockstore Profile
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="col-sm-12">
-      <div class="col-md-3 col-sm-4">
-        <img *ngIf="user?.avatarUrl" [src]="user?.avatarUrl" height="175">
-      </div>
-      <mat-list class="col-md-9 col-sm-8">
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image *ngIf="user?.avatarUrl" [src]="user?.avatarUrl">
+    <mat-card-content>
+      <mat-list>
         <mat-list-item>
           <strong>Username</strong>:&nbsp;
           <span id="account-username"> {{user?.username}}</span>
@@ -33,27 +32,23 @@
           <span id="account-is-admin"> {{ user?.isAdmin ? 'Yes' : 'No' }}</span>
         </mat-list-item>
         <mat-list-item *ngIf="getDockstoreToken()">
-          <strong>Dockstore Token</strong>:&nbsp;
-          <button class="btn btn-default" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
+          <strong>Dockstore Token</strong>
+          <span>:</span>
+          <button class="btn btn-default ml-1" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
             <span class="glyphicon glyphicon-copy"></span>
           </button>
           <button [matTooltip]="show ? 'Hide token' : 'Show token'" class="btn btn-secondary" (click)="show = !show">
             <span *ngIf="show" class="glyphicon glyphicon-eye-close"></span>
             <span *ngIf="!show" class="glyphicon glyphicon-eye-open"></span>
           </button>
-          <span class="form-inline" *ngIf="show">
-            <span class="input-group">
-              <!-- TODO: Only have 1 pipe here -->
-              <span class="form-control" style="word-break: break-all;font-size: small">{{getDockstoreToken()}}</span>
-            </span>
-          </span>
+        </mat-list-item>
+        <mat-list-item class="form-control" *ngIf="show">
+          <!-- TODO: Only have 1 pipe here -->
+          <div style="word-break: break-all;font-size: small">{{getDockstoreToken()}}</div>
         </mat-list-item>
       </mat-list>
-    </div>
-    <mat-action-row>
-    </mat-action-row>
-  </mat-expansion-panel>
-  <div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
+    </mat-card-content>
+  </mat-card>
   <mat-card fxFlex="30%" fxFlex.sm="80%" fxFlex.md="45%" fxFlex.xs="80%" class="my-2 mx-2" *ngIf="(hasGitHubToken$ | async)">
     <mat-card-header>
       <mat-card-title>
@@ -115,4 +110,3 @@
     </mat-card-actions>
   </mat-card>
 </div>
-
