@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../../../loginComponents/user.service';
 import { User } from '../../../../shared/swagger/model/user';
 import { UsersService } from './../../../../shared/swagger/api/users.service';
+import { RefreshService } from './../../../../shared/refresh.service';
 
 @Component({
   selector: 'app-change-username',
@@ -15,7 +16,7 @@ export class ChangeUsernameComponent implements OnInit {
   validUsername = true;
   checkingIfValid = false;
   usernameMeetsRequirements = true;
-  constructor(private userService: UserService, private usersService: UsersService) { }
+  constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService) { }
 
   ngOnInit() {
     this.userService.user$.subscribe(user => {
@@ -64,7 +65,14 @@ export class ChangeUsernameComponent implements OnInit {
    * Attempts to update the username to the new value given by the user
    */
   updateUsername() {
-
+    this.usersService.changeUsername(this.username).subscribe(
+      (user: User) => {
+        this.userService.updateUser();
+        this.refreshService.handleSuccess('Updating username');
+      }, error => {
+        console.error(error);
+        this.refreshService.handleError('Updating username', error);
+      });
   }
 
 }
