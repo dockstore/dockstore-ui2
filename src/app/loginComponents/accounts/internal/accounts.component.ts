@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 
+import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { Configuration, Profile, User } from '../../../shared/swagger';
 import { TokenService } from '../../token.service';
 import { UserService } from '../../user.service';
@@ -14,6 +16,7 @@ import { UsersService } from './../../../shared/swagger/api/users.service';
 })
 export class AccountsInternalComponent implements OnInit {
   user: User;
+  TokenSource = TokenSource;
   googleProfile: Profile;
   gitHubProfile: Profile;
   hasGitHubToken$: Observable<boolean>;
@@ -21,25 +24,20 @@ export class AccountsInternalComponent implements OnInit {
   show: false;
   public syncing = false;
   constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
-    private authService: AuthService, private tokenService: TokenService) {
+    private authService: AuthService, private tokenService: TokenService, private matSnackBar: MatSnackBar) {
       this.hasGitHubToken$ = this.tokenService.hasGitHubToken$;
       this.hasGoogleToken$ = this.tokenService.hasGoogleToken$;
     }
 
-  syncGitHub() {
+  /**
+   * Update user metadata for a service ('github.com' or 'google.com')
+   *
+   * @param {string} service  'github.com' or 'google.com'
+   * @memberof AccountsInternalComponent
+   */
+  sync(service: TokenSource) {
     this.syncing = true;
-    this.usersService.updateLoggedInUserMetadata('github.com').subscribe((user: User) => {
-      this.userService.setUser(user);
-      this.syncing = false;
-    }, error => {
-      this.syncing = false;
-    }
-    );
-  }
-
-  syncGoogle() {
-    this.syncing = true;
-    this.usersService.updateLoggedInUserMetadata('google.com').subscribe((user: User) => {
+    this.usersService.updateLoggedInUserMetadata(service).subscribe((user: User) => {
       this.userService.setUser(user);
       this.syncing = false;
     }, error => {
@@ -47,7 +45,6 @@ export class AccountsInternalComponent implements OnInit {
     },
     );
   }
-
 
   // TODO: Fix, it is called a bajillion times
   getDockstoreToken(): string {

@@ -80,7 +80,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with GitHub" [disabled]="syncing" (click)="syncGitHub()">
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with GitHub" [disabled]="syncing" (click)="sync(TokenSource.GITHUB)">
         <mat-icon aria-label="Sync profile with GitHub">sync</mat-icon>
       </button>
     </mat-card-actions>
@@ -112,7 +112,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with Google" [disabled]="syncing" (click)="syncGoogle()">
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with Google" [disabled]="syncing" (click)="sync(TokenSource.GOOGLE)">
         <mat-icon aria-label="Sync profile with Google">sync</mat-icon>
       </button>
     </mat-card-actions>
