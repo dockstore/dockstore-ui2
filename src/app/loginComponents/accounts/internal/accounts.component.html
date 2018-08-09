@@ -13,6 +13,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+<mat-progress-bar *ngIf="(syncing || syncing); else placeholder" mode="indeterminate"></mat-progress-bar>
+<ng-template #placeholder>
+    <div class="pt-2"></div>
+  </ng-template>
 <div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
   <mat-card fxFlex="30%" fxFlex.sm="80%" fxFlex.md="45%" fxFlex.xs="80%" class="my-2 mx-2">
     <mat-card-header>
@@ -76,7 +80,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with GitHub" [disabled]="syncingWithGitHub" (click)="syncGitHub()">
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with GitHub" [disabled]="syncing" (click)="syncGitHub()">
         <mat-icon aria-label="Sync profile with GitHub">sync</mat-icon>
       </button>
     </mat-card-actions>
@@ -108,7 +112,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with Google" [disabled]="syncingWithGoogle" (click)="syncGoogle()">
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with Google" [disabled]="syncing" (click)="syncGoogle()">
         <mat-icon aria-label="Sync profile with Google">sync</mat-icon>
       </button>
     </mat-card-actions>

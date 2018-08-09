@@ -19,8 +19,7 @@ export class AccountsInternalComponent implements OnInit {
   hasGitHubToken$: Observable<boolean>;
   hasGoogleToken$: Observable<boolean>;
   show: false;
-  public syncingWithGitHub = false;
-  public syncingWithGoogle = false;
+  public syncing = false;
   constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
     private authService: AuthService, private tokenService: TokenService) {
       this.hasGitHubToken$ = this.tokenService.hasGitHubToken$;
@@ -28,23 +27,23 @@ export class AccountsInternalComponent implements OnInit {
     }
 
   syncGitHub() {
-    this.syncingWithGitHub = true;
+    this.syncing = true;
     this.usersService.updateLoggedInUserMetadata('github.com').subscribe((user: User) => {
       this.userService.setUser(user);
-      this.syncingWithGitHub = false;
+      this.syncing = false;
     }, error => {
-      this.syncingWithGitHub = false;
+      this.syncing = false;
     }
     );
   }
 
   syncGoogle() {
-    this.syncingWithGoogle = true;
+    this.syncing = true;
     this.usersService.updateLoggedInUserMetadata('google.com').subscribe((user: User) => {
       this.userService.setUser(user);
-      this.syncingWithGoogle = false;
+      this.syncing = false;
     }, error => {
-      this.syncingWithGoogle = false;
+      this.syncing = false;
     },
     );
   }
