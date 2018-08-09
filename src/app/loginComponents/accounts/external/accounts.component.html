@@ -34,13 +34,13 @@
     <mat-card-footer class="clearfix">
       <span *ngIf="row.isLinked; else notLinked" class="pull-right">
         <span class="mr-2">Username: {{row.source | getTokenUsername: tokens}}</span>
-        <button mat-raised-button color="primary" [attr.id]="'unlink-' + row.name" (click)="unlink(row.source)">
+        <button mat-raised-button color="primary" [attr.id]="'unlink-' + row.name" (click)="unlink(row.source)" matTooltip="Unlink the account" [matTooltipShowDelay]="1000">
           <mat-icon>link_off</mat-icon>
           <span>Unlink Account</span>
         </button>
       </span>
       <ng-template #notLinked>
-        <button mat-raised-button color="secondary" class="pull-right" [attr.id]="'link-' + row.name" *ngIf="!row.isLinked" (click)="link(row.source)">
+        <button mat-raised-button color="secondary" class="pull-right" [attr.id]="'link-' + row.name" *ngIf="!row.isLinked" (click)="link(row.source)" matTooltip="Link the account" [matTooltipShowDelay]="1000">
             <mat-icon>link</mat-icon>
           <span>Link Account</span>
         </button>

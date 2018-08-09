@@ -10,10 +10,10 @@
     <button mat-raised-button color="primary" id="updateUsername" [disabled]="!validUsername" (click)="updateUsername()">Update Username</button>
 
     <span *ngIf="!checkingIfValid">
-      <span *ngIf="validUsername" class="vertical-center">
+      <span *ngIf="validUsername && usernameMeetsRequirements" class="vertical-center">
         <mat-icon style="color: green">check</mat-icon>&nbsp;Username available
       </span>
-      <span *ngIf="!validUsername" class="vertical-center">
+      <span *ngIf="!validUsername || !usernameMeetsRequirements" class="vertical-center">
         <mat-icon style="color: red">clear</mat-icon>&nbsp;Username not available
       </span>
     </span>

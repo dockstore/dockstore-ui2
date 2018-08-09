@@ -14,6 +14,7 @@ export class ChangeUsernameComponent implements OnInit {
   user: User;
   validUsername = true;
   checkingIfValid = false;
+  usernameMeetsRequirements = true;
   constructor(private userService: UserService, private usersService: UsersService) { }
 
   ngOnInit() {
@@ -29,20 +30,34 @@ export class ChangeUsernameComponent implements OnInit {
    * Returns true if the username exists, false otherwise
    */
   checkIfUsernameExists(event: any) {
-    this.checkingIfValid = true;
     this.username = event.target.value;
-    this.usersService.checkUserExists(this.username).subscribe(
-      (userExists: boolean) => {
-        if (userExists && this.username === this.user.username) {
-          this.validUsername = true;
-        } else {
-          this.validUsername = !userExists;
-        }
-        this.checkingIfValid = false;
-      }, error => {
-        this.checkingIfValid = false;
-        console.error(error);
-      });
+
+    if (!this.isValidUsername()) {
+      this.usernameMeetsRequirements = false;
+    } else {
+      this.checkingIfValid = true;
+      this.usernameMeetsRequirements = true;
+      this.usersService.checkUserExists(this.username).subscribe(
+        (userExists: boolean) => {
+          if (userExists && this.username === this.user.username) {
+            this.validUsername = true;
+          } else {
+            this.validUsername = !userExists;
+          }
+          this.checkingIfValid = false;
+        }, error => {
+          this.checkingIfValid = false;
+          console.error(error);
+        });
+    }
+  }
+
+  /**
+   * Checks whether the currently typed username passes the requirements for a Dockstore username
+   */
+  isValidUsername() {
+    const regex = /^[a-zA-Z][a-zA-Z0-9]*([-_]?[a-zA-Z0-9]+)*$/g;
+    return this.username && this.username.trim() !== '' && !this.username.includes('@') && regex.test(this.username);
   }
 
   /**

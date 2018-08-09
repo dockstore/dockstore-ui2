@@ -38,7 +38,8 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatMenuModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatBadgeModule
 } from '@angular/material';
 
 @NgModule({
@@ -66,7 +67,8 @@ import {
     MatToolbarModule,
     MatTooltipModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatBadgeModule
   ],
   exports: [
     MatButtonModule,
@@ -92,7 +94,8 @@ import {
     MatToolbarModule,
     MatTooltipModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatBadgeModule
   ]
 })
 export class CustomMaterialModule { }
