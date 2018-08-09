@@ -42,6 +42,18 @@ describe('Dropdown test', function() {
             everythingOk();
         });
     });
+    describe('Go to Dockstore Account Controls', function() {
+      beforeEach(function() {
+          // Select dropdown accounts
+          cy
+              .get('#dropdown-accounts')
+              .click()
+          cy.contains("Dockstore Account Controls").click()
+      });
+      it('Should have the delete button disabled', function() {
+          cy.contains("Delete Dockstore Account").should('be.disabled');
+      });
+    });
     var everythingOk = function() {
             cy.get('#unlink-GitHub').should('be.visible')
             cy.get('#unlink-Quay').should('be.visible')
