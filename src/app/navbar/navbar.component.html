@@ -54,7 +54,7 @@
           <mat-icon color="accent">account_circle</mat-icon>Account
         </a>
 
-        <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding"  *ngIf="!extendedUser?.canChangeUsername">
+        <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding"  *ngIf="extendedUser?.canChangeUsername">
           <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
         </a>
 
@@ -87,7 +87,7 @@
             <mat-icon color="accent">account_circle</mat-icon>Account
           </a>
 
-          <a mat-menu-item id="dropdown-onboarding-mobile" routerLink="/onboarding" *ngIf="!extendedUser?.canChangeUsername">
+          <a mat-menu-item id="dropdown-onboarding-mobile" routerLink="/onboarding" *ngIf="extendedUser?.canChangeUsername">
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
           </a>
 
