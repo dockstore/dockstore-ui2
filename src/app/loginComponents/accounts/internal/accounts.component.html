@@ -44,7 +44,7 @@
           <button class="btn btn-default ml-1" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
             <span class="glyphicon glyphicon-copy"></span>
           </button>
-          <button [matTooltip]="show ? 'Hide token' : 'Show token'" class="btn btn-secondary" (click)="show = !show">
+          <button [matTooltip]="show ? 'Hide token' : 'Show token'" class="btn btn-default" (click)="show = !show">
             <span *ngIf="show" class="glyphicon glyphicon-eye-close"></span>
             <span *ngIf="!show" class="glyphicon glyphicon-eye-open"></span>
           </button>
