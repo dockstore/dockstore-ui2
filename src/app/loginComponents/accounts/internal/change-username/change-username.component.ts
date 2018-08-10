@@ -16,6 +16,7 @@ export class ChangeUsernameComponent implements OnInit {
   validUsername = true;
   checkingIfValid = false;
   usernameMeetsRequirements = true;
+  extendedUser: any;
   constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService) { }
 
   ngOnInit() {
@@ -25,6 +26,7 @@ export class ChangeUsernameComponent implements OnInit {
         this.username = user.username;
       }
     });
+    this.userService.extendedUser$.subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 
   /**

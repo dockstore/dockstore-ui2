@@ -22,9 +22,12 @@ import { User } from './../shared/swagger/model/user';
 export class UserService {
 
   private userSource = new BehaviorSubject<User>(null);
+  private extendedUserSource = new BehaviorSubject<any>(null);
 
   user$ = this.userSource.asObservable();
   userId$: Observable<number>;
+  extendedUser$ = this.extendedUserSource.asObservable();
+
   constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration,
     private router: Router) {
     this.updateUser();
@@ -33,6 +36,10 @@ export class UserService {
 
   setUser(user) {
     this.userSource.next(user);
+  }
+
+  setExtendedUser(extendedUser) {
+    this.extendedUserSource.next(extendedUser);
   }
 
   updateUser() {
@@ -44,6 +51,10 @@ export class UserService {
         // Currently this function is executed whether the user is logged in or not.
         this.setUser(null);
       }
+    );
+    this.usersService.getExtendedUserData().subscribe(
+      (extendedUser: any) => this.setExtendedUser(extendedUser),
+      error => this.setExtendedUser(null)
     );
   }
 
