@@ -51,8 +51,32 @@ describe('Dropdown test', function() {
         beforeEach(function() {
             // Select dropdown setup
             cy
-                .get('#dropdown-onboarding')
-                .click()
+              .get('#dropdown-onboarding')
+              .click()
+        });
+
+        it('Should let you change your username if possible', function() {
+          cy
+            .get('#updateUsername')
+            .should('not.be.disabled')
+          cy
+            .get('#username')
+            .type('-')
+          cy
+            .get('#updateUsername')
+            .should('be.disabled')
+          cy
+            .get('#username')
+            .type('a')
+          cy
+            .get('#updateUsername')
+            .should('not.be.disabled')
+          cy
+            .get('#username')
+            .type('@')
+          cy
+            .get('#updateUsername')
+            .should('be.disabled')
         });
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
@@ -62,6 +86,12 @@ describe('Dropdown test', function() {
             // })
             // TODO: Gitlab is being very slow, hopefully one day we can remove this
             // cy.wait(10000);
+
+            // Need to first go to the accounts part of the dropdown
+            cy
+              .contains('Link External Accounts')
+              .click()
+
             everythingOk();
             cy.visit(String(global.baseUrl) + '/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
