@@ -17,6 +17,8 @@ import { Observable } from 'rxjs';
 
 import { FileService } from '../file.service';
 import { SafeUrl } from '@angular/platform-browser';
+import { GA4GHFilesStateService } from '../entry/GA4GHFiles.state.service';
+import { GA4GHService, FileWrapper } from '../swagger';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -34,20 +36,15 @@ export abstract class EntryFileSelector {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
+  abstract entrypath: string;
+  protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
 
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
-  /**
-   * Get the file using the descriptor/{relative-path} endpoint
-   *
-   * @abstract
-   * @memberof EntryFileSelector
-   */
-  abstract reactToFile(): void;
 
-  constructor(protected fileService: FileService) {
-
+  constructor(protected fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
+    protected gA4GHService: GA4GHService) {
   }
 
   protected getDescriptorPath(path: string, entryType: ('tool' | 'workflow')): string {
@@ -108,5 +105,24 @@ export abstract class EntryFileSelector {
   updateCustomDownloadFileButtonAttributes(): void {
     this.customDownloadHREF = this.fileService.getFileData(this.content);
     this.customDownloadPath = this.fileService.getFileName(this.filePath);
+  }
+
+  /**
+   * Get the file using the descriptor/{relative-path} endpoint
+   *
+   * @abstract
+   * @memberof EntryFileSelector
+   */
+  reactToFile(): void {
+    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
+    // TODO: Memoize this
+    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
+      this.entryType === 'workflow' ? '#workflow/' + this.entrypath : this.entrypath,
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
+        this.content = file.content;
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
+        this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.updateCustomDownloadFileButtonAttributes();
+      });
   }
 }

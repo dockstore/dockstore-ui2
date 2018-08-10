@@ -22,7 +22,7 @@ import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.serv
 import { FileService } from '../../shared/file.service';
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService, GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
+import { ContainersService, GA4GHService, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from './paramfiles.service';
 
@@ -40,14 +40,13 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
   public filePath: string;
-  public entryType = 'tool';
+  protected entryType: ('tool' | 'workflow') = 'tool';
   public downloadFilePath: string;
-
-  constructor(private containerService: ContainerService, private containersService: ContainersService, private gA4GHService: GA4GHService,
-              private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService,
-              public fileService: FileService) {
-    super(fileService);
-      this.published$ = this.containerService.toolIsPublished$;
+  constructor(private containerService: ContainerService, private containersService: ContainersService,
+    protected gA4GHService: GA4GHService, private paramfilesService: ParamfilesService,
+    protected gA4GHFilesStateService: GA4GHFilesStateService, public fileService: FileService) {
+    super(fileService, gA4GHFilesStateService, gA4GHService);
+    this.published$ = this.containerService.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
@@ -80,24 +79,12 @@ export class ParamfilesComponent extends EntryFileSelector {
         return observableOf([]);
       }
     }
-      return testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-        if (toolFiles) {
+    return testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
+      if (toolFiles) {
         return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
-        } else {
-          return [];
-        }
-      }));
-  }
-
-  reactToFile(): void {
-    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
-    // TODO: Memoize this
-    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolTests) => {
-        this.content = file.test;
-        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
-        this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.updateCustomDownloadFileButtonAttributes();
-      });
+      } else {
+        return [];
+      }
+    }));
   }
 }

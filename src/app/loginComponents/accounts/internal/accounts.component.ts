@@ -25,14 +25,14 @@ export class AccountsInternalComponent implements OnInit {
   public syncing = false;
   constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
     private authService: AuthService, private tokenService: TokenService, private matSnackBar: MatSnackBar) {
-      this.hasGitHubToken$ = this.tokenService.hasGitHubToken$;
-      this.hasGoogleToken$ = this.tokenService.hasGoogleToken$;
-    }
+    this.hasGitHubToken$ = this.tokenService.hasGitHubToken$;
+    this.hasGoogleToken$ = this.tokenService.hasGoogleToken$;
+  }
 
   /**
-   * Update user metadata for a service ('github.com' or 'google.com')
+   * Update user metadata for a service
    *
-   * @param {string} service  'github.com' or 'google.com'
+   * @param {TokenSource} service  TokenSource.GITHUB or TokenSource.GOOGLE
    * @memberof AccountsInternalComponent
    */
   sync(service: TokenSource) {
@@ -57,16 +57,16 @@ export class AccountsInternalComponent implements OnInit {
       if (user) {
         const userProfiles = user.userProfiles;
         if (userProfiles) {
-        this.googleProfile = userProfiles['google.com'];
-        // Using gravatar for Google also, may result in two identical pictures if both accounts use the same email address
-        if (this.googleProfile && !this.googleProfile.avatarURL) {
-          this.googleProfile.avatarURL = this.userService.gravatarUrl(this.googleProfile.email, this.googleProfile.avatarURL);
+          this.googleProfile = userProfiles[TokenSource.GOOGLE];
+          // Using gravatar for Google also, may result in two identical pictures if both accounts use the same email address
+          if (this.googleProfile && !this.googleProfile.avatarURL) {
+            this.googleProfile.avatarURL = this.userService.gravatarUrl(this.googleProfile.email, this.googleProfile.avatarURL);
+          }
+          this.gitHubProfile = userProfiles[TokenSource.GITHUB];
+          if (this.gitHubProfile && !this.gitHubProfile.avatarURL) {
+            this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
+          }
         }
-        this.gitHubProfile = userProfiles['github.com'];
-        if (this.gitHubProfile && !this.gitHubProfile.avatarURL) {
-          this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
-        }
-      }
       }
     }
     );

@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { GA4GHService, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
@@ -37,11 +37,13 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
 
+  protected entryType: ('tool' | 'workflow') = 'workflow';
+
   public descriptorPath: string;
-  constructor(private workflowDescriptorService: WorkflowDescriptorService, private gA4GHService: GA4GHService,
-    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
+  constructor(private workflowDescriptorService: WorkflowDescriptorService, public gA4GHService: GA4GHService,
+    public fileService: FileService, public gA4GHFilesStateService: GA4GHFilesStateService,
     private workflowService: WorkflowService) {
-    super(fileService);
+    super(fileService, gA4GHFilesStateService, gA4GHService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
@@ -62,18 +64,5 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
         toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
     }));
-
-  }
-
-  reactToFile(): void {
-    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
-    // TODO: Memoize this
-    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolDescriptor) => {
-        this.content = file.descriptor;
-        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
-        this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.updateCustomDownloadFileButtonAttributes();
-      });
   }
 }
