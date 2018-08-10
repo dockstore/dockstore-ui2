@@ -88,10 +88,10 @@
             Delete
           </button>
           <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
+          <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the tool">
+              Refresh
+            </button>
         </div>
-        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the tool">
-          Refresh
-        </button>
       </div>
     </h3>
   </div>
