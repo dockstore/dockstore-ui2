@@ -3,7 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CustomMaterialModule } from '../../../shared/modules/material.module';
 import { ControlsComponent } from './controls.component';
 import { UserService } from '../../user.service';
-import { UserStubService } from '../../../test/service-stubs';
+import { UserStubService, UsersStubService } from '../../../test/service-stubs';
+import { UsersService } from '../../../shared/swagger';
 
 describe('ControlsComponent', () => {
   let component: ControlsComponent;
@@ -13,7 +14,9 @@ describe('ControlsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ControlsComponent ],
       imports: [CustomMaterialModule],
-      providers: [{provide: UserService, useClass: UserStubService}]
+      providers: [{provide: UserService, useClass: UserStubService},
+      {provide: UsersService, useClass: UsersStubService}
+    ]
     })
     .compileComponents();
   }));

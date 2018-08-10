@@ -110,7 +110,6 @@ export abstract class EntryFileSelector {
   /**
    * Get the file using the descriptor/{relative-path} endpoint
    *
-   * @abstract
    * @memberof EntryFileSelector
    */
   reactToFile(): void {

@@ -4,7 +4,8 @@ import { MatDialogRef } from '@angular/material';
 
 import { LogoutService } from '../../../../shared/logout.service';
 import { CustomMaterialModule } from '../../../../shared/modules/material.module';
-import { LogoutStubService, UserStubService } from '../../../../test/service-stubs';
+import { UsersService } from '../../../../shared/swagger';
+import { LogoutStubService, UsersStubService, UserStubService } from '../../../../test/service-stubs';
 import { UserService } from '../../../user.service';
 import { DeleteAccountDialogComponent } from './delete-account-dialog.component';
 
@@ -16,14 +17,16 @@ describe('DeleteAccountDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DeleteAccountDialogComponent],
       imports: [CustomMaterialModule, ReactiveFormsModule],
-      providers: [{ provide: UserService, useClass: UserStubService },
-      { provide: LogoutService, useClass: LogoutStubService },
-      {
-        provide: MatDialogRef,
-        useValue: {
-          close: (dialogResult: any) => { }
-        }
-      }],
+      providers: [
+        { provide: UserService, useClass: UserStubService },
+        { provide: LogoutService, useClass: LogoutStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: (dialogResult: any) => { }
+          }
+        }],
     })
       .compileComponents();
   }));
