@@ -13,3 +13,23 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+
+::ng-deep .mat-list .mat-list-item .mat-line {
+    word-wrap: break-all;
+    white-space: pre-wrap;
+}
+
+// This manages to put the action button at the bottom
+
+.mat-card {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.mat-card-content {
+  display: flex;
+  flex: 1;
+}
+
+// End
