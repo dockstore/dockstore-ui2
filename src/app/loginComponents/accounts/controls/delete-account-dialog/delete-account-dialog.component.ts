@@ -4,8 +4,9 @@ import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { map } from 'rxjs/operators';
 
 import { LogoutService } from '../../../../shared/logout.service';
-import { User } from '../../../../shared/swagger';
+import { User, UsersService } from '../../../../shared/swagger';
 import { UserService } from '../../../user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-delete-account-dialog',
@@ -18,7 +19,7 @@ export class DeleteAccountDialogComponent {
   usernameForm: FormGroup;
 
   constructor(public userService: UserService, public form: FormBuilder, public dialogRef: MatDialogRef<DeleteAccountDialogComponent>,
-    private logoutService: LogoutService, private matSnackBar: MatSnackBar) {
+    private logoutService: LogoutService, private matSnackBar: MatSnackBar, private usersService: UsersService) {
     this.userService.user$.pipe(map((user: User) => {
       return user.username;
     })).subscribe((username: string) => {
@@ -51,7 +52,15 @@ export class DeleteAccountDialogComponent {
    * @memberof DeleteAccountDialogComponent
    */
   deleteAccount(): void {
-    this.deleteAccountSuccess();
+    this.usersService.selfDestruct().subscribe((status: boolean) => {
+      if (status) {
+        this.deleteAccountSuccess();
+      } else {
+        this.deleteAccountFailure();
+      }
+    }, (error: HttpErrorResponse) => {
+      this.deleteAccountFailure();
+    });
   }
 
   /**

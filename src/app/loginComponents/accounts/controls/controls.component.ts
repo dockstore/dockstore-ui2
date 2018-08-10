@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { User } from '../../../shared/swagger';
+import { UsersService } from '../../../shared/swagger';
+import { ExtendedUserData } from '../../../shared/swagger/model/extendedUserData';
 import { UserService } from '../../user.service';
 import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-account-dialog.component';
 
@@ -11,18 +12,19 @@ import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-acc
   styleUrls: ['./controls.component.scss']
 })
 export class ControlsComponent implements OnInit {
-  public isDisabled = false;
-  constructor(public dialog: MatDialog, public userService: UserService) { }
+  public isDisabled = true;
+  constructor(public dialog: MatDialog, public userService: UserService, public usersService: UsersService) { }
 
   ngOnInit() {
-    this.userService.user$.subscribe((user: User) => {
-      if (user) {
-        if (user.isAdmin) {
-          this.isDisabled = false;
-        } else {
-          this.isDisabled = true;
-        }
+    this.usersService.getExtendedUserData().subscribe((extendedUserData: ExtendedUserData) => {
+      if (extendedUserData) {
+        this.isDisabled = !extendedUserData.canChangeUsername;
+      } else {
+        this.isDisabled = true;
       }
+    }, error => {
+      this.isDisabled = true;
+      console.error('Could not retrieve ExtendedUserData');
     });
   }
 
