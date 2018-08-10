@@ -20,6 +20,8 @@ import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from './../loginComponents/user.service';
 import { LoginService } from './login.service';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +31,11 @@ import { LoginService } from './login.service';
 export class LoginComponent {
   constructor(private trackLoginService: TrackLoginService,
     private loginService: LoginService, private registerService: RegisterService,
-    private router: Router, private userService: UserService) { }
+    private router: Router, private userService: UserService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+      iconRegistry.addSvgIcon(
+        'google',
+        sanitizer.bypassSecurityTrustResourceUrl('assets/svg/btn_google_light_normal_ios.svg'));
+    }
 
   private login(observable) {
     observable.subscribe(
