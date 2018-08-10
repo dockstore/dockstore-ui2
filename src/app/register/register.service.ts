@@ -13,22 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Response } from '@angular/http';
+import { MatSnackBar } from '@angular/material';
 import { AuthService } from 'ng2-ui-auth';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class RegisterService {
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private matSnackBar: MatSnackBar) { }
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
       return this.auth.authenticate(provider, { 'register' : true}).subscribe(user => {
         observable.next(user);
         observable.complete();
+      }, error => {
+        this.matSnackBar.open(error._body, 'Dismiss',  {
+          duration: 5000,
+        });
       });
     });
   }

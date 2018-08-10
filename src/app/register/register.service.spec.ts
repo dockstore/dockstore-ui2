@@ -13,18 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { RegisterService } from './register.service';
-import { Configuration } from './../shared/swagger/configuration';
-import { UsersStubService, ConfigurationStub } from './../test/service-stubs';
-import { UsersService } from '../shared/swagger';
-import { AuthStubService } from '../test/service-stubs';
+import { inject, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { TestBed, inject } from '@angular/core/testing';
+
+import { AuthStubService } from '../test/service-stubs';
+import { RegisterService } from './register.service';
 
 describe('RegisterService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
+          imports: [MatSnackBarModule],
             providers: [RegisterService,
                 { provide: AuthService, useClass: AuthStubService}
             ],
