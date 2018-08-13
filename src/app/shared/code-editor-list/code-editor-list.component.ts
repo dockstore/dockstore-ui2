@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'app-code-editor-list',
@@ -13,6 +14,7 @@ export class CodeEditorListComponent {
   @Input() descriptorType: string;
   NEXTFLOW_CONFIG_PATH = '/nextflow.config';
   NEXTFLOW_PATH = '/main.nf';
+  public DescriptorType = ToolDescriptor.TypeEnum;
   constructor() { }
 
   /**
@@ -22,7 +24,7 @@ export class CodeEditorListComponent {
     const filesToAdd = [];
     const newFilePath = this.getDefaultPath();
     if (!this.hasPrimaryDescriptor() && this.fileType === 'descriptor') {
-      if (this.descriptorType === 'nfl') {
+      if (this.descriptorType === this.DescriptorType.NFL.toLowerCase()) {
         filesToAdd.push(this.createFileObject(this.NEXTFLOW_PATH));
         filesToAdd.push(this.createFileObject(this.NEXTFLOW_CONFIG_PATH));
       } else {
@@ -65,7 +67,7 @@ export class CodeEditorListComponent {
   getFileType(filepath) {
     if (this.fileType === 'descriptor') {
       if (this.descriptorType) {
-        if (this.descriptorType === 'nfl') {
+        if (this.descriptorType === this.DescriptorType.NFL.toLowerCase()) {
           if (filepath === this.NEXTFLOW_CONFIG_PATH) {
             return 'NEXTFLOW_CONFIG';
           } else {
@@ -79,7 +81,7 @@ export class CodeEditorListComponent {
       }
     } else if (this.fileType === 'testParam') {
       if (this.descriptorType) {
-        if (this.descriptorType === 'nfl') {
+        if (this.descriptorType === this.DescriptorType.NFL.toLowerCase()) {
           return 'NEXTFLOW_TEST_PARAMS';
         } else {
           return this.descriptorType.toUpperCase() + '_TEST_JSON';
@@ -101,7 +103,7 @@ export class CodeEditorListComponent {
   getDefaultPath() {
     if (this.fileType === 'descriptor') {
       if (this.descriptorType) {
-        if (this.descriptorType === 'nfl') {
+        if (this.descriptorType === this.DescriptorType.NFL.toLowerCase()) {
           return '.nf';
         } else {
           return '.' + this.descriptorType.toLowerCase();
@@ -165,7 +167,7 @@ export class CodeEditorListComponent {
     }
 
     const pathToFind = '/Dockstore.' + this.descriptorType;
-    if (this.descriptorType === 'nfl') {
+    if (this.descriptorType === this.DescriptorType.NFL.toLowerCase()) {
       return this.hasFilePath(this.NEXTFLOW_PATH) && this.hasFilePath(this.NEXTFLOW_CONFIG_PATH);
     }
     return this.hasFilePath(pathToFind);
