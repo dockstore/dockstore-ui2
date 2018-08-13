@@ -52,6 +52,11 @@ describe('Dropdown test', function() {
             url: "/users/user/extended",
             response: {"canChangeUsername":true}
           })
+          .route({
+            method: "DELETE",
+            url: "/users/user",
+            response: "true"
+          })
           cy
               .get('#dropdown-accounts')
               .click()
@@ -63,7 +68,8 @@ describe('Dropdown test', function() {
         cy.get('input').type('potato')
         cy.contains("Yes, delete my account").should('be.disabled')
         cy.get('input').clear().type('user_A')
-        cy.contains("Yes, delete my account").should('not.be.disabled')
+        cy.contains("Yes, delete my account").should('not.be.disabled').click()
+        cy.url().should('eq', String(global.baseUrl) + '/login')
       })
     });
     describe('Go to enabled Dockstore Account Controls', function() {
