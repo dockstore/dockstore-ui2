@@ -92,7 +92,6 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
-import { RegisterComponent } from './register/register.component';
 import { RegisterService } from './register/register.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -110,7 +109,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     FooterComponent,
     HomeFootNoteComponent,
     LoginComponent,
-    RegisterComponent,
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,
