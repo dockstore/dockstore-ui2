@@ -13,7 +13,6 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div id="container-header">
   <div class="container">
     <div class="row">
@@ -27,20 +26,39 @@
 </div>
 <div class="container separation">
   <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <div class="panel login-panel panel-primary ds-login-panel">
-        <div class="panel-heading">
-          Authentication Options
-        </div>
-        <div class="panel-body">
-          <a class="btn btn-block btn-social btn-github" (click)="loginWithGitHub()">
-            <span class="fa fa-github"></span> Sign in with GitHub
-          </a>
-          <a class="btn btn-block btn-social btn-github" (click)="loginWithGoogle()">
-            <span class="fa fa-google"></span> Sign in with Google
-          </a>
-        </div>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="mt-5">
+      <mat-card>
+        <mat-tab-group layout-fill color="primary" mat-stretch-tabs fxFlex="400px">
+          <mat-tab isActive="true" label="Login">
+            <mat-card>
+              <p>Login to your existing Dockstore account with any third party application that has been previously linked.</p>
+              <a class="btn btn-block btn-social btn-github" matTooltip="Log in with GitHub account" (click)="loginWith('github')">
+                <span class="fa fa-github"></span> Login with GitHub
+              </a>
+              <a class="btn btn-block btn-social btn-github" matTooltip="Log in with Google account" (click)="loginWith('google')">
+                <span class="fa fa-google"></span> Login with Google
+              </a>
+            </mat-card>
+          </mat-tab>
+          <mat-tab label="Register">
+            <mat-card>
+              <p>Register a new Dockstore account with any third party application.</p>
+              <a class="btn btn-block btn-social btn-github" matTooltip="Register with GitHub account" (click)="registerWith('github')">
+                <span class="fa fa-github"></span> Register with GitHub
+              </a>
+              <a class="btn btn-block btn-social btn-github" matTooltip="Register with Google account" (click)="registerWith('google')">
+                <span class="fa fa-google"></span> Register with Google
+              </a>
+
+              <!-- Attempt at using  -->
+              <!-- <mat-icon svgIcon="google"></mat-icon> -->
+              <!-- <a class="btn btn-block btn-social btn-real-google" matTooltip="Register with Google account" (click)="registerWith('google')">
+                  <span class="google-logo "></span>Register with Google
+              </a> -->
+            </mat-card>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
     </div>
   </div>
 </div>

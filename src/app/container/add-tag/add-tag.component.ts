@@ -179,24 +179,40 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       }
     }
   }
+
   // Validation ends here
   // Checks if the currently edited test parameter file already exists
   // TODO: This code is repeated in version-modal.component.ts for tools, move it somewhere common
-  hasDuplicateTestJson(type) {
-    if (type === 'cwl') {
-      if (this.unsavedCWLTestParameterFilePaths.includes(this.unsavedTestCWLFile)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else if (type === 'wdl') {
-      if (this.unsavedWDLTestParameterFilePaths.includes(this.unsavedTestWDLFile)) {
-        return true;
-      } else {
-        return false;
-      }
+  // TODO: This is also executed a bajillion times
+  hasDuplicateTestJson(type: ToolDescriptor.TypeEnum): boolean {
+    if (type === this.DescriptorType.CWL) {
+      return this.hasDuplicateTestJsonCommon(this.unsavedTestCWLFile, this.unsavedTestWDLFile);
+    } else if (type === this.DescriptorType.WDL) {
+      return this.hasDuplicateTestJsonCommon(this.unsavedTestWDLFile, this.unsavedTestCWLFile);
     } else {
       return false;
+    }
+  }
+
+  /**
+   * Mainly checks 3 things, if we're checking the CWL test parameter file that's about to be added then:
+   * - The current list of WDL test parameter files cannot already have it
+   * - The current list of CWL test parameter files cannot already have it
+   * - The current WDL test parameter file to be added cannot be the same
+   *   with the exception that both are empty since nothing happens regardless)
+   *
+   * @private
+   * @param {string} focusedTestFilePath    The test parameter file we're currently checking
+   * @param {string} unfocusedTestFilePath  The other test parameter file we're not currently checking
+   * @returns {boolean}                     Whether or not a duplicate test file exists
+   * @memberof AddTagComponent
+   */
+  private hasDuplicateTestJsonCommon(focusedTestFilePath: string, unfocusedTestFilePath: string): boolean {
+    if (!focusedTestFilePath) {
+      return false;
+    } else {
+      const paths = this.unsavedCWLTestParameterFilePaths.concat(this.unsavedWDLTestParameterFilePaths).concat(unfocusedTestFilePath);
+      return paths.includes(focusedTestFilePath);
     }
   }
 }

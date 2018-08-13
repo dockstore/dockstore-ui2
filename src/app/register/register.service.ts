@@ -18,23 +18,23 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { AuthService } from 'ng2-ui-auth';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class RegisterService {
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private matSnackBar: MatSnackBar) { }
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
       return this.auth.authenticate(provider, { 'register' : true}).subscribe(user => {
-        this.onLoginSuccess(user);
         observable.next(user);
         observable.complete();
+      }, error => {
+        this.matSnackBar.open(error._body, 'Dismiss',  {
+          duration: 5000,
+        });
       });
     });
-  }
-
-  private onLoginSuccess(user) {
-    return user;
   }
 }

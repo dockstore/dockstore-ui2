@@ -14,6 +14,15 @@
  *    limitations under the License.
  */
 
-.panel-heading {
-  background-color: #487980;
+ // Turns out the Google svg includes a very annoying popup border effect
+.google-logo {
+  text-indent: -9999px;
+  width: 32px;
+  height: 32px;
+  background: url(assets/svg/btn_google_light_normal_ios.svg);
+  background-size: 32px 32px;
+}
+
+.btn-real-google {
+  border-color: rgba(0,0,0,0.2);
 }

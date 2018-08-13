@@ -25,6 +25,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatMenuModule,
   MatPaginatorModule,
   MatProgressBarModule,
   MatRadioModule,
