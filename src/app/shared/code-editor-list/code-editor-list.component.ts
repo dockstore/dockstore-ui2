@@ -162,7 +162,7 @@ export class CodeEditorListComponent {
    * @return {boolean} whether or not version has a primary descriptor
    */
   hasPrimaryDescriptor(): boolean {
-    if (!this.descriptorType === null || this.descriptorType === undefined) {
+    if (this.descriptorType === null || this.descriptorType === undefined) {
       return false;
     }
 
