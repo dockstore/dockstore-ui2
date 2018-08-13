@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
+import { AuthService } from 'ng2-ui-auth';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class RegisterService {
@@ -29,9 +30,7 @@ export class RegisterService {
         observable.next(user);
         observable.complete();
       }, error => {
-        this.matSnackBar.open(error._body, 'Dismiss',  {
-          duration: 5000,
-        });
+        this.matSnackBar.open(error._body, 'Dismiss');
       });
     });
   }

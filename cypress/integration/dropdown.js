@@ -3,6 +3,13 @@ describe('Dropdown test', function() {
     require('./helper.js')
 
     beforeEach(function() {
+      cy
+          .server()
+          .route({
+              method: "GET",
+              url: /extended/,
+              response: {"canChangeUsername":true}
+          })
         cy.visit(String(global.baseUrl))
 
         // Select dropdown
@@ -81,8 +88,11 @@ describe('Dropdown test', function() {
           cy.contains("Dockstore Account Controls").click()
       });
       it('Should have the delete button disabled', function() {
-          cy.contains("Delete Dockstore Account").should('be.disabled');
+          cy.contains("Delete Dockstore Account").should('not.be.disabled');
       });
+      it('Should have the change username button enabled', function() {
+        cy.contains("Update Username").should('not.be.disabled');
+    });
     });
     var everythingOk = function() {
             cy.get('#unlink-GitHub').should('be.visible')
@@ -90,37 +100,81 @@ describe('Dropdown test', function() {
             cy.get('#link-Bitbucket').should('be.visible')
             // cy.get('#link-GitLab').should('be.visible')
     }
+
+    var goToAccountsOnboarding = function() {
+      cy
+        .contains('Link External Accounts')
+        .click()
+    }
     describe('Go to setup page', function() {
         beforeEach(function() {
+
             // Select dropdown setup
             cy
-                .get('#dropdown-onboarding')
-                .click()
+              .get('#dropdown-onboarding')
+              .click()
+        });
+
+        it('Should let you change your username if possible', function() {
+
+          cy
+            .get('#updateUsername')
+            .should('not.be.disabled')
+          cy
+            .get('#username')
+            .type('-')
+          cy
+            .get('#updateUsername')
+            .should('be.disabled')
+          cy
+            .get('#username')
+            .type('a')
+          cy
+            .get('#updateUsername')
+            .should('not.be.disabled')
+          cy
+            .get('#username')
+            .type('@')
+          cy
+            .get('#updateUsername')
+            .should('be.disabled')
         });
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
             // everythingOk();
+            // goToAccountsOnboarding();
             // cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
             //     expect(resp.status).to.eq('')
             // })
+            // goToAccountsOnboarding();
             // TODO: Gitlab is being very slow, hopefully one day we can remove this
             // cy.wait(10000);
+
+            goToAccountsOnboarding();
             everythingOk();
+            goToAccountsOnboarding();
             cy.visit(String(global.baseUrl) + '/auth/bitbucket.org?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
+            goToAccountsOnboarding();
             everythingOk();
+            goToAccountsOnboarding();
             cy.visit(String(global.baseUrl) + '/auth/potato.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
+            goToAccountsOnboarding();
             everythingOk();
+            goToAccountsOnboarding();
             cy.visit(String(global.baseUrl) + '/auth/github.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
+            goToAccountsOnboarding();
             everythingOk();
+            goToAccountsOnboarding();
             cy.visit(String(global.baseUrl) + '/auth/quay.io?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
                 expect(resp.status).to.eq('')
             })
+            goToAccountsOnboarding();
             everythingOk();
         });
         // TODO: this part of the wizard has been reworked

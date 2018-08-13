@@ -16,7 +16,12 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+  MatSnackBarConfig,
+  MatTooltipDefaultOptions,
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -56,7 +61,6 @@ import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
@@ -96,11 +100,19 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
+import { RegisterService } from './register/register.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
   hideDelay: 500,
   touchendHideDelay: 500,
+};
+
+export const myCustomSnackbarDefaults: MatSnackBarConfig = {
+  duration: 5000,
+  horizontalPosition: 'center',
+  verticalPosition: 'bottom'
 };
 
 @NgModule({
@@ -127,8 +139,9 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     DownloadCLIClientComponent,
     MaintenanceComponent,
     FundingComponent,
-    BannerComponent
-  ],
+    BannerComponent,
+    ChangeUsernameComponent
+],
   imports: [
     BrowserAnimationsModule,
     FormsModule,
@@ -187,7 +200,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ExtendedWorkflowsService,
     ExtendedToolsService,
     VerifiedByService,
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
   entryComponents: [DeleteAccountDialogComponent],
   bootstrap: [AppComponent]

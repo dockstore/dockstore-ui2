@@ -32,6 +32,13 @@
   flex: 1 1 auto;
 }
 
+.flex-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .toolbar-holder {
   padding: 0px;
 }
@@ -39,12 +46,6 @@
 .toolbar-holder-sm {
   height: auto !important;
   margin: 5px;
-}
-
-.navbar-holder {
-  margin: 0px !important;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
 mat-menu {
@@ -57,10 +58,4 @@ mat-menu {
 
 .icon-sm {
   width: 25%;
-}
-
-@media (min-width: 768px) and (max-width: 992px) {
-  .navbar-fluid {
-    width: auto !important;
-  }
 }

@@ -37,6 +37,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;
+  extendedUser: any;
   isExtended = false;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -54,7 +55,8 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.user$.subscribe(user => this.user = user);
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
+    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 
   resetPageNumber() {

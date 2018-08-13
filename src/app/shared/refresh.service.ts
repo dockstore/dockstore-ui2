@@ -64,9 +64,7 @@ export class RefreshService {
      */
     handleSuccess(message: string): void {
         this.stateService.setRefreshMessage(null);
-        this.snackBar.open(message + ' succeeded', 'Dismiss', {
-          duration: 5000,
-        });
+        this.snackBar.open(message + ' succeeded', 'Dismiss');
     }
 
 
@@ -80,9 +78,7 @@ export class RefreshService {
     handleError(message: string, error: any): void {
         this.errorService.setErrorAlert(error);
         this.stateService.setRefreshMessage(null);
-        this.snackBar.open(message + ' failed', 'Dismiss', {
-          duration: 5000,
-        });
+        this.snackBar.open(message + ' failed', 'Dismiss');
     }
 
     /**
