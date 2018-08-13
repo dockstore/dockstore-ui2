@@ -66,6 +66,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
     MatBadgeModule
   ],
@@ -92,6 +93,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
     MatBadgeModule
   ]
