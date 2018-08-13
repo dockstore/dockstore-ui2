@@ -19,16 +19,16 @@ import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class LoginService {
+export class RegisterService {
 
   constructor(private auth: AuthService, private matSnackBar: MatSnackBar) { }
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
-      return this.auth.authenticate(provider).subscribe(user => {
+      return this.auth.authenticate(provider, { 'register' : true}).subscribe(user => {
         observable.next(user);
         observable.complete();
-      }, (error) => {
+      }, error => {
         this.matSnackBar.open(error._body, 'Dismiss',  {
           duration: 5000,
         });
