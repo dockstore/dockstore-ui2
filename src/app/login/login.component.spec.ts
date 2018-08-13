@@ -23,6 +23,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { LoginComponent } from './login.component';
+import { RegisterService } from '../register/register.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -35,7 +36,9 @@ describe('LoginComponent', () => {
       imports: [RouterTestingModule],
       providers: [ {provide: TrackLoginService, useClass: TrackLoginStubService},
         { provide: LoginService, useClass: LoginStubService},
-        { provide: UserService, useClass: UserStubService }]
+        { provide: UserService, useClass: UserStubService },
+        { provide: RegisterService, useClass: LoginStubService }
+      ]
     })
     .compileComponents();
   }));

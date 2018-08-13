@@ -13,24 +13,29 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { UserService } from './../loginComponents/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LoginService } from './login.service';
+import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
+import { UserService } from './../loginComponents/user.service';
+import { LoginService } from './login.service';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-
   constructor(private trackLoginService: TrackLoginService,
-              private authService: LoginService,
-              private router: Router, private userService: UserService) { }
+    private loginService: LoginService, private registerService: RegisterService,
+    private router: Router, private userService: UserService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+      iconRegistry.addSvgIcon(
+        'google',
+        sanitizer.bypassSecurityTrustResourceUrl('assets/svg/btn_google_light_normal_ios.svg'));
+    }
 
   private login(observable) {
     observable.subscribe(
@@ -45,11 +50,23 @@ export class LoginComponent {
     );
   }
 
-  loginWithGitHub() {
-    this.login(this.authService.authenticate('github'));
+  /**
+   * Login to Dockstore account with a third party service
+   *
+   * @param {string} service 'github' or 'google'
+   * @memberof LoginComponent
+   */
+  loginWith(service: string): void {
+    this.login(this.loginService.authenticate(service));
   }
 
-  public loginWithGoogle() {
-    this.login(this.authService.authenticate('google'));
+  /**
+   * Register a new Dockstore account with a third party service
+   *
+   * @param {string} service 'github' or 'google'
+   * @memberof LoginComponent
+   */
+  registerWith(service: string): void {
+    this.login(this.registerService.authenticate(service));
   }
 }
