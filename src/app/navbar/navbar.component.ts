@@ -55,8 +55,8 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.user$.subscribe(user => this.user = user);
-    this.userService.extendedUser$.subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
+    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 
   resetPageNumber() {

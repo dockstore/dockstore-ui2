@@ -3,6 +3,8 @@ import { UserService } from '../../../../loginComponents/user.service';
 import { User } from '../../../../shared/swagger/model/user';
 import { UsersService } from './../../../../shared/swagger/api/users.service';
 import { RefreshService } from './../../../../shared/refresh.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-change-username',
@@ -17,16 +19,17 @@ export class ChangeUsernameComponent implements OnInit {
   checkingIfValid = false;
   usernameMeetsRequirements = true;
   extendedUser: any;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService) { }
 
   ngOnInit() {
-    this.userService.user$.subscribe(user => {
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         this.username = user.username;
       }
     });
-    this.userService.extendedUser$.subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 
   /**
