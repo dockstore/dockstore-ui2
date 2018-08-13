@@ -42,7 +42,31 @@ describe('Dropdown test', function() {
             everythingOk();
         });
     });
-    describe('Go to Dockstore Account Controls', function() {
+    describe('Go to disabled Dockstore Account Controls', function() {
+      beforeEach(function() {
+          // Select dropdown accounts
+          cy
+          .server()
+          .route({
+            method: "GET",
+            url: "/users/user/extended",
+            response: {"canChangeUsername":true}
+          })
+          cy
+              .get('#dropdown-accounts')
+              .click()
+          cy.contains("Dockstore Account Controls").click()
+      });
+      it ('Should not have the delete button disabled', function() {
+        cy.contains("Delete Dockstore Account").should('not.be.disabled').click();
+        cy.contains("Yes, delete my account").should('be.disabled')
+        cy.get('input').type('potato')
+        cy.contains("Yes, delete my account").should('be.disabled')
+        cy.get('input').clear().type('user_A')
+        cy.contains("Yes, delete my account").should('not.be.disabled')
+      })
+    });
+    describe('Go to enabled Dockstore Account Controls', function() {
       beforeEach(function() {
           // Select dropdown accounts
           cy
