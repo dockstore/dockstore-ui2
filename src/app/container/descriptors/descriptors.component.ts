@@ -22,8 +22,8 @@ import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.serv
 import { FileService } from '../../shared/file.service';
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, FileWrapper, ToolFile } from '../../shared/swagger';
-import { Tag } from '../../shared/swagger';
+import { GA4GHService, ToolFile } from '../../shared/swagger';
+import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptorService } from './tool-descriptor.service';
 
 @Component({
@@ -41,10 +41,12 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.onVersionChange(value);
   }
 
+  protected entryType: ('tool' | 'workflow') = 'tool';
+
   constructor(private containerService: ContainerService,
-    private descriptorsService: ToolDescriptorService, private gA4GHService: GA4GHService,
-    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService) {
-    super(fileService);
+    private descriptorsService: ToolDescriptorService, protected gA4GHService: GA4GHService,
+    public fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService) {
+    super(fileService, gA4GHFilesStateService, gA4GHService);
     this.published$ = this.containerService.toolIsPublished$;
   }
 
@@ -87,17 +89,5 @@ export class DescriptorsComponent extends EntryFileSelector {
         return [];
       }
     }));
-  }
-
-  reactToFile(): void {
-    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
-    // TODO: Memoize this
-    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
-        this.content = file.content;
-        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
-        this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.updateCustomDownloadFileButtonAttributes();
-      });
   }
 }

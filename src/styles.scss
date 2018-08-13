@@ -1186,3 +1186,8 @@ tabset.homeComponent {
 .nav-tabs.nav-justified > li > a {
   margin: 0px !important;
 }
+
+// This is like the bootstrap 4 utility class, remove once we have the real one
+.align-middle {
+  vertical-align: middle;
+}

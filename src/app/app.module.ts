@@ -15,7 +15,7 @@
  */
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -37,6 +37,10 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
+import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
+import {
+  DeleteAccountDialogComponent,
+} from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
@@ -103,6 +107,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 @NgModule({
   declarations: [
     AppComponent,
+    ControlsComponent,
+    DeleteAccountDialogComponent,
     SponsorsComponent,
     NavbarComponent,
     HomeComponent,
@@ -144,13 +150,14 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ModalModule.forRoot(),
     StargazersModule,
     NgxMdModule.forRoot(),
+    ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule
   ],
   providers: [
     AccountsService,
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     AuthService,
     LoginService,
     RegisterService,
@@ -184,7 +191,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     VerifiedByService,
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
   ],
-  bootstrap: [ AppComponent ]
+  entryComponents: [DeleteAccountDialogComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

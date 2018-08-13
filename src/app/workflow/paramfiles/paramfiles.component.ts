@@ -21,8 +21,8 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, ToolFile, FileWrapper } from '../../shared/swagger';
-import { WorkflowVersion } from '../../shared/swagger';
+import { GA4GHService, ToolFile } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
@@ -37,13 +37,13 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.clearContent();
     this.onVersionChange(value);
   }
-  public entryType = 'workflow';
+  protected entryType: ('tool' | 'workflow') = 'workflow';
   public downloadFilePath: string;
 
-  constructor(private paramfilesService: ParamfilesService, private gA4GHService: GA4GHService,
-    public fileService: FileService, private gA4GHFilesStateService: GA4GHFilesStateService,
+  constructor(private paramfilesService: ParamfilesService, protected gA4GHService: GA4GHService,
+    public fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
     private workflowService: WorkflowService) {
-    super(fileService);
+    super(fileService, gA4GHFilesStateService, gA4GHService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
@@ -63,17 +63,5 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     return this.gA4GHFilesStateService.testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
       return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
     }));
-  }
-
-  reactToFile(): void {
-    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
-    // TODO: Memoize this
-    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
-        this.content = file.content;
-        this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
-        this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.updateCustomDownloadFileButtonAttributes();
-      });
   }
 }

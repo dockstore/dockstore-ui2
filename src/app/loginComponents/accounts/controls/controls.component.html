@@ -1,0 +1,10 @@
+<mat-card>
+  <mat-card-header>
+    <!-- <mat-card-title>Dockstore Account Controls</mat-card-title> -->
+    <mat-card-subtitle>
+      Dockstore account controls have a large impact and should be used with extreme caution
+    </mat-card-subtitle>
+  </mat-card-header>
+  <button class="mr-1" mat-raised-button color="warn" (click)="deleteAccount()" [disabled]="isDisabled">Delete Dockstore Account</button>
+  <span *ngIf="isDisabled">Only available for accounts with no published tools/workflows</span>
+</mat-card>

@@ -13,102 +13,143 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<div class="container">
-  <mat-accordion class="example-headers-align">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          General Dockstore Account Information
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="col-lg-3 col-md-3 col-sm-4">
-          <img *ngIf="user?.avatarUrl" [src]="user?.avatarUrl" height="175">
-        </div>
-        <mat-list class="col-lg-9 col-md-9 col-sm-8">
-          <mat-list-item>
-            <strong>Username</strong>:&nbsp;
-            <span id="account-username"> {{user?.username}}</span>
-          </mat-list-item>
-          <mat-list-item>
-            <strong>Administrator</strong>:&nbsp;
-            <span id="account-is-admin"> {{ user?.isAdmin ? 'Yes' : 'No' }}</span>
-          </mat-list-item>
-          <mat-list-item *ngIf="getDockstoreToken()">
-            <strong>Dockstore Token</strong>:&nbsp;
-            <span style="word-break: break-all;font-size: small" class="hidden-xs">{{getDockstoreToken()}}</span>&nbsp;
-            <button class="btn btn-default" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
-              <span class="glyphicon glyphicon-copy"></span>
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <mat-action-row>
-      </mat-action-row>
-    </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="(hasGitHubToken$ | async)">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          GitHub Profile
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="col-lg-3 col-md-3 col-sm-4">
-          <img *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL" height="175">
-        </div>
-        <mat-list class="col-lg-9 col-md-9 col-sm-8">
-          <mat-list-item *ngIf="gitHubProfile?.name">
-            <strong>Name</strong>:&nbsp;{{gitHubProfile.name}}
-          </mat-list-item>
-          <mat-list-item *ngIf="gitHubProfile?.email">
-            <strong>Email</strong>:&nbsp;{{gitHubProfile.email}}
-          </mat-list-item>
-          <mat-list-item *ngIf="gitHubProfile?.bio">
-            <strong>Bio</strong>:&nbsp;{{gitHubProfile.bio}}
-          </mat-list-item>
-          <mat-list-item *ngIf="gitHubProfile?.company">
-            <strong>Company</strong>:&nbsp;{{gitHubProfile.company}}
-          </mat-list-item>
-          <mat-list-item *ngIf="gitHubProfile?.location">
-            <strong>Location</strong>:&nbsp;{{gitHubProfile.location}}
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <mat-action-row>
-        <button mat-button color="primary" [disabled]="syncingWithGitHub" (click)="syncGitHub()">Sync with GitHub</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="(hasGoogleToken$ | async)">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="flex-vert-center">
-          Google Profile
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="col-lg-3 col-md-3 col-sm-4">
-          <img *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL" height="175">
-        </div>
-        <mat-list class="col-lg-9 col-md-9 col-sm-8">
-          <mat-list-item *ngIf="googleProfile?.name">
-            <strong>Name</strong>:&nbsp;{{googleProfile.name}}
-          </mat-list-item>
-          <mat-list-item *ngIf="googleProfile?.email">
-            <strong>Email</strong>:&nbsp;{{googleProfile.email}}
-          </mat-list-item>
-          <mat-list-item *ngIf="googleProfile?.bio">
-            <strong>Bio</strong>:&nbsp;{{googleProfile.bio}}
-          </mat-list-item>
-          <mat-list-item *ngIf="googleProfile?.company">
-            <strong>Company</strong>:&nbsp;{{googleProfile.company}}
-          </mat-list-item>
-          <mat-list-item *ngIf="googleProfile?.location">
-            <strong>Location</strong>:&nbsp;{{googleProfile.location}}
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <mat-action-row>
-        <button mat-button color="primary" [disabled]="syncingWithGoogle" (click)="syncGoogle()">Sync with Google</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-  </mat-accordion>
+<mat-progress-bar *ngIf="(syncing || syncing); else placeholder" mode="indeterminate"></mat-progress-bar>
+<ng-template #placeholder>
+  <div class="pt-2"></div>
+</ng-template>
+<div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
+  <mat-card fxFlex="300px" class="my-2 mx-2">
+    <mat-card-header>
+      <mat-card-title>
+        Dockstore Profile
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image *ngIf="user?.avatarUrl" [src]="user?.avatarUrl">
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <h1 matLine>
+            <strong>Username:</strong>
+          </h1>
+          <p matLine id="account-username">{{user?.username}}</p>
+        </mat-list-item>
+        <mat-list-item>
+          <h1 matLine>
+            <strong>Administrator:</strong>
+          </h1>
+          <p matLine id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="getDockstoreToken()">
+          <strong>Dockstore Token:</strong>
+          <button class="btn btn-default ml-1" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
+            <span class="glyphicon glyphicon-copy"></span>
+          </button>
+          <button [matTooltip]="show ? 'Hide token' : 'Show token'" class="btn btn-default" (click)="show = !show">
+            <span *ngIf="show" class="glyphicon glyphicon-eye-close"></span>
+            <span *ngIf="!show" class="glyphicon glyphicon-eye-open"></span>
+          </button>
+        </mat-list-item>
+        <br>
+        <mat-list-item *ngIf="show">
+          <!-- TODO: Only have 1 pipe here -->
+          <textarea type="text" matTextareaAutosize matInput class="small w-100" readonly>{{getDockstoreToken()}}</textarea>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  <mat-card fxFlex="300px" class="my-2 mx-2" *ngIf="(hasGitHubToken$ | async)">
+    <mat-card-header>
+      <mat-card-title>
+        GitHub Profile
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL">
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngIf="gitHubProfile?.name">
+          <h1 matLine>
+            <strong>Name:</strong>
+          </h1>
+          <p matLine>{{gitHubProfile.name}}
+          </p>
+        </mat-list-item>
+        <mat-list-item *ngIf="gitHubProfile?.email">
+          <h1 matLine>
+            <strong>Email:</strong>
+          </h1>
+          <p matLine>{{gitHubProfile.email}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="gitHubProfile?.bio">
+          <h1 matLine>
+            <strong>Bio:</strong>
+          </h1>
+          <p matLine>{{gitHubProfile.bio}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="gitHubProfile?.company">
+          <h1 matLine>
+            <strong>Company:</strong>
+          </h1>
+          <p matLine>{{gitHubProfile.company}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="gitHubProfile?.location">
+          <h1 matLine>
+            <strong>Location:</strong>
+          </h1>
+          <p matLine>{{gitHubProfile.location}}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with GitHub" [disabled]="syncing" (click)="sync(TokenSource.GITHUB)">
+        <mat-icon aria-label="Sync profile with GitHub">sync</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card fxFlex="300px" class="my-2  mx-2" *ngIf="(hasGoogleToken$ | async)">
+    <mat-card-header>
+      <mat-card-title>
+        Google Profile
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL">
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngIf="googleProfile?.name">
+          <h1 matLine>
+            <strong>Name:</strong>
+          </h1>
+          <p matLine>{{googleProfile.name}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="googleProfile?.email">
+          <h1 matLine>
+            <strong>Email:</strong>
+          </h1>
+          <p matLine>{{googleProfile.email}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="googleProfile?.bio">
+          <h1 matLine>
+            <strong>Bio:</strong>
+          </h1>
+          <p matLine>{{googleProfile.bio}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="googleProfile?.company">
+          <h1 matLine>
+            <strong>Company:</strong>
+          </h1>
+          <p matLine>{{googleProfile.company}}</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="googleProfile?.location">
+          <h1 matLine>
+            <strong>Location:</strong>
+          </h1>
+          <p matLine>{{googleProfile.location}}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button color="primary" class="pull-right" matTooltip="Sync profile with Google" [disabled]="syncing" (click)="sync(TokenSource.GOOGLE)">
+        <mat-icon aria-label="Sync profile with Google">sync</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>
