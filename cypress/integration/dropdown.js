@@ -112,9 +112,11 @@ describe('Dropdown test', function() {
 
         it('Should show all accounts as linked (except GitLab and Bitbucket)', function() {
             // everythingOk();
+            // goToAccountsOnboarding();
             // cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
             //     expect(resp.status).to.eq('')
             // })
+            // goToAccountsOnboarding();
             // TODO: Gitlab is being very slow, hopefully one day we can remove this
             // cy.wait(10000);
 

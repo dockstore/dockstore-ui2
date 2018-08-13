@@ -56,7 +56,7 @@ export class DownloadCLIClientComponent implements OnInit {
 #### Requirements
 1. Linux/Ubuntu (Recommended) or Mac OS X machine
 2. Java 8 (Oracle)
-3. Python and pip (Optional)
+3. Python and pip (Optional: if working with CWL)
 
 #### Part 1 - Install dependencies and Dockstore CLI
 1. Add the Oracle Java repo and install:
