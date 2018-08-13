@@ -1,50 +1,44 @@
-<hr />
-<div class="container">
-  <div class="row">
-    <div *ngFor="let row of accountsInfo">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">{{ row.name }} Account
-            <span *ngIf="row.isLinked">
-              <span class="label label-success">
-                <span class="glyphicon glyphicon-link"></span>
-                <span>Linked</span>
-              </span>
-              <button class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
-                <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
-                <span *ngIf="!row.show" class="glyphicon glyphicon-eye-open"></span>
-              </button>
-              <span class="form-inline" *ngIf="row.show">
-                <span class="input-group">
-                  <!-- TODO: Only have 1 pipe here -->
-                  <span class="form-control input-xs">{{row.source | getTokenContent: tokens}}</span>
-                  <span class="input-group-btn">
-                    <button class="btn btn-default btn-xs" type="button" ngxClipboard [cbContent]="row.source | getTokenContent: tokens" (cbOnSuccess)="isCopied1 = true">
-                      <span class="glyphicon glyphicon-copy"></span>
-                    </button>
-                  </span>
-                </span>
-              </span>
+<div *ngFor="let row of accountsInfo">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">{{ row.name }} Account
+        <span *ngIf="row.isLinked">
+          <span class="label label-success">
+            <span class="glyphicon glyphicon-link"></span>
+            <span>Linked</span>
+          </span>
+          <button class="btn btn-default btn-xs" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="row.source | getTokenContent: tokens"
+            (cbOnSuccess)="isCopied1 = true">
+            <span class="glyphicon glyphicon-copy"></span>
+          </button>
+          <button [matTooltip]="row.show ? 'Hide token' : 'Show token'" class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
+            <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
+            <span *ngIf="!row.show" class="glyphicon glyphicon-eye-open"></span>
+          </button>
+          <span class="form-inline" *ngIf="row.show">
+            <span class="input-group">
+              <!-- TODO: Only have 1 pipe here -->
+              <span class="form-control input-xs">{{row.source | getTokenContent: tokens}}</span>
             </span>
-          </h4>
-          <div *ngIf="row.isLinked; else notLinked">
-            <p class="pull-left">Username: {{row.source | getTokenUsername: tokens}}</p>
-            <button [attr.id]="'unlink-' + row.name" class="pull-right btn btn-default btn-sm" (click)="unlink(row.source)">
-              <span class="text-danger glyphicon glyphicon-link"></span>
-              <span class="text-danger">Unlink Account</span>
-            </button>
-          </div>
-          <ng-template #notLinked>
-            <button [attr.id]="'link-' + row.name" *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-sm" (click)="link(row.source)">
-              <span class="glyphicon glyphicon-link"></span>
-              <span>Link Account</span>
-            </button>
-          </ng-template>
-        </div>
-        <div class="panel-body">
-          <strong>{{ row.bold }} </strong> {{ row.message }}
-        </div>
+          </span>
+        </span>
+      </h4>
+      <div *ngIf="row.isLinked; else notLinked">
+        <p class="pull-left">Username: {{row.source | getTokenUsername: tokens}}</p>
+        <button [attr.id]="'unlink-' + row.name" class="pull-right btn btn-default btn-sm" (click)="unlink(row.source)">
+          <span class="text-danger glyphicon glyphicon-link"></span>
+          <span class="text-danger">Unlink Account</span>
+        </button>
       </div>
+      <ng-template #notLinked>
+        <button [attr.id]="'link-' + row.name" *ngIf="!row.isLinked" class="pull-right btn btn-primary btn-sm" (click)="link(row.source)">
+          <span class="glyphicon glyphicon-link"></span>
+          <span>Link Account</span>
+        </button>
+      </ng-template>
+    </div>
+    <div class="panel-body">
+      <strong>{{ row.bold }} </strong> {{ row.message }}
     </div>
   </div>
 </div>
