@@ -13,6 +13,12 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+<div *ngIf="loading; else placeholder">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<ng-template #placeholder>
+  <div class="pt-2"></div>
+</ng-template>
 <h1 mat-dialog-title>
   Are you sure you want to delete this Dockstore account?
 </h1>
@@ -30,7 +36,7 @@
     </div>
     <div class="btn-group">
       <button mat-raised-button mat-dialog-close>No</button>
-      <button mat-raised-button (click)="onNoClick(); deleteAccount()" [disabled]="usernameForm.invalid" color="warn">Yes, delete my account</button>
+      <button mat-raised-button (click)="deleteAccount()" [disabled]="usernameForm.invalid" color="warn">Yes, delete my account</button>
     </div>
   </div>
 </div>
