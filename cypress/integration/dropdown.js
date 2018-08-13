@@ -58,10 +58,10 @@ describe('Dropdown test', function() {
           cy.contains("Dockstore Account Controls").click()
       });
       it('Should have the delete button disabled', function() {
-          cy.contains("Delete Dockstore Account").should('be.disabled');
+          cy.contains("Delete Dockstore Account").should('not.be.disabled');
       });
       it('Should have the change username button enabled', function() {
-        cy.contains("Update Username").should('be.disabled');
+        cy.contains("Update Username").should('not.be.disabled');
     });
     });
     var everythingOk = function() {
