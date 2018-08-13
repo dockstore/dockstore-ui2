@@ -14,34 +14,40 @@
   ~    limitations under the License.
   -->
 <div>
-  <span *ngIf="_selectedVersion?.valid" class="row m-0">
-    <span class="form-group col-sm-4">
-      <strong>File:</strong>
-      <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+  <alert *ngIf="!_selectedVersion?.valid" type="warning">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp;This version of the workflow is invalid.
+  </alert>
+  <div *ngIf="content; else noContent">
+    <span class="row m-0">
+      <span class="form-group col-sm-4">
+        <strong>File:</strong>
+        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+      </span>
     </span>
-  </span>
-  <div *ngIf="this.nullDescriptors || !_selectedVersion?.valid">
+    <div class="row m-0">
+      <div class="btn-group pull-right" role="group">
+        <a mat-mini-fab color="primary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+          <mat-icon>save_alt</mat-icon>
+        </a>
+        <ng-template #unpublishedDownloadLink>
+          <a mat-mini-fab color="primary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+            <mat-icon>save_alt</mat-icon>
+          </a>
+        </ng-template>
+        <button mat-mini-fab color="primary" type="button" ngxClipboard [cbContent]="content">
+          <mat-icon>file_copy</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div [hidden]="!content">
+    <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
+  </div>
+  <ng-template #noContent>
     <alert type="warning">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;A Descriptor File associated with this Docker container could not be found.
     </alert>
-  </div>
-  <div *ngIf="!this.nullDescriptors && _selectedVersion?.valid" class="row m-0">
-    <div class="btn-group" role="group">
-      <a mat-mini-fab color="primary" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
-        <mat-icon>save_alt</mat-icon>
-      </a>
-      <ng-template #unpublishedDownloadLink>
-        <a mat-mini-fab color="primary" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
-            <mat-icon>save_alt</mat-icon>
-        </a>
-      </ng-template>
-      <button mat-mini-fab color="primary" type="button" ngxClipboard [cbContent]="content">
-          <mat-icon>file_copy</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div [hidden]="!content || !_selectedVersion?.valid">
-    <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
-  </div>
+  </ng-template>
 </div>

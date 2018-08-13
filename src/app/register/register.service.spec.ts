@@ -18,22 +18,22 @@ import { MatSnackBarModule } from '@angular/material';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 
 import { AuthStubService } from '../test/service-stubs';
-import { LoginService } from './login.service';
+import { RegisterService } from './register.service';
 
-describe('LoginService', () => {
+describe('RegisterService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [MatSnackBarModule],
-            providers: [LoginService,
-                { provide: AuthService, useClass: AuthStubService},
+            providers: [RegisterService,
+                { provide: AuthService, useClass: AuthStubService}
             ],
         });
     });
 
-    it('should be created', inject([LoginService], (service: LoginService) => {
+    it('should be created', inject([RegisterService], (service: RegisterService) => {
         expect(service).toBeTruthy();
     }));
-    it('should be able to authenticate', inject([LoginService], (service: LoginService) => {
+    it('should be able to authenticate', inject([RegisterService], (service: RegisterService) => {
         service.authenticate('github').subscribe(user => {
             expect(user).toEqual({});
         });

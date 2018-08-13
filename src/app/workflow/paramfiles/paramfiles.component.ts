@@ -21,8 +21,8 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { GA4GHService, ToolFile, FileWrapper } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
@@ -69,8 +69,8 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
     // TODO: Memoize this
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, '#workflow/' + this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolTests) => {
-        this.content = file.test;
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
+        this.content = file.content;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'workflow');
         this.filePath = this.fileService.getFilePath(this.currentFile);
         this.updateCustomDownloadFileButtonAttributes();

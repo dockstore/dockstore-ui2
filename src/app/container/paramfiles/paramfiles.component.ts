@@ -22,8 +22,8 @@ import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.serv
 import { FileService } from '../../shared/file.service';
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService, GA4GHService, ToolFile, ToolTests } from '../../shared/swagger';
-import { Tag } from '../../shared/swagger/model/tag';
+import { ContainersService, GA4GHService, ToolFile, FileWrapper } from '../../shared/swagger';
+import { Tag } from '../../shared/swagger';
 import { ParamfilesService } from './paramfiles.service';
 
 @Component({
@@ -93,8 +93,8 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
     // TODO: Memoize this
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor, this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: ToolTests) => {
-        this.content = file.test;
+      this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
+        this.content = file.content;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, 'tool');
         this.filePath = this.fileService.getFilePath(this.currentFile);
         this.updateCustomDownloadFileButtonAttributes();

@@ -38,7 +38,7 @@
       <a mat-button class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
         <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
       </a>
-      <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+      <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login/Register</a>
       <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
         <mat-icon class="hidden-lg">account_circle</mat-icon>
         <span class="hidden-md hidden-sm">{{user?.username}}</span>

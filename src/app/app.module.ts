@@ -16,7 +16,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatIconModule, MatSnackBarModule } from '@angular/material';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -52,6 +52,7 @@ import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
@@ -92,6 +93,12 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 
+export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
+  showDelay: 500,
+  hideDelay: 500,
+  touchendHideDelay: 500,
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -118,12 +125,9 @@ import { StarringModule } from './starring/starring.module';
 ],
   imports: [
     BrowserAnimationsModule,
-    MatSnackBarModule,
     FormsModule,
     Ng2UiAuthModule.forRoot(AuthConfig),
     HeaderModule,
-    MatButtonModule,
-    MatIconModule,
     ListContainersModule,
     ListWorkflowsModule,
     BsDropdownModule.forRoot(),
@@ -147,6 +151,7 @@ import { StarringModule } from './starring/starring.module';
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     AuthService,
     LoginService,
+    RegisterService,
     LogoutService,
     DockstoreService,
     DateService,
@@ -174,7 +179,8 @@ import { StarringModule } from './starring/starring.module';
     MetadataService,
     ExtendedWorkflowsService,
     ExtendedToolsService,
-    VerifiedByService
+    VerifiedByService,
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
   ],
   bootstrap: [ AppComponent ]
 })

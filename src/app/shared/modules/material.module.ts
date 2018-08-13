@@ -25,6 +25,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatMenuModule,
   MatPaginatorModule,
   MatProgressBarModule,
   MatRadioModule,
@@ -37,7 +38,6 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatMenuModule
 } from '@angular/material';
 
 @NgModule({
