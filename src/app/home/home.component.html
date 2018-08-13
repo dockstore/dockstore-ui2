@@ -59,14 +59,12 @@
       <div class="col-md-3 col-sm-12 row-center">
         <div class="row">
             <div class="button-row">
-              <div class="col-sm-6 col-xs-12 col-md-12">
-                  <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
-              </div>
               <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=!user>
                   <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
+                  <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
               </div>
               <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=user>
-                <a mat-raised-button color="accent" routerLink="onboarding">Full Tutorial <mat-icon>chevron_right</mat-icon></a>
+                <a mat-raised-button color="accent" routerLink="onboarding">Setup Account <mat-icon>chevron_right</mat-icon></a>
               </div>
               <div class="col-sm-6 col-xs-12 col-md-12">
                 <a mat-raised-button color="accent" href="https://docs.dockstore.org/news/">News and Events <mat-icon>chevron_right</mat-icon></a>

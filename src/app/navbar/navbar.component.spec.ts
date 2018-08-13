@@ -25,7 +25,7 @@ import { PageNumberStubService, TrackLoginStubService } from '../test/service-st
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NavbarComponent } from './navbar.component';
-import { MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, MatToolbarModule } from '@angular/material';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -38,7 +38,9 @@ describe('NavbarComponent', () => {
         RouterTestingModule,
         MatMenuModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatDividerModule,
+        MatToolbarModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PagenumberService,

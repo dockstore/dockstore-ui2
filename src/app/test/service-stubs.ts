@@ -254,9 +254,14 @@ export class UsersStubService {
     getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<Token>> {
         return observableOf([]);
     }
-
     getExtendedUserData() {
       return observableOf(null);
+    }
+    checkUserExists(username) {
+      return observableOf([]);
+    }
+    changeUsername(username) {
+      return observableOf([]);
     }
 }
 
@@ -427,6 +432,7 @@ export class LogoutStubService {
 export class UserStubService {
     userId$ = observableOf(5);
     user$ = observableOf({});
+    extendedUser$ = observableOf({});
     updateUser() {
     }
 }

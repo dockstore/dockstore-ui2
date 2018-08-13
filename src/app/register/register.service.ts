@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
+import { AuthService } from 'ng2-ui-auth';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class RegisterService {
