@@ -5,7 +5,8 @@ import { ChangeUsernameComponent } from './change-username.component';
 
 import { UserService } from '../../../../loginComponents/user.service';
 import { UsersService } from './../../../../shared/swagger/api/users.service';
-import { UsersStubService, UserStubService } from './../../../../test/service-stubs';
+import { RefreshService } from './../../../../shared/refresh.service';
+import { UsersStubService, UserStubService, RefreshStubService } from './../../../../test/service-stubs';
 
 import {
   MatButtonModule,
@@ -33,7 +34,8 @@ describe('ChangeUsernameComponent', () => {
       ],
       providers: [
         { provide: UserService, useClass: UserStubService },
-        { provide: UsersService, useClass: UsersStubService }
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: RefreshService, useClass: RefreshStubService }
       ]
     })
     .compileComponents();

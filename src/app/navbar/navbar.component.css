@@ -32,6 +32,13 @@
   flex: 1 1 auto;
 }
 
+.flex-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .toolbar-holder {
   padding: 0px;
 }
