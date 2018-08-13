@@ -10,14 +10,14 @@
     <input matInput placeholder="Username" name="username" [(value)]="username" (keyup)="checkIfUsernameExists($event)" id="username">
   </mat-form-field>
   <span class="change-username-form-buttons">
-    <button mat-raised-button color="primary" id="updateUsername" [disabled]="!validUsername || !extendedUser?.canChangeUsername" (click)="updateUsername()">Update Username</button>
+    <button mat-raised-button color="primary" id="updateUsername" [disabled]="!usernameNotTaken || !usernameMeetsRequirements || !extendedUser?.canChangeUsername" (click)="updateUsername()">Update Username</button>
 
     <span *ngIf="extendedUser?.canChangeUsername">
       <span *ngIf="!checkingIfValid">
-        <span *ngIf="validUsername && usernameMeetsRequirements" class="vertical-center">
+        <span *ngIf="usernameNotTaken && usernameMeetsRequirements" class="vertical-center">
           <mat-icon style="color: green">check</mat-icon>&nbsp;Username available
         </span>
-        <span *ngIf="!validUsername || !usernameMeetsRequirements" class="vertical-center">
+        <span *ngIf="!usernameNotTaken || !usernameMeetsRequirements" class="vertical-center">
           <mat-icon style="color: red">clear</mat-icon>&nbsp;Username not available
         </span>
       </span>

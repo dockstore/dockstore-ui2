@@ -13,7 +13,7 @@ export class ChangeUsernameComponent implements OnInit {
   @Input() showText;
   username: string;
   user: User;
-  validUsername = true;
+  usernameNotTaken = true;
   checkingIfValid = false;
   usernameMeetsRequirements = true;
   extendedUser: any;
@@ -43,9 +43,9 @@ export class ChangeUsernameComponent implements OnInit {
       this.usersService.checkUserExists(this.username).subscribe(
         (userExists: boolean) => {
           if (userExists && this.username === this.user.username) {
-            this.validUsername = true;
+            this.usernameNotTaken = true;
           } else {
-            this.validUsername = !userExists;
+            this.usernameNotTaken = !userExists;
           }
           this.checkingIfValid = false;
         }, error => {
