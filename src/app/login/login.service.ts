@@ -29,9 +29,7 @@ export class LoginService {
         observable.next(user);
         observable.complete();
       }, (error) => {
-        this.matSnackBar.open(error._body, 'Dismiss',  {
-          duration: 5000,
-        });
+        this.matSnackBar.open(error._body, 'Dismiss');
       });
     });
   }

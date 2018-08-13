@@ -16,7 +16,12 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+  MatSnackBarConfig,
+  MatTooltipDefaultOptions,
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -103,6 +108,12 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   touchendHideDelay: 500,
 };
 
+export const myCustomSnackbarDefaults: MatSnackBarConfig = {
+  duration: 5000,
+  horizontalPosition: 'center',
+  verticalPosition: 'bottom'
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -187,7 +198,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ExtendedWorkflowsService,
     ExtendedToolsService,
     VerifiedByService,
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
   entryComponents: [DeleteAccountDialogComponent],
   bootstrap: [AppComponent]
