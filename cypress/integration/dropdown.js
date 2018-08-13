@@ -60,6 +60,9 @@ describe('Dropdown test', function() {
       it('Should have the delete button disabled', function() {
           cy.contains("Delete Dockstore Account").should('be.disabled');
       });
+      it('Should have the change username button enabled', function() {
+        cy.contains("Update Username").should('be.disabled');
+    });
     });
     var everythingOk = function() {
             cy.get('#unlink-GitHub').should('be.visible')
