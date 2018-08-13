@@ -52,7 +52,6 @@ import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';

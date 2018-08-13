@@ -38,7 +38,6 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatMenuModule,
   MatProgressSpinnerModule,
   MatBadgeModule
 } from '@angular/material';
@@ -67,7 +66,6 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatMenuModule,
     MatProgressSpinnerModule,
     MatBadgeModule
   ],
@@ -94,7 +92,6 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatMenuModule,
     MatProgressSpinnerModule,
     MatBadgeModule
   ]
