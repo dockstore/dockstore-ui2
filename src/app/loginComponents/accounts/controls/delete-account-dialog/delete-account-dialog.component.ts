@@ -71,9 +71,7 @@ export class DeleteAccountDialogComponent {
    */
   private deleteAccountSuccess(): void {
     this.logoutService.logout();
-    this.matSnackBar.open('Deleting Dockstore account succeeded', 'Dismiss', {
-      duration: 5000,
-    });
+    this.matSnackBar.open('Deleting Dockstore account succeeded', 'Dismiss');
   }
 
   /**
@@ -83,9 +81,7 @@ export class DeleteAccountDialogComponent {
    * @memberof DeleteAccountDialogComponent
    */
   private deleteAccountFailure(): void {
-    this.matSnackBar.open('Deleting Dockstore account failed', 'Dismiss', {
-      duration: 5000,
-    });
+    this.matSnackBar.open('Deleting Dockstore account failed', 'Dismiss');
   }
 
   /**
