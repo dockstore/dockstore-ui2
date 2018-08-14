@@ -21,9 +21,9 @@
 <div class="container search-container">
   <div class="row">
     <div class="col-md-3 containers-rsb">
-      <div class="mb-3">
-        <button mat-raised-button color="accent" (click)="accordion.openAll()" class="w-50">Expand All<mat-icon>unfold_more</mat-icon></button>
-        <button mat-raised-button color="accent" (click)="accordion.closeAll()" class="w-50">Collapse All<mat-icon>unfold_less</mat-icon></button>
+      <div class="mb-3 expand-collapse-holder">
+        <button mat-raised-button color="accent" (click)="accordion.openAll()">Expand All<mat-icon>unfold_more</mat-icon></button>
+        <button mat-raised-button color="accent" (click)="accordion.closeAll()">Collapse All<mat-icon>unfold_less</mat-icon></button>
       </div>
       <mat-accordion multi>
         <mat-expansion-panel expanded>
@@ -135,7 +135,7 @@
                 </div>
               </div>
             </ng-template>
-            <button type="button" class="refresh-all-button btn btn-primary"
+            <button mat-button type="button"
                     [popover]="popTemplate"
                     popoverTitle="Link to this page"
                     placement="bottom" [outsideClick]="true">

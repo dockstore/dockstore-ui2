@@ -35,8 +35,10 @@
         </angular-tag-cloud>
       </div>
     </div>
-    <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-    <app-search-tool-table></app-search-tool-table>
+    <span class="m-2">
+      <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
+      <app-search-tool-table></app-search-tool-table>
+    </span>
   </tab>
 
   <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
@@ -59,7 +61,9 @@
       <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
       Browse Workflows
     </ng-template>
-    <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-    <app-search-workflow-table></app-search-workflow-table>
+    <span class="m-2">
+      <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+      <app-search-workflow-table></app-search-workflow-table>
+    </span>
   </tab>
 </tabset>

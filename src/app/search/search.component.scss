@@ -138,3 +138,9 @@
 .mat-expansion-panel-spacing {
   margin: 10px 0;
 }
+
+.expand-collapse-holder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

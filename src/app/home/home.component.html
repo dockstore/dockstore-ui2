@@ -98,8 +98,8 @@
               Browse Workflows
             </ng-template>
             <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-            <span *ngIf="selectedTab === 'workflowTab'">
-                <app-list-workflows [previewMode]="true"></app-list-workflows>
+            <span *ngIf="selectedTab === 'workflowTab'" class="m-2">
+              <app-list-workflows [previewMode]="true"></app-list-workflows>
             </span>
           </tab>
         </tabset>
