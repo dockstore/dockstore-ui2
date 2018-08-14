@@ -15,9 +15,11 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatRadioChange } from '@angular/material';
+import { MatDialogRef, MatRadioChange } from '@angular/material';
 import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
+import { formInputDebounceTime } from '../../shared/constants';
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
 import {
@@ -27,8 +29,6 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { debounceTime } from 'rxjs/operators';
-import { formInputDebounceTime } from '../../shared/constants';
 
 @Component({
   selector: 'app-register-workflow-modal',
@@ -64,7 +64,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService) {
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService,
+    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
   }
 
   friendlyRepositoryKeys(): Array<string> {
@@ -98,12 +99,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow);
   }
 
-  showModal() {
-    this.registerWorkflowModalService.setIsModalShown(true);
-  }
-
   hideModal() {
-    this.registerWorkflowModalService.setIsModalShown(false);
+    this.dialogRef.close();
   }
 
   // Validation starts here, should move most of these to a service somehow

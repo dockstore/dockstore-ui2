@@ -15,11 +15,15 @@
  */
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { combineLatest } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 import { MyEntry } from '../../shared/my-entry';
 import { Workflow } from '../../shared/swagger';
+import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { AccountsService } from './../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from './../../loginComponents/token.service';
 import { UserService } from './../../loginComponents/user.service';
@@ -35,8 +39,7 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-import { first, takeUntil, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+
 /**
  * How the workflow selection works:
  * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
@@ -71,7 +74,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
-    private workflowService: WorkflowService, protected authService: AuthService,
+    private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
     protected accountsService: AccountsService, private refreshService: RefreshService, private stateService: StateService,
     private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
     protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService) {
@@ -311,7 +314,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    this.registerWorkflowModalService.setIsModalShown(true);
+    const dialogRef = this.dialog.open(RegisterWorkflowModalComponent, {width: '600px'});
   }
 
   refreshAllEntries(): void {
