@@ -25,17 +25,17 @@
   </div>
   <div *ngIf="_selectedVersion.valid">
     <div>
-      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nextflow'" class="m-2" tooltip="Commands for creating a runtime JSON template">
+      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nfl'" class="m-2" tooltip="Commands for creating a runtime JSON template">
         Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
         <pre>{{ params }}</pre>
         or grab one that the workflow author has provided (if applicable)
         <pre>{{ wgetTestJsonDescription }}</pre>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nextflow'" class="m-2" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nfl'" class="m-2" tooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
         Run locally with the Dockstore CLI
         <pre>{{ cli }}</pre>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nextflow'" class="m-2">
+      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nfl'" class="m-2">
         <div tooltip="Nextflow can conveniently run a workflow off of source control">
           Run with nextflow
           <pre>{{ nextflowNativeLaunchDescription }}</pre>

@@ -93,7 +93,7 @@ export abstract class LaunchService {
         case 'cwl':
           urlType = 'PLAIN_CWL';
           break;
-        case 'nextflow':
+        case 'nfl':
           urlType = 'PLAIN_NFL';
           break;
         default:

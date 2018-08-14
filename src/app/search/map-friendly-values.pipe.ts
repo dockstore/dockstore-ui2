@@ -27,7 +27,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ])],
     ['descriptor_type', new Map([
       ['CWL', 'CWL'], ['WDL', 'WDL'],
-      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nextflow', 'Nextflow'], ['NEXTFLOW', 'Nextflow']
+      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
     ])],
     ['registry', new Map([
       ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR'],

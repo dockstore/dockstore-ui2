@@ -91,6 +91,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       this.title = this.getEntryPathFromURL();
       this.urlVersion = this.getVersionFromURL();
       this.setupPublicEntry(url);
+    } else {
+      if (this.entryTabs) {
+        this.selectTab(0);
+      }
     }
   }
 

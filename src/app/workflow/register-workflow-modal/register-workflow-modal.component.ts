@@ -169,7 +169,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
         break;
       }
-      case 'nextflow': {
+      case 'nfl': {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
         break;
       }

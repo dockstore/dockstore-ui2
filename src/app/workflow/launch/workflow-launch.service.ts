@@ -27,7 +27,7 @@ export class WorkflowLaunchService extends LaunchService {
     super();
   }
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
-    if (currentDescriptor === 'nextflow') {
+    if (currentDescriptor === 'nfl') {
       return `$ vim Dockstore.json`;
     }
     return `$ dockstore ${this.type} convert entry2json --entry ${path}:${versionName} > Dockstore.json

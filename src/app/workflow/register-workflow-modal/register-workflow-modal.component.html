@@ -149,7 +149,7 @@
                   Descriptor Type:
                 </label>
                 <mat-radio-group id="descriptorTypeRadioButtons" class="col-sm-9 radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes" (change)="radioButtonChange($event)">
-                  <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
+                  <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()" [disabled]="descriptorType === 'NFL'">
                     {{'descriptor_type' | mapFriendlyValue : descriptorType}}
                   </mat-radio-button>
                 </mat-radio-group>
