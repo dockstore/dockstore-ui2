@@ -7,7 +7,7 @@
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
-  <mat-step>
+  <mat-step *ngIf="extendedUser?.canChangeUsername">
     <ng-template matStepLabel>Confirm Your Username</ng-template>
 
     <h3>Choose Your Username</h3>

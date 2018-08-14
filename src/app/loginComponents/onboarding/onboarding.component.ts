@@ -1,16 +1,18 @@
 import { TokenService } from '../token.service';
 import { UsersService } from '../../shared/swagger';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html'
 })
 export class OnboardingComponent implements OnInit {
-  public curStep = 1;
   public tokenSetComplete;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+  extendedUser: any;
   constructor(private userService: UserService, private usersService: UsersService, private tokenService: TokenService) {
   }
   ngOnInit() {
@@ -25,24 +27,7 @@ export class OnboardingComponent implements OnInit {
         }
       }
     );
-  }
-  prevStep() {
-    if (this.curStep > 1) {
-      this.curStep--;
-    }
-  }
-  nextStep() {
-    if (!this.tokenSetComplete) {
-      return;
-    }
-    switch (this.curStep) {
-      case 1:
-      case 2:
-        this.curStep++;
-        break;
-      default:
-        localStorage.setItem('page', '/onboarding');
-    }
-  }
 
+    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+  }
 }
