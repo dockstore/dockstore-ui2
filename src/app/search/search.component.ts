@@ -17,7 +17,7 @@ import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
  */
 
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router/';
 import { HttpClient } from '@angular/common/http';
 import { Dockstore } from './../shared/dockstore.model';
@@ -29,6 +29,7 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchService } from './search.service';
+import { MatAccordion } from '@angular/material';
 
 @Component({
   selector: 'app-search',
@@ -36,6 +37,7 @@ import { SearchService } from './search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
+  @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
   private routeSub: Subscription;
   public shortUrl: string;

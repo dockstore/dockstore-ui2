@@ -21,58 +21,48 @@
 <div class="container search-container">
   <div class="row">
     <div class="col-md-3 containers-rsb">
-      <accordion>
-        <app-expand-collapse></app-expand-collapse>
-        <!-- Common search facets -->
-        <accordion-group panelClass="containers-accordion" #group [isOpen]="expandAll$ | async">
-          <div accordion-heading>
+      <span class="pb-3">
+        <button mat-raised-button color="accent" (click)="accordion.openAll()" class="w-50">Expand All<mat-icon>unfold_more</mat-icon></button>
+        <button mat-raised-button color="accent" (click)="accordion.closeAll()" class="w-50">Collapse All<mat-icon>unfold_less</mat-icon></button>
+      </span>
+      <mat-accordion multi>
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
             Search
-            <span>
-              <i class="pull-right float-xs-right glyphicon"
-                 [ngClass]="group?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
-              </i>
-            </span>
-          </div>
-          <div>
-            <input  tooltip="Find tools and workflows"
-                    type="text" list="suggestions" class="search-box form-control" [(ngModel)]="values"
-                    (ngModelChange)="onKey()" placeholder="Enter search term" />
-            <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
-              <div *ngFor="let term of autocompleteTerms">
-                <option [value]="term">
-              </div>
-            </datalist>
-          </div>
+          </mat-expansion-panel-header>
+          <input tooltip="Find tools and workflows"
+                  type="text" list="suggestions" class="search-box form-control" [(ngModel)]="values"
+                  (ngModelChange)="onKey()" placeholder="Enter search term" />
+          <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
+            <div *ngFor="let term of autocompleteTerms">
+              <option [value]="term">
+            </div>
+          </datalist>
+
           <button type="button" class="btn btn-success btn-sm center-block advancedSearch-btn" (click)="openAdvancedSearch()">
             Open Advanced Search
           </button>
           <app-advancedsearch></app-advancedsearch>
-        </accordion-group>
-        <!-- This is all the search facets -->
-        <accordion-group *ngFor="let key of getKeys(orderedBuckets)" #bucket panelClass="containers-accordion" [isOpen]="expandAll$ | async">
-          <div accordion-heading>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
+          <mat-expansion-panel-header>
             {{friendlyNames.get(key)}}
-            <span>
-              <i class="pull-right float-xs-right glyphicon"
-                 [ngClass]="bucket?.isOpen ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'">
-              </i>
-            </span>
-          </div>
+          </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
               <i class="float-xs-right glyphicon" aria-hidden="true"
-                 [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+                  [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
             </button>
             <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
               <i class="float-xs-right glyphicon" aria-hidden="true"
-                 [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+                  [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
             </button>
           </div>
           <div *ngFor='let subBucket of getBucketKeys(key); let i = index'>
             <div class="panel-container-label selected-item">
               <div class="container-name-oflw pull-left">
                   <span>
-                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
                     {{( key | mapFriendlyValue : subBucket)}}
                   </span>
               </div>
@@ -86,7 +76,7 @@
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
                   <span tooltip="{{( key | mapFriendlyValue : subBucket)}}">
-                    <input type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
                     {{( key | mapFriendlyValue : subBucket)}}
                   </span>
                 </div>
@@ -97,7 +87,7 @@
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
                   <span tooltip="{{( key | mapFriendlyValue : subBucket)}}">
-                    <input tooltip="{{subBucket}}" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"/>
+                    <mat-checkbox tooltip="{{subBucket}}" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
                     {{( key | mapFriendlyValue : subBucket)}}
                   </span>
                 </div>
@@ -116,9 +106,10 @@
               </a>
             </span>
           </div>
-        </accordion-group>
-      </accordion>
-      <button (click) = resetFilters() type="button" class="btn btn-info btn-sm sidebar-btn reset">
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <button mat-raised-button color="accent" (click) = resetFilters() type="button" class="w-100">
         Reset Filters
       </button>
     </div>

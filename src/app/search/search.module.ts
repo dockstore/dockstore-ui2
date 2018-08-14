@@ -41,12 +41,10 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './search.service';
-import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collapse.component';
 
 @NgModule({
   declarations: [
     AdvancedSearchComponent,
-    ExpandCollapseComponent,
     SearchComponent,
     SearchResultsComponent,
     SearchToolTableComponent,
