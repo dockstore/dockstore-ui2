@@ -21,11 +21,77 @@
  // Be sure that you only ever include this mixin once!
  @include mat-core();
 
+ $my-blue: (
+  50: #4e5c88,
+  100: #4e5c88,
+  200: #4e5c88,
+  300: #21335b,
+  400: #21335b,
+  500: #21335b,
+  600: #000c31,
+  700: #000c31,
+  800: #000c31,
+  900: #000c31,
+  A100: #21335b,
+  A200: #21335b,
+  A400: #21335b,
+  A700: #21335b,
+  contrast: (
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
+$my-teal: (
+  50: #77a8af,
+  100: #77a8af,
+  200: #77a8af,
+  300: #487980,
+  400: #487980,
+  500: #487980,
+  600: #194d54,
+  700: #194d54,
+  800: #194d54,
+  900: #194d54,
+  A100: #487980,
+  A200: #487980,
+  A400: #487980,
+  A700: #487980,
+  contrast: (
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
  // Define the palettes for your theme using the Material Design palettes available in palette.scss
  // (imported above). For each palette, you can optionally specify a default, lighter, and darker
  // hue. Available color palettes: https://www.google.com/design/spec/style/color.html
- $candy-app-primary: mat-palette($mat-indigo, 800);
- $candy-app-accent:  mat-palette($mat-teal, 500);
+ $candy-app-primary: mat-palette($my-blue, 300, 50, 600);
+ $candy-app-accent:  mat-palette($my-teal, 300, 50, 600);
 
  // The warn palette is optional (defaults to red).
  $candy-app-warn:    mat-palette($mat-red);
