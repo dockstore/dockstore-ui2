@@ -21,10 +21,10 @@
 <div class="container search-container">
   <div class="row">
     <div class="col-md-3 containers-rsb">
-      <span class="pb-3">
+      <div class="mb-3">
         <button mat-raised-button color="accent" (click)="accordion.openAll()" class="w-50">Expand All<mat-icon>unfold_more</mat-icon></button>
         <button mat-raised-button color="accent" (click)="accordion.closeAll()" class="w-50">Collapse All<mat-icon>unfold_less</mat-icon></button>
-      </span>
+      </div>
       <mat-accordion multi>
         <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
@@ -109,7 +109,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <button mat-raised-button color="accent" (click) = resetFilters() type="button" class="w-100">
+      <button mat-raised-button color="accent" (click) = resetFilters() type="button" class="w-100 mt-3">
         Reset Filters
       </button>
     </div>

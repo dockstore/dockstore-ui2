@@ -1,4 +1,3 @@
-import { ExpandService } from './expand.service';
 import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
 /*
  *    Copyright 2017 OICR
@@ -65,7 +64,6 @@ export class SearchComponent implements OnInit {
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public query_size = 201;
   searchTerm = false;
-  expandAll$: Observable<boolean>;
   autocompleteTerms: Array<string> = new Array<string>();
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -115,7 +113,7 @@ export class SearchComponent implements OnInit {
    * @param providerService
    */
   constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
-    public searchService: SearchService, private expandService: ExpandService,
+    public searchService: SearchService,
     private advancedSearchService: AdvancedSearchService,
     private router: Router,
     private locationService: Location,
@@ -131,7 +129,6 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.expandAll$ = this.expandService.expandAll$;
     this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
