@@ -22,6 +22,7 @@ import { debounceTime } from 'rxjs/operators';
 import { formInputDebounceTime } from '../../shared/constants';
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
+import { Tooltip } from '../../shared/tooltip';
 import {
   exampleDescriptorPatterns,
   formErrors,
@@ -33,7 +34,7 @@ import { RegisterWorkflowModalService } from './register-workflow-modal.service'
 @Component({
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
-  styleUrls: ['./register-workflow-modal.component.css']
+  styleUrls: ['./register-workflow-modal.component.scss']
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
@@ -45,6 +46,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public refreshMessage: string;
   public descriptorValidationPattern;
   public descriptorLanguages$: Observable<Array<string>>;
+  public Tooltip = Tooltip;
   public hostedWorkflow = {
     name: '',
     descriptorType: 'cwl'
@@ -89,14 +91,19 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         this.changeDescriptorType(languages[0].toLowerCase());
       }
     });
+    this.workflow.repository = this.friendlyRepositoryKeys()[1];
   }
 
   registerWorkflow() {
     this.registerWorkflowModalService.registerWorkflow();
+    // TODO: Only hide if previous thing was a success
+    this.hideModal();
   }
 
   registerHostedWorkflow() {
     this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow);
+    // TODO: Only hide if previous thing was a success
+    this.hideModal();
   }
 
   hideModal() {
