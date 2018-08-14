@@ -90,8 +90,8 @@ $my-teal: (
  // Define the palettes for your theme using the Material Design palettes available in palette.scss
  // (imported above). For each palette, you can optionally specify a default, lighter, and darker
  // hue. Available color palettes: https://www.google.com/design/spec/style/color.html
- $candy-app-primary: mat-palette($my-blue, 300, 600, 50);
- $candy-app-accent:  mat-palette($my-teal, 300, 600, 50);
+ $candy-app-primary: mat-palette($my-blue, 300, 50, 600);
+ $candy-app-accent:  mat-palette($my-teal, 300, 50, 600);
 
  // The warn palette is optional (defaults to red).
  $candy-app-warn:    mat-palette($mat-red);
