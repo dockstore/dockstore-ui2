@@ -22,7 +22,6 @@ import { AccordionModule } from 'ngx-bootstrap';
 import { ProviderService } from '../shared/provider.service';
 import { AdvancedSearchStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
-import { ExpandService } from './expand.service';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
@@ -42,8 +41,7 @@ describe('SearchComponent', () => {
         {provide: SearchService, useClass: SearchStubService},
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         ProviderService,
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService},
-        ExpandService
+        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService}
       ]
     })
     .compileComponents();
