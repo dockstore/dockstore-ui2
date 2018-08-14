@@ -31,7 +31,7 @@
             Search
           </mat-expansion-panel-header>
           <input tooltip="Find tools and workflows"
-                  type="text" list="suggestions" class="search-box form-control" [(ngModel)]="values"
+                  type="text" list="suggestions" class="search-box form-control w-100 mb-3" [(ngModel)]="values"
                   (ngModelChange)="onKey()" placeholder="Enter search term" />
           <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
             <div *ngFor="let term of autocompleteTerms">
@@ -39,7 +39,7 @@
             </div>
           </datalist>
 
-          <button type="button" class="btn btn-success btn-sm center-block advancedSearch-btn" (click)="openAdvancedSearch()">
+          <button mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
             Open Advanced Search
           </button>
           <app-advancedsearch></app-advancedsearch>
