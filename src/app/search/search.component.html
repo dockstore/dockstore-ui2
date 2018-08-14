@@ -30,7 +30,7 @@
           <mat-expansion-panel-header>
             Search
           </mat-expansion-panel-header>
-          <input tooltip="Find tools and workflows"
+          <input matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
                   type="text" list="suggestions" class="search-box form-control w-100 mb-3" [(ngModel)]="values"
                   (ngModelChange)="onKey()" placeholder="Enter search term" />
           <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
@@ -49,11 +49,11 @@
             {{friendlyNames.get(key)}}
           </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
-            <button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+            <button mat-stroked-button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
               <i class="float-xs-right glyphicon" aria-hidden="true"
                   [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
             </button>
-            <button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="btn btn-info col-md-6 sortBtn">
+            <button mat-stroked-button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
               <i class="float-xs-right glyphicon" aria-hidden="true"
                   [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
             </button>
@@ -75,7 +75,7 @@
             <div class="panel-container-label">
               <div *ngIf="i < 5">
                 <div class="container-name-oflw pull-left">
-                  <span tooltip="{{( key | mapFriendlyValue : subBucket)}}">
+                  <span matTooltip="{{( key | mapFriendlyValue : subBucket)}}" [matTooltipPosition]="'after'">
                     <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
                     {{( key | mapFriendlyValue : subBucket)}}
                   </span>
@@ -86,8 +86,8 @@
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)">
                 <div class="container-name-oflw pull-left">
-                  <span tooltip="{{( key | mapFriendlyValue : subBucket)}}">
-                    <mat-checkbox tooltip="{{subBucket}}" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
+                  <span matTooltip="{{( key | mapFriendlyValue : subBucket)}}" [matTooltipPosition]="'after'">
+                    <mat-checkbox matTooltip="{{subBucket}}" [matTooltipPosition]="'after'" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
                     {{( key | mapFriendlyValue : subBucket)}}
                   </span>
                 </div>
