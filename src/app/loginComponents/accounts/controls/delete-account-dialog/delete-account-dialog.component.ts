@@ -1,29 +1,33 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
-import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 
 import { LogoutService } from '../../../../shared/logout.service';
 import { User, UsersService } from '../../../../shared/swagger';
 import { UserService } from '../../../user.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-delete-account-dialog',
   templateUrl: './delete-account-dialog.component.html',
   styleUrls: ['./delete-account-dialog.component.scss']
 })
-export class DeleteAccountDialogComponent {
+export class DeleteAccountDialogComponent implements OnDestroy {
   username = '';
   usernameFormControl: FormControl;
   usernameForm: FormGroup;
-
+  loading = false;
+  private ngUnsubscribe: Subject<{}> = new Subject();
   constructor(public userService: UserService, public form: FormBuilder, public dialogRef: MatDialogRef<DeleteAccountDialogComponent>,
     private logoutService: LogoutService, private matSnackBar: MatSnackBar, private usersService: UsersService) {
     this.userService.user$.pipe(map((user: User) => {
       return user.username;
-    })).subscribe((username: string) => {
+    }), takeUntil(this.ngUnsubscribe)).subscribe((username: string) => {
       this.setupForm(username);
+    }, error => {
+      console.error('Could not get username from userService');
     });
   }
 
@@ -52,7 +56,11 @@ export class DeleteAccountDialogComponent {
    * @memberof DeleteAccountDialogComponent
    */
   deleteAccount(): void {
-    this.usersService.selfDestruct().subscribe((status: boolean) => {
+    this.loading = true;
+    this.usersService.selfDestruct().pipe(finalize(() => {
+      this.loading = false;
+      this.onNoClick();
+    })).subscribe((status: boolean) => {
       if (status) {
         this.deleteAccountSuccess();
       } else {
@@ -99,5 +107,10 @@ export class DeleteAccountDialogComponent {
       }
       return null;
     };
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
