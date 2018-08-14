@@ -66,6 +66,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
         newSourceFiles).subscribe((workflow: Workflow) => {
           this.toggleEdit();
           this.refreshService.handleSuccess(message);
+          this.clearSourceFiles();
           this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2: Workflow) => {
             this.workflowService.setWorkflow(workflow2);
           });
@@ -84,4 +85,14 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);
     this.testParameterFiles = this.getTestFiles(this.originalSourceFiles);
   }
+
+  /**
+   * Clear the sourcefiles stored
+   */
+  clearSourceFiles() {
+    this.descriptorFiles = [];
+    this.testParameterFiles = [];
+    this.originalSourceFiles = [];
+  }
+
 }
