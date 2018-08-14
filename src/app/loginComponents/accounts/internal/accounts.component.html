@@ -19,12 +19,12 @@
 </ng-template>
 <div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
   <mat-card fxFlex="300px" class="my-2 mx-2">
+    <img mat-card-image *ngIf="user?.avatarUrl" [src]="user?.avatarUrl">
     <mat-card-header>
       <mat-card-title>
-        Dockstore Profile
+        <h3>Dockstore Profile</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image *ngIf="user?.avatarUrl" [src]="user?.avatarUrl">
     <mat-card-content>
       <mat-list>
         <mat-list-item>
@@ -58,12 +58,12 @@
     </mat-card-content>
   </mat-card>
   <mat-card fxFlex="300px" class="my-2 mx-2" *ngIf="(hasGitHubToken$ | async)">
+    <img mat-card-image *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL">
     <mat-card-header>
       <mat-card-title>
-        GitHub Profile
+        <h3>GitHub Profile</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL">
     <mat-card-content>
       <mat-list>
         <mat-list-item *ngIf="gitHubProfile?.name">
@@ -106,12 +106,12 @@
     </mat-card-actions>
   </mat-card>
   <mat-card fxFlex="300px" class="my-2  mx-2" *ngIf="(hasGoogleToken$ | async)">
+    <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL">
     <mat-card-header>
       <mat-card-title>
-        Google Profile
+        <h3>Google Profile</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL">
     <mat-card-content>
       <mat-list>
         <mat-list-item *ngIf="googleProfile?.name">

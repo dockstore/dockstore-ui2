@@ -1,7 +1,7 @@
 <div *ngFor="let row of accountsInfo" class="p-3">
   <mat-card class="mb-2">
     <div>
-      <h4>
+      <h3>
         <mat-chip-list>
           <mat-chip *ngIf="row.isLinked" color="accent" selected matTooltip="Account is linked">
             <mat-icon>link</mat-icon>
@@ -25,7 +25,7 @@
             </span>
           </span>
         </mat-chip-list>
-      </h4>
+      </h3>
     </div>
     <div>
       <strong>{{ row.bold }} </strong> {{ row.message }}

@@ -11,7 +11,7 @@
 
   <mat-card>
     <h3>Delete your Dockstore Account</h3>
+    <p>Only available for accounts with no published tools/workflows.</p>
     <button class="mr-1" mat-raised-button color="warn" (click)="deleteAccount()" [disabled]="isDisabled">Delete Dockstore Account</button>
-    <span *ngIf="isDisabled">Only available for accounts with no published tools/workflows</span>
   </mat-card>
 </div>
