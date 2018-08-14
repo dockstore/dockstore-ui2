@@ -21,17 +21,29 @@ export class TwitterService {
 
   constructor() { }
   runScript() {
-    const id = 'twitter-wjs';
-    if (document.getElementById(id)) {
-      return;
+    // https://stackoverflow.com/questions/42993859/twitter-widget-on-angular-2
+    (<any>window).twttr = (function (d, s, id) {
+      let js: any;
+      const fjs = d.getElementsByTagName(s)[0];
+      const t = (<any>window).twttr || {};
+      if (d.getElementById(id)) {
+        return t;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function (f: any) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, 'script', 'twitter-wjs'));
+
+    if ((<any>window).twttr.ready()) {
+      (<any>window).twttr.widgets.load();
     }
-    const doc = document;
-    const script = 'script';
-    let js: any;
-    const scriptElement = doc.getElementsByTagName(script)[0];
-    js = doc.createElement(script);
-    js.id = id;
-    js.src = 'https://platform.twitter.com/widgets.js';
-    scriptElement.parentNode.insertBefore(js, scriptElement);
   }
 }
