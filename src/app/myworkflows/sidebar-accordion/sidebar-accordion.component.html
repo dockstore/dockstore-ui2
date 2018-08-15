@@ -10,7 +10,7 @@
       <mat-tab label="Published">
       <mat-list class="org-accordion-list">
           <mat-list-item *ngFor="let workflowObj of orgObj?.published" [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}">
-            <a [ngClass]="{selected: (workflowId$ | async) === workflowObj?.id}" class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}" [routerLink]="'/my-workflows/' + workflowObj.full_workflow_path">
+            <a class="no-wrap" title="{{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}" [routerLink]="'/my-workflows/' + workflowObj.full_workflow_path">
               {{workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '')}}
             </a>
           </mat-list-item>

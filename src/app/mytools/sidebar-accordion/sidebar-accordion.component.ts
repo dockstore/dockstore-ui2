@@ -1,9 +1,8 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tool } from './../../container/register-tool/tool';
 import { ContainerService } from './../../shared/container.service';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
-import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -14,7 +13,6 @@ export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
   @Input() groupEntriesObject;
   @Input() refreshMessage;
-  @Output() selectEntry: EventEmitter<any> = new EventEmitter();
 
   public toolId$: Observable<number>;
   private registerTool: Tool;
@@ -37,9 +35,5 @@ export class SidebarAccordionComponent implements OnInit {
 
   showRegisterEntryModal(): void {
     this.registerToolService.setIsModalShown(true);
-  }
-
-  selectTool(tool: ExtendedDockstoreTool): void {
-    this.selectEntry.emit(tool);
   }
 }

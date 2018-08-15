@@ -72,6 +72,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
+    this.containerService.setTools(null);
+
     this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       tool => {
         this.tool = tool;
@@ -80,6 +82,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
           this.updateActiveTab();
         }
     });
+
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
@@ -88,6 +91,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         });
       }
     });
+
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       if (tools) {
         this.tools = tools;
@@ -96,6 +100,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.selectInitialEntry(sortedContainers);
       }
     });
+
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
@@ -192,7 +197,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   selectEntry(tool: ExtendedDockstoreTool): void {
     if (tool !== null) {
       this.containersService.getContainer(tool.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
-        this.location.go('/my-tools/' + result.tool_path);
+        this.location.go(this.pageName + '/' + result.tool_path);
         this.containerService.setTool(result);
       });
     }
