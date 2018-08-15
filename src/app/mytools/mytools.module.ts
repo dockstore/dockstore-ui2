@@ -62,5 +62,6 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     RegisterToolService, AccountsService
   ],
+  entryComponents: [RegisterToolComponent]
 })
 export class MyToolsModule {}
