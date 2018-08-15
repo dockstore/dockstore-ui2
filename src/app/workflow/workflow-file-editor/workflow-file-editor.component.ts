@@ -21,8 +21,11 @@ export class WorkflowFileEditorComponent extends FileEditing {
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
     if (value != null) {
+      this.clearSourceFiles();
       this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
       this.loadVersionSourcefiles();
+    } else {
+      this.clearSourceFiles();
     }
   }
   constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
@@ -66,7 +69,6 @@ export class WorkflowFileEditorComponent extends FileEditing {
         newSourceFiles).subscribe((workflow: Workflow) => {
           this.toggleEdit();
           this.refreshService.handleSuccess(message);
-          this.clearSourceFiles();
           this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2: Workflow) => {
             this.workflowService.setWorkflow(workflow2);
           });

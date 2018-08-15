@@ -21,13 +21,17 @@ export class ToolFileEditorComponent extends FileEditing {
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;
       if (value != null) {
+        this.clearSourceFiles();
         this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
         this.loadVersionSourcefiles();
+      } else {
+        this.clearSourceFiles();
       }
-    }
-    constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService) {
-      super();
-    }
+  }
+
+  constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService) {
+    super();
+  }
 
   /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
@@ -85,6 +89,16 @@ export class ToolFileEditorComponent extends FileEditing {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);
     this.testParameterFiles = this.getTestFiles(this.originalSourceFiles);
     this.dockerFile = this.getDockerFile(this.originalSourceFiles);
+  }
+
+  /**
+   * Clear the sourcefiles stored
+   */
+  clearSourceFiles() {
+    this.dockerFile = [];
+    this.descriptorFiles = [];
+    this.testParameterFiles = [];
+    this.originalSourceFiles = [];
   }
 
 
