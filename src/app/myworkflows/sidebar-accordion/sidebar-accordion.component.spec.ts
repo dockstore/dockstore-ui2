@@ -15,7 +15,9 @@ import {
   MatIconModule,
   MatExpansionModule,
   MatListModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDialogRef,
+  MatDialogModule
 } from '@angular/material';
 
 describe('SidebarAccordionComponent', () => {
@@ -26,6 +28,7 @@ describe('SidebarAccordionComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SidebarAccordionComponent, RefreshWorkflowOrganizationComponent ],
       imports: [
+        MatDialogModule,
         MatTabsModule,
         MatToolbarModule,
         MatIconModule,
@@ -36,7 +39,13 @@ describe('SidebarAccordionComponent', () => {
         RouterTestingModule],
       providers: [
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService }
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: (dialogResult: any) => { }
+          }
+        }
       ]
     })
     .compileComponents();
