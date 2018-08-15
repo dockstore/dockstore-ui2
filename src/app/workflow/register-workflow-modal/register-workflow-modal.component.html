@@ -74,7 +74,7 @@
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
           <mat-error *ngIf="formErrors.gitPath">{{ formErrors.gitPath }}</mat-error>
         </mat-form-field>
-        <mat-radio-group class="w-100" position="before" id="descriptorTypeRadioButtons" class="radio-group" [(ngModel)]="workflow.descriptorType" name="descriptorTypes"
+        <mat-radio-group class="w-100 radio-group" position="before" id="descriptorTypeRadioButtons" [(ngModel)]="workflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
           <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
@@ -111,34 +111,22 @@
           </button>
         </div>
       </form>
-      <form *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm" (ngSubmit)="registerHostedWorkflow()"
+      <form fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm" (ngSubmit)="registerHostedWorkflow()"
         novalidate>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="col-sm-3 control-label pt-0">
-              Descriptor Type:
-            </label>
-            <mat-radio-group id="descriptorTypeRadioButtons" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
-              (change)="radioButtonChange($event)">
-              <mat-radio-button *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()" [disabled]="descriptorType === 'NFL'">
-                {{'descriptor_type' | mapFriendlyValue : descriptorType}}
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">
-              Workflow Name:
-            </label>
-            <div class="col-sm-9">
-              <input id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" type="text" class="form-control" [(ngModel)]="hostedWorkflow.name"
-                [pattern]="validationPatterns.workflowName" maxlength="256" placeholder="e.g. fastqc" required/>
-              <div *ngIf="hostedWorkflowName?.errors?.pattern" class="alert alert-danger">
-                A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
+        <mat-radio-group id="descriptorTypeRadioButtons" position="before" class="w-100 radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
+          (change)="radioButtonChange($event)">
+          <mat-label>Descriptor Type: </mat-label>
+          <mat-radio-button *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()" [disabled]="descriptorType === 'NFL'">
+            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field class="w-100">
+          <mat-label>Workflow Name</mat-label>
+          <input matInput id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" [(ngModel)]="hostedWorkflow.name" [pattern]="validationPatterns.workflowName"
+            maxlength="256" placeholder="e.g. fastqc" required/>
+          <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
+        </mat-form-field>
+        <div mat-dialog-actions>
           <button type="button" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>

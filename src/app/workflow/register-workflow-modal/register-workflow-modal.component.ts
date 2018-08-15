@@ -39,6 +39,7 @@ import { RegisterWorkflowModalService } from './register-workflow-modal.service'
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
+  public validationMessage = validationMessages;
   public examplePatterns = exampleDescriptorPatterns;
   public workflow: Workflow;
   public workflowRegisterError;
