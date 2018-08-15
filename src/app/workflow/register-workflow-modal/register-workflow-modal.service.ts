@@ -15,6 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -26,6 +27,7 @@ import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
+import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -91,7 +93,7 @@ export class RegisterWorkflowModalService {
         this.setWorkflow(this.actualWorkflow);
     }
 
-    registerWorkflow() {
+    registerWorkflow(dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
         this.clearWorkflowRegisterError();
         this.stateService.setRefreshMessage('Registering new workflow...');
         this.workflowsService.manualRegister(
@@ -107,7 +109,7 @@ export class RegisterWorkflowModalService {
                 })).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
-                    this.setIsModalShown(false);
+                    dialogRef.close();
                     this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
                 }, error => this.setWorkflowRegisterError(error));
             }, error =>  {
@@ -120,7 +122,7 @@ export class RegisterWorkflowModalService {
      * Registers a hosted workflow
      * @param  hostedWorkflow hosted workflow object
      */
-    registerHostedWorkflow(hostedWorkflow) {
+    registerHostedWorkflow(hostedWorkflow, dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
       this.clearWorkflowRegisterError();
       this.stateService.setRefreshMessage('Registering new workflow...');
       this.hostedService.createHostedWorkflow(
@@ -130,7 +132,7 @@ export class RegisterWorkflowModalService {
           })).subscribe(result => {
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);
-            this.setIsModalShown(false);
+            dialogRef.close();
             this.clearWorkflowRegisterError();
             this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
           }, error =>  {

@@ -77,7 +77,7 @@ describe('Service: RegisterWorkflowModal', () => {
 
     it('should set register workflow and clear refreshing state and error', inject([RegisterWorkflowModalService, StateService],
         (service: RegisterWorkflowModalService, stateService: StateService) => {
-            service.registerWorkflow();
+            service.registerWorkflow(null);
             service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toEqual(false));
             service.workflowRegisterError$.subscribe(isModalShown => expect(isModalShown).toBeFalsy);
         }));

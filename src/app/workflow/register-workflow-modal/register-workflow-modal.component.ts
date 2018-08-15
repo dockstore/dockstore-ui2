@@ -96,15 +96,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow();
-    // TODO: Only hide if previous thing was a success
-    this.hideModal();
+    this.registerWorkflowModalService.registerWorkflow(this.dialogRef);
   }
 
   registerHostedWorkflow() {
-    this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow);
-    // TODO: Only hide if previous thing was a success
-    this.hideModal();
+    this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow, this.dialogRef);
   }
 
   hideModal() {
