@@ -13,14 +13,14 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { UserService } from '../../loginComponents/user.service';
-import { CommunicatorService } from '../../shared/communicator.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
@@ -35,6 +35,8 @@ import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { Configuration } from './../../shared/swagger/configuration';
 import { first, takeUntil } from 'rxjs/operators';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+
 
 @Component({
   selector: 'app-my-tool',
@@ -49,25 +51,34 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public refreshMessage: string;
   private registerTool: Tool;
   public showSidebar = true;
-  constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
-    private communicatorService: CommunicatorService, private usersService: UsersService,
+  constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
-    private containerService: ContainerService,
+    private containerService: ContainerService, private location: Location,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService,
-    protected urlResolverService: UrlResolverService, private router: Router) {
+    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService) {
     super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
   ngOnInit() {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (this.groupEntriesObject) {
+          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+            this.groupEntriesObject);
+          this.selectEntry(foundTool);
+        }
+      }
+    });
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
-    this.containerService.tool$.subscribe(tool => {
-      this.tool = tool;
-      if (tool) {
-        this.setIsFirstOpen();
-        this.updateActiveTab();
-      }
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      tool => {
+        this.tool = tool;
+        if (tool) {
+          this.setIsFirstOpen();
+          this.updateActiveTab();
+        }
     });
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
@@ -179,9 +190,11 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   selectEntry(tool: ExtendedDockstoreTool): void {
-    this.containerService.setTool(tool);
-    if (tool) {
-      this.router.navigateByUrl(this.pageName + '/' + tool.tool_path);
+    if (tool !== null) {
+      this.containersService.getContainer(tool.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+        this.location.go('/my-tools/' + result.tool_path);
+        this.containerService.setTool(result);
+      });
     }
   }
 

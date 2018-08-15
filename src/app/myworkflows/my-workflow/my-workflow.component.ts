@@ -35,7 +35,7 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-import { first, takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 /**
  * How the workflow selection works:

@@ -342,4 +342,12 @@ export class ContainerComponent extends Entry {
       this.containerEditData.labels.splice(index, 1);
     }
   }
+
+  isHosted(): boolean {
+    if (this.tool) {
+      return this.tool.mode === DockstoreTool.ModeEnum.HOSTED;
+    } else {
+      return true;
+    }
+  }
 }
