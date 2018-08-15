@@ -81,7 +81,7 @@
                 </ul>
               </div>
               <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="gitPath" [(ngModel)]="tool.gitPath" minlength="3" maxlength="128"
-                [pattern]="validationPatterns.gitPath" required tooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
+                [pattern]="validationPatterns.gitPath" required matTooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
               />
             </div>
             <div *ngIf="formErrors.gitPath" class="alert alert-danger"> {{ formErrors.gitPath }} </div>
@@ -93,7 +93,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text" class="form-control" name="dockerfilePath" [(ngModel)]="tool.default_dockerfile_path" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath"
-              required tooltip="Default relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" />
+              required matTooltip="Default relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" />
             <div *ngIf="formErrors.dockerfilePath" class="alert alert-danger"> {{ formErrors.dockerfilePath }} </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text" class="form-control" name="cwlPath" [(ngModel)]="tool.default_cwl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath"
-              [required]="!(tool.default_wdl_path.length)" tooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl"
+              [required]="!(tool.default_wdl_path.length)" matTooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl"
             />
             <div *ngIf="formErrors.cwlPath" class="alert alert-danger"> {{ formErrors.cwlPath }} </div>
           </div>
@@ -114,7 +114,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text" class="form-control" name="wdlPath" [(ngModel)]="tool.default_wdl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath"
-              [required]="!(tool.default_cwl_path.length)" tooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl"
+              [required]="!(tool.default_cwl_path.length)" matTooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl"
             />
             <div *ngIf="formErrors.wdlPath" class="alert alert-danger"> {{ formErrors.wdlPath }} </div>
           </div>
@@ -125,7 +125,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="tool.default_cwl_test_parameter_file" minlength="3" maxlength="128"
-              [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json"
+              [pattern]="validationPatterns.testFilePath" matTooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json"
             />
             <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.cwlTestParameterFilePath }} </div>
           </div>
@@ -136,7 +136,7 @@
           </label>
           <div class="col-sm-9">
             <input type="text" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="tool.default_wdl_test_parameter_file" minlength="3" maxlength="128"
-              [pattern]="validationPatterns.testFilePath" tooltip="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json"
+              [pattern]="validationPatterns.testFilePath" matTooltip="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json"
             />
             <div *ngIf="formErrors.wdlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.wdlTestParameterFilePath }} </div>
           </div>
@@ -161,7 +161,7 @@
                 </ul>
               </div>
               <input id="imageRegistryInput" type="text" class="form-control" name="imagePath" [(ngModel)]="tool.imagePath" minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath"
-                required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
+                required matTooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
             </div>
             <div *ngIf="formErrors.imagePath" class="alert alert-danger"> {{ formErrors.imagePath}} </div>
           </div>
@@ -174,19 +174,19 @@
             <span *ngIf="showCustomDockerRegistryPath">
               <span *ngIf="tool.irProvider === 'Amazon ECR'">
                 <input id="dockerRegistryPathInput" class="form-control" name="amazonDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256"
-                  tooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"
+                  matTooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"
                 />
                 <div *ngIf="formErrors.amazonDockerRegistryPath" class="alert alert-danger"> {{ formErrors.amazonDockerRegistryPath}} </div>
               </span>
               <span *ngIf="tool.irProvider === 'Seven Bridges'">
                 <input id="dockerRegistryPathInput" class="form-control" name="sevenBridgesDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256"
-                  tooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com" [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
+                  matTooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com" [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
                 />
                 <div *ngIf="formErrors.sevenBridgesDockerRegistryPath" class="alert alert-danger"> {{ formErrors.sevenBridgesDockerRegistryPath}} </div>
               </span>
             </span>
             <input *ngIf="!showCustomDockerRegistryPath" id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="customDockerRegistryPath"
-              maxlength="256" tooltip="Custom Docker registry path" disabled/>
+              maxlength="256" matTooltip="Custom Docker registry path" disabled/>
           </div>
         </div>
         <div class="form-group form-group-sm">
@@ -195,7 +195,7 @@
           </label>
           <div class="col-sm-9">
             <label>
-              <input type="checkbox" name="tool.private_access" [(ngModel)]="tool.private_access" tooltip="Image registry entry is private." id="privateTool"
+              <input type="checkbox" name="tool.private_access" [(ngModel)]="tool.private_access" matTooltip="Image registry entry is private." id="privateTool"
               />
             </label>
           </div>
@@ -206,7 +206,7 @@
           </label>
           <div class="col-sm-9">
             <input id="toolMaintainerEmailInput" type="email" class="form-control" name="toolmaintaineremail" [(ngModel)]="tool.tool_maintainer_email" maxlength="256"
-              tooltip="Email of the tool maintainer." placeholder="e.g. example@domain.com" />
+              matTooltip="Email of the tool maintainer." placeholder="e.g. example@domain.com" />
             <div *ngIf="formErrors.email" class="alert alert-danger"> {{ formErrors.email}} </div>
           </div>
         </div>
@@ -215,7 +215,7 @@
             Tool Name:
           </label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" name="toolName" [(ngModel)]="tool.toolname" maxlength="256" [pattern]="validationPatterns.toolName" tooltip="Dockstore Image path toolname suffix."
+            <input type="text" class="form-control" name="toolName" [(ngModel)]="tool.toolname" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Dockstore Image path toolname suffix."
               placeholder="e.g. liftover-fast (optional)" />
             <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
           </div>
@@ -253,7 +253,7 @@
                 </ul>
               </div>
               <input id="hostedImagePath" type="text" class="form-control" name="hostedImagePath" #hostedImagePath="ngModel" [(ngModel)]="hostedTool.path"
-                minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required tooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
+                minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required matTooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
               />
             </div>
             <div *ngIf="hostedImagePath?.errors?.pattern" class="alert alert-danger">
@@ -269,7 +269,7 @@
             <span *ngIf="hostedTool.registryProvider === 'Seven Bridges' || hostedTool.registryProvider === 'Amazon ECR'">
               <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">
                 <input id="hostedDockerRegistryPathInput" class="form-control" name="amazonDockerRegistryPath" #amazonDockerRegistryPath="ngModel" [(ngModel)]="hostedTool.registry"
-                  maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"
+                  maxlength="256" matTooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"
                 />
                 <div *ngIf="amazonDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
                   Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.
@@ -277,7 +277,7 @@
               </span>
               <span *ngIf="hostedTool.registryProvider === 'Seven Bridges'">
                 <input id="hostedDockerRegistryPathInput" class="form-control" name="sevenBridgesDockerRegistryPath" #sevenBridgesDockerRegistryPath="ngModel"
-                  [(ngModel)]="hostedTool.registry" maxlength="256" tooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com"
+                  [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com"
                   [pattern]="validationPatterns.sevenBridgesDockerRegistryPath" />
                 <div *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
                   Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.
@@ -285,7 +285,7 @@
               </span>
             </span>
             <input *ngIf="hostedTool.registryProvider !== 'Seven Bridges' && hostedTool.registryProvider !== 'Amazon ECR'" id="dockerRegistryPathInput" class="form-control"
-              name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" tooltip="Custom Docker registry path" disabled/>
+              name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" disabled/>
           </div>
         </div>
       </div>
