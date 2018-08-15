@@ -24,11 +24,12 @@
   </p>
   <p class="error-output">{{toolRegisterError.errorDetails}}</p>
 </div>
-<div class="alert alert-info" role="alert" *ngIf="refreshMessage">
-  <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
-  </span>
-  Please wait, retrieving tool...
+<div *ngIf="refreshMessage; else placeholder">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
+<ng-template #placeholder>
+  <div class="pt-2"></div>
+</ng-template>
 <mat-horizontal-stepper #stepper>
   <ng-template matStepperIcon="edit">
     <mat-icon>done</mat-icon>
