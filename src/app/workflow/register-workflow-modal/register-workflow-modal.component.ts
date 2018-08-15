@@ -54,7 +54,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   };
   public options = [
     {
-      label: 'Use CWL, WDL or Nextflow from GitHub, BitBucket, etc.',
+      label: 'Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.',
       value: 0
     },
     {
