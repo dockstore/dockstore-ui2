@@ -62,7 +62,7 @@
       <form fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="selectedOption?.value == 0" #registerWorkflowForm="ngForm" name="registerWorkflowForm"
         (submit)="registerWorkflow()" novalidate>
         <mat-form-field class="w-100">
-          <mat-select placeholder="Source Code Provider" id="descriptorTypeRadioButtons" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
+          <mat-select placeholder="Source Code Provider" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
             <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
               {{repository}}
             </mat-option>
@@ -103,7 +103,7 @@
             placeholder="e.g. liftover-fast (optional)" />
           <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
         </mat-form-field>
-        <div mat-dialog-actions>
+        <div mat-dialog-actions class="pull-right">
           <button mat-button type="button" id="closeRegisterWorkflowModalButton" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
@@ -127,7 +127,7 @@
             maxlength="256" placeholder="e.g. fastqc" required/>
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field>
-        <div mat-dialog-actions>
+        <div mat-dialog-actions class="pull-right">
           <button type="button" mat-raised-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
