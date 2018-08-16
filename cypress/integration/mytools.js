@@ -108,17 +108,18 @@ describe('Dockstore my tools', function() {
 
     describe('manually register an Amazon ECR tool', function() {
         it("register tool", function() {
+          var toolObject = { "id": 40000, "author": null, "description": null, "labels": [], "users": [{ "id": 1, "username": "user_A", "isAdmin": false, "name": "user_A" }], "email": null, "defaultVersion": null, "lastUpdated": 1482334377743, "gitUrl": "git@github.com:testnamespace/testname.git", "mode": "MANUAL_IMAGE_PATH", "name": "testname", "toolname": "", "namespace": "testnamespace", "registry": "AMAZON_ECR", "lastBuild": null, "tags": [], "is_published": false, "last_modified": null, "default_dockerfile_path": "/Dockerfile", "defaultCWLTestParameterFile": "/test.cwl.json", "defaultWDLTestParameterFile": "/test.wdl.json", "default_cwl_path": "/Dockstore.cwl", "default_wdl_path": "/Dockstore.wdl", "tool_maintainer_email": "test@email.com", "private_access": true, "path": "amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname", "tool_path": "amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname", "custom_docker_registry_path": "amazon.dkr.ecr.test.amazonaws.com" };
             cy
                 .server()
                 .route({
                     method: "GET",
                     url: /refresh/,
-                    response: { "id": 40000, "author": null, "description": null, "labels": [], "users": [{ "id": 1, "username": "user_A", "isAdmin": false, "name": "user_A" }], "email": null, "defaultVersion": null, "lastUpdated": 1482334377743, "gitUrl": "git@github.com:testnamespace/testname.git", "mode": "MANUAL_IMAGE_PATH", "name": "testname", "toolname": "", "namespace": "testnamespace", "registry": "AMAZON_ECR", "lastBuild": null, "tags": [], "is_published": false, "last_modified": null, "default_dockerfile_path": "/Dockerfile", "defaultCWLTestParameterFile": "/test.cwl.json", "defaultWDLTestParameterFile": "/test.wdl.json", "default_cwl_path": "/Dockstore.cwl", "default_wdl_path": "/Dockstore.wdl", "tool_maintainer_email": "test@email.com", "private_access": true, "path": "amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname", "tool_path": "amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname", "custom_docker_registry_path": "amazon.dkr.ecr.test.amazonaws.com" }
+                    response: toolObject
                 })
                 .route({
                   method: "GET",
                   url: 'containers/40000',
-                  response: { "id": 40000, "author": null, "description": null, "labels": [], "users": [{ "id": 1, "username": "user_A", "isAdmin": false, "name": "user_A" }], "email": null, "defaultVersion": null, "lastUpdated": 1482334377743, "gitUrl": "git@github.com:testnamespace/testname.git", "mode": "MANUAL_IMAGE_PATH", "name": "testname", "toolname": "", "namespace": "testnamespace", "registry": "AMAZON_ECR", "lastBuild": null, "tags": [], "is_published": false, "last_modified": null, "default_dockerfile_path": "/Dockerfile", "defaultCWLTestParameterFile": "/test.cwl.json", "defaultWDLTestParameterFile": "/test.wdl.json", "default_cwl_path": "/Dockstore.cwl", "default_wdl_path": "/Dockstore.wdl", "tool_maintainer_email": "test@email.com", "private_access": true, "path": "amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname", "tool_path": "amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname", "custom_docker_registry_path": "amazon.dkr.ecr.test.amazonaws.com" }
+                  response: toolObject
                 })
                 .route({
                     method: "GET",
