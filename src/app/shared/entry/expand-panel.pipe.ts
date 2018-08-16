@@ -21,12 +21,10 @@ export class ExpandPanelPipe implements PipeTransform {
   transform(orgEntriesObject: (OrgToolObject | OrgWorkflowObject), entryId: number): boolean {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
-    if (publishedEntries.find((entry: Entry) => entry.id === entryId)) {
+    if (publishedEntries.find((entry: Entry) => entry.id === entryId) || unpublishedEntries.find((entry: Entry) => entry.id === entryId)) {
       return true;
+    } else {
+      return false;
     }
-    if (unpublishedEntries.find((entry: Entry) => entry.id === entryId)) {
-      return true;
-    }
-    return false;
   }
 }
