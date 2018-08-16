@@ -103,10 +103,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
-        if (workflow) {
-          this.setIsFirstOpen();
-          this.updateActiveTab();
-        }
       }
     );
 
@@ -166,54 +162,16 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.showSidebar = !this.showSidebar;
   }
 
-  protected updateActiveTab(): void {
-    if (this.groupEntriesObject) {
-      this.groupEntriesObject = this.updateActiveTabHelper(this.groupEntriesObject);
-    }
-
-    if (this.groupSharedEntriesObject) {
-      this.groupSharedEntriesObject = this.updateActiveTabHelper(this.groupSharedEntriesObject);
-    }
-  }
-
-  /**
-   * Helper class for creating a new instance of grouped entries with correct active tabs
-   * @param groupEntriesObject
-   */
-  protected updateActiveTabHelper(groupEntriesObject: Array<any>): Array<any> {
-    for (let i = 0; i < groupEntriesObject.length; i++) {
-      if (this.workflow) {
-        if (groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          groupEntriesObject[i].activeTab = 'unpublished';
-          continue;
-        }
-        if (groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          groupEntriesObject[i].activeTab = 'published';
-          continue;
-        }
-        if (groupEntriesObject[i].published.length > 0) {
-          groupEntriesObject[i].activeTab = 'published';
-        } else {
-          groupEntriesObject[i].activeTab = 'unpublished';
-        }
-      }
-    }
-    return groupEntriesObject;
-  }
-
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
     const groupEntriesObject: Array<OrgWorkflowObject> = [];
     for (let i = 0; i < nsWorkflows.length; i++) {
       const orgWorkflowObject: OrgWorkflowObject = {
         sourceControl: '',
-        isFirstOpen: false,
         organization: '',
         published: [],
-        unpublished: [],
-        activeTab: 'published'
+        unpublished: []
       };
       const nsWorkflow: Array<Workflow> = nsWorkflows[i].entries;
-      orgWorkflowObject.isFirstOpen = nsWorkflows[i].isFirstOpen;
       orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
       orgWorkflowObject.organization = nsWorkflows[i].organization;
       orgWorkflowObject.published = nsWorkflow.filter((workflow: Workflow) => {
@@ -252,37 +210,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       }
     }
     return null;
-  }
-
-  setIsFirstOpen(): void {
-    let setFirstMyWorkflow = false;
-    if (this.groupEntriesObject && this.workflow) {
-      for (let i = 0; i < this.groupEntriesObject.length; i++) {
-        if (this.groupEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.groupEntriesObject[i].isFirstOpen = true;
-          setFirstMyWorkflow = true;
-          break;
-        }
-        if (this.groupEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.groupEntriesObject[i].isFirstOpen = true;
-          setFirstMyWorkflow = true;
-          break;
-        }
-      }
-    }
-
-    if (!setFirstMyWorkflow && this.groupSharedEntriesObject && this.workflow) {
-      for (let i = 0; i < this.groupSharedEntriesObject.length; i++) {
-        if (this.groupSharedEntriesObject[i].published.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.groupSharedEntriesObject[i].isFirstOpen = true;
-          break;
-        }
-        if (this.groupSharedEntriesObject[i].unpublished.find((workflow: Workflow) => workflow.id === this.workflow.id)) {
-          this.groupSharedEntriesObject[i].isFirstOpen = true;
-          break;
-        }
-      }
-    }
   }
 
   /**
@@ -324,8 +251,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 export interface OrgWorkflowObject {
   sourceControl: string;
   organization: string;
-  isFirstOpen: boolean;
   published: Array<Workflow>;
   unpublished: Array<Workflow>;
-  activeTab: 'unpublished' | 'published';
 }

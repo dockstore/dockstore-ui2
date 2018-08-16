@@ -72,15 +72,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
-    this.containerService.setTools(null);
-
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      tool => {
-        this.tool = tool;
-        if (tool) {
-          this.setIsFirstOpen();
-          this.updateActiveTab();
-        }
+    this.containerService.tool$.subscribe(tool => {
+      this.tool = tool;
     });
 
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
@@ -105,41 +98,16 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
 
-  protected updateActiveTab(): void {
-    if (this.groupEntriesObject) {
-      for (let i = 0; i < this.groupEntriesObject.length; i++) {
-        if (this.tool) {
-          if (this.groupEntriesObject[i].unpublished.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
-            this.groupEntriesObject[i].activeTab = 'unpublished';
-            continue;
-          }
-          if (this.groupEntriesObject[i].published.find((tool: DockstoreTool) => tool.id === this.tool.id)) {
-            this.groupEntriesObject[i].activeTab = 'published';
-            continue;
-          }
-          if (this.groupEntriesObject[i].published.length > 0) {
-            this.groupEntriesObject[i].activeTab = 'published';
-          } else {
-            this.groupEntriesObject[i].activeTab = 'unpublished';
-          }
-        }
-      }
-    }
-  }
-
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
     const groupEntriesObject: Array<OrgToolObject> = [];
     for (let i = 0; i < nsTools.length; i++) {
       const orgToolObject: OrgToolObject = {
         namespace: '',
-        isFirstOpen: false,
         organization: '',
         published: [],
-        unpublished: [],
-        activeTab: 'published'
+        unpublished: []
       };
       const nsTool: Array<DockstoreTool> = nsTools[i].entries;
-      orgToolObject.isFirstOpen = nsTools[i].isFirstOpen;
       orgToolObject.namespace = nsTools[i].namespace;
       orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
         return tool.is_published;
@@ -179,21 +147,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     return null;
   }
 
-  setIsFirstOpen(): void {
-    if (this.groupEntriesObject && this.tool) {
-      for (let i = 0; i < this.groupEntriesObject.length; i++) {
-        if (this.groupEntriesObject[i].published.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
-          this.groupEntriesObject[i].isFirstOpen = true;
-          break;
-        }
-        if (this.groupEntriesObject[i].unpublished.find((entry: DockstoreTool) => entry.id === this.tool.id)) {
-          this.groupEntriesObject[i].isFirstOpen = true;
-          break;
-        }
-      }
-    }
-  }
-
   selectEntry(tool: ExtendedDockstoreTool): void {
     if (tool !== null) {
       this.containersService.getContainer(tool.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
@@ -230,8 +183,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
 export interface OrgToolObject {
   namespace: string;
   organization: string;
-  isFirstOpen: boolean;
   published: Array<ExtendedDockstoreTool>;
   unpublished: Array<ExtendedDockstoreTool>;
-  activeTab: 'unpublished' | 'published';
 }

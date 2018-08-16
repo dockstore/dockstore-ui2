@@ -57,8 +57,10 @@ export class RegisterCheckerWorkflowService {
                     // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
                     if (entry.hasOwnProperty('is_checker')) {
                         this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
+                        this.workflowService.setWorkflow(<Workflow>entry);
                     } else {
                         this.containerService.upsertToolToTools(<DockstoreTool>entry);
+                        this.containerService.setTool(<DockstoreTool>entry);
                     }
                     this.isModalShown$.next(false);
                     this.refreshService.handleSuccess(message);
