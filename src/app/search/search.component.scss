@@ -38,8 +38,6 @@
   color: red;
 }
 .search-box {
-  margin: 10px 0 10px 5%;
-  width: 90%;
   border: 1px solid #ccc;
   outline: 0;
   border-radius: 10px;
@@ -133,4 +131,14 @@
 .selected-item {
   background-color: #e7f1fb;
   color: #487980;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 10px 0;
+}
+
+.expand-collapse-holder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }

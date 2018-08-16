@@ -33,7 +33,6 @@ import { PipeModule } from './../shared/pipe/pipe.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
-import { ExpandService } from './expand.service';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchToolTableComponent } from './search-tool-table/search-tool-table.component';
@@ -41,12 +40,10 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './search.service';
-import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collapse.component';
 
 @NgModule({
   declarations: [
     AdvancedSearchComponent,
-    ExpandCollapseComponent,
     SearchComponent,
     SearchResultsComponent,
     SearchToolTableComponent,
@@ -70,7 +67,7 @@ import { ExpandCollapseComponent } from './sidebar/expand-collapse/expand-collap
     HttpClientModule,
     PrivateIconModule
   ],
-  providers: [AdvancedSearchService, ExpandService,
+  providers: [AdvancedSearchService,
     SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
   exports: [SearchComponent]
 
