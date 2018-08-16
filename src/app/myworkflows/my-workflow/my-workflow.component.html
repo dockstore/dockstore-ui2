@@ -64,7 +64,7 @@
                   <li>
                     Press the 'Register Workflow' button to manually add a workflow.
                   </li>
-                  <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
+                  <button mat-raised-button color="primary" type="button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
                 </ul>
                 <div *ngIf="!hasGitHubToken">
                   <a class="btn btn-block btn-social btn-github" (click)="link()">
