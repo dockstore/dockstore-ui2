@@ -37,32 +37,37 @@ describe('Dockstore my workflows', function() {
 
     function haveAlert() {
         cy
-            .get('.alert')
+            .get('.mat-error')
             .should('be.visible')
     }
 
 
     function notHaveAlert() {
         cy
-            .get('.alert')
+            .get('.mat-error')
             .should('not.be.visible')
     }
 
-    describe('test register workflow form validation', function() {
+    describe('Test register workflow form validation', function() {
         it('It should have 3 seperate descriptor path validation patterns', function() {
             cy
                 .get('#registerWorkflowButton')
                 .should('be.visible')
                 .should('be.enabled')
                 .click()
+            // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+            cy.wait(1000)
             cy
                 .contains('button', 'Next')
                 .click()
+            // Untouched form should not have errors but is disabled
+            cy.get('#submitButton').should('be.disabled');
+            notHaveAlert()
             cy
                 .get('#sourceCodeRepositoryInput')
                 .clear()
                 .type('beef/stew')
-            haveAlert()
+            cy.get('#submitButton').should('be.disabled');
             cy
                 .get('#sourceCodeRepositoryWorkflowPathInput')
                 .clear()

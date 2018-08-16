@@ -58,6 +58,7 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     CustomMaterialModule,
     PipeModule
   ],
+  entryComponents: [RegisterWorkflowModalComponent],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
   ]

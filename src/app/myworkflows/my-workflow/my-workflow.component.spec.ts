@@ -1,5 +1,5 @@
-/**
- *    Copyright 2017 OICR
+/*
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 
-import { RefreshService } from '../shared/refresh.service';
-import { RouterLinkStubDirective } from '../test';
-import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
-import { TokenService } from './../loginComponents/token.service';
-import { UserService } from './../loginComponents/user.service';
-import { StateService } from './../shared/state.service';
-import { UsersService } from './../shared/swagger/api/users.service';
-import { Configuration } from './../shared/swagger/configuration';
-import { UrlResolverService } from './../shared/url-resolver.service';
-import { WorkflowService } from './../shared/workflow.service';
-import { sampleWorkflow1, sampleWorkflow2, sampleWorkflow3 } from './../test/mocked-objects';
-import { RouterOutletStubComponent } from './../test/router-stubs';
+import { RefreshService } from '../../shared/refresh.service';
+import { RouterLinkStubDirective } from '../../test';
+import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { TokenService } from '../../loginComponents/token.service';
+import { UserService } from '../../loginComponents/user.service';
+import { StateService } from '../../shared/state.service';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Configuration } from '../../shared/swagger/configuration';
+import { UrlResolverService } from '../../shared/url-resolver.service';
+import { WorkflowService } from '../../shared/workflow.service';
+import { RouterOutletStubComponent } from '../../test/router-stubs';
 import {
   AccountsStubService,
   AuthStubService,
@@ -41,16 +42,16 @@ import {
   UrlResolverStubService,
   UsersStubService,
   UserStubService,
+  WorkflowsStubService,
   WorkflowStubService,
-  WorkflowsStubService
-} from './../test/service-stubs';
-import { RegisterWorkflowModalService } from './../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
-import { MyWorkflowsService } from './myworkflows.service';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+} from '../../test/service-stubs';
+import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { MyWorkflowComponent } from './my-workflow.component';
+import { MyWorkflowsService } from '../myworkflows.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-describe('MyWorkflowComponent', () => {
+describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;
   let registerWorkflowModalService: RegisterWorkflowModalService;
@@ -59,7 +60,7 @@ describe('MyWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule ],
       providers: [
         { provide: Configuration, useClass: ConfigurationStub },
         { provide: UsersService, useClass: UsersStubService },
@@ -72,7 +73,13 @@ describe('MyWorkflowComponent', () => {
         { provide: TokenService, useClass: TokenStubService },
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService
+        { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService,
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: (dialogResult: any) => { }
+          }
+        }
       ]
     })
     .compileComponents();
@@ -90,11 +97,8 @@ describe('MyWorkflowComponent', () => {
   });
   it('should set observables', () => {
     registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
-    spyOn(registerWorkflowModalService, 'setIsModalShown');
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
-    component.showRegisterEntryModal();
     component.setRegisterEntryModalInfo('a/b');
-    expect(registerWorkflowModalService.setIsModalShown).toHaveBeenCalled();
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {

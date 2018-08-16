@@ -15,11 +15,14 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatRadioChange } from '@angular/material';
+import { MatDialogRef, MatRadioChange } from '@angular/material';
 import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
+import { formInputDebounceTime } from '../../shared/constants';
 import { StateService } from '../../shared/state.service';
 import { Workflow } from '../../shared/swagger';
+import { Tooltip } from '../../shared/tooltip';
 import {
   exampleDescriptorPatterns,
   formErrors,
@@ -27,17 +30,16 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { debounceTime } from 'rxjs/operators';
-import { formInputDebounceTime } from '../../shared/constants';
 
 @Component({
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
-  styleUrls: ['./register-workflow-modal.component.css']
+  styleUrls: ['./register-workflow-modal.component.scss']
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
+  public validationMessage = validationMessages;
   public examplePatterns = exampleDescriptorPatterns;
   public workflow: Workflow;
   public workflowRegisterError;
@@ -45,13 +47,14 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public refreshMessage: string;
   public descriptorValidationPattern;
   public descriptorLanguages$: Observable<Array<string>>;
+  public Tooltip = Tooltip;
   public hostedWorkflow = {
     name: '',
     descriptorType: 'cwl'
   };
   public options = [
     {
-      label: 'Use CWL, WDL or Nextflow from GitHub, BitBucket, etc.',
+      label: 'Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.',
       value: 0
     },
     {
@@ -64,7 +67,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService) {
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService,
+    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
   }
 
   friendlyRepositoryKeys(): Array<string> {
@@ -88,22 +92,19 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         this.changeDescriptorType(languages[0].toLowerCase());
       }
     });
+    this.workflow.repository = this.friendlyRepositoryKeys()[1];
   }
 
   registerWorkflow() {
-    this.registerWorkflowModalService.registerWorkflow();
+    this.registerWorkflowModalService.registerWorkflow(this.dialogRef);
   }
 
   registerHostedWorkflow() {
-    this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow);
-  }
-
-  showModal() {
-    this.registerWorkflowModalService.setIsModalShown(true);
+    this.registerWorkflowModalService.registerHostedWorkflow(this.hostedWorkflow, this.dialogRef);
   }
 
   hideModal() {
-    this.registerWorkflowModalService.setIsModalShown(false);
+    this.dialogRef.close();
   }
 
   // Validation starts here, should move most of these to a service somehow
