@@ -36,9 +36,6 @@
       <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
         <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
       </span>
-      <button mat-mini-fab color="accent" class="add-entry-button" matTooltip="Add new workflow" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" type="button" (click)="setRegisterEntryModalInfo(orgObj?.organization + '/new_workflow'); showRegisterEntryModal()" [disabled]="refreshMessage">
-        <mat-icon>add</mat-icon>
-      </button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
