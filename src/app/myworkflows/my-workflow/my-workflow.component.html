@@ -17,6 +17,9 @@
   <button mat-icon-button (click)="toggleSidebar()"><mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon></button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
 </app-header>
+
+<button mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right" matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="refreshMessage"><mat-icon>add</mat-icon></button>
+
 <div class="container-fluid pt-3 sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
@@ -33,9 +36,6 @@
         </div>
         <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
         <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage"></app-sidebar-accordion>
-        <div *ngIf="(groupEntriesObject?.length > 0 && groupEntriesObject) || (groupSharedEntriesObject?.length > 0 && groupSharedEntriesObject) ">
-          <button mat-raised-button id="registerWorkflowButton" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a workflow" class="pull-right register-entry-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
-        </div>
         <br>
 
         <div class="clearfix sidebar-header">
@@ -64,7 +64,7 @@
                   <li>
                     Press the 'Register Workflow' button to manually add a workflow.
                   </li>
-                  <button type="button" class="btn btn-primary btn-sm" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
+                  <button mat-raised-button color="primary" type="button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Workflow</button>
                 </ul>
                 <div *ngIf="!hasGitHubToken">
                   <a class="btn btn-block btn-social btn-github" (click)="link()">
