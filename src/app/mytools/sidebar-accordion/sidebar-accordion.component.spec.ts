@@ -17,6 +17,8 @@ import {
   MatListModule,
   MatTooltipModule
 } from '@angular/material';
+import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
+import { ExpandPanelPipe } from '../../shared/entry/expand-panel.pipe';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -24,7 +26,7 @@ describe('SidebarAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarAccordionComponent, RefreshToolOrganizationComponent ],
+      declarations: [ SidebarAccordionComponent, RefreshToolOrganizationComponent, ExpandPanelPipe, SelectTabPipe ],
       imports: [
         MatTabsModule,
         MatToolbarModule,

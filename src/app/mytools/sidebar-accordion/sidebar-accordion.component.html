@@ -1,12 +1,12 @@
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj?.isFirstOpen">
+  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj | expandPanel : (toolId$ | async)">
     <mat-expansion-panel-header>
       <mat-panel-title class="org-accordion-header">
         {{orgObj?.namespace}}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj.activeTab === 'published' ? 0 : 1">
+    <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj | selectTab : (toolId$ | async)">
       <mat-tab label="Published">
       <mat-list class="org-accordion-list">
         <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{selected: (toolId$ | async) === toolObj?.id}">
