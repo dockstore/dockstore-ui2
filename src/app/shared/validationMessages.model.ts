@@ -144,8 +144,7 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Workflow Path is too short. (Min. 3 characters.)',
     'maxlength': 'Workflow Path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Workflow Path format. ' +
-    'Workflow Path must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', \'*.config\', or\'*.wdl\' ' +
+    'pattern': 'Must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', \'*.config\', or\'*.wdl\' ' +
     'depending on the descriptor type.'
   },
   'workflowName': {
