@@ -131,7 +131,8 @@ describe('Dockstore my tools', function() {
             cy
                 .get('#register_tool_button')
                 .click()
-
+            // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+            cy.wait(1000)
             cy
               .get('.modal-footer')
               .contains('Next')
@@ -231,7 +232,8 @@ describe('Dockstore my tools', function() {
       cy
         .get('#register_tool_button')
         .click()
-
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000)
       cy
         .get('.modal-footer')
         .contains('Next')
