@@ -798,3 +798,10 @@ mat-panel-title.org-accordion-header {
 .add-entry-button {
   margin-left: 5px;
 }
+
+.fab-bottom-right {
+  position:fixed !important;
+  bottom:10px;
+  right:10px;
+  z-index: 99999;
+}

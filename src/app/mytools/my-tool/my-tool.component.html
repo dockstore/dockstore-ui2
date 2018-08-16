@@ -18,6 +18,8 @@
     <img src="../assets/images/dockstore/dockstore-tools-blue.png"> My Tools
   </app-header>
 
+  <button mat-fab color="accent" id="register_tool_button" class="fab-bottom-right" matTooltip="Register tool" [matTooltipPosition]="'before'" (click)="showRegisterEntryModal()" [disabled]="refreshMessage"><mat-icon>add</mat-icon></button>
+
   <div class="container-fluid pt-3 sidebar-set-height">
       <!--Tool Content Page-->
       <div class="row containers-rsb" style="height:100%;">
@@ -34,9 +36,6 @@
             </div>
             <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
-            <span *ngIf="groupEntriesObject?.length > 0 && groupEntriesObject">
-              <button mat-raised-button id="register_tool_button" color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Manually register a tool" class="pull-right register-entry-modal-button" (click)="showRegisterEntryModal()" [disabled]="refreshMessage">Register Tool</button>
-            </span>
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
             <span *ngIf="refreshMessage">
