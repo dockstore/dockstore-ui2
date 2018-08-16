@@ -45,18 +45,6 @@ export abstract class MyEntry implements OnDestroy {
     }
 
     /**
-     * This figures out which tab (Published/Unpublished) is active
-     * In order of priority:
-     * 1. If the selected entry is published/unpublished, the tab selected will published/unpublished to reflect it
-     * 2. If there are published entries, the published tab will be selected
-     * 3. Unpublished otherwise
-     * @protected
-     * @abstract
-     * @memberof MyEntry
-     */
-    protected abstract updateActiveTab(): void;
-
-    /**
      * Converts the deprecated nsTool object to the new groupEntriesObject contains:
      * an array of published and unpublished tools
      * and which tab should be opened (published or unpublished)
@@ -92,12 +80,6 @@ export abstract class MyEntry implements OnDestroy {
     protected abstract findEntryFromPath(path: string, orgEntries: (Array<OrgToolObject> | Array<OrgWorkflowObject>)):
         ExtendedDockstoreTool | ExtendedWorkflow;
 
-    /**
-     * Determines which accordion is expanded on the entry selector sidebar
-     * @abstract
-     * @memberof MyEntry
-     */
-    public abstract setIsFirstOpen(): void;
     public abstract selectEntry(entry: (ExtendedDockstoreTool | ExtendedWorkflow)): void;
     public abstract setRegisterEntryModalInfo(gitURLOrNamespace: String): void;
     public abstract showRegisterEntryModal(): void;

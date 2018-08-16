@@ -20,7 +20,6 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { CustomMaterialModule } from './../shared/modules/material.module';
 
 import {
   RefreshToolOrganizationComponent,
@@ -28,9 +27,11 @@ import {
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
+import { PipeModule } from '../shared/pipe/pipe.module';
 import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
@@ -44,7 +45,7 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     RefreshToolOrganizationComponent,
     MyToolComponent,
     SidebarAccordionComponent
-],
+  ],
   imports: [
     CommonModule,
     ContainerModule,
@@ -56,11 +57,12 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    CustomMaterialModule
+    CustomMaterialModule,
+    PipeModule
   ],
   providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     RegisterToolService, AccountsService
   ],
 })
-export class MyToolsModule {}
+export class MyToolsModule { }
