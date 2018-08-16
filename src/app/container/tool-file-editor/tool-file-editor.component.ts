@@ -20,12 +20,10 @@ export class ToolFileEditorComponent extends FileEditing {
   selectedDescriptorType = 'cwl';
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;
+      this.clearSourceFiles();
       if (value != null) {
-        this.clearSourceFiles();
         this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
         this.loadVersionSourcefiles();
-      } else {
-        this.clearSourceFiles();
       }
   }
 

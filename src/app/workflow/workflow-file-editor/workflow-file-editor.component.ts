@@ -20,12 +20,10 @@ export class WorkflowFileEditorComponent extends FileEditing {
   @Input() descriptorType: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
+    this.clearSourceFiles();
     if (value != null) {
-      this.clearSourceFiles();
       this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
       this.loadVersionSourcefiles();
-    } else {
-      this.clearSourceFiles();
     }
   }
   constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
