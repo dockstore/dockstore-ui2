@@ -19,6 +19,7 @@ import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger';
+import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 
 export const updatedWorkflow: Workflow = {
     'descriptorType': 'cwl',
@@ -146,6 +147,37 @@ export const sampleTool3: DockstoreTool = {
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
     defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+};
+
+// Case 1: sampleTool1 in published entries, unpublished doesn't matter
+export const orgObj1: OrgToolObject = {
+  namespace: 'beef',
+  organization: 'stew',
+  published: [sampleTool1],
+  unpublished: [sampleTool2, sampleTool3]
+};
+// Case 2: sampleTool1 in unpublished entries, published doesn't matter
+export const orgObj2: OrgToolObject = {
+  namespace: 'beef',
+  organization: 'stew',
+  published: [sampleTool2, sampleTool3],
+  unpublished: [sampleTool1]
+};
+
+// Case 3: sampleTool1 in neither, published has something
+export const orgObj3: OrgToolObject = {
+  namespace: 'beef',
+  organization: 'stew',
+  published: [sampleTool2],
+  unpublished: [sampleTool3]
+};
+
+// Case 4: sampleTool1 in neither, published has nothing
+export const orgObj4: OrgToolObject = {
+  namespace: 'beef',
+  organization: 'stew',
+  published: [],
+  unpublished: []
 };
 
 export const gitLabToken: Token = {
