@@ -73,7 +73,7 @@ describe('Dockstore hosted tools', function() {
         cy.window().then(function (window) {
           cy.document().then((doc) => {
             const editors = doc.getElementsByClassName('ace_editor');
-            const cwlDescriptor = `#!/usr/bin/env cwl-runner cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []`;
+            const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
             window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
           })
         });
@@ -122,7 +122,7 @@ describe('Dockstore hosted tools', function() {
           cy.window().then(function (window) {
             cy.document().then((doc) => {
               const editors = doc.getElementsByClassName('ace_editor');
-              const cwlDescriptor = `#!/usr/bin/env cwl-runner cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []`;
+              const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
               window.ace.edit(editors[2]).setValue(cwlDescriptor, -1);
             })
           });
