@@ -49,6 +49,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public refreshMessage: string;
   private registerTool: Tool;
   public showSidebar = true;
+  hasLoadedTools = false;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
@@ -70,6 +71,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.user = user;
         this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
           this.containerService.setTools(tools);
+          this.hasLoadedTools = true;
         });
       }
     });

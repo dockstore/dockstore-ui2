@@ -116,6 +116,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             if (workflows && sharedWorkflows) {
               this.workflowService.setWorkflows(workflows);
               this.workflowService.setSharedWorkflows(sharedWorkflows);
+              this.hasLoadedWorkflows = true;
             }
           });
       }
