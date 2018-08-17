@@ -46,10 +46,10 @@
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
         <span *ngIf="refreshMessage">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
+          <mat-progress-bar mode="indeterminate" class="m-2"></mat-progress-bar>
         </span>
         <app-alert></app-alert>
-        <div *ngIf="(groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject)">
+        <div *ngIf="!refreshMessage && ((groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))">
             <div class="col-md-12">
               <div class="alert alert-info" role="alert">
                 <p>

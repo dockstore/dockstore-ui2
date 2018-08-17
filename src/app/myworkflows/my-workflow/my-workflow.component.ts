@@ -68,7 +68,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
   workflows: Array<Workflow>;
   sharedWorkflows: Array<Workflow>;
-  hasLoadedWorkflows = false;
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
   public showSidebar = true;
@@ -111,12 +110,16 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
+        this.stateService.setRefreshMessage('Fetching workflows');
         combineLatest(this.usersService.userWorkflows(user.id).pipe(first()), this.workflowsService.sharedWorkflows().pipe(first()))
           .subscribe(([workflows, sharedWorkflows]) => {
             if (workflows && sharedWorkflows) {
               this.workflowService.setWorkflows(workflows);
               this.workflowService.setSharedWorkflows(sharedWorkflows);
+              this.stateService.setRefreshMessage(null);
             }
+          }, (error: any) => {
+            this.stateService.setRefreshMessage(null);
           });
       }
     });
