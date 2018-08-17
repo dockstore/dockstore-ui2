@@ -118,6 +118,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
               this.workflowService.setSharedWorkflows(sharedWorkflows);
               this.stateService.setRefreshMessage(null);
             }
+          }, (error: any) => {
+            this.stateService.setRefreshMessage(null);
           });
       }
     });
