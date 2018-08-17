@@ -67,8 +67,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
-        this.stateService.setRefreshMessage('Fetching tools');
         this.user = user;
+        this.stateService.setRefreshMessage('Fetching tools');
         this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
           this.containerService.setTools(tools);
           this.stateService.setRefreshMessage(null);

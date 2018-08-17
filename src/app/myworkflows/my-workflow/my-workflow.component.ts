@@ -109,8 +109,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     // Retrieve all of the workflows for the user and update the workflow service
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
-        this.stateService.setRefreshMessage('Fetching workflows');
         this.user = user;
+        this.stateService.setRefreshMessage('Fetching workflows');
         combineLatest(this.usersService.userWorkflows(user.id).pipe(first()), this.workflowsService.sharedWorkflows().pipe(first()))
           .subscribe(([workflows, sharedWorkflows]) => {
             if (workflows && sharedWorkflows) {
