@@ -19,6 +19,7 @@ export class ChangeUsernameComponent implements OnInit {
   checkingIfValid = false;
   usernameMeetsRequirements = true;
   extendedUser: any;
+  showEmailWarning = false;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService) { }
 
@@ -27,6 +28,7 @@ export class ChangeUsernameComponent implements OnInit {
       if (user) {
         this.user = user;
         this.username = user.username;
+        this.showEmailWarning = this.user.username.includes('@');
       }
     });
     this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
@@ -79,5 +81,4 @@ export class ChangeUsernameComponent implements OnInit {
         this.refreshService.handleError('Updating username', error);
       });
   }
-
 }

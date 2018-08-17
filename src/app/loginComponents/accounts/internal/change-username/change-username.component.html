@@ -5,7 +5,7 @@
 
 <p>You <strong>can<span *ngIf="!extendedUser?.canChangeUsername">'t</span></strong> change your username.</p>
 
-<div class="alert alert-warning" role="alert">
+<div class="alert alert-warning" role="alert" *ngIf="showEmailWarning">
   <strong>Warning!</strong> Your username seems to be an email. We recommend changing your username to something else so that your email is
   not picked up by a malicious program. The @ symbol is not allowed in a username, so note that once you change your username you cannot
   change it back to your email.
