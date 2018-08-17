@@ -26,7 +26,7 @@
         <mat-sidenav-container autosize class="sidebar-set-height">
           <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
             <span class="visible-xs" *ngIf="refreshMessage">
-              <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
+              <mat-progress-bar mode="indeterminate" class="m-2"></mat-progress-bar>
             </span>
             <div class="clearfix sidebar-header">
                 <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
@@ -38,11 +38,11 @@
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-            <span *ngIf="refreshMessage || !hasLoadedTools">
+            <span *ngIf="refreshMessage">
               <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
             </span>
             <app-alert></app-alert>
-            <div *ngIf="hasLoadedTools && (groupEntriesObject?.length == 0 || !groupEntriesObject)">
+            <div *ngIf="!refreshMessage && (groupEntriesObject?.length == 0 || !groupEntriesObject)">
               <div class="col-md-12">
                 <div class="alert alert-info" role="alert">
                   <p>
