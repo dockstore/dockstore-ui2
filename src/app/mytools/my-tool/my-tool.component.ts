@@ -37,6 +37,8 @@ import { Configuration } from './../../shared/swagger/configuration';
 import { first, takeUntil } from 'rxjs/operators';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 
+import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
+import { MatDialogRef, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-my-tool',
@@ -53,7 +55,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
-    private containerService: ContainerService, private location: Location,
+    private containerService: ContainerService, private dialog: MatDialog, private location: Location,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService,
     protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService) {
@@ -68,6 +70,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
             this.groupEntriesObject);
           this.selectEntry(foundTool);
         }
+      }
+    });
+    this.registerToolService.isModalShown.subscribe((isModalShown: boolean) => {
+      if (isModalShown) {
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
+      } else {
+        this.dialog.closeAll();
       }
     });
     this.commonMyEntriesOnInit();

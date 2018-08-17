@@ -83,6 +83,12 @@ export class GA4GHFilesStateService {
       });
   }
 
+  clearFiles() {
+    this.cwlToolFiles$.next([]);
+    this.wdlToolFiles$.next([]);
+    this.nflToolFiles$.next([]);
+  }
+
   /**
    * This merges the ToolFile arrays together into one array with no duplicates
    * @private

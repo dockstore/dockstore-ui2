@@ -72,20 +72,30 @@ export class CodeEditorComponent implements AfterViewInit {
    */
   setMode(filepath: string): void {
     if (filepath !== undefined && filepath !== null) {
-      if (filepath.endsWith('cwl')) {
+      if (filepath.endsWith('.cwl')) {
         this.mode = 'cwl';
-      } else if (filepath.endsWith('wdl')) {
+      } else if (filepath.endsWith('.wdl')) {
         this.mode = 'wdl';
       } else if (filepath.includes('Dockerfile')) {
         this.mode = 'dockerfile';
-      } else if (filepath.endsWith('json')) {
+      } else if (filepath.endsWith('.json')) {
         this.mode = 'json';
-      } else if (filepath.endsWith('yml') || filepath.endsWith('yaml')) {
+      } else if (filepath.endsWith('.yml') || filepath.endsWith('.yaml')) {
         this.mode = 'yaml';
-      } else if (filepath.endsWith('config')) {
+      } else if (filepath.endsWith('.config')) {
         this.mode = 'groovy';
-      } else if (filepath.endsWith('nf')) {
+      } else if (filepath.endsWith('.nf')) {
         this.mode = 'nfl';
+      } else if (filepath.endsWith('.r')) {
+        this.mode = 'r';
+      } else if (filepath.endsWith('.py')) {
+        this.mode = 'python';
+      } else if (filepath.endsWith('.html')) {
+        this.mode = 'html';
+      } else if (filepath.endsWith('.js')) {
+        this.mode = 'javascript';
+      } else if (filepath.endsWith('.xml')) {
+        this.mode = 'xml';
       } else {
         this.mode = 'text';
       }
