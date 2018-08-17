@@ -16,7 +16,7 @@
 <div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div [ngClass]="{'fullscreen-dropdown': expanded}">
-      <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl'" style="line-height: 20px;">
+      <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl' && workflow?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
         <label class="radio-inline">
           <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
         </label>
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <app-cwl-viewer *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl'" [hidden]="dagType !== 'cwlviewer'"
+    <app-cwl-viewer *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl' && workflow?.source_control_provider === 'GITHUB'" [hidden]="dagType !== 'cwlviewer'"
                     [workflow]="workflow" [selectedVersion]="_selectedVersion" [refresh]="refreshCounter" [expanded]="expanded">
     </app-cwl-viewer>
 
