@@ -80,17 +80,17 @@
     <h3>
       <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
-          <button id="publishToolButton" mat-raised-button color="secondary" (click)="publish()" [(ngModel)]="published"
-            [disabled]="publishDisable()" btnCheckbox [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Publish/unpublish the tool">
+          <button id="publishToolButton" mat-flat-button color="accent" (click)="publish()" [(ngModel)]="published"
+            [disabled]="publishDisable()" btnCheckbox matTooltip="Publish/unpublish the tool" class="mr-2">
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
-          <button *ngIf="tool?.is_published" mat-raised-button color="warn" [disabled]="tool?.is_published" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Delete the tool">
+          <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool" class="mr-2">
             Delete
           </button>
+          <button mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Refresh the tool" class="mr-2">
+            Refresh
+          </button>
           <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
-          <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the tool">
-              Refresh
-            </button>
         </div>
       </div>
     </h3>

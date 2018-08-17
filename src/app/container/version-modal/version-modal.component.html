@@ -232,8 +232,8 @@
           <app-verified-display *ngIf="version?.verified" [sourceFiles]=version?.sourceFiles></app-verified-display>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="onHidden()">Close</button>
-          <button id="saveVersionModal" type="button" (click)="onSubmit()" class="btn btn-primary" *ngIf="mode==TagEditorMode.Edit" [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)" data-dismiss="modal">
+          <button type="button" mat-button color="secondary" (click)="onHidden()">Close</button>
+          <button id="saveVersionModal" type="button" (click)="onSubmit()" mat-flat-button color="primary" *ngIf="mode==TagEditorMode.Edit" [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)" data-dismiss="modal">
             Save Changes
           </button>
         </div>

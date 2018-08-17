@@ -75,8 +75,8 @@
   <div *ngIf="!publicPage" class="col-md-5">
     <h3>
       <div class="pull-right my-entry-button-group">
-        <button mat-raised-button id="publishButton" color="basic" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable() || !isOwner" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Publish/unpublish the workflow" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
-        <button mat-raised-button color="primary" (click)="refresh()" [disabled]="refreshMessage" *ngIf="!isHosted() && canWrite" [matTooltipShowDelay]="1000" [matTooltipPosition]="'before'" matTooltip="Refresh the workflow">Refresh</button>
+        <button mat-flat-button id="publishButton" class="mr-2" color="accent" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable() || !isOwner" matTooltip="Publish/unpublish the workflow" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
+        <button mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" *ngIf="!isHosted() && canWrite" matTooltip="Refresh the workflow">Refresh</button>
       </div>
     </h3>
   </div>
