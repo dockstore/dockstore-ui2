@@ -35,6 +35,8 @@ import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { Configuration } from './../../shared/swagger/configuration';
 import { first, takeUntil } from 'rxjs/operators';
+import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
+import { MatDialogRef, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-my-tool',
@@ -52,7 +54,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration,
     private communicatorService: CommunicatorService, private usersService: UsersService,
     private userService: UserService, protected authService: AuthService, private stateService: StateService,
-    private containerService: ContainerService,
+    private containerService: ContainerService, private dialog: MatDialog,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService,
     protected urlResolverService: UrlResolverService, private router: Router) {
@@ -60,6 +62,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
+    this.registerToolService.isModalShown.subscribe((isModalShown: boolean) => {
+      if (isModalShown) {
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
+      } else {
+        this.dialog.closeAll();
+      }
+    });
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.tool$.subscribe(tool => {

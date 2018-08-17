@@ -35,8 +35,11 @@ export class FilesContainerComponent extends Files implements OnInit, OnChanges 
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
-    this.gA4GHFilesStateService.update(this.entrypath, this.selectedVersion.name);
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
+    if (!this.selectedVersion) {
+      this.gA4GHFilesStateService.clearFiles();
+    } else {
+      this.gA4GHFilesStateService.update(this.entrypath, this.selectedVersion.name);
+      this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
+    }
   }
-
 }
