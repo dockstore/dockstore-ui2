@@ -46,7 +46,7 @@
     </button>
   </span>
   <span *ngIf="editing">
-    <button id="cancelButton" mat-raised-button color="secondary" (click)="toggleEdit();resetFiles()">
+    <button id="cancelButton" mat-button color="secondary" (click)="toggleEdit();resetFiles()">
       Cancel
     </button>
     <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">

@@ -176,8 +176,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="addTagModal.hide()">Close</button>
-          <button id="addVersionTagButton" type="button" (click)="addTagModal.hide(); addTag()" class="btn btn-primary" [disabled]="!addTagForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)">
+          <button type="button" mat-button color="secondary" (click)="addTagModal.hide()">Close</button>
+          <button id="addVersionTagButton" type="button" mat-flat-button color="primary" (click)="addTagModal.hide(); addTag()" [disabled]="!addTagForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)">
             Add Tag
           </button>
         </div>

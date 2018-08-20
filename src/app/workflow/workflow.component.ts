@@ -65,6 +65,9 @@ export class WorkflowComponent extends Entry {
   protected writers = [];
   protected owners = [];
   public schema;
+  publishMessage = 'Publish the workflow to make it visible to the public';
+  unpublishMessage = 'Unpublish the workflow to remove it from the public';
+  pubUnpubMessage: string;
   @Input() user;
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
@@ -178,6 +181,7 @@ export class WorkflowComponent extends Entry {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;
+          this.setPublishMessage();
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion);
         }
@@ -189,6 +193,10 @@ export class WorkflowComponent extends Entry {
         this.workflowCopyBtn = workflowCopyBtn;
       }
     );
+  }
+
+  setPublishMessage() {
+    this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
   }
 
   public setupPublicEntry(url: String) {
@@ -246,6 +254,7 @@ export class WorkflowComponent extends Entry {
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
           this.workflowService.setWorkflow(response);
+          this.setPublishMessage();
           if (response.checker_id) {
             this.workflowsService.getWorkflow(response.checker_id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
               this.workflowService.upsertWorkflowToWorkflow(workflow);

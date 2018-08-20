@@ -20,16 +20,16 @@
   </alert>
   <div *ngIf="content; else noContent" class="row m-0">
     <div class="btn-group pull-right" role="group">
-      <a mat-mini-fab color="primary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
-        <mat-icon>save_alt</mat-icon>
+      <a mat-button color="primary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+        Download
       </a>
       <ng-template #unpublishedDownloadLink>
-        <a mat-mini-fab color="primary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
-          <mat-icon>save_alt</mat-icon>
+        <a mat-button color="primary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+          Download
         </a>
       </ng-template>
-      <button mat-mini-fab color="primary" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
-        <mat-icon>file_copy</mat-icon>
+      <button mat-button color="primary" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
+        Save
       </button>
     </div>
   </div>

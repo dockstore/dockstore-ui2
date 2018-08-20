@@ -54,10 +54,10 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideModal()">
+            <button type="button" mat-button color="secondary" data-dismiss="modal" (click)="hideModal()">
               Close
             </button>
-            <button id="submitButton" type="submit" class="btn btn-primary" [disabled]="!registerCheckerWorkflowForm.form.valid || (refreshMessage$ | async) !== null">
+            <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerCheckerWorkflowForm.form.valid || (refreshMessage$ | async) !== null">
               {{ (mode$ | async )==='add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}
             </button>
           </div>

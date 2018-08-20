@@ -60,6 +60,9 @@ export class ContainerComponent extends Entry {
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema;
+  publishMessage = 'Publish the tool to make it visible to the public';
+  unpublishMessage = 'Unpublish the tool to remove it from the public';
+  pubUnpubMessage: string;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -135,6 +138,7 @@ export class ContainerComponent extends Entry {
         this.tool = tool;
         if (tool) {
           this.published = this.tool.is_published;
+          this.setPublishMessage();
           if (this.tool.tags.length === 0) {
             this.selectedVersion = null;
           } else {
@@ -199,6 +203,7 @@ export class ContainerComponent extends Entry {
       this.containersService.publish(this.tool.id, request).subscribe(
         response => {
           this.containerService.upsertToolToTools(response);
+          this.setPublishMessage();
         }, err => {
           this.published = !this.published;
           this.refreshService.handleError('publish error', err);
@@ -238,6 +243,10 @@ export class ContainerComponent extends Entry {
 
   refresh() {
     this.refreshService.refreshTool();
+  }
+
+  setPublishMessage() {
+    this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
   }
 
   resetContainerEditData() {

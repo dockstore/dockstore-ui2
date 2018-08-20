@@ -29,8 +29,8 @@
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
         </span>
         <div class="clearfix sidebar-header">
-            <button mat-mini-fab color="primary" [matTooltipShowDelay]="1000" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
-              <mat-icon>refresh</mat-icon>
+            <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows and find new workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
+              Refresh All
             </button>
           <h3 class="sidebar-header">My workflows</h3>
         </div>

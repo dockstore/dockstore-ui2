@@ -138,8 +138,8 @@
             <app-verified-display *ngIf="version?.verified" [sourceFiles]=version?.sourceFiles></app-verified-display>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="hideModal()">Close</button>
-            <button type="button" (click)="saveChanges()" class="btn btn-primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid"
+            <button type="button" mat-button color="secondary" (click)="hideModal()">Close</button>
+            <button type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid"
               data-dismiss="modal">
               Save Changes
             </button>
