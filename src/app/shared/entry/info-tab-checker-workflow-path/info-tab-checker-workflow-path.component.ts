@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { StateService } from '../../state.service';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { Workflow } from './../../swagger/model/workflow';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
@@ -30,13 +31,17 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   hasParentEntry$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
+  refreshMessage$: Observable<string>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
-    private registerCheckerWorkflowService: RegisterCheckerWorkflowService) { }
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
+    private stateService: StateService
+  ) { }
 
   ngOnInit(): void {
+    this.refreshMessage$ = this.stateService.refreshMessage$;
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
     this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
     this.isPublic$ = this.checkerWorkflowService.publicPage$;

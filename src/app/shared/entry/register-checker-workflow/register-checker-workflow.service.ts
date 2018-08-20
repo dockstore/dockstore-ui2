@@ -64,9 +64,13 @@ export class RegisterCheckerWorkflowService {
                     }
                     this.isModalShown$.next(false);
                     this.refreshService.handleSuccess(message);
+                    const refreshCheckerMessage = 'Refreshing checker workflow';
+                    this.stateService.setRefreshMessage(refreshCheckerMessage);
                     this.workflowsService.refresh(entry.checker_id).pipe(first()).subscribe((workflow: Workflow) => {
                         this.workflowService.upsertWorkflowToWorkflow(workflow);
-                        this.refreshService.handleSuccess('Refreshing checker workflow');
+                        this.refreshService.handleSuccess(refreshCheckerMessage);
+                    }, error => {
+                      this.refreshService.handleError(refreshCheckerMessage, error);
                     });
             }, error => {
                 this.refreshService.handleError('Could not register checker workflow', error);
