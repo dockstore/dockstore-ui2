@@ -137,7 +137,10 @@ export class RegisterToolService {
             this.containerService.addToTools(this.tools, result);
             this.containerService.setTool(result);
             this.router.navigateByUrl('/my-tools' + '/' + result.tool_path);
-          }, error => this.setToolRegisterError(error)
+          }, error =>  {
+                this.stateService.setRefreshMessage(null);
+                this.setToolRegisterError(error)
+            }
           );
     }
 
