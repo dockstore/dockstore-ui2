@@ -81,7 +81,7 @@
       <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
           <button id="publishToolButton" mat-flat-button color="accent" (click)="publish()" [(ngModel)]="published"
-            [disabled]="publishDisable()" btnCheckbox matTooltip="Publish/unpublish the tool" class="mr-2">
+            [disabled]="publishDisable()" btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
           <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool" class="mr-2">
