@@ -18,11 +18,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { combineLatest } from 'rxjs';
-import { first, takeUntil, finalize } from 'rxjs/operators';
+import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 import { MyEntry } from '../../shared/my-entry';
-import { Workflow, SharedWorkflows } from '../../shared/swagger';
+import { Workflow } from '../../shared/swagger';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { AccountsService } from './../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from './../../loginComponents/token.service';
@@ -111,18 +111,18 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.stateService.setRefreshMessage('Fetching workflows');
-        this.usersService.userWorkflows(user.id)
-          .subscribe((workflows: Array<Workflow>) => {
-            this.workflowService.setWorkflows(workflows);
-          }, error => {
-            this.matSnackbar.open('Could not retrieve workflows');
-            this.workflowService.setWorkflows([]);
-          });
-        this.workflowsService.sharedWorkflows().subscribe((sharedWorkflows: Array<SharedWorkflows>) => {
-          this.workflowService.setSharedWorkflows(sharedWorkflows);
-        }, error => {
+        forkJoin(this.usersService.userWorkflows(user.id).pipe(catchError(error => {
+          this.matSnackbar.open('Could not retrieve workflows');
+          return observableOf([]);
+        })), this.workflowsService.sharedWorkflows().pipe(catchError(error => {
           this.matSnackbar.open('Could not retrieve shared workflows');
-          this.workflowService.setSharedWorkflows([]);
+          return observableOf([]);
+        }))).subscribe(([workflows, sharedWorkflows]) => {
+          this.workflowService.setWorkflows(workflows);
+          this.workflowService.setSharedWorkflows(sharedWorkflows);
+          this.stateService.setRefreshMessage(null);
+        }, error => {
+          console.error('This should be impossible because both errors are caught already');
         });
       }
     });
@@ -131,7 +131,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     combineLatest(this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)),
       this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)))
       .subscribe(([workflows, sharedWorkflows]) => {
-        this.stateService.setRefreshMessage(null);
         if (workflows && sharedWorkflows) {
           this.workflows = workflows;
           const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
