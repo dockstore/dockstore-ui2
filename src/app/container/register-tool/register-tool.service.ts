@@ -139,7 +139,7 @@ export class RegisterToolService {
             this.router.navigateByUrl('/my-tools' + '/' + result.tool_path);
           }, error =>  {
                 this.stateService.setRefreshMessage(null);
-                this.setToolRegisterError(error)
+                this.setToolRegisterError(error);
             }
           );
     }
