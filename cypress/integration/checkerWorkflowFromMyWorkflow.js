@@ -37,6 +37,20 @@ describe('Checker workflow test from my-workflows', function() {
                 .type('/test.json')
 
             cy.get('#submitButton').click()
+
+            // Actions should be possible right after registering checker workflow
+            cy.get('#viewParentEntryButton').should('not.be.visible')
+            cy.get('#viewCheckerWorkflowButton').should('be.visible')
+            cy.get('#viewCheckerWorkflowButton').should('be.disabled')
+            cy.get('#viewCheckerWorkflowButton').should('not.be.disabled').click()
+            cy.get('#workflow-path').contains('github.com/A/l/_cwl_checker')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
+            cy.get('#addCheckerWorkflowButton').should('not.be.visible')
+            cy.get('#viewParentEntryButton').should('be.visible').click()
+            cy.get('#workflow-path').contains('github.com/A/l')
+            cy.url().should('eq', String(global.baseUrl) + '/my-workflows/github.com/A/l')
+            cy.get('#viewParentEntryButton').should('not.be.visible')
+            cy.get('#viewCheckerWorkflowButton').should('be.disabled')
         });
         it('visit the workflow and its checker workflow and have the correct buttons', function() {
             getWorkflow();
