@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div class="row" *ngIf="error || missingWarning">
+<div class="row m-1" *ngIf="error || missingWarning">
   <div class="col-md-12" *ngIf="!isToolPublic">
     <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
       <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
@@ -25,16 +25,16 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row m-1">
   <ngx-json-ld [json]="schema"></ngx-json-ld>
   <div class="col-md-7">
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="tool?.versionVerified">
         <a href= {{getVerifiedLink()}} class="verified-check">
-          <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+          <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
         </a>
       </span>
-      <span *ngIf="tool?.private_access" class="private-lock" tooltip="Private">
+      <span *ngIf="tool?.private_access" class="private-lock" matTooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
@@ -96,7 +96,7 @@
     </h3>
   </div>
 </div>
-<div class="row">
+<div class="row m-1">
   <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
@@ -131,7 +131,7 @@
     </span>
   </div>
 </div>
-<div class="row" *ngIf="!starGazersClicked">
+<div class="row m-1" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" (select)="setEntryTab('info')">
@@ -173,7 +173,7 @@
             <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
-                  <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+                  <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
                 </a>
               </span>
               <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}} </a>

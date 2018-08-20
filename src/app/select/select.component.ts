@@ -25,6 +25,7 @@ export class SelectComponent implements OnChanges {
   @Input() items: Array<any>;
   @Input() field?;
   @Input() default?: any;
+  @Input() placeholder?: string;
 
   @Output() select: EventEmitter<any> = new EventEmitter();
 

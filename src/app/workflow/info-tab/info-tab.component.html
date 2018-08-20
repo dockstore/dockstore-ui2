@@ -16,17 +16,17 @@
 
   <ul class="list-unstyled container-info" *ngIf="workflow">
       <li *ngIf="workflow?.author">
-          <strong tooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
+          <strong matTooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author }}
         </li>
         <li *ngIf="workflow?.email">
-          <strong tooltip="E-mail of corresponding author for workflow">E-mail</strong>:
+          <strong matTooltip="E-mail of corresponding author for workflow">E-mail</strong>:
           <a href="mailto:{{workflow?.email}}">
             {{ workflow?.email }}
           </a>
         </li>
       <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
         <li *ngIf="workflow?.provider && workflow?.providerUrl">
-          <strong tooltip="Git repository for the associated descriptors">
+          <strong matTooltip="Git repository for the associated descriptors">
             {{ workflow?.provider}}
           </strong>:
           <a [href]="workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
@@ -35,11 +35,11 @@
         </li>
       </span>
       <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
-          <strong tooltip="The source code for this workflow is stored on Dockstore.org">Dockstore.org</strong>:
+          <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Dockstore.org</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
       </li>
       <li *ngIf="isPublic && isValidVersion">
-        <strong tooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
+        <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
         <a [href]="trsLink">
           #workflow/{{workflow?.full_workflow_path}}
         </a>
@@ -48,7 +48,7 @@
     <li *ngIf="workflow?.workflow_path || !isPublic">
       <form #editWorkflowPathForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong [tooltip]="tooltip.workflowPath">Workflow Path: </strong>
+          <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
           <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
           <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath" type="text" class="input-default form-control"
             name="workflowPath" [(ngModel)]="workflow.workflow_path" placeholder="e.g. /Dockstore.cwl" />
@@ -66,7 +66,7 @@
       </form>
       <form #editTestFilePathForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong tooltip="Path in Git repository to main descriptor file">Test File Path: </strong>
+          <strong matTooltip="Path in Git repository to main descriptor file">Test File Path: </strong>
           <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
           <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
             name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath" placeholder="e.g. /Dockstore.cwl" />
@@ -84,11 +84,11 @@
   <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
   <!-- TODO: Remove once hosted workflows support checker workflows -->
   <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
-    <strong tooltip="Currently disabled for Hosted Workflows">Checker Workflow</strong>: n/a
+    <strong matTooltip="Currently disabled for Hosted Workflows">Checker Workflow</strong>: n/a
   </div>
   <li *ngIf="!isPublic">
     <ng-template #modeTooltip><div [innerHtml]="modeTooltipContent"></div></ng-template>
-    <strong [tooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
+    <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
       [disabled]="refreshMessage">
       <span class="glyphicon glyphicon-remove"></span> Restub
@@ -96,13 +96,13 @@
   </li>
   <li>
     <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
-      <Strong tooltip="Type of descriptor language used">Descriptor Type: </Strong>
+      <Strong matTooltip="Type of descriptor language used">Descriptor Type: </Strong>
       <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
         <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option>
       </select>
     </div>
     <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB">
-      <Strong tooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' | mapFriendlyValue : workflow?.descriptorType }}</div>
+      <Strong matTooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' | mapFriendlyValue : workflow?.descriptorType }}</div>
   </li>
 </ul>
 
@@ -110,7 +110,7 @@
 
 <div *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB">
   <div *ngIf="workflow?.description || !isPublic">
-    <label tooltip="Description of workflow obtained from workflow descriptor">
+    <label matTooltip="Description of workflow obtained from workflow descriptor">
       Description
     </label>
     <div *ngIf="workflow?.description" class="well well-sm">

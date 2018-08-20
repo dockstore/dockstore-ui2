@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<div class="row" *ngIf="error  || missingWarning">
+<div class="row m-1" *ngIf="error  || missingWarning">
   <div class="col-md-12" *ngIf="!isWorkflowPublic">
     <div class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
       <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
@@ -25,7 +25,7 @@
     </div>
   </div>
 </div>
-<div class="row" *ngIf="showRedirect">
+<div class="row m-1" *ngIf="showRedirect">
   <div class="col-md-10 col-md-offset-1">
     <h2 class="text-center">The workflow linked to could not be found!</h2>
     <p class="text-center">
@@ -39,13 +39,13 @@
     </ul>
   </div>
 </div>
-<div class="row" *ngIf="!showRedirect">
+<div class="row m-1" *ngIf="!showRedirect">
   <ngx-json-ld [json]="schema"></ngx-json-ld>
   <div class="col-md-7">
     <h3 id="workflow-path">
       <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
         <a href= {{getVerifiedLink()}} class="verified-check">
-          <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+          <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
         </a>
       </span>
       {{ title }}<span *ngIf="workflow?.workflowVersions.length > 0">:<span class="ds-green">{{ selectedVersion?.name }}</span></span>
@@ -81,7 +81,7 @@
     </h3>
   </div>
 </div>
-<div class="row" *ngIf="!showRedirect">
+<div class="row m-1" *ngIf="!showRedirect">
   <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
     <span *ngIf="!labelsEditMode">
       <mat-chip-list>
@@ -116,7 +116,7 @@
     </span>
   </div>
 </div>
-<div class="row" *ngIf="!starGazersClicked && !showRedirect">
+<div class="row m-1" *ngIf="!starGazersClicked && !showRedirect">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
@@ -181,7 +181,7 @@
             <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
-                  <span class="glyphicon glyphicon-ok" tooltip="Verified"></span>
+                  <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
                 </a>
               </span>
               <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}} </a>

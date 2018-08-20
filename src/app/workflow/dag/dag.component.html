@@ -29,11 +29,11 @@
           <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
         <!-- This following div is shared by both viewers -->
         <div class="btn-group pull-right" role="group" style="width:auto">
-          <button id="dag_fullscreen" (click)="toggleExpand()" tooltip="Toggle fullscreen" class="dag-button btn btn-default">
+          <button id="dag_fullscreen" (click)="toggleExpand()" matTooltip="Toggle fullscreen" class="dag-button btn btn-default">
             <span *ngIf="!expanded" class="glyphicon glyphicon-resize-full" id="resize-full-button"></span>
             <span  *ngIf="expanded" class="glyphicon glyphicon-resize-small" id="resize-small-button"></span>
           </button>
-          <button id="dag_reload" (click)="reset()" class="dag-button btn btn-default" tooltip="Reset">
+          <button id="dag_reload" (click)="reset()" class="dag-button btn btn-default" matTooltip="Reset">
             <span class="glyphicon glyphicon-screenshot"></span>
           </button>
         </div>

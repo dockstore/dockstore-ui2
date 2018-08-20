@@ -13,20 +13,24 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div>
+<div *ngIf="!_selectedVersion">
+  <alert type="warning">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp;No versions exist for this tool.
+  </alert>
+</div>
+<div *ngIf="_selectedVersion">
   <alert *ngIf="!_selectedVersion?.valid" type="warning">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;This version of the tool is invalid.
   </alert>
   <div *ngIf="content; else noContent">
     <span class="row m-0">
-      <span class="form-group col-sm-4">
-        <strong>Descriptor Type:</strong>
-        <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+      <span class="col-sm-4">
+        <app-select [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
       </span>
-      <span class="form-group col-sm-4">
-        <strong>File:</strong>
-        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+      <span class="col-sm-4">
+        <app-select [placeholder]="'File'" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
       </span>
     </span>
     <div class="row m-0">

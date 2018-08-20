@@ -17,16 +17,16 @@
 <div *ngIf="tool">
   <ul class="list-unstyled container-info">
     <li *ngIf="tool?.author">
-      <strong tooltip="Author listed in descriptor">Author</strong>: {{ tool?.author }}
+      <strong matTooltip="Author listed in descriptor">Author</strong>: {{ tool?.author }}
     </li>
     <li *ngIf="tool?.email">
-      <strong tooltip="E-mail of corresponding author for tool">E-mail</strong>:
+      <strong matTooltip="E-mail of corresponding author for tool">E-mail</strong>:
       <a href="mailto:{{tool?.email}}">
         {{ tool?.email }}
       </a>
     </li>
     <li *ngIf="tool?.providerUrl">
-      <strong tooltip="Source code repository for the associated tool descriptors and Dockerfile">
+      <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">
         {{ tool?.provider}}
       </strong>:
       <a [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
@@ -34,11 +34,11 @@
       </a>
     </li>
     <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-        <strong tooltip="The source code for this tool is stored on Dockstore.org">Dockstore.org</strong>:
+        <strong matTooltip="The source code for this tool is stored on Dockstore.org">Dockstore.org</strong>:
         <i>The source code for this tool is stored on Dockstore.org</i>
     </li>
     <li *ngIf="tool?.imgProviderUrl">
-      <strong tooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
+      <strong matTooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
       <a [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
         {{ tool?.imgProviderUrl }}
       </a>
@@ -48,13 +48,13 @@
     </li>
     <span *ngIf="isPublic && isValidVersion">
       <li *ngIf="trsLinkCWL">
-        <strong tooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
+        <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
         <a [href]="trsLinkCWL">
           {{tool?.tool_path}}
         </a>
       </li>
       <li *ngIf="trsLinkWDL">
-        <strong tooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
+        <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
         <a [href]="trsLinkWDL">
           {{tool?.tool_path}}
         </a>
@@ -63,7 +63,7 @@
     <li *ngIf="(tool?.default_dockerfile_path || !isPublic)">
       <form #editDockerfileForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong tooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
+          <strong matTooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path: </strong>
           <span *ngIf="!dockerFileEditing">{{ tool?.default_dockerfile_path }}</span>
           <input *ngIf="dockerFileEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath" type="text" class="input-default form-control"
             name="contDockerfilePath" [(ngModel)]="tool.default_dockerfile_path" placeholder="e.g. /Dockerfile" />
@@ -83,7 +83,7 @@
     <li *ngIf="(tool?.default_cwl_path || !isPublic)">
       <form #editCWLPathForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
+          <strong matTooltip="Path in Git repository to main CWL descriptor file">CWL Path: </strong>
           <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
           <input *ngIf="cwlPathEditing" [required]="!tool?.default_wdl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control"
             name="contCWLPath" [(ngModel)]="tool.default_cwl_path" [placeholder]="exampleDescriptorPatterns.cwl" />
@@ -103,7 +103,7 @@
     <li *ngIf="(tool?.default_wdl_path || !isPublic)">
       <form #editWDLPathForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
+          <strong matTooltip="Path in Git repository to main WDL descriptor file">WDL Path:</strong>
           <span *ngIf="!wdlPathEditing">{{ tool?.default_wdl_path || 'n/a' }}</span>
           <input *ngIf="wdlPathEditing" [required]="!tool?.default_cwl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control"
             name="contWDLPath" [(ngModel)]="tool.default_wdl_path" [placeholder]="exampleDescriptorPatterns.wdl" />
@@ -123,7 +123,7 @@
    <li>
       <form #editCWLTestPathForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong tooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
+          <strong matTooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path: </strong>
           <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
           <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile" placeholder="e.g. /test.cwl.json" />
         </div>
@@ -138,7 +138,7 @@
     <li>
       <form #editWDLTestPathForm="ngForm" class="form-inline">
         <div class="form-group">
-          <strong tooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
+          <strong matTooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path:</strong>
           <span *ngIf="!wdlTestPathEditing">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
           <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath" type="text" class="input-default form-control"
             name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile" placeholder="e.g. /test.wdl.json" />
@@ -150,22 +150,26 @@
         </button>
       </form>
     </li>
-    <app-info-tab-checker-workflow-path [canRead]="true" [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
+    <app-info-tab-checker-workflow-path *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"  [canRead]="true" [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
+    <!-- TODO: Remove once hosted tools support checker workflows -->
+    <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+      <strong matTooltip="Currently disabled for Hosted Tools">Checker Workflow</strong>: n/a
+    </div>
     <li *ngIf="tool?.buildMode">
-      <strong tooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
+      <strong matTooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
     <li *ngIf="tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-      <strong tooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
+      <strong matTooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
     </li>
     <li *ngIf="tool?.lastUpdatedDate">
-      <strong tooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
+      <strong matTooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
     </li>
   </ul>
 
   <button id="downloadZipButton" *ngIf="isValidVersion"  mat-raised-button (click)="downloadZip()">Export as ZIP</button>
 
   <div *ngIf="tool?.description || !isPublic">
-    <label tooltip="Description of tool obtained from tool descriptor">
+    <label matTooltip="Description of tool obtained from tool descriptor">
       Description
     </label>
     <div *ngIf="tool?.description" class="well well-sm">

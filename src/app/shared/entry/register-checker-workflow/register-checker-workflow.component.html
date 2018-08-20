@@ -29,7 +29,7 @@
               </label>
               <div class="col-sm-9">
                 <input type="text" id="checkerWorkflowPath" class="form-control" name="workflow_path" [(ngModel)]="workflowPath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
-                  required tooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
+                  required matTooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
                 <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
               </div>
             </div>
@@ -39,12 +39,12 @@
               </label>
               <div class="col-sm-9">
                 <input type="text" id="checkerWorkflowTestParameterFilePath" class="form-control" name="testParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.testParameterFilePath"
-                  required tooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /test.json" />
+                  required matTooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /test.json" />
                 <div *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </div>
               </div>
             </div>
             <div class="form-group form-group-sm" *ngIf="!isWorkflow">
-              <label class="col-sm-3 control-label" tooltip="Type of descriptor language used">Descriptor Type:
+              <label class="col-sm-3 control-label" matTooltip="Type of descriptor language used">Descriptor Type:
               </label>
               <div class="col-sm-9">
                 <select class="form-control input-sm" [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">

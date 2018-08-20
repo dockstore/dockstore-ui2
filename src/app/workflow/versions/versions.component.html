@@ -20,7 +20,7 @@
     <tr>
       <th>
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-          <label placement="top" tooltip="Git branches/tags: The selected reference and tag will be used
+          <label placement="top" matTooltip="Git branches/tags: The selected reference and tag will be used
                          to populate the info tab including 'launch with'">
             Git Reference
           </label>
@@ -29,7 +29,7 @@
         </span>
 
         <span *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
-          <label placement="top" tooltip="Version of the workflow.">
+          <label placement="top" matTooltip="Version of the workflow.">
             Version
           </label>
         </span>
@@ -45,14 +45,14 @@
               [ngClass]="getIconClass('author')"
               (click)="clickSortColumn('author')">
         </span>
-        <label placement="top" tooltip="The editing author as collected by Dockstore">Author</label>
+        <label placement="top" matTooltip="The editing author as collected by Dockstore">Author</label>
       </th>
       <th>
         <span class="glyphicon pull-right"
               [ngClass]="getIconClass('last_modified')"
               (click)="clickSortColumn('last_modified')">
         </span>
-        <label placement="top" tooltip="Date of last update to Git reference">Date Modified</label>
+        <label placement="top" matTooltip="Date of last update to Git reference">Date Modified</label>
       </th>
 
       <th>
@@ -60,7 +60,7 @@
               [ngClass]="getIconClass('valid')"
               (click)="clickSortColumn('valid')">
         </span>
-        <label placement="top" tooltip="A version is valid if it has at least one valid descriptor file">
+        <label placement="top" matTooltip="A version is valid if it has at least one valid descriptor file">
           Valid
         </label>
       </th>
@@ -70,19 +70,19 @@
               [ngClass]="getIconClass('verified')"
               (click)="clickSortColumn('verified')">
         </span>
-        <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
+        <label placement="top" matTooltip="A version is verified if it has been verified to work by a person/group">
           Verified Platforms
         </label>
       </th>
       <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
       <!-- <th>
-        <label placement="top" tooltip="Link to DOI entry for the given version">
+        <label placement="top" matTooltip="Link to DOI entry for the given version">
           DOI
         </label>
       </th> -->
 
       <th>
-        <label placement="top" tooltip="View more information about the given version">
+        <label placement="top" matTooltip="View more information about the given version">
           Actions
         </label>
       </th>
@@ -102,7 +102,7 @@
       <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
       <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
       <span *ngIf="(version.commitID && (version.commitID | commitUrl: workflow?.providerUrl)); else noCommitID" [tooltip]="version.commitID? 'Commit ID: ' + version.commitID : ''">
-        <a [href]="version.commitID | commitUrl: workflow?.providerUrl">{{version?.name}}</a>
+        &nbsp;<a [href]="version.commitID | commitUrl: workflow?.providerUrl">{{version?.name}}</a>
       </span>
       <ng-template #noCommitID><span>{{version?.name}}</span></ng-template>
     </td>
@@ -114,7 +114,7 @@
       </td>
       <td>
         <a href={{verifiedLink}}>
-          <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
+          <span class="glyphicon glyphicon-ok" *ngIf="version.verified" matTooltip="{{getVerifiedSource(version.name)}}"></span>
         </a>
         {{version?.sourceFiles | verifiedPlatforms }}
         <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>

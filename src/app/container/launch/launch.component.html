@@ -13,9 +13,9 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
+  
 <div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see launch with, please refresh the workflow.
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see launch with, please select a version.
 </div>
 <div *ngIf="_selectedVersion">
   <div *ngIf="!_selectedVersion.valid">
@@ -27,11 +27,11 @@
     <span>
       <div class="form-inline">
         <div class="text-right small-bottom-margin">
-          <select id="launchWithDescriptor" class="form-control input-sm" [(ngModel)]="currentDescriptor" (change)="reactToDescriptor()">
-            <option *ngFor="let descriptor of validDescriptors" [ngValue]="descriptor">
-              {{ descriptor }}
-            </option>
-          </select>
+          <mat-form-field>
+            <mat-select name="toolVersions" [(value)]="currentDescriptor" (selectionChange)="reactToDescriptor($event)">
+              <mat-option *ngFor="let descriptor of validDescriptors" [value]="descriptor">{{descriptor}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </span>
