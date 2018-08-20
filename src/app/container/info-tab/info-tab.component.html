@@ -150,7 +150,11 @@
         </button>
       </form>
     </li>
-    <app-info-tab-checker-workflow-path [canRead]="true" [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
+    <app-info-tab-checker-workflow-path *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"  [canRead]="true" [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
+    <!-- TODO: Remove once hosted tools support checker workflows -->
+    <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+      <strong matTooltip="Currently disabled for Hosted Tools">Checker Workflow</strong>: n/a
+    </div>
     <li *ngIf="tool?.buildMode">
       <strong matTooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
     </li>
