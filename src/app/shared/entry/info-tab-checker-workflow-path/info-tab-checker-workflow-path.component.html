@@ -1,7 +1,7 @@
 <li *ngIf="(checkerWorkflow$ | async) || (!(checkerWorkflow$ | async) && !(hasParentEntry$ | async) && !(isStub$ | async))">
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group">
-      <strong tooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
+      <strong matTooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
     </div>
     <span *ngIf="!(checkerWorkflow$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
@@ -24,7 +24,7 @@
   <form class="form-inline">
     <div>
       <div class="form-group">
-        <strong tooltip="The parent entry of this checker workflow">Parent Entry</strong>:
+        <strong matTooltip="The parent entry of this checker workflow">Parent Entry</strong>:
       </div>
       <span>
         <div class="btn-group" role="group">

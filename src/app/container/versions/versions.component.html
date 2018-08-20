@@ -19,7 +19,7 @@
     <thead>
       <tr>
         <th>
-          <label placement="top" tooltip="Tags from Docker repository: The selected tag will be used
+          <label placement="top" matTooltip="Tags from Docker repository: The selected tag will be used
           to populate the Info tab including 'Launch With'">
             Version
           </label>
@@ -33,29 +33,29 @@
               [ngClass]="getIconClass('author')"
               (click)="clickSortColumn('author')">
         </span>
-        <label placement="top" tooltip="The editing author as collected by Dockstore">Author</label>
+        <label placement="top" matTooltip="The editing author as collected by Dockstore">Author</label>
       </th>
         <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-          <label placement="top" tooltip="Git branches/tags">
+          <label placement="top" matTooltip="Git branches/tags">
             Git Reference
           </label>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('reference')" (click)="clickSortColumn('reference')">
           </span>
         </th>
         <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-          <label placement="top" tooltip="Date of last build of the Docker image">Date Built</label>
+          <label placement="top" matTooltip="Date of last build of the Docker image">Date Built</label>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('last_modified')" (click)="clickSortColumn('last_modified')">
           </span>
         </th>
         <th>
-          <label placement="top" tooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
+          <label placement="top" matTooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
             Valid
           </label>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('valid')" (click)="clickSortColumn('valid')">
           </span>
         </th>
         <th>
-          <label placement="top" tooltip="A version is verified if it has been verified to work by a person/group">
+          <label placement="top" matTooltip="A version is verified if it has been verified to work by a person/group">
             Verified Platforms
           </label>
           <span class="glyphicon pull-right" [ngClass]="getIconClass('verified')" (click)="clickSortColumn('verified')">
@@ -63,12 +63,12 @@
         </th>
         <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
         <!-- <th>
-          <label placement="top" tooltip="Link to DOI entry for the given version">
+          <label placement="top" matTooltip="Link to DOI entry for the given version">
             DOI
           </label>
         </th> -->
         <th>
-          <label placement="top" tooltip="View more information about the given version">
+          <label placement="top" matTooltip="View more information about the given version">
             Actions
           </label>
         </th>
@@ -103,7 +103,7 @@
         </td>
         <td>
           <a href= {{verifiedLink}}>
-            <span class="glyphicon glyphicon-ok" *ngIf="version.verified" tooltip="{{getVerifiedSource(version.name)}}"></span>
+            <span class="glyphicon glyphicon-ok" *ngIf="version.verified" matTooltip="{{getVerifiedSource(version.name)}}"></span>
           </a>
           {{version?.sourceFiles | verifiedPlatforms }}
           <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
