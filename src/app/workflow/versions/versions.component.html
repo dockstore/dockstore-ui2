@@ -102,7 +102,7 @@
       <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
       <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
       <span *ngIf="(version.commitID && (version.commitID | commitUrl: workflow?.providerUrl)); else noCommitID" [tooltip]="version.commitID? 'Commit ID: ' + version.commitID : ''">
-        <a [href]="version.commitID | commitUrl: workflow?.providerUrl">{{version?.name}}</a>
+        &nbsp;<a [href]="version.commitID | commitUrl: workflow?.providerUrl">{{version?.name}}</a>
       </span>
       <ng-template #noCommitID><span>{{version?.name}}</span></ng-template>
     </td>
