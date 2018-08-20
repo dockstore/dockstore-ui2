@@ -1,5 +1,5 @@
 import { TokenService } from '../token.service';
-import { UsersService } from '../../shared/swagger';
+import { ExtendedUserData, User, UsersService } from '../../shared/swagger';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { takeUntil } from 'rxjs/operators';
@@ -12,7 +12,8 @@ import { Subject } from 'rxjs';
 export class OnboardingComponent implements OnInit {
   public tokenSetComplete;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  extendedUser: any;
+  extendedUser: ExtendedUserData;
+  user: User;
   constructor(private userService: UserService, private usersService: UsersService, private tokenService: TokenService) {
   }
   ngOnInit() {
@@ -27,7 +28,7 @@ export class OnboardingComponent implements OnInit {
         }
       }
     );
-
+    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
     this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 }
