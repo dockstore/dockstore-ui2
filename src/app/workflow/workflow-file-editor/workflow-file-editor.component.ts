@@ -20,6 +20,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
   @Input() descriptorType: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
+    this.clearSourceFiles();
     if (value != null) {
       this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
       this.loadVersionSourcefiles();
@@ -84,4 +85,14 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);
     this.testParameterFiles = this.getTestFiles(this.originalSourceFiles);
   }
+
+  /**
+   * Clear the sourcefiles stored
+   */
+  clearSourceFiles() {
+    this.descriptorFiles = [];
+    this.testParameterFiles = [];
+    this.originalSourceFiles = [];
+  }
+
 }

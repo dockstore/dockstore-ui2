@@ -23,6 +23,7 @@
       <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
         <mat-option value="cwl">cwl</mat-option>
         <mat-option value="wdl">wdl</mat-option>
+        <!-- <mat-option value="nfl">nextflow</mat-option> -->
       </mat-select>
     </mat-form-field>
     <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [fileType]="'descriptor'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
@@ -32,6 +33,7 @@
       <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
         <mat-option value="cwl">cwl</mat-option>
         <mat-option value="wdl">wdl</mat-option>
+        <!-- <mat-option value="nfl">nextflow</mat-option> -->
       </mat-select>
     </mat-form-field>
     <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>

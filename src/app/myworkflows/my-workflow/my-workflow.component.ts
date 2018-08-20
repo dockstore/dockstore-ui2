@@ -39,7 +39,6 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
-
 /**
  * How the workflow selection works:
  * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
