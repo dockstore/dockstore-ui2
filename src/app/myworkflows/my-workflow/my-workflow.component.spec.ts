@@ -15,7 +15,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 
@@ -60,7 +60,7 @@ describe('MyWorkflowsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
-      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule ],
+      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule ],
       providers: [
         { provide: Configuration, useClass: ConfigurationStub },
         { provide: UsersService, useClass: UsersStubService },
