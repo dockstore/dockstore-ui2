@@ -17,6 +17,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CustomMaterialModule } from './../modules/material.module';
 
 import { SelectComponent } from '../../select/select.component';
 
@@ -26,7 +27,8 @@ import { SelectComponent } from '../../select/select.component';
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    CustomMaterialModule
   ],
   providers: [],
   exports: [

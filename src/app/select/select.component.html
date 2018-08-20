@@ -14,13 +14,15 @@
   ~    limitations under the License.
   -->
 
-<select class="form-control input-sm" [(ngModel)]="obj" (change)="changedSelect(obj)">
-  <option *ngFor="let obj of items" [ngValue]="obj">
-    <div *ngIf="field">
-      {{ obj[field] }}
-    </div>
-    <div *ngIf="!field">
-      {{ obj }}
-    </div>
-  </option>
-</select>
+<mat-form-field>
+  <mat-select [placeholder]="placeholder" [(value)]="obj" (selectionChange)="changedSelect(obj)">
+    <mat-option *ngFor="let obj of items" [value]="obj">
+      <div *ngIf="field">
+        {{ obj[field] }}
+      </div>
+      <div *ngIf="!field">
+        {{ obj }}
+      </div>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

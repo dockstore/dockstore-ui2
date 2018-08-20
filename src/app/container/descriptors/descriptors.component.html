@@ -21,12 +21,10 @@
   <div *ngIf="content; else noContent">
     <span class="row m-0">
       <span class="form-group col-sm-4">
-        <strong>Descriptor Type:</strong>
-        <app-select [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+        <app-select [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
       </span>
       <span class="form-group col-sm-4">
-        <strong>File:</strong>
-        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+        <app-select [placeholder]="'File'" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
       </span>
     </span>
     <div class="row m-0">
