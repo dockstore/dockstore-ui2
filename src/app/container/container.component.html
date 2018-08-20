@@ -87,7 +87,7 @@
           <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool" class="mr-2">
             Delete
           </button>
-          <button mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Refresh the tool" class="mr-2">
+          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Refresh the tool" class="mr-2">
             Refresh
           </button>
           <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>

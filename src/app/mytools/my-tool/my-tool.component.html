@@ -35,7 +35,7 @@
               <h3 class="sidebar-header">My tools</h3>
             </div>
             <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage" (selectEntry)="selectEntry($event)"></app-sidebar-accordion>
+            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="refreshMessage"></app-sidebar-accordion>
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
             <span *ngIf="refreshMessage">
