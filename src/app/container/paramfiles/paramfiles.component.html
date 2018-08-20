@@ -13,7 +13,13 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div>
+<div *ngIf="!_selectedVersion">
+  <alert type="warning">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp;No versions exist for this tool.
+  </alert>
+</div>
+<div *ngIf="_selectedVersion">
   <alert *ngIf="!_selectedVersion?.valid" type="warning">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;This version of the tool is invalid.
