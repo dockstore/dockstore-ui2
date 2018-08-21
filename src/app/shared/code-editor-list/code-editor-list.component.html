@@ -16,15 +16,15 @@
           </span>
           <span class="spacer"></span>
           <span>
-            <button mat-icon-button class="delete-editor-file mr-2" color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
+            <button mat-icon-button class="delete-editor-file mr-2" color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)" matTooltip="Delete the file">
               <mat-icon>delete</mat-icon>
             </button>
             <span *ngIf="!editing">
-              <a mat-icon-button color="secondary" class="mr-2 link-button" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="getDescriptorPath(sourcefile)" type="button" matTooltip="Download {{sourcefile?.path}}">
+              <a mat-icon-button color="secondary" class="mr-2 link-button" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="(sourcefile | publicFileDownload : entrypath: selectedVersion: descriptorType: entryType)" type="button" matTooltip="Download {{sourcefile?.path}}">
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a mat-icon-button color="secondary" class="mr-2 link-button" [href]="getPrivateHREF(sourcefile?.content)" [download]="getPrivatePath(sourcefile?.path)" type="button" matTooltip="Download {{sourcefile?.path}}">
+                <a mat-icon-button color="secondary" class="mr-2 link-button" [href]="(sourcefile?.content | privateFileDownload)" [download]="(sourcefile?.path | privateFilePath)" type="button" matTooltip="Download {{sourcefile?.path}}">
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>

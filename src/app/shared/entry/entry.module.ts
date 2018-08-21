@@ -35,7 +35,9 @@ import { VerifiedDisplayComponent } from './verified-display/verified-display.co
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
-
+import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
+import { PrivateFileDownloadPipe } from './private-file-download.pipe';
+import { PrivateFilePathPipe } from './private-file-path.pipe';
 
 @NgModule({
   imports: [
@@ -57,7 +59,10 @@ import { ClipboardModule } from 'ngx-clipboard';
     VerifiedByComponent,
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
-    VersionProviderUrlPipe
+    VersionProviderUrlPipe,
+    PublicFileDownloadPipe,
+    PrivateFileDownloadPipe,
+    PrivateFilePathPipe
   ],
   providers: [
     GA4GHFilesStateService
@@ -73,6 +78,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
+    PublicFileDownloadPipe,
     NgxJsonLdModule
   ]
 })

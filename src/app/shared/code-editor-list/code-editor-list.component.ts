@@ -2,10 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { WorkflowService } from '../../shared/workflow.service';
 import { Observable } from 'rxjs';
-import { FileService } from '../file.service';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-code-editor-list',
@@ -27,7 +24,7 @@ export class CodeEditorListComponent {
   public DescriptorType = ToolDescriptor.TypeEnum;
   publishDownloadLinks: Array<string>;
 
-  constructor(private workflowService: WorkflowService, protected fileService: FileService) {
+  constructor(private workflowService: WorkflowService) {
     this.published$ = this.workflowService.workflowIsPublished$;
   }
 
@@ -213,17 +210,4 @@ export class CodeEditorListComponent {
     }
     return false;
   }
-
-  protected getDescriptorPath(sourcefile: SourceFile): string {
-    return this.fileService.getDescriptorPath(this.entrypath, this.selectedVersion, sourcefile, this.descriptorType, this.entryType);
-  }
-
-  getPrivateHREF(content: string): SafeUrl {
-    return this.fileService.getFileData(content);
-  }
-
-  getPrivatePath(filePath: string): string {
-    return this.fileService.getFileName(filePath);
-  }
-
 }
