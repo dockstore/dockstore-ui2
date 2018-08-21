@@ -18,6 +18,7 @@ export class ToolFileEditorComponent extends FileEditing {
   originalSourceFiles = [];
   currentVersion: Tag;
   selectedDescriptorType = 'cwl';
+  @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;
       this.clearSourceFiles();

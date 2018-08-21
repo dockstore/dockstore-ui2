@@ -34,6 +34,7 @@ import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
+import { ClipboardModule } from 'ngx-clipboard';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     FormsModule,
     ModalModule,
     CustomMaterialModule,
-    NgxJsonLdModule
+    NgxJsonLdModule,
+    ClipboardModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,

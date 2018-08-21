@@ -16,9 +16,22 @@
           </span>
           <span class="spacer"></span>
           <span>
-          <button mat-mini-fab class="delete-editor-file" color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
-            <mat-icon>delete</mat-icon>
-          </button>
+            <button mat-icon-button class="delete-editor-file mr-2" color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <span *ngIf="!editing">
+              <a mat-icon-button color="secondary" class="mr-2" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="getDescriptorPath(sourcefile)" type="button" matTooltip="Download {{sourcefile?.path}}">
+                <mat-icon>save_alt</mat-icon>
+              </a>
+              <ng-template #unpublishedDownloadLink>
+                <a mat-icon-button color="secondary" class="mr-2" [href]="getPrivateHREF(sourcefile?.content)" [download]="getPrivatePath(sourcefile?.path)" type="button" title="{{sourcefile?.path}}">
+                  <mat-icon>save_alt</mat-icon>
+                </a>
+              </ng-template>
+              <button mat-icon-button color="secondary" type="button" class="mr-2" matTooltip="Copy to clipboard" ngxClipboard [cbContent]="sourcefile?.content">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </span>
           </span>
         </mat-toolbar-row>
       </mat-toolbar>
