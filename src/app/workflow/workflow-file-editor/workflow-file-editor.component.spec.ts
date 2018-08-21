@@ -4,23 +4,32 @@ import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
 import { TabsModule } from 'ngx-bootstrap';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
-import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule } from '@angular/material';
+import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule,
+  MatTooltipModule } from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
+import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
+import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
+import { ClipboardModule } from 'ngx-clipboard';
+import { FileService } from './../../shared/file.service';
 
 describe('WorkflowFileEditorComponent', () => {
   let component: WorkflowFileEditorComponent;
   let fixture: ComponentFixture<WorkflowFileEditorComponent>;
-
+  class FileStubService { }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         WorkflowFileEditorComponent,
         CodeEditorListComponent,
-        CodeEditorComponent
+        CodeEditorComponent,
+        PublicFileDownloadPipe,
+        PrivateFileDownloadPipe,
+        PrivateFilePathPipe
       ],
       imports: [
         TabsModule.forRoot(),
@@ -29,13 +38,16 @@ describe('WorkflowFileEditorComponent', () => {
         MatToolbarModule,
         MatIconModule,
         MatInputModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatTooltipModule,
+        ClipboardModule
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: FileService, useClass: FileStubService }
       ]
     })
     .compileComponents();
