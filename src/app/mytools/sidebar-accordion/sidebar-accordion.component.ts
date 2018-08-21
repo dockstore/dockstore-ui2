@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ContainerService } from './../../shared/container.service';
+import { ContainerService } from '../../shared/container.service';
+import { Tool } from '../../shared/swagger';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -9,7 +10,7 @@ import { ContainerService } from './../../shared/container.service';
 })
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
-  @Input() groupEntriesObject;
+  @Input() groupEntriesObject: Tool[];
   @Input() refreshMessage;
 
   public toolId$: Observable<number>;
