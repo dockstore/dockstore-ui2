@@ -20,11 +20,11 @@
               <mat-icon>delete</mat-icon>
             </button>
             <span *ngIf="!editing">
-              <a mat-icon-button color="secondary" class="mr-2" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="getDescriptorPath(sourcefile)" type="button" matTooltip="Download {{sourcefile?.path}}">
+              <a mat-icon-button color="secondary" class="mr-2 link-button" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="getDescriptorPath(sourcefile)" type="button" matTooltip="Download {{sourcefile?.path}}">
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a mat-icon-button color="secondary" class="mr-2" [href]="getPrivateHREF(sourcefile?.content)" [download]="getPrivatePath(sourcefile?.path)" type="button" title="{{sourcefile?.path}}">
+                <a mat-icon-button color="secondary" class="mr-2 link-button" [href]="getPrivateHREF(sourcefile?.content)" [download]="getPrivatePath(sourcefile?.path)" type="button" matTooltip="Download {{sourcefile?.path}}">
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>
