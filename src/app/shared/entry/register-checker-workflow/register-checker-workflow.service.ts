@@ -62,11 +62,10 @@ export class RegisterCheckerWorkflowService {
                         this.containerService.upsertToolToTools(<DockstoreTool>entry);
                         this.containerService.setTool(<DockstoreTool>entry);
                     }
-                    this.isModalShown$.next(false);
-                    this.refreshService.handleSuccess(message);
                     const refreshCheckerMessage = 'Refreshing checker workflow';
                     this.stateService.setRefreshMessage(refreshCheckerMessage);
                     this.workflowsService.refresh(entry.checker_id).pipe(first()).subscribe((workflow: Workflow) => {
+                        this.isModalShown$.next(false);
                         this.workflowService.upsertWorkflowToWorkflow(workflow);
                         this.refreshService.handleSuccess(refreshCheckerMessage);
                     }, error => {
