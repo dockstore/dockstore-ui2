@@ -15,11 +15,11 @@
  */
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { combineLatest } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
+import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 import { MyEntry } from '../../shared/my-entry';
 import { Workflow } from '../../shared/swagger';
@@ -75,7 +75,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
     protected accountsService: AccountsService, private refreshService: RefreshService, private stateService: StateService,
     private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
-    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService) {
+    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar) {
     super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
@@ -110,16 +110,19 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.stateService.setRefreshMessage('Fetching workflows');
-        combineLatest(this.usersService.userWorkflows(user.id).pipe(first()), this.workflowsService.sharedWorkflows().pipe(first()))
-          .subscribe(([workflows, sharedWorkflows]) => {
-            if (workflows && sharedWorkflows) {
-              this.workflowService.setWorkflows(workflows);
-              this.workflowService.setSharedWorkflows(sharedWorkflows);
-              this.stateService.setRefreshMessage(null);
-            }
-          }, (error: any) => {
-            this.stateService.setRefreshMessage(null);
-          });
+        forkJoin(this.usersService.userWorkflows(user.id).pipe(catchError(error => {
+          this.matSnackbar.open('Could not retrieve workflows');
+          return observableOf([]);
+        })), this.workflowsService.sharedWorkflows().pipe(catchError(error => {
+          this.matSnackbar.open('Could not retrieve shared workflows');
+          return observableOf([]);
+        }))).subscribe(([workflows, sharedWorkflows]) => {
+          this.workflowService.setWorkflows(workflows);
+          this.workflowService.setSharedWorkflows(sharedWorkflows);
+          this.stateService.setRefreshMessage(null);
+        }, error => {
+          console.error('This should be impossible because both errors are caught already');
+        });
       }
     });
 
@@ -145,6 +148,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             }
           }
         }
+      }, error => {
+        console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
       });
 
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
@@ -243,7 +248,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    const dialogRef = this.dialog.open(RegisterWorkflowModalComponent, {width: '600px'});
+    const dialogRef = this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
   }
 
   refreshAllEntries(): void {
