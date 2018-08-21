@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { WorkflowService } from '../../shared/workflow.service';
-import { Workflow } from '../../shared/swagger';
+import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -12,7 +12,7 @@ import { Workflow } from '../../shared/swagger';
 })
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
-  @Input() groupEntriesObject: Workflow[];
+  @Input() groupEntriesObject: OrgWorkflowObject[];
   @Input() refreshMessage;
   public workflowId$: Observable<number>;
   activeTab = 0;
