@@ -12,12 +12,12 @@ import { SelectTabPipe } from '../entry/select-tab.pipe';
   declarations: [
     ExpandPanelPipe,
     MapFriendlyValuesPipe,
-    SelectTabPipe,
+    SelectTabPipe
   ],
   exports: [
     ExpandPanelPipe,
     MapFriendlyValuesPipe,
-    SelectTabPipe,
+    SelectTabPipe
   ],
 })
 export class PipeModule { }

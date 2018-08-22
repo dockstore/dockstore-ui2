@@ -18,6 +18,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
   originalSourceFiles = [];
   _selectedVersion: WorkflowVersion;
   @Input() descriptorType: string;
+  @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
     this.clearSourceFiles();

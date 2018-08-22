@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
+import { WorkflowService } from '../../shared/workflow.service';
+import { Observable } from 'rxjs';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-code-editor-list',
@@ -12,10 +14,18 @@ export class CodeEditorListComponent {
   @Input() editing: boolean;
   @Input() fileType: string;
   @Input() descriptorType: string;
+  @Input() entryType: string;
+  @Input() entrypath: string;
+  @Input() selectedVersion: WorkflowVersion;
+  protected published$: Observable<boolean>;
+  public downloadFilePath: string;
   NEXTFLOW_CONFIG_PATH = '/nextflow.config';
   NEXTFLOW_PATH = '/main.nf';
   public DescriptorType = ToolDescriptor.TypeEnum;
-  constructor() { }
+
+  constructor(private workflowService: WorkflowService) {
+    this.published$ = this.workflowService.workflowIsPublished$;
+  }
 
   /**
    * Adds a new file editor

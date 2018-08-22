@@ -28,6 +28,7 @@ import { Tag } from '../../shared/swagger/model/tag';
 @Component({
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
+  styleUrls: ['./dockerfile.component.scss']
 })
 export class DockerfileComponent {
 

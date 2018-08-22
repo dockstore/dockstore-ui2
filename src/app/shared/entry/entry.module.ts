@@ -34,7 +34,10 @@ import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
-
+import { ClipboardModule } from 'ngx-clipboard';
+import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
+import { PrivateFileDownloadPipe } from './private-file-download.pipe';
+import { PrivateFilePathPipe } from './private-file-path.pipe';
 
 @NgModule({
   imports: [
@@ -43,7 +46,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     FormsModule,
     ModalModule,
     CustomMaterialModule,
-    NgxJsonLdModule
+    NgxJsonLdModule,
+    ClipboardModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -55,7 +59,10 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedByComponent,
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
-    VersionProviderUrlPipe
+    VersionProviderUrlPipe,
+    PublicFileDownloadPipe,
+    PrivateFileDownloadPipe,
+    PrivateFilePathPipe
   ],
   providers: [
     GA4GHFilesStateService
@@ -71,6 +78,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
+    PublicFileDownloadPipe,
     NgxJsonLdModule
   ]
 })

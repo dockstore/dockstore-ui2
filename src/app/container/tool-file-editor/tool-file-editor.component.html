@@ -16,7 +16,7 @@
 
 <tabset [justified]="true">
   <tab heading="Dockerfile" id="dockerfileTab">
-    <app-code-editor-list [sourcefiles]="dockerFile" [editing]="editing" [fileType]="'dockerfile'"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="dockerFile" [editing]="editing" [fileType]="'dockerfile'" [selectedVersion]="currentVersion" [entryType]="'tool'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
   <tab heading="Descriptor Files" id="descriptorFilesTab">
     <mat-form-field>
@@ -26,7 +26,7 @@
         <!-- <mat-option value="nfl">nextflow</mat-option> -->
       </mat-select>
     </mat-form-field>
-    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [fileType]="'descriptor'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [fileType]="'descriptor'" [descriptorType]="selectedDescriptorType" [selectedVersion]="currentVersion" [entryType]="'tool'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
   <tab heading="Test Parameter Files" id="testParameterFilesTab">
     <mat-form-field>
@@ -36,7 +36,7 @@
         <!-- <mat-option value="nfl">nextflow</mat-option> -->
       </mat-select>
     </mat-form-field>
-    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'" [descriptorType]="selectedDescriptorType"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'" [descriptorType]="selectedDescriptorType" [selectedVersion]="currentVersion" [entryType]="'tool'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
 </tabset>
 <div class="editor-button-container" *ngIf="!publicPage">

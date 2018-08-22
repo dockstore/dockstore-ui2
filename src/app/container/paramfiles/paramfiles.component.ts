@@ -28,7 +28,8 @@ import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',
-  templateUrl: './paramfiles.component.html'
+  templateUrl: './paramfiles.component.html',
+  styleUrls: ['./paramfiles.component.scss']
 })
 
 export class ParamfilesComponent extends EntryFileSelector {
