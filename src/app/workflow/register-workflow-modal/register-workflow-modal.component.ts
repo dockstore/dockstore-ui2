@@ -72,7 +72,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    return this.registerWorkflowModalService.friendlyRepositoryKeys();
+    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter(key => key !== 'Dockstore');
   }
 
   clearWorkflowRegisterError(): void {
@@ -92,7 +92,20 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         this.changeDescriptorType(languages[0].toLowerCase());
       }
     });
-    this.workflow.repository = this.friendlyRepositoryKeys()[1];
+    this.selectInitialSourceControlRepository();
+  }
+
+  /**
+   * Playing favourites with GitHub by selecting it first
+   *
+   * @memberof RegisterWorkflowModalComponent
+   */
+  selectInitialSourceControlRepository() {
+    if (this.friendlyRepositoryKeys().includes('GitHub')) {
+      this.workflow.repository = 'GitHub';
+    } else {
+      this.workflow.repository = this.friendlyRepositoryKeys()[0];
+    }
   }
 
   registerWorkflow() {
@@ -133,7 +146,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
           const messages = validationMessages[field];
           for (const key in control.errors) {
             if (control.errors.hasOwnProperty(key)) {
-              formErrors[field] += messages[key] + ' ';
+              formErrors[field] = messages[key];
             }
           }
         }

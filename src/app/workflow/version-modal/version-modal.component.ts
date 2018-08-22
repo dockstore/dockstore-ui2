@@ -117,7 +117,15 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         .subscribe(data => this.onValueChanged(data));
     }
   }
-  onValueChanged(data?: any) {
+
+  /**
+   * Only shows one error message at a time
+   *
+   * @param {*} [data]
+   * @returns
+   * @memberof VersionModalComponent
+   */
+  onValueChanged(data?: any): void {
     if (!this.versionEditorForm) { return; }
     const form = this.versionEditorForm.form;
     for (const field in formErrors) {
