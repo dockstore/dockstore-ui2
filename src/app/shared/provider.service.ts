@@ -31,16 +31,20 @@ export class ProviderService {
 
 // TODO: Without an anchor, this looks fragile (for example if you had a github repo that included the string " bitbucket.org" in its name.
   private getProvider(gitUrl: string): string {
-    if (gitUrl.includes('github.com')) {
+    if (gitUrl.startsWith('git@github.com')) {
       return 'GitHub';
     }
 
-    if (gitUrl.includes('bitbucket.org')) {
+    if (gitUrl.startsWith('git@bitbucket.org')) {
       return 'Bitbucket';
     }
 
-    if (gitUrl.includes('gitlab.com')) {
+    if (gitUrl.startsWith('git@gitlab.com')) {
       return 'GitLab';
+    }
+
+    if (gitUrl.startsWith('git@dockstore.org')) {
+      return 'Dockstore';
     }
 
     return null;
@@ -69,6 +73,9 @@ export class ProviderService {
           break;
         case 'GitLab':
           providerUrl = 'https://gitlab.com/';
+          break;
+        case 'Dockstore':
+          providerUrl = 'https://dockstore.org/';
           break;
         default:
           return null;

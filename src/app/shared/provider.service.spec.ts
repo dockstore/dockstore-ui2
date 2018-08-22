@@ -16,7 +16,7 @@
 
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ProviderService } from './provider.service';
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 describe('ProviderService', () => {
     beforeEach(() => {
@@ -50,18 +50,21 @@ describe('ProviderService', () => {
         tool2.gitUrl = 'git@github.com:denis-yuen/dockstore-tool-bamstats.git';
         expect(service.setUpProvider(tool2).providerUrl).toContain('https://github.com/');
         const tool3 = tool;
-        tool3.gitUrl = 'https://garyluu@bitbucket.org/garyluu/dockstore-tool-md5sum.git';
+        tool3.gitUrl = 'git@bitbucket.org:garyluu/dockstore-tool-md5sum.git';
         expect(service.setUpProvider(tool3).providerUrl).toContain('https://bitbucket.org/');
         const tool4 = tool;
-        tool4.gitUrl = 'https://gitlab.com/garyluu/dockstore-tool-md5sum.git';
-        expect(service.setUpProvider(tool3).providerUrl).toContain('https://gitlab.com/');
+        tool4.gitUrl = 'git@gitlab.com:garyluu/dockstore-tool-md5sum.git';
+        expect(service.setUpProvider(tool4).providerUrl).toContain('https://gitlab.com/');
         const tool5 = tool;
         tool5.gitUrl = '';
-        expect(service.setUpProvider(tool3).providerUrl).toBeFalsy();
-        expect(service.setUpProvider(tool3).provider).toBeFalsy();
+        expect(service.setUpProvider(tool5).providerUrl).toBeFalsy();
+        expect(service.setUpProvider(tool5).provider).toBeFalsy();
         const tool6 = tool;
-        tool5.gitUrl = 'https://someprivateregistry.com/garyluu/dockstore-tool-md5sum.git';
-        expect(service.setUpProvider(tool3).providerUrl).toBeFalsy();
-        expect(service.setUpProvider(tool3).provider).toBeFalsy();
+        tool6.gitUrl = 'https://someprivateregistry.com/garyluu/dockstore-tool-md5sum.git';
+        expect(service.setUpProvider(tool6).providerUrl).toBeFalsy();
+        expect(service.setUpProvider(tool6).provider).toBeFalsy();
+        const tool7 = tool;
+        tool7.gitUrl = 'git@dockstore.org:garyluu/dockstore-tool-md5sum.git';
+        expect(service.setUpProvider(tool7).providerUrl).toContain('https://dockstore.org/');
     }));
 });

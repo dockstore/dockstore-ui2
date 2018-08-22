@@ -14,6 +14,12 @@
   ~    limitations under the License.
   -->
 <div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
+  <div class="col-md-12">
+    <span class="alert alert-warning col-md-12" role="alert" *ngIf="workflow?.descriptorType === 'nfl' && dagType === 'classic'">
+      <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;DAG display is still experimental for Nextflow.
+    </span>
+  </div>
+
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div [ngClass]="{'fullscreen-dropdown': expanded}">
       <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl' && workflow?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
@@ -40,17 +46,14 @@
       </div>
     </div>
 
-    <div *ngIf="dagType === 'classic'">
+    <div *ngIf="dagType === 'classic' && workflow?.descriptorType !== 'nfl'">
       <div class="alert alert-warning" role="alert" *ngIf="!dagResult">
         <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
         <span *ngIf="workflow?.descriptorType === 'wdl'">
-        A Descriptor associated with this workflow could not be found.
+          A Descriptor associated with this workflow could not be found.
         </span>
         <span *ngIf="workflow?.descriptorType === 'cwl'">
-        Please ensure that the Descriptor is a valid CWL 1.0 workflow.
-        </span>
-        <span *ngIf="workflow?.descriptorType === 'nfl'">
-        DAG display is still experimental for Nextflow.
+          Please ensure that the Descriptor is a valid CWL 1.0 workflow.
         </span>
       </div>
 

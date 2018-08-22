@@ -10,8 +10,8 @@
       <mat-tab label="Published">
       <mat-list class="org-accordion-list">
         <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{selected: (toolId$ | async) === toolObj?.id}">
-          <a class="no-wrap" title="{{toolObj?.repository + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}" [routerLink]="'/my-tools/' + toolObj.tool_path">
-            {{toolObj?.name + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}
+          <a class="no-wrap" title="{{toolObj?.repository + (toolObj?.toolname ? '/' + toolObj?.toolname : '')}}" [routerLink]="'/my-tools/' + toolObj.tool_path">
+            {{toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '')}}
           </a>
         </mat-list-item>
         <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
@@ -22,8 +22,8 @@
       <mat-tab label="Unpublished">
         <mat-list class="org-accordion-list">
           <mat-list-item *ngFor="let toolObj of orgObj?.unpublished" [ngClass]="{selected: (toolId$ | async) === toolObj?.id}">
-            <a class="no-wrap" title="{{toolObj?.name + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}" [routerLink]="'/my-tools/' + toolObj.tool_path">
-              {{toolObj?.name + (toolObj?.toolName ? '/' + toolObj?.toolName : '')}}
+            <a class="no-wrap" title="{{toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '')}}" [routerLink]="'/my-tools/' + toolObj.tool_path">
+              {{toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '')}}
             </a>
           </mat-list-item>
           <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">

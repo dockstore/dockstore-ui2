@@ -34,7 +34,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ['SEVEN_BRIDGES', 'Seven Bridges']
     ])],
     ['source_control_provider.keyword', new Map([
-      ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com']
+      ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com'], ['DOCKSTORE', 'dockstore.org']
     ])]
   ]);
 
