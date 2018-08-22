@@ -1,0 +1,61 @@
+
+
+{
+  "aliases": null,
+  "author": null,
+  "checker_id": null,
+  "dbCreateDate": 1534863323429,
+  "dbUpdateDate": 1534863323429,
+  "defaultTestParameterFilePath": "\/test.json",
+  "defaultVersion": null,
+  "description": null,
+  "descriptorType": "cwl",
+  "email": null,
+  "full_workflow_path": "github.com\/A\/l\/_cwl_checker",
+  "gitUrl": "git@github.com:A\/l.git",
+  "has_checker": false,
+  "id": 103,
+  "input_file_formats": [
+    
+  ],
+  "is_checker": true,
+  "is_published": true,
+  "labels": [
+    
+  ],
+  "lastUpdated": 1480363257688,
+  "last_modified": null,
+  "last_modified_date": null,
+  "mode": "STUB",
+  "organization": "A",
+  "output_file_formats": [
+    
+  ],
+  "parent_id": 11,
+  "path": "github.com\/A\/l",
+  "repository": "l",
+  "sourceControl": "github.com",
+  "source_control_provider": "GITHUB",
+  "starredUsers": [
+    
+  ],
+  "users": [
+    {
+      "avatarUrl": null,
+      "curator": false,
+      "id": 1,
+      "isAdmin": false,
+      "name": "user_A",
+      "setupComplete": false,
+      "userProfiles": null,
+      "username": "user_A"
+    }
+  ],
+  "workflowName": "_cwl_checker",
+  "workflowVersions": [
+    
+  ],
+  "workflow_path": "\/Dockstore.cwl"
+}
+
+

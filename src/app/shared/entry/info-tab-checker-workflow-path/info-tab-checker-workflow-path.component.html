@@ -5,7 +5,7 @@
     </div>
     <span *ngIf="!(checkerWorkflow$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
-      <button id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link" (click)="view()">
+      <button [disabled]="(refreshMessage$ | async)" id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link" (click)="view()">
         <span class="glyphicon glyphicon-eye-open"></span> View
       </button>
       <span *ngIf="!(isPublic$ | async)">
