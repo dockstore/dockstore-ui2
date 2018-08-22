@@ -18,35 +18,30 @@
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;This version of the workflow is invalid.
   </alert>
-  <div *ngIf="content; else noContent">
-    <span class="row m-0">
-      <span class="col-sm-4">
-        <app-select [placeholder]="'File'" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-      </span>
-    </span>
-    <div class="row m-0">
-      <div class="btn-group pull-right" role="group">
-        <a mat-button color="primary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
-          Download
-        </a>
-        <ng-template #unpublishedDownloadLink>
-          <a mat-button color="primary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
-            Download
-          </a>
-        </ng-template>
-        <button mat-button color="primary" type="button" ngxClipboard [cbContent]="content">
-          Copy
-        </button>
-      </div>
-    </div>
-  </div>
   <div [hidden]="!content">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <app-select  [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+        <span class="spacer"></span>
+        <div class="btn-group pull-right" role="group">
+          <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+            <mat-icon>save_alt</mat-icon>
+          </a>
+          <ng-template #unpublishedDownloadLink>
+            <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+              <mat-icon>save_alt</mat-icon>
+            </a>
+          </ng-template>
+          <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
+            <mat-icon>file_copy</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
     <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
   </div>
-  <ng-template #noContent>
-    <alert type="warning">
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      &nbsp;A Descriptor File associated with this Docker container could not be found.
-    </alert>
-  </ng-template>
+  <alert type="warning" *ngIf="!content">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp;A Descriptor File associated with this Docker container could not be found.
+  </alert>
 </div>

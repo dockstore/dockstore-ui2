@@ -29,7 +29,8 @@ import { ToolDescriptorService } from './tool-descriptor.service';
 @Component({
   selector: 'app-descriptors-container',
   templateUrl: './descriptors.component.html',
-  providers: [ToolDescriptorService]
+  providers: [ToolDescriptorService],
+  styleUrls: ['./descriptors.component.scss']
 })
 
 export class DescriptorsComponent extends EntryFileSelector {

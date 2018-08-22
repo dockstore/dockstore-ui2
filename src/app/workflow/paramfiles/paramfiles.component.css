@@ -14,3 +14,6 @@
  *    limitations under the License.
  */
 
+mat-toolbar-row {
+  font-size: 16px;
+}

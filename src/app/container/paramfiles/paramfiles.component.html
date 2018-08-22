@@ -24,38 +24,37 @@
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;This version of the tool is invalid.
   </alert>
-  <div *ngIf="content; else noContent">
+  <div *ngIf="content">
     <span class="row m-0">
       <span class="col-sm-4">
         <app-select [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
       </span>
-      <span class="col-sm-4">
-        <app-select [placeholder]="'File'" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-      </span>
     </span>
-    <div class="row m-0">
-      <div class="btn-group pull-right">
-        <a mat-button color="primary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
-          Download
-        </a>
-        <ng-template #unpublishedDownloadLink>
-          <a mat-button color="primary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
-            Download
-          </a>
-        </ng-template>
-        <button mat-button color="primary" type="button" ngxClipboard [cbContent]="content" title="Copy to clipboard">
-          Copy
-        </button>
-      </div>
-    </div>
   </div>
-  <ng-template #noContent>
-    <alert type="warning">
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
-    </alert>
-  </ng-template>
+  <alert type="warning" *ngIf="!content">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
+  </alert>
   <div [hidden]="!content || !_selectedVersion?.valid">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+        <span class="spacer"></span>
+        <div class="btn-group pull-right" role="group">
+          <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+            <mat-icon>save_alt</mat-icon>
+          </a>
+          <ng-template #unpublishedDownloadLink>
+            <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+              <mat-icon>save_alt</mat-icon>
+            </a>
+          </ng-template>
+          <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
+            <mat-icon>file_copy</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
     <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
   </div>
 </div>
