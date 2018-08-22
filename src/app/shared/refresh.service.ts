@@ -41,10 +41,6 @@ export class RefreshService {
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
 
-    clearError() {
-      this.errorService.setErrorAlert(null);
-    }
-
     /**
      * Handles refreshing of tool and updates the view.
      * @memberof RefreshService
@@ -67,9 +63,9 @@ export class RefreshService {
      * @memberof RefreshService
      */
     handleSuccess(message: string): void {
-      this.clearError();
       this.stateService.setRefreshMessage(null);
       this.snackBar.open(message + ' succeeded', 'Dismiss');
+      this.errorService.setErrorAlert(null);
     }
 
 
