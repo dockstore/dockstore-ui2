@@ -41,19 +41,23 @@ export class RefreshService {
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
 
+    clearError() {
+      this.errorService.setErrorAlert(null);
+    }
+
     /**
      * Handles refreshing of tool and updates the view.
      * @memberof RefreshService
      */
     refreshTool(): void {
-        const message = 'Refreshing ' + this.tool.tool_path;
-        this.stateService.setRefreshMessage(message + ' ...');
-        this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
-            this.containerService.replaceTool(this.tools, response);
-            this.containerService.setTool(response);
-            this.handleSuccess(message);
-        }, error => this.handleError(message, error)
-        );
+      const message = 'Refreshing ' + this.tool.tool_path;
+      this.stateService.setRefreshMessage(message + ' ...');
+      this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
+          this.containerService.replaceTool(this.tools, response);
+          this.containerService.setTool(response);
+          this.handleSuccess(message);
+      }, error => this.handleError(message, error)
+      );
     }
 
     /**
@@ -63,8 +67,9 @@ export class RefreshService {
      * @memberof RefreshService
      */
     handleSuccess(message: string): void {
-        this.stateService.setRefreshMessage(null);
-        this.snackBar.open(message + ' succeeded', 'Dismiss');
+      this.clearError();
+      this.stateService.setRefreshMessage(null);
+      this.snackBar.open(message + ' succeeded', 'Dismiss');
     }
 
 
@@ -76,9 +81,9 @@ export class RefreshService {
      * @memberof RefreshService
      */
     handleError(message: string, error: any): void {
-        this.errorService.setErrorAlert(error);
-        this.stateService.setRefreshMessage(null);
-        this.snackBar.open(message + ' failed', 'Dismiss');
+      this.errorService.setErrorAlert(error);
+      this.stateService.setRefreshMessage(null);
+      this.snackBar.open(message + ' failed', 'Dismiss');
     }
 
     /**
@@ -86,13 +91,13 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshWorkflow(): void {
-        const message = 'Refreshing ' +  this.workflow.full_workflow_path;
-        this.stateService.setRefreshMessage(message + ' ...');
-        this.workflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
-            this.workflowService.upsertWorkflowToWorkflow(response);
-            this.workflowService.setWorkflow(response);
-            this.handleSuccess(message);
-        }, error => this.handleError(message, error));
+      const message = 'Refreshing ' +  this.workflow.full_workflow_path;
+      this.stateService.setRefreshMessage(message + ' ...');
+      this.workflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
+          this.workflowService.upsertWorkflowToWorkflow(response);
+          this.workflowService.setWorkflow(response);
+          this.handleSuccess(message);
+      }, error => this.handleError(message, error));
     }
 
 
@@ -102,13 +107,13 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllTools(userId: number): void {
-        const message = 'Refreshing all tools';
-        this.stateService.setRefreshMessage(message + '...');
-        this.usersService.refresh(userId).subscribe(
-            response => {
-                this.containerService.setTools(response);
-                this.handleSuccess(message);
-            }, error => this.handleError(message, error));
+      const message = 'Refreshing all tools';
+      this.stateService.setRefreshMessage(message + '...');
+      this.usersService.refresh(userId).subscribe(
+          response => {
+              this.containerService.setTools(response);
+              this.handleSuccess(message);
+          }, error => this.handleError(message, error));
     }
 
 
@@ -118,13 +123,13 @@ export class RefreshService {
      * @memberof RefreshService
      */
     refreshAllWorkflows(userId: number): void {
-        const message = 'Refreshing all workflows';
-        this.stateService.setRefreshMessage(message + '...');
-        this.usersService.refreshWorkflows(userId).subscribe(
-            response => {
-                this.workflowService.setWorkflows(response);
-                this.handleSuccess(message);
-            }, error => this.handleError(message, error));
+      const message = 'Refreshing all workflows';
+      this.stateService.setRefreshMessage(message + '...');
+      this.usersService.refreshWorkflows(userId).subscribe(
+          response => {
+              this.workflowService.setWorkflows(response);
+              this.handleSuccess(message);
+          }, error => this.handleError(message, error));
     }
 
     /**
@@ -134,8 +139,8 @@ export class RefreshService {
      * @memberof RefreshService
      */
     replaceTool(tool: DockstoreTool): void {
-        this.tools = this.tools.filter(obj => obj.id !== tool.id);
-        this.tools.push(tool);
-        this.containerService.setTools(this.tools);
+      this.tools = this.tools.filter(obj => obj.id !== tool.id);
+      this.tools.push(tool);
+      this.containerService.setTools(this.tools);
     }
 }
