@@ -3,7 +3,7 @@
   Onboarding Wizard
 </app-header>
 
-<mat-horizontal-stepper #stepper class="container">
+<mat-horizontal-stepper *ngIf="extendedUser && user" #stepper class="container">
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
