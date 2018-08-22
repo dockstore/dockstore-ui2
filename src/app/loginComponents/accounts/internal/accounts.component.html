@@ -58,7 +58,7 @@
     </mat-card-content>
   </mat-card>
   <mat-card fxFlex="300px" class="my-2 mx-2" *ngIf="(hasGitHubToken$ | async)">
-    <img mat-card-image *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL">
+    <img mat-card-image *ngIf="gitHubProfile?.avatarURL" [src]="gitHubProfile?.avatarURL" style="filter: grayscale(100%)">
     <mat-card-header>
       <mat-card-title>
         <h3>GitHub Profile</h3>
@@ -106,7 +106,7 @@
     </mat-card-actions>
   </mat-card>
   <mat-card fxFlex="300px" class="my-2  mx-2" *ngIf="(hasGoogleToken$ | async)">
-    <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL">
+    <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL" style="filter: grayscale(100%)">
     <mat-card-header>
       <mat-card-title>
         <h3>Google Profile</h3>
