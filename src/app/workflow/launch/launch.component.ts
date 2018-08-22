@@ -19,6 +19,8 @@ import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { WorkflowService } from '../../shared/workflow.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-launch',
@@ -51,8 +53,11 @@ export class LaunchWorkflowComponent extends EntryTab {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
-  constructor(private launchService: WorkflowLaunchService) {
+  protected published$: Observable<boolean>;
+
+  constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService) {
     super();
+    this.published$ = this.workflowService.workflowIsPublished$;
   }
   reactToDescriptor(): void {
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name);

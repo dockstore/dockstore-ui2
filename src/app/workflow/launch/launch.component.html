@@ -42,7 +42,7 @@
           <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
         </div>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) === 'cwl'"  class="m-2">
+      <mat-card *ngIf="(currentDescriptor | lowercase) === 'cwl' && (published$ | async)"  class="m-2">
         <div [matTooltip]="cwlrunnerTooltip">
           {{cwlrunnerDescription}}
           <pre>{{ cwl }}</pre>

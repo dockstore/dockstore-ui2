@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-  
+
 <div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see launch with, please select a version.
 </div>
@@ -45,7 +45,7 @@
         Run locally with the Dockstore CLI
         <pre>{{ cli }}</pre>
       </mat-card>
-      <div *ngIf="(currentDescriptor | lowercase) === 'cwl'">
+      <div *ngIf="(currentDescriptor | lowercase) === 'cwl' && (published$ | async)">
         <mat-card class="m-2" [matTooltip]="cwlrunnerTooltip">
           {{cwlrunnerDescription}}
           <pre>{{ cwl }}</pre>
