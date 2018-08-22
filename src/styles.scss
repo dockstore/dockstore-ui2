@@ -1191,3 +1191,10 @@ tabset.homeComponent {
 .align-middle {
   vertical-align: middle;
 }
+
+// Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
+app-sidebar-accordion .mat-accordion > .mat-expansion-panel > .mat-expansion-panel-content > .mat-expansion-panel-body > .mat-tab-group > .mat-tab-header > .mat-tab-label-container > .mat-tab-list > .mat-tab-labels {
+  .mat-tab-label[role^='tab'] {
+    min-width: 80px;
+  }
+}

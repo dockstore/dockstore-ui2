@@ -24,6 +24,7 @@ describe('Dockstore my tools', function() {
       cy.contains(org)
           .parentsUntil('mat-accordion')
           .contains("Unpublished")
+          .should('be.visible')
           .click()
     }
 
