@@ -11,7 +11,7 @@
               Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports in DNAstack.
             </div>
             <a mat-raised-button
-               title="{{!wdlHasContent ? 'The WDL has no content.' : ''}}"
+               [matTooltip]="!wdlHasContent ? 'The WDL has no content.' : ''"
                target="_blank"
                rel="noopener"
                [attr.href]="dnastackURL"
@@ -20,7 +20,7 @@
           </div>
           <div fxFlex="100%">
             <a mat-raised-button
-               title="{{!wdlHasContent ? 'The WDL has no content.' : (wdlHasFileImports ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : '')}}"
+               [matTooltip]="!wdlHasContent ? 'The WDL has no content.' : (wdlHasFileImports ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : '')"
                target="_blank"
                rel="noopener"
                [attr.href]="fireCloudURL"
@@ -29,7 +29,7 @@
           </div>
           <div fxFlex="100%">
             <a mat-raised-button
-               title="{{!wdlHasContent ? 'The WDL has no content.' : ''}}"
+               [matTooltip]="!wdlHasContent ? 'The WDL has no content.' : ''"
                target="_blank"
                rel="noopener"
                [attr.href]="dnanexusURL"
