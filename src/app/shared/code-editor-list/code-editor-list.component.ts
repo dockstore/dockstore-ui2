@@ -22,7 +22,6 @@ export class CodeEditorListComponent {
   NEXTFLOW_CONFIG_PATH = '/nextflow.config';
   NEXTFLOW_PATH = '/main.nf';
   public DescriptorType = ToolDescriptor.TypeEnum;
-  publishDownloadLinks: Array<string>;
 
   constructor(private workflowService: WorkflowService) {
     this.published$ = this.workflowService.workflowIsPublished$;

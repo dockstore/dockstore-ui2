@@ -9,7 +9,7 @@ export class PublicFileDownloadPipe implements PipeTransform {
 
   constructor(protected fileService: FileService) {}
 
-  transform(sourcefile: SourceFile, entrypath: string, selectedVersion: any, descriptorType: string, entryType: string): any {
+  transform(sourcefile: SourceFile, entrypath: string, selectedVersion: any, descriptorType: string, entryType: string): string {
     return this.fileService.getDescriptorPath(entrypath, selectedVersion, sourcefile, descriptorType, entryType);
   }
 
