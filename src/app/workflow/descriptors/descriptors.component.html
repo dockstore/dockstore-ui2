@@ -21,7 +21,7 @@
   <div [hidden]="!content">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        <app-select  [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
         <span class="spacer"></span>
         <div class="btn-group pull-right" role="group">
           <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">

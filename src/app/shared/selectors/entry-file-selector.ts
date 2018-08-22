@@ -31,8 +31,8 @@ export abstract class EntryFileSelector {
   public nullDescriptors: boolean;
   public filePath: string;
   public currentFile;
-  protected files: Array<any>;
-  protected published$: Observable<boolean>;
+  public files: Array<any>;
+  public published$: Observable<boolean>;
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
