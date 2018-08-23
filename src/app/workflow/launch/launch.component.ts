@@ -82,8 +82,16 @@ export class LaunchWorkflowComponent extends EntryTab {
    * Finds the path of the first sourcefile test parameter file for the selected version
    */
   getFirstTestParameterFilePath(): string {
+    let testParameterType = 'CWL_TEST_JSON';
+    if (this.currentDescriptor === 'cwl') {
+      testParameterType = 'CWL_TEST_JSON';
+    } else if (this.currentDescriptor === 'wdl') {
+      testParameterType = 'WDL_TEST_JSON';
+    } else if (this.currentDescriptor === 'nfl') {
+      testParameterType = 'NEXTFLOW_TEST_PARAMS';
+    }
     const matchedVersion = this._selectedVersion.sourceFiles.find((sourcefile: SourceFile) => {
-      return sourcefile.type === 'CWL_TEST_JSON' || sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'NEXTFLOW_TEST_PARAMS';
+      return sourcefile.type === testParameterType;
     });
     return matchedVersion ? matchedVersion.path : null;
   }
