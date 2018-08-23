@@ -21,6 +21,7 @@ import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowService } from '../../shared/workflow.service';
 import { Observable } from 'rxjs';
+import { SourceFile } from './../../shared/swagger';
 
 @Component({
   selector: 'app-launch',
@@ -71,6 +72,19 @@ export class LaunchWorkflowComponent extends EntryTab {
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
-    this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName, this.currentDescriptor);
+    const testParameterPath = this.getFirstTestParameterFilePath();
+    this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName,
+      this.currentDescriptor, testParameterPath);
+  }
+
+
+  /**
+   * Finds the path of the first sourcefile test parameter file for the selected version
+   */
+  getFirstTestParameterFilePath(): string {
+    const matchedVersion = this._selectedVersion.sourceFiles.find((sourcefile: SourceFile) => {
+      return sourcefile.type === 'CWL_TEST_JSON' || sourcefile.type === 'WDL_TEST_JSON' || sourcefile.type === 'NEXTFLOW_TEST_PARAMS';
+    });
+    return matchedVersion ? matchedVersion.path : null;
   }
 }
