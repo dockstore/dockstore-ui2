@@ -5,10 +5,8 @@
 </a>
 <ngx-md [data]="textData2"></ngx-md>
 <div class="input-group textarea indent">
-  <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>
-    token: {{dsToken}}
-    server-url: {{dsServerURI}}</textarea>
-  <span class="input-group-btn">
+  <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>token: {{dsToken}}&#13;&#10;server-url: {{dsServerURI}}</textarea>
+    <span class="input-group-btn">
     <button class="btn btn-default textarea btn" [ngClass]="{'btn-copy':isCopied2}" type="button" [ngxClipboard]="inputTarget" (cbOnSuccess)="isCopied2 = true">
       <span class="glyphicon glyphicon-copy"></span>
     </button>
