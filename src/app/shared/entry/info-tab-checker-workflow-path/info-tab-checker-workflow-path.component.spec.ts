@@ -22,6 +22,7 @@ import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService } from '
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;
@@ -29,7 +30,7 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TooltipModule.forRoot(), FormsModule],
+      imports: [TooltipModule.forRoot(), FormsModule, RouterTestingModule],
       providers: [
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService }],
