@@ -8,6 +8,8 @@ import { TokenSource } from '../../shared/enum/token-source.enum';
 import { Dockstore } from '../../shared/dockstore.model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { RefreshService } from '../../shared/refresh.service';
 
 @Component({
   selector: 'app-permissions',
@@ -40,7 +42,8 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar, private tokenService: TokenService) {
+  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar,
+              private tokenService: TokenService, private refreshService: RefreshService) {
   }
 
   ngOnInit() {
@@ -56,11 +59,8 @@ export class PermissionsComponent implements OnInit {
         this.updating--;
         this.processResponse(userPermissions);
       },
-      (e) => {
-        this.updating--;
-        const message = e.error || `Error removing user ${entity}.`;
-        this.snackBar.open(message,
-          'Dismiss');
+      (e: HttpErrorResponse) => {
+        this.handleError(e, `Error removing user ${entity}.`);
       }
     );
   }
@@ -76,11 +76,8 @@ export class PermissionsComponent implements OnInit {
           this.updating--;
           this.processResponse(userPermissions);
         },
-        (e) => {
-          this.updating--;
-          const message = e.error || `Error adding user ${value}. Please make sure ${value} is registered with FireCloud`;
-          this.snackBar.open(message,
-            'Dismiss');
+        (e: HttpErrorResponse) => {
+          this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with FireCloud`);
         }
       );
     }
@@ -88,6 +85,16 @@ export class PermissionsComponent implements OnInit {
     // Reset the input value
     if (input) {
       input.value = '';
+    }
+  }
+
+  private handleError(e: HttpErrorResponse, defaultMessage: string) {
+    this.updating--;
+    const message = e.error || defaultMessage;
+    if (e.status === 409) { // A more severe error that deserves more attention than a disappearing snackbar
+      this.refreshService.handleError(message, e);
+    } else {
+      this.snackBar.open(message, 'Dismiss');
     }
   }
 
