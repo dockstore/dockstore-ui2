@@ -84,7 +84,11 @@ export abstract class LaunchService {
      * @param path The GA4GH Tool's path
      * @param versionName The ToolVersion's name
      */
-    getTestJsonString(workflowPath: string, versionName: string, type: string) {
+    // tslint:disable:max-line-length
+    getTestJsonString(workflowPath: string, versionName: string, type: string, filePath: string) {
+      if (!filePath) {
+        return;
+      }
       let urlType = 'PLAIN_NFL';
       switch (type) {
         case 'wdl':
@@ -105,6 +109,6 @@ export abstract class LaunchService {
       const outputFile = `-O Dockstore.json`;
       const encodedID = encodeURIComponent(`#workflow/${ workflowPath }`);
       const encodedVersion = encodeURIComponent(`${ versionName }`);
-      return `${prefix}' ${Dockstore.API_URI}${ga4ghPath}/tools/${encodedID}/versions/${encodedVersion}/${urlType}/tests ${outputFile}`;
+      return `${prefix}' ${Dockstore.API_URI}${ga4ghPath}/tools/${encodedID}/versions/${encodedVersion}/${urlType}/descriptor/${filePath} ${outputFile}`;
     }
 }
