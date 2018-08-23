@@ -81,7 +81,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
-    this.containerService.tool$.subscribe(tool => {
+    this.containerService.setTools(null);
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
     });
 

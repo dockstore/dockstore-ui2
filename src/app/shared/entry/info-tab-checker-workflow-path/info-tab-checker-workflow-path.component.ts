@@ -13,8 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { Workflow } from './../../swagger/model/workflow';
@@ -25,8 +26,9 @@ import { RegisterCheckerWorkflowService } from './../register-checker-workflow/r
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss']
 })
-export class InfoTabCheckerWorkflowPathComponent implements OnInit {
+export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;
+  // This is for some reason incorrect.  Subscribing or using checkerWorkflowService.entry$ has become unreliable
   hasParentEntry$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
@@ -34,17 +36,27 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
+  private ngUnsubscribe: Subject<{}> = new Subject();
+  hasParentEntry = false;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService) { }
 
   ngOnInit(): void {
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
     this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
+    this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {
+      this.hasParentEntry = this.checkerWorkflowService.hasParentEntry;
+    });
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
     this.isStub$ = this.checkerWorkflowService.isStub$;
-    this.checkerWorkflow$.subscribe((workflow: Workflow) => {
+    this.checkerWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
       this.checkerWorkflowPath = this.viewCheckerWorkflow();
     });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   add(): void {
@@ -56,7 +68,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   }
 
   delete(): void {
-   this.registerCheckerWorkflowService.delete();
+    this.registerCheckerWorkflowService.delete();
   }
 
   viewParentEntry(): void {
