@@ -20,6 +20,8 @@ import { DescriptorLanguageService } from './../../shared/entry/descriptor-langu
 import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
+import { ContainerService } from '../../shared/container.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-launch',
@@ -53,13 +55,16 @@ export class LaunchComponent {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  protected published$: Observable<boolean>;
+
   constructor(private launchService: ToolLaunchService,
     private toolDescriptorService: ToolDescriptorService,
-    private descriptorLanguageService: DescriptorLanguageService) {
+    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService) {
     this.descriptorLanguageService.descriptorLanguages$.subscribe(map => {
       this.descriptors = map;
       this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
+    this.published$ = this.containerService.toolIsPublished$;
   }
 
   // Returns an array of descriptors that are valid for the given tool version

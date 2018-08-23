@@ -17,6 +17,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { StateService } from '../../state.service';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { Workflow } from './../../swagger/model/workflow';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
@@ -33,15 +34,19 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
   checkerWorkflowPath: string;
+  refreshMessage$: Observable<string>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   private ngUnsubscribe: Subject<{}> = new Subject();
   hasParentEntry = false;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
-    private registerCheckerWorkflowService: RegisterCheckerWorkflowService) { }
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
+    private stateService: StateService
+  ) { }
 
   ngOnInit(): void {
+    this.refreshMessage$ = this.stateService.refreshMessage$;
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
     this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
     this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {

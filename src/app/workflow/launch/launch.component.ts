@@ -19,6 +19,9 @@ import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { WorkflowService } from '../../shared/workflow.service';
+import { Observable } from 'rxjs';
+import { SourceFile } from './../../shared/swagger';
 
 @Component({
   selector: 'app-launch',
@@ -51,8 +54,11 @@ export class LaunchWorkflowComponent extends EntryTab {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
-  constructor(private launchService: WorkflowLaunchService) {
+  protected published$: Observable<boolean>;
+
+  constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService) {
     super();
+    this.published$ = this.workflowService.workflowIsPublished$;
   }
   reactToDescriptor(): void {
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name);
@@ -66,6 +72,27 @@ export class LaunchWorkflowComponent extends EntryTab {
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
-    this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName, this.currentDescriptor);
+    const testParameterPath = this.getFirstTestParameterFilePath();
+    this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName,
+      this.currentDescriptor, testParameterPath);
+  }
+
+
+  /**
+   * Finds the path of the first sourcefile test parameter file for the selected version
+   */
+  getFirstTestParameterFilePath(): string {
+    let testParameterType = 'CWL_TEST_JSON';
+    if (this.currentDescriptor === 'cwl') {
+      testParameterType = 'CWL_TEST_JSON';
+    } else if (this.currentDescriptor === 'wdl') {
+      testParameterType = 'WDL_TEST_JSON';
+    } else if (this.currentDescriptor === 'nfl') {
+      testParameterType = 'NEXTFLOW_TEST_PARAMS';
+    }
+    const matchedVersion = this._selectedVersion.sourceFiles.find((sourcefile: SourceFile) => {
+      return sourcefile.type === testParameterType;
+    });
+    return matchedVersion ? matchedVersion.path : null;
   }
 }

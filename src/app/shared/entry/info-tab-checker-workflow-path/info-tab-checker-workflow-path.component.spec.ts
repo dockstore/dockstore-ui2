@@ -18,7 +18,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService } from './../../../test/service-stubs';
+import { StateService } from '../../state.service';
+import {
+  CheckerWorkflowStubService,
+  RegisterCheckerWorkflowStubService,
+  StateStubService,
+} from './../../../test/service-stubs';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
@@ -33,7 +38,8 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
       imports: [TooltipModule.forRoot(), FormsModule, RouterTestingModule],
       providers: [
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService }],
+        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+        { provide: StateService, useClass: StateStubService }],
       declarations: [InfoTabCheckerWorkflowPathComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
