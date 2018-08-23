@@ -52,8 +52,8 @@
     </p>
     <div *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>
-      <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
-        <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+      <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked=false">
+        <mat-icon>chevron_left</mat-icon>Back to details
       </button>
     </div>
   </div>

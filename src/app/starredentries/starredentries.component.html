@@ -4,8 +4,8 @@
 </app-header>
 <div class="container" *ngIf="starGazersClicked">
   <app-stargazers></app-stargazers>
-  <button id="backButton" type="button" (click)="starGazersClicked=false" class="btn btn-default">
-    <i class="glyphicon glyphicon-chevron-left"></i>Back to details
+  <button id="backButton" mat-flat-button color="primary" type="button" (click)="starGazersClicked=false">
+    <mat-icon>chevron_left</mat-icon>Back to details
   </button>
 </div>
 
