@@ -30,6 +30,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   hasParentEntry$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
+  checkerWorkflowPath: string;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
@@ -41,21 +42,24 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
     this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
     this.isStub$ = this.checkerWorkflowService.isStub$;
+    this.checkerWorkflow$.subscribe((workflow: Workflow) => {
+      this.checkerWorkflowPath = this.viewCheckerWorkflow();
+    });
   }
 
   add(): void {
     this.registerCheckerWorkflowService.add();
   }
 
-  view(): void {
-    this.checkerWorkflowService.goToCheckerWorkflow();
+  viewCheckerWorkflow(): string {
+    return this.checkerWorkflowService.getCheckerWorkflowURL();
   }
 
   delete(): void {
    this.registerCheckerWorkflowService.delete();
   }
 
-  viewParentWorkflow(): void {
+  viewParentEntry(): void {
     this.checkerWorkflowService.goToParentEntry();
   }
 }

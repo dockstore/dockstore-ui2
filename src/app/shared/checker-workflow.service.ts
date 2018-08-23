@@ -115,29 +115,38 @@ export class CheckerWorkflowService {
         }
     }
 
+    public getCheckerWorkflowURL(): string {
+      const workflow = this.checkerWorkflow;
+      if (workflow) {
+        return this.getEntryURL(this.publicPage, workflow.full_workflow_path, 'workflow');
+      } else {
+        console.log('This entry has no checker workflow.');
+      }
+    }
+
     /**
      * Go to parent entry (could be a tool or workflow)
      */
     public goToParentEntry(): void {
-        const parentId = (<Workflow>this.entry).parent_id;
-        if (!parentId) {
-            console.log('This entry is not a checker workflow and has no parent entry.');
-            return;
-        }
-        if (this.publicPage) {
-            this.workflowsService.getPublishedWorkflow(parentId).pipe(first()).subscribe((workflow: Workflow) => {
-                this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
-            }, error => this.containersService.getPublishedContainer(parentId).pipe(first()).subscribe((tool: DockstoreTool) => {
-                this.goToEntry(this.publicPage, tool.tool_path, 'tool');
-            }, error2 => console.log('Can not get parent entry')));
-        } else {
-            this.workflowsService.getWorkflow(parentId).pipe(first()).subscribe((workflow: Workflow) => {
-                this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
-            }, error => this.containersService.getContainer(parentId).pipe(first()).subscribe((tool: DockstoreTool) => {
-                this.goToEntry(this.publicPage, tool.tool_path, 'tool');
-            }, error2 => console.log('Can not get parent entry')));
-        }
-    }
+      const parentId = (<Workflow>this.entry).parent_id;
+      if (!parentId) {
+          console.log('This entry is not a checker workflow and has no parent entry.');
+          return;
+      }
+      if (this.publicPage) {
+          this.workflowsService.getPublishedWorkflow(parentId).pipe(first()).subscribe((workflow: Workflow) => {
+              this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
+          }, error => this.containersService.getPublishedContainer(parentId).pipe(first()).subscribe((tool: DockstoreTool) => {
+              this.goToEntry(this.publicPage, tool.tool_path, 'tool');
+          }, error2 => console.log('Can not get parent entry')));
+      } else {
+          this.workflowsService.getWorkflow(parentId).pipe(first()).subscribe((workflow: Workflow) => {
+              this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
+          }, error => this.containersService.getContainer(parentId).pipe(first()).subscribe((tool: DockstoreTool) => {
+              this.goToEntry(this.publicPage, tool.tool_path, 'tool');
+          }, error2 => console.log('Can not get parent entry')));
+      }
+  }
 
     /**
      * Go to entry
@@ -145,13 +154,26 @@ export class CheckerWorkflowService {
      * @param entryType Either 'tool' or 'workflow'
      */
     public goToEntry(publicPage: boolean, path: string, entryType: 'tool' | 'workflow'): void {
-        let url: string;
-        if (publicPage) {
-            url = '/' + entryType + 's/' + path;
-        } else {
-            url = '/my-' + entryType + 's/' + path;
-        }
-        this.router.navigateByUrl(url);
+        this.router.navigateByUrl(this.getEntryURL(publicPage, path, entryType));
+    }
+
+    /**
+     * Get the entry's URL
+     *
+     * @param {boolean} publicPage    Whether the user is currently on a public page or not
+     * @param {string} path           The entry path
+     * @param {('tool' | 'workflow')} entryType  Whether entry is a tool or workflow
+     * @returns {string}              The URL of the entry
+     * @memberof CheckerWorkflowService
+     */
+    public getEntryURL(publicPage: boolean, path: string, entryType: 'tool' | 'workflow'): string {
+      let url: string;
+      if (publicPage) {
+          url = '/' + entryType + 's/' + path;
+      } else {
+          url = '/my-' + entryType + 's/' + path;
+      }
+      return url;
     }
 
     /**

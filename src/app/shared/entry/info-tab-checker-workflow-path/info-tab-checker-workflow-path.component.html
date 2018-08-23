@@ -5,9 +5,9 @@
     </div>
     <span *ngIf="!(checkerWorkflow$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
-      <button id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link" (click)="view()">
+      <a [routerLink]="checkerWorkflowPath" id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link">
         <span class="glyphicon glyphicon-eye-open"></span> View
-      </button>
+      </a>
       <span *ngIf="!(isPublic$ | async)">
         <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="!(checkerWorkflow$ | async) && !(hasParentEntry$ | async) && !(isStub$ | async) && canWrite" type="button" class="btn btn-link" (click)="add()">
           <span class="glyphicon glyphicon-plus"></span> Add
@@ -28,7 +28,7 @@
       </div>
       <span>
         <div class="btn-group" role="group">
-          <button id=viewParentEntryButton type="button" class="btn btn-link" (click)="viewParentWorkflow()">
+          <button id=viewParentEntryButton type="button" class="btn btn-link" (click)="viewParentEntry()">
             <span class="glyphicon glyphicon-eye-open"></span> View
           </button>
         </div>
