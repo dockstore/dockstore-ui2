@@ -5,9 +5,9 @@
     </div>
     <span *ngIf="!(checkerWorkflow$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
-      <a mat-raised-button [disabled]="(refreshMessage$ | async)" [routerLink]="checkerWorkflowPath" id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link">
+      <button [disabled]="(refreshMessage$ | async)" [routerLink]="checkerWorkflowPath" id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link">
         <span class="glyphicon glyphicon-eye-open"></span> View
-      </a>
+      </button>
       <span *ngIf="!(isPublic$ | async)">
         <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="!(checkerWorkflow$ | async) && !hasParentEntry && !(isStub$ | async) && canWrite" type="button" class="btn btn-link" (click)="add()">
           <span class="glyphicon glyphicon-plus"></span> Add
