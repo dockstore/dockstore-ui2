@@ -3,11 +3,11 @@
   Onboarding Wizard
 </app-header>
 
-<mat-horizontal-stepper *ngIf="extendedUser && user" #stepper class="container">
+<mat-horizontal-stepper *ngIf="ready" #stepper class="container">
   <ng-template matStepperIcon="edit">
     <mat-icon>check</mat-icon>
   </ng-template>
-  <mat-step *ngIf="extendedUser?.canChangeUsername && !user?.setupComplete">
+  <mat-step *ngIf="ready && extendedUser?.canChangeUsername && !user?.setupComplete">
     <ng-template matStepLabel>Confirm Your Username</ng-template>
 
     <h3>Choose Your Username</h3>
