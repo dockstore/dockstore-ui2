@@ -39,15 +39,8 @@ export class CheckerWorkflowService {
   private publicPage: boolean;
   // The current checker workflow
   private checkerWorkflow: Workflow;
-  /**
-   * The current entry being looked at.
-   * Can't trust the entry object when subscribed from other components.
-   * Can still be used as a trigger for other things.
-   *
-   * @type {Observable<Entry>}
-   * @memberof CheckerWorkflowService
-   */
   public entry$: Observable<Entry>;
+  private entrySource$: BehaviorSubject<Entry> = new BehaviorSubject<Entry>(null);
   // Whether the current entry has a parent or not
   public hasParentEntry: boolean;
   public parentId: number;
@@ -59,9 +52,12 @@ export class CheckerWorkflowService {
     private containerService: ContainerService, private router: Router, private containersService: ContainersService) {
     this.publicPage$ = this.stateService.publicPage$;
     this.publicPage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => this.publicPage = publicPage);
-    this.entry$ = observableMerge(this.containerService.tool$, this.workflowService.workflow$).pipe(
+    observableMerge(this.containerService.tool$, this.workflowService.workflow$).pipe(
       filter(x => x != null),
-      distinctUntilChanged());
+      distinctUntilChanged()).subscribe((entry: Entry) => {
+        this.entrySource$.next(entry);
+      });
+    this.entry$ = this.entrySource$;
     this.checkerWorkflowPath$ = this.checkerWorkflow$.pipe(map((workflow: Workflow) => {
       if (workflow) {
         return workflow.full_workflow_path;
