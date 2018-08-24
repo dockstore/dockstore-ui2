@@ -13,18 +13,25 @@
 
 <div class="change-username-form">
   <mat-form-field>
-    <!-- TODO: Change to formInputDebounceTime -->
-    <input matInput placeholder="Username" name="username" [(value)]="username" (keyup)="checkIfUsernameExists($event)" id="username">
+    <mat-label>Username</mat-label>
+    <input [errorStateMatcher]="matcher" [formControl]="usernameFormControl" matInput id="username" name="username" [(ngModel)]="username">
+    <mat-error *ngIf="usernameFormControl.hasError('pattern'); else checkRequired">Invalid Username Pattern (Only alphanumeric characters and internal underscores and dashes allowed)</mat-error>
+    <ng-template #checkRequired>
+      <mat-error *ngIf="usernameFormControl.hasError('required'); else checkMaxLength">Username is required</mat-error>
+      <ng-template #checkMaxLength>
+        <mat-error *ngIf="usernameFormControl.hasError('maxlength')">Username is too long (Max 39 characters)</mat-error>
+      </ng-template>
+    </ng-template>
   </mat-form-field>
   <span class="change-username-form-buttons">
-    <button mat-raised-button color="primary" id="updateUsername" [disabled]="!usernameNotTaken || !usernameMeetsRequirements || !extendedUser?.canChangeUsername" (click)="updateUsername()">Update Username</button>
-
-    <span *ngIf="extendedUser?.canChangeUsername">
+    <button mat-raised-button color="primary" id="updateUsername" [disabled]="usernameTaken || usernameFormControl.invalid || !extendedUser?.canChangeUsername"
+      (click)="updateUsername()">Update Username</button>
+    <span *ngIf="extendedUser?.canChangeUsername && usernameFormControl.valid">
       <span *ngIf="!checkingIfValid">
-        <span *ngIf="usernameNotTaken && usernameMeetsRequirements" class="vertical-center">
+        <span *ngIf="!usernameTaken" class="vertical-center">
           <mat-icon style="color: green">check</mat-icon>&nbsp;Username available
         </span>
-        <span *ngIf="!usernameNotTaken || !usernameMeetsRequirements" class="vertical-center">
+        <span *ngIf="usernameTaken" class="vertical-center">
           <mat-icon style="color: red">clear</mat-icon>&nbsp;Username not available
         </span>
       </span>
