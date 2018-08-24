@@ -29,8 +29,6 @@ import { RegisterCheckerWorkflowService } from './../register-checker-workflow/r
 })
 export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;
-  // This is for some reason incorrect.  Subscribing or using checkerWorkflowService.entry$ has become unreliable
-  hasParentEntry$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
   checkerWorkflowPath: string;
@@ -39,7 +37,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  hasParentEntry = false;
+  parentId = null;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
     private stateService: StateService
@@ -48,9 +46,8 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.refreshMessage$ = this.stateService.refreshMessage$;
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
-    this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
     this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {
-      this.hasParentEntry = this.checkerWorkflowService.hasParentEntry;
+      this.parentId = this.checkerWorkflowService.parentId;
     });
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
     this.isStub$ = this.checkerWorkflowService.isStub$;

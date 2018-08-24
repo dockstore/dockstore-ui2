@@ -39,11 +39,18 @@ export class CheckerWorkflowService {
   private publicPage: boolean;
   // The current checker workflow
   private checkerWorkflow: Workflow;
-  // The current entry being looked at
+  /**
+   * The current entry being looked at.
+   * Can't trust the entry object when subscribed from other components.
+   * Can still be used as a trigger for other things.
+   *
+   * @type {Observable<Entry>}
+   * @memberof CheckerWorkflowService
+   */
   public entry$: Observable<Entry>;
   // Whether the current entry has a parent or not
-  public hasParentEntry$: Observable<boolean>;
   public hasParentEntry: boolean;
+  public parentId: number;
   public entry: Entry;
   // Whether current entry is a stub or not
   public isStub$: Observable<boolean>;
@@ -55,13 +62,6 @@ export class CheckerWorkflowService {
     this.entry$ = observableMerge(this.containerService.tool$, this.workflowService.workflow$).pipe(
       filter(x => x != null),
       distinctUntilChanged());
-    this.hasParentEntry$ = this.entry$.pipe(map((entry: Entry) => {
-      if ((<Workflow>entry).parent_id) {
-        return true;
-      } else {
-        return false;
-      }
-    }));
     this.checkerWorkflowPath$ = this.checkerWorkflow$.pipe(map((workflow: Workflow) => {
       if (workflow) {
         return workflow.full_workflow_path;
@@ -76,20 +76,12 @@ export class CheckerWorkflowService {
       if (!this.isEntryAWorkflow(entry)) {
         return false;
       } else {
-        if ((<Workflow>entry).mode === Workflow.ModeEnum.STUB) {
-          return true;
-        } else {
-          return false;
-        }
+        return (<Workflow>entry).mode === Workflow.ModeEnum.STUB;
       }
     }));
     this.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
       this.entry = entry;
-      if ((<Workflow>entry).parent_id) {
-        this.hasParentEntry = true;
-      } else {
-        this.hasParentEntry = false;
-      }
+      this.parentId = ((<Workflow>entry).parent_id);
       if (!entry || !entry.checker_id) {
         this.checkerWorkflow$.next(null);
         return;

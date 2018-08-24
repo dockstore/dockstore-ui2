@@ -134,7 +134,14 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     }
   }
 
-  onValueChanged(data?: any) {
+  /**
+   * Shows one form error at a time
+   *
+   * @param {*} [data]
+   * @returns {void}
+   * @memberof RegisterWorkflowModalComponent
+   */
+  onValueChanged(data?: any): void {
     if (!this.registerWorkflowForm) { return; }
     const form = this.registerWorkflowForm.form;
     for (const field in formErrors) {
