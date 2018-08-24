@@ -40,35 +40,35 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     {
       name: 'GitHub',
       source: TokenSource.GITHUB,
-      bold: 'Required',
-      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
+      bold: 'One of GitHub or Google is required.',
+      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub',
       show: false
     },
     {
       name: 'Google',
       source: TokenSource.GOOGLE,
-      bold: 'Required',
+      bold: 'One of GitHub or Google is required.',
       message: 'Google credentials are used for login purposes and integration with FireCloud.',
       show: false
     },
     {
       name: 'Quay',
       source: TokenSource.QUAY,
-      bold: 'Optional',
+      bold: '',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false
     },
     {
       name: 'Bitbucket',
       source: TokenSource.BITBUCKET,
-      bold: 'Optional',
+      bold: '',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false
     },
     {
       name: 'GitLab',
       source: TokenSource.GITLAB,
-      bold: 'Optional',
+      bold: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false
     }
