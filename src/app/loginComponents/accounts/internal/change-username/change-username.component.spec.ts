@@ -1,21 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { ChangeUsernameComponent } from './change-username.component';
-
-import { UserService } from '../../../../loginComponents/user.service';
-import { UsersService } from './../../../../shared/swagger/api/users.service';
-import { RefreshService } from './../../../../shared/refresh.service';
-import { UsersStubService, UserStubService, RefreshStubService } from './../../../../test/service-stubs';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
+  MatFormFieldModule,
   MatIconModule,
-  MatTooltipModule,
-  MatProgressSpinnerModule,
   MatInputModule,
-  MatFormFieldModule
+  MatProgressSpinnerModule,
+  MatTooltipModule,
 } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { UserService } from '../../../../loginComponents/user.service';
+import { RefreshService } from '../../../../shared/refresh.service';
+import { UsersService } from '../../../../shared/swagger/api/users.service';
+import { RefreshStubService, UsersStubService, UserStubService } from '../../../../test/service-stubs';
+import { ChangeUsernameComponent } from './change-username.component';
+
 describe('ChangeUsernameComponent', () => {
   let component: ChangeUsernameComponent;
   let fixture: ComponentFixture<ChangeUsernameComponent>;
@@ -24,6 +24,7 @@ describe('ChangeUsernameComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ChangeUsernameComponent ],
       imports: [
+        ReactiveFormsModule,
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
