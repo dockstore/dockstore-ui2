@@ -12,10 +12,3 @@
 mat-card-footer {
   padding: 24px;
 }
-
-.token-copy-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-}
