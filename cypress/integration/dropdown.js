@@ -42,7 +42,6 @@ describe('Dropdown test', function () {
       cy
         .get('#dropdown-accounts')
         .click()
-      cy.contains("External Accounts").click()
     });
 
     it('Should show all accounts as linked (except GitLab and Bitbucket)', function () {

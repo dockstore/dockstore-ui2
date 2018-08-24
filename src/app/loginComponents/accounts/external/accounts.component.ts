@@ -79,7 +79,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   private userId;
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
-  protected dockstoreToken: string;
+  public dockstoreToken: string;
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
     private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService,
