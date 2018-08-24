@@ -27,6 +27,7 @@ import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Configuration } from './../../../shared/swagger/configuration';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-accounts-external',
@@ -77,10 +78,12 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public tokens: Token[];
   private userId;
   private ngUnsubscribe: Subject<{}> = new Subject();
-
+  public show: false;
+  protected dockstoreToken: string;
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
-    private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService) {
+    private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService,
+    private matSnackBar: MatSnackBar) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       state => {
         if (!state) {
@@ -88,6 +91,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.dockstoreToken = this.getDockstoreToken();
   }
 
   // Delete token by id
@@ -100,6 +104,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   link(source: string): void {
+    this.matSnackBar.open('Linking ' + source + ' account', 'Dismiss');
     this.accountsService.link(source);
   }
 
@@ -108,6 +113,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.deleteToken(source).pipe(
       first()).subscribe(() => {
         this.userService.updateUser();
+        this.matSnackBar.open('Unlinked ' + source + ' account', 'Dismiss');
+      }, error => {
+        this.matSnackBar.open('Failed to unlink ' + source, 'Dismiss');
       });
   }
 
@@ -129,6 +137,11 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     if (tokens) {
       this.setAvailableTokens(tokens);
     }
+  }
+
+  // TODO: Fix, it is called a bajillion times
+  getDockstoreToken(): string {
+    return this.authService.getToken();
   }
 
   ngOnInit() {
