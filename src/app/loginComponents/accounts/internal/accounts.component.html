@@ -39,21 +39,6 @@
           </h1>
           <p matLine id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</p>
         </mat-list-item>
-        <mat-list-item *ngIf="getDockstoreToken()">
-          <strong>Dockstore Token:</strong>
-          <button class="btn btn-default ml-1" matTooltip="Copy token" type="button" ngxClipboard [cbContent]="getDockstoreToken()" (cbOnSuccess)="isCopied1 = true">
-            <span class="glyphicon glyphicon-copy"></span>
-          </button>
-          <button [matTooltip]="show ? 'Hide token' : 'Show token'" class="btn btn-default" (click)="show = !show">
-            <span *ngIf="show" class="glyphicon glyphicon-eye-close"></span>
-            <span *ngIf="!show" class="glyphicon glyphicon-eye-open"></span>
-          </button>
-        </mat-list-item>
-        <br>
-        <mat-list-item *ngIf="show">
-          <!-- TODO: Only have 1 pipe here -->
-          <textarea type="text" matTextareaAutosize matInput class="small w-100" readonly>{{getDockstoreToken()}}</textarea>
-        </mat-list-item>
       </mat-list>
     </mat-card-content>
   </mat-card>

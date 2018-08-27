@@ -13,6 +13,27 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+
+<div class="p-3">
+  <mat-card class="mb-2" *ngIf="dockstoreToken">
+    <h3>Dockstore Account</h3>
+    <div>
+      Use with our CLI utilities or with our <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch tools and workflows.
+    </div>
+    <span fxLayout="row" fxLayoutAlign="start center">
+      <strong>Token</strong>
+      <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-icon-button color="secondary" (click)="show = !show">
+        <mat-icon *ngIf="show">visibility_off</mat-icon>
+        <mat-icon *ngIf="!show">visibility</mat-icon>
+      </button>
+      <button mat-icon-button color="secondary" ngxClipboard [cbContent]="dockstoreToken" (cbOnSuccess)="isCopied1 = true" matTooltip="Copy Token">
+        <mat-icon>file_copy</mat-icon>
+      </button>
+      <span *ngIf="show" style="overflow: auto;">{{dockstoreToken}}</span>
+    </span>
+  </mat-card>
+</div>
+
 <div *ngFor="let row of accountsInfo" class="p-3">
   <mat-card class="mb-2">
     <div>
@@ -23,23 +44,6 @@
           </mat-chip>
           {{ row.name }} Account&nbsp;
           <mat-chip [disabled]="true" *ngIf="row.bold" matTooltip="A method of logging into Dockstore">Login Method</mat-chip>
-          <span *ngIf="row.isLinked">
-            <button class="btn btn-secondary btn-xs" (click)="row.show = !row.show">
-              <span *ngIf="row.show" class="glyphicon glyphicon-eye-close"></span>
-              <span *ngIf="!row.show" class="glyphicon glyphicon-eye-open"></span>
-            </button>
-            <span class="form-inline" *ngIf="row.show">
-              <span class="input-group">
-                <!-- TODO: Only have 1 pipe here -->
-                <span class="form-control input-xs">{{row.source | getTokenContent: tokens}}</span>
-                <span class="input-group-btn">
-                  <button class="btn btn-default btn-xs" type="button" ngxClipboard [cbContent]="row.source | getTokenContent: tokens" (cbOnSuccess)="isCopied1 = true">
-                    <span class="glyphicon glyphicon-copy"></span>
-                  </button>
-                </span>
-              </span>
-            </span>
-          </span>
         </mat-chip-list>
       </h3>
     </div>
@@ -49,6 +53,19 @@
     <div>
       {{ row.bold }}
     </div>
+
+    <span fxLayout="row" fxLayoutAlign="start center" *ngIf="row.isLinked">
+      <strong>Token</strong>
+      <button mat-icon-button color="secondary" (click)="row.show = !row.show">
+        <mat-icon *ngIf="row.show">visibility_off</mat-icon>
+        <mat-icon *ngIf="!row.show">visibility</mat-icon>
+      </button>
+      <button mat-icon-button color="secondary" ngxClipboard [cbContent]="row.source | getTokenContent: tokens" (cbOnSuccess)="isCopied1 = true">
+        <mat-icon>file_copy</mat-icon>
+      </button>
+      <span *ngIf="row.show" style="overflow: auto;">{{row.source | getTokenContent: tokens}}</span>
+    </span>
+
     <mat-card-footer class="clearfix">
       <span *ngIf="row.isLinked; else notLinked" class="pull-right">
         <span class="mr-2">Username: {{row.source | getTokenUsername: tokens}}</span>

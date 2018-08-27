@@ -13,8 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { StateService } from '../../state.service';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
@@ -26,15 +27,17 @@ import { RegisterCheckerWorkflowService } from './../register-checker-workflow/r
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss']
 })
-export class InfoTabCheckerWorkflowPathComponent implements OnInit {
+export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;
-  hasParentEntry$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
+  checkerWorkflowPath: string;
   refreshMessage$: Observable<string>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
+  private ngUnsubscribe: Subject<{}> = new Subject();
+  parentId = null;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
     private stateService: StateService
@@ -43,24 +46,34 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit {
   ngOnInit(): void {
     this.refreshMessage$ = this.stateService.refreshMessage$;
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
-    this.hasParentEntry$ = this.checkerWorkflowService.hasParentEntry$;
+    this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {
+      this.parentId = this.checkerWorkflowService.parentId;
+    });
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
     this.isStub$ = this.checkerWorkflowService.isStub$;
+    this.checkerWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
+      this.checkerWorkflowPath = this.viewCheckerWorkflow();
+    });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   add(): void {
     this.registerCheckerWorkflowService.add();
   }
 
-  view(): void {
-    this.checkerWorkflowService.goToCheckerWorkflow();
+  viewCheckerWorkflow(): string {
+    return this.checkerWorkflowService.getCheckerWorkflowURL();
   }
 
   delete(): void {
-   this.registerCheckerWorkflowService.delete();
+    this.registerCheckerWorkflowService.delete();
   }
 
-  viewParentWorkflow(): void {
+  viewParentEntry(): void {
     this.checkerWorkflowService.goToParentEntry();
   }
 }

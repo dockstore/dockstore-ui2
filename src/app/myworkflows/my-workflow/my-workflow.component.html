@@ -29,7 +29,7 @@
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
         </span>
         <div class="clearfix sidebar-header">
-            <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows and find new workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
+            <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Find new workflows and sync all existing workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
               Refresh All
             </button>
           <h3 class="sidebar-header">My workflows</h3>
@@ -58,7 +58,7 @@
                 </p>
                 <ul>
                   <li>
-                    Press the 'Refresh All Workflows' button to create workflow stubs for all of your source control repositories. Browse to the workflow stubs and
+                    Press the 'Refresh All' button to create workflow stubs for all of your source control repositories. Browse to the workflow stubs and
                     refresh/publish those that correspond to real workflows.
                   </li>
                   <li>
