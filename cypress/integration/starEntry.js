@@ -13,6 +13,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+
+ // This file can run independent of all other tests successfully and is idempotent
 describe('Tool and Workflow starring', function() {
     require('./helper.js')
 
@@ -96,7 +98,7 @@ describe('Tool and Workflow starring', function() {
             .get('#starCountButton')
             .should('exist')
 
-        cy.visit(url)
+        cy.get('mat-list-item').find('a').first().click()
 
         beStarred();
 
