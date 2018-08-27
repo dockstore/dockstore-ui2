@@ -23,7 +23,10 @@ describe('Dockstore my tools', function() {
     function selectUnpublishedTab(org) {
       cy.contains(org)
           .parentsUntil('mat-accordion')
-          .contains("Unpublished")
+          .should('be.visible')
+          .find('mat-tab-group')
+          .should('be.visible')
+          .contains('div', 'Unpublished')
           .should('be.visible')
           .click()
     }
