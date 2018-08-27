@@ -28,8 +28,8 @@
         <span class="visible-xs" *ngIf="refreshMessage">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br />
         </span>
-        <div class="clearfix sidebar-header">
-            <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Refresh all of my workflows and find new workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage">
+        <div class="clearfix sidebar-header" matTooltipPosition="after" [matTooltip]="(hasSourceControlToken$ | async)? '' : 'Requires source control token'">
+            <button mat-flat-button color="primary" matTooltipPosition="after" matTooltip="Refresh all of my workflows and find new workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="refreshMessage || !(hasSourceControlToken$ | async)">
               Refresh All
             </button>
           <h3 class="sidebar-header">My workflows</h3>

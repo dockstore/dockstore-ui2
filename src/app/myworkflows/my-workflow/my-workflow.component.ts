@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
+import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
 import { MyEntry } from '../../shared/my-entry';
@@ -39,6 +39,7 @@ import { UrlResolverService } from './../../shared/url-resolver.service';
 import { WorkflowService } from './../../shared/workflow.service';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from './../myworkflows.service';
+
 /**
  * How the workflow selection works:
  * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
@@ -70,6 +71,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-workflows';
   public refreshMessage: string;
   public showSidebar = true;
+  hasSourceControlToken$: Observable<boolean>;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
     private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
     private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
@@ -93,6 +95,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
       }
     });
+    this.hasSourceControlToken$ = this.tokenService.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
     this.workflowService.setWorkflow(null);
     this.workflowService.setWorkflows(null);
