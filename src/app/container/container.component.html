@@ -98,7 +98,7 @@
 </div>
 <div class="row m-1">
   <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
-    <span *ngIf="!labelsEditMode">
+    <span *ngIf="!labelsEditMode && !starGazersClicked">
       <mat-chip-list>
         <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{label}}</mat-chip>
         <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
