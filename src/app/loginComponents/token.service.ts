@@ -24,8 +24,9 @@ export class TokenService {
   tokens$: BehaviorSubject<Token[]> = new BehaviorSubject<Token[]>(null);
   tokens: Token[];
   user: User;
-  hasGitHubToken$ = this.tokens$.pipe(map(tokens => this.hasGitHubTokenFunction(tokens)));
-  hasGoogleToken$ = this.tokens$.pipe(map(tokens => this.hasGoogleTokenFunction(tokens)));
+  hasGitHubToken$ = this.tokens$.pipe(map(tokens => this.hasToken(tokens, 'github.com')));
+  hasGoogleToken$ = this.tokens$.pipe(map(tokens => this.hasToken(tokens, 'google.com')));
+  hasSourceControlToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasSourceControlToken(tokens)));
   constructor(private usersService: UsersService, private userService: UserService,
     private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {
@@ -34,28 +35,21 @@ export class TokenService {
         this.updateTokens();
       }
     });
+    this.hasSourceControlToken$ = this.tokens$.pipe(map(tokens => this.hasSourceControlToken(tokens)));
     this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
     this.tokens$.subscribe(tokens => this.tokens = tokens);
   }
 
-  hasGitHubTokenFunction(tokens: Token[]) {
-    if (!tokens) {
-      return false;
-    }
-    const githubToken = tokens.find(token => token.tokenSource === 'github.com');
-    if (githubToken) {
-      return true;
-    } else {
-      return false;
-    }
+  hasSourceControlToken(tokens: Token[]): boolean {
+    return this.hasToken(tokens, 'github.com') || this.hasToken(tokens, 'bitbucket.org') || this.hasToken(tokens, 'gitlab.com');
   }
 
-  hasGoogleTokenFunction(tokens: Token[]) {
+  hasToken(tokens: Token[], tokenToFind: string): boolean {
     if (!tokens) {
       return false;
     }
-    const githubToken = tokens.find(token => token.tokenSource === 'google.com');
-    if (githubToken) {
+    const foundToken = tokens.find(token => token.tokenSource === tokenToFind);
+    if (foundToken) {
       return true;
     } else {
       return false;
