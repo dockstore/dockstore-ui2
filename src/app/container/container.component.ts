@@ -203,6 +203,7 @@ export class ContainerComponent extends Entry {
       this.containersService.publish(this.tool.id, request).subscribe(
         response => {
           this.containerService.upsertToolToTools(response);
+          this.containerService.setTool(response);
           this.setPublishMessage();
         }, err => {
           this.published = !this.published;

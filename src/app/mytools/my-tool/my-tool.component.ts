@@ -81,7 +81,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
-    this.containerService.tool$.subscribe(tool => {
+    this.containerService.setTools(null);
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
     });
 
@@ -103,7 +104,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.tools = tools;
         const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
         this.setGroupEntriesObject(sortedContainers);
-        this.selectInitialEntry(sortedContainers);
+        // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+        if (!this.tool) {
+          if (this.tools.length > 0) {
+            this.selectInitialEntry(sortedContainers);
+          }
+        }
       }
     });
 

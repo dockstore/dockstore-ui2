@@ -16,12 +16,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
 import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
@@ -29,15 +32,13 @@ import {
   InfoTabCheckerWorkflowPathComponent,
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
+import { PrivateFileDownloadPipe } from './private-file-download.pipe';
+import { PrivateFilePathPipe } from './private-file-path.pipe';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
-import { ClipboardModule } from 'ngx-clipboard';
-import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
-import { PrivateFileDownloadPipe } from './private-file-download.pipe';
-import { PrivateFilePathPipe } from './private-file-path.pipe';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { PrivateFilePathPipe } from './private-file-path.pipe';
     ModalModule,
     CustomMaterialModule,
     NgxJsonLdModule,
-    ClipboardModule
+    ClipboardModule,
+    RouterModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,

@@ -80,7 +80,7 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Dockerfile Path is too short. (Min. 3 characters.)',
     'maxlength': 'Dockerfile Path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Dockerfile Path format. Dockerfile Path must begin with \'/\' and end with \'Dockerfile\'. ' +
+    'pattern': 'Must begin with \'/\' and end with \'Dockerfile\'. ' +
                 'Optionally you can use a string as a prefix or a suffix to \'Dockerfile\', as long as they are separated by a \'.\'.'
   },
   'gitPath': {
@@ -104,22 +104,19 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
     'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Test parameter file format. ' +
-    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+    'pattern': 'Must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
   'wdlTestParameterFilePath': {
     'required': 'This field cannot be empty.',
     'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
     'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Test parameter file format. ' +
-    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+    'pattern': 'Must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
   'testParameterFilePath': {
     'required': 'This field cannot be empty.',
     'minlength': 'Test parameter file path is too short. (Min. 3 characters.)',
     'maxlength': 'Test parameter file path is too long. (Max 256 characters.)',
-    'pattern': 'Invalid Test parameter file format. ' +
-    'Test parameter file path must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
+    'pattern': 'Must begin with \'/\' and end with \'*.json\', \'*.yml\', or \'*.yaml\'.'
   },
   'toolName': {
     'maxlength': 'Tool Name is too long. (Max 256 characters.)',
@@ -132,8 +129,7 @@ export const validationMessages = {
     'required': 'This field cannot be empty.',
     'minlength': 'Git reference is too short. (Min. 3 characters.)',
     'maxlength': 'Git reference is too long. (Max 128 characters.)',
-    'pattern': 'Invalid Git Reference format. ' +
-    'A Git Reference path may only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
+    'pattern': 'May only consist of alphanumeric characters, \'-\' and \'_\', with interior \'/\' and \'.\' separators.'
   },
   'versionTag': {
     'required': 'This field cannot be empty.',

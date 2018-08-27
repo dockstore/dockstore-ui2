@@ -15,10 +15,10 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-// This line is super important for jQuery to work across the website for some reason
-import * as $ from 'jquery';
 import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { ContainerService } from './../../shared/container.service';
 import { Repository } from './../../shared/enum/Repository.enum';
@@ -28,7 +28,9 @@ import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tool } from './tool';
-import { finalize } from 'rxjs/operators';
+
+// This line is super important for jQuery to work across the website for some reason
+import * as $ from 'jquery';
 
 @Injectable()
 export class RegisterToolService {
@@ -48,7 +50,7 @@ export class RegisterToolService {
             '/Dockstore.cwl', '/Dockstore.wdl',
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
-    constructor(private containersService: ContainersService,
+    constructor(private containersService: ContainersService, private matSnackBar: MatSnackBar,
         private containerService: ContainerService,
         private stateService: StateService, private router: Router,
         private metadataService: MetadataService, private hostedService: HostedService) {
@@ -58,13 +60,19 @@ export class RegisterToolService {
         this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
     }
     deregisterTool() {
-        this.containersService.deleteContainer(this.selectedTool.id).subscribe(response => {
-            const index = this.tools.indexOf(this.selectedTool);
-            this.tools.splice(index, 1);
-            this.containerService.setTools(this.tools);
-        }, error => {
-            console.log(error);
-        });
+      this.containersService.deleteContainer(this.selectedTool.id).subscribe(response => {
+        const newTools: Array<DockstoreTool> = this.tools.filter((tool: DockstoreTool) => tool.id !== this.selectedTool.id);
+        const found = newTools.find((tool: DockstoreTool) => tool.registry_string === this.selectedTool.registry_string
+          && tool.namespace === this.selectedTool.namespace);
+        if (found) {
+          this.router.navigateByUrl('/my-tools/' + found.tool_path);
+        } else {
+          this.containerService.setTool(null);
+        }
+        this.containerService.setTools(newTools);
+      }, error => {
+        this.matSnackBar.open('Encountered problems deleting tool', 'Dismiss');
+      });
     }
     setTool(newTool: Tool): void {
         this.tool.next(newTool);
