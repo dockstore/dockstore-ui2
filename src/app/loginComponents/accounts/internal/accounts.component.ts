@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 
 import { TokenSource } from '../../../shared/enum/token-source.enum';
@@ -21,10 +20,9 @@ export class AccountsInternalComponent implements OnInit {
   gitHubProfile: Profile;
   hasGitHubToken$: Observable<boolean>;
   hasGoogleToken$: Observable<boolean>;
-  show: false;
   public syncing = false;
   constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
-    private authService: AuthService, private tokenService: TokenService, private matSnackBar: MatSnackBar) {
+    private tokenService: TokenService, private matSnackBar: MatSnackBar) {
     this.hasGitHubToken$ = this.tokenService.hasGitHubToken$;
     this.hasGoogleToken$ = this.tokenService.hasGoogleToken$;
   }
@@ -44,11 +42,6 @@ export class AccountsInternalComponent implements OnInit {
       this.syncing = false;
     },
     );
-  }
-
-  // TODO: Fix, it is called a bajillion times
-  getDockstoreToken(): string {
-    return this.authService.getToken();
   }
 
   private getUser() {
