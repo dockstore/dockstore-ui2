@@ -19,6 +19,7 @@ import { MetadataService } from '../metadata/metadata.service';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from './versions';
 import { Subscription } from 'rxjs';
+import { Dockstore } from './../shared/dockstore.model';
 
 @Component({
   selector: 'app-footer',
@@ -30,12 +31,13 @@ export class FooterComponent implements OnInit, OnDestroy {
   tag: string;
   public prod = true;
   mdService: Subscription;
+  public dsServerURI: any;
 
   constructor(private metadataService: MetadataService) { }
 
   ngOnInit() {
     this.tag = versions.tag;
-
+    this.dsServerURI = Dockstore.API_URI;
     this.mdService = this.metadataService.getMetadata()
       .subscribe(
         (metadata: Metadata) => {
