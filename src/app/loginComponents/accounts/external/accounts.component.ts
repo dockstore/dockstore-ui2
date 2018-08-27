@@ -139,7 +139,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     }
   }
 
-  // TODO: Fix, it is called a bajillion times
   getDockstoreToken(): string {
     return this.authService.getToken();
   }
