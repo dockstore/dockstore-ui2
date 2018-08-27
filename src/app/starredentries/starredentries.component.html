@@ -53,7 +53,7 @@
         <mat-list>
             <mat-list-item *ngFor="let workflow of starredWorkflows; let last = last;">
               <h3 class="spacing" mat-line>
-                <a href="/containers/{{workflow.full_workflow_path}}">
+                <a href="/workflows/{{workflow.full_workflow_path}}">
                 {{workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '')}}
                 </a>
               </h3>
