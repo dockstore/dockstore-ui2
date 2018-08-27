@@ -1,6 +1,9 @@
 <div class="p-3">
   <mat-card class="mb-2" *ngIf="dockstoreToken">
     <h3>Dockstore Account</h3>
+    <div>
+      Use with our CLI utilities or with our <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch tools and workflows.
+    </div>
     <span fxLayout="row" fxLayoutAlign="start center">
       <strong>Token</strong>
       <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-icon-button color="secondary" (click)="show = !show">

@@ -28,6 +28,7 @@ import { Configuration } from './../../../shared/swagger/configuration';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
 import { MatSnackBar } from '@angular/material';
+import { Dockstore } from '../../../shared/dockstore.model';
 
 @Component({
   selector: 'app-accounts-external',
@@ -35,7 +36,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./accounts.component.css']
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
-
+  public dsServerURI: any;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
@@ -144,6 +145,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.dsServerURI = Dockstore.API_URI;
     this.tokenService.tokens$.subscribe((tokens: Token[]) => {
       this.setTokens(tokens);
     });
