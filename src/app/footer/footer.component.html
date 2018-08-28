@@ -17,7 +17,7 @@
 <div class="container-fluid">
   <div class="container">
     <div class="row">
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-4 col-sm-6">
         <ul class="footer-list">
           <li>
             <a href="https://docs.dockstore.org/docs/" class="footer-link">
@@ -35,33 +35,24 @@
             </a>
           </li>
           <li>
+              <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" class="footer-link">
+                <small>Swagger UI</small>
+              </a>
+          </li>
+          <li>
+              <a href="https://status.dockstore.org/" class="footer-link">
+                <img src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg">
+              </a>
+          </li>
+          <li>
             <a href="https://github.com/ga4gh/dockstore/blob/1.2.10/LICENSE" class="footer-link">&copy; 2018 OICR</a>
           </li>
         </ul>
       </div>
-      <div class="col-md-3 col-sm-6">
-        <ul>
-          <li>
-              Can't find what you're looking for?<br />
-              <a href="https://gitter.im/ga4gh/dockstore" class="footer-link m-0">Chat With Us on Gitter&raquo;</a>
-          </li>
-        </ul>
+
+      <div class="col-md-4 col-sm-6">
       </div>
-      <div class="col-md-3 col-sm-6">
-          <ul>
-            <li>
-                <a href="https://status.dockstore.org/" class="footer-link">
-                  Status
-                </a>
-            </li>
-            <li>
-                <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" class="footer-link">
-                  Swagger UI
-                </a>
-            </li>
-          </ul>
-        </div>
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-4 col-sm-6">
         <ul>
           <li>
             <a href="https://github.com/ga4gh/dockstore" class="footer-link">
@@ -74,6 +65,11 @@
               <img src="../assets/images/dockstore/twitter.png">
               Follow Us
             </a>
+          </li>
+          <li>
+              <a href="https://gitter.im/ga4gh/dockstore" class="footer-link">
+                Chat With Us on Gitter
+              </a>
           </li>
         </ul>
       </div>
