@@ -1,10 +1,29 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../../../../loginComponents/user.service';
-import { User } from '../../../../shared/swagger/model/user';
-import { UsersService } from './../../../../shared/swagger/api/users.service';
-import { RefreshService } from './../../../../shared/refresh.service';
-import { takeUntil } from 'rxjs/operators';
+/*
+ *    Copyright 2018 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
+
+import { UserService } from '../../../../loginComponents/user.service';
+import { formInputDebounceTime } from '../../../../shared/constants';
+import { MyErrorStateMatcher } from '../../../../shared/error-state-matcher';
+import { User } from '../../../../shared/swagger/model/user';
+import { RefreshService } from './../../../../shared/refresh.service';
+import { UsersService } from './../../../../shared/swagger/api/users.service';
 
 @Component({
   selector: 'app-change-username',
@@ -15,11 +34,16 @@ export class ChangeUsernameComponent implements OnInit {
   @Input() showText;
   username: string;
   user: User;
-  usernameNotTaken = true;
+  usernameTaken = false;
   checkingIfValid = false;
-  usernameMeetsRequirements = true;
   extendedUser: any;
   showEmailWarning = false;
+  matcher = new MyErrorStateMatcher();
+  usernameFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^[a-zA-Z][a-zA-Z0-9]*([-_]?[a-zA-Z0-9]+)*$'),
+    Validators.maxLength(39)
+  ]);
   protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService) { }
 
@@ -32,40 +56,31 @@ export class ChangeUsernameComponent implements OnInit {
       }
     });
     this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe(value => {
+      if (this.usernameFormControl.valid) {
+        this.checkIfUsernameExists(value);
+      }
+    });
   }
 
   /**
-   * Returns true if the username exists, false otherwise
+   * Sets usernameTaken and checkingIfValid
    */
-  checkIfUsernameExists(event: any) {
-    this.username = event.target.value;
-
-    if (!this.isValidUsername()) {
-      this.usernameMeetsRequirements = false;
-    } else {
-      this.checkingIfValid = true;
-      this.usernameMeetsRequirements = true;
-      this.usersService.checkUserExists(this.username).subscribe(
-        (userExists: boolean) => {
-          if (userExists && this.username === this.user.username) {
-            this.usernameNotTaken = true;
-          } else {
-            this.usernameNotTaken = !userExists;
-          }
-          this.checkingIfValid = false;
-        }, error => {
-          this.checkingIfValid = false;
-          console.error(error);
-        });
-    }
-  }
-
-  /**
-   * Checks whether the currently typed username passes the requirements for a Dockstore username
-   */
-  isValidUsername() {
-    const regex = /^[a-zA-Z][a-zA-Z0-9]*([-_]?[a-zA-Z0-9]+)*$/g;
-    return this.username && this.username.trim() !== '' && !this.username.includes('@') && regex.test(this.username);
+  checkIfUsernameExists(value: string): void {
+    this.username = value;
+    this.checkingIfValid = true;
+    this.usersService.checkUserExists(this.username).pipe(finalize(() => {
+      this.checkingIfValid = false;
+    })).subscribe(
+      (userExists: boolean) => {
+        if (userExists && this.username === this.user.username) {
+          this.usernameTaken = false;
+        } else {
+          this.usernameTaken = userExists;
+        }
+      }, error => {
+        console.error(error);
+      });
   }
 
   /**
