@@ -35,7 +35,11 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ])],
     ['source_control_provider.keyword', new Map([
       ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com'], ['DOCKSTORE', 'dockstore.org']
-    ])]
+    ])],
+    ['descriptor_tooltip', new Map([
+      ['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'],
+      ['Nextflow', 'Nextflow coming soon!']
+    ])],
   ]);
 
   /**

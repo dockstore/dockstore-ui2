@@ -20,13 +20,13 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { StateService } from './../../shared/state.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { StateService } from '../../shared/state.service';
+import { HostedService } from '../../shared/swagger';
+import { MetadataService } from '../../shared/swagger';
+import { WorkflowsService } from '../../shared/swagger';
+import { Workflow } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
 
 @Injectable()
