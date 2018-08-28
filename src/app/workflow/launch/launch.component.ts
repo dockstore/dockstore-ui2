@@ -17,11 +17,12 @@ import { Component, Input } from '@angular/core';
 
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowService } from '../../shared/workflow.service';
-import { Observable } from 'rxjs';
-import { SourceFile } from './../../shared/swagger';
+import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { ToolFile } from '../../shared/swagger';
 
 @Component({
   selector: 'app-launch',
@@ -54,9 +55,12 @@ export class LaunchWorkflowComponent extends EntryTab {
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  testParameterPath: string;
   protected published$: Observable<boolean>;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService) {
+  constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService,
+    protected gA4GHFilesStateService: GA4GHFilesStateService) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -72,27 +76,49 @@ export class LaunchWorkflowComponent extends EntryTab {
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
-    const testParameterPath = this.getFirstTestParameterFilePath();
-    this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName,
-      this.currentDescriptor, testParameterPath);
+    this.updateWgetTestJsonString(workflowPath, versionName);
   }
 
-
   /**
-   * Finds the path of the first sourcefile test parameter file for the selected version
+   * Updates the wget test json string with the first available test parameter file
+   * @param workflowPath
+   * @param versionName
    */
-  getFirstTestParameterFilePath(): string {
-    let testParameterType = 'CWL_TEST_JSON';
-    if (this.currentDescriptor === 'cwl') {
-      testParameterType = 'CWL_TEST_JSON';
-    } else if (this.currentDescriptor === 'wdl') {
-      testParameterType = 'WDL_TEST_JSON';
-    } else if (this.currentDescriptor === 'nfl') {
-      testParameterType = 'NEXTFLOW_TEST_PARAMS';
+  updateWgetTestJsonString(workflowPath: string, versionName: string): void {
+    let descriptorToolFiles$: BehaviorSubject<Array<ToolFile>>;
+    switch (this.currentDescriptor) {
+      case 'wdl': {
+        descriptorToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
+        break;
+      }
+      case 'cwl': {
+        descriptorToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
+        break;
+      }
+      case 'nfl': {
+        descriptorToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
+        break;
+      }
+      default: {
+        console.error('Unknown descriptor type: ' + this.currentDescriptor);
+      }
     }
-    const matchedVersion = this._selectedVersion.sourceFiles.find((sourcefile: SourceFile) => {
-      return sourcefile.type === testParameterType;
+
+    descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
+      if (toolFiles) {
+        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
+      } else {
+        return [];
+      }
+    })).pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
+      if (toolFiles.length > 0) {
+        console.log(toolFiles[0].path);
+        this.testParameterPath = toolFiles[0].path;
+      } else {
+        this.testParameterPath = null;
+      }
+      this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName,
+        this.currentDescriptor, this.testParameterPath);
     });
-    return matchedVersion ? matchedVersion.path : null;
   }
 }
