@@ -25,6 +25,14 @@
     </div>
   </div>
 </div>
+
+<div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.tags?.length === 0">
+  <div class="alert alert-info" role="alert">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    Your manually added tool does not have any tags. Go to the versions tab to add one.
+  </div>
+</div>
+
 <div class="row m-1">
   <ngx-json-ld [json]="schema"></ngx-json-ld>
   <div class="col-md-7">
