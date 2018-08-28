@@ -6,6 +6,7 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { UserService } from '../loginComponents/user.service';
 import {Subscription} from 'rxjs';
 import { StarentryService } from '../shared/starentry.service';
+import { Workflow, DockstoreTool } from '../shared/swagger';
 
 @Component({
   selector: 'app-starredentries',
@@ -35,7 +36,7 @@ export class StarredEntriesComponent implements OnInit {
     this.userService.user$.subscribe(user => this.user = user);
     this.usersService.getStarredTools().subscribe(
       starredTool => {
-        this.starredTools = starredTool;
+        this.starredTools = starredTool. filter((entry: DockstoreTool) => entry.is_published);
         this.starredTools.forEach(
           tool => {
             if (!tool.providerUrl) {
@@ -48,7 +49,7 @@ export class StarredEntriesComponent implements OnInit {
       });
     this.usersService.getStarredWorkflows().subscribe(
       starredWorkflow => {
-        this.starredWorkflows = starredWorkflow;
+        this.starredWorkflows = starredWorkflow.filter((entry: Workflow) => entry.is_published);
         this.starredWorkflows.forEach(
           workflow => {
             if (!workflow.providerUrl) {
