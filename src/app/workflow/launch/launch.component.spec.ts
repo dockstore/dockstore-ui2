@@ -24,10 +24,13 @@ import {
   ContainerStubService,
   DescriptorsStubService,
   WorkflowStubService,
+  GA4GHStubService
 } from './../../test/service-stubs';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
+import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { GA4GHService } from '../../shared/swagger';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
@@ -40,7 +43,9 @@ describe('LaunchWorkflowComponent', () => {
       providers: [WorkflowLaunchService, { provide: ContainerService, useClass: ContainerStubService },
         { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-      { provide: WorkflowService, useClass: WorkflowStubService}]
+        { provide: WorkflowService, useClass: WorkflowStubService},
+        { provide: GA4GHService, useClass: GA4GHStubService},
+        GA4GHFilesStateService]
     })
       .compileComponents();
   }));
