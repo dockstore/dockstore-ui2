@@ -112,7 +112,6 @@ export class LaunchWorkflowComponent extends EntryTab {
       }
     })).pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
       if (toolFiles.length > 0) {
-        console.log(toolFiles[0].path);
         this.testParameterPath = toolFiles[0].path;
       } else {
         this.testParameterPath = null;
