@@ -38,7 +38,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ])],
     ['descriptor_tooltip', new Map([
       ['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'],
-      ['Nextflow', 'Nextflow coming soon!']
+      ['NFL', 'Nextflow coming soon!']
     ])],
   ]);
 
