@@ -20,7 +20,6 @@ import { StargazersComponent } from './stargazers.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
-import { UserService } from '../loginComponents/user.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -34,7 +33,6 @@ import { UserService } from '../loginComponents/user.service';
   ],
   providers: [
     StarringService,
-    UserService,
     StarentryService
   ]
 })
