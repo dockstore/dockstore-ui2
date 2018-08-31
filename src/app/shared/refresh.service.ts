@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material';
 
 import { ErrorService } from './../shared/error.service';
 import { ContainerService } from './container.service';
+import { GA4GHFilesStateService } from './entry/GA4GHFiles.state.service';
 import { StateService } from './state.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
@@ -34,7 +35,7 @@ export class RefreshService {
     private workflows;
     constructor(private workflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private errorService: ErrorService, private snackBar: MatSnackBar) {
+        private ga4ghFilesStateService: GA4GHFilesStateService, private errorService: ErrorService, private snackBar: MatSnackBar) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
@@ -83,19 +84,24 @@ export class RefreshService {
     }
 
     /**
-     * Handles refreshing of the workflow and updates the view.
+     * Handles refreshing of the workflow and optionally updates the GA4GH files
+     *
+     * @param {string} toolID  GA4GH Tool ID
+     * @param {string} versionName  GA4GH version name
      * @memberof RefreshService
      */
-    refreshWorkflow(): void {
+    refreshWorkflow(toolID?: string, versionName?: string): void {
       const message = 'Refreshing ' +  this.workflow.full_workflow_path;
       this.stateService.setRefreshMessage(message + ' ...');
-      this.workflowsService.refresh(this.workflow.id).subscribe((response: Workflow) => {
-          this.workflowService.upsertWorkflowToWorkflow(response);
-          this.workflowService.setWorkflow(response);
+      this.workflowsService.refresh(this.workflow.id).subscribe((refreshedWorkflow: Workflow) => {
+          this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
+          this.workflowService.setWorkflow(refreshedWorkflow);
           this.handleSuccess(message);
+          if (toolID && versionName) {
+            this.ga4ghFilesStateService.update(toolID, versionName);
+          }
       }, error => this.handleError(message, error));
     }
-
 
     /**
      * Handles refreshing of all the tools and updates the view.

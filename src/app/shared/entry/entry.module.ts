@@ -27,7 +27,6 @@ import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
-import { GA4GHFilesStateService } from './GA4GHFiles.state.service';
 import {
   InfoTabCheckerWorkflowPathComponent,
 } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
@@ -65,9 +64,6 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     PublicFileDownloadPipe,
     PrivateFileDownloadPipe,
     PrivateFilePathPipe
-  ],
-  providers: [
-    GA4GHFilesStateService
   ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
