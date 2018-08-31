@@ -51,6 +51,7 @@ import { AccountsService } from './loginComponents/accounts/external/accounts.se
 import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
+import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
@@ -61,6 +62,7 @@ import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
@@ -71,6 +73,7 @@ import { DateService } from './shared/date.service';
 import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
+import { GA4GHFilesStateService } from './shared/entry/GA4GHFiles.state.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 import { ErrorService } from './shared/error.service';
 import { ExtendedToolsService } from './shared/extended-tools.service';
@@ -100,8 +103,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
-import { RegisterService } from './register/register.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -178,6 +179,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     TrackLoginService,
     TokenService,
     UserService,
+    GA4GHFilesStateService,
     ListService,
     CommunicatorService,
     ProviderService,

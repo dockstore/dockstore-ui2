@@ -38,6 +38,7 @@ import { Workflow } from './../shared/swagger/model/workflow';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { Permission } from './../shared/swagger';
 import RoleEnum = Permission.RoleEnum;
+import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
 
 @Component({
   selector: 'app-workflow',
@@ -72,7 +73,7 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService,
+    router: Router, private workflowService: WorkflowService, private ga4ghFilesStateService: GA4GHFilesStateService,
     stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
     location: Location, activatedRoute: ActivatedRoute) {
     super(trackLoginService, providerService, router,
@@ -328,7 +329,7 @@ export class WorkflowComponent extends Entry {
   }
 
   refresh() {
-    this.refreshService.refreshWorkflow();
+    this.refreshService.refreshWorkflow('#workflow/' + this.workflow.full_workflow_path, this.selectedVersion.name);
   }
 
   /**

@@ -23,12 +23,15 @@ import {
   ContainersStubService,
   ContainerStubService,
   ErrorStubService,
+  GA4GHStubService,
   UsersStubService,
   WorkflowsStubService,
 } from './../test/service-stubs';
 import { ContainerService } from './container.service';
+import { GA4GHFilesStateService } from './entry/GA4GHFiles.state.service';
 import { RefreshService } from './refresh.service';
 import { StateService } from './state.service';
+import { GA4GHService } from './swagger';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
@@ -45,6 +48,8 @@ describe('RefreshService', () => {
                 { provide: ErrorService, useClass: ErrorStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
+                GA4GHFilesStateService,
+                { provide: GA4GHService, useClass: GA4GHStubService },
                 { provide: WorkflowService, useClass: WorkflowService },
                 { provide: UsersService, useClass: UsersStubService }
             ]
