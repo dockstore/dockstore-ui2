@@ -109,7 +109,7 @@ export abstract class LaunchService {
       const outputFile = `-O Dockstore.json`;
       const encodedID = encodeURIComponent(`#workflow/${ workflowPath }`);
       const encodedVersion = encodeURIComponent(`${ versionName }`);
-      const url = `${Dockstore.API_URI}${ga4ghPath}/tools/${encodedID}/versions/${encodedVersion}/${urlType}/descriptor/${filePath}`;
+      const url = `${Dockstore.API_URI}${ga4ghPath}/tools/${encodedID}/versions/${encodedVersion}/${urlType}/descriptor/${encodeURIComponent(filePath)}`;
       return `${prefix}' ${url} ${outputFile}`;
     }
 }
