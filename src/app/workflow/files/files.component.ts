@@ -16,10 +16,10 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 
 @Component({
   selector: 'app-files-workflow',

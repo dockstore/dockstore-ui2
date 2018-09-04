@@ -13,19 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { EntryTab } from '../../shared/entry/entry-tab';
-import { Tooltip } from '../../shared/tooltip';
-import { ga4ghPath, ga4ghWorkflowIdPrefix } from './../../shared/constants';
-import { StateService } from './../../shared/state.service';
-import { ExtendedWorkflowsService } from './../../shared/extended-workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
-import { HttpResponse } from '@angular/common/http';
-import { validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { WorkflowService } from './../../shared/workflow.service';
+import { EntryTab } from '../../shared/entry/entry-tab';
+import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
+import { StateService } from '../../shared/state.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { Tooltip } from '../../shared/tooltip';
+import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
+import { WorkflowService } from '../../shared/workflow.service';
 import { InfoTabService } from './info-tab.service';
 
 @Component({

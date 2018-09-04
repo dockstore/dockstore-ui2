@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-
-import { WorkflowLaunchService } from '../launch/workflow-launch.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { EntryTab } from '../../shared/entry/entry-tab';
-import { WorkflowService } from '../../shared/workflow.service';
-import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+
+import { EntryTab } from '../../shared/entry/entry-tab';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { ToolFile } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { WorkflowService } from '../../shared/workflow.service';
+import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 
 @Component({

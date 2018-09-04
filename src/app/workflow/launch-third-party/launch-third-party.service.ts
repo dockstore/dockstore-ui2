@@ -1,7 +1,8 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
-import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

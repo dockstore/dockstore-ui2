@@ -13,13 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
-import { FileService } from '../file.service';
-import { SafeUrl } from '@angular/platform-browser';
-import { GA4GHFilesStateService } from '../entry/GA4GHFiles.state.service';
-import { GA4GHService, FileWrapper } from '../swagger';
 import { ga4ghWorkflowIdPrefix } from '../constants';
+import { GA4GHFilesStateService } from '../entry/GA4GHFiles.state.service';
+import { FileService } from '../file.service';
+import { FileWrapper, GA4GHService } from '../swagger';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
