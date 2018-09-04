@@ -17,7 +17,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { Tooltip } from '../../shared/tooltip';
-import { ga4ghPath } from './../../shared/constants';
+import { ga4ghPath, ga4ghWorkflowIdPrefix } from './../../shared/constants';
 import { StateService } from './../../shared/state.service';
 import { ExtendedWorkflowsService } from './../../shared/extended-workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
@@ -144,7 +144,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    */
   getTRSLink(path: string, versionName: string, descriptorType: string,
     descriptorPath: string): string {
-    return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent('#workflow/' + path)}` +
+    return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(ga4ghWorkflowIdPrefix + path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType.toUpperCase() +
       `/descriptor/` + descriptorPath;
   }

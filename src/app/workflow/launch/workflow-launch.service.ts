@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
-import { ga4ghPath } from './../../shared/constants';
+import { ga4ghPath, ga4ghWorkflowIdPrefix } from './../../shared/constants';
 import { EntryType } from './../../shared/enum/entryType.enum';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return `$ cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent('#workflow/' + path)}` +
+    return `$ cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(ga4ghWorkflowIdPrefix + path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 

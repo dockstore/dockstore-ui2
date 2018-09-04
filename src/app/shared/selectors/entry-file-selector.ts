@@ -19,6 +19,7 @@ import { FileService } from '../file.service';
 import { SafeUrl } from '@angular/platform-browser';
 import { GA4GHFilesStateService } from '../entry/GA4GHFiles.state.service';
 import { GA4GHService, FileWrapper } from '../swagger';
+import { ga4ghWorkflowIdPrefix } from '../constants';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -116,7 +117,7 @@ export abstract class EntryFileSelector {
     this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
     // TODO: Memoize this
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
-      this.entryType === 'workflow' ? '#workflow/' + this.entrypath : this.entrypath,
+      this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
       this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
         this.content = file.content;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);

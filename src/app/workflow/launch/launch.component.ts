@@ -23,6 +23,7 @@ import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { ToolFile } from '../../shared/swagger';
+import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 
 @Component({
   selector: 'app-launch',
@@ -116,7 +117,7 @@ export class LaunchWorkflowComponent extends EntryTab {
       } else {
         this.testParameterPath = null;
       }
-      this.wgetTestJsonDescription = this.launchService.getTestJsonString(workflowPath, versionName,
+      this.wgetTestJsonDescription = this.launchService.getTestJsonString(ga4ghWorkflowIdPrefix + workflowPath, versionName,
         this.currentDescriptor, this.testParameterPath);
     });
   }

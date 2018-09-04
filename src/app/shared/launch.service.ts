@@ -80,16 +80,16 @@ export abstract class LaunchService {
     }
 
     /**
-     * Gets the wget test parameter file command for workflows
+     * Gets the wget test parameter file command
      *
-     * @param {string} workflowPath  The full workflow path
+     * @param {string} entryPath     The entry path
      * @param {string} versionName   The workflow version
      * @param {string} type          The descriptor type (cwl, wdl, nfl)
      * @param {string} filePath      Relative file path of the the test parameter file
      * @returns {string}             The wget command
      * @memberof LaunchService
      */
-    getTestJsonString(workflowPath: string, versionName: string, type: string, filePath: string): string {
+    getTestJsonString(entryPath: string, versionName: string, type: string, filePath: string): string {
       if (!filePath) {
         return;
       }
@@ -111,7 +111,7 @@ export abstract class LaunchService {
 
       const prefix = `$ wget --header='Accept: text/plain`;
       const outputFile = `-O Dockstore.json`;
-      const id = encodeURIComponent('#workflow/' + workflowPath);
+      const id = encodeURIComponent(entryPath);
       const versionId = encodeURIComponent(versionName);
       const relativePath = encodeURIComponent(filePath);
       const url = `${Dockstore.API_URI}${ga4ghPath}/tools/${id}/versions/${versionId}/${urlType}/descriptor/${relativePath}`;

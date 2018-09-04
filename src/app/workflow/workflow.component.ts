@@ -39,6 +39,7 @@ import { UrlResolverService } from './../shared/url-resolver.service';
 import { Permission } from './../shared/swagger';
 import RoleEnum = Permission.RoleEnum;
 import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
+import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 
 @Component({
   selector: 'app-workflow',
@@ -329,7 +330,7 @@ export class WorkflowComponent extends Entry {
   }
 
   refresh() {
-    this.refreshService.refreshWorkflow('#workflow/' + this.workflow.full_workflow_path, this.selectedVersion.name);
+    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name);
   }
 
   /**
