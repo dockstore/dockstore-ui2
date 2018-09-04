@@ -77,5 +77,9 @@ describe('WorkflowLaunchService', () => {
       `-O Dockstore.json`);
     expect(service.getTestJsonString('github.com/garyluu/example_cwl_workflow', 'v1.0', 'potato', 'test.json'))
       .toBe(null);
+    expect(service.getTestJsonString('github.com/HumanCellAtlas/skylab/HCA_SmartSeq2', 'dockstore', 'wdl', '../../test/smartseq2_single_sample/pr/dockstore_test_inputs.json'))
+    .toBe(`$ wget --header='Accept: text/plain' ` +
+      `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN_WDL/descriptor/..%2F..%2Ftest%2Fsmartseq2_single_sample%2Fpr%2Fdockstore_test_inputs.json ` +
+      `-O Dockstore.json`);
   }));
 });
