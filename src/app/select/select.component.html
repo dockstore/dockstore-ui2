@@ -16,7 +16,7 @@
 
 <mat-form-field>
   <mat-select [placeholder]="placeholder" [(value)]="obj" (selectionChange)="changedSelect(obj)">
-    <mat-option *ngFor="let obj of items" [value]="obj">
+    <mat-option [matTooltip]="field ? obj[field] : obj" *ngFor="let obj of items" [value]="obj">
       <div *ngIf="field">
         {{ obj[field] }}
       </div>
