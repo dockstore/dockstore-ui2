@@ -113,7 +113,11 @@ export abstract class LaunchService {
       const outputFile = `-O Dockstore.json`;
       const id = encodeURIComponent(entryPath);
       const versionId = encodeURIComponent(versionName);
-      const relativePath = encodeURIComponent(filePath);
+
+      // Encode the '../' only
+      const re = new RegExp('\\.\\./', 'g');
+      const relativePath = filePath.replace(re, encodeURIComponent('../'));
+
       const url = `${Dockstore.API_URI}${ga4ghPath}/tools/${id}/versions/${versionId}/${urlType}/descriptor/${relativePath}`;
       return `${prefix}' ${url} ${outputFile}`;
     }
