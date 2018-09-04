@@ -81,10 +81,14 @@
       </form>
     </li>
 </span>
-  <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
+  <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && workflow?.descriptorType !== 'nfl'" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
   <!-- TODO: Remove once hosted workflows support checker workflows -->
   <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
     <strong matTooltip="Currently disabled for Hosted Workflows">Checker Workflow</strong>: n/a
+  </div>
+    <!-- TODO: Remove once nextflow workflows support checker workflows -->
+  <div *ngIf="workflow?.descriptorType === 'nfl'">
+    <strong matTooltip="Currently disabled for Nextflow workflows">Checker Workflow</strong>: n/a
   </div>
   <li *ngIf="!isPublic">
     <ng-template #modeTooltip><div [innerHtml]="modeTooltipContent"></div></ng-template>
