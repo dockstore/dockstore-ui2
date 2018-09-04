@@ -16,6 +16,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -40,7 +41,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   ngOnChanges() {
     // Change detection is messed up because of permissions changing
     if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
-      this.gA4GHFilesStateService.update('#workflow/' + this.entrypath, this.selectedVersion.name);
+      this.gA4GHFilesStateService.update(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name);
       this.previousEntryPath = this.entrypath;
       this.previousVersionName = this.selectedVersion.name;
     }

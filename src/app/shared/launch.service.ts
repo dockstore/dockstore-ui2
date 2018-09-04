@@ -80,12 +80,16 @@ export abstract class LaunchService {
     }
 
     /**
-     * Grabs first test json if it is available
-     * @param path The GA4GH Tool's path
-     * @param versionName The ToolVersion's name
+     * Gets the wget test parameter file command
+     *
+     * @param {string} entryPath     The entry path
+     * @param {string} versionName   The workflow version
+     * @param {string} type          The descriptor type (cwl, wdl, nfl)
+     * @param {string} filePath      Relative file path of the the test parameter file
+     * @returns {string}             The wget command
+     * @memberof LaunchService
      */
-    // tslint:disable:max-line-length
-    getTestJsonString(workflowPath: string, versionName: string, type: string, filePath: string) {
+    getTestJsonString(entryPath: string, versionName: string, type: string, filePath: string): string {
       if (!filePath) {
         return;
       }
@@ -107,9 +111,14 @@ export abstract class LaunchService {
 
       const prefix = `$ wget --header='Accept: text/plain`;
       const outputFile = `-O Dockstore.json`;
-      const encodedID = encodeURIComponent(`#workflow/${ workflowPath }`);
-      const encodedVersion = encodeURIComponent(`${ versionName }`);
-      const url = `${Dockstore.API_URI}${ga4ghPath}/tools/${encodedID}/versions/${encodedVersion}/${urlType}/descriptor/${filePath}`;
+      const id = encodeURIComponent(entryPath);
+      const versionId = encodeURIComponent(versionName);
+
+      // Encode the '../' only
+      const re = new RegExp('\\.\\./', 'g');
+      const relativePath = filePath.replace(re, encodeURIComponent('../'));
+
+      const url = `${Dockstore.API_URI}${ga4ghPath}/tools/${id}/versions/${versionId}/${urlType}/descriptor/${relativePath}`;
       return `${prefix}' ${url} ${outputFile}`;
     }
 }

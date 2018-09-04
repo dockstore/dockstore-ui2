@@ -52,7 +52,9 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
     this.isPublic$ = this.checkerWorkflowService.publicPage$;
     this.isStub$ = this.checkerWorkflowService.isStub$;
     this.checkerWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
-      this.checkerWorkflowPath = this.viewCheckerWorkflow();
+      if (workflow) {
+        this.checkerWorkflowPath = this.viewCheckerWorkflow();
+      }
     });
   }
 

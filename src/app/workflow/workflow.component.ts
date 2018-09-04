@@ -13,33 +13,34 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 
+import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
+import { ErrorService } from '../shared/error.service';
+import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
+import { RefreshService } from '../shared/refresh.service';
+import { StateService } from '../shared/state.service';
+import { Permission } from '../shared/swagger';
+import { WorkflowsService } from '../shared/swagger/api/workflows.service';
+import { PublishRequest } from '../shared/swagger/model/publishRequest';
 import { Tag } from '../shared/swagger/model/tag';
+import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
+import { UrlResolverService } from '../shared/url-resolver.service';
 import { WorkflowService } from '../shared/workflow.service';
-import { ErrorService } from './../shared/error.service';
-import { ExtendedWorkflow } from './../shared/models/ExtendedWorkflow';
-import { RefreshService } from './../shared/refresh.service';
-import { StateService } from './../shared/state.service';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
-import { Workflow } from './../shared/swagger/model/workflow';
-import { UrlResolverService } from './../shared/url-resolver.service';
-import { Permission } from './../shared/swagger';
-import RoleEnum = Permission.RoleEnum;
-import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
 
+import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -329,7 +330,7 @@ export class WorkflowComponent extends Entry {
   }
 
   refresh() {
-    this.refreshService.refreshWorkflow('#workflow/' + this.workflow.full_workflow_path, this.selectedVersion.name);
+    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name);
   }
 
   /**
