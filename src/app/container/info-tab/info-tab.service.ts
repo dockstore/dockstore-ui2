@@ -83,6 +83,7 @@ export class InfoTabService {
 
     updateAndRefresh(tool: DockstoreTool) {
         const message = 'Tool Info';
+        tool.tags = [];
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
             this.stateService.setRefreshMessage('Updating ' + message + '...');
             this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {

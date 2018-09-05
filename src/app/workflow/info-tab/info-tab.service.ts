@@ -73,6 +73,7 @@ export class InfoTabService {
 
     updateAndRefresh(workflow: Workflow) {
         const message = 'Workflow Info';
+        workflow.workflowVersions = [];
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
             this.stateService.setRefreshMessage('Updating ' + message + '...');
             this.workflowsService.refresh(this.originalWorkflow.id).subscribe(refreshResponse => {
@@ -96,6 +97,7 @@ export class InfoTabService {
         const message = 'Descriptor Type';
         this.stateService.setRefreshMessage('Updating ' + message + '...');
         workflow = this.changeWorkflowPathToDefaults(workflow);
+        workflow.workflowVersions = [];
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe((updatedWorkflow: Workflow) => {
             this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
             this.refreshService.handleSuccess(message);
