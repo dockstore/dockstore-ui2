@@ -330,7 +330,8 @@ export class WorkflowComponent extends Entry {
   }
 
   refresh() {
-    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name);
+    const versionName = this.selectedVersion ? this.selectedVersion.name : null;
+    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, versionName);
   }
 
   /**

@@ -53,7 +53,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public currentTab = 'info';
   public urlVersion;
   location: Location;
-  public selectedVersion = null;
+  public selectedVersion: (WorkflowVersion | Tag | null) = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
