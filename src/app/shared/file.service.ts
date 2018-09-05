@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
-import { ga4ghPath } from './constants';
+import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
 import { Dockstore } from './dockstore.model';
 import { SourceFile, Tag, WorkflowVersion } from './swagger';
 
@@ -75,7 +75,7 @@ export class FileService {
     const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
     let entry = '';
     if (entryType === 'workflow') {
-      entry = encodeURIComponent('#workflow/' + entryPath);
+      entry = encodeURIComponent(ga4ghWorkflowIdPrefix + entryPath);
     } else {
       entry = encodeURIComponent(entryPath);
     }
