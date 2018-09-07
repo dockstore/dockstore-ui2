@@ -59,7 +59,7 @@ export const validationDescriptorPatterns = {
   'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
-  'amazonDockerRegistryPath': '^[a-zA-Z0-9]+\.dkr\.ecr\.[a-zA-Z0-9]+\.amazonaws\.com',
+  'amazonDockerRegistryPath': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\.dkr\.ecr\.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\.amazonaws\.com',
   'sevenBridgesDockerRegistryPath': '^([a-zA-Z0-9]+-)?images\.sbgenomics\.com'
 };
 
@@ -149,7 +149,8 @@ export const validationMessages = {
   },
   'amazonDockerRegistryPath': {
     'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
-    'pattern': 'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.'
+    'pattern': 'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character,' +
+    ' internal underscores, and internal hyphens.'
   },
   'sevenBridgesDockerRegistryPath': {
     'maxlength': 'Custom docker registry path is too long. (Max 256 characters.)',
