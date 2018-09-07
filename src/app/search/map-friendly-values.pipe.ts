@@ -40,6 +40,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'],
       ['NFL', 'Nextflow coming soon!']
     ])],
+    ['author', new Map([
+      ['', 'n/a']
+    ])],
   ]);
 
   /**
@@ -51,7 +54,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   transform(key: string, subBucket: string): string {
-    if (this.friendlyValueNames.has(key)) {
+    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucket.toString())) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {
       return subBucket;
