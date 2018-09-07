@@ -96,6 +96,8 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'javascript';
       } else if (filepath.endsWith('.xml')) {
         this.mode = 'xml';
+      } else if (filepath.endsWith('.pl')) {
+        this.mode = 'perl';
       } else {
         this.mode = 'text';
       }

@@ -43,6 +43,7 @@
               "node_modules/ace-builds/src-min-noconflict/mode-html.js",
               "node_modules/ace-builds/src-min-noconflict/mode-javascript.js",
               "node_modules/ace-builds/src-min-noconflict/mode-xml.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-perl.js",
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
