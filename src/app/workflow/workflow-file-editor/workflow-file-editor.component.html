@@ -19,7 +19,12 @@
     <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
   <tab heading="Test Parameter Files" id="testParameterFilesTab">
-    <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
+    <app-code-editor-list *ngIf="descriptorType !== 'nfl'" [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
+    <div class="alert alert-info" role="alert" *ngIf="descriptorType === 'nfl'">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;
+      Nextflow does not have the concept of a test parameter file.
+    </div>
   </tab>
 </tabset>
 <div class="editor-button-container" *ngIf="!publicPage && canWrite">

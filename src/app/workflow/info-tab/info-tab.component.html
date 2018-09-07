@@ -64,7 +64,7 @@
           </button>
         </div>
       </form>
-      <form #editTestFilePathForm="ngForm" class="form-inline">
+      <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="workflow?.descriptorType !== 'nfl'">
         <div class="form-group">
           <strong matTooltip="Path in Git repository to main descriptor file">Test File Path: </strong>
           <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
