@@ -138,7 +138,7 @@
       </tab>
       <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions && !isStub() && !isHosted()">
-          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [descriptorType]="workflow.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-files-workflow>
         </div>
         <div *ngIf="validVersions && isHosted()">

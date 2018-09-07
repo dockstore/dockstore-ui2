@@ -33,6 +33,7 @@ import { WorkflowService } from '../../shared/workflow.service';
 export class ParamfilesWorkflowComponent extends EntryFileSelector {
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() descriptorType: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.clearContent();
     this.onVersionChange(value);

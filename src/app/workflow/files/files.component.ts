@@ -28,6 +28,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 })
 export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: WorkflowVersion;
+  @Input() descriptorType: string;
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
