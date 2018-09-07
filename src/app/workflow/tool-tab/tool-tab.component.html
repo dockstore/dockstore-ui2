@@ -23,17 +23,17 @@
             <span class="glyphicon pull-right">
             </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'cwl'">
+          <th *ngIf="workflow?.descriptorType === 'cwl'">
             Tool Excerpt
             <span class="glyphicon pull-right">
             </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'wdl'">
+          <th *ngIf="workflow?.descriptorType === 'wdl'">
             Task Excerpt
             <span class="glyphicon pull-right">
             </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'nfl'">
+          <th *ngIf="workflow?.descriptorType === 'nfl'">
             Process Excerpt
             <span class="glyphicon pull-right">
             </span>
@@ -52,10 +52,10 @@
           </td>
         </tr>
         <tr *ngFor="let tool of toolsContent">
-          <td *ngIf="workflow.descriptorType === 'cwl'">
+          <td *ngIf="workflow?.descriptorType === 'cwl'">
             <strong>tool ID</strong>: {{tool?.id}}
           </td>
-          <td *ngIf="workflow.descriptorType === 'cwl'">
+          <td *ngIf="workflow?.descriptorType === 'cwl'">
             <strong>run</strong>: {{tool?.file}}
             <br>
             <strong>docker</strong>: {{tool?.docker}}
@@ -65,11 +65,11 @@
             <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
           </td>
 
-          <td *ngIf="workflow.descriptorType === 'wdl'">
+          <td *ngIf="workflow?.descriptorType === 'wdl'">
             <strong>task ID</strong>: {{tool?.id}}
             <br>
           </td>
-          <td *ngIf="workflow.descriptorType === 'wdl'">
+          <td *ngIf="workflow?.descriptorType === 'wdl'">
             <strong>docker</strong>: {{tool?.docker}}
             <br>
             <strong>link</strong>:
@@ -77,11 +77,11 @@
             <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
           </td>
 
-          <td *ngIf="workflow.descriptorType === 'nfl'">
+          <td *ngIf="workflow?.descriptorType === 'nfl'">
             <strong>process name</strong>: {{tool?.id}}
             <br>
           </td>
-          <td *ngIf="workflow.descriptorType === 'nfl'">
+          <td *ngIf="workflow?.descriptorType === 'nfl'">
             <strong>docker</strong>: {{tool?.docker}}
             <br>
             <strong>link</strong>:
