@@ -107,7 +107,7 @@ pip install -r requirements.txt
 \`\`\`
 Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
 
-3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/engine/installation/linux/ubuntulinux/).
+3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
 Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
 \`\`\`
