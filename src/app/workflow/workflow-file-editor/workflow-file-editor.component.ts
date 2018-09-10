@@ -21,6 +21,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
+    this.editing = false;
     this.clearSourceFiles();
     if (value != null) {
       this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);

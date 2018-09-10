@@ -21,6 +21,7 @@ export class ToolFileEditorComponent extends FileEditing {
   @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;
+      this.editing = false;
       this.clearSourceFiles();
       if (value != null) {
         this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
