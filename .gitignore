@@ -8,6 +8,7 @@
 !/src/app/shared/grammars/*.js
 src/app/shared/swagger/
 swagger-codegen-cli.jar
+documentation
 
 # dependencies
 /node_modules
