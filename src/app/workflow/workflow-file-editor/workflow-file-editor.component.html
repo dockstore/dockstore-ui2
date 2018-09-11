@@ -27,7 +27,7 @@
     </div>
   </tab>
 </tabset>
-<div class="editor-button-container" *ngIf="!publicPage && canWrite">
+<div class="editor-button-container" *ngIf="!publicPage && canWrite && isNewestVersion">
   <span *ngIf="!editing">
     <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
       Edit Files

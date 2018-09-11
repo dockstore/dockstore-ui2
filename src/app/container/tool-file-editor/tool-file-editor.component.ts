@@ -18,9 +18,12 @@ export class ToolFileEditorComponent extends FileEditing {
   originalSourceFiles = [];
   currentVersion: Tag;
   selectedDescriptorType = 'cwl';
+  isNewestVersion = false;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;
+      this.isNewestVersion = this.checkIfNewestVersion();
+      this.editing = false;
       this.clearSourceFiles();
       if (value != null) {
         this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
@@ -30,6 +33,14 @@ export class ToolFileEditorComponent extends FileEditing {
 
   constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService) {
     super();
+  }
+
+  checkIfNewestVersion(): boolean {
+    if (!this.versions || this.versions.length === 0) {
+      return true;
+    }
+    const mostRecentId = this.versions.reduce((max, n) => Math.max(max, n.id), this.versions[0].id);
+    return this.currentVersion.id === mostRecentId;
   }
 
   /**

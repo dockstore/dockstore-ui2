@@ -17,10 +17,13 @@ export class WorkflowFileEditorComponent extends FileEditing {
   testParameterFiles = [];
   originalSourceFiles = [];
   _selectedVersion: WorkflowVersion;
+  isNewestVersion = false;
   @Input() descriptorType: string;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
+    this.editing = false;
+    this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
       this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
@@ -30,6 +33,14 @@ export class WorkflowFileEditorComponent extends FileEditing {
   constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService) {
     super();
+  }
+
+  checkIfNewestVersion(): boolean {
+    if (!this.versions || this.versions.length === 0) {
+      return true;
+    }
+    const mostRecentId = this.versions.reduce((max, n) => Math.max(max, n.id), this.versions[0].id);
+    return this._selectedVersion.id === mostRecentId;
   }
 
   /**
