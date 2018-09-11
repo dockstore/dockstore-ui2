@@ -13,13 +13,13 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
-  <div class="col-md-12">
-    <span class="alert alert-warning col-md-12" role="alert" *ngIf="workflow?.descriptorType === 'nfl' && dagType === 'classic'">
-      <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;DAG display is still experimental for Nextflow.
-    </span>
-  </div>
+<div *ngIf="workflow?.descriptorType === 'nfl' && dagType === 'classic'">
+  <span class="alert alert-warning col-md-12" role="alert">
+    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;DAG display is still experimental for Nextflow.
+  </span>
+</div>
 
+<div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div [ngClass]="{'fullscreen-dropdown': expanded}">
       <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl' && workflow?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
