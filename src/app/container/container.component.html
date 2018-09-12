@@ -25,20 +25,18 @@
     </div>
   </div>
 </div>
-
 <div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.tags?.length === 0">
   <div class="alert alert-info" role="alert">
     <span class="glyphicon glyphicon-warning-sign"></span>
     Your manually added tool does not have any tags. Go to the versions tab to add one.
   </div>
 </div>
-
 <div class="row m-1">
   <ngx-json-ld [json]="schema"></ngx-json-ld>
   <div class="col-md-7">
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="tool?.versionVerified">
-        <a href= {{getVerifiedLink()}} class="verified-check">
+        <a [href]="verifiedLink" class="verified-check">
           <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
         </a>
       </span>
@@ -47,8 +45,7 @@
       </span>
       {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name }}</span>
     </h3>
-
-    <div *ngIf="!publicPage && tool?.tags.length > 0" >
+    <div *ngIf="!publicPage && tool?.tags.length > 0">
       <mat-form-field>
         <mat-select name="toolVersions" [(value)]="selectedVersion" (selectionChange)="onTagChange($event)">
           <mat-option *ngFor="let tag of tool.tags" [value]="tag">{{tag.name}}</mat-option>
@@ -88,14 +85,16 @@
     <h3>
       <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
-          <button id="publishToolButton" mat-flat-button color="accent" (click)="publish()" [(ngModel)]="published"
-            [disabled]="publishDisable()" btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
+          <button id="publishToolButton" mat-flat-button color="accent" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable()"
+            btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
-          <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool" class="mr-2">
+          <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool"
+            class="mr-2">
             Delete
           </button>
-          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Sync the tool with the Docker image repository, etc" class="mr-2">
+          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Sync the tool with the Docker image repository, etc"
+            class="mr-2">
             Refresh
           </button>
           <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
@@ -114,26 +113,21 @@
         </button>
       </mat-chip-list>
     </span>
-
     <span *ngIf="labelsEditMode && !isToolPublic">
       <mat-form-field style="width: 100%;">
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true"
-           (removed)="removeLabel(label)">
+          <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
             {{label}}
             <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="New label..."
-                 [matChipInputFor]="chipList"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="true"
-                 (matChipInputTokenEnd)="addToLabels($event)"/>
+          <input placeholder="New label..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addToLabels($event)" />
         </mat-chip-list>
       </mat-form-field>
-      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
-         <span class="glyphicon glyphicon-remove"></span> Cancel
+      <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+        <span class="glyphicon glyphicon-remove"></span> Cancel
       </button>
-      <button type="button"(click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+      <button type="button" (click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
         <span class="glyphicon glyphicon-floppy-save"></span>Save
       </button>
     </span>
@@ -141,34 +135,38 @@
 </div>
 <div class="row m-1" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
-    <mat-tab-group [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs (selectedTabChange)="selectedTab($event)">
+    <mat-tab-group [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs (selectedTabChange)="selectedTabChange($event)">
       <mat-tab id="infoTab" label="Info">
         <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [tool]="tool" [validVersions]="validVersions"></app-info-tab>
         <hr *ngIf="publicPage">
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </mat-tab>
       <mat-tab id="launchTab" label="Launch">
-        <app-launch *ngIf="tool?.tags.length > 0" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname"></app-launch>
+        <app-launch *ngIf="tool?.tags.length > 0" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path"
+          [toolname]="tool?.toolname"></app-launch>
       </mat-tab>
       <mat-tab id="versionTab" label="Versions">
         <div *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
+          <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab"
+            [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
           </app-versions-container>
         </div>
       </mat-tab>
       <mat-tab label="Files">
         <ng-template matTabContent>
-        <div *ngIf="validVersions">
-          <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
-            </app-files-container>
+          <div *ngIf="validVersions">
+            <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+              <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion"
+                [selectedVersion]="selectedVersion">
+              </app-files-container>
+            </div>
+            <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+              <app-tool-file-editor *ngIf="currentTab === 'files'" [entrypath]="tool.tool_path" [id]="tool?.id" [versions]="validVersions"
+                [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+              </app-tool-file-editor>
+            </div>
           </div>
-          <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-            <app-tool-file-editor *ngIf="currentTab === 'files'" [entrypath]="tool.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
-            </app-tool-file-editor>
-          </div>
-        </div>
-      </ng-template>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
   </div>
@@ -182,7 +180,7 @@
           <span *ngFor="let sortedVersion of sortedVersions">
             <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                <a href= {{getVerifiedLink()}} class="verified-check">
+                <a [href]="verifiedLink" class="verified-check">
                   <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
                 </a>
               </span>
@@ -203,8 +201,8 @@
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
           <span class="input-group-btn">
-            <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
-              (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
+            <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard
+              [cbContent]="dockerPullCmd" (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
               <span class="glyphicon glyphicon-copy"></span>
             </button>
           </span>
@@ -252,8 +250,8 @@
       </div>
       <div class="panel-body">
         <div class="container-sharing">
-          <share-buttons class="withCount" [url]="shareURL" [google]="false" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true"
-            (count)="sumCounts($event)">
+          <share-buttons class="withCount" [url]="shareURL" [google]="false" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false"
+            [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
           </share-buttons>
         </div>
       </div>

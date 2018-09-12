@@ -18,7 +18,7 @@ import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/'
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription ,  Subject } from 'rxjs';
 import { Location } from '@angular/common';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -55,6 +55,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public urlVersion;
   selected = new FormControl(0);
   location: Location;
+  public verifiedLink: string;
   public selectedVersion: (WorkflowVersion | Tag | null) = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
@@ -86,6 +87,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
+    this.verifiedLink = this.getVerifiedLink();
+  }
+
+  selectedTabChange(tabChangeEvent: MatTabChangeEvent): void {
+    this.selected.setValue(tabChangeEvent.index);
+    this.setEntryTab(tabChangeEvent.tab.textLabel.toLowerCase());
   }
 
   private parseURL(url: String): void {

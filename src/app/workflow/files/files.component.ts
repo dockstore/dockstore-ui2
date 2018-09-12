@@ -13,11 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 

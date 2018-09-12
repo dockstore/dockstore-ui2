@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 
@@ -351,11 +351,6 @@ export class WorkflowComponent extends Entry {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
       this.providerService.setUpProvider(this.workflow);
     }
-  }
-
-  selectedTab(tabChangeEvent: MatTabChangeEvent): void {
-    this.selected.setValue(tabChangeEvent.index);
-    this.setEntryTab(tabChangeEvent.tab.textLabel.toLowerCase());
   }
 
   setEntryTab(tabName: string): void {

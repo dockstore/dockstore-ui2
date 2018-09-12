@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
@@ -26,6 +26,7 @@ import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 import { Tag } from '../shared/swagger/model/tag';
@@ -36,11 +37,10 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
 import { RefreshService } from './../shared/refresh.service';
 import { StateService } from './../shared/state.service';
 import { ContainersService } from './../shared/swagger/api/containers.service';
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
 
 @Component({
   selector: 'app-container',
@@ -307,11 +307,6 @@ export class ContainerComponent extends Entry {
       this.providerService.setUpProvider(this.tool);
     }
     this.onTagChange(tag);
-  }
-
-  selectedTab(tabChangeEvent: MatTabChangeEvent): void {
-    this.selected.setValue(tabChangeEvent.index);
-    this.setEntryTab(tabChangeEvent.tab.textLabel.toLowerCase());
   }
 
   setEntryTab(tabName: string): void {
