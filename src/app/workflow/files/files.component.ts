@@ -26,26 +26,10 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
-export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
+export class FilesWorkflowComponent extends Files {
   @Input() selectedVersion: WorkflowVersion;
   @Input() descriptorType: string;
-  versionsWithParamfiles: Array<any>;
-  previousEntryPath: string;
-  previousVersionName: string;
-  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
+  constructor() {
     super();
-  }
-
-  ngOnInit() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-  }
-  ngOnChanges() {
-    // Change detection is messed up because of permissions changing
-    if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
-      this.gA4GHFilesStateService.update(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name);
-      this.previousEntryPath = this.entrypath;
-      this.previousVersionName = this.selectedVersion.name;
-    }
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }

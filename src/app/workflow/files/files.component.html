@@ -13,15 +13,18 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <mat-tab-group mat-stretch-tabs>
   <mat-tab label="Descriptor Files">
-    <app-descriptors-workflow [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
-    </app-descriptors-workflow>
+      <ng-template matTabContent>
+      <app-descriptors-workflow [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
+      </app-descriptors-workflow>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Test Parameter Files">
-    <app-paramfiles-workflow [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [descriptorType]="descriptorType">
-    </app-paramfiles-workflow>
+    <ng-template matTabContent>
+      <app-paramfiles-workflow [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [descriptorType]="descriptorType">
+      </app-paramfiles-workflow>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>
 <div *ngIf="!versions">

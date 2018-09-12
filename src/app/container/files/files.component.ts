@@ -38,7 +38,6 @@ export class FilesContainerComponent extends Files implements OnInit, OnChanges 
     if (!this.selectedVersion) {
       this.gA4GHFilesStateService.clearFiles();
     } else {
-      this.gA4GHFilesStateService.update(this.entrypath, this.selectedVersion.name);
       this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
     }
   }

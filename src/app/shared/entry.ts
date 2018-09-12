@@ -31,6 +31,7 @@ import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 import { takeUntil } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -52,6 +53,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public validTabs;
   public currentTab = 'info';
   public urlVersion;
+  selected = new FormControl(0);
   location: Location;
   public selectedVersion: (WorkflowVersion | Tag | null) = null;
   @Input() isWorkflowPublic = true;
@@ -228,7 +230,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @returns {void}
    */
   selectTab(tabIndex: number): void {
-    this.entryTabs.tabs[tabIndex].active = true;
+    this.selected.setValue(tabIndex);
   }
 
   /**
