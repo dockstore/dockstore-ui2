@@ -17,7 +17,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
@@ -40,6 +40,7 @@ import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
 
 @Component({
   selector: 'app-container',
@@ -64,7 +65,7 @@ export class ContainerComponent extends Entry {
   unpublishMessage = 'Unpublish the tool to remove it from the public';
   pubUnpubMessage: string;
 
-  constructor(private dockstoreService: DockstoreService,
+  constructor(private dockstoreService: DockstoreService, private ga4ghFilesStateService: GA4GHFilesStateService,
     dateService: DateService,
     urlResolverService: UrlResolverService,
     private imageProviderService: ImageProviderService,
@@ -108,6 +109,7 @@ export class ContainerComponent extends Entry {
     if (this.selectedVersion === null) {
       this.dockerPullCmd = null;
     } else {
+      this.ga4ghFilesStateService.update(this.tool.tool_path, this.selectedVersion.name);
       this.dockerPullCmd = this.listContainersService.getDockerPullCmd(this.tool.tool_path, this.selectedVersion.name);
     }
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
@@ -300,10 +302,16 @@ export class ContainerComponent extends Entry {
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
     if (this.tool != null) {
+      this.ga4ghFilesStateService.update(this.tool.tool_path, tag.name);
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
       this.providerService.setUpProvider(this.tool);
     }
     this.onTagChange(tag);
+  }
+
+  selectedTab(tabChangeEvent: MatTabChangeEvent): void {
+    this.selected.setValue(tabChangeEvent.index);
+    this.setEntryTab(tabChangeEvent.tab.textLabel.toLowerCase());
   }
 
   setEntryTab(tabName: string): void {
