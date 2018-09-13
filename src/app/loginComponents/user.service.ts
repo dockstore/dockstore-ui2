@@ -43,7 +43,8 @@ export class UserService {
   }
 
   updateUser() {
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    const token = this.authService.getToken();
+    this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
     this.usersService.getUser().subscribe(
       (user: User) => this.setUser(user),
       error => {
