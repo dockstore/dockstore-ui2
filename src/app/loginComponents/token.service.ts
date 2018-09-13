@@ -36,7 +36,8 @@ export class TokenService {
       }
     });
     this.hasSourceControlToken$ = this.tokens$.pipe(map(tokens => this.hasSourceControlToken(tokens)));
-    this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+    const token = this.authService.getToken();
+    this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
     this.tokens$.subscribe(tokens => this.tokens = tokens);
   }
 
