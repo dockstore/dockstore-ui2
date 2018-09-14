@@ -63,8 +63,12 @@ export class GA4GHFilesStateService {
    * @memberof GA4GHFilesStateService
    */
   public injectAuthorizationToken(ga4ghService: GA4GHService) {
-    ga4ghService.defaultHeaders = ga4ghService.defaultHeaders.set('Authorization',
-      ga4ghService.configuration.apiKeys['Authorization']);
+    const auth = ga4ghService.configuration.apiKeys['Authorization'];
+    if (auth) {
+      ga4ghService.defaultHeaders = ga4ghService.defaultHeaders.set('Authorization', auth);
+    } else {
+      ga4ghService.defaultHeaders = ga4ghService.defaultHeaders.delete('Authorization');
+    }
   }
 
   update(id: string, version: string) {

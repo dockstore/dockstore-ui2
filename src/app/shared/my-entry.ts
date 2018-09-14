@@ -87,7 +87,8 @@ export abstract class MyEntry implements OnDestroy {
 
     commonMyEntriesOnInit(): void {
         localStorage.setItem('page', this.pageName);
-        this.configuration.apiKeys['Authorization'] = 'Bearer ' + this.authService.getToken();
+      const token = this.authService.getToken();
+      this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
         this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     }
 
