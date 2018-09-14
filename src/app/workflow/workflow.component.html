@@ -159,7 +159,7 @@
       </tab>
       <tab id="dagTab" heading="DAG" (select)="setEntryTab('dag')">
         <div *ngIf="validVersions && !isStub() && currentTab == 'dag'">
-          <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
+          <app-dag [id]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
