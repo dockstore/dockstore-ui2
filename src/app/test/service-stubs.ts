@@ -594,6 +594,9 @@ export class DateStubService {
 }
 
 export class WorkflowsStubService {
+    getTableToolContent(workflowId: number, workflowVersionId: number, observe?: 'body', reportProgress?: boolean): Observable<string> {
+      return observableOf('tableToolContentString');
+    }
     sharedWorkflows() {
       return observableOf([]);
     }
