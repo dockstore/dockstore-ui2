@@ -18,7 +18,7 @@ import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/'
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subscription ,  Subject } from 'rxjs';
 import { Location } from '@angular/common';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -31,6 +31,7 @@ import { StateService } from './state.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 import { takeUntil } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -52,7 +53,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public validTabs;
   public currentTab = 'info';
   public urlVersion;
+  selected = new FormControl(0);
   location: Location;
+  public verifiedLink: string;
   public selectedVersion: (WorkflowVersion | Tag | null) = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
@@ -84,6 +87,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
     this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
+    this.verifiedLink = this.getVerifiedLink();
+  }
+
+  selectedTabChange(tabChangeEvent: MatTabChangeEvent): void {
+    this.selected.setValue(tabChangeEvent.index);
+    this.setEntryTab(tabChangeEvent.tab.textLabel.toLowerCase());
   }
 
   private parseURL(url: String): void {
@@ -228,7 +237,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @returns {void}
    */
   selectTab(tabIndex: number): void {
-    this.entryTabs.tabs[tabIndex].active = true;
+    this.selected.setValue(tabIndex);
   }
 
   /**

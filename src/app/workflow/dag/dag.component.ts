@@ -13,7 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
@@ -31,10 +33,11 @@ declare var window: any;
   styleUrls: ['./dag.component.scss'],
   providers: [DagService]
 })
-export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
+export class DagComponent extends EntryTab implements OnInit, AfterViewChecked, OnDestroy {
   @Input() validVersions: Array<WorkflowVersion>;
   @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
+  private ngUnsubscribe: Subject<{}> = new Subject();
 
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -50,6 +53,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
 
   public expanded: Boolean = false;
   @ViewChild('cy') el: ElementRef;
+  @ViewChild('exportLink') exportLink: ElementRef;
   private style;
   public workflow: Workflow;
   private tooltip: string;
@@ -80,7 +84,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
   refreshDocument() {
     const self = this;
     if (this.dagResult) {
-      this.element = document.getElementById('cy');
+      this.element = this.el.nativeElement;
       this.cy = cytoscape({
         container: this.element,
         boxSelectionEnabled: false,
@@ -184,7 +188,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
     this.style = this.dagService.style;
     this.missingTool = false;
   }
@@ -201,11 +205,17 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
     }
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   download() {
     if (this.cy) {
       const pngDAG = this.cy.png({ full: true, scale: 2 });
       const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
-      $('#exportLink').attr('href', pngDAG).attr('download', name);
+      this.exportLink.nativeElement.setAttribute('href', pngDAG);
+      this.exportLink.nativeElement.setAttribute('download', name);
     }
   }
   ngAfterViewChecked() {
@@ -222,7 +232,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
   }
 
   getDag(versionId: number) {
-    this.dagService.getCurrentDAG(this.id, versionId).subscribe(result => {
+    this.dagService.getCurrentDAG(this.id, versionId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.handleDagResponse(result);
     }, error => {
       this.handleDagResponse(null);

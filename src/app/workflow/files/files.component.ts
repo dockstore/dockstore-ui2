@@ -13,11 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
@@ -26,26 +23,10 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
-export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
+export class FilesWorkflowComponent extends Files {
   @Input() selectedVersion: WorkflowVersion;
   @Input() descriptorType: string;
-  versionsWithParamfiles: Array<any>;
-  previousEntryPath: string;
-  previousVersionName: string;
-  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
+  constructor() {
     super();
-  }
-
-  ngOnInit() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-  }
-  ngOnChanges() {
-    // Change detection is messed up because of permissions changing
-    if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
-      this.gA4GHFilesStateService.update(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name);
-      this.previousEntryPath = this.entrypath;
-      this.previousVersionName = this.selectedVersion.name;
-    }
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }

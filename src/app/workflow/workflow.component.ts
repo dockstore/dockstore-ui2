@@ -190,6 +190,9 @@ export class WorkflowComponent extends Entry {
           this.setPublishMessage();
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion);
+            if (this.selectedVersion) {
+              this.ga4ghFilesStateService.update(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name);
+            }
         }
         this.setUpWorkflow(workflow);
       }
@@ -346,6 +349,7 @@ export class WorkflowComponent extends Entry {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
     if (this.workflow != null) {
+      this.ga4ghFilesStateService.update(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, version.name);
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
       this.providerService.setUpProvider(this.workflow);
     }

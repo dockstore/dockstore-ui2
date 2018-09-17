@@ -13,33 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
 import { Tag } from '../../shared/swagger/model/tag';
-import { ParamfilesService } from '../paramfiles/paramfiles.service';
 
 @Component({
   selector: 'app-files-container',
   templateUrl: './files.component.html'
 })
-export class FilesContainerComponent extends Files implements OnInit, OnChanges {
+export class FilesContainerComponent extends Files {
   @Input() selectedVersion: Tag;
-  versionsWithParamfiles: Array<any>;
-  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
+  constructor() {
     super();
-  }
-
-  ngOnInit() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-  }
-  ngOnChanges() {
-    if (!this.selectedVersion) {
-      this.gA4GHFilesStateService.clearFiles();
-    } else {
-      this.gA4GHFilesStateService.update(this.entrypath, this.selectedVersion.name);
-      this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-    }
   }
 }
