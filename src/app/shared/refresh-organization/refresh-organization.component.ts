@@ -22,6 +22,7 @@ import { Component, OnInit, Input } from '@angular/core';
 @Injectable()
 export class RefreshOrganizationComponent implements OnInit {
   protected userId: number;
+  buttonText: string;
   @Input() protected organization: string;
   protected refreshMessage: string;
   constructor(private userService: UserService, protected stateService: StateService) {

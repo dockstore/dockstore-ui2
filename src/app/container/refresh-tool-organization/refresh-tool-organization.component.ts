@@ -31,10 +31,10 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
-
   constructor(userService: UserService, public stateService: StateService, private usersService: UsersService,
     private containerService: ContainerService, private refreshService: RefreshService) {
     super(userService, stateService);
+    this.buttonText = 'Refresh Namespace';
   }
 
   refreshOrganization(): void {

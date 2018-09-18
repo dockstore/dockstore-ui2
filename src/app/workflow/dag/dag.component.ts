@@ -32,8 +32,6 @@ declare var window: any;
   providers: [DagService]
 })
 export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
-  @Input() validVersions: Array<WorkflowVersion>;
-  @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
 
   _selectedVersion: WorkflowVersion;
