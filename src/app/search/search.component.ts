@@ -1,4 +1,3 @@
-import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,28 +13,31 @@ import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router/';
 import { HttpClient } from '@angular/common/http';
-import { Dockstore } from './../shared/dockstore.model';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatAccordion } from '@angular/material';
+import { Router } from '@angular/router/';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
+import { formInputDebounceTime } from '../shared/constants';
+import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { ProviderService } from '../shared/provider.service';
-import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchService } from './search.service';
-import { MatAccordion } from '@angular/material';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
   private routeSub: Subscription;
@@ -108,6 +110,7 @@ export class SearchComponent implements OnInit {
    * @type {string}
    */
   public values = '';
+  private values$: Subject<string> = new Subject();
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -128,6 +131,11 @@ export class SearchComponent implements OnInit {
     return Array.from(map.keys());
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   ngOnInit() {
     this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
       if (toSaveSearch) {
@@ -141,6 +149,12 @@ export class SearchComponent implements OnInit {
         this.tagClicked();
       }
     });
+    this.values$.pipe(
+      debounceTime(formInputDebounceTime),
+      distinctUntilChanged(),
+      takeUntil(this.ngUnsubscribe)).subscribe((value: string) => {
+        this.onKey();
+      });
     this.hits = [];
     this.curURL = this.router.url;
     this.advancedSearchObject = {
@@ -463,6 +477,10 @@ export class SearchComponent implements OnInit {
    *                Event Functions
    * ==============================================
    */
+  onInputChange(event) {
+    this.values$.next(event);
+  }
+
   onKey() {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = this.values + '.*';

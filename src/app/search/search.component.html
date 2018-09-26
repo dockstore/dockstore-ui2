@@ -32,7 +32,7 @@
           </mat-expansion-panel-header>
           <input matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
                   type="text" list="suggestions" class="search-box form-control w-100 mb-3" [(ngModel)]="values"
-                  (ngModelChange)="onKey()" placeholder="Enter search term" />
+                  (ngModelChange)="onInputChange($event)" placeholder="Enter search term" />
           <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
             <div *ngFor="let term of autocompleteTerms">
               <option [value]="term">
