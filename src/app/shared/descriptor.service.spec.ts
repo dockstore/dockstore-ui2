@@ -67,6 +67,6 @@ describe('DescriptorService', () => {
             'cwl_path': '/Dockstore.cwl',
             'wdl_path': '/Dockstore.wdl'
         };
-        expect(service.getDescriptors(sampleVersion)).toEqual(['cwl', 'wdl']);
+        expect(service.getAllDescriptors(sampleVersion)).toEqual(['cwl', 'wdl']);
     }));
 });

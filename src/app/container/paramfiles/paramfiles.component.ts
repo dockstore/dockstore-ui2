@@ -49,7 +49,8 @@ export class ParamfilesComponent extends EntryFileSelector {
     super(fileService, gA4GHFilesStateService, gA4GHService);
     this.published$ = this.containerService.toolIsPublished$;
   }
-  getDescriptors(version): Array<any> {
+
+  getAllDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 

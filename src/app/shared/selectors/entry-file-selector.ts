@@ -41,7 +41,7 @@ export abstract class EntryFileSelector {
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
 
-  abstract getDescriptors(version): Array<any>;
+  abstract getAllDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
   constructor(protected fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
@@ -53,7 +53,7 @@ export abstract class EntryFileSelector {
   }
 
   reactToVersion(): void {
-    this.descriptors = this.getDescriptors(this._selectedVersion);
+    this.descriptors = this.getAllDescriptors(this._selectedVersion);
     if (this.descriptors) {
       this.nullDescriptors = false;
       if (this.descriptors.length) {

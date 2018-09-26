@@ -14,9 +14,10 @@
   ~    limitations under the License.
   -->
 <div>
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
+  <alert *ngIf="!_selectedVersion?.valid && content" type="warning">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;This version of the workflow is invalid.
+    <div *ngIf="_selectedVersion?.validationMessage" class="well mt-2">{{ _selectedVersion.validationMessage }}</div>
   </alert>
   <alert type="warning" *ngIf="!content && descriptorType !== 'nfl'">
     <span class="glyphicon glyphicon-warning-sign"></span>

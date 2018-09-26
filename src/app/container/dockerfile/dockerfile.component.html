@@ -20,15 +20,11 @@
   </alert>
 </div>
 <div *ngIf="_selectedVersion">
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;This version of the tool is invalid.
-  </alert>
   <alert type="warning" *ngIf="!content">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;A Dockerfile associated with this Docker container could not be found.
   </alert>
-  <div [hidden]="!content || !_selectedVersion?.valid">
+  <div [hidden]="!content">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
         <span>{{filePath}}</span>

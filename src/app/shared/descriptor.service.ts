@@ -76,7 +76,7 @@ export abstract class DescriptorService {
      * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
      * @memberof DescriptorService
      */
-    getDescriptors(version) {
+    getAllDescriptors(version) {
         if (version) {
             const descriptorTypes = [];
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
@@ -92,4 +92,21 @@ export abstract class DescriptorService {
             return descriptorTypes;
         }
     }
+
+    getValidDescriptors(version) {
+      if (version) {
+          const descriptorTypes = [];
+          const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
+          unique.forEach(element => {
+              if (element === SourceFile.TypeEnum.DOCKSTORECWL && version.cwlValidationMessage !== null) {
+                  descriptorTypes.push('cwl');
+              } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL && version.wdlValidationMessage !== null) {
+                  descriptorTypes.push('wdl');
+              } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
+                  descriptorTypes.push('nfl');
+              }
+          });
+          return descriptorTypes;
+      }
+  }
 }

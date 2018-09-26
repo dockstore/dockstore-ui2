@@ -47,7 +47,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     super(fileService, gA4GHFilesStateService, gA4GHService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
-  getDescriptors(version): Array<any> {
+  getAllDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 

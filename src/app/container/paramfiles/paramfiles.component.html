@@ -20,10 +20,20 @@
   </alert>
 </div>
 <div *ngIf="_selectedVersion">
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;This version of the tool is invalid.
-  </alert>
+    <alert *ngIf="_selectedVersion?.wdlValidationMessage && currentDescriptor === 'wdl'" type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;This version of the tool has an invalid WDL descriptor or test parameter file.
+      <div *ngIf="_selectedVersion?.wdlValidationMessage" class="well mt-2">{{ _selectedVersion.wdlValidationMessage }}</div>
+    </alert>
+    <alert *ngIf="_selectedVersion?.cwlValidationMessage && currentDescriptor === 'cwl'" type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;This version of the tool has an invalid CWL descriptor or test parameter file.
+      <div *ngIf="_selectedVersion?.cwlValidationMessage" class="well mt-2">{{ _selectedVersion.cwlValidationMessage }}</div>
+    </alert>
+    <alert type="warning" *ngIf="!content">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
+    </alert>
   <div *ngIf="content">
     <span class="row m-0">
       <span class="col-sm-4">
@@ -31,11 +41,7 @@
       </span>
     </span>
   </div>
-  <alert type="warning" *ngIf="!content">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
-  </alert>
-  <div [hidden]="!content || !_selectedVersion?.valid">
+  <div [hidden]="!content">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
         <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
