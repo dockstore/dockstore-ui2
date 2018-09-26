@@ -155,7 +155,7 @@
       <tab heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions">
           <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion">
+            <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
             </app-files-container>
           </div>
           <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">

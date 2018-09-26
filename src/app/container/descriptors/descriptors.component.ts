@@ -37,7 +37,7 @@ export class DescriptorsComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
-
+  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
@@ -54,6 +54,10 @@ export class DescriptorsComponent extends EntryFileSelector {
 
   getAllDescriptors(version): Array<any> {
     return this.descriptorsService.getAllDescriptors(this._selectedVersion);
+  }
+
+  getValidDescriptors(version): Array<any> {
+    return this.descriptorsService.getValidDescriptors(this._selectedVersion);
   }
 
   /**

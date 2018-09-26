@@ -51,6 +51,10 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
+  getValidDescriptors(version): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
+  }
+
   /**
    * Get all the test parameter files
    *

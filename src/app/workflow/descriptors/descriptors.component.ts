@@ -50,6 +50,10 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     return this.workflowDescriptorService.getAllDescriptors(this._selectedVersion);
   }
 
+  getValidDescriptors(version): Array<any> {
+    return this.workflowDescriptorService.getValidDescriptors(this._selectedVersion);
+  }
+
   /**
    * Get all the primary or secondary descriptors
    *

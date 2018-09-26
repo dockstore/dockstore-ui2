@@ -36,6 +36,7 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
@@ -52,6 +53,10 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   getAllDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
+  }
+
+  getValidDescriptors(version): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
   }
 
   /**

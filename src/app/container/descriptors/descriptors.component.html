@@ -20,20 +20,23 @@
   </alert>
 </div>
 <div *ngIf="_selectedVersion">
-  <alert *ngIf="_selectedVersion?.wdlValidationMessage && currentDescriptor === 'wdl'" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;This version of the tool has an invalid WDL descriptor or test parameter file.
-    <div *ngIf="_selectedVersion?.wdlValidationMessage" class="well mt-2">{{ _selectedVersion.wdlValidationMessage }}</div>
-  </alert>
-  <alert *ngIf="_selectedVersion?.cwlValidationMessage && currentDescriptor === 'cwl'" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;This version of the tool has an invalid CWL descriptor or test parameter file.
-    <div *ngIf="_selectedVersion?.cwlValidationMessage" class="well mt-2">{{ _selectedVersion.cwlValidationMessage }}</div>
-  </alert>
+  <span *ngIf="!publicPage">
+    <alert *ngIf="_selectedVersion?.wdlValidationMessage && currentDescriptor === 'wdl'" type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;This version of the tool has an invalid WDL descriptor or test parameter file.
+      <div *ngIf="_selectedVersion?.wdlValidationMessage" class="well mt-2">{{ _selectedVersion.wdlValidationMessage }}</div>
+    </alert>
+    <alert *ngIf="_selectedVersion?.cwlValidationMessage && currentDescriptor === 'cwl'" type="warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp;This version of the tool has an invalid CWL descriptor or test parameter file.
+      <div *ngIf="_selectedVersion?.cwlValidationMessage" class="well mt-2">{{ _selectedVersion.cwlValidationMessage }}</div>
+    </alert>
+  </span>
   <div *ngIf="content">
     <span class="row m-0">
       <span class="col-sm-4">
-        <app-select [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+        <app-select *ngIf="!publicPage" [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
+        <app-select *ngIf="publicPage" [placeholder]="'Descriptor Type'" [items]="validDescriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event)"></app-select>
       </span>
     </span>
   </div>

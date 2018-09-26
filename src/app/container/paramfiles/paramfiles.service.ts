@@ -54,6 +54,29 @@ export class ParamfilesService {
     return descriptorsWithParamfiles;
   }
 
+  /**
+   * Gets the descriptor types (cwl/wdl/nfl) which have test parameter files and that is valid
+   * @param {any} version the current selected version of the workflow or tool
+   * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
+   * @memberof DescriptorService
+   */
+    getValidDescriptors(version) {
+      const descriptorsWithParamfiles = [];
+      if (version) {
+        for (const file of version.sourceFiles) {
+          const type = file.type;
+          if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl') && version.cwlValidationMessage === null) {
+            descriptorsWithParamfiles.push('cwl');
+          } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl') && version.wdlValidationMessage === null) {
+            descriptorsWithParamfiles.push('wdl');
+          } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes('nfl')) {
+            descriptorsWithParamfiles.push('nfl');
+          }
+        }
+      }
+      return descriptorsWithParamfiles;
+    }
+
   // get versions which have test parameter files
   getVersions(versions) {
     const versionsWithParamfiles = [];

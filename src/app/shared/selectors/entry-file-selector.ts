@@ -29,6 +29,7 @@ export abstract class EntryFileSelector {
 
   protected currentDescriptor;
   protected descriptors: Array<any>;
+  protected validDescriptors: Array<any>;
   public nullDescriptors: boolean;
   public filePath: string;
   public currentFile;
@@ -42,6 +43,7 @@ export abstract class EntryFileSelector {
   content: string = null;
 
   abstract getAllDescriptors(version): Array<any>;
+  abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
   constructor(protected fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
@@ -54,10 +56,15 @@ export abstract class EntryFileSelector {
 
   reactToVersion(): void {
     this.descriptors = this.getAllDescriptors(this._selectedVersion);
+    this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
     if (this.descriptors) {
       this.nullDescriptors = false;
       if (this.descriptors.length) {
-        this.onDescriptorChange(this.descriptors[0]);
+        if (this.validDescriptors && this.validDescriptors.length) {
+          this.onDescriptorChange(this.validDescriptors[0]);
+        } else {
+          this.onDescriptorChange(this.descriptors[0]);
+        }
       }
     } else {
       this.nullDescriptors = true;
