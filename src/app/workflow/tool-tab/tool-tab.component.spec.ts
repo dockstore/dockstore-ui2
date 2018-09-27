@@ -49,4 +49,13 @@ describe('ToolTabComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should update table tool content', () => {
+    component.updateTableToolContent(1, null);
+    expect(component.toolsContent).toBe(null);
+    component.updateTableToolContent(null, 1);
+    expect(component.toolsContent).toBe(null);
+    component.updateTableToolContent(1, 1);
+    expect(component.toolsContent).toBe('tableToolContentString');
+  });
 });

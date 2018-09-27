@@ -160,22 +160,24 @@ export class WorkflowComponent extends Entry {
       }
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
-      this.workflowsService.getWorkflowActions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((actions: Array<string>) => {
-          // Alas, Swagger codegen does not generate a type for the actions
-          this.canRead = actions.indexOf('READ') !== -1;
-          this.canWrite = actions.indexOf('WRITE') !== -1;
-          this.isOwner = actions.indexOf('SHARE') !== -1;
-          // TODO: when expanding permissions beyond hosted workflows, this component will need to tolerate a 401
-          // for users that are not on FireCloud
-          if (this.isOwner && this.isHosted()) {
-            this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
-              .subscribe((userPermissions: Permission[]) => {
-                this.processPermissions(userPermissions);
-              }
-            );
-          }
-        });
+      if (!this.isPublic()) {
+        this.workflowsService.getWorkflowActions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((actions: Array<string>) => {
+            // Alas, Swagger codegen does not generate a type for the actions
+            this.canRead = actions.indexOf('READ') !== -1;
+            this.canWrite = actions.indexOf('WRITE') !== -1;
+            this.isOwner = actions.indexOf('SHARE') !== -1;
+            // TODO: when expanding permissions beyond hosted workflows, this component will need to tolerate a 401
+            // for users that are not on FireCloud
+            if (this.isOwner && this.isHosted()) {
+              this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe((userPermissions: Permission[]) => {
+                    this.processPermissions(userPermissions);
+                  }
+                );
+            }
+          });
+      }
     }
   }
 

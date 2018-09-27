@@ -29,7 +29,6 @@
 
   <div *ngIf="showSecondRow" class="row text-center">
     <h5 style="color:#21335B">Works With</h5><br />
-    <div class="col-lg-1 col-sm-12"></div>
     <div *ngFor="let partner of partners" class="col-md-3 col-sm-6 sponsor-row">
       <a href="{{partner.url}}" target="_blank">
         <img [src]="partner.current" class="img-responsive center-image"
