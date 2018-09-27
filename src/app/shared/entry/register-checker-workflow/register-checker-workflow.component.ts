@@ -30,7 +30,6 @@ import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
 @Component({
-  selector: 'app-register-checker-workflow',
   templateUrl: './register-checker-workflow.component.html',
   styleUrls: ['./register-checker-workflow.component.scss']
 })
@@ -70,7 +69,6 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
       this.registerError = error;
     });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
-    this.isModalShown$ = this.registerCheckerWorkflowService.isModalShown$;
     this.syncTestJson = false;
     this.refreshMessage$ = this.registerCheckerWorkflowService.refreshMessage$;
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
@@ -109,10 +107,6 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
         }
       }
     }
-  }
-
-  hideModal(): void {
-    this.registerCheckerWorkflowService.isModalShown$.next(false);
   }
 
   registerCheckerWorkflow(): void {

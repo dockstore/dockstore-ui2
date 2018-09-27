@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
@@ -30,14 +31,14 @@ import { WorkflowService } from './../../workflow.service';
 @Injectable()
 export class RegisterCheckerWorkflowService {
 
-    public isModalShown$ = new BehaviorSubject<boolean>(false);
     public refreshMessage$ = new BehaviorSubject<string>(null);
     public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
     public errorObj$: Observable<any>;
     public entryId$: Observable<number>;
     public entryId: number;
     constructor(private stateService: StateService, private errorService: ErrorService, private workflowsService: WorkflowsService,
-        private containerService: ContainerService, private workflowService: WorkflowService, private refreshService: RefreshService) {
+        private containerService: ContainerService, private workflowService: WorkflowService, private refreshService: RefreshService,
+        public matDialog: MatDialog) {
         this.refreshMessage$ = this.stateService.refreshMessage$;
         this.errorObj$ = this.errorService.errorObj$;
         this.entryId$ = observableMerge(this.containerService.toolId$, this.workflowService.workflowId$).pipe(filter(x => x != null));
@@ -65,9 +66,9 @@ export class RegisterCheckerWorkflowService {
                     const refreshCheckerMessage = 'Refreshing checker workflow';
                     this.stateService.setRefreshMessage(refreshCheckerMessage);
                     this.workflowsService.refresh(entry.checker_id).pipe(first()).subscribe((workflow: Workflow) => {
-                        this.isModalShown$.next(false);
                         this.workflowService.upsertWorkflowToWorkflow(workflow);
                         this.refreshService.handleSuccess(refreshCheckerMessage);
+                        this.matDialog.closeAll();
                     }, error => {
                       this.refreshService.handleError(refreshCheckerMessage, error);
                     });
@@ -79,20 +80,10 @@ export class RegisterCheckerWorkflowService {
 
     add(): void {
         this.mode$.next('add');
-        this.showModal();
-        // Placeholder for endpoint
     }
 
     delete(): void {
         // Placeholder for endpoint
-    }
-
-    showModal(): void {
-        this.isModalShown$.next(true);
-    }
-
-    hideModal(): void {
-        this.isModalShown$.next(false);
     }
 
     clearError(): void {

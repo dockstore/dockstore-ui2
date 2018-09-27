@@ -14,10 +14,12 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { StateService } from '../../state.service';
+import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/register-checker-workflow.component';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { Workflow } from './../../swagger/model/workflow';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
@@ -38,7 +40,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   @Input() isOwner: boolean;
   private ngUnsubscribe: Subject<{}> = new Subject();
   parentId = null;
-  constructor(private checkerWorkflowService: CheckerWorkflowService,
+  constructor(private checkerWorkflowService: CheckerWorkflowService, public dialog: MatDialog,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
     private stateService: StateService
   ) { }
@@ -65,6 +67,7 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
 
   add(): void {
     this.registerCheckerWorkflowService.add();
+    const dialogRef = this.dialog.open(RegisterCheckerWorkflowComponent, { width: '600px'});
   }
 
   viewCheckerWorkflow(): string {

@@ -78,6 +78,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
     NgxJsonLdModule
-  ]
+  ],
+  entryComponents: [RegisterCheckerWorkflowComponent]
 })
 export class EntryModule { }
