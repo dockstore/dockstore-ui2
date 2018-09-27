@@ -9,8 +9,9 @@ beforeEach(function () {
 
 Cypress.Commands.add('goToTab', (tabName) => {
 	cy
-			.get('.nav-link')
-			.contains(tabName)
-			.parent()
+      .get('.mat-tab-labels')
+      .should('be.visible')
+      .contains('div', tabName)
+      .should('be.visible')
 			.click()
 })

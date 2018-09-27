@@ -28,10 +28,12 @@ import { StateService } from './../../state.service';
 import { WorkflowsService } from './../../swagger/api/workflows.service';
 import { WorkflowService } from './../../workflow.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
+import { MatDialogModule } from '@angular/material';
 
 describe('Service: RegisterCheckerWorkflow', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [MatDialogModule],
       providers: [RegisterCheckerWorkflowService, StateService, ErrorService,
       {provide: WorkflowsService, useClass: WorkflowsStubService},
       {provide: ContainerService, useClass: ContainerStubService},
