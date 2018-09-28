@@ -31,7 +31,7 @@ export class UserService {
   constructor(private authService: AuthService, private usersService: UsersService, private configuration: Configuration,
     private router: Router) {
     this.updateUser();
-    this.userId$ = this.userSource.pipe(map((user: User) => user.id));
+    this.userId$ = this.userSource.pipe(map((user: User) => user ? user.id : null));
    }
 
   setUser(user) {
@@ -45,18 +45,25 @@ export class UserService {
   updateUser() {
     const token = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
-    this.usersService.getUser().subscribe(
-      (user: User) => this.setUser(user),
-      error => {
-        // TODO: Figure out what to do when error.
-        // Currently this function is executed whether the user is logged in or not.
-        this.setUser(null);
-      }
-    );
-    this.usersService.getExtendedUserData().subscribe(
-      (extendedUser: any) => this.setExtendedUser(extendedUser),
-      error => this.setExtendedUser(null)
-    );
+    if (token) {
+      // Attempt to get user and extended user data if there's a token because it would 401 otherwise
+      this.usersService.getUser().subscribe(
+        (user: User) => this.setUser(user),
+        error => {
+          // TODO: Figure out what to do when error.
+          // Currently this function is executed whether the user is logged in or not.
+          this.setUser(null);
+        }
+      );
+      this.usersService.getExtendedUserData().subscribe(
+        (extendedUser: any) => this.setExtendedUser(extendedUser),
+        error => this.setExtendedUser(null)
+      );
+    } else {
+      // No token, no user
+      this.setUser(null);
+      this.setExtendedUser(null);
+    }
   }
 
   gravatarUrl(email: string, defaultImg: string) {
