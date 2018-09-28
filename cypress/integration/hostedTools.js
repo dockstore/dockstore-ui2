@@ -31,21 +31,13 @@ describe('Dockstore hosted tools', function() {
           .should('not.be.visible')
 
         // Check content of the version tab
-        cy
-          .get('.nav-link')
-          .contains('Versions')
-          .parent()
-          .click()
-          .get('table > tbody')
+        cy.goToTab('Versions')
+        cy.get('table > tbody')
           .find('tr')
           .should('have.length', 1)
 
         // Add a new version with one descriptor and dockerfile
-        cy
-          .get('.nav-link')
-          .contains('Files')
-          .parent()
-          .click()
+        cy.goToTab('Files')
         cy
           .get('#editFilesButton')
           .click()
@@ -83,31 +75,19 @@ describe('Dockstore hosted tools', function() {
           .click()
 
         // Should have a version 1
-        cy
-          .get('.nav-link')
-          .contains('Versions')
-          .parent()
-          .click()
-          .get('table')
+        cy.goToTab('Versions')
+        cy.get('table')
           .contains('span', /\b1\b/)
 
         // Should be able to download zip
-        cy
-          .get('.nav-link')
-          .contains('Info')
-          .parent()
-          .click()
+        cy.goToTab('Info')
 
         cy
           .get('#downloadZipButton')
           .should('be.visible')
 
           // Add a new version with a second descriptor and a test json
-          cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
+          cy.goToTab('Files')
           cy
             .get('#editFilesButton')
             .click()
@@ -148,12 +128,8 @@ describe('Dockstore hosted tools', function() {
             .click()
 
           // Should have a version 2
-          cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
-            .get('table')
+          cy.goToTab('Versions')
+          cy.get('table')
             .contains('span', /\b2\b/)
 
           // Should be able to publish
@@ -162,11 +138,7 @@ describe('Dockstore hosted tools', function() {
             .should('not.be.disabled')
 
           // Try deleting a file (.cwl file)
-          cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
+          cy.goToTab('Files')
           cy
             .get('#editFilesButton')
             .click()
@@ -189,11 +161,7 @@ describe('Dockstore hosted tools', function() {
             .should('have.length', 3)
 
           // New version should be added
-          cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
+          cy.goToTab('Versions')
             .get('table')
             .contains('span', /\b3\b/)
 
@@ -205,12 +173,8 @@ describe('Dockstore hosted tools', function() {
             .click()
 
           // Version should no longer exist
-          cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
-            .get('table')
+          cy.goToTab('Files')
+          cy.get('table')
             .find('a')
             .should('not.contain', '1')
       });

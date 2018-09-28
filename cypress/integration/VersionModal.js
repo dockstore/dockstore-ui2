@@ -8,12 +8,7 @@ describe('Public Version Modal', function() {
     });
 
     it('Change tab to versions', function() {
-        cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
-
+        cy.goToTab('Versions')
         cy
             .contains("View")
             .click()

@@ -35,21 +35,14 @@ describe('Dockstore hosted workflows', function() {
           .should('not.be.visible')
 
         // Check content of the version tab
-        cy
-          .get('.nav-link')
-          .contains('Versions')
-          .parent()
-          .click()
+        // 1 row saying no records
+        cy.goToTab('Versions')
           .get('table > tbody')
           .find('tr')
-          .should('have.length', 2)
+          .should('have.length', 1)
 
         // Add a new version with one descriptor
-        cy
-          .get('.nav-link')
-          .contains('Files')
-          .parent()
-          .click()
+        cy.goToTab('Files')
         cy
           .get('#editFilesButton')
           .click()
@@ -69,31 +62,19 @@ describe('Dockstore hosted workflows', function() {
           .click()
 
         // Should have a version 1
-        cy
-          .get('.nav-link')
-          .contains('Versions')
-          .parent()
-          .click()
-          .get('table')
+        cy.goToTab('Versions')
+        cy.get('table')
           .contains('span', /\b1\b/)
 
         // Should be able to download zip
-        cy
-          .get('.nav-link')
-          .contains('Info')
-          .parent()
-          .click()
+        cy.goToTab('Info')
 
         cy
           .get('#downloadZipButton')
           .should('be.visible')
 
           // Add a new version with a second descriptor and a test json
-          cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
+          cy.goToTab('Files')
           cy
             .get('#editFilesButton')
             .click()
@@ -129,12 +110,8 @@ describe('Dockstore hosted workflows', function() {
             .click()
 
           // Should have a version 2
-          cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
-            .get('table')
+          cy.goToTab('Versions')
+          cy.get('table')
           .contains('span', /\b2\b/)
 
           // Should be able to publish
@@ -143,17 +120,14 @@ describe('Dockstore hosted workflows', function() {
             .should('not.be.disabled')
 
           // Try deleting a file (.wdl file)
-          cy
-            .get('.nav-link')
-            .contains('Files')
-            .parent()
-            .click()
+          cy.goToTab('Files')
           cy
             .get('#editFilesButton')
             .click()
           cy
             .get('.delete-editor-file')
-            .first()
+            .last()
+            .should('be.visible')
             .click()
           cy
             .get('#saveNewVersionButton')
@@ -165,12 +139,8 @@ describe('Dockstore hosted workflows', function() {
             .should('have.length', 2)
 
           // New version should be added
-          cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
-            .get('table')
+          cy.goToTab('Versions')
+          cy.get('table')
           .contains('span', /\b3\b/)
 
           // Delete a version
@@ -181,12 +151,8 @@ describe('Dockstore hosted workflows', function() {
             .click()
 
           // Version should no longer exist
-          cy
-            .get('.nav-link')
-            .contains('Versions')
-            .parent()
-            .click()
-            .get('table')
+          cy.goToTab('Versions')
+          cy.get('table')
             .find('a')
             .should('not.contain', '1')
       });

@@ -41,20 +41,12 @@ describe('Dockstore Workflow Details', function() {
   });
 
   it('Change tab to launch', function() {
-    cy
-    .get('.nav-link')
-    .contains('Launch')
-    .parent()
-    .click()
+    cy.goToTab('Launch')
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=launch')
   });
 
   it('Change tab to versions', function() {
-    cy
-    .get('.nav-link')
-    .contains('Versions')
-    .parent()
-    .click()
+    cy.goToTab('Versions')
     cy
         .get('tbody>tr')
         .should('have.length', 2) // 1 Version and warning line
@@ -63,20 +55,13 @@ describe('Dockstore Workflow Details', function() {
 
   describe('Change tab to files', function() {
     beforeEach(function() {
-      cy
-      .get('.nav-link')
-      .contains('Files')
-      .parent()
-      .click()
+      cy.goToTab('Files')
       cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=files')
     });
 
     it('Should have Descriptor files tab selected', function() {
-      cy
-      .get('.nav-link')
-      .contains('Descriptor Files')
-      .parent()
-      .click()
+      cy.goToTab('Descriptor Files')
+          .click()
           .should("have.class", "active")
     });
 
@@ -88,11 +73,7 @@ describe('Dockstore Workflow Details', function() {
 
       describe('Change tab to Test Parameters', function() {
           beforeEach(function() {
-            cy
-            .get('.nav-link')
-            .contains('Test Parameter Files')
-            .parent()
-            .click()
+            cy.goToTab('Test Parameter Files')
           });
 
           it('Should not have content in file viewer', function() {
@@ -105,21 +86,13 @@ describe('Dockstore Workflow Details', function() {
   });
 
   it('Change tab to tools', function() {
-    cy
-    .get('.nav-link')
-    .contains('Tools')
-    .parent()
-    .click()
+    cy.goToTab('Tools')
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=tools')
   });
 
   describe('Change tab to dag', function () {
     beforeEach(function() {
-      cy
-      .get('.nav-link')
-      .contains('DAG')
-      .parent()
-      .click()
+      cy.goToTab('DAG')
       cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=dag')
     });
 

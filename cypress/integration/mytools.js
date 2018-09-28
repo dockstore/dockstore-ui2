@@ -41,11 +41,7 @@ describe('Dockstore my tools', function() {
     describe('Go to published tool A2/b3', function() {
       it('Should have two versions visible', function() {
         selectTool('b3')
-        cy
-        .get('.nav-link')
-        .contains('Versions')
-        .parent()
-        .click()
+        cy.goToTab('Versions')
         cy
         .get('tbody>tr')
         .should('have.length', 2)
