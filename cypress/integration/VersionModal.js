@@ -3,8 +3,8 @@ describe('Public Version Modal', function() {
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut")
         cy
-            .get('tab')
-            .should('have.length', 7)
+          .get('.mat-tab-label')
+          .should('have.length', 4)
     });
 
     it('Change tab to versions', function() {

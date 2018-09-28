@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
@@ -24,7 +25,6 @@ import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
-import { MatDialog } from '@angular/material';
 import { AddTagComponent } from '../add-tag/add-tag.component';
 
 @Component({

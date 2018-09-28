@@ -27,10 +27,12 @@ import {
   WorkflowStubService,
 } from './../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
+import { MatDialogModule } from '@angular/material';
 
 describe('Service: version-modal.service.ts', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
+          imports: [MatDialogModule],
             providers: [VersionModalService,
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },

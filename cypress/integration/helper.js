@@ -8,10 +8,14 @@ beforeEach(function () {
 });
 
 Cypress.Commands.add('goToTab', (tabName) => {
+	cy.getTab(tabName)
+			.click()
+})
+
+Cypress.Commands.add('getTab', (tabName) => {
 	cy
       .get('.mat-tab-labels')
       .should('be.visible')
       .contains('div', tabName)
       .should('be.visible')
-			.click()
 })

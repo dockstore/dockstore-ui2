@@ -1,6 +1,7 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { MatDialogModule } from '@angular/material';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersService } from '../../containers/list/list.service';
@@ -11,19 +12,18 @@ import { ContainersService } from '../../shared/swagger';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { DateService } from './../../shared/date.service';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { sampleTool1, sampleTag } from './../../test/mocked-objects';
+import { sampleTag, sampleTool1 } from './../../test/mocked-objects';
 import {
-    ContainersStubService,
-    ContainerStubService,
-    ContainertagsStubService,
-    DateStubService,
-    ParamFilesStubService,
-    RefreshStubService,
-    StateStubService,
+  ContainersStubService,
+  ContainerStubService,
+  ContainertagsStubService,
+  DateStubService,
+  ParamFilesStubService,
+  RefreshStubService,
+  StateStubService,
 } from './../../test/service-stubs';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;
@@ -33,7 +33,7 @@ describe('VersionModalComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ VersionModalComponent],
-      imports: [ModalModule.forRoot(), FormsModule, ClipboardModule],
+      imports: [FormsModule, ClipboardModule, MatDialogModule],
       providers: [
         {provide: ParamfilesService, useClass: ParamFilesStubService},
         VersionModalService,

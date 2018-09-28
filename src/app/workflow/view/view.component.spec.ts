@@ -33,6 +33,7 @@ import { WorkflowService } from '../../shared/workflow.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ViewWorkflowComponent } from './view.component';
+import { MatDialogModule } from '@angular/material';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
@@ -40,6 +41,7 @@ describe('ViewWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatDialogModule],
       declarations: [ViewWorkflowComponent],
       providers: [
         { provide: WorkflowService, useClass: WorkflowStubService },

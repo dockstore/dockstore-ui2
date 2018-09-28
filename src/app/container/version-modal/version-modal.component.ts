@@ -13,9 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../../containers/list/list.service';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -32,13 +34,12 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { VersionModalService } from './version-modal.service';
-import { MatDialog } from '@angular/material';
 
 @Component({
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked {
+export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public editMode: boolean;
@@ -56,6 +57,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   public dockerPullCommand = '';
   public DockstoreToolType = DockstoreTool;
 
+  private ngUnsubscribe: Subject<{}> = new Subject();
   public formErrors = formErrors;
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
@@ -66,6 +68,11 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     private listContainersService: ListContainersService, private containerService: ContainerService,
     private containersService: ContainersService, private containertagsService: ContainertagsService, public matDialog: MatDialog,
     private stateService: StateService, private dateService: DateService, private refreshService: RefreshService) {
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   // Almost all these functions should be moved to a service
@@ -239,18 +246,16 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       this.unsavedVersion = Object.assign({}, this.version);
       this.updateDockerPullCommand();
     });
-    this.versionModalService.mode.subscribe(
-      (mode: TagEditorMode) => {
-        this.mode = mode;
-        if (mode !== null && this.tool) {
-          this.setMode(mode);
-        }
-      }
-    );
+    this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      (mode: TagEditorMode) => this.mode = mode);
     this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
-    this.containerService.tool$.subscribe(tool => {
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       this.updateDockerPullCommand();
+      // This is flakey and depends on the mode being set before tool, fix this
+      if (this.mode !== null && this.tool) {
+        this.setMode(this.mode);
+      }
     });
     this.versionModalService.unsavedTestCWLFile.subscribe(
       (file: string) => {

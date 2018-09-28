@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>{{TagEditorMode[mode]}} Version Tag</h4>
-<form #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
+<form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
   <div class="modal-body tagEditor">
     <div class="form-group form-group-sm">
       <label class="col-sm-3 col-md-3 col-lg-3 control-label">
@@ -65,7 +65,7 @@
       </label>
       <div class="col-sm-9 col-md-9 col-lg-9">
         <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128"
-          [pattern]="validationPatterns.cwlPath" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository."
+          [pattern]="validationPatterns.cwlPath" ng-required="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)" title="Relative path to the CWL Descriptor in the Git repository."
           placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
         <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
           {{formErrors.cwlPath}}
@@ -78,7 +78,7 @@
       </label>
       <div class="col-sm-9 col-md-9 col-lg-9">
         <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128"
-          [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository."
+          [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)" title="Relative path to the WDL Descriptor in the Git repository."
           placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
         <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
           {{formErrors.wdlPath}}

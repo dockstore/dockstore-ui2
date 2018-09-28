@@ -13,20 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { ContainerService } from './../../shared/container.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { StateService } from './../../shared/state.service';
-import { VersionModalService } from './../version-modal/version-modal.service';
-import { DateService } from './../../shared/date.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { View } from '../../shared/view';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
-import { MatDialog } from '@angular/material';
+import { ContainerService } from './../../shared/container.service';
+import { DateService } from './../../shared/date.service';
+import { StateService } from './../../shared/state.service';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { VersionModalService } from './../version-modal/version-modal.service';
+
 
 @Component({
   selector: 'app-view-container',

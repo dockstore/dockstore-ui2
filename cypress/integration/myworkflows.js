@@ -109,40 +109,22 @@ describe('Dockstore my workflows', function() {
         it('Look at each tab', function() {
             cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/l")
             cy.wait(3000)
-            cy
-                .get('.nav-link')
-                .contains('Info')
-                .parent()
-                .should('have.class', 'active')
+            cy.getTab('Info').parent()
+                .should('have.class', 'mat-tab-label-active')
                 .and('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Launch')
-                .parent()
+            cy.getTab('Launch')
                 .should('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Versions')
-                .parent()
+            cy.getTab('Files')
                 .should('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Files')
-                .parent()
+            cy.getTab('Tools')
                 .should('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('Tools')
-                .parent()
+            cy.getTab('DAG')
                 .should('not.have.class', 'disabled')
-            cy
-                .get('.nav-link')
-                .contains('DAG')
-                .parent()
+            cy.goToTab('Versions')
                 .should('not.have.class', 'disabled')
             cy
                 .get('table>tbody>tr')
-                .should('have.length', 3) // 2 Versions and warning line
+                .should('have.length', 2) // 2 Versions and no warning line
 
             cy
                 .get('#publishButton')

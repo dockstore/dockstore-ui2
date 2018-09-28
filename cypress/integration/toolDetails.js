@@ -1,42 +1,44 @@
+// This file can run independent of all other tests successfully and is idempotent
 describe('Variations of URL', function() {
   require('./helper.js')
-  it('Should redirect to canonical url (encoding)', function() {
-    cy.visit(String(global.baseUrl) + "/containers/quay.io%2FA2%2Fa")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
-  });
-  it('Should redirect to canonical url (tools)', function() {
-    cy.visit(String(global.baseUrl) + "/tools/quay.io/A2/a")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
-  });
-  it('Should redirect to canonical url (encoding + tools)', function() {
-    cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
-  });
-  it('Should redirect to canonical url (version)', function() {
-    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:latest")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
-  });
-  it('Should redirect to canonical url (tab)', function() {
-    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a?tab=files")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
-  });
-  it('Should redirect to canonical url (tab + version)', function() {
-    cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:latest?tab=files")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
-  });
-  it('Should redirect to canonical url (tools + encoding + tab + version)', function() {
-    cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa:latest?tab=files")
-    cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
-  });
+//   it('Should redirect to canonical url (encoding)', function() {
+//     cy.visit(String(global.baseUrl) + "/containers/quay.io%2FA2%2Fa")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
+//   });
+//   it('Should redirect to canonical url (tools)', function() {
+//     cy.visit(String(global.baseUrl) + "/tools/quay.io/A2/a")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
+//   });
+//   it('Should redirect to canonical url (encoding + tools)', function() {
+//     cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
+//   });
+//   it('Should redirect to canonical url (version)', function() {
+//     cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:latest")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
+//   });
+//   it('Should redirect to canonical url (tab)', function() {
+//     cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a?tab=files")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
+//   });
+//   it('Should redirect to canonical url (tab + version)', function() {
+//     cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a:latest?tab=files")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
+//   });
+//   it('Should redirect to canonical url (tools + encoding + tab + version)', function() {
+//     cy.visit(String(global.baseUrl) + "/tools/quay.io%2FA2%2Fa:latest?tab=files")
+//     cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=files')
+//   });
 });
 
 describe('Dockstore Tool Details of quay.io/A2/a', function() {
     require('./helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
+        // 4 tabs: Info, Launch, Versions, Files.  The files ones are hidden.
         cy
-            .get('tab')
-            .should('have.length', 7)
+            .get('.mat-tab-label')
+            .should('have.length', 4)
         cy.url().should('eq', String(global.baseUrl) + '/containers/quay.io/A2/a:latest?tab=info')
     });
 
@@ -57,11 +59,8 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
         });
 
         it('Should have Dockerfile tab selected', function() {
-            cy
-                .get('.nav-link')
-                .contains('Dockerfile')
-                .parent()
-                .should("have.class", "active")
+            cy.getTab('Dockerfile').parent()
+                .should("have.class", "mat-tab-label-active")
 
             it('Should have content in file viewer', function() {
                 cy
@@ -103,8 +102,8 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut")
         cy
-            .get('tab')
-            .should('have.length', 7)
+            .get('.mat-tab-label')
+            .should('have.length', 4)
     });
 
 
@@ -114,11 +113,9 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
         });
 
         it('Should have Dockerfile tab selected', function() {
-            cy
-                .get('.nav-link')
-                .contains('Dockerfile')
-                .parent()
-                .should("have.class", "active")
+            cy.getTab('Dockerfile')
+            .parent()
+                .should("have.class", "mat-tab-label-active")
 
             it('Should have content in file viewer', function() {
                 cy
@@ -158,8 +155,8 @@ describe('Dockstore Tool Details of quay.io/A2/b3', function() {
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/b3")
         cy
-            .get('tab')
-            .should('have.length', 7)
+            .get('.mat-tab-label')
+            .should('have.length', 4)
     });
 
     it('Change tab to versions, should only have one visible', function() {

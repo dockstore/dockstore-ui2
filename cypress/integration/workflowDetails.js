@@ -26,9 +26,10 @@ describe('Dockstore Workflow Details', function() {
   require('./helper.js')
 	beforeEach(function () {
      cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l")
+     // 6 Tabs include all top level tabs and not the 2 tabs in the files tab
      cy
-      .get('tab')
-      .should('have.length', 8) // 8 Tabs include all top level tabs plus 2 tabs in the files tab
+     .get('.mat-tab-label')
+     .should('have.length', 6)
      cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
   });
 
@@ -62,7 +63,8 @@ describe('Dockstore Workflow Details', function() {
     it('Should have Descriptor files tab selected', function() {
       cy.goToTab('Descriptor Files')
           .click()
-          .should("have.class", "active")
+          .parent()
+          .should("have.class", "mat-tab-label-active")
     });
 
     it('Should have content in file viewer', function() {

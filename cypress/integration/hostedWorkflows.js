@@ -126,7 +126,7 @@ describe('Dockstore hosted workflows', function() {
             .click()
           cy
             .get('.delete-editor-file')
-            .last()
+            .first()
             .should('be.visible')
             .click()
           cy
