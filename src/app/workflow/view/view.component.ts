@@ -26,6 +26,8 @@ import { View } from '../../shared/view';
 import { DateService } from '../../shared/date.service';
 import { WorkflowService } from '../../shared/workflow.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { MatDialog } from '@angular/material';
+import { VersionModalComponent } from '../version-modal/version-modal.component';
 
 @Component({
   selector: 'app-view-workflow',
@@ -43,7 +45,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public WorkflowType = Workflow;
 
   constructor(
-    private workflowService: WorkflowService,
+    private workflowService: WorkflowService, private matDialog: MatDialog,
     private versionModalService: VersionModalService,
     private stateService: StateService,
     private workflowsService: WorkflowsService,
@@ -58,9 +60,17 @@ export class ViewWorkflowComponent extends View implements OnInit {
       .subscribe(items => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
-        this.versionModalService.setIsModalShown(true);
+        const dialogRef = this.matDialog.open(VersionModalComponent,
+          {
+            width: '600px',
+            data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
+          });
       }, error => {
-        this.versionModalService.setIsModalShown(true);
+        const dialogRef = this.matDialog.open(VersionModalComponent,
+          {
+            width: '600px',
+            data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
+          });
       });
   }
 

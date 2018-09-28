@@ -56,13 +56,6 @@ describe('Service: version-modal.service.ts', () => {
     it('should ...', inject([VersionModalService], (service: VersionModalService) => {
         expect(service).toBeTruthy();
     }));
-    it('should be initially not visible', inject([VersionModalService], (service: VersionModalService) => {
-        service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeFalsy());
-    }));
-    it('should be shown after set to true', inject([VersionModalService], (service: VersionModalService) => {
-        service.setIsModalShown(true);
-        service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeTruthy());
-    }));
     it('should be able to set version', inject([VersionModalService], (service: VersionModalService) => {
         service.setVersion(expectedVersion);
         service.version.subscribe(version => expect(version).toEqual(expectedVersion));

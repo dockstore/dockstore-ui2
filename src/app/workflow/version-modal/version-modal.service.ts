@@ -23,26 +23,22 @@ import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from './../../shared/workflow.service';
+import { MatDialog } from '@angular/material';
 
 @Injectable()
 export class VersionModalService {
-    isModalShown$: Subject<boolean> = new BehaviorSubject<boolean>(false);
     version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
     testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
     private workflowId;
     constructor(
         private stateService: StateService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-        private refreshService: RefreshService) {
+        private refreshService: RefreshService, private matDialog: MatDialog) {
         workflowService.workflow$.subscribe(workflow => {
             if (workflow) {
                 this.workflowId = workflow.id;
             }
         });
     }
-    setIsModalShown(isModalShown: boolean) {
-        this.isModalShown$.next(isModalShown);
-    }
-
     setVersion(version: WorkflowVersion) {
         this.version.next(version);
     }
@@ -68,7 +64,6 @@ export class VersionModalService {
         const message1 = 'Saving workflow version';
         const message2 = 'Refreshing workflow';
         const message3 = 'Modifying test parameter files';
-        this.setIsModalShown(false);
         this.stateService.setRefreshMessage(message1 + '...');
         if (workflowMode !== 'HOSTED') {
           this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
@@ -80,6 +75,7 @@ export class VersionModalService {
                       this.stateService.setRefreshMessage(message3 + '...');
                       this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
                           success => {
+                              this.matDialog.closeAll();
                               this.refreshService.handleSuccess(message3);
                               this.refreshService.refreshWorkflow();
                           }, error => {
@@ -98,6 +94,7 @@ export class VersionModalService {
           this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
               response => {
                   this.refreshService.handleSuccess(message1);
+                  this.matDialog.closeAll();
               }, error => {
                   this.refreshService.handleError(message1, error);
               }
