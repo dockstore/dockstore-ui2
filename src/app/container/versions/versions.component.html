@@ -120,5 +120,6 @@
   </table>
 </div>
 <div class="row">
-  <app-add-tag class="pull-right add-tag" *ngIf="!publicPage && isManualMode()"></app-add-tag>
+  <button id="addTagButton" type="button" class="pull-right add-tag" *ngIf="!publicPage && isManualMode()" mat-flat-button color="primary" (click)="showAddTagModal()">
+    Add Tag</button>
 </div>

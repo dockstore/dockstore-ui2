@@ -25,6 +25,7 @@ import { Tag } from '../../shared/swagger/model/tag';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-add-tag',
@@ -46,7 +47,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private paramFilesService: ParamfilesService) {
+    private containersService: ContainersService, private paramFilesService: ParamfilesService, private matDialog: MatDialog) {
   }
 
   initializeTag() {
@@ -144,6 +145,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
       this.containerService.setTool(this.tool);
       this.initializeTag();
       this.loadDefaults();
+      this.matDialog.closeAll();
     }, error => console.log(error));
   }
 

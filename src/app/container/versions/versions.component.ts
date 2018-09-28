@@ -24,6 +24,8 @@ import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
+import { MatDialog } from '@angular/material';
+import { AddTagComponent } from '../add-tag/add-tag.component';
 
 @Component({
   selector: 'app-versions-container',
@@ -44,7 +46,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   tool: any;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService, private refreshService: RefreshService,
+    dateService: DateService, private refreshService: RefreshService, private matDialog: MatDialog,
     protected stateService: StateService,
     private containerService: ContainerService) {
     super(dockstoreService, dateService, stateService);
@@ -94,5 +96,9 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   setVersion(version: Tag) {
     this.versionTag = version;
     this.selectedVersionChange.emit(this.versionTag);
+  }
+
+  showAddTagModal() {
+    this.matDialog.open(AddTagComponent, {width: '600px'});
   }
 }
