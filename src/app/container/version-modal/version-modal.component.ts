@@ -32,16 +32,15 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { VersionModalService } from './version-modal.service';
+import { MatDialog } from '@angular/material';
 
 @Component({
-  selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
 export class VersionModalComponent implements OnInit, AfterViewChecked {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
-  public isModalShown: boolean;
   public editMode: boolean;
   public mode: TagEditorMode;
   public tool: DockstoreTool;
@@ -50,8 +49,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
-  public unsavedCWLTestParameterFilePaths: Array<string>;
-  public unsavedWDLTestParameterFilePaths: Array<string>;
+  public unsavedCWLTestParameterFilePaths: Array<string> = [];
+  public unsavedWDLTestParameterFilePaths: Array<string> = [];
   public unsavedTestCWLFile = '';
   public unsavedTestWDLFile = '';
   public dockerPullCommand = '';
@@ -65,7 +64,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService,
-    private containersService: ContainersService, private containertagsService: ContainertagsService,
+    private containersService: ContainersService, private containertagsService: ContainertagsService, public matDialog: MatDialog,
     private stateService: StateService, private dateService: DateService, private refreshService: RefreshService) {
   }
 
@@ -150,16 +149,16 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
       this.tool.tags = response;
       this.containerService.setTool(this.tool);
-      this.versionModalService.setIsModalShown(false);
+      this.matDialog.closeAll();
       this.refreshService.handleSuccess(message);
     }, error => {
       this.refreshService.handleError(message, error);
-      this.versionModalService.setIsModalShown(false);
+      this.matDialog.closeAll();
     });
   }
 
   onHidden() {
-    this.versionModalService.setIsModalShown(false);
+    this.matDialog.closeAll();
     this.versionModalService.setCurrentMode(null);
   }
 
@@ -239,12 +238,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);
       this.updateDockerPullCommand();
-    });
-    this.versionModalService.isModalShown.subscribe(isModalShown => {
-      if (!this.tool && this.isModalShown) {
-        this.versionModalService.setIsModalShown(false);
-      } else {
-        this.isModalShown = isModalShown; }
     });
     this.versionModalService.mode.subscribe(
       (mode: TagEditorMode) => {

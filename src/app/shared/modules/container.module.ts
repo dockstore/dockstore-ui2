@@ -117,7 +117,8 @@ import { SelectModule } from './select.module';
   exports: [
     ContainerComponent,
     CustomMaterialModule
-  ]
+  ],
+  entryComponents: [VersionModalComponent]
 })
 export class ContainerModule {
 }

@@ -25,6 +25,8 @@ import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { View } from '../../shared/view';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { VersionModalComponent } from '../version-modal/version-modal.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-view-container',
@@ -38,14 +40,15 @@ export class ViewContainerComponent extends View implements OnInit {
   public DockstoreToolType = DockstoreTool;
   isPublic: boolean;
   constructor(dateService: DateService, private versionModalService: VersionModalService, private stateService: StateService,
-    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService) {
+    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService,
+    private matDialog: MatDialog) {
     super(dateService);
   }
 
   setMode(mode: TagEditorMode) {
     this.versionModalService.setVersion(this.version);
     this.versionModalService.setCurrentMode(mode);
-    this.versionModalService.setIsModalShown(true);
+    const dialogRef = this.matDialog.open(VersionModalComponent, { width: '600px' });
   }
 
   deleteTag() {
