@@ -50,7 +50,7 @@ describe('Dockstore Workflow Details', function() {
     cy.goToTab('Versions')
     cy
         .get('tbody>tr')
-        .should('have.length', 2) // 1 Version and warning line
+        .should('have.length', 1) // 1 Version and no warning line
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=versions')
   });
 
@@ -88,12 +88,14 @@ describe('Dockstore Workflow Details', function() {
   });
 
   it('Change tab to tools', function() {
+    cy.get('.mat-tab-header-pagination-after').click()
     cy.goToTab('Tools')
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=tools')
   });
 
   describe('Change tab to dag', function () {
     beforeEach(function() {
+      cy.get('.mat-tab-header-pagination-after').click()
       cy.goToTab('DAG')
       cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=dag')
     });
