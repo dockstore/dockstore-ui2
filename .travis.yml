@@ -10,39 +10,109 @@ jdk:
 env:
   global:
     - WEBSERVICE_VERSION="1.5.0-beta.4"
-  matrix:
-    - RUN_PROD=false
-    - RUN_PROD=true
 addons:
   firefox: "latest"
   postgresql: "9.6"
   chrome: stable
 
-before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - 'wget --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar'
-  - 'chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar'
-  - 'sleep 3' # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
-
 install:
   - ./scripts/install-travis-script.sh
 
-before_script:
-  - pwd
-  - wget --no-verbose http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.3.1/swagger-codegen-cli-2.3.1.jar -O swagger-codegen-cli.jar
-  - java -jar swagger-codegen-cli.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json
-  - psql -c "create user dockstore with password 'dockstore' createdb;" -U postgres
-  - psql -c "ALTER USER dockstore WITH superuser;" -U postgres
-  - psql -c 'create database webservice_test with owner = dockstore;' -U postgres
-  - psql -f travisci/db_dump.sql webservice_test
-  - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar db migrate -i 1.5.0 travisci/web.yml
-  - java -jar dockstore-webservice-${WEBSERVICE_VERSION}.jar server travisci/web.yml 1>/dev/null &
-  - 'sleep 20'
+jobs:
+  include:
+    - stage: Lint and Unit Tests
+      script:
+        - ng lint
+        - npm run prebuild
+        - ng test --watch=false --code-coverage --browsers ChromeHeadless
+      env: RUN_PROD=false
 
-script:
-  - ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=app-spec
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=checkerWorkflow/*
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=disabledAccountControls
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=dropdown
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=hostedTools
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=hostedWorkflows
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=mytools
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=myworkflows
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=sharedWorkflows
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=starDisabled
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=starEntry
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=toolDetails
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=ToolsSearch
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=VersionModal
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=workflowDetails
+      script: ./scripts/run-travis-script.sh
+    - stage: integration-tests
+      env:
+        - RUN_PROD=false
+        - TEST=WorkflowsSearch
+      script: ./scripts/run-travis-script.sh
+
+      stage: prod-tests
+      script: npm run build.prod
+      env: RUN_PROD=true
+
+script: echo "overriding test"
 
 after_success:
   - ./node_modules/codecov/bin/codecov

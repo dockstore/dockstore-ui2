@@ -16,10 +16,10 @@ describe('Dockstore tool list page', function () {
         .should('have.attr', 'href', '/containers/quay.io/A2/b3')
         .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
     });
-    it('Should have 4 tools', function () {
+    it('Should have 3 tools', function () {
       cy
         .get('mat-row')
-        .should('have.length', 4)
+        .should('have.length', 3)
     });
     it('Should be able to go to the quay.io/A2/a tool', function () {
       cy

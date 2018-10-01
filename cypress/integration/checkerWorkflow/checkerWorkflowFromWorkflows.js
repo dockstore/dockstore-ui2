@@ -1,5 +1,5 @@
 describe('Checker workflow test from workflows', function() {
-    require('./helper.js')
+    require('../helper.js')
 
     beforeEach(function() {
         // Visit the workflows page
