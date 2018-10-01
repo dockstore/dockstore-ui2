@@ -14,10 +14,9 @@
   ~    limitations under the License.
   -->
 <div>
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
+  <alert *ngIf="validationMessage !== null">
     <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;This version of the workflow is invalid.
-    <div *ngIf="_selectedVersion?.validationMessage" class="well mt-2">{{ _selectedVersion.validationMessage }}</div>
+    &nbsp;{{validationMessage}}
   </alert>
   <div [hidden]="!content">
     <mat-toolbar color="primary">

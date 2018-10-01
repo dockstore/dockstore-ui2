@@ -41,6 +41,7 @@ export class DescriptorsComponent extends EntryFileSelector {
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
+    this.checkIfValid(true);
   }
 
   protected entryType: ('tool' | 'workflow') = 'tool';

@@ -38,6 +38,7 @@ export abstract class EntryFileSelector {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
+  public validationMessage = null;
   abstract entrypath: string;
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
@@ -131,5 +132,28 @@ export abstract class EntryFileSelector {
         this.filePath = this.fileService.getFilePath(this.currentFile);
         this.updateCustomDownloadFileButtonAttributes();
       });
+  }
+
+  checkIfValid(isDescriptor: boolean): void {
+    let fileEnum = null;
+    if (this.currentDescriptor === 'cwl') {
+      if (isDescriptor) {
+        fileEnum = 'DOCKSTORE_CWL';
+      } else {
+        fileEnum = 'CWL_TEST_JSON';
+      }
+    } else if (this.currentDescriptor === 'wdl') {
+      if (isDescriptor) {
+        fileEnum = 'DOCKSTORE_CWL';
+      } else {
+        fileEnum = 'CWL_TEST_JSON';
+      }
+    }
+    for (const validation of this._selectedVersion.validations) {
+      if (validation.type === fileEnum) {
+        this.validationMessage = validation.message;
+        break;
+      }
+    }
   }
 }
