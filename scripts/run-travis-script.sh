@@ -19,5 +19,5 @@ else
   npm run build
   ng serve --progress=false &
   ./scripts/wait-for.sh
-  cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/${TEST}.js
+  cypress run --record --config defaultCommandTimeout=10000 --spec ${TEST}
 fi

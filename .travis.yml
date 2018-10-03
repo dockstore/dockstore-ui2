@@ -30,82 +30,82 @@ jobs:
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=app-spec
+        - TEST='cypress/integration/app-spec.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=checkerWorkflow/*
+        - TEST='cypress/integration/checkerWorkflow/**/*'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=disabledAccountControls
+        - TEST='cypress/integration/disabledAccountControls.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=dropdown
+        - TEST='cypress/integration/dropdown.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=hostedTools
+        - TEST='cypress/integration/hostedTools.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=hostedWorkflows
+        - TEST='cypress/integration/hostedWorkflows.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=mytools
+        - TEST='cypress/integration/mytools.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=myworkflows
+        - TEST='cypress/integration/myworkflows.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=sharedWorkflows
+        - TEST='cypress/integration/sharedWorkflows.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=starDisabled
+        - TEST='cypress/integration/starDisabled.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=starEntry
+        - TEST='cypress/integration/starEntry.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=toolDetails
+        - TEST='cypress/integration/toolDetails.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=ToolsSearch
+        - TEST='cypress/integration/ToolsSearch.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=VersionModal
+        - TEST='cypress/integration/VersionModal.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=workflowDetails
+        - TEST='cypress/integration/workflowDetails.js'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST=WorkflowsSearch
+        - TEST='cypress/integration/WorkflowsSearch.js'
       script: ./scripts/run-travis-script.sh
 
       stage: prod-tests

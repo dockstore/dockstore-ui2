@@ -1,4 +1,4 @@
-global.baseUrl = "http://localhost:9000";
+global.baseUrl = "http://localhost:4200";
 
 describe('Workflow starring while not logged in', function() {
   beforeEach(function() {
