@@ -120,8 +120,18 @@
       <span class="glyphicon glyphicon-warning-sign"></span>
       <span ng-show="!containerObj.description">
         No description associated with this workflow. See
-        <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a> and
-        <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+        <span *ngIf="workflow?.descriptorType === 'cwl'">
+          <a href="https://docs.dockstore.org/docs/publisher-tutorials/best-practices/#authorship-metadata">CWL Best Practices</a> and
+          <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
+        </span>
+
+        <span *ngIf="workflow?.descriptorType === 'wdl'">
+          <a href="https://docs.dockstore.org/docs/publisher-tutorials/wdl-best-practices/#authorship-metadata">WDL Best Practices</a>.
+        </span>
+
+        <span *ngIf="workflow?.descriptorType === 'nfl'">
+          <a href="https://docs.dockstore.org/docs/publisher-tutorials/nfl-best-practices/#authorship-metadata">Nextflow Best Practices</a>.
+        </span>
       </span>
     </div>
   </div>
