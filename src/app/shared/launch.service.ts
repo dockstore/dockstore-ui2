@@ -79,10 +79,18 @@ export abstract class LaunchService {
       return `$ nextflow run http://${workflowPath} -r ${versionName}`;
     }
 
-    getNextflowLocalLaunchString(descriptorPath: string) {
-      return `$ nextflow run ${descriptorPath}`;
+    /**
+     * Gets local launch command
+     */
+    getNextflowLocalLaunchString() {
+      return `$ nextflow run nextflow.config`;
     }
 
+    /**
+     * Gets the download command
+     * @param workflowPath Path of the workflow
+     * @param versionName Name of the version
+     */
     getNextflowDownload(workflowPath: string, versionName: string) {
       return `$ dockstore workflow download --entry ${workflowPath}:${versionName}`;
     }
