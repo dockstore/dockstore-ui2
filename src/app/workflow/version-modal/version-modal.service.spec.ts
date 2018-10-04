@@ -13,28 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { inject, TestBed } from '@angular/core/testing';
 
+import { SessionQuery } from '../../shared/session/session.query';
 import { RefreshService } from './../../shared/refresh.service';
-import { StateService } from './../../shared/state.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from './../../shared/workflow.service';
-import {
-  RefreshStubService,
-  WorkflowsStubService,
-  WorkflowStubService,
-} from './../../test/service-stubs';
+import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
 
 describe('Service: version-modal.service.ts', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [VersionModalService,
+              SessionQuery,
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
-                StateService,
                 { provide: RefreshService, useClass: RefreshStubService}
             ]
         });
@@ -71,11 +66,11 @@ describe('Service: version-modal.service.ts', () => {
         service.setTestParameterFiles([]);
         service.testParameterFiles.subscribe(files => expect(files).toEqual([]));
     }));
-    it('should be able to save version and clear refreshing state', inject([VersionModalService, StateService],
-        (service: VersionModalService, stateService: StateService) => {
+    it('should be able to save version and clear refreshing state', inject([VersionModalService, SessionQuery],
+        (service: VersionModalService, sessionQuery: SessionQuery) => {
         service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
         // Refresh service takes modifying the refreshMessage from the third message
-        stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));
+        sessionQuery.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));
     }));
 
 });

@@ -19,11 +19,12 @@ import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionService } from '../../shared/session/session.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
+import { SessionQuery } from '../../shared/session/session.query';
 
 @Component({
   selector: 'app-versions-container',
@@ -45,9 +46,9 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService, private refreshService: RefreshService,
-    protected stateService: StateService,
-    private containerService: ContainerService) {
-    super(dockstoreService, dateService, stateService);
+    protected sessionService: SessionService,
+    private containerService: ContainerService, protected sessionQuery: SessionQuery) {
+    super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
@@ -77,7 +78,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default tool version';
-    this.stateService.setRefreshMessage(message + '...');
+    this.sessionService.setRefreshMessage(message + '...');
     this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
       this.refreshService.handleSuccess(message);
       if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {

@@ -21,11 +21,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { StateService } from '../../shared/state.service';
-import { HostedService } from '../../shared/swagger';
-import { MetadataService } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger';
-import { Workflow } from '../../shared/swagger';
+import { SessionService } from '../../shared/session/session.service';
+import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
 
@@ -43,7 +40,7 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService, private router: Router,
-        private stateService: StateService, private descriptorLanguageService: DescriptorLanguageService,
+        private sessionService: SessionService, private descriptorLanguageService: DescriptorLanguageService,
         private metadataService: MetadataService, private hostedService: HostedService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
@@ -95,7 +92,7 @@ export class RegisterWorkflowModalService {
 
     registerWorkflow(dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
         this.clearWorkflowRegisterError();
-        this.stateService.setRefreshMessage('Registering new workflow...');
+        this.sessionService.setRefreshMessage('Registering new workflow...');
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
@@ -103,9 +100,9 @@ export class RegisterWorkflowModalService {
             this.actualWorkflow.workflowName,
             this.actualWorkflow.descriptorType,
             this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
-              this.stateService.setRefreshMessage('Refreshing new workflow...');
+              this.sessionService.setRefreshMessage('Refreshing new workflow...');
                 this.workflowsService.refresh(result.id).pipe(finalize(() => {
-                  this.stateService.setRefreshMessage(null);
+                  this.sessionService.setRefreshMessage(null);
                 })).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
@@ -113,7 +110,7 @@ export class RegisterWorkflowModalService {
                     this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
                 }, error => this.setWorkflowRegisterError(error));
             }, error =>  {
-              this.stateService.setRefreshMessage(null);
+              this.sessionService.setRefreshMessage(null);
               this.setWorkflowRegisterError(error);
             });
     }
@@ -124,11 +121,11 @@ export class RegisterWorkflowModalService {
      */
     registerHostedWorkflow(hostedWorkflow, dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
       this.clearWorkflowRegisterError();
-      this.stateService.setRefreshMessage('Registering new workflow...');
+      this.sessionService.setRefreshMessage('Registering new workflow...');
       this.hostedService.createHostedWorkflow(
           hostedWorkflow.name,
           hostedWorkflow.descriptorType).pipe(finalize(() => {
-            this.stateService.setRefreshMessage(null);
+            this.sessionService.setRefreshMessage(null);
           })).subscribe(result => {
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);

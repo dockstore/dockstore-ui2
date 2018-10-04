@@ -17,7 +17,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { StateService } from '../../state.service';
+import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { Workflow } from './../../swagger/model/workflow';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
@@ -40,11 +40,11 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   parentId = null;
   constructor(private checkerWorkflowService: CheckerWorkflowService,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
-    private stateService: StateService
+    private sessionQuery: SessionQuery
   ) { }
 
   ngOnInit(): void {
-    this.refreshMessage$ = this.stateService.refreshMessage$;
+    this.refreshMessage$ = this.sessionQuery.refreshMessage$;
     this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
     this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {
       this.parentId = this.checkerWorkflowService.parentId;

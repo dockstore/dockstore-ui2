@@ -1,9 +1,9 @@
-import { ErrorService } from '../../shared/error.service';
-import { StateService } from '../state.service';
 import { Component, OnInit } from '@angular/core';
 
-// TODO: Rename this component to something like 'alert' since it contains both error and refresh alerts
+import { ErrorService } from '../../shared/error.service';
+import { SessionQuery } from '../session/session.query';
 
+// TODO: Rename this component to something like 'alert' since it contains both error and refresh alerts
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
@@ -12,10 +12,10 @@ import { Component, OnInit } from '@angular/core';
 export class AlertComponent implements OnInit {
   public refreshMessage: string;
   public errorObj: any;
-  constructor(private stateService: StateService, private errorService: ErrorService) { }
+  constructor(private sessionQuery: SessionQuery, private errorService: ErrorService) { }
 
   ngOnInit() {
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.errorService.errorObj$.subscribe(errorObj => this.errorObj = errorObj);
   }
 

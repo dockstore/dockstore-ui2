@@ -1,4 +1,3 @@
-import { RefreshService } from '../../shared/refresh.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,29 +13,16 @@ import { RefreshService } from '../../shared/refresh.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule, MatIconModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 
+import { RefreshService } from '../../shared/refresh.service';
 import { UserService } from './../../loginComponents/user.service';
-import { StateService } from './../../shared/state.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import {
-    RefreshStubService,
-    StateStubService,
-    UsersStubService,
-    UserStubService,
-    WorkflowStubService,
-} from './../../test/service-stubs';
+import { RefreshStubService, UsersStubService, UserStubService, WorkflowStubService } from './../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
-import {
-  MatButtonModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatTooltipModule
-} from '@angular/material';
 
-/* tslint:disable:no-unused-variable */
 describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
   let fixture: ComponentFixture<RefreshWorkflowOrganizationComponent>;
@@ -52,7 +38,6 @@ describe('RefreshWorkflowOrganizationComponent', () => {
       ],
       providers: [
         { provide: UserService, useClass: UserStubService },
-        { provide: StateService, useClass: StateStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService }]

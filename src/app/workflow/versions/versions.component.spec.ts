@@ -1,6 +1,3 @@
-import { RefreshService } from '../../shared/refresh.service';
-import { ErrorService } from './../../shared/error.service';
-import { StateService } from './../../shared/state.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,21 +13,26 @@ import { StateService } from './../../shared/state.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { DateService } from './../../shared/date.service';
-import { DateStubService, ErrorStubService, DockstoreStubService, WorkflowStubService, WorkflowsStubService,
-  StateStubService, RefreshStubService } from './../../test/service-stubs';
-import { DockstoreService } from './../../shared/dockstore.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { OrderBy } from '../../shared/orderBy';
 
-import { VersionsWorkflowComponent } from './versions.component';
 import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
 import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
+import { OrderBy } from '../../shared/orderBy';
+import { RefreshService } from '../../shared/refresh.service';
+import { DateService } from './../../shared/date.service';
+import { DockstoreService } from './../../shared/dockstore.service';
+import { ErrorService } from './../../shared/error.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { WorkflowService } from './../../shared/workflow.service';
+import {
+  DateStubService,
+  ErrorStubService,
+  RefreshStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+} from './../../test/service-stubs';
+import { VersionsWorkflowComponent } from './versions.component';
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
@@ -44,7 +46,6 @@ describe('VersionsWorkflowComponent', () => {
         { provide: DateService, useClass: DateStubService},
         { provide: WorkflowService, useClass: WorkflowStubService},
         { provide: WorkflowsService, useClass: WorkflowsStubService},
-        StateService,
         { provide: ErrorService, useClass: ErrorStubService },
         { provide: RefreshService, useClass: RefreshStubService}
       ]

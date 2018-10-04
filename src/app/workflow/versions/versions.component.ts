@@ -19,7 +19,8 @@ import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ErrorService } from '../../shared/error.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { SessionService } from '../../shared/session/session.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -48,10 +49,10 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService, dateService: DateService, protected stateService: StateService,
+  constructor(dockstoreService: DockstoreService, dateService: DateService, protected sessionService: SessionService,
     private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService) {
-    super(dockstoreService, dateService, stateService);
+    private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
+    super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
@@ -79,7 +80,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default workflow version';
-    this.stateService.setRefreshMessage(message + '...');
+    this.sessionService.setRefreshMessage(message + '...');
     this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
         this.refreshService.handleSuccess(message);
         if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {

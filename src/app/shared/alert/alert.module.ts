@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { StateService } from '../state.service';
-import { AlertComponent } from './alert.component';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { AlertComponent } from './alert.component';
 
 @NgModule({
     declarations: [

@@ -17,12 +17,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 
-import { RefreshService } from './../../shared/refresh.service';
-import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
+import { RefreshService } from '../../shared/refresh.service';
+import { SessionService } from '../../shared/session/session.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { WorkflowService } from '../../shared/workflow.service';
 
 @Injectable()
 export class VersionModalService {
@@ -31,7 +31,7 @@ export class VersionModalService {
     testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
     private workflowId;
     constructor(
-        private stateService: StateService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
+        private sessionService: SessionService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
         private refreshService: RefreshService) {
         workflowService.workflow$.subscribe(workflow => {
             if (workflow) {
@@ -69,15 +69,15 @@ export class VersionModalService {
         const message2 = 'Refreshing workflow';
         const message3 = 'Modifying test parameter files';
         this.setIsModalShown(false);
-        this.stateService.setRefreshMessage(message1 + '...');
+        this.sessionService.setRefreshMessage(message1 + '...');
         if (workflowMode !== 'HOSTED') {
           this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
               response => {
                   this.refreshService.handleSuccess(message1);
-                  this.stateService.setRefreshMessage(message2 + '...');
+                  this.sessionService.setRefreshMessage(message2 + '...');
                   this.workflowsService.refresh(this.workflowId).subscribe(workflow => {
                       this.refreshService.handleSuccess(message2);
-                      this.stateService.setRefreshMessage(message3 + '...');
+                      this.sessionService.setRefreshMessage(message3 + '...');
                       this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
                           success => {
                               this.refreshService.handleSuccess(message3);

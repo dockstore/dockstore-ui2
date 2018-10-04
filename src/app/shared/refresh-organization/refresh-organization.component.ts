@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,22 +13,22 @@ import { Injectable } from '@angular/core';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable, Input, OnInit } from '@angular/core';
 
-import { StateService } from './../state.service';
 import { UserService } from '../../loginComponents/user.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { SessionQuery } from '../session/session.query';
 
 @Injectable()
 export class RefreshOrganizationComponent implements OnInit {
   protected userId: number;
   @Input() protected organization: string;
   protected refreshMessage: string;
-  constructor(private userService: UserService, protected stateService: StateService) {
+  constructor(private userService: UserService, protected sessionQuery: SessionQuery) {
   }
 
   ngOnInit() {
     this.userService.userId$.subscribe(userId => this.userId = userId);
-    this.stateService.refreshMessage$.subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
+    this.sessionQuery.refreshMessage$.subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
   }
 
   toDisable(): boolean {

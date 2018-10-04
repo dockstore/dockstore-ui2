@@ -18,11 +18,11 @@ import { Input } from '@angular/core';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { DateService } from './date.service';
-import { StateService } from './state.service';
 import { Tooltip } from './tooltip';
 import { EntryTab } from '../shared/entry/entry-tab';
 import { Tag } from './../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { SessionQuery } from './session/session.query';
 
 export abstract class Versions extends EntryTab {
 
@@ -37,7 +37,7 @@ export abstract class Versions extends EntryTab {
   abstract setNoOrderCols(): Array<number>;
 
   constructor(protected dockstoreService: DockstoreService,
-    private dateService: DateService, protected stateService: StateService) {
+    private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_modified, latest first
     super();
     this.sortColumn = 'last_modified';
@@ -46,7 +46,7 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.isPublic$.subscribe(publicPage => this.publicPage = publicPage);
   }
 
   getDefaultTooltip(publicPage: boolean): string {

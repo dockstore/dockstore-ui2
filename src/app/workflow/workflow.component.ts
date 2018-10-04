@@ -29,7 +29,8 @@ import { ErrorService } from '../shared/error.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
 import { RefreshService } from '../shared/refresh.service';
-import { StateService } from '../shared/state.service';
+import { SessionQuery } from '../shared/session/session.query';
+import { SessionService } from '../shared/session/session.service';
 import { Permission } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { PublishRequest } from '../shared/swagger/model/publishRequest';
@@ -75,10 +76,10 @@ export class WorkflowComponent extends Entry {
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService, private ga4ghFilesStateService: GA4GHFilesStateService,
-    stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    location: Location, activatedRoute: ActivatedRoute) {
+    errorService: ErrorService, urlResolverService: UrlResolverService,
+    location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
+      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery);
     this._toolType = 'workflows';
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');

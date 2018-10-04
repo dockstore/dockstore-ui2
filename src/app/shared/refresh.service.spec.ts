@@ -30,7 +30,7 @@ import {
 import { ContainerService } from './container.service';
 import { GA4GHFilesStateService } from './entry/GA4GHFiles.state.service';
 import { RefreshService } from './refresh.service';
-import { StateService } from './state.service';
+import { SessionQuery } from './session/session.query';
 import { GA4GHService } from './swagger';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
@@ -43,11 +43,12 @@ describe('RefreshService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [BrowserAnimationsModule, MatSnackBarModule],
-            providers: [RefreshService, StateService,
+            providers: [RefreshService,
                 { provide: ContainersService, useClass: ContainersStubService },
                 { provide: ErrorService, useClass: ErrorStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
+                SessionQuery,
                 GA4GHFilesStateService,
                 { provide: GA4GHService, useClass: GA4GHStubService },
                 { provide: WorkflowService, useClass: WorkflowService },
@@ -60,8 +61,8 @@ describe('RefreshService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('should refresh tool', inject([RefreshService, StateService, ContainerService],
-        (service: RefreshService, stateService: StateService, containerService: ContainerService) => {
+    it('should refresh tool', inject([RefreshService, SessionQuery, ContainerService],
+        (service: RefreshService, sessionQuery: SessionQuery, containerService: ContainerService) => {
             const refreshedTool: DockstoreTool = {
                 default_cwl_path: 'refreshedDefaultCWLPath',
                 default_dockerfile_path: 'refreshedDefaultDockerfilePath',
@@ -78,15 +79,15 @@ describe('RefreshService', () => {
                 defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
             };
         service.refreshTool();
-        stateService.refreshMessage$.subscribe(refreshing => {
+        sessionQuery.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         containerService.tool$.subscribe(tool => {
             expect(tool).toEqual(refreshedTool);
         });
     }));
-    it('should refresh workflow', inject([RefreshService, StateService, WorkflowService],
-        (service: RefreshService, stateService: StateService, workflowService: WorkflowService) => {
+    it('should refresh workflow', inject([RefreshService, SessionQuery, WorkflowService],
+        (service: RefreshService, sessionQuery: SessionQuery, workflowService: WorkflowService) => {
             const refreshedWorkflow: Workflow = {
                 'descriptorType': 'cwl',
                 'gitUrl': 'refreshedGitUrl',
@@ -102,7 +103,7 @@ describe('RefreshService', () => {
             workflowService.setWorkflows([]);
             workflowService.setWorkflow(sampleWorkflow1);
         service.refreshWorkflow();
-        stateService.refreshMessage$.subscribe(refreshing => {
+        sessionQuery.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
         });
         workflowService.workflow$.subscribe(workflow => {

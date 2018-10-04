@@ -23,7 +23,7 @@ import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionService } from '../../shared/session/session.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
@@ -32,6 +32,7 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { VersionModalService } from './version-modal.service';
+import { SessionQuery } from '../../shared/session/session.query';
 
 @Component({
   selector: 'app-version-modal',
@@ -65,8 +66,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService,
-    private containersService: ContainersService, private containertagsService: ContainertagsService,
-    private stateService: StateService, private dateService: DateService, private refreshService: RefreshService) {
+    private containersService: ContainersService, private containertagsService: ContainertagsService, private sessionQuery: SessionQuery,
+    private sessionService: SessionService, private dateService: DateService, private refreshService: RefreshService) {
   }
 
   // Almost all these functions should be moved to a service
@@ -113,7 +114,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
 
   editTag() {
     const message = 'Updating tag';
-    this.stateService.setRefreshMessage(message + '...');
+    this.sessionService.setRefreshMessage(message + '...');
     const id = this.tool.id;
     const tagName = this.version.name;
 
@@ -254,7 +255,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         }
       }
     );
-    this.stateService.publicPage$.subscribe(publicPage => this.editMode = !publicPage);
+    this.sessionQuery.isPublic$.subscribe(publicPage => this.editMode = !publicPage);
     this.containerService.tool$.subscribe(tool => {
       this.tool = tool;
       this.updateDockerPullCommand();

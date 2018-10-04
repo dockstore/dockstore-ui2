@@ -13,18 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { ContainerService } from './../../shared/container.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { StateService } from './../../shared/state.service';
-import { VersionModalService } from './../version-modal/version-modal.service';
-import { DateService } from './../../shared/date.service';
-import { Component, OnInit } from '@angular/core';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { View } from '../../shared/view';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { SessionQuery } from '../../shared/session/session.query';
+import { View } from '../../shared/view';
+import { ContainerService } from './../../shared/container.service';
+import { DateService } from './../../shared/date.service';
+import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { VersionModalService } from './../version-modal/version-modal.service';
+
 
 @Component({
   selector: 'app-view-container',
@@ -37,7 +38,7 @@ export class ViewContainerComponent extends View implements OnInit {
   public tool: DockstoreTool;
   public DockstoreToolType = DockstoreTool;
   isPublic: boolean;
-  constructor(dateService: DateService, private versionModalService: VersionModalService, private stateService: StateService,
+  constructor(dateService: DateService, private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
     private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService) {
     super(dateService);
   }
@@ -80,7 +81,7 @@ export class ViewContainerComponent extends View implements OnInit {
   }
 
   ngOnInit() {
-    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
+    this.sessionQuery.isPublic$.subscribe(isPublic => this.isPublic = isPublic);
     this.containerService.tool$.subscribe(tool => this.tool = tool);
   }
 }

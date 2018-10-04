@@ -19,13 +19,13 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ga4ghPath } from './../../shared/constants';
 import { ContainerService } from './../../shared/container.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
-import { StateService } from './../../shared/state.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ExtendedToolsService } from './../../shared/extended-tools.service';
 import { HttpResponse } from '@angular/common/http';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { SessionQuery } from '../../shared/session/session.query';
 
 @Component({
   selector: 'app-info-tab',
@@ -51,7 +51,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
   trsLinkWDL: string;
   downloadZipLink: string;
   isValidVersion = false;
-  constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private stateService: StateService,
+  constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private sessionQuery: SessionQuery,
     private containersService: ExtendedToolsService) {
   }
 
@@ -80,7 +80,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
     this.infoTabService.wdlPathEditing$.subscribe(editing => this.wdlPathEditing = editing);
     this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
     this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
-    this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
+    this.sessionQuery.isPublic$.subscribe(publicPage => this.isPublic = publicPage);
   }
 
   downloadZip() {

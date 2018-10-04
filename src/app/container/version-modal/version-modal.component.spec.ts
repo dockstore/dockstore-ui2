@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -6,24 +7,21 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { ListContainersService } from '../../containers/list/list.service';
 import { ContainerService } from '../../shared/container.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
 import { ContainersService } from '../../shared/swagger';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { DateService } from './../../shared/date.service';
 import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { sampleTool1, sampleTag } from './../../test/mocked-objects';
+import { sampleTag, sampleTool1 } from './../../test/mocked-objects';
 import {
-    ContainersStubService,
-    ContainerStubService,
-    ContainertagsStubService,
-    DateStubService,
-    ParamFilesStubService,
-    RefreshStubService,
-    StateStubService,
+  ContainersStubService,
+  ContainerStubService,
+  ContainertagsStubService,
+  DateStubService,
+  ParamFilesStubService,
+  RefreshStubService,
 } from './../../test/service-stubs';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;
@@ -41,7 +39,6 @@ describe('VersionModalComponent', () => {
         {provide: ContainerService, useClass: ContainerStubService},
         {provide: ContainersService, useClass: ContainersStubService},
         {provide: ContainertagsService, useClass: ContainertagsStubService},
-        {provide: StateService, useClass: StateStubService},
         {provide: DateService, useClass: DateStubService},
         {provide: RefreshService, useClass: RefreshStubService},
       ]

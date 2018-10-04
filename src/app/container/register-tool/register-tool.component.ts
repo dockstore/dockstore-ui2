@@ -18,8 +18,8 @@ import { NgForm } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
+import { SessionQuery } from '../../shared/session/session.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { StateService } from './../../shared/state.service';
 import { RegisterToolService } from './register-tool.service';
 
 @Component({
@@ -55,7 +55,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
-  constructor(private registerToolService: RegisterToolService, private stateService: StateService) { }
+  constructor(private registerToolService: RegisterToolService, private sessionQuery: SessionQuery) { }
 
   isInvalidCustomRegistry() {
     return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
@@ -120,7 +120,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
     this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
-    this.stateService.refreshMessage$.subscribe(status => this.refreshMessage = status);
+    this.sessionQuery.refreshMessage$.subscribe(status => this.refreshMessage = status);
     this.registerToolService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 

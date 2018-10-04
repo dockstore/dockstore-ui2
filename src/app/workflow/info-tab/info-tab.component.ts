@@ -20,7 +20,7 @@ import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
@@ -54,7 +54,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   <b>FULL:</b> Full content synced from source control.<br />
   <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
   constructor(private workflowService: WorkflowService, private workflowsService: ExtendedWorkflowsService,
-    private stateService: StateService, private infoTabService: InfoTabService) {
+    private sessionQuery: SessionQuery, private infoTabService: InfoTabService) {
     super();
   }
 
@@ -73,10 +73,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
+    this.sessionQuery.isPublic$.subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.defaultTestFilePathEditing$.subscribe(editing => this.defaultTestFilePathEditing = editing);
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   /**

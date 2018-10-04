@@ -17,7 +17,6 @@
 import { WorkflowsService } from '../../shared/swagger';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DateService } from './../../shared/date.service';
-import { StateService } from '../../shared/state.service';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 
@@ -45,7 +44,6 @@ describe('ViewWorkflowComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: VersionModalService, useClass: VersionModalStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService},
-        { provide: StateService, useClass: StateStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: HostedService, useClass: HostedStubService }
       ]

@@ -20,9 +20,9 @@ import { ContainerService } from './../../shared/container.service';
 import { ExtendedToolService } from './../../shared/extended-tool.service';
 import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../../shared/refresh.service';
-import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { SessionService } from '../../shared/session/session.service';
 
 @Injectable()
 export class InfoTabService {
@@ -50,7 +50,7 @@ export class InfoTabService {
      * @memberof InfoTabService
      */
     private currentTool: ExtendedDockstoreTool;
-    constructor(private containersService: ContainersService, private stateService: StateService,
+    constructor(private containersService: ContainersService, private sessionService: SessionService,
         private containerService: ContainerService, private refreshService: RefreshService,
         private extendedToolService: ExtendedToolService) {
         this.extendedToolService.extendedDockstoreTool$.subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
@@ -85,7 +85,7 @@ export class InfoTabService {
         const message = 'Tool Info';
         tool.tags = [];
         this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
-            this.stateService.setRefreshMessage('Updating ' + message + '...');
+            this.sessionService.setRefreshMessage('Updating ' + message + '...');
             this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
                 this.containerService.replaceTool(this.tools, refreshResponse);
                 this.containerService.setTool(refreshResponse);

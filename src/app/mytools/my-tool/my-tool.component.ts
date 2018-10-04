@@ -15,9 +15,12 @@
  */
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
+import { first, takeUntil } from 'rxjs/operators';
 
+import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { UserService } from '../../loginComponents/user.service';
@@ -25,20 +28,17 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { SessionService } from '../../shared/session/session.service';
 import { DockstoreTool } from '../../shared/swagger';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { MytoolsService } from '../mytools.service';
 import { Tool } from './../../container/register-tool/tool';
 import { TokenService } from './../../loginComponents/token.service';
 import { ContainerService } from './../../shared/container.service';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { Configuration } from './../../shared/swagger/configuration';
-import { first, takeUntil } from 'rxjs/operators';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-
-import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
-import { MatDialogRef, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-my-tool',
@@ -54,10 +54,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
   private registerTool: Tool;
   public showSidebar = true;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
-    private userService: UserService, protected authService: AuthService, private stateService: StateService,
+    private userService: UserService, protected authService: AuthService, private sessionService: SessionService,
     private containerService: ContainerService, private dialog: MatDialog, private location: Location,
     private refreshService: RefreshService, protected accountsService: AccountsService,
-    private registerToolService: RegisterToolService, protected tokenService: TokenService,
+    private registerToolService: RegisterToolService, protected tokenService: TokenService, private sessionQuery: SessionQuery,
     protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService) {
     super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
@@ -89,12 +89,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
-        this.stateService.setRefreshMessage('Fetching tools');
+        this.sessionService.setRefreshMessage('Fetching tools');
         this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
           this.containerService.setTools(tools);
-          this.stateService.setRefreshMessage(null);
+          this.sessionService.setRefreshMessage(null);
         }, (error: any) => {
-          this.stateService.setRefreshMessage(null);
+          this.sessionService.setRefreshMessage(null);
         });
       }
     });
@@ -113,7 +113,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       }
     });
 
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
   }
 

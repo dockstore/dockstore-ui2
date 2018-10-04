@@ -17,8 +17,7 @@ import { RefreshService } from '../../shared/refresh.service';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StateService } from '../../shared/state.service';
-import { StateStubService, UserStubService } from '../../test/service-stubs';
+import { UserStubService } from '../../test/service-stubs';
 import { UserService } from './../../loginComponents/user.service';
 import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
@@ -44,7 +43,6 @@ describe('RefreshToolOrganizationComponent', () => {
       ],
       providers: [
         { provide: UserService, useClass: UserStubService },
-        { provide: StateService, useClass: StateStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: RefreshService, useClass: RefreshStubService }]

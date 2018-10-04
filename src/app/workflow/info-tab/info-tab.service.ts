@@ -17,11 +17,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { RefreshService } from '../../shared/refresh.service';
+import { SessionService } from '../../shared/session/session.service';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { ErrorService } from './../../shared/error.service';
 import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
 import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
-import { StateService } from './../../shared/state.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -52,8 +52,8 @@ export class InfoTabService {
      */
     private currentWorkflow: any;
 
-    constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
-        private errorService: ErrorService, private refreshService: RefreshService,
+    constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService,
+      private sessionService: SessionService, private errorService: ErrorService, private refreshService: RefreshService,
         private extendedWorkflowService: ExtendedWorkflowService,
         private descriptorLanguageService: DescriptorLanguageService) {
         this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
@@ -75,7 +75,7 @@ export class InfoTabService {
         const message = 'Workflow Info';
         workflow.workflowVersions = [];
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
-            this.stateService.setRefreshMessage('Updating ' + message + '...');
+            this.sessionService.setRefreshMessage('Updating ' + message + '...');
             this.workflowsService.refresh(this.originalWorkflow.id).subscribe(refreshResponse => {
                 this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
@@ -95,7 +95,7 @@ export class InfoTabService {
      */
     update(workflow: Workflow) {
         const message = 'Descriptor Type';
-        this.stateService.setRefreshMessage('Updating ' + message + '...');
+        this.sessionService.setRefreshMessage('Updating ' + message + '...');
         workflow = this.changeWorkflowPathToDefaults(workflow);
         workflow.workflowVersions = [];
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe((updatedWorkflow: Workflow) => {

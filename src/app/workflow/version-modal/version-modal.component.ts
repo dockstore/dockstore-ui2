@@ -20,7 +20,7 @@ import { debounceTime } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -57,7 +57,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
-    private stateService: StateService, private workflowService: WorkflowService) {
+    private sessionQuery: SessionQuery, private workflowService: WorkflowService) {
   }
 
   ngOnInit() {
@@ -73,8 +73,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         this.originalTestParameterFilePaths.push(testParameterFile.path);
       }
     });
-    this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.isPublic$.subscribe(publicPage => this.isPublic = publicPage);
+    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   removeTestParameterFile(index: number) {

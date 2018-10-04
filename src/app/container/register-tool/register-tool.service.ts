@@ -22,7 +22,6 @@ import { finalize } from 'rxjs/operators';
 
 import { ContainerService } from './../../shared/container.service';
 import { Repository } from './../../shared/enum/Repository.enum';
-import { StateService } from './../../shared/state.service';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { MetadataService } from './../../shared/swagger/api/metadata.service';
@@ -31,6 +30,7 @@ import { Tool } from './tool';
 
 // This line is super important for jQuery to work across the website for some reason
 import * as $ from 'jquery';
+import { SessionService } from '../../shared/session/session.service';
 
 @Injectable()
 export class RegisterToolService {
@@ -52,7 +52,7 @@ export class RegisterToolService {
             'Quay.io', '', false, '', ''));
     constructor(private containersService: ContainersService, private matSnackBar: MatSnackBar,
         private containerService: ContainerService,
-        private stateService: StateService, private router: Router,
+        private sessionService: SessionService, private router: Router,
         private metadataService: MetadataService, private hostedService: HostedService) {
         this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
@@ -106,13 +106,13 @@ export class RegisterToolService {
     registerTool(newTool: Tool, customDockerRegistryPath) {
       this.setToolRegisterError(null);
       this.setTool(newTool);
-      this.stateService.setRefreshMessage('Registering new tool...');
+      this.sessionService.setRefreshMessage('Registering new tool...');
       const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
       this.containersService.registerManual(normalizedToolObj)
         .subscribe((registeredDockstoreTool: DockstoreTool) => {
-          this.stateService.setRefreshMessage('Refreshing new tool...');
+          this.sessionService.setRefreshMessage('Refreshing new tool...');
           this.containersService.refresh(registeredDockstoreTool.id).pipe(finalize(() => {
-            this.stateService.setRefreshMessage(null);
+            this.sessionService.setRefreshMessage(null);
           })).subscribe((refreshedDockstoreTool: DockstoreTool) => {
             this.setIsModalShown(false);
             this.containerService.addToTools(this.tools, refreshedDockstoreTool);
@@ -120,7 +120,7 @@ export class RegisterToolService {
             this.router.navigateByUrl('/my-tools' + '/' + refreshedDockstoreTool.tool_path);
           }, (error: HttpErrorResponse) => this.setToolRegisterError(error));
         }, (error: HttpErrorResponse) => {
-          this.stateService.setRefreshMessage(null);
+          this.sessionService.setRefreshMessage(null);
           this.setToolRegisterError(error);
         });
     }
@@ -133,20 +133,20 @@ export class RegisterToolService {
       const splitPath = hostedTool.path.split('/');
       const namespace = splitPath[0];
       const name = splitPath[1];
-      this.stateService.setRefreshMessage('Registering tool...');
+      this.sessionService.setRefreshMessage('Registering tool...');
       this.hostedService.createHostedTool(
           name,
           'cwl',
           hostedTool.registry,
           namespace).subscribe((result: DockstoreTool) => {
             this.setToolRegisterError(null);
-            this.stateService.setRefreshMessage(null);
+            this.sessionService.setRefreshMessage(null);
             this.setIsModalShown(false);
             this.containerService.addToTools(this.tools, result);
             this.containerService.setTool(result);
             this.router.navigateByUrl('/my-tools' + '/' + result.tool_path);
           }, error =>  {
-                this.stateService.setRefreshMessage(null);
+                this.sessionService.setRefreshMessage(null);
                 this.setToolRegisterError(error);
             }
           );

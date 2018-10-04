@@ -19,7 +19,7 @@ import { BehaviorSubject, merge as observableMerge, Observable, Subject } from '
 import { distinctUntilChanged, filter, first, map, takeUntil } from 'rxjs/operators';
 
 import { ContainerService } from './container.service';
-import { StateService } from './state.service';
+import { SessionQuery } from './session/session.query';
 import { ContainersService } from './swagger/api/containers.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
@@ -48,9 +48,9 @@ export class CheckerWorkflowService {
   // Whether current entry is a stub or not
   public isStub$: Observable<boolean>;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private workflowsService: WorkflowsService, private stateService: StateService, private workflowService: WorkflowService,
+  constructor(private workflowsService: WorkflowsService, private sessionQuery: SessionQuery, private workflowService: WorkflowService,
     private containerService: ContainerService, private router: Router, private containersService: ContainersService) {
-    this.publicPage$ = this.stateService.publicPage$;
+    this.publicPage$ = this.sessionQuery.isPublic$;
     this.publicPage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => this.publicPage = publicPage);
     observableMerge(this.containerService.tool$, this.workflowService.workflow$).pipe(
       filter(x => x != null),

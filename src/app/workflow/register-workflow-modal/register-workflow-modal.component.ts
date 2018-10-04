@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
 import { Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
@@ -67,7 +67,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService,
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private sessionQuery: SessionQuery,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
   }
 
@@ -84,7 +84,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.registerWorkflowModalService.workflowRegisterError$.subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
     this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
     this.descriptorLanguages$.subscribe((languages: Array<string>) => {
@@ -96,7 +96,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   /**
-   * Playing favourites with GitHub by selecting it first
+   * Playing favourites with GitHub by selecting it firststateService
    *
    * @memberof RegisterWorkflowModalComponent
    */

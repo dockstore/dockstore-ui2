@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router/';
-import { TabsetComponent } from 'ngx-bootstrap';
-import { Subscription ,  Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router/';
+import { TabsetComponent } from 'ngx-bootstrap';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -27,10 +28,10 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { ErrorService } from './../shared/error.service';
 import { DateService } from './date.service';
 import { ProviderService } from './provider.service';
-import { StateService } from './state.service';
+import { SessionQuery } from './session/session.query';
+import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -62,12 +63,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
-    private stateService: StateService,
     private errorService: ErrorService,
     public dateService: DateService,
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
-    public locationService: Location) {
+    public locationService: Location,
+    protected sessionService: SessionService, protected sessionQuery: SessionQuery) {
       this.location = locationService;
   }
 
@@ -79,10 +80,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.parseURL(this.router.url);
-    this.stateService.setPublicPage(this.isPublic());
+    this.sessionService.setPublicPage(this.isPublic());
     this.errorService.errorObj$.subscribe(toolError => this.error = toolError);
-    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.isPublic$.subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
   }
 

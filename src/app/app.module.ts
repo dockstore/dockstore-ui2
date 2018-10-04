@@ -90,7 +90,6 @@ import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
-import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
@@ -191,7 +190,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,
     RefreshService,
-    StateService,
     SearchService,
     PagenumberService,
     TwitterService,

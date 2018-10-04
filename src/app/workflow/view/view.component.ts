@@ -13,19 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { StateService } from './../../shared/state.service';
-import { VersionModalService } from './../version-modal/version-modal.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { AfterViewChecked, AfterViewInit, Component, Input, ViewChild, OnInit } from '@angular/core';
-import { Workflow } from './../../shared/swagger/model/workflow';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { View } from '../../shared/view';
 import { DateService } from '../../shared/date.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { View } from '../../shared/view';
 import { WorkflowService } from '../../shared/workflow.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { Workflow } from './../../shared/swagger/model/workflow';
+import { VersionModalService } from './../version-modal/version-modal.service';
+
 
 @Component({
   selector: 'app-view-workflow',
@@ -45,7 +44,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   constructor(
     private workflowService: WorkflowService,
     private versionModalService: VersionModalService,
-    private stateService: StateService,
+    private sessionQuery: SessionQuery,
     private workflowsService: WorkflowsService,
     private hostedService: HostedService,
     dateService: DateService) {
@@ -65,7 +64,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   ngOnInit() {
-    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
+    this.sessionQuery.isPublic$.subscribe(isPublic => this.isPublic = isPublic);
     this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
   }
 

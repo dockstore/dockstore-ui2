@@ -16,20 +16,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 
-import { RefreshService } from '../../shared/refresh.service';
-import { RouterLinkStubDirective } from '../../test';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from '../../loginComponents/token.service';
 import { UserService } from '../../loginComponents/user.service';
-import { StateService } from '../../shared/state.service';
+import { RefreshService } from '../../shared/refresh.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { WorkflowService } from '../../shared/workflow.service';
+import { RouterLinkStubDirective } from '../../test';
 import { RouterOutletStubComponent } from '../../test/router-stubs';
 import {
   AccountsStubService,
@@ -37,7 +37,6 @@ import {
   ConfigurationStub,
   RefreshStubService,
   RegisterWorkflowModalStubService,
-  StateStubService,
   TokenStubService,
   UrlResolverStubService,
   UsersStubService,
@@ -46,9 +45,8 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowComponent } from './my-workflow.component';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MyWorkflowComponent } from './my-workflow.component';
 
 
 describe('MyWorkflowsComponent', () => {
@@ -69,7 +67,6 @@ describe('MyWorkflowsComponent', () => {
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
         { provide: UserService, useClass: UserStubService },
-        { provide: StateService, useClass: StateStubService },
         { provide: TokenService, useClass: TokenStubService },
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
