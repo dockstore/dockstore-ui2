@@ -32,6 +32,7 @@ export class LaunchComponent {
   @Input() basePath;
   @Input() path;
   @Input() toolname;
+  @Input() mode;
 
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
