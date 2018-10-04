@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 describe('Dockstore my tools', function() {
-    require('./helper.js')
+    require('../helper.js')
 
     beforeEach(function() {
       cy.visit(String(global.baseUrl) + "/my-tools")

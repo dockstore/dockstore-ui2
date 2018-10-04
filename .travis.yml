@@ -50,22 +50,12 @@ jobs:
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST='cypress/integration/hostedTools.js'
+        - TEST='cypress/integration/hostedEntries/**/*'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST='cypress/integration/hostedWorkflows.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/mytools.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/myworkflows.js'
+        - TEST='cypress/integration/myEntries/**/*'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
@@ -85,27 +75,17 @@ jobs:
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST='cypress/integration/toolDetails.js'
+        - TEST='cypress/integration/entryDetails/**/*'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
-        - TEST='cypress/integration/ToolsSearch.js'
+        - TEST='cypress/integration/entrySearch/**/*'
       script: ./scripts/run-travis-script.sh
     - stage: integration-tests
       env:
         - RUN_PROD=false
         - TEST='cypress/integration/VersionModal.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/workflowDetails.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/WorkflowsSearch.js'
       script: ./scripts/run-travis-script.sh
 
       stage: prod-tests
