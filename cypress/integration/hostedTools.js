@@ -6,15 +6,7 @@ describe('Dockstore hosted tools', function() {
     });
 
     function getTool() {
-    cy
-      .contains('div .no-wrap', 'ht')
-      .should('not.be.visible')
-    cy.contains('quay.io/hosted-tool')
-      .click()
-    cy
-      .contains('div .no-wrap', 'ht')
-      .should('be.visible')
-      .click()
+      cy.goToUnexpandedSidebarEntry('quay.io/hosted-tool', 'ht')
   }
 
     // Ensure tabs are correct for the hosted tool, try adding a version
