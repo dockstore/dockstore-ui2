@@ -35,6 +35,7 @@ import { NgxMdModule } from 'ngx-md';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
+import { CoreModule } from './core/core.module';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
@@ -144,6 +145,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ChangeUsernameComponent
 ],
   imports: [
+    CoreModule,
     BrowserAnimationsModule,
     FormsModule,
     Ng2UiAuthModule.forRoot(AuthConfig),
