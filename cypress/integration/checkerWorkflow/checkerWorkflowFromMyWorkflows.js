@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+// These tests in the checkerWorkflow directory depend on each other
 describe('Checker workflow test from my-workflows', function() {
     require('../helper.js')
-
+    require('../helperCommands.js')
     beforeEach(function() {
         // Visit my-workflows page
         cy.visit(String(global.baseUrl) + "/my-workflows")

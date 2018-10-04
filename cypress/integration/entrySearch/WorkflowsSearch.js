@@ -26,10 +26,11 @@ describe('Dockstore workflow list page', function () {
         .should('have.attr', 'href', '/workflows/github.com/A/l')
         .should('not.have.attr', 'href', '/workflows/github.com%20A%20l')
     });
-    it('Should have 3 workflows', function () {
+    // 1 workflow A/l, no checkers from other tests added
+    it('Should have 1 workflow', function () {
       cy
         .get('mat-row')
-        .should('have.length', 3)
+        .should('have.length', 1)
     });
     it('Should be able to go to the github.com/A/l workflow', function () {
       cy

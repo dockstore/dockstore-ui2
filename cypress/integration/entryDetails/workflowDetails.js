@@ -23,7 +23,7 @@ describe('Variations of URL', function() {
 });
 
 describe('Dockstore Workflow Details', function() {
-  require('./helper.js')
+  require('../helper.js')
 	beforeEach(function () {
      cy.visit(String(global.baseUrl) + "/workflows/github.com/A/l")
      cy

@@ -46,7 +46,7 @@ describe('Variations of URL', function() {
 });
 
 describe('Dockstore Tool Details of quay.io/A2/a', function() {
-    require('./helper.js')
+    require('../helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/a")
         cy
@@ -135,7 +135,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', function() {
 })
 
 describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut', function() {
-    require('./helper.js')
+    require('../helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut")
         cy
@@ -203,7 +203,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 })
 
 describe('Dockstore Tool Details of quay.io/A2/b3', function() {
-    require('./helper.js')
+    require('../helper.js')
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/containers/quay.io/A2/b3")
         cy

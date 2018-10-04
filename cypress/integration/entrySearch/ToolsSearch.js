@@ -1,5 +1,5 @@
 describe('Dockstore tool list page', function () {
-  require('./helper.js')
+  require('../helper.js')
   describe('Select a tool', function () {
     it('Should be able to go to the tools search page', function () {
       cy.visit(String(global.baseUrl) + "/search-containers")

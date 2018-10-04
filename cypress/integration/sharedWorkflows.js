@@ -1,6 +1,6 @@
 describe('Shared with me workflow test from my-workflows', function() {
   require('./helper.js')
-
+  require('./helperCommands.js')
   beforeEach(function() {
       // Mock the shared with me workflows and permissions
       // TODO: There is probably a better approach to this which would allow for deeper testing of shared workflows
