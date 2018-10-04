@@ -37,11 +37,22 @@
         Run locally with the Dockstore CLI
         <pre>{{ cli }}</pre>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nfl'" class="m-2">
+      <!-- Show this if not hosted -->
+      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nfl' && (!DockstoreToolType.ModeEnum.HOSTED === mode && !WorkflowType.ModeEnum.HOSTED === mode)" class="m-2">
         <div matTooltip="Nextflow can conveniently run a workflow off of source control">
           Run with nextflow
           <pre>{{ nextflowNativeLaunchDescription }}</pre>
           <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
+        </div>
+      </mat-card>
+      <!-- Show this if hosted -->
+      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nfl' && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)" class="m-2">
+        <div matTooltip="Nextflow can also run a local workflow">
+          Download the workflow files
+          <pre>{{ nextflowDownloadFileDescription }}</pre>
+
+          Run with nextflow
+          <pre>{{ nextflowLocalLaunchDescription }}</pre>
         </div>
       </mat-card>
       <mat-card *ngIf="(currentDescriptor | lowercase) === 'cwl' && (published$ | async)"  class="m-2">
