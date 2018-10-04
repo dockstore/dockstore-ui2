@@ -70,39 +70,15 @@ describe('Shared with me workflow test from my-workflows', function() {
   }
 
   function getReadOnlyWorkflow() {
-    cy.contains('dockstore.org/user_B')
-      .parent()
-      .parent()
-      .parent()
-      .contains('div .no-wrap', /readertest/)
-      .should('not.be.visible')
-    cy.contains('dockstore.org/user_B')
-      .click()
-    // Can't seem to select the mat-expansion-panel for some reason without triple parent
-    cy.contains('dockstore.org/user_B')
-      .parent()
-      .parent()
-      .parent()
-      .contains('div .no-wrap', /readertest/)
-      .should('be.visible').click()
+    cy.goToUnexpandedSidebarEntry('dockstore.org/user_B', /readertest/)
   }
 
   function getWriteOnlyWorkflow() {
-    cy.contains('dockstore.org/user_B')
-      .click()
-    cy.contains('dockstore.org/user_B')
-      .parentsUntil('accordion-group')
-      .contains('div .no-wrap', /writertest/)
-      .should('be.visible').click()
+    cy.goToUnexpandedSidebarEntry('dockstore.org/user_B', /writertest/)
   }
 
   function getOwnerWorkflow() {
-    cy.contains('dockstore.org/user_B')
-      .click()
-    cy.contains('dockstore.org/user_B')
-      .parentsUntil('accordion-group')
-      .contains('div .no-wrap', /ownertest/)
-      .should('be.visible').click()
+    cy.goToUnexpandedSidebarEntry('dockstore.org/user_B', /ownertest/)
   }
 
   describe('Should be able to perform operations on shared with me workflows based on permissions', function() {

@@ -6,14 +6,7 @@ describe('Dockstore hosted workflows', function() {
     });
 
     function getWorkflow() {
-      cy.contains('dockstore.org/A')
-        .click()
-      cy.contains('dockstore.org/A')
-          .parent()
-          .parent()
-          .parent()
-          .contains('div .no-wrap', /hosted/)
-          .should('be.visible').click()
+      cy.goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/)
   }
 
     // Ensure tabs are correct for the hosted workflow, try adding a version
