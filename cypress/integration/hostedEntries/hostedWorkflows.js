@@ -1,5 +1,5 @@
 describe('Dockstore hosted workflows', function() {
-    require('./helper.js')
+    require('../helper.js')
 
     beforeEach(function() {
         cy.visit(String(global.baseUrl) + "/my-workflows")

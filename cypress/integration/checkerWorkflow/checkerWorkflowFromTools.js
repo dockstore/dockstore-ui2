@@ -1,3 +1,4 @@
+// These tests in the checkerWorkflow directory depend on each other
 describe('Checker workflow test from tools', function() {
     require('../helper.js')
 

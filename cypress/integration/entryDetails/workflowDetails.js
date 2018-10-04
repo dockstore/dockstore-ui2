@@ -1,5 +1,5 @@
 describe('Variations of URL', function() {
-  require('./helper.js')
+  require('../helper.js')
   it('Should redirect to canonical url (encoding)', function() {
     cy.visit(String(global.baseUrl) + "/workflows/github.com%2FA%2Fl")
     cy.url().should('eq', String(global.baseUrl) + '/workflows/github.com/A/l:master?tab=info')
