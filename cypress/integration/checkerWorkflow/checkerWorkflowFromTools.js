@@ -1,7 +1,7 @@
 // These tests in the checkerWorkflow directory depend on each other
 describe('Checker workflow test from tools', function() {
     require('../helper.js')
-
+    require('../helperCommands.js')
     beforeEach(function() {
         // Visit the search-containers page
         cy.visit(String(global.baseUrl) + "/search-containers")

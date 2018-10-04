@@ -15,6 +15,7 @@
  */
 describe('Dockstore hosted tools', function() {
     require('../helper.js')
+    require('../helperCommands.js')
 
     beforeEach(function() {
       cy.visit(String(global.baseUrl) + "/my-tools")
