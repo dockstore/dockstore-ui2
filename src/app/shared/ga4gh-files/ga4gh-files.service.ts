@@ -40,9 +40,8 @@ export class GA4GHFilesService {
     });
   }
 
-  @transaction()
   clearFiles() {
-    this.ga4ghFilesStore.destroy();
+    this.ga4ghFilesStore.remove();
   }
 
   /**

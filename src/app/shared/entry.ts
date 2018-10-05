@@ -27,6 +27,7 @@ import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ErrorService } from './../shared/error.service';
 import { DateService } from './date.service';
+import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
@@ -68,7 +69,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
     public locationService: Location,
-    protected sessionService: SessionService, protected sessionQuery: SessionQuery) {
+    protected sessionService: SessionService, protected sessionQuery: SessionQuery, protected gA4GHFilesService: GA4GHFilesService) {
       this.location = locationService;
   }
 
@@ -136,6 +137,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   protected initTool(): void {
+    this.gA4GHFilesService.clearFiles();
     this.setProperties();
     this.getValidVersions();
     this.chooseDefaultVersion();

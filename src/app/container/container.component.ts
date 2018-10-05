@@ -26,6 +26,7 @@ import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
@@ -81,9 +82,10 @@ export class ContainerComponent extends Entry {
     private containerService: ContainerService,
     errorService: ErrorService,
     location: Location,
-    activatedRoute: ActivatedRoute, sessionService: SessionService, sessionQuery: SessionQuery) {
+    activatedRoute: ActivatedRoute, sessionService: SessionService, sessionQuery: SessionQuery,
+      protected gA4GHFilesService: GA4GHFilesService) {
     super(trackLoginService, providerService, router,
-      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery);
+      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'containers';
     this.redirectAndCallDiscourse('/my-tools');
   }

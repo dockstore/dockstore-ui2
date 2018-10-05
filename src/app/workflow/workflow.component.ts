@@ -25,6 +25,7 @@ import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { ErrorService } from '../shared/error.service';
+import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
 import { RefreshService } from '../shared/refresh.service';
@@ -76,9 +77,10 @@ export class WorkflowComponent extends Entry {
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService,
     errorService: ErrorService, urlResolverService: UrlResolverService,
-    location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService) {
+    location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
+      gA4GHFilesService: GA4GHFilesService) {
     super(trackLoginService, providerService, router,
-      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery);
+      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
