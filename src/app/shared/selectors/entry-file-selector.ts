@@ -17,8 +17,8 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
 import { ga4ghWorkflowIdPrefix } from '../constants';
-import { GA4GHFilesStateService } from '../entry/GA4GHFiles.state.service';
 import { FileService } from '../file.service';
+import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
 import { FileWrapper, GA4GHService } from '../swagger';
 
 /**
@@ -44,7 +44,7 @@ export abstract class EntryFileSelector {
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
-  constructor(protected fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
+  constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
     protected gA4GHService: GA4GHService) {
   }
 
@@ -114,7 +114,7 @@ export abstract class EntryFileSelector {
    * @memberof EntryFileSelector
    */
   reactToFile(): void {
-    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
+    this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
     // TODO: Memoize this
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
       this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,

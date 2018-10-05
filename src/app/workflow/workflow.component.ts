@@ -24,7 +24,6 @@ import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
 import { ErrorService } from '../shared/error.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
@@ -75,7 +74,7 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService, private ga4ghFilesStateService: GA4GHFilesStateService,
+    router: Router, private workflowService: WorkflowService,
     errorService: ErrorService, urlResolverService: UrlResolverService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService) {
     super(trackLoginService, providerService, router,

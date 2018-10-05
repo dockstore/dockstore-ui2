@@ -14,11 +14,13 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { EntryTab } from '../../shared/entry/entry-tab';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
@@ -61,7 +63,7 @@ export class LaunchWorkflowComponent extends EntryTab {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService,
-    protected gA4GHFilesStateService: GA4GHFilesStateService) {
+    protected gA4GHFilesService: GA4GHFilesService, private gA4GHFilesQuery: GA4GHFilesQuery) {
     super();
     this.published$ = this.workflowService.workflowIsPublished$;
   }
@@ -77,7 +79,7 @@ export class LaunchWorkflowComponent extends EntryTab {
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
-    this.updateWgetTestJsonString(workflowPath, versionName);
+    this.updateWgetTestJsonString(workflowPath, versionName, this.currentDescriptor);
   }
 
   /**
@@ -85,40 +87,17 @@ export class LaunchWorkflowComponent extends EntryTab {
    * @param workflowPath
    * @param versionName
    */
-  updateWgetTestJsonString(workflowPath: string, versionName: string): void {
-    let descriptorToolFiles$: BehaviorSubject<Array<ToolFile>>;
-    switch (this.currentDescriptor) {
-      case 'wdl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
-        break;
-      }
-      case 'cwl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
-        break;
-      }
-      case 'nfl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
-        break;
-      }
-      default: {
-        console.error('Unknown descriptor type: ' + this.currentDescriptor);
-      }
+  updateWgetTestJsonString(workflowPath: string, versionName: string, descriptorType: WebserviceDescriptorType): void {
+      let toolFiles$: Observable<Array<ToolFile>>;
+      toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
+      toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
+        if (toolFiles.length > 0) {
+          this.testParameterPath = toolFiles[0].path;
+        } else {
+          this.testParameterPath = null;
+        }
+        this.wgetTestJsonDescription = this.launchService.getTestJsonString(ga4ghWorkflowIdPrefix + workflowPath, versionName,
+          this.currentDescriptor, this.testParameterPath);
+      });
     }
-
-    descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (toolFiles) {
-        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
-      } else {
-        return [];
-      }
-    })).pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
-      if (toolFiles.length > 0) {
-        this.testParameterPath = toolFiles[0].path;
-      } else {
-        this.testParameterPath = null;
-      }
-      this.wgetTestJsonDescription = this.launchService.getTestJsonString(ga4ghWorkflowIdPrefix + workflowPath, versionName,
-        this.currentDescriptor, this.testParameterPath);
-    });
-  }
 }

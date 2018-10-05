@@ -16,7 +16,6 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MAT_TOOLTIP_DEFAULT_OPTIONS,
@@ -24,6 +23,7 @@ import {
   MatTooltipDefaultOptions,
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -33,6 +33,7 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
 
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
@@ -75,7 +76,6 @@ import { DateService } from './shared/date.service';
 import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
-import { GA4GHFilesStateService } from './shared/entry/GA4GHFiles.state.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 import { ErrorService } from './shared/error.service';
 import { ExtendedToolsService } from './shared/extended-tools.service';
@@ -104,7 +104,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { environment } from '../environments/environment';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -183,7 +182,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     TrackLoginService,
     TokenService,
     UserService,
-    GA4GHFilesStateService,
     ListService,
     CommunicatorService,
     ProviderService,

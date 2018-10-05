@@ -15,8 +15,8 @@
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { Files } from '../../shared/files';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 
@@ -27,7 +27,8 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
 export class FilesContainerComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: Tag;
   versionsWithParamfiles: Array<any>;
-  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesStateService: GA4GHFilesStateService) {
+  constructor(private paramfilesService: ParamfilesService,
+    private gA4GHFilesService: GA4GHFilesService) {
     super();
   }
 
@@ -36,9 +37,9 @@ export class FilesContainerComponent extends Files implements OnInit, OnChanges 
   }
   ngOnChanges() {
     if (!this.selectedVersion) {
-      this.gA4GHFilesStateService.clearFiles();
+      this.gA4GHFilesService.clearFiles();
     } else {
-      this.gA4GHFilesStateService.update(this.entrypath, this.selectedVersion.name);
+      this.gA4GHFilesService.updateFiles(this.entrypath, this.selectedVersion.name);
       this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
     }
   }

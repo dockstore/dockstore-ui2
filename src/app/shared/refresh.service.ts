@@ -18,7 +18,7 @@ import { MatSnackBar } from '@angular/material';
 
 import { ErrorService } from './../shared/error.service';
 import { ContainerService } from './container.service';
-import { GA4GHFilesStateService } from './entry/GA4GHFiles.state.service';
+import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { SessionService } from './session/session.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
@@ -35,8 +35,8 @@ export class RefreshService {
     private workflows;
     constructor(private workflowsService: WorkflowsService, private containerService: ContainerService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private ga4ghFilesStateService: GA4GHFilesStateService, private errorService: ErrorService, private snackBar: MatSnackBar,
-        private sessionService: SessionService) {
+        private errorService: ErrorService, private snackBar: MatSnackBar,
+        private sessionService: SessionService, private gA4GHFilesService: GA4GHFilesService) {
         this.containerService.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
@@ -99,7 +99,7 @@ export class RefreshService {
           this.workflowService.setWorkflow(refreshedWorkflow);
           this.handleSuccess(message);
           if (toolID && versionName) {
-            this.ga4ghFilesStateService.update(toolID, versionName);
+            this.gA4GHFilesService.updateFiles(toolID, versionName);
           }
       }, error => this.handleError(message, error));
     }

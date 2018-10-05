@@ -19,7 +19,6 @@ import { Observable } from 'rxjs';
 
 import { ContainersStubService, ContainerStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
 import { ContainerService } from '../../shared/container.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { ContainersService, GA4GHService } from '../../shared/swagger';
 import { DescriptorsComponent } from './descriptors.component';
@@ -47,7 +46,6 @@ describe('DescriptorsComponent', () => {
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
-        GA4GHFilesStateService
       ]
     })
       .compileComponents();

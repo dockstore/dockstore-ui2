@@ -14,12 +14,12 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { ContainerService } from '../../shared/container.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { GA4GHService, ToolFile } from '../../shared/swagger';
@@ -45,9 +45,9 @@ export class DescriptorsComponent extends EntryFileSelector {
   protected entryType: ('tool' | 'workflow') = 'tool';
 
   constructor(private containerService: ContainerService,
-    private descriptorsService: ToolDescriptorService, protected gA4GHService: GA4GHService,
-    public fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService) {
-    super(fileService, gA4GHFilesStateService, gA4GHService);
+    private descriptorsService: ToolDescriptorService, protected gA4GHFilesService: GA4GHFilesService,
+    private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHService: GA4GHService) {
+    super(fileService, gA4GHFilesService, gA4GHService);
     this.published$ = this.containerService.toolIsPublished$;
   }
 
@@ -62,33 +62,8 @@ export class DescriptorsComponent extends EntryFileSelector {
    * @returns {Observable<Array<ToolFile>>} The array of language-specific descriptors
    * @memberof DescriptorsComponent
    */
-  getFiles(descriptor: WebserviceDescriptorType): Observable<Array<ToolFile>> {
-    let descriptorToolFiles$: BehaviorSubject<Array<ToolFile>>;
-    switch (descriptor) {
-      case 'wdl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
-        break;
-      }
-      case 'cwl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
-        break;
-      }
-      case 'nfl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
-        break;
-      }
-      default: {
-        console.error('Unknown descriptor type: ' + descriptor);
-        return observableOf([]);
-      }
-    }
-    return descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (toolFiles) {
-        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
-          toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
-      } else {
-        return [];
-      }
-    }));
+  getFiles(descriptorType: WebserviceDescriptorType): Observable<Array<ToolFile>> {
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+    ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
   }
 }
