@@ -16,6 +16,7 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MAT_TOOLTIP_DEFAULT_OPTIONS,
@@ -103,6 +104,7 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { environment } from '../environments/environment';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -144,6 +146,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ChangeUsernameComponent
 ],
   imports: [
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
     CoreModule,
     BrowserAnimationsModule,
     FormsModule,
