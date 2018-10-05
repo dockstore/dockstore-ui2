@@ -35,7 +35,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
-    this.checkIfValid(true);
+    this.checkIfValid(true, value);
   }
 
   protected entryType: ('tool' | 'workflow') = 'workflow';

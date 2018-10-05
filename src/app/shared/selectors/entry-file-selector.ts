@@ -134,7 +134,7 @@ export abstract class EntryFileSelector {
       });
   }
 
-  checkIfValid(isDescriptor: boolean): void {
+  checkIfValid(isDescriptor: boolean, version: any): void {
     let fileEnum = null;
     if (this.currentDescriptor === 'cwl') {
       if (isDescriptor) {
@@ -149,10 +149,12 @@ export abstract class EntryFileSelector {
         fileEnum = 'CWL_TEST_JSON';
       }
     }
-    for (const validation of this._selectedVersion.validations) {
-      if (validation.type === fileEnum) {
-        this.validationMessage = validation.message;
-        break;
+    if (version) {
+      for (const validation of version.validations) {
+        if (validation.type === fileEnum) {
+          this.validationMessage = validation.message;
+          break;
+        }
       }
     }
   }

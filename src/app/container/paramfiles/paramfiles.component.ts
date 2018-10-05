@@ -40,7 +40,7 @@ export class ParamfilesComponent extends EntryFileSelector {
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
-    this.checkIfValid(false);
+    this.checkIfValid(false, value);
   }
   public filePath: string;
   protected entryType: ('tool' | 'workflow') = 'tool';
