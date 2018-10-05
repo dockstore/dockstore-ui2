@@ -82,7 +82,7 @@ export abstract class LaunchService {
     /**
      * Gets local launch command
      */
-    getNextflowLocalLaunchString() {
+    getNextflowLocalLaunchString(): string {
       return `$ nextflow run nextflow.config`;
     }
 
@@ -91,7 +91,7 @@ export abstract class LaunchService {
      * @param workflowPath Path of the workflow
      * @param versionName Name of the version
      */
-    getNextflowDownload(workflowPath: string, versionName: string) {
+    getNextflowDownload(workflowPath: string, versionName: string): string {
       return `$ dockstore workflow download --entry ${workflowPath}:${versionName}`;
     }
 

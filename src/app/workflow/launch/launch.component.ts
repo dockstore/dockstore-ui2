@@ -33,10 +33,10 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
   styleUrls: ['./launch.component.css']
 })
 export class LaunchWorkflowComponent extends EntryTab {
-  @Input() basePath;
-  @Input() path;
-  @Input() currentDescriptor;
-  @Input() mode;
+  @Input() basePath: string;
+  @Input() path: string;
+  @Input() currentDescriptor: string;
+  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
 
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
