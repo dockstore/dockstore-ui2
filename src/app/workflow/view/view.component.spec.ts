@@ -13,25 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from '../../shared/swagger';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { DateService } from './../../shared/date.service';
-import { VersionModalService } from '../version-modal/version-modal.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-
-import {
-    DateStubService,
-    StateStubService,
-    VersionModalStubService,
-    WorkflowsStubService,
-    WorkflowStubService,
-    HostedStubService
-} from './../../test/service-stubs';
-import { WorkflowService } from '../../shared/workflow.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { WorkflowsService } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/workflow.service';
+import { VersionModalService } from '../version-modal/version-modal.service';
+import { DateService } from './../../shared/date.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import {
+  DateStubService,
+  HostedStubService,
+  VersionModalStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+} from './../../test/service-stubs';
 import { ViewWorkflowComponent } from './view.component';
+
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;

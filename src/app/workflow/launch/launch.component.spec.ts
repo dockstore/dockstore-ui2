@@ -16,6 +16,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { GA4GHService } from '../../shared/swagger';
 import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
 import { ContainerService } from './../../shared/container.service';
 import { WorkflowService } from './../../shared/workflow.service';
@@ -23,14 +24,12 @@ import {
   CheckerWorkflowStubService,
   ContainerStubService,
   DescriptorsStubService,
+  GA4GHStubService,
   WorkflowStubService,
-  GA4GHStubService
 } from './../../test/service-stubs';
 import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
-import { GA4GHService } from '../../shared/swagger';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
@@ -44,8 +43,8 @@ describe('LaunchWorkflowComponent', () => {
         { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         { provide: WorkflowService, useClass: WorkflowStubService},
-        { provide: GA4GHService, useClass: GA4GHStubService},
-        GA4GHFilesStateService]
+        { provide: GA4GHService, useClass: GA4GHStubService}
+      ]
     })
       .compileComponents();
   }));

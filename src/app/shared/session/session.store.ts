@@ -13,9 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { createSession, Session } from './session.model';
-​
+
 export interface SessionState {
    refreshMessage: string;
    isPublic: boolean;
@@ -28,6 +28,9 @@ export function createInitialState(): SessionState {
   };
 }
 ​
+@Injectable({
+  providedIn: 'root'
+})
 @StoreConfig({ name: 'session' })
 export class SessionStore extends Store<SessionState> {
   constructor() {

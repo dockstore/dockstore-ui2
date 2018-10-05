@@ -16,17 +16,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
-import {
-  CheckerWorkflowStubService,
-  RegisterCheckerWorkflowStubService,
-  StateStubService,
-} from './../../../test/service-stubs';
+import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService } from './../../../test/service-stubs';
 import { CheckerWorkflowService } from './../../checker-workflow.service';
 import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;

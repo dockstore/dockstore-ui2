@@ -16,7 +16,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHService } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/workflow.service';
@@ -35,8 +34,7 @@ describe('DescriptorsWorkflowComponent', () => {
         { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService },
-        GA4GHFilesStateService
+        { provide: GA4GHService, useClass: GA4GHStubService }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

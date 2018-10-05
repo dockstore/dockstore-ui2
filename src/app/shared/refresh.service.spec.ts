@@ -28,7 +28,6 @@ import {
   WorkflowsStubService,
 } from './../test/service-stubs';
 import { ContainerService } from './container.service';
-import { GA4GHFilesStateService } from './entry/GA4GHFiles.state.service';
 import { RefreshService } from './refresh.service';
 import { SessionQuery } from './session/session.query';
 import { GA4GHService } from './swagger';
@@ -49,7 +48,6 @@ describe('RefreshService', () => {
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
                 SessionQuery,
-                GA4GHFilesStateService,
                 { provide: GA4GHService, useClass: GA4GHStubService },
                 { provide: WorkflowService, useClass: WorkflowService },
                 { provide: UsersService, useClass: UsersStubService }

@@ -751,9 +751,3 @@ export class ContainersStubService {
 export class VersionModalStubService {
 
 }
-
-
-export class StateStubService {
-    publicPage$ = observableOf(false);
-    refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-}

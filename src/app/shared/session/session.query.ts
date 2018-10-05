@@ -1,9 +1,3 @@
-import { Query } from '@datorama/akita';
-import { Session } from './session.model';
-import { SessionStore, SessionState } from './session.store';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
 /*
  *    Copyright 2018 OICR
  *
@@ -19,6 +13,11 @@ import { Observable } from 'rxjs';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { Query } from '@datorama/akita';
+import { Observable } from 'rxjs';
+
+import { SessionState, SessionStore } from './session.store';
 
 @Injectable({
   providedIn: 'root'

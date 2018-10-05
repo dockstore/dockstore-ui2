@@ -13,11 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { SessionStore } from './session.store';
-import { createSession } from './session.model';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+import { SessionStore } from './session.store';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class SessionService {
 
   constructor(private sessionStore: SessionStore) { }
