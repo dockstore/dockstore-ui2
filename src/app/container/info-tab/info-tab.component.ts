@@ -13,19 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
+import { ga4ghPath } from '../../shared/constants';
+import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { ga4ghPath } from './../../shared/constants';
-import { ContainerService } from './../../shared/container.service';
-import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { Tag } from './../../shared/swagger/model/tag';
-import { ExtendedToolsService } from './../../shared/extended-tools.service';
-import { HttpResponse } from '@angular/common/http';
-import { exampleDescriptorPatterns, validationDescriptorPatterns } from './../../shared/validationMessages.model';
-import { InfoTabService } from './info-tab.service';
+import { ExtendedToolsService } from '../../shared/extended-tools.service';
+import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Tag } from '../../shared/swagger/model/tag';
+import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
+import { InfoTabService } from './info-tab.service';
 
 @Component({
   selector: 'app-info-tab',

@@ -1,13 +1,3 @@
-import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { Observable, combineLatest, of as observableOf } from 'rxjs';
-
-import { ToolFile, ToolDescriptor } from '../swagger';
-import { GA4GHFiles } from './ga4gh-files.model';
-import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
-import { filter, map } from 'rxjs/operators';
-import { WebserviceDescriptorType } from '../models/DescriptorType';
-
 /*
  *    Copyright 2018 OICR
  *
@@ -23,6 +13,15 @@ import { WebserviceDescriptorType } from '../models/DescriptorType';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { QueryEntity } from '@datorama/akita';
+import { Observable, of as observableOf } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { WebserviceDescriptorType } from '../models/DescriptorType';
+import { ToolDescriptor, ToolFile } from '../swagger';
+import { GA4GHFiles } from './ga4gh-files.model';
+import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
 
 @Injectable({
   providedIn: 'root'
@@ -32,20 +31,12 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
     const descriptorTypeEnum = this.convertToToolDescriptorTypeEnum(descriptorType);
     if (descriptorTypeEnum) {
       let toolFiles$: Observable<Array<ToolFile>>;
-      toolFiles$ = this.selectEntity(descriptorTypeEnum).pipe(map(gA4GHFile => {
-        if (gA4GHFile) {
-          return gA4GHFile.toolFiles;
-        } else {
-          return [];
-        }
-      }));
-      return toolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-        if (toolFiles) {
-          return toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type));
-        } else {
-          return [];
-        }
-      }));
+      toolFiles$ = this.selectEntity(descriptorTypeEnum).pipe(
+        map((gA4GHFile: GA4GHFiles) => gA4GHFile ? gA4GHFile.toolFiles : [])
+      );
+      return toolFiles$.pipe(
+        map((toolFiles: Array<ToolFile>) => toolFiles ? toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type)) : [])
+      );
     } else {
       return observableOf([]);
     }
@@ -54,6 +45,14 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
     super(store);
   }
 
+  /**
+   * Converts a WebserviceDescriptorType to a ToolDescriptor.TypeEnum
+   * Deprecate this function once all descriptor types are unified
+   * @private
+   * @param {WebserviceDescriptorType} descriptorType
+   * @returns {ToolDescriptor.TypeEnum}
+   * @memberof GA4GHFilesQuery
+   */
   private convertToToolDescriptorTypeEnum(descriptorType: WebserviceDescriptorType): ToolDescriptor.TypeEnum {
     switch (descriptorType) {
       case 'cwl': {

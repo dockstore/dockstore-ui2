@@ -96,7 +96,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   /**
-   * Playing favourites with GitHub by selecting it firststateService
+   * Playing favourites with GitHub by selecting it first
    *
    * @memberof RegisterWorkflowModalComponent
    */

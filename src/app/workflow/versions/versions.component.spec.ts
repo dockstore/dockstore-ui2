@@ -16,22 +16,22 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DateService } from '../../shared/date.service';
+import { DockstoreService } from '../../shared/dockstore.service';
 import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
 import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
+import { ErrorService } from '../../shared/error.service';
 import { OrderBy } from '../../shared/orderBy';
 import { RefreshService } from '../../shared/refresh.service';
-import { DateService } from './../../shared/date.service';
-import { DockstoreService } from './../../shared/dockstore.service';
-import { ErrorService } from './../../shared/error.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import {
   DateStubService,
   ErrorStubService,
   RefreshStubService,
   WorkflowsStubService,
   WorkflowStubService,
-} from './../../test/service-stubs';
+} from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
 
 describe('VersionsWorkflowComponent', () => {

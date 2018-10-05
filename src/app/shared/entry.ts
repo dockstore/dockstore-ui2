@@ -22,10 +22,10 @@ import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../shared/dockstore.model';
+import { ErrorService } from '../shared/error.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
-import { ErrorService } from './../shared/error.service';
 import { DateService } from './date.service';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { ProviderService } from './provider.service';

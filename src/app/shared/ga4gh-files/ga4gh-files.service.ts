@@ -18,7 +18,6 @@ import { transaction } from '@datorama/akita';
 
 import { GA4GHService, ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
-import { WebserviceDescriptorType } from '../models/DescriptorType';
 
 @Injectable({
   providedIn: 'root'
@@ -27,31 +26,40 @@ export class GA4GHFilesService {
 
   constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService) { }
 
+  /**
+   * Updates all GA4GH files from all descriptor types
+   *
+   * @param {string} id    GA4GH Tool ID
+   * @param {string} version  GA4GH Version name
+   * @memberof GA4GHFilesService
+   */
   @transaction()
   updateFiles(id: string, version: string) {
     this.injectAuthorizationToken(this.ga4ghService);
     const descriptorTypes = [ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL];
     descriptorTypes.forEach(descriptorType => {
-      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(
-        descriptorType, id, version).subscribe(files => {
-          this.ga4ghFilesStore.createOrReplace(descriptorType,
-            {toolFiles: files });
-        });
+      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
+        files => this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: files }));
     });
   }
 
+  /**
+   * Removes all GA4GH files stored
+   *
+   * @memberof GA4GHFilesService
+   */
   clearFiles() {
     this.ga4ghFilesStore.remove();
   }
 
   /**
- * Workaround.
- * Since the swagger.yaml does not indicate the endpoints are optionally authenticated,
- * the generated classes will not try and use authentication.  This manually injects it in for use.
- *
- * @param {GA4GHService} ga4ghService
- * @memberof GA4GHFilesStateService
- */
+   * Workaround.
+   * Since the swagger.yaml does not indicate the endpoints are optionally authenticated,
+   * the generated classes will not try and use authentication.  This manually injects it in for use.
+   *
+   * @param {GA4GHService} ga4ghService
+   * @memberof GA4GHFilesService
+   */
   public injectAuthorizationToken(ga4ghService: GA4GHService) {
     const auth = ga4ghService.configuration.apiKeys['Authorization'];
     if (auth) {

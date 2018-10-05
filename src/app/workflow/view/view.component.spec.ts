@@ -15,21 +15,20 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DateService } from '../../shared/date.service';
 import { WorkflowsService } from '../../shared/swagger';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
-import { VersionModalService } from '../version-modal/version-modal.service';
-import { DateService } from './../../shared/date.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import {
   DateStubService,
   HostedStubService,
   VersionModalStubService,
   WorkflowsStubService,
   WorkflowStubService,
-} from './../../test/service-stubs';
+} from '../../test/service-stubs';
+import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
-
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;

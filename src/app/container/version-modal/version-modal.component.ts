@@ -23,16 +23,16 @@ import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { RefreshService } from '../../shared/refresh.service';
+import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
-import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { VersionModalService } from './version-modal.service';
-import { SessionQuery } from '../../shared/session/session.query';
 
 @Component({
   selector: 'app-version-modal',

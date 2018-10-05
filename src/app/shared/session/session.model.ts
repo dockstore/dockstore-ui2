@@ -21,7 +21,7 @@ export interface Session {
   refreshMessage: string;
 }
 
-export function createSession({ id = null, isPublic = false, refreshMessage = '' }: Partial<Session>) {
+export function createSession({ id = null, isPublic = true, refreshMessage = '' }: Partial<Session>) {
   return {
     id,
     isPublic,

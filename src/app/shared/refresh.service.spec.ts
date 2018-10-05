@@ -17,8 +17,8 @@ import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ErrorService } from '../shared/error.service';
 import { sampleWorkflow1 } from '../test/mocked-objects';
-import { ErrorService } from './../shared/error.service';
 import {
   ContainersStubService,
   ContainerStubService,
@@ -26,7 +26,7 @@ import {
   GA4GHStubService,
   UsersStubService,
   WorkflowsStubService,
-} from './../test/service-stubs';
+} from '../test/service-stubs';
 import { ContainerService } from './container.service';
 import { RefreshService } from './refresh.service';
 import { SessionQuery } from './session/session.query';

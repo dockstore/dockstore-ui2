@@ -28,6 +28,7 @@ import { Workflow } from '../../swagger/model/workflow';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../validationMessages.model';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
+import { SessionQuery } from '../../session/session.query';
 
 @Component({
   selector: 'app-register-checker-workflow',
@@ -38,7 +39,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
 
   constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
     private checkerWorkflowService: CheckerWorkflowService, private errorService: ErrorService,
-    private descriptorLanguageService: DescriptorLanguageService) { }
+    private descriptorLanguageService: DescriptorLanguageService, private sessionQuery: SessionQuery) { }
   public registerError: HttpErrorResponse;
   public isModalShown$: Observable<boolean>;
   public workflowPath: string;
@@ -72,7 +73,7 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
     this.mode$ = this.registerCheckerWorkflowService.mode$;
     this.isModalShown$ = this.registerCheckerWorkflowService.isModalShown$;
     this.syncTestJson = false;
-    this.refreshMessage$ = this.registerCheckerWorkflowService.refreshMessage$;
+    this.refreshMessage$ = this.sessionQuery.refreshMessage$;
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
       this.descriptorLanguages = descriptorLanguages.filter((language: string) => language.toLowerCase() !== 'nfl');
     });

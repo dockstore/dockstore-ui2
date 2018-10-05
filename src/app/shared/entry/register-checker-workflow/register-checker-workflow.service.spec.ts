@@ -20,12 +20,12 @@ import {
   RefreshStubService,
   WorkflowsStubService,
   WorkflowStubService,
-} from './../../../test/service-stubs';
-import { ContainerService } from './../../container.service';
-import { ErrorService } from './../../error.service';
-import { RefreshService } from './../../refresh.service';
-import { WorkflowsService } from './../../swagger/api/workflows.service';
-import { WorkflowService } from './../../workflow.service';
+} from '../../../test/service-stubs';
+import { ContainerService } from '../../container.service';
+import { ErrorService } from '../../error.service';
+import { RefreshService } from '../../refresh.service';
+import { WorkflowsService } from '../../swagger/api/workflows.service';
+import { WorkflowService } from '../../workflow.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
 describe('Service: RegisterCheckerWorkflow', () => {

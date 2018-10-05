@@ -17,10 +17,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { CheckerWorkflowService } from '../../checker-workflow.service';
 import { SessionQuery } from '../../session/session.query';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { Workflow } from './../../swagger/model/workflow';
-import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
+import { Workflow } from '../../swagger/model/workflow';
+import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',

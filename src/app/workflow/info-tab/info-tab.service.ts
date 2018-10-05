@@ -16,15 +16,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { ErrorService } from '../../shared/error.service';
+import { ExtendedWorkflowService } from '../../shared/extended-workflow.service';
+import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionService } from '../../shared/session/session.service';
-import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { ErrorService } from './../../shared/error.service';
-import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
-import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { WorkflowService } from '../../shared/workflow.service';
 
 @Injectable()
 export class InfoTabService {

@@ -18,13 +18,12 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
 import { WorkflowService } from '../../shared/workflow.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { VersionModalService } from './../version-modal/version-modal.service';
-
+import { VersionModalService } from '../version-modal/version-modal.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -43,8 +42,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   constructor(
     private workflowService: WorkflowService,
-    private versionModalService: VersionModalService,
-    private sessionQuery: SessionQuery,
+    private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
     private workflowsService: WorkflowsService,
     private hostedService: HostedService,
     dateService: DateService) {

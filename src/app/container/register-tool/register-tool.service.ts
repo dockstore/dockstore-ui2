@@ -20,17 +20,17 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { ContainerService } from './../../shared/container.service';
-import { Repository } from './../../shared/enum/Repository.enum';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ContainerService } from '../../shared/container.service';
+import { Repository } from '../../shared/enum/Repository.enum';
+import { SessionService } from '../../shared/session/session.service';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tool } from './tool';
 
 // This line is super important for jQuery to work across the website for some reason
 import * as $ from 'jquery';
-import { SessionService } from '../../shared/session/session.service';
 
 @Injectable()
 export class RegisterToolService {

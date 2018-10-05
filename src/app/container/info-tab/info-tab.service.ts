@@ -16,13 +16,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { ContainerService } from './../../shared/container.service';
-import { ExtendedToolService } from './../../shared/extended-tool.service';
-import { ExtendedDockstoreTool } from './../../shared/models/ExtendedDockstoreTool';
-import { RefreshService } from './../../shared/refresh.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { ContainerService } from '../../shared/container.service';
+import { ExtendedToolService } from '../../shared/extended-tool.service';
+import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { RefreshService } from '../../shared/refresh.service';
 import { SessionService } from '../../shared/session/session.service';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 @Injectable()
 export class InfoTabService {

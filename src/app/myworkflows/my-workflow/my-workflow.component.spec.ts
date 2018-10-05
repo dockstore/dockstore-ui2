@@ -48,7 +48,6 @@ import { RegisterWorkflowModalService } from '../../workflow/register-workflow-m
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
 
-
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;

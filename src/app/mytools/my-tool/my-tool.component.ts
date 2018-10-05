@@ -22,8 +22,11 @@ import { first, takeUntil } from 'rxjs/operators';
 
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
+import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { TokenService } from '../../loginComponents/token.service';
 import { UserService } from '../../loginComponents/user.service';
+import { ContainerService } from '../../shared/container.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
@@ -31,14 +34,11 @@ import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
 import { DockstoreTool } from '../../shared/swagger';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { MytoolsService } from '../mytools.service';
-import { Tool } from './../../container/register-tool/tool';
-import { TokenService } from './../../loginComponents/token.service';
-import { ContainerService } from './../../shared/container.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { Configuration } from './../../shared/swagger/configuration';
 
 @Component({
   selector: 'app-my-tool',

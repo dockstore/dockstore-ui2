@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService } from './../shared/error.service';
+import { ErrorService } from '../shared/error.service';
 import { ContainerService } from './container.service';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { SessionService } from './session/session.service';

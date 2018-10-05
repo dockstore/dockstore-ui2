@@ -16,16 +16,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
+import { ContainerService } from '../../shared/container.service';
+import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { SessionQuery } from '../../shared/session/session.query';
+import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { View } from '../../shared/view';
-import { ContainerService } from './../../shared/container.service';
-import { DateService } from './../../shared/date.service';
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { VersionModalService } from './../version-modal/version-modal.service';
-
+import { VersionModalService } from '../version-modal/version-modal.service';
 
 @Component({
   selector: 'app-view-container',

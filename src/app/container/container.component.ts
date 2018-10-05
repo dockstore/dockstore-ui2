@@ -82,7 +82,7 @@ export class ContainerComponent extends Entry {
     private containerService: ContainerService,
     errorService: ErrorService,
     location: Location,
-    activatedRoute: ActivatedRoute, sessionService: SessionService, sessionQuery: SessionQuery,
+    activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
       protected gA4GHFilesService: GA4GHFilesService) {
     super(trackLoginService, providerService, router,
       errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);

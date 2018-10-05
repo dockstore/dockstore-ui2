@@ -13,17 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { RefreshService } from './../../shared/refresh.service';
 import { Component } from '@angular/core';
 
-import { UserService } from './../../loginComponents/user.service';
-import { ContainerService } from './../../shared/container.service';
-import { RefreshOrganizationComponent } from './../../shared/refresh-organization/refresh-organization.component';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { SessionService } from '../../shared/session/session.service';
+import { UserService } from '../../loginComponents/user.service';
+import { ContainerService } from '../../shared/container.service';
+import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
 import { SessionQuery } from '../../shared/session/session.query';
+import { SessionService } from '../../shared/session/session.service';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { RefreshService } from './../../shared/refresh.service';
 
 @Component({
   selector: 'app-refresh-tool-organization',
@@ -33,7 +32,7 @@ import { SessionQuery } from '../../shared/session/session.query';
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
 
-  constructor(userService: UserService, public sessionService: SessionService, private usersService: UsersService,
+  constructor(userService: UserService, private sessionService: SessionService, private usersService: UsersService,
     private containerService: ContainerService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
     super(userService, sessionQuery);
   }

@@ -27,8 +27,7 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
 export class FilesContainerComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: Tag;
   versionsWithParamfiles: Array<any>;
-  constructor(private paramfilesService: ParamfilesService,
-    private gA4GHFilesService: GA4GHFilesService) {
+  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
     super();
   }
 

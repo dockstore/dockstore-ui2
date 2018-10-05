@@ -21,25 +21,25 @@ import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
+import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { TokenService } from '../../loginComponents/token.service';
+import { UserService } from '../../loginComponents/user.service';
+import { DockstoreService } from '../../shared/dockstore.service';
+import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
+import { ProviderService } from '../../shared/provider.service';
+import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
 import { Workflow } from '../../shared/swagger';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Configuration } from '../../shared/swagger/configuration';
+import { UrlResolverService } from '../../shared/url-resolver.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
-import { AccountsService } from './../../loginComponents/accounts/external/accounts.service';
-import { TokenService } from './../../loginComponents/token.service';
-import { UserService } from './../../loginComponents/user.service';
-import { DockstoreService } from './../../shared/dockstore.service';
-import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
-import { ProviderService } from './../../shared/provider.service';
-import { RefreshService } from './../../shared/refresh.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Configuration } from './../../shared/swagger/configuration';
-import { UrlResolverService } from './../../shared/url-resolver.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowsService } from './../myworkflows.service';
+import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { MyWorkflowsService } from '../myworkflows.service';
 
 /**
  * How the workflow selection works:

@@ -19,7 +19,7 @@ export interface GA4GHFiles {
   toolFiles: Array<ToolFile>;
 }
 
-export function createGA4GHFiles({toolFiles = []}: Partial<GA4GHFiles>) {
+export function createGA4GHFiles({ toolFiles = [] }: Partial<GA4GHFiles>) {
   return {
     toolFiles: []
   };

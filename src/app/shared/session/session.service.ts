@@ -24,7 +24,7 @@ export class SessionService {
 
   constructor(private sessionStore: SessionStore) { }
 
-  setPublicPage(isPublic: boolean) {
+  setPublicPage(isPublic: boolean): void {
     this.sessionStore.setState(state => {
       return {
         ...state,
@@ -33,7 +33,7 @@ export class SessionService {
     });
   }
 
-  setRefreshMessage(message: string) {
+  setRefreshMessage(message: string): void {
     this.sessionStore.setState(state => {
       return {
         ...state,

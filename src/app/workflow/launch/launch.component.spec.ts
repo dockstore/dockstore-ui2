@@ -16,18 +16,18 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CheckerWorkflowService } from '../../shared/checker-workflow.service';
+import { ContainerService } from '../../shared/container.service';
 import { GA4GHService } from '../../shared/swagger';
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
-import { ContainerService } from './../../shared/container.service';
-import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowService } from '../../shared/workflow.service';
 import {
   CheckerWorkflowStubService,
   ContainerStubService,
   DescriptorsStubService,
   GA4GHStubService,
   WorkflowStubService,
-} from './../../test/service-stubs';
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
+} from '../../test/service-stubs';
+import { WorkflowDescriptorService } from '../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
 

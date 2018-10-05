@@ -6,12 +6,11 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersService } from '../../containers/list/list.service';
 import { ContainerService } from '../../shared/container.service';
+import { DateService } from '../../shared/date.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { ContainersService } from '../../shared/swagger';
-import { ParamfilesService } from '../paramfiles/paramfiles.service';
-import { DateService } from './../../shared/date.service';
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { sampleTag, sampleTool1 } from './../../test/mocked-objects';
+import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
+import { sampleTag, sampleTool1 } from '../../test/mocked-objects';
 import {
   ContainersStubService,
   ContainerStubService,
@@ -19,7 +18,8 @@ import {
   DateStubService,
   ParamFilesStubService,
   RefreshStubService,
-} from './../../test/service-stubs';
+} from '../../test/service-stubs';
+import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
 

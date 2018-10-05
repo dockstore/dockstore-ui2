@@ -15,11 +15,11 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
+import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { RefreshService } from './../../shared/refresh.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { WorkflowService } from '../../shared/workflow.service';
 import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
 

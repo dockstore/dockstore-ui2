@@ -49,7 +49,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService, dateService: DateService, protected sessionService: SessionService,
+  constructor(dockstoreService: DockstoreService, dateService: DateService, private sessionService: SessionService,
     private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
     private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);

@@ -45,8 +45,8 @@ export class DescriptorsComponent extends EntryFileSelector {
   protected entryType: ('tool' | 'workflow') = 'tool';
 
   constructor(private containerService: ContainerService,
-    private descriptorsService: ToolDescriptorService, protected gA4GHFilesService: GA4GHFilesService,
-    private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHService: GA4GHService) {
+    private descriptorsService: ToolDescriptorService, protected gA4GHService: GA4GHService,
+    private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService) {
     super(fileService, gA4GHFilesService, gA4GHService);
     this.published$ = this.containerService.toolIsPublished$;
   }

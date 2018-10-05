@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorService } from './../../shared/error.service';
-import { ErrorStubService } from './../../test/service-stubs';
+import { ErrorService } from '../../shared/error.service';
+import { ErrorStubService } from '../../test/service-stubs';
 import { AlertComponent } from './alert.component';
 
 describe('RefreshAlertComponent', () => {
@@ -10,11 +10,11 @@ describe('RefreshAlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlertComponent ],
+      declarations: [AlertComponent],
       providers: [
-      { provide: ErrorService, useClass: ErrorStubService}]
+        { provide: ErrorService, useClass: ErrorStubService }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

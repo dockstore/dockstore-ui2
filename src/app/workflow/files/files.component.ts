@@ -32,8 +32,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
-  constructor(private paramfilesService: ParamfilesService,
-    private gA4GHFilesService: GA4GHFilesService) {
+  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
     super();
   }
 
