@@ -27,16 +27,20 @@ export class GA4GHFilesService {
   constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService) { }
 
   /**
-   * Updates all GA4GH files from all descriptor types
+   * Updates all GA4GH files from all descriptor types unless specific ones provided
    *
    * @param {string} id    GA4GH Tool ID
    * @param {string} version  GA4GH Version name
+   * @param {Array<ToolDescriptor.TypeEnum>} [descriptorTypes]  Optional. Specific descriptor types to update
    * @memberof GA4GHFilesService
    */
   @transaction()
-  updateFiles(id: string, version: string) {
+  updateFiles(id: string, version: string, descriptorTypes?: Array<ToolDescriptor.TypeEnum>) {
+    this.clearFiles();
+    if (!descriptorTypes) {
+      descriptorTypes = [ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL];
+    }
     this.injectAuthorizationToken(this.ga4ghService);
-    const descriptorTypes = [ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL];
     descriptorTypes.forEach(descriptorType => {
       this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
         files => this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: files }));

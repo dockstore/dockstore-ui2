@@ -48,12 +48,12 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
   /**
    * Converts a WebserviceDescriptorType to a ToolDescriptor.TypeEnum
    * Deprecate this function once all descriptor types are unified
-   * @private
+   *
    * @param {WebserviceDescriptorType} descriptorType
    * @returns {ToolDescriptor.TypeEnum}
    * @memberof GA4GHFilesQuery
    */
-  private convertToToolDescriptorTypeEnum(descriptorType: WebserviceDescriptorType): ToolDescriptor.TypeEnum {
+  public convertToToolDescriptorTypeEnum(descriptorType: WebserviceDescriptorType): ToolDescriptor.TypeEnum {
     switch (descriptorType) {
       case 'cwl': {
         return ToolDescriptor.TypeEnum.CWL;
