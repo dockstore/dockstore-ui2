@@ -33,6 +33,7 @@
     "@angular/platform-server": "^6.0.2",
     "@angular/router": "^6.0.2",
     "@datorama/akita": "^1.9.6",
+    "@datorama/akita-ngdevtools": "^1.0.2",
     "@ngx-lite/json-ld": "^0.4.2",
     "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.14",
@@ -64,7 +65,6 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@datorama/akita-ngdevtools": "^1.0.2",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "codelyzer": "^4.2.1",
