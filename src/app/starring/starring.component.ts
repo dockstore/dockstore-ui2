@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 
 import { UserService } from '../loginComponents/user.service';
@@ -43,9 +43,6 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   public disable = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
-  private workflowSubscription: Subscription;
-  private toolSubscription: Subscription;
-  private loginSubscription: Subscription;
   constructor(private trackLoginService: TrackLoginService,
     private userService: UserService,
     private workflowService: WorkflowService,

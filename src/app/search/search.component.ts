@@ -18,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material';
 import { Router } from '@angular/router/';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../shared/constants';
@@ -40,7 +40,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
-  private routeSub: Subscription;
   public shortUrl: string;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
@@ -137,13 +136,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
+    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchService.values$.subscribe(values => {
+    this.searchService.values$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(values => {
       this.values = values;
       if (this.values) {
         this.tagClicked();
@@ -167,7 +166,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     };
     this.parseParams();
 
-    this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+    this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });

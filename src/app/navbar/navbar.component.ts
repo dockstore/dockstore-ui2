@@ -13,22 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { UsersService } from './../shared/swagger/api/users.service';
-import { User } from './../shared/swagger/model/user';
-import { AuthService } from 'ng2-ui-auth';
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subscription ,  Subject } from 'rxjs';
-
-import { LogoutService } from './../shared/logout.service';
-import { Logout } from '../loginComponents/logout';
-import { TrackLoginService } from './../shared/track-login.service';
-import { UserService } from './../loginComponents/user.service';
-import { PagenumberService } from './../shared/pagenumber.service';
-import { PageInfo } from './../shared/models/PageInfo';
-import { toExtendSite } from '../shared/helpers';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { Logout } from '../loginComponents/logout';
+import { toExtendSite } from '../shared/helpers';
+import { UserService } from './../loginComponents/user.service';
+import { LogoutService } from './../shared/logout.service';
+import { PageInfo } from './../shared/models/PageInfo';
+import { PagenumberService } from './../shared/pagenumber.service';
+import { User } from './../shared/swagger/model/user';
+import { TrackLoginService } from './../shared/track-login.service';
+
 
 @Component({
   selector: 'app-navbar',

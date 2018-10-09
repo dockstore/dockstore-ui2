@@ -1,15 +1,13 @@
-import { Token } from './../../shared/swagger/model/token';
-import { UsersService } from './../../shared/swagger/api/users.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable ,  Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
-import { Logout } from '../logout';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { LogoutService } from '../../shared/logout.service';
+import { TrackLoginService } from '../../shared/track-login.service';
+import { Logout } from '../logout';
 import { TokenService } from '../token.service';
 import { UserService } from '../user.service';
-import { TrackLoginService } from '../../shared/track-login.service';
-import { LogoutService } from '../../shared/logout.service';
+import { UsersService } from './../../shared/swagger/api/users.service';
 
 @Component({
   selector: 'app-tokens',

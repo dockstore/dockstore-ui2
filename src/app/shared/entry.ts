@@ -18,7 +18,7 @@ import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../shared/dockstore.model';
@@ -49,7 +49,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   protected refreshMessage: string;
   public labelPattern = validationDescriptorPatterns.label;
   public labelsEditMode: boolean;
-  private loginSubscription: Subscription;
   public error;
   public validTabs;
   public currentTab = 'info';
@@ -85,7 +84,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     this.errorService.errorObj$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolError => this.error = toolError);
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
     this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-    this.loginSubscription = this.trackLoginService.isLoggedIn$.pipe(
+    this.trackLoginService.isLoggedIn$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(state => this.isLoggedIn = state);
   }
 

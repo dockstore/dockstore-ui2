@@ -1,34 +1,37 @@
-import { UsersService } from './../shared/swagger/api/users.service';
 import { Component, OnInit } from '@angular/core';
-import { StarringService } from '../starring/starring.service';
-import { ProviderService } from '../shared/provider.service';
-import { ImageProviderService } from '../shared/image-provider.service';
+import { takeUntil } from 'rxjs/operators';
+
 import { UserService } from '../loginComponents/user.service';
-import {Subscription} from 'rxjs';
+import { Base } from '../shared/base';
+import { ImageProviderService } from '../shared/image-provider.service';
+import { ProviderService } from '../shared/provider.service';
 import { StarentryService } from '../shared/starentry.service';
-import { Workflow, DockstoreTool } from '../shared/swagger';
+import { DockstoreTool, Workflow } from '../shared/swagger';
+import { StarringService } from '../starring/starring.service';
+import { UsersService } from './../shared/swagger/api/users.service';
 
 @Component({
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
   styleUrls: ['./starredentries.component.scss'],
 })
-export class StarredEntriesComponent implements OnInit {
+export class StarredEntriesComponent extends Base implements OnInit {
   starredTools: any;
   starredWorkflows: any;
   user: any;
   starGazersClicked = false;
   selectedEntry: any;
-  private entrySubscription: Subscription;
   constructor(private starringService: StarringService,
               private userService: UserService,
               private imageProviderService: ImageProviderService,
               private providerService: ProviderService,
               private starentryService: StarentryService,
-              private usersService: UsersService) { }
+              private usersService: UsersService) {
+                super();
+               }
 
   ngOnInit() {
-    this.entrySubscription = this.starentryService.starEntry$.subscribe(
+    this.starentryService.starEntry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       entry => {
         this.selectedEntry = entry;
       }

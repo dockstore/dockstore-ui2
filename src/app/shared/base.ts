@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,30 +13,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { toExtendSite } from '../shared/helpers';
+/**
+ * This class allows other components to easily unsubscribe from it.
+ * One day, when we stop subscribing from within components (by doing so in services instead),
+ * this class easily shows which components will need to be changed later on (even though services can extend it too)
+ *
+ * @export
+ * @abstract
+ * @class Base
+ * @implements {OnDestroy}
+ */
+export abstract class Base implements OnDestroy {
 
-@Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html'
-})
-export class HeaderComponent implements OnInit {
-  isExtended = false;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private router: Router) {
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isExtended = toExtendSite(this.router.url);
-      }
-    });
-  }
+  constructor() { }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

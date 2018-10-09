@@ -1,10 +1,10 @@
-
-import {of as observableOf,  Observable ,  SubscriptionLike as ISubscription } from 'rxjs';
-
-import {mergeMap} from 'rxjs/operators';
-import { Provider } from '../../shared/enum/provider.enum';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of as observableOf } from 'rxjs';
+import { mergeMap, takeUntil } from 'rxjs/operators';
+
+import { Base } from '../../shared/base';
+import { Provider } from '../../shared/enum/provider.enum';
 import { TokenService } from '../token.service';
 import { UserService } from '../user.service';
 
@@ -12,13 +12,13 @@ import { UserService } from '../user.service';
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnInit, OnDestroy {
-
-  tokenSubscription: ISubscription;
+export class AuthComponent extends Base implements OnInit {
 
   constructor(private tokenService: TokenService, private userService: UserService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) { }
+              private router: Router) {
+                super();
+              }
 
   private getQuayToken(fragment: string) {
     const accessTokenString = 'access_token=';
@@ -69,16 +69,11 @@ export class AuthComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const prevPage = localStorage.getItem('page');
 
-    this.tokenSubscription = this.addToken().subscribe(token => {
+    this.addToken().pipe(takeUntil(this.ngUnsubscribe)).subscribe(token => {
       this.userService.updateUser();
       this.router.navigate([`${ prevPage }`]);
     }, error => {
       this.router.navigate([`${ prevPage }`]);
     });
   }
-
-  ngOnDestroy() {
-    this.tokenSubscription.unsubscribe();
-  }
-
 }
