@@ -23,6 +23,7 @@ import { EntryTab } from '../shared/entry/entry-tab';
 import { Tag } from './../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { SessionQuery } from './session/session.query';
+import { takeUntil } from 'rxjs/operators';
 
 export abstract class Versions extends EntryTab {
 
@@ -46,7 +47,7 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.sessionQuery.isPublic$.subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
   }
 
   getDefaultTooltip(publicPage: boolean): string {

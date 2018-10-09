@@ -72,7 +72,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         }
       }
     });
-    this.registerToolService.isModalShown.subscribe((isModalShown: boolean) => {
+    this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
       } else {
@@ -90,7 +90,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.sessionService.setRefreshMessage('Fetching tools');
-        this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
+        this.usersService.userContainers(user.id).subscribe(tools => {
           this.containerService.setTools(tools);
           this.sessionService.setRefreshMessage(null);
         }, (error: any) => {
@@ -113,8 +113,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
       }
     });
 
-    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-    this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
+    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.registerTool = tool);
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {

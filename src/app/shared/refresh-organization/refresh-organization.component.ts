@@ -13,26 +13,34 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Injectable, Input, OnInit } from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { UserService } from '../../loginComponents/user.service';
 import { SessionQuery } from '../session/session.query';
 
 @Injectable()
-export class RefreshOrganizationComponent implements OnInit {
+export class RefreshOrganizationComponent implements OnInit, OnDestroy {
   protected userId: number;
   @Input() protected organization: string;
   protected refreshMessage: string;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private userService: UserService, protected sessionQuery: SessionQuery) {
   }
 
   ngOnInit() {
-    this.userService.userId$.subscribe(userId => this.userId = userId);
-    this.sessionQuery.refreshMessage$.subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
+    this.userService.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => this.userId = userId);
+    this.sessionQuery.refreshMessage$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
   }
 
   toDisable(): boolean {
     return this.refreshMessage !== null && this.refreshMessage !== undefined;
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

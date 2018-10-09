@@ -82,10 +82,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
-    this.errorService.errorObj$.subscribe(toolError => this.error = toolError);
-    this.sessionQuery.isPublic$.subscribe(publicPage => this.publicPage = publicPage);
-    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-    this.loginSubscription = this.trackLoginService.isLoggedIn$.subscribe(state => this.isLoggedIn = state);
+    this.errorService.errorObj$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolError => this.error = toolError);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.loginSubscription = this.trackLoginService.isLoggedIn$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(state => this.isLoggedIn = state);
   }
 
   private parseURL(url: String): void {
@@ -174,7 +175,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       })();
     }
 
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
       const tabIndex = this.validTabs.indexOf(params['tab']);
       if (tabIndex > -1) {
         this.currentTab = this.validTabs[tabIndex];

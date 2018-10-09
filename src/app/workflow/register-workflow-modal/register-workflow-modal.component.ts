@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MatRadioChange } from '@angular/material';
-import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -36,7 +36,7 @@ import { RegisterWorkflowModalService } from './register-workflow-modal.service'
   templateUrl: './register-workflow-modal.component.html',
   styleUrls: ['./register-workflow-modal.component.scss']
 })
-export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
+export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
   public validationMessage = validationMessages;
@@ -64,6 +64,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   ];
   public selectedOption = this.options[0];
 
+  private ngUnsubscribe: Subject<{}> = new Subject();
+
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
@@ -80,14 +82,15 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   ngOnInit() {
-    this.registerWorkflowModalService.workflow.subscribe(workflow => this.workflow = workflow);
-    this.registerWorkflowModalService.workflowRegisterError$.subscribe(
+    this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.registerWorkflowModalService.workflowRegisterError$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
-    this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.registerWorkflowModalService.isModalShown$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
-    this.descriptorLanguages$.subscribe((languages: Array<string>) => {
+    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<string>) => {
       if (languages && languages.length > 0) {
         this.changeDescriptorType(languages[0].toLowerCase());
       }
@@ -129,7 +132,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     if (this.currentForm === this.registerWorkflowForm) { return; }
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
-      this.registerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.registerWorkflowForm.valueChanges.pipe(
+        debounceTime(formInputDebounceTime),
+        takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }
@@ -199,5 +204,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         this.descriptorValidationPattern = '.*';
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

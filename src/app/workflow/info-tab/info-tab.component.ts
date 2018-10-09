@@ -27,6 +27,7 @@ import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { WorkflowService } from '../../shared/workflow.service';
 import { InfoTabService } from './info-tab.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-info-tab',
@@ -73,10 +74,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.sessionQuery.isPublic$.subscribe(isPublic => this.isPublic = isPublic);
-    this.infoTabService.workflowPathEditing$.subscribe(editing => this.workflowPathEditing = editing);
-    this.infoTabService.defaultTestFilePathEditing$.subscribe(editing => this.defaultTestFilePathEditing = editing);
-    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
+    this.infoTabService.workflowPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(editing => this.workflowPathEditing = editing);
+    this.infoTabService.defaultTestFilePathEditing$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(editing => this.defaultTestFilePathEditing = editing);
+    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   /**

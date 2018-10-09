@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../../containers/list/list.service';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -39,7 +40,7 @@ import { VersionModalService } from './version-modal.service';
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked {
+export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public isModalShown: boolean;
@@ -64,6 +65,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm') currentForm: NgForm;
 
+  private ngUnsubscribe: Subject<{}> = new Subject();
+
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService,
     private containersService: ContainersService, private containertagsService: ContainertagsService, private sessionQuery: SessionQuery,
@@ -87,7 +90,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
     if (this.currentForm === this.tagEditorForm) { return; }
     this.tagEditorForm = this.currentForm;
     if (this.tagEditorForm) {
-      this.tagEditorForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.tagEditorForm.valueChanges.pipe(
+        debounceTime(formInputDebounceTime),
+        takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }
@@ -236,18 +241,18 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.versionModalService.version.subscribe(version => {
+    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);
       this.updateDockerPullCommand();
     });
-    this.versionModalService.isModalShown.subscribe(isModalShown => {
+    this.versionModalService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => {
       if (!this.tool && this.isModalShown) {
         this.versionModalService.setIsModalShown(false);
       } else {
         this.isModalShown = isModalShown; }
     });
-    this.versionModalService.mode.subscribe(
+    this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (mode: TagEditorMode) => {
         this.mode = mode;
         if (mode !== null && this.tool) {
@@ -255,17 +260,17 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
         }
       }
     );
-    this.sessionQuery.isPublic$.subscribe(publicPage => this.editMode = !publicPage);
-    this.containerService.tool$.subscribe(tool => {
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.editMode = !publicPage);
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       this.updateDockerPullCommand();
     });
-    this.versionModalService.unsavedTestCWLFile.subscribe(
+    this.versionModalService.unsavedTestCWLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (file: string) => {
         this.unsavedTestCWLFile = file;
       }
     );
-    this.versionModalService.unsavedTestWDLFile.subscribe(
+    this.versionModalService.unsavedTestWDLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (file: string) => {
         this.unsavedTestWDLFile = file;
       }
@@ -312,5 +317,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked {
       const paths = this.unsavedCWLTestParameterFilePaths.concat(this.unsavedWDLTestParameterFilePaths).concat(unfocusedTestFilePath);
       return paths.includes(focusedTestFilePath);
     }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

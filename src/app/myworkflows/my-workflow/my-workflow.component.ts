@@ -103,11 +103,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.setSharedWorkflows(null);
 
     // Updates selected workflow from service and selects in sidebar
-    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      workflow => {
-        this.workflow = workflow;
-      }
-    );
+    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
 
     // Retrieve all of the workflows for the user and update the workflow service
     this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
@@ -120,7 +116,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         })), this.workflowsService.sharedWorkflows().pipe(catchError(error => {
           this.matSnackbar.open('Could not retrieve shared workflows');
           return observableOf([]);
-        }))).subscribe(([workflows, sharedWorkflows]) => {
+        }))).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
           this.workflowService.setWorkflows(workflows);
           this.workflowService.setSharedWorkflows(sharedWorkflows);
           this.sessionService.setRefreshMessage(null);
@@ -131,9 +127,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     });
 
     // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
-    combineLatest(this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)),
-      this.workflowService.sharedWorkflows$.pipe(takeUntil(this.ngUnsubscribe)))
-      .subscribe(([workflows, sharedWorkflows]) => {
+    combineLatest(this.workflowService.workflows$, this.workflowService.sharedWorkflows$)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
         if (workflows && sharedWorkflows) {
           this.workflows = workflows;
           const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
@@ -156,7 +151,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
       });
 
-    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   /**

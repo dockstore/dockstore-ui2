@@ -25,6 +25,7 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { View } from '../../shared/view';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-container',
@@ -80,7 +81,7 @@ export class ViewContainerComponent extends View implements OnInit {
   }
 
   ngOnInit() {
-    this.sessionQuery.isPublic$.subscribe(isPublic => this.isPublic = isPublic);
-    this.containerService.tool$.subscribe(tool => this.tool = tool);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.tool = tool);
   }
 }

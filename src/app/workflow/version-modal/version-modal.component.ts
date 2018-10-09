@@ -15,8 +15,8 @@
  */
 import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
@@ -50,21 +50,22 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   validationPatterns = validationDescriptorPatterns;
   public refreshMessage: string;
   public WorkflowType = Workflow;
-  workflowSubscription: Subscription;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   @ViewChild('versionEditorForm') currentForm: NgForm;
+
+  private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
     private sessionQuery: SessionQuery, private workflowService: WorkflowService) {
   }
 
   ngOnInit() {
-    this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.versionModalService.version.subscribe(version => this.version = version);
-    this.workflowSubscription = this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-    this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
+    this.versionModalService.isModalShown$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = version);
+    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
       this.testParameterFiles = testParameterFiles;
@@ -73,8 +74,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         this.originalTestParameterFilePaths.push(testParameterFile.path);
       }
     });
-    this.sessionQuery.isPublic$.subscribe(publicPage => this.isPublic = publicPage);
-    this.sessionQuery.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.isPublic = publicPage);
+    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   removeTestParameterFile(index: number) {
@@ -148,6 +149,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnDestroy() {
-    this.workflowSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

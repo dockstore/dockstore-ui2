@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -27,7 +28,7 @@ import { RegisterToolService } from './register-tool.service';
   templateUrl: './register-tool.component.html',
   styleUrls: ['./register-tool.component.css']
 })
-export class RegisterToolComponent implements OnInit, AfterViewChecked {
+export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestroy {
   public toolRegisterError: boolean;
   public tool: any;
   public formErrors = formErrors;
@@ -52,6 +53,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     }
   ];
   public selectedOption = this.options[0];
+  private ngUnsubscribe: Subject<{}> = new Subject();
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -115,13 +117,21 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.registerToolService.toolRegisterError.subscribe(toolRegisterError => this.toolRegisterError = toolRegisterError);
-    this.registerToolService.tool.subscribe(tool => this.tool = tool);
-    this.registerToolService.customDockerRegistryPath.subscribe(path => this.customDockerRegistryPath = path);
-    this.registerToolService.showCustomDockerRegistryPath.subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
-    this.registerToolService.toolRegisterError.subscribe(error => this.toolRegisterError = error);
-    this.sessionQuery.refreshMessage$.subscribe(status => this.refreshMessage = status);
-    this.registerToolService.isModalShown.subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.registerToolService.toolRegisterError.pipe(
+      takeUntil(this.ngUnsubscribe))
+      .subscribe(toolRegisterError => this.toolRegisterError = toolRegisterError);
+    this.registerToolService.tool.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(tool => this.tool = tool);
+    this.registerToolService.customDockerRegistryPath.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(path => this.customDockerRegistryPath = path);
+    this.registerToolService.showCustomDockerRegistryPath.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
+    this.registerToolService.toolRegisterError.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(error => this.toolRegisterError = error);
+    this.sessionQuery.refreshMessage$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(status => this.refreshMessage = status);
+    this.registerToolService.isModalShown.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -157,4 +167,9 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     }
   }
   // Validation ends here
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }
