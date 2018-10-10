@@ -15,6 +15,8 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
@@ -25,7 +27,6 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { View } from '../../shared/view';
 import { VersionModalService } from '../version-modal/version-modal.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-container',
@@ -37,7 +38,8 @@ export class ViewContainerComponent extends View implements OnInit {
   public TagEditorMode = TagEditorMode;
   public tool: DockstoreTool;
   public DockstoreToolType = DockstoreTool;
-  isPublic: boolean;
+  isPublic$: Observable<boolean>;
+  isManualTool: boolean;
   constructor(dateService: DateService, private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
     private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService) {
     super(dateService);
@@ -68,20 +70,20 @@ export class ViewContainerComponent extends View implements OnInit {
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
-        (result: DockstoreTool) => {
-            this.containerService.setTool(result);
-          }, (error: HttpErrorResponse) => {
-            console.log(error);
-          });
+        (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
+        (error: HttpErrorResponse) => console.log(error));
     }
   }
 
-  isManualTool(): boolean {
-    return this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
-  }
-
   ngOnInit() {
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.tool = tool);
+    this.isPublic$ = this.sessionQuery.isPublic$;
+    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+      this.tool = tool;
+      if (this.tool) {
+        this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
+      } else {
+        this.isManualTool = undefined;
+      }
+    });
   }
 }
