@@ -18,7 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { ExtendedToolService } from '../../shared/extended-tool.service';
+import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -47,14 +47,14 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService, private refreshService: RefreshService,
-    private sessionService: SessionService, private extendedToolService: ExtendedToolService,
+    private sessionService: SessionService, private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
     this.publicPageSubscription();
-    this.extendedToolService.extendedDockstoreTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: ExtendedDockstoreTool) => {
+    this.extendedDockstoreToolQuery.extendedDockstoreTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: ExtendedDockstoreTool) => {
       this.tool = tool;
       if (tool) {
         this.defaultVersion = tool.defaultVersion;

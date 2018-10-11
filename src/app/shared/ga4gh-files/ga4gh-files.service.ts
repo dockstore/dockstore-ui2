@@ -28,6 +28,7 @@ export class GA4GHFilesService {
 
   /**
    * Updates all GA4GH files from all descriptor types unless specific ones provided
+   * The transaction doesn't appear to be working.  The 3 sets of files are being set 1 after another.
    *
    * @param {string} id    GA4GH Tool ID
    * @param {string} version  GA4GH Version name

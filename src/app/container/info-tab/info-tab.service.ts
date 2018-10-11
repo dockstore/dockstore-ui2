@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Base } from '../../shared/base';
 import { ContainerService } from '../../shared/container.service';
-import { ExtendedToolService } from '../../shared/extended-tool.service';
+import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionService } from '../../shared/session/session.service';
@@ -54,9 +54,9 @@ export class InfoTabService extends Base {
   private currentTool: ExtendedDockstoreTool;
   constructor(private containersService: ContainersService, private sessionService: SessionService,
     private containerService: ContainerService, private refreshService: RefreshService,
-    private extendedToolService: ExtendedToolService) {
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery) {
     super();
-    this.extendedToolService.extendedDockstoreTool$.pipe(
+    this.extendedDockstoreToolQuery.extendedDockstoreTool$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
         if (extendedDockstoreTool) {
           this.tool = extendedDockstoreTool;

@@ -14,20 +14,16 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Store, StoreConfig } from '@datorama/akita';
 
-import { GA4GHFiles } from './ga4gh-files.model';
-
-export interface GA4GHFilesState extends EntityState<GA4GHFiles> {}
-​
-const initialState: GA4GHFilesState = {};
+import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 ​
 @Injectable({
   providedIn: 'root'
 })
-@StoreConfig({ name: 'ga4gh-files' })
-export class GA4GHFilesStore extends EntityStore<GA4GHFilesState, GA4GHFiles> {
+@StoreConfig({ name: 'extended-dockstoreTool'})
+export class ExtendedDockstoreToolStore extends Store<ExtendedDockstoreTool> {
   constructor() {
-    super(initialState);
+    super({});
   }
 }

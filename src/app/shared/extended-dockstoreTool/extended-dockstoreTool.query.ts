@@ -14,28 +14,23 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { transaction } from '@datorama/akita';
+import { Query } from '@datorama/akita';
 
-import { ExtendedDockstoreToolService } from '../extended-dockstoreTool/extended-dockstoreTool.service';
+import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
+import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
+import { ContainerService } from '../container.service';
+import { ProviderService } from '../provider.service';
+import { DateService } from '../date.service';
+import { ImageProviderService } from '../image-provider.service';
 import { DockstoreTool } from '../swagger';
-import { ToolStore } from './tool.store';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ToolService {
-
-  constructor(private toolStore: ToolStore, private extendedDockstoreToolService: ExtendedDockstoreToolService) { }
-
-  @transaction()
-  setTool(tool: (DockstoreTool | null)) {
-    if (tool) {
-      this.toolStore.createOrReplace(tool.id, tool);
-      this.extendedDockstoreToolService.updateExtendedDockstoreTool(tool);
-      this.toolStore.setActive(tool.id);
-    } else {
-      this.toolStore.remove();
-      this.extendedDockstoreToolService.removeExtendedDockstoreTool();
-    }
+export class ExtendedDockstoreToolQuery extends Query<ExtendedDockstoreTool> {
+  extendedDockstoreTool$: Observable<ExtendedDockstoreTool> = this.select();
+  constructor(protected store: ExtendedDockstoreToolStore) {
+    super(store);
   }
 }

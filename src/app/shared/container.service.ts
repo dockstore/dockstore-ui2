@@ -82,33 +82,4 @@ export class ContainerService {
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }
-
-  getBuildMode(mode: DockstoreTool.ModeEnum) {
-    switch (mode) {
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
-        return 'Fully-Automated';
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
-        return 'Partially-Automated';
-      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
-      case DockstoreTool.ModeEnum.HOSTED:
-        return 'Manual';
-      default:
-        return 'Unknown';
-    }
-  }
-
-  getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
-    switch (mode) {
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
-        return 'Fully-Automated: All versions are automated builds';
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
-        return 'Partially-Automated: At least one version is an automated build';
-      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
-      case DockstoreTool.ModeEnum.HOSTED:
-        return 'Manual: No versions are automated builds';
-      default:
-        return 'Unknown: Build information not known';
-    }
-  }
-
 }

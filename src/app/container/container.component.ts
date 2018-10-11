@@ -27,7 +27,7 @@ import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { ExtendedToolService } from '../shared/extended-tool.service';
+import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
@@ -60,7 +60,7 @@ export class ContainerComponent extends Entry {
   public missingWarning: boolean;
   public tool: DockstoreTool;
   public toolCopyBtn: string;
-  public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
@@ -87,10 +87,12 @@ export class ContainerComponent extends Entry {
     errorService: ErrorService,
     location: Location,
     activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
-      protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery, private extendedToolService: ExtendedToolService) {
-    super(trackLoginService, providerService, router,
-      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
-      this.extendedTool$ = this.extendedToolService.extendedDockstoreTool$;
+    protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery) {
+    super(trackLoginService, providerService, router, errorService, dateService, urlResolverService, activatedRoute,
+      location, sessionService, sessionQuery, gA4GHFilesService);
+    this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
+
     this._toolType = 'containers';
     this.redirectAndCallDiscourse('/my-tools');
   }
@@ -261,11 +263,11 @@ export class ContainerComponent extends Entry {
   setContainerLabels(): any {
     return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).
       subscribe(
-      tool => {
-        this.tool.labels = tool.labels;
-        this.updateContainer.setTool(tool);
-        this.labelsEditMode = false;
-      });
+        tool => {
+          this.tool.labels = tool.labels;
+          this.updateContainer.setTool(tool);
+          this.labelsEditMode = false;
+        });
   }
 
   cancelLabelChanges(): void {
@@ -295,45 +297,45 @@ export class ContainerComponent extends Entry {
   }
 
   setEntryTab(tabName: string): void {
-     this.currentTab = tabName;
-     if (this.tool != null) {
-       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
-     }
-   }
+    this.currentTab = tabName;
+    if (this.tool != null) {
+      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+    }
+  }
 
-   /**
-    * Will change the /tools in the current URL with /containers
-    * @return {void}
-    */
-   switchToolsToContainers(): void {
-     const url = window.location.href.replace('/tools', '/containers');
-     const toolsIndex = window.location.href.indexOf('/tools');
-     const newPath = url.substring(toolsIndex);
-     this.location.go(newPath);
-   }
+  /**
+   * Will change the /tools in the current URL with /containers
+   * @return {void}
+   */
+  switchToolsToContainers(): void {
+    const url = window.location.href.replace('/tools', '/containers');
+    const toolsIndex = window.location.href.indexOf('/tools');
+    const newPath = url.substring(toolsIndex);
+    this.location.go(newPath);
+  }
 
-   getPageIndex(): number {
-     let pageIndex = this.getIndexInURL('/containers');
-     if (pageIndex === -1) {
-       pageIndex = this.getIndexInURL('/tools');
-       this.switchToolsToContainers();
-     }
-     return pageIndex;
-   }
+  getPageIndex(): number {
+    let pageIndex = this.getIndexInURL('/containers');
+    if (pageIndex === -1) {
+      pageIndex = this.getIndexInURL('/tools');
+      this.switchToolsToContainers();
+    }
+    return pageIndex;
+  }
 
-   addToLabels(event: MatChipInputEvent): void {
-     const input = event.input;
-     const value = event.value;
-     if ((value || '').trim()) {
-       this.containerEditData.labels.push(value.trim());
-     }
+  addToLabels(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.containerEditData.labels.push(value.trim());
+    }
 
-     if (input) {
-       input.value = '';
-     }
-   }
+    if (input) {
+      input.value = '';
+    }
+  }
 
-   removeLabel(label: any): void {
+  removeLabel(label: any): void {
     const index = this.containerEditData.labels.indexOf(label);
 
     if (index >= 0) {

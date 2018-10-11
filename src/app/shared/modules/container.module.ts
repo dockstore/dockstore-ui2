@@ -54,7 +54,6 @@ import { VersionModalComponent } from './../../container/version-modal/version-m
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
-import { ExtendedToolService } from './../extended-tool.service';
 import { CustomMaterialModule } from './../modules/material.module';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
@@ -111,8 +110,7 @@ import { SelectModule } from './select.module';
     StarringService,
     VersionModalService,
     InfoTabService,
-    ToolDescriptorService,
-    ExtendedToolService
+    ToolDescriptorService
   ],
   exports: [
     ContainerComponent,
