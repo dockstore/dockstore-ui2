@@ -24,6 +24,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
 import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolQuery } from '../../shared/tool/tool.query';
 
 @Component({
   selector: 'app-dockerfile',
@@ -46,10 +47,10 @@ export class DockerfileComponent {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
-  constructor(public fileService: FileService,
+  constructor(public fileService: FileService, private toolQuery: ToolQuery,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.filePath = '/Dockerfile';
-    this.published$ = this.containerService.toolIsPublished$;
+    this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   reactToVersion(): void {

@@ -25,6 +25,7 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
 import { VersionModalService } from '../version-modal/version-modal.service';
 
@@ -41,7 +42,8 @@ export class ViewContainerComponent extends View implements OnInit {
   isPublic$: Observable<boolean>;
   isManualTool: boolean;
   constructor(dateService: DateService, private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
-    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService) {
+    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService,
+    private toolQuery: ToolQuery) {
     super(dateService);
   }
 
@@ -77,7 +79,7 @@ export class ViewContainerComponent extends View implements OnInit {
 
   ngOnInit() {
     this.isPublic$ = this.sessionQuery.isPublic$;
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       if (this.tool) {
         this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;

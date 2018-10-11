@@ -18,6 +18,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
@@ -26,6 +27,7 @@ import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { ExtendedToolService } from '../shared/extended-tool.service';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
@@ -33,6 +35,7 @@ import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { ToolQuery } from '../shared/tool/tool.query';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ErrorService } from './../shared/error.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
@@ -55,7 +58,7 @@ export class ContainerComponent extends Entry {
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
-  public tool: ExtendedDockstoreTool;
+  public tool: DockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag|WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
@@ -65,6 +68,7 @@ export class ContainerComponent extends Entry {
   publishMessage = 'Publish the tool to make it visible to the public';
   unpublishMessage = 'Unpublish the tool to remove it from the public';
   pubUnpubMessage: string;
+  public extendedTool$: Observable<ExtendedDockstoreTool>;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -83,9 +87,10 @@ export class ContainerComponent extends Entry {
     errorService: ErrorService,
     location: Location,
     activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
-      protected gA4GHFilesService: GA4GHFilesService) {
+      protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery, private extendedToolService: ExtendedToolService) {
     super(trackLoginService, providerService, router,
       errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
+      this.extendedTool$ = this.extendedToolService.extendedDockstoreTool$;
     this._toolType = 'containers';
     this.redirectAndCallDiscourse('/my-tools');
   }
@@ -106,7 +111,6 @@ export class ContainerComponent extends Entry {
    * Populate the extra ExtendedDockstoreTool properties
    */
   setProperties() {
-    let toolRef: ExtendedDockstoreTool = this.tool;
     if (this.selectedVersion === null) {
       this.dockerPullCmd = null;
     } else {
@@ -115,15 +119,6 @@ export class ContainerComponent extends Entry {
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
-    toolRef.agoMessage = this.dateService.getAgoMessage(new Date(this.tool.lastBuild).getTime());
-    toolRef.email = this.dockstoreService.stripMailTo(this.tool.email);
-    toolRef.lastBuildDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
-    toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
-    toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
-    toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
-    if (!toolRef.imgProviderUrl) {
-      toolRef = this.imageProviderService.setUpImageProvider(toolRef);
-    }
     this.resetContainerEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
@@ -135,7 +130,7 @@ export class ContainerComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       tool => {
         this.tool = tool;
         if (tool) {
@@ -161,13 +156,6 @@ export class ContainerComponent extends Entry {
   protected setUpTool(tool: ExtendedDockstoreTool) {
     if (tool) {
       this.tool = tool;
-      if (!tool.providerUrl) {
-        this.providerService.setUpProvider(tool);
-      }
-      this.tool = Object.assign(tool, this.tool);
-      const toolRef: ExtendedDockstoreTool = this.tool;
-      toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
-      toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
       this.initTool();
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
@@ -188,7 +176,6 @@ export class ContainerComponent extends Entry {
           if (this.tool != null) {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
-          this.providerService.setUpProvider(this.tool);
         }, error => {
           this.router.navigate(['../']);
         });
@@ -303,7 +290,6 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
-      this.providerService.setUpProvider(this.tool);
     }
     this.onTagChange(tag);
   }

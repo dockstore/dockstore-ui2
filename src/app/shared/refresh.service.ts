@@ -25,6 +25,7 @@ import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
+import { ToolQuery } from './tool/tool.query';
 import { WorkflowService } from './workflow.service';
 
 @Injectable()
@@ -35,9 +36,9 @@ export class RefreshService {
     private workflows;
     constructor(private workflowsService: WorkflowsService, private containerService: ContainerService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private errorService: ErrorService, private snackBar: MatSnackBar,
+        private errorService: ErrorService, private snackBar: MatSnackBar, private toolQuery: ToolQuery,
         private sessionService: SessionService, private gA4GHFilesService: GA4GHFilesService) {
-        this.containerService.tool$.subscribe(tool => this.tool = tool);
+        this.toolQuery.tool$.subscribe(tool => this.tool = tool);
         this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);

@@ -34,7 +34,6 @@ import { WorkflowService } from '../../shared/workflow.service';
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -89,9 +88,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
       }, error => this.refreshService.handleError(message, error));
   }
 
-  getVerifiedSource(name: string) {
-    return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
-  }
 
   /**
    * Updates the version and emits an event for the parent component

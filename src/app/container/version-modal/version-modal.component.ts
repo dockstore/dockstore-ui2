@@ -31,6 +31,7 @@ import { ContainertagsService } from '../../shared/swagger/api/containertags.ser
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
@@ -70,7 +71,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService,
     private containersService: ContainersService, private containertagsService: ContainertagsService, private sessionQuery: SessionQuery,
-    private sessionService: SessionService, private dateService: DateService, private refreshService: RefreshService) {
+    private sessionService: SessionService, private dateService: DateService, private refreshService: RefreshService,
+    private toolQuery: ToolQuery) {
   }
 
   // Almost all these functions should be moved to a service
@@ -261,7 +263,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       }
     );
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.editMode = !publicPage);
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       this.updateDockerPullCommand();
     });

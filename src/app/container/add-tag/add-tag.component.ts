@@ -22,9 +22,10 @@ import { ContainerService } from '../../shared/container.service';
 import { ContainersService } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
-import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'app-add-tag',
@@ -46,7 +47,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private paramFilesService: ParamfilesService) {
+    private containersService: ContainersService, private paramFilesService: ParamfilesService, private toolQuery: ToolQuery) {
   }
 
   initializeTag() {
@@ -84,7 +85,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.initializeTag();
-    this.containerService.tool$.subscribe(tool => {
+    this.toolQuery.tool$.subscribe(tool => {
       this.tool = tool;
       this.loadDefaults();
     });

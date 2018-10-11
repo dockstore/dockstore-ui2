@@ -13,21 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Input } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { DockstoreService } from '../shared/dockstore.service';
-import { DateService } from './date.service';
-import { Tooltip } from './tooltip';
 import { EntryTab } from '../shared/entry/entry-tab';
 import { Tag } from './../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
-import { takeUntil } from 'rxjs/operators';
+import { Tooltip } from './tooltip';
 
 export abstract class Versions extends EntryTab {
 
   @Input() versions: Array<(Tag | WorkflowVersion)>;
+  @Input() verifiedSource: Array<any>;
   sortColumn: string;
   sortReverse: boolean;
   publicPage: boolean;
@@ -80,4 +80,7 @@ export abstract class Versions extends EntryTab {
     }
   }
 
+  getVerifiedSource(name: string): string {
+    return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
+  }
 }

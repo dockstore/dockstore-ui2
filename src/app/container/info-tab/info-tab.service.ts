@@ -15,7 +15,9 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { Base } from '../../shared/base';
 import { ContainerService } from '../../shared/container.service';
 import { ExtendedToolService } from '../../shared/extended-tool.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
@@ -25,116 +27,118 @@ import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 @Injectable()
-export class InfoTabService {
-    public dockerFileEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public cwlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private tools;
+export class InfoTabService extends Base {
+  public dockerFileEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public cwlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private tools;
 
-    /**
-     * The original tool that should be in sync with the database
-     *
-     * @private
-     * @type {ExtendedDockstoreTool}
-     * @memberof InfoTabService
-     */
-    private originalTool: ExtendedDockstoreTool;
+  /**
+   * The original tool that should be in sync with the database
+   *
+   * @private
+   * @type {ExtendedDockstoreTool}
+   * @memberof InfoTabService
+   */
+  private originalTool: ExtendedDockstoreTool;
 
-    /**
-     * The tool with info that may have been modified but not saved
-     *
-     * @private
-     * @type {ExtendedDockstoreTool}
-     * @memberof InfoTabService
-     */
-    private currentTool: ExtendedDockstoreTool;
-    constructor(private containersService: ContainersService, private sessionService: SessionService,
-        private containerService: ContainerService, private refreshService: RefreshService,
-        private extendedToolService: ExtendedToolService) {
-        this.extendedToolService.extendedDockstoreTool$.subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
-            if (extendedDockstoreTool) {
-                this.tool = extendedDockstoreTool;
-                this.cancelEditing();
-            }
-        });
-        this.containerService.tools$.subscribe(tools => this.tools = tools);
-    }
-    setDockerFileEditing(editing: boolean) {
-        this.dockerFileEditing$.next(editing);
-    }
+  /**
+   * The tool with info that may have been modified but not saved
+   *
+   * @private
+   * @type {ExtendedDockstoreTool}
+   * @memberof InfoTabService
+   */
+  private currentTool: ExtendedDockstoreTool;
+  constructor(private containersService: ContainersService, private sessionService: SessionService,
+    private containerService: ContainerService, private refreshService: RefreshService,
+    private extendedToolService: ExtendedToolService) {
+    super();
+    this.extendedToolService.extendedDockstoreTool$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
+        if (extendedDockstoreTool) {
+          this.tool = extendedDockstoreTool;
+          this.cancelEditing();
+        }
+      });
+    this.containerService.tools$.subscribe(tools => this.tools = tools);
+  }
+  setDockerFileEditing(editing: boolean) {
+    this.dockerFileEditing$.next(editing);
+  }
 
-    setCWLPathEditing(editing: boolean) {
-        this.cwlPathEditing$.next(editing);
-    }
+  setCWLPathEditing(editing: boolean) {
+    this.cwlPathEditing$.next(editing);
+  }
 
-    setWDLPathEditing(editing: boolean) {
-        this.wdlPathEditing$.next(editing);
-    }
+  setWDLPathEditing(editing: boolean) {
+    this.wdlPathEditing$.next(editing);
+  }
 
-    setCWLTestPathEditing(editing: boolean) {
-        this.cwlTestPathEditing$.next(editing);
-    }
+  setCWLTestPathEditing(editing: boolean) {
+    this.cwlTestPathEditing$.next(editing);
+  }
 
-    setWDLTestPathEditing(editing: boolean) {
-        this.wdlTestPathEditing$.next(editing);
-    }
+  setWDLTestPathEditing(editing: boolean) {
+    this.wdlTestPathEditing$.next(editing);
+  }
 
-    updateAndRefresh(tool: DockstoreTool) {
-        const message = 'Tool Info';
-        tool.tags = [];
-        this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
-            this.sessionService.setRefreshMessage('Updating ' + message + '...');
-            this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
-                this.containerService.replaceTool(this.tools, refreshResponse);
-                this.containerService.setTool(refreshResponse);
-                this.refreshService.handleSuccess(message);
-            }, error => {
-                this.refreshService.handleError(message, error);
-                this.restoreTool();
-            });
-        });
-    }
-
-    get tool(): ExtendedDockstoreTool {
-        return this.currentTool;
-    }
-
-    set tool(tool: ExtendedDockstoreTool) {
-        this.originalTool = tool;
-        this.currentTool = Object.assign({}, tool);
-    }
-
-    /**
-     * Cancels editing for all editable fields
-     *
-     * @memberof InfoTabService
-     */
-    cancelEditing(): void {
-        this.dockerFileEditing$.next(false);
-        this.cwlPathEditing$.next(false);
-        this.wdlPathEditing$.next(false);
-        this.wdlTestPathEditing$.next(false);
-        this.cwlTestPathEditing$.next(false);
+  updateAndRefresh(tool: DockstoreTool) {
+    const message = 'Tool Info';
+    tool.tags = [];
+    this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
+      this.sessionService.setRefreshMessage('Updating ' + message + '...');
+      this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
+        this.containerService.replaceTool(this.tools, refreshResponse);
+        this.containerService.setTool(refreshResponse);
+        this.refreshService.handleSuccess(message);
+      }, error => {
+        this.refreshService.handleError(message, error);
         this.restoreTool();
-    }
+      });
+    });
+  }
 
-    /**
-     * Reverts the tool info back to the original
-     *
-     * @memberof InfoTabService
-     */
-    restoreTool(): void {
-        this.tool = this.originalTool;
-    }
+  get tool(): ExtendedDockstoreTool {
+    return this.currentTool;
+  }
 
-    /**
-     * Saves the current workflow into the workflow variable
-     *
-     * @memberof InfoTabService
-     */
-    saveTool(): void {
-        this.tool = this.currentTool;
-    }
+  set tool(tool: ExtendedDockstoreTool) {
+    this.originalTool = tool;
+    this.currentTool = Object.assign({}, tool);
+  }
+
+  /**
+   * Cancels editing for all editable fields
+   *
+   * @memberof InfoTabService
+   */
+  cancelEditing(): void {
+    this.dockerFileEditing$.next(false);
+    this.cwlPathEditing$.next(false);
+    this.wdlPathEditing$.next(false);
+    this.wdlTestPathEditing$.next(false);
+    this.cwlTestPathEditing$.next(false);
+    this.restoreTool();
+  }
+
+  /**
+   * Reverts the tool info back to the original
+   *
+   * @memberof InfoTabService
+   */
+  restoreTool(): void {
+    this.tool = this.originalTool;
+  }
+
+  /**
+   * Saves the current workflow into the workflow variable
+   *
+   * @memberof InfoTabService
+   */
+  saveTool(): void {
+    this.tool = this.currentTool;
+  }
 }

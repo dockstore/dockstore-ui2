@@ -294,7 +294,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     let sortedVersions: Array<Tag|WorkflowVersion> = [];
 
     // Sort versions by verified date and then last_modified
-    sortedVersions = versions.sort((a, b) => this.entryVersionSorting(a, b));
+    sortedVersions = versions.slice().sort((a, b) => this.entryVersionSorting(a, b));
 
     // Get the top 6 versions
     const recentVersions: Array<Tag|WorkflowVersion> = sortedVersions.slice(0, 6);

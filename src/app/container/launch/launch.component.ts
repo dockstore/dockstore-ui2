@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { ContainerService } from '../../shared/container.service';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
-import { ContainerService } from '../../shared/container.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-launch',
@@ -58,13 +58,13 @@ export class LaunchComponent {
   protected published$: Observable<boolean>;
 
   constructor(private launchService: ToolLaunchService,
-    private toolDescriptorService: ToolDescriptorService,
+    private toolDescriptorService: ToolDescriptorService, private toolQuery: ToolQuery,
     private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService) {
     this.descriptorLanguageService.descriptorLanguages$.subscribe(map => {
       this.descriptors = map;
       this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
-    this.published$ = this.containerService.toolIsPublished$;
+    this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   // Returns an array of descriptors that are valid for the given tool version

@@ -27,6 +27,7 @@ import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { Tool } from './tool';
 
 // This line is super important for jQuery to work across the website for some reason
@@ -53,11 +54,12 @@ export class RegisterToolService {
     constructor(private containersService: ContainersService, private matSnackBar: MatSnackBar,
         private containerService: ContainerService,
         private sessionService: SessionService, private router: Router,
-        private metadataService: MetadataService, private hostedService: HostedService) {
+        private metadataService: MetadataService, private hostedService: HostedService,
+        private toolQuery: ToolQuery) {
         this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
-        this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
+        this.toolQuery.tool$.subscribe(tool => this.selectedTool = tool);
     }
     deregisterTool() {
       this.containersService.deleteContainer(this.selectedTool.id).subscribe(response => {

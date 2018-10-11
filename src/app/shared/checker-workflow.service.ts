@@ -25,6 +25,7 @@ import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Entry } from './swagger/model/entry';
 import { Workflow } from './swagger/model/workflow';
+import { ToolQuery } from './tool/tool.query';
 import { WorkflowService } from './workflow.service';
 
 @Injectable()
@@ -49,10 +50,11 @@ export class CheckerWorkflowService {
   public isStub$: Observable<boolean>;
   private ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private workflowsService: WorkflowsService, private sessionQuery: SessionQuery, private workflowService: WorkflowService,
-    private containerService: ContainerService, private router: Router, private containersService: ContainersService) {
+    private containerService: ContainerService, private router: Router, private containersService: ContainersService,
+    private toolQuery: ToolQuery) {
     this.publicPage$ = this.sessionQuery.isPublic$;
     this.publicPage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => this.publicPage = publicPage);
-    observableMerge(this.containerService.tool$, this.workflowService.workflow$).pipe(
+    observableMerge(this.toolQuery.tool$, this.workflowService.workflow$).pipe(
       filter(x => x != null),
       distinctUntilChanged()).subscribe((entry: Entry) => {
         this.entrySource$.next(entry);

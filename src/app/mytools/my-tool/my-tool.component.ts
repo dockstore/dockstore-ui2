@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
-import { first, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
@@ -37,6 +37,7 @@ import { DockstoreTool } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { Configuration } from '../../shared/swagger/configuration';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { MytoolsService } from '../mytools.service';
 
@@ -58,7 +59,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private containerService: ContainerService, private dialog: MatDialog, private location: Location,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService, private sessionQuery: SessionQuery,
-    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService) {
+    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService,
+    private toolQuery: ToolQuery) {
     super(accountsService, authService, configuration, tokenService, urlResolverService);
   }
 
@@ -82,7 +84,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.setTools(null);
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
     });
 

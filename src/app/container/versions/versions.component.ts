@@ -14,10 +14,12 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
-import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { ExtendedToolService } from '../../shared/extended-tool.service';
+import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
@@ -33,7 +35,6 @@ import { Versions } from '../../shared/versions';
 })
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<any>;
   versionTag: Tag;
   public DockstoreToolType = DockstoreTool;
   @Input() set selectedVersion(value: Tag) {
@@ -42,18 +43,18 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     }
   }
   @Output() selectedVersionChange = new EventEmitter<Tag>();
-  tool: any;
+  tool: ExtendedDockstoreTool;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService, private refreshService: RefreshService,
-    private sessionService: SessionService,
-    private containerService: ContainerService, protected sessionQuery: SessionQuery) {
+    private sessionService: SessionService, private extendedToolService: ExtendedToolService,
+    protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
     this.publicPageSubscription();
-    this.containerService.tool$.subscribe(tool => {
+    this.extendedToolService.extendedDockstoreTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: ExtendedDockstoreTool) => {
       this.tool = tool;
       if (tool) {
         this.defaultVersion = tool.defaultVersion;
@@ -85,10 +86,6 @@ export class VersionsContainerComponent extends Versions implements OnInit {
         this.refreshService.refreshTool();
       }
     }, error => this.refreshService.handleError(message, error));
-  }
-
-  getVerifiedSource(name: string) {
-    this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
   }
 
   // Updates the version and emits an event for the parent component
