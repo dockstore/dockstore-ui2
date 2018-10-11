@@ -112,7 +112,8 @@ export const sampleTool1: DockstoreTool = {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
+    tool_path: ''
 };
 
 export const sampleTool2: DockstoreTool = {

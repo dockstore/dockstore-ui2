@@ -30,7 +30,7 @@ import { WorkflowService } from './workflow.service';
 
 @Injectable()
 export class RefreshService {
-    private tool: DockstoreTool;
+    public tool: DockstoreTool;
     private tools;
     private workflow: Workflow;
     private workflows;

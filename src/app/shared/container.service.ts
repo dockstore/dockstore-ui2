@@ -27,9 +27,9 @@ export class ContainerService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
-  constructor(private toolSerivce: ToolService) { }
+  constructor(private toolService: ToolService) { }
   setTool(tool: any) {
-    this.toolSerivce.setTool(tool);
+    this.toolService.setTool(tool);
   }
   setTools(tools: any) {
     this.tools$.next(tools);

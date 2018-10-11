@@ -59,8 +59,8 @@ describe('Service: ExtendedTool', () => {
     expect(extendedTool.imgProviderUrl).toEqual('an image provider url');
     expect(extendedTool.provider).toEqual('a provider');
     expect(extendedTool.providerUrl).toEqual('a provider url');
-    expect(extendedTool.buildMode).toEqual('Fully-Automated');
-    expect(extendedTool.buildModeTooltip).toEqual('Fully-Automated: All versions are automated builds');
+    expect(extendedTool.buildMode).toEqual('Manual');
+    expect(extendedTool.buildModeTooltip).toEqual('Manual: No versions are automated builds');
   }));
 });
 

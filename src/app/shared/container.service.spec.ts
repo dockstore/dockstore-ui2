@@ -20,11 +20,20 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ContainerService } from './container.service';
+import { ProviderService } from './provider.service';
+import { ProviderStubService, ImageProviderStubService, DateStubService, DockstoreStubService } from '../test/service-stubs';
+import { ImageProviderService } from './image-provider.service';
+import { DateService } from './date.service';
+import { DockstoreService } from './dockstore.service';
 
 describe('ContainerService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [ContainerService],
+            providers: [ContainerService,
+              {provide: ProviderService, useClass: ProviderStubService},
+            {provide: ImageProviderService, useClass: ImageProviderStubService},
+          {provide: DateService, useClass: DateStubService},
+        {provide: DockstoreService, useClass: DockstoreStubService}],
         });
     });
 
@@ -38,8 +47,6 @@ describe('ContainerService', () => {
         service.setTool(tool);
         service.setNsContainers('2');
         service.setCopyBtn('1');
-        expect(service.tool$.getValue()).not.toBe(tool1);
-        expect(service.tool$.getValue()).toEqual(tool);
         service.copyBtn$.subscribe(value => expect(value).toEqual('1'));
         service.nsContainers.subscribe(value => expect(value).toEqual('2'));
     }));
@@ -73,17 +80,4 @@ describe('ContainerService', () => {
         expect(service.tools$.getValue()).toEqual([sampleTool1, sampleTool2, sampleTool3]);
     }));
 
-    it('should get build mode', inject([ContainerService], (service: ContainerService) => {
-        expect(service.getBuildMode(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS)).toEqual('Fully-Automated');
-        expect(service.getBuildMode(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED)).toEqual('Partially-Automated');
-        expect(service.getBuildMode(DockstoreTool.ModeEnum.MANUALIMAGEPATH)).toEqual('Manual');
-    }));
-
-    it('should get build mode tooltip', inject([ContainerService], (service: ContainerService) => {
-        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS))
-            .toEqual('Fully-Automated: All versions are automated builds');
-        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED))
-            .toEqual('Partially-Automated: At least one version is an automated build');
-        expect(service.getBuildModeTooltip(DockstoreTool.ModeEnum.MANUALIMAGEPATH)).toEqual('Manual: No versions are automated builds');
-    }));
 });

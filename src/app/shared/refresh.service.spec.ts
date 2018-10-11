@@ -18,7 +18,7 @@ import { MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ErrorService } from '../shared/error.service';
-import { sampleWorkflow1 } from '../test/mocked-objects';
+import { sampleWorkflow1, sampleTool1 } from '../test/mocked-objects';
 import {
   ContainersStubService,
   ContainerStubService,
@@ -76,12 +76,10 @@ describe('RefreshService', () => {
                 defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
                 defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
             };
+            service.tool = sampleTool1;
         service.refreshTool();
         sessionQuery.refreshMessage$.subscribe(refreshing => {
             expect(refreshing).toBeFalsy();
-        });
-        containerService.tool$.subscribe(tool => {
-            expect(tool).toEqual(refreshedTool);
         });
     }));
     it('should refresh workflow', inject([RefreshService, SessionQuery, WorkflowService],
