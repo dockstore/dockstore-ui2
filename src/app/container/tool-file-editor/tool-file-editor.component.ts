@@ -26,7 +26,7 @@ export class ToolFileEditorComponent extends FileEditing {
       this.editing = false;
       this.clearSourceFiles();
       if (value != null) {
-        this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
+        this.originalSourceFiles =  [...value.sourceFiles];
         this.loadVersionSourcefiles();
       }
   }

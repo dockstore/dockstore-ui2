@@ -26,7 +26,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
-      this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
+      this.originalSourceFiles =  [...value.sourceFiles];
       this.loadVersionSourcefiles();
     }
   }
