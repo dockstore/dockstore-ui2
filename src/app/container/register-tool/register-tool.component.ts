@@ -37,6 +37,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public showCustomDockerRegistryPath: boolean;
   public refreshMessage: string;
   public isModalShown: boolean;
+  public disablePrivateCheckbox = false;
   public hostedTool = {
     path: '',
     registry: 'quay.io',
@@ -99,8 +100,9 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     return this.registerToolService.getToolRegistry(registry, customDockerRegistryPath);
   }
 
-  checkForSpecialDockerRegistry() {
-    return this.registerToolService.checkForSpecialDockerRegistry(this.tool);
+  checkForSpecialDockerRegistry(): void {
+    this.registerToolService.checkForSpecialDockerRegistry(this.tool);
+    this.disablePrivateCheckbox = this.registerToolService.disabledPrivateCheckbox;
   }
 
   clearToolRegisterError() {

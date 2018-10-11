@@ -21,7 +21,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
 import {UserService} from '../loginComponents/user.service';
 import {UserStubService} from '../test/service-stubs';
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatDialogModule } from '@angular/material';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -33,7 +33,8 @@ describe('HomeComponent', () => {
       imports: [
         TabsModule.forRoot(),
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatDialogModule
       ],
       providers: [ TwitterService,
         { provide: UserService, useClass: UserStubService }],

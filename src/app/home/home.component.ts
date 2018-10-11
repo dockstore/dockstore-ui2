@@ -13,12 +13,29 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { TabDirective } from 'ngx-bootstrap/tabs';
+import { Observable } from 'rxjs';
+
+import { UserService } from '../loginComponents/user.service';
+import { User } from '../shared/swagger/model/user';
 import { TwitterService } from '../shared/twitter.service';
-import {UserService} from '../loginComponents/user.service';
-import {User} from '../shared/swagger/model/user';
+
+/**
+ * Simple youtube iframe component, too simple to have its own file
+ *
+ * @export
+ * @class YoutubeComponent
+ */
+@Component({
+  template: '<iframe width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
+})
+export class YoutubeComponent {
+  constructor(
+    public dialogRef: MatDialogRef<YoutubeComponent>) {}
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -27,14 +44,17 @@ import {User} from '../shared/swagger/model/user';
 export class HomeComponent implements OnInit, AfterViewInit {
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
-  public user: User;
+  public user$: Observable<User>;
   public selectedTab = 'toolTab';
-  constructor(private twitterService: TwitterService, private userService: UserService) {
+
+  @ViewChild('youtube') youtube: ElementRef;
+
+  constructor(private dialog: MatDialog, private renderer: Renderer2, private twitterService: TwitterService,
+    private userService: UserService) {
   }
 
   ngOnInit() {
-    (<any>$('.youtube')).colorbox({iframe: true, innerWidth: 640, innerHeight: 390});
-    this.userService.user$.subscribe(user => this.user = user);
+    this.user$ = this.userService.user$;
   }
   ngAfterViewInit() {
     this.twitterService.runScript();
@@ -48,5 +68,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.selectedTab = data.id;
   }
 
-
+  openYoutube() {
+    this.dialog.open(YoutubeComponent);
+  }
 }

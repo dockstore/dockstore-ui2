@@ -30,15 +30,13 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { Tool } from './tool';
 
-// This line is super important for jQuery to work across the website for some reason
-import * as $ from 'jquery';
-
 @Injectable()
 export class RegisterToolService {
     toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private repositories = Repository;
     public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public disabledPrivateCheckbox = false;
     private dockerRegistryMap = [];
     private sourceControlMap = [];
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -231,14 +229,14 @@ export class RegisterToolService {
         return path;
     }
 
-    checkForSpecialDockerRegistry(toolObj: Tool) {
+    checkForSpecialDockerRegistry(toolObj: Tool): void {
         for (const registry of this.dockerRegistryMap) {
             if (toolObj.irProvider === registry.friendlyName) {
                 if (registry.privateOnly === 'true') {
                     toolObj.private_access = true;
-                    $('#privateTool').attr('disabled', 'disabled');
+                    this.disabledPrivateCheckbox = true;
                 } else {
-                    $('#privateTool').removeAttr('disabled');
+                    this.disabledPrivateCheckbox = false;
                 }
 
                 if (registry.customDockerPath === 'true') {

@@ -195,7 +195,7 @@
           </label>
           <div class="col-sm-9">
             <label>
-              <input type="checkbox" name="tool.private_access" [(ngModel)]="tool.private_access" matTooltip="Image registry entry is private." id="privateTool"
+              <input type="checkbox" [disabled]="disablePrivateCheckbox" name="tool.private_access" [(ngModel)]="tool.private_access" matTooltip="Image registry entry is private." id="privateTool"
               />
             </label>
           </div>

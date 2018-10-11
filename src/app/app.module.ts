@@ -41,7 +41,7 @@ import { CoreModule } from './core/core.module';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -142,7 +142,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     MaintenanceComponent,
     FundingComponent,
     BannerComponent,
-    ChangeUsernameComponent
+    ChangeUsernameComponent,
+    YoutubeComponent
 ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -206,7 +207,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
-  entryComponents: [DeleteAccountDialogComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
