@@ -31,7 +31,7 @@
         </label>
       </div>
       <div>
-        <a *ngIf="dagType === 'classic' && dagResult" href id="exportLink" (click)="download()">
+        <a *ngIf="dagType === 'classic' && dagResult" href #exportLink (click)="download()">
           <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
         <!-- This following div is shared by both viewers -->
         <div class="btn-group pull-right" role="group" style="width:auto">

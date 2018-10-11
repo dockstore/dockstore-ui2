@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
@@ -43,6 +43,8 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
       this.onChange();
     }
   }
+
+  @ViewChild('exportLink') exportLink: ElementRef;
 
   private element: any;
   public dagResult: any;
@@ -174,7 +176,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
     }
   }
 
-  constructor(private dagService: DagService, private workflowService: WorkflowService) {
+  constructor(private renderer: Renderer2, private dagService: DagService, private workflowService: WorkflowService) {
     super();
   }
 
@@ -205,7 +207,8 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
     if (this.cy) {
       const pngDAG = this.cy.png({ full: true, scale: 2 });
       const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
-      $('#exportLink').attr('href', pngDAG).attr('download', name);
+      this.renderer.setAttribute(this.exportLink.nativeElement, 'href', pngDAG);
+      this.renderer.setAttribute(this.exportLink.nativeElement, 'download', name);
     }
   }
   ngAfterViewChecked() {
