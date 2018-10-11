@@ -32,7 +32,7 @@
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/platform-server": "^6.0.2",
     "@angular/router": "^6.0.2",
-    "@datorama/akita": "^1.9.6",
+    "@datorama/akita": "^1.11.0",
     "@datorama/akita-ngdevtools": "^1.0.2",
     "@ngx-lite/json-ld": "^0.4.2",
     "@types/elastic.js": "^1.2.8",
