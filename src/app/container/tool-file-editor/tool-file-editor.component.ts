@@ -26,7 +26,8 @@ export class ToolFileEditorComponent extends FileEditing {
       this.editing = false;
       this.clearSourceFiles();
       if (value != null) {
-        this.originalSourceFiles =  [...value.sourceFiles];
+        // Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
+        this.originalSourceFiles =  JSON.parse(JSON.stringify(value.sourceFiles));
         this.loadVersionSourcefiles();
       }
   }
@@ -44,12 +45,13 @@ export class ToolFileEditorComponent extends FileEditing {
   }
 
   /**
+   * Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles(): void {
-    this.descriptorFiles = this.getDescriptorFiles(this.currentVersion.sourceFiles);
-    this.testParameterFiles = this.getTestFiles(this.currentVersion.sourceFiles);
-    this.dockerFile = this.getDockerFile(this.currentVersion.sourceFiles);
+    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.currentVersion.sourceFiles)));
+    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.currentVersion.sourceFiles)));
+    this.dockerFile = JSON.parse(JSON.stringify(this.getDockerFile(this.currentVersion.sourceFiles)));
   }
 
   /**

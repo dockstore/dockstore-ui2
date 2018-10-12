@@ -29,7 +29,7 @@ import { TwitterService } from '../shared/twitter.service';
  * @class YoutubeComponent
  */
 @Component({
-  template: '<iframe width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
+  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
 })
 export class YoutubeComponent {
   constructor(

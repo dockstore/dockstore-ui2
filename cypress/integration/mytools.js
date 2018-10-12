@@ -101,12 +101,16 @@ describe('Dockstore my tools', function() {
       });
     });
 
-    describe('Publish an existing Amazon ECR tool', function() {
-      it('publish', function() {
+    describe('Publish and unpublish an existing Amazon ECR tool', function() {
+      it('Publish and Unpublish', function() {
         cy.visit(String(global.baseUrl) + "/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a")
         cy
         .get('#publishToolButton')
+        .should('contain', 'Publish')
         .click()
+        .should('contain', 'Unpublish')
+        .click()
+        .should('contain', 'Publish')
       });
     });
 

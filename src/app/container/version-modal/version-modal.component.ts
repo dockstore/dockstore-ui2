@@ -156,7 +156,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         err => this.refreshService.handleError(message, err) );
     }
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
-      this.tool.tags = response;
+      this.tool = {...this.tool, tags: response};
       this.containerService.setTool(this.tool);
       this.versionModalService.setIsModalShown(false);
       this.refreshService.handleSuccess(message);
