@@ -78,6 +78,10 @@ export class CheckerWorkflowService {
       }
     }));
     this.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
+      if (!entry) {
+        console.error('No active entry');
+        return;
+      }
       this.entry = entry;
       this.parentId = ((<Workflow>entry).parent_id);
       if (!entry || !entry.checker_id) {
