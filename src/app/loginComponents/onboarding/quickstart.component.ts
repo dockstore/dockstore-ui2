@@ -13,12 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
 
 import { TokenService } from '../token.service';
-import { UsersService } from '../../shared/swagger';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-onboarding',

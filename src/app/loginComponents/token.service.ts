@@ -1,17 +1,15 @@
-
-import {map} from 'rxjs/operators';
-import { TokenSource } from '../shared/enum/token-source.enum';
-import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
-import { BehaviorSubject ,  Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { Provider } from '../shared/enum/provider.enum';
+import { TokenSource } from '../shared/enum/token-source.enum';
 import { Configuration, TokensService } from '../shared/swagger';
-import { UsersService } from './../shared/swagger/api/users.service';
-import { Token } from './../shared/swagger/model/token';
-import { User } from './../shared/swagger/model/user';
-import { UserService } from './user.service';
-
+import { UsersService } from '../shared/swagger/api/users.service';
+import { Token } from '../shared/swagger/model/token';
+import { User } from '../shared/swagger/model/user';
+import { UserQuery } from '../shared/user/user.query';
 
 /**
  * This service contains the token array observable that is returned from usersService.getUserTokens().
@@ -27,7 +25,7 @@ export class TokenService {
   hasGitHubToken$ = this.tokens$.pipe(map(tokens => this.hasToken(tokens, 'github.com')));
   hasGoogleToken$ = this.tokens$.pipe(map(tokens => this.hasToken(tokens, 'google.com')));
   hasSourceControlToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasSourceControlToken(tokens)));
-  constructor(private usersService: UsersService, private userService: UserService,
+  constructor(private usersService: UsersService, private userService: UserQuery,
     private tokensService: TokensService, private configuration: Configuration, private authService: AuthService) {
     userService.user$.subscribe(user => {
       this.user = user;
@@ -88,7 +86,6 @@ export class TokenService {
   }
 
   getUserTokenStatusSet(tokens: Token[]) {
-    let tokenSet;
     const tokenStatusSet = {
       dockstore: false,
       github: false,
@@ -96,9 +93,9 @@ export class TokenService {
       quayio: false,
       gitlab: false
     };
-    if (this.tokens) {
-      for (let i = 0; i < tokens.length; i++) {
-        switch (tokens[i].tokenSource) {
+    if (tokens) {
+      tokens.forEach(token => {
+        switch (token.tokenSource) {
           case 'dockstore':
             tokenStatusSet.dockstore = true;
             break;
@@ -115,9 +112,8 @@ export class TokenService {
             tokenStatusSet.gitlab = true;
             break;
         }
-      }
-      tokenSet = tokenStatusSet;
+      });
     }
-    return tokenSet;
+    return tokenStatusSet;
   }
 }

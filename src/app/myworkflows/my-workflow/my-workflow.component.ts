@@ -23,7 +23,6 @@ import { catchError, takeUntil } from 'rxjs/operators';
 
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from '../../loginComponents/token.service';
-import { UserService } from '../../loginComponents/user.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
@@ -36,6 +35,7 @@ import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
+import { UserQuery } from '../../shared/user/user.query';
 import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
@@ -74,7 +74,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration, private sessionQuery: SessionQuery,
-    private usersService: UsersService, private userService: UserService, protected tokenService: TokenService,
+    private usersService: UsersService, private userQuery: UserQuery, protected tokenService: TokenService,
     private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
     protected accountsService: AccountsService, private refreshService: RefreshService, private sessionService: SessionService,
     private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
@@ -106,7 +106,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
 
     // Retrieve all of the workflows for the user and update the workflow service
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         this.sessionService.setRefreshMessage('Fetching workflows');

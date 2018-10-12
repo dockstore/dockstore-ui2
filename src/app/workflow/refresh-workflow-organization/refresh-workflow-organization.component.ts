@@ -15,13 +15,13 @@
  */
 import { Component } from '@angular/core';
 
-import { UserService } from '../../loginComponents/user.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
+import { UserQuery } from '../../shared/user/user.query';
 import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
@@ -32,9 +32,9 @@ import { WorkflowService } from '../../shared/workflow.service';
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
 
-  constructor(private usersService: UsersService, userService: UserService, private workflowService: WorkflowService,
+  constructor(private usersService: UsersService, userQuery: UserQuery, private workflowService: WorkflowService,
     private sessionService: SessionService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
-      super(userService, sessionQuery);
+      super(userQuery, sessionQuery);
   }
 
   refreshOrganization(): void {

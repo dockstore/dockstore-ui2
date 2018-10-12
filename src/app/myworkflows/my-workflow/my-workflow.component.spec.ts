@@ -22,7 +22,6 @@ import { AuthService } from 'ng2-ui-auth';
 
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from '../../loginComponents/token.service';
-import { UserService } from '../../loginComponents/user.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
@@ -40,13 +39,13 @@ import {
   TokenStubService,
   UrlResolverStubService,
   UsersStubService,
-  UserStubService,
   WorkflowsStubService,
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
+import { UserQuery } from '../../shared/user/user.query';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -59,13 +58,13 @@ describe('MyWorkflowsComponent', () => {
       schemas: [ NO_ERRORS_SCHEMA ],
       imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule ],
       providers: [
+        UserQuery,
         { provide: Configuration, useClass: ConfigurationStub },
         { provide: UsersService, useClass: UsersStubService },
         { provide: AuthService, useClass: AuthStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        { provide: UserService, useClass: UserStubService },
         { provide: TokenService, useClass: TokenStubService },
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
@@ -98,6 +97,7 @@ describe('MyWorkflowsComponent', () => {
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
+    component.user = { id: 1};
     refreshService = fixture.debugElement.injector.get(RefreshService);
     spyOn(refreshService, 'refreshAllWorkflows');
     component.refreshAllEntries();

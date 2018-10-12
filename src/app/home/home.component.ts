@@ -18,9 +18,9 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable } from 'rxjs';
 
-import { UserService } from '../loginComponents/user.service';
 import { User } from '../shared/swagger/model/user';
 import { TwitterService } from '../shared/twitter.service';
+import { UserQuery } from '../shared/user/user.query';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -50,11 +50,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('youtube') youtube: ElementRef;
 
   constructor(private dialog: MatDialog, private renderer: Renderer2, private twitterService: TwitterService,
-    private userService: UserService) {
+    private userQuery: UserQuery) {
   }
 
   ngOnInit() {
-    this.user$ = this.userService.user$;
+    this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
     this.twitterService.runScript();

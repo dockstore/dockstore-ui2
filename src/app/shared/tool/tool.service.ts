@@ -17,7 +17,8 @@ import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 
 import { ExtendedDockstoreToolService } from '../extended-dockstoreTool/extended-dockstoreTool.service';
-import { DockstoreTool } from '../swagger';
+import { DockstoreTool, Tag } from '../swagger';
+import { ToolQuery } from './tool.query';
 import { ToolStore } from './tool.store';
 
 @Injectable({
@@ -25,7 +26,8 @@ import { ToolStore } from './tool.store';
 })
 export class ToolService {
 
-  constructor(private toolStore: ToolStore, private extendedDockstoreToolService: ExtendedDockstoreToolService) { }
+  constructor(private toolStore: ToolStore, private extendedDockstoreToolService: ExtendedDockstoreToolService,
+    private toolQuery: ToolQuery) { }
 
   @transaction()
   setTool(tool: (DockstoreTool | null)) {
@@ -37,5 +39,15 @@ export class ToolService {
       this.toolStore.remove();
       this.extendedDockstoreToolService.removeExtendedDockstoreTool();
     }
+  }
+
+  @transaction()
+  setTags(tags: (Array<Tag> | null)) {
+    this.toolStore.updateActive(active => {
+      return {
+        ...active.tags, tags
+      };
+    });
+    this.extendedDockstoreToolService.updateExtendedDockstoreTool(this.toolQuery.getActive());
   }
 }

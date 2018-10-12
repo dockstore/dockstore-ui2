@@ -17,11 +17,11 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../loginComponents/user.service';
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
 import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
+import { UserQuery } from '../shared/user/user.query';
 import { WorkflowService } from '../shared/workflow.service';
 import { StarringService } from './starring.service';
 
@@ -44,7 +44,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
   constructor(private trackLoginService: TrackLoginService,
-    private userService: UserService,
+    private userQuery: UserQuery,
     private workflowService: WorkflowService,
     private containerService: ContainerService,
     private starringService: StarringService,
@@ -53,7 +53,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     // get tool from the observer
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
       this.rate = this.calculateRate(this.starredUsers);
     });

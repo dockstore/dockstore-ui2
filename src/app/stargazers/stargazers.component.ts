@@ -16,9 +16,9 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../loginComponents/user.service';
 import { Base } from '../shared/base';
 import { StarentryService } from '../shared/starentry.service';
+import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
 
 @Component({

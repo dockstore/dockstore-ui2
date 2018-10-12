@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Logout } from '../loginComponents/logout';
 import { toExtendSite } from '../shared/helpers';
-import { UserService } from './../loginComponents/user.service';
+import { UserQuery } from '../shared/user/user.query';
 import { LogoutService } from './../shared/logout.service';
 import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
@@ -43,7 +43,7 @@ export class NavbarComponent extends Logout implements OnInit {
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
     router: Router,
-    private userService: UserService) {
+    private userQuery: UserQuery) {
     super(trackLoginService, logoutService, router);
     this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -53,8 +53,8 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
-    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
+    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 
   resetPageNumber() {

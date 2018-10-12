@@ -12,6 +12,9 @@ import { SessionStore } from '../shared/session/session.store';
 import { ToolQuery } from '../shared/tool/tool.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { ToolStore } from '../shared/tool/tool.store';
+import { UserQuery } from '../shared/user/user.query';
+import { UserService } from '../shared/user/user.service';
+import { UserStore } from '../shared/user/user.store';
 
 export const sessionProviders = [
   SessionStore,
@@ -37,7 +40,13 @@ export const extendedDockstoreToolProviders = [
   ExtendedDockstoreToolService
 ];
 
+export const userProviders = [
+  UserStore,
+  UserQuery,
+  UserService
+];
+
 @NgModule({
-  providers: [sessionProviders, ga4ghFilesProviders, toolProviders]
+  providers: [sessionProviders, ga4ghFilesProviders, toolProviders, userProviders]
 })
 export class CoreModule { }

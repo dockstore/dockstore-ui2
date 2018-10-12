@@ -61,7 +61,6 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { TokenService } from './loginComponents/token.service';
 import { TokensComponent } from './loginComponents/tokens/tokens.component';
-import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -182,7 +181,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     DateService,
     TrackLoginService,
     TokenService,
-    UserService,
     ListService,
     CommunicatorService,
     ProviderService,

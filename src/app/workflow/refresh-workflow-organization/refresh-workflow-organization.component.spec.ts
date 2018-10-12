@@ -17,10 +17,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule, MatIconModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 
 import { RefreshService } from '../../shared/refresh.service';
-import { UserService } from './../../loginComponents/user.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
 import { WorkflowService } from './../../shared/workflow.service';
-import { RefreshStubService, UsersStubService, UserStubService, WorkflowStubService } from './../../test/service-stubs';
+import { RefreshStubService, UsersStubService, WorkflowStubService } from './../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
 
 describe('RefreshWorkflowOrganizationComponent', () => {
@@ -37,7 +36,6 @@ describe('RefreshWorkflowOrganizationComponent', () => {
         MatTooltipModule
       ],
       providers: [
-        { provide: UserService, useClass: UserStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService }]

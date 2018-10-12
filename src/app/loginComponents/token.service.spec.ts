@@ -1,27 +1,21 @@
-import { Provider } from '../shared/enum/provider.enum';
 import { inject, TestBed } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
 
+import { Provider } from '../shared/enum/provider.enum';
 import { Configuration, TokensService, UsersService } from '../shared/swagger';
 import { Token } from './../shared/swagger/model/token';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken } from './../test/mocked-objects';
-import {
-    AuthStubService,
-    ConfigurationStub,
-    TokensStubService,
-    UsersStubService,
-    UserStubService,
-} from './../test/service-stubs';
+import { AuthStubService, ConfigurationStub, TokensStubService, UsersStubService, UserStubService } from './../test/service-stubs';
 import { TokenService } from './token.service';
-import { UserService } from './user.service';
+import { UserService } from '../shared/user/user.service';
 
 describe('TokenService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [TokenService,
                 { provide: AuthService, useClass: AuthStubService },
-                { provide: UsersService, useClass: UsersStubService },
                 { provide: UserService, useClass: UserStubService },
+                { provide: UsersService, useClass: UsersStubService },
                 { provide: TokensService, useClass: TokensStubService },
                 { provide: Configuration, useClass: ConfigurationStub }
             ],
@@ -49,6 +43,7 @@ describe('TokenService', () => {
         const dockstoreToken: Token = {
             tokenSource: 'dockstore'
         };
+        console.log([dockstoreToken, quayToken, bitbucketToken, gitLabToken, gitHubToken]);
         expect(service.getUserTokenStatusSet([dockstoreToken, quayToken, bitbucketToken, gitLabToken, gitHubToken]))
             .toEqual(expectedStatusSet);
     }));

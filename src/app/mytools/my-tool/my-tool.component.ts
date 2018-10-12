@@ -25,7 +25,6 @@ import { RegisterToolService } from '../../container/register-tool/register-tool
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { TokenService } from '../../loginComponents/token.service';
-import { UserService } from '../../loginComponents/user.service';
 import { ContainerService } from '../../shared/container.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
@@ -39,6 +38,7 @@ import { UsersService } from '../../shared/swagger/api/users.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
+import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
 
 @Component({
@@ -55,7 +55,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   private registerTool: Tool;
   public showSidebar = true;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
-    private userService: UserService, protected authService: AuthService, private sessionService: SessionService,
+    private userQuery: UserQuery, protected authService: AuthService, private sessionService: SessionService,
     private containerService: ContainerService, private dialog: MatDialog, private location: Location,
     private refreshService: RefreshService, protected accountsService: AccountsService,
     private registerToolService: RegisterToolService, protected tokenService: TokenService, private sessionQuery: SessionQuery,
@@ -88,7 +88,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       this.tool = tool;
     });
 
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         this.sessionService.setRefreshMessage('Fetching tools');

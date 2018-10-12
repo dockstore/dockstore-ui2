@@ -6,7 +6,7 @@ import { mergeMap, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { Provider } from '../../shared/enum/provider.enum';
 import { TokenService } from '../token.service';
-import { UserService } from '../user.service';
+import { UserService } from '../../shared/user/user.service';
 
 @Component({
   selector: 'app-auth',
@@ -70,7 +70,7 @@ export class AuthComponent extends Base implements OnInit {
     const prevPage = localStorage.getItem('page');
 
     this.addToken().pipe(takeUntil(this.ngUnsubscribe)).subscribe(token => {
-      this.userService.updateUser();
+      this.userService.getUser();
       this.router.navigate([`${ prevPage }`]);
     }, error => {
       this.router.navigate([`${ prevPage }`]);

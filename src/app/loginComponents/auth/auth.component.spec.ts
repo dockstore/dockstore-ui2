@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { UserService } from '../../shared/user/user.service';
+import { TokenStubService, UserStubService } from '../../test/service-stubs';
 import { TokenService } from '../token.service';
-import { UserService } from '../user.service';
-import { TokenStubService, UserStubService } from './../../test/service-stubs';
 import { AuthComponent } from './auth.component';
 
 describe('AuthComponent', () => {
@@ -15,8 +15,8 @@ describe('AuthComponent', () => {
       declarations: [AuthComponent],
       imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }])],
       providers: [
-        { provide: TokenService, useClass: TokenStubService },
-        { provide: UserService, useClass: UserStubService }
+        { provide: UserService, useClass: UserStubService },
+        { provide: TokenService, useClass: TokenStubService }
       ]
     })
       .compileComponents();

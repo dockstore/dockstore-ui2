@@ -3,7 +3,7 @@
   You can update your username only if you meet certain conditions.
 </p>
 
-<p>You <strong>can<span *ngIf="!extendedUser?.canChangeUsername">'t</span></strong> change your username.</p>
+<p>You <strong>can<span *ngIf="!(canChangeUsername$ | async)">'t</span></strong> change your username.</p>
 
 <div class="alert alert-warning" role="alert" *ngIf="showEmailWarning">
   <strong>Warning!</strong> Your username seems to be an email. We recommend changing your username to something else so that your email is
@@ -26,7 +26,7 @@
   <span class="change-username-form-buttons">
     <button mat-raised-button color="primary" id="updateUsername" [disabled]="usernameTaken || usernameFormControl.invalid || !extendedUser?.canChangeUsername"
       (click)="updateUsername()">Update Username</button>
-    <span *ngIf="extendedUser?.canChangeUsername && usernameFormControl.valid">
+    <span *ngIf="(canChangeUsername$ | async) && usernameFormControl.valid">
       <span *ngIf="!checkingIfValid">
         <span *ngIf="!usernameTaken" class="vertical-center">
           <mat-icon style="color: green">check</mat-icon>&nbsp;Username available

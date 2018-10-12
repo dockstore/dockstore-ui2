@@ -17,8 +17,8 @@ import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../../loginComponents/user.service';
 import { SessionQuery } from '../session/session.query';
+import { UserQuery } from '../user/user.query';
 
 @Injectable()
 export class RefreshOrganizationComponent implements OnInit, OnDestroy {
@@ -26,11 +26,11 @@ export class RefreshOrganizationComponent implements OnInit, OnDestroy {
   @Input() protected organization: string;
   protected refreshMessage: string;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private userService: UserService, protected sessionQuery: SessionQuery) {
+  constructor(private userQuery: UserQuery, protected sessionQuery: SessionQuery) {
   }
 
   ngOnInit() {
-    this.userService.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => this.userId = userId);
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => this.userId = userId);
     this.sessionQuery.refreshMessage$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
   }

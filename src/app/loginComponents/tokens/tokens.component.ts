@@ -6,8 +6,6 @@ import { LogoutService } from '../../shared/logout.service';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { Logout } from '../logout';
 import { TokenService } from '../token.service';
-import { UserService } from '../user.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
 
 @Component({
   selector: 'app-tokens',
@@ -21,7 +19,6 @@ export class TokensComponent extends Logout implements OnInit {
 
   constructor(private dockstoreService: DockstoreService,
               private tokenService: TokenService,
-              private userService: UserService, private usersService: UsersService,
               trackLoginService: TrackLoginService,
               logoutService: LogoutService,
               router: Router) {
