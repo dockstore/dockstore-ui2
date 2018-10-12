@@ -24,7 +24,7 @@
     </ng-template>
   </mat-form-field>
   <span class="change-username-form-buttons">
-    <button mat-raised-button color="primary" id="updateUsername" [disabled]="usernameTaken || usernameFormControl.invalid || !extendedUser?.canChangeUsername"
+    <button mat-raised-button color="primary" id="updateUsername" [disabled]="usernameTaken || usernameFormControl.invalid || !(canChangeUsername$ | async)"
       (click)="updateUsername()">Update Username</button>
     <span *ngIf="(canChangeUsername$ | async) && usernameFormControl.valid">
       <span *ngIf="!checkingIfValid">

@@ -439,6 +439,9 @@ export class UserStubService {
     extendedUser$ = observableOf({});
     updateUser() {
     }
+    getExtendedUserData() {
+
+    }
 }
 
 export class TokenStubService {

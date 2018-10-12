@@ -12,7 +12,7 @@ export class UserService {
 
   constructor(private userStore: UserStore, private authService: AuthService, private usersService: UsersService,
     private configuration: Configuration, private refreshService: RefreshService) {
-      this.getUser();
+    this.getUser();
   }
 
   updateUser(user: User) {
@@ -35,33 +35,44 @@ export class UserService {
 
   @transaction()
   remove() {
-    this.userStore.update({user: null, extendedUserData: null});
+    this.userStore.update({ user: null, extendedUserData: null });
   }
 
-  getUser() {
+  setupConfigurationToken(): void {
     const token = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
-    if (token) {
-      // Attempt to get user and extended user data if there's a token because it would 401 otherwise
-      this.usersService.getUser().subscribe(
-        (user: User) => this.updateUser(user),
-        error => {
-          // TODO: Figure out what to do when error.
-          // Currently this function is executed whether the user is logged in or not.
-          this.updateUser(null);
-        }
-      );
+  }
+
+  getExtendedUserData(): void {
+    this.setupConfigurationToken();
+    if (this.configuration.apiKeys['Authorization']) {
       this.usersService.getExtendedUserData().subscribe(
-        (extendedUser: any) => this.updateExtendedUserData(extendedUser),
-        error => this.updateExtendedUserData(null)
-      );
+        (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
+        error => this.updateExtendedUserData(null));
     } else {
-      // No token, no user
-      this.remove();
+      this.updateExtendedUserData(null);
     }
   }
 
-  gravatarUrl(email: string, defaultImg: string) {
+  getSingleUser(): void {
+    this.setupConfigurationToken();
+    if (this.configuration.apiKeys['Authorization']) {
+      this.usersService.getUser().subscribe(
+        (user: User) => this.updateUser(user),
+        error => this.updateUser(null));
+    } else {
+      this.updateUser(null);
+    }
+  }
+
+  getUser(): void {
+    // Attempt to get user and extended user data if there's a token because it would 401 otherwise
+    this.getSingleUser();
+    this.getExtendedUserData();
+
+  }
+
+  gravatarUrl(email: string, defaultImg: string): string {
     if (email) {
       return 'https://www.gravatar.com/avatar/' + Md5.hashStr(email) + '?d=' + defaultImg + '&s=500';
     } else {
@@ -73,10 +84,10 @@ export class UserService {
     }
   }
 
-    /**
-   * Attempts to update the username to the new value given by the user
-   */
-  updateUsername(username: string) {
+  /**
+ * Attempts to update the username to the new value given by the user
+ */
+  updateUsername(username: string): void {
     this.usersService.changeUsername(username).subscribe(
       (user: User) => {
         this.getUser();

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { UsersService } from '../../../shared/swagger';
 import { UserQuery } from '../../../shared/user/user.query';
+import { UserService } from '../../../shared/user/user.service';
 import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-account-dialog.component';
 
 @Component({
@@ -13,9 +14,10 @@ import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-acc
 })
 export class ControlsComponent implements OnInit {
   public canChangeUsername$: Observable<boolean>;
-  constructor(public dialog: MatDialog, public userQuery: UserQuery, public usersService: UsersService) { }
+  constructor(public dialog: MatDialog, public userQuery: UserQuery, public usersService: UsersService, public userService: UserService) { }
 
   ngOnInit() {
+    this.userService.getExtendedUserData();
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
   }
 
