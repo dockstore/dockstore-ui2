@@ -21,12 +21,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { TokenService } from '../../loginComponents/token.service';
 import { RefreshService } from '../../shared/refresh.service';
+import { TokenQuery } from '../../shared/state/token.query';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
+import { UserQuery } from '../../shared/user/user.query';
 import { WorkflowService } from '../../shared/workflow.service';
 import { RouterLinkStubDirective } from '../../test';
 import { RouterOutletStubComponent } from '../../test/router-stubs';
@@ -36,7 +37,6 @@ import {
   ConfigurationStub,
   RefreshStubService,
   RegisterWorkflowModalStubService,
-  TokenStubService,
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
@@ -45,7 +45,6 @@ import {
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
-import { UserQuery } from '../../shared/user/user.query';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -65,7 +64,7 @@ describe('MyWorkflowsComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        { provide: TokenService, useClass: TokenStubService },
+        TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService,

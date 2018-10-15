@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
 
 import { LoginService } from '../../../login/login.service';
-import { TokenService } from '../../token.service';
-import { TokenSource } from './../../../shared/enum/token-source.enum';
-import { Links } from './links.model';
+import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { UserService } from '../../../shared/user/user.service';
+import { Links } from './links.model';
 
 @Injectable()
 export class AccountsService {
 
-    constructor(private loginService: LoginService, private tokenService: TokenService, private userService: UserService) { }
+    constructor(private loginService: LoginService, private userService: UserService) { }
 
     private stripSpace(url: string): string {
         return url.replace(/\s/g, '');

@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 
 import { DockstoreService } from '../../shared/dockstore.service';
 import { LogoutService } from '../../shared/logout.service';
+import { TokenQuery } from '../../shared/state/token.query';
+import { TokenService } from '../../shared/state/token.service';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { Logout } from '../logout';
-import { TokenService } from '../token.service';
 
 @Component({
   selector: 'app-tokens',
@@ -18,14 +19,14 @@ export class TokensComponent extends Logout implements OnInit {
   sortReverse: boolean;
 
   constructor(private dockstoreService: DockstoreService,
-              private tokenService: TokenService,
+              private tokenService: TokenService, private tokenQuery: TokenQuery,
               trackLoginService: TrackLoginService,
               logoutService: LogoutService,
               router: Router) {
     super(trackLoginService, logoutService, router);
   }
   ngOnInit() {
-    this.tokenService.tokens$.subscribe(tokens => {
+    this.tokenQuery.tokens$.subscribe(tokens => {
       this.tokens = tokens;
       if (tokens) {
         this.setProperty();

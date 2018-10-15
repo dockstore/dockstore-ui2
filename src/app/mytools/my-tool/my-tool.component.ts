@@ -24,7 +24,6 @@ import { RegisterToolComponent } from '../../container/register-tool/register-to
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { TokenService } from '../../loginComponents/token.service';
 import { ContainerService } from '../../shared/container.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
@@ -32,6 +31,7 @@ import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
+import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
@@ -58,10 +58,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private userQuery: UserQuery, protected authService: AuthService, private sessionService: SessionService,
     private containerService: ContainerService, private dialog: MatDialog, private location: Location,
     private refreshService: RefreshService, protected accountsService: AccountsService,
-    private registerToolService: RegisterToolService, protected tokenService: TokenService, private sessionQuery: SessionQuery,
+    private registerToolService: RegisterToolService, protected tokenQuery: TokenQuery, private sessionQuery: SessionQuery,
     protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService,
     private toolQuery: ToolQuery) {
-    super(accountsService, authService, configuration, tokenService, urlResolverService);
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
   }
 
   ngOnInit() {

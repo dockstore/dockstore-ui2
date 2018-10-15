@@ -5,7 +5,7 @@ import { mergeMap, takeUntil } from 'rxjs/operators';
 
 import { Base } from '../../shared/base';
 import { Provider } from '../../shared/enum/provider.enum';
-import { TokenService } from '../token.service';
+import { TokenService } from '../../shared/state/token.service';
 import { UserService } from '../../shared/user/user.service';
 
 @Component({

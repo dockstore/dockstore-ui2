@@ -24,11 +24,12 @@ import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserService } from '../../../shared/user/user.service';
-import { TokenService } from '../../token.service';
 import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Configuration } from './../../../shared/swagger/configuration';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
+import { TokenService } from '../../../shared/state/token.service';
+import { TokenQuery } from '../../../shared/state/token.query';
 
 @Component({
   selector: 'app-accounts-external',
@@ -84,7 +85,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
     private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
     private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService,
-    private matSnackBar: MatSnackBar) {
+    private matSnackBar: MatSnackBar, private tokenQuery: TokenQuery) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       state => {
         if (!state) {
@@ -146,7 +147,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dsServerURI = Dockstore.API_URI;
-    this.tokenService.tokens$.subscribe((tokens: Token[]) => {
+    this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
       this.setTokens(tokens);
     });
   }

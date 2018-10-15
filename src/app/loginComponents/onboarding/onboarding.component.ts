@@ -4,7 +4,8 @@ import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { ExtendedUserData, User, UsersService } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
-import { TokenService } from '../token.service';
+import { TokenService } from '../../shared/state/token.service';
+import { TokenQuery } from '../../shared/state/token.query';
 
 @Component({
   selector: 'app-onboarding',
@@ -16,17 +17,14 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   extendedUser: ExtendedUserData;
   user: User;
   ready = false;
-  constructor(private userQuery: UserQuery, private usersService: UsersService, private tokenService: TokenService) {
+  constructor(private userQuery: UserQuery, private usersService: UsersService, private tokenService: TokenQuery) {
   }
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
-    this.tokenService.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      tokens => {
-        if (tokens) {
-          const tokenStatusSet = this.tokenService.getUserTokenStatusSet(tokens);
+    this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      tokenStatusSet => {
           if (tokenStatusSet) {
             this.tokenSetComplete = tokenStatusSet.github;
-          }
         }
       }
     );

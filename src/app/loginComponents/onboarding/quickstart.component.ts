@@ -15,8 +15,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { TokenService } from '../token.service';
-
 @Component({
   selector: 'app-onboarding',
   templateUrl: './quickstart.component.html'
@@ -24,7 +22,7 @@ import { TokenService } from '../token.service';
 export class QuickStartComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete;
-  constructor(private tokenService: TokenService) {
+  constructor() {
   }
   ngOnInit() {
     localStorage.setItem('page', '/quick-start');

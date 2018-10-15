@@ -1,16 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
-import { MatChipInputEvent, MatSnackBar } from '@angular/material';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import RoleEnum = Permission.RoleEnum;
-import { TokenService } from '../../loginComponents/token.service';
-import { TokenSource } from '../../shared/enum/token-source.enum';
-import { Dockstore } from '../../shared/dockstore.model';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RefreshService } from '../../shared/refresh.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatChipInputEvent, MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { Dockstore } from '../../shared/dockstore.model';
+import { TokenSource } from '../../shared/enum/token-source.enum';
+import { RefreshService } from '../../shared/refresh.service';
+import { TokenQuery } from '../../shared/state/token.query';
+import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
+
+import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
@@ -43,11 +44,11 @@ export class PermissionsComponent implements OnInit {
   }
 
   constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar,
-              private tokenService: TokenService, private refreshService: RefreshService) {
+    private tokenQuery: TokenQuery, private refreshService: RefreshService) {
   }
 
   ngOnInit() {
-    this.tokenService.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
+    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
       this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });
   }
@@ -71,7 +72,7 @@ export class PermissionsComponent implements OnInit {
 
     if ((value || '').trim()) {
       this.updating++;
-      this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, {email: value, role: permission}).subscribe(
+      this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }).subscribe(
         (userPermissions: Permission[]) => {
           this.updating--;
           this.processResponse(userPermissions);

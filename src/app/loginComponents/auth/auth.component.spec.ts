@@ -3,8 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { UserService } from '../../shared/user/user.service';
 import { TokenStubService, UserStubService } from '../../test/service-stubs';
-import { TokenService } from '../token.service';
 import { AuthComponent } from './auth.component';
+import { TokenService } from '../../shared/state/token.service';
 
 describe('AuthComponent', () => {
   let component: AuthComponent;

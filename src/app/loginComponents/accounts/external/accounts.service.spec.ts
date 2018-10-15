@@ -3,8 +3,8 @@ import { inject, TestBed } from '@angular/core/testing';
 import { LoginService } from '../../../login/login.service';
 import { UserService } from '../../../shared/user/user.service';
 import { LoginStubService, TokenStubService, UserStubService } from '../../../test/service-stubs';
-import { TokenService } from '../../token.service';
 import { AccountsService } from './accounts.service';
+import { TokenService } from '../../../shared/state/token.service';
 
 describe('Service: Accounts', () => {
   beforeEach(() => {

@@ -6,12 +6,13 @@ import { Configuration, ExtendedUserData, User, UsersService } from '../swagger'
 import { UserStore } from './user.store';
 import { Md5 } from 'ts-md5/dist/md5';
 import { RefreshService } from '../refresh.service';
+import { TokenService } from '../state/token.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
   constructor(private userStore: UserStore, private authService: AuthService, private usersService: UsersService,
-    private configuration: Configuration, private refreshService: RefreshService) {
+    private configuration: Configuration, private refreshService: RefreshService, private tokenService: TokenService) {
     this.getUser();
   }
 
@@ -58,18 +59,29 @@ export class UserService {
     this.setupConfigurationToken();
     if (this.configuration.apiKeys['Authorization']) {
       this.usersService.getUser().subscribe(
-        (user: User) => this.updateUser(user),
-        error => this.updateUser(null));
+        (user: User) => {
+          this.updateUser(user);
+          if (user) {
+            this.tokenService.get(user.id);
+          } else {
+            this.tokenService.removeAll();
+          }
+        },
+        error => {
+          this.updateUser(null);
+          this.tokenService.removeAll();
+        });
     } else {
       this.updateUser(null);
+      this.tokenService.removeAll();
     }
   }
 
+  @transaction()
   getUser(): void {
     // Attempt to get user and extended user data if there's a token because it would 401 otherwise
     this.getSingleUser();
     this.getExtendedUserData();
-
   }
 
   gravatarUrl(email: string, defaultImg: string): string {

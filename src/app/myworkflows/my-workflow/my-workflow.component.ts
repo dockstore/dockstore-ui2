@@ -22,7 +22,6 @@ import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { TokenService } from '../../loginComponents/token.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
@@ -30,6 +29,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
+import { TokenQuery } from '../../shared/state/token.query';
 import { Workflow } from '../../shared/swagger';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
@@ -74,12 +74,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
   constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration, private sessionQuery: SessionQuery,
-    private usersService: UsersService, private userQuery: UserQuery, protected tokenService: TokenService,
+    private usersService: UsersService, private userQuery: UserQuery,
     private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
     protected accountsService: AccountsService, private refreshService: RefreshService, private sessionService: SessionService,
     private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
-    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar) {
-    super(accountsService, authService, configuration, tokenService, urlResolverService);
+    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar,
+    protected tokenQuery: TokenQuery) {
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
   }
 
   ngOnInit() {
@@ -96,7 +97,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
       }
     });
-    this.hasSourceControlToken$ = this.tokenService.hasSourceControlToken$;
+    this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
     this.workflowService.setWorkflow(null);
     this.workflowService.setWorkflows(null);
