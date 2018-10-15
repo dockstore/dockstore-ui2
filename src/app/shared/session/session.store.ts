@@ -23,7 +23,7 @@ export interface SessionState {
 ​
 export function createInitialState(): SessionState {
   return {
-    refreshMessage: '',
+    refreshMessage: null,
     isPublic: true
   };
 }

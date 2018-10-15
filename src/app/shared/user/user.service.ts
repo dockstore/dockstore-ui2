@@ -37,6 +37,7 @@ export class UserService {
   @transaction()
   remove() {
     this.userStore.update({ user: null, extendedUserData: null });
+    this.tokenService.removeAll();
   }
 
   setupConfigurationToken(): void {
