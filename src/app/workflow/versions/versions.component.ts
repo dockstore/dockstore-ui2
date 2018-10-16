@@ -18,6 +18,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ErrorService } from '../../shared/error.service';
+import { ExtendedWorkflowService } from '../../shared/extended-workflow.service';
+import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
@@ -25,7 +27,6 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
-import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -43,20 +44,20 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   }
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
   public WorkflowType = Workflow;
-  workflow: any;
+  workflow: ExtendedWorkflow;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
 
   constructor(dockstoreService: DockstoreService, dateService: DateService, private sessionService: SessionService,
-    private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
+    private errorService: ErrorService, private extendedWorkflowService: ExtendedWorkflowService,
+    private workflowsService: WorkflowsService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
     this.publicPageSubscription();
-    this.workflowService.workflow$.subscribe(workflow => {
+    this.extendedWorkflowService.extendedWorkflow$.subscribe(workflow => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;

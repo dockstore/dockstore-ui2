@@ -67,7 +67,6 @@ import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
-import { CheckerWorkflowService } from './shared/checker-workflow.service';
 import { CommunicatorService } from './shared/communicator.service';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
@@ -192,7 +191,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     PagenumberService,
     TwitterService,
     GA4GHService,
-    CheckerWorkflowService,
     ErrorService,
     DescriptorLanguageService,
     UrlResolverService,

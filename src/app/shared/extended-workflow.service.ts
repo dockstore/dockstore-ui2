@@ -35,7 +35,8 @@ export class ExtendedWorkflowService {
      */
     extendWorkflow(workflow: Workflow): ExtendedWorkflow {
         if (workflow) {
-            const extendedWorkflow: ExtendedWorkflow = <ExtendedWorkflow>this.providerService.setUpProvider(workflow);
+          let extendedWorkflow: ExtendedWorkflow = {...workflow};
+            extendedWorkflow = <ExtendedWorkflow>this.providerService.setUpProvider(extendedWorkflow);
             extendedWorkflow.email = this.dockstoreService.stripMailTo(extendedWorkflow.email);
             extendedWorkflow.agoMessage = this.dateService.getAgoMessage(new Date(extendedWorkflow.last_modified_date).getTime());
             extendedWorkflow.versionVerified = this.dockstoreService.getVersionVerified(extendedWorkflow.workflowVersions);

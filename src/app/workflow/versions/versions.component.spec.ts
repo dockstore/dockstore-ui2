@@ -31,21 +31,30 @@ import {
   RefreshStubService,
   WorkflowsStubService,
   WorkflowStubService,
+  ContainersStubService,
+  ImageProviderStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
+import { ExtendedWorkflowService } from '../../shared/extended-workflow.service';
+import { ProviderService } from '../../shared/provider.service';
+import { ImageProviderService } from '../../shared/image-provider.service';
+import { ContainersService } from '../../shared/swagger';
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
-  let workflowService: WorkflowService;
+  let workflowService: ExtendedWorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
+        ExtendedWorkflowService,
         { provide: WorkflowService, useClass: WorkflowStubService},
         { provide: WorkflowsService, useClass: WorkflowsStubService},
+        ProviderService,
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
         { provide: ErrorService, useClass: ErrorStubService },
         { provide: RefreshService, useClass: RefreshStubService}
       ]
@@ -58,7 +67,7 @@ describe('VersionsWorkflowComponent', () => {
     component = fixture.componentInstance;
     component.versions = [];
     fixture.detectChanges();
-    workflowService = fixture.debugElement.injector.get(WorkflowService);
+    workflowService = fixture.debugElement.injector.get(ExtendedWorkflowService);
   });
 
   it('should create', () => {

@@ -9,6 +9,9 @@ import { GA4GHFilesStore } from '../shared/ga4gh-files/ga4gh-files.store';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
 import { SessionStore } from '../shared/session/session.store';
+import { CheckerWorkflowQuery } from '../shared/state/checker-workflow.query';
+import { CheckerWorkflowService } from '../shared/state/checker-workflow.service';
+import { CheckerWorkflowStore } from '../shared/state/checker-workflow.store';
 import { ToolQuery } from '../shared/tool/tool.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { ToolStore } from '../shared/tool/tool.store';
@@ -46,7 +49,13 @@ export const userProviders = [
   UserService
 ];
 
+export const checkerWorkflowProviders = [
+  CheckerWorkflowStore,
+  CheckerWorkflowQuery,
+  CheckerWorkflowService
+];
+
 @NgModule({
-  providers: [sessionProviders, ga4ghFilesProviders, toolProviders, userProviders]
+  providers: [sessionProviders, ga4ghFilesProviders, toolProviders, userProviders, checkerWorkflowProviders]
 })
 export class CoreModule { }

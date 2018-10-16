@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
@@ -26,13 +26,14 @@ import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
+import { Base } from '../../shared/base';
 
 @Component({
   selector: 'app-add-tag',
   templateUrl: './add-tag.component.html',
   styleUrls: ['./add-tag.component.css']
 })
-export class AddTagComponent implements OnInit, AfterViewChecked {
+export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
   @ViewChild('addTagForm') currentForm: NgForm;
   public DescriptorType = ToolDescriptor.TypeEnum;
@@ -48,6 +49,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
     private containersService: ContainersService, private paramFilesService: ParamfilesService, private toolQuery: ToolQuery) {
+      super();
   }
 
   initializeTag() {
@@ -85,7 +87,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.initializeTag();
-    this.toolQuery.tool$.subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       this.loadDefaults();
     });

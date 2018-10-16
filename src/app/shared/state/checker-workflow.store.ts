@@ -14,20 +14,28 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Store, StoreConfig } from '@datorama/akita';
+import { Workflow, Entry } from '../swagger';
 
-import { GA4GHFiles } from './ga4gh-files.model';
-
-export interface GA4GHFilesState extends EntityState<GA4GHFiles> {}
-​
-const initialState: GA4GHFilesState = {};
-​
-@Injectable({
-  providedIn: 'root'
-})
-@StoreConfig({ name: 'ga4ghFiles' })
-export class GA4GHFilesStore extends EntityStore<GA4GHFilesState, GA4GHFiles> {
-  constructor() {
-    super(initialState);
-  }
+export interface CheckerWorkflowState {
+   entry: Entry;
+   checkerWorkflow: Workflow;
 }
+
+export function createInitialState(): CheckerWorkflowState {
+  return {
+    entry: null,
+    checkerWorkflow: null
+  };
+}
+
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'checkerWorkflow' })
+export class CheckerWorkflowStore extends Store<CheckerWorkflowState> {
+
+  constructor() {
+    super(createInitialState());
+  }
+
+}
+

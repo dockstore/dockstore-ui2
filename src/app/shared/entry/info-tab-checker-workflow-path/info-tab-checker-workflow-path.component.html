@@ -1,26 +1,26 @@
-<li *ngIf="(checkerWorkflow$ | async) || (!(checkerWorkflow$ | async) && !parentId && !(isStub$ | async))">
+<li *ngIf="(checkerId$ | async) || (canAdd$ | async)">
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group">
       <strong matTooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
     </div>
-    <span *ngIf="!(checkerWorkflow$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
+    <span *ngIf="!(checkerId$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
-      <button [disabled]="(refreshMessage$ | async)" [routerLink]="checkerWorkflowPath" id=viewCheckerWorkflowButton *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link">
+      <a [routerLink]="(checkerWorkflowURL$ | async)" id=viewCheckerWorkflowButton *ngIf="(checkerId$ | async) && !(refreshMessage$ | async)" type="button" class="btn btn-link">
         <span class="glyphicon glyphicon-eye-open"></span> View
-      </button>
+      </a>
       <span *ngIf="!(isPublic$ | async)">
-        <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="!(checkerWorkflow$ | async) && !parentId && !(isStub$ | async) && canWrite" type="button" class="btn btn-link" (click)="add()">
+        <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="(canAdd$ | async) && canWrite" type="button" class="btn btn-link" (click)="add()">
           <span class="glyphicon glyphicon-plus"></span> Add
         </button>
-        <!-- <button *ngIf="(checkerWorkflow$ | async)" type="button" class="btn btn-link" (click)="delete()">
+        <!-- <button *ngIf="checkerWorkflowPath" type="button" class="btn btn-link" (click)="delete()">
           <span class="glyphicon glyphicon-remove"></span> Delete
         </button> -->
       </span>
     </div>
   </form>
-  <app-register-checker-workflow *ngIf="!(isPublic$ |async) && !(checkerWorkflowPath$ | async)"></app-register-checker-workflow>
+  <app-register-checker-workflow *ngIf="!(isPublic$ |async) && !(checkerId$ | async)"></app-register-checker-workflow>
 </li>
-<li *ngIf="parentId">
+<li *ngIf="(parentId$ | async)">
   <form class="form-inline">
     <div>
       <div class="form-group">

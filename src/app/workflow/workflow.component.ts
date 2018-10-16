@@ -42,6 +42,8 @@ import { UrlResolverService } from '../shared/url-resolver.service';
 import { WorkflowService } from '../shared/workflow.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { ExtendedWorkflowService } from '../shared/extended-workflow.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -68,6 +70,7 @@ export class WorkflowComponent extends Entry {
   protected writers = [];
   protected owners = [];
   public schema;
+  public extendedWorkflow$: Observable<ExtendedWorkflow>;
   publishMessage = 'Publish the workflow to make it visible to the public';
   unpublishMessage = 'Unpublish the workflow to remove it from the public';
   pubUnpubMessage: string;
@@ -75,7 +78,7 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService,
+    router: Router, private workflowService: WorkflowService, private extendedWorkflowService: ExtendedWorkflowService,
     errorService: ErrorService, urlResolverService: UrlResolverService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
       gA4GHFilesService: GA4GHFilesService) {
@@ -85,6 +88,7 @@ export class WorkflowComponent extends Entry {
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
+    this.extendedWorkflow$ = this.extendedWorkflowService.extendedWorkflow$;
   }
 
   private processPermissions(userPermissions: Permission[]): void {
@@ -127,12 +131,7 @@ export class WorkflowComponent extends Entry {
    * Populate the extra ExtendedWorkflow properties
    */
   setProperties() {
-    const workflowRef: ExtendedWorkflow = this.workflow;
     this.shareURL = window.location.href;
-    workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
-    workflowRef.agoMessage = this.dateService.getAgoMessage(new Date(workflowRef.last_modified_date).getTime());
-    workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
-    workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
@@ -150,10 +149,6 @@ export class WorkflowComponent extends Entry {
   private setUpWorkflow(workflow: any) {
     if (workflow) {
       this.workflow = workflow;
-      if (!workflow.providerUrl) {
-        this.providerService.setUpProvider(workflow);
-      }
-      this.workflow = Object.assign(workflow, this.workflow);
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);

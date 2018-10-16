@@ -22,7 +22,7 @@ import {
   DescriptorLanguageStubService,
   RegisterCheckerWorkflowStubService,
 } from './../../../test/service-stubs';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { ErrorService } from './../../error.service';
 import { DescriptorLanguageService } from './../descriptor-language.service';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow.component';

@@ -17,29 +17,34 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import { CheckerWorkflowService } from '../../checker-workflow.service';
 import { formInputDebounceTime } from '../../constants';
 import { ErrorService } from '../../error.service';
+import { SessionQuery } from '../../session/session.query';
+import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
 import { Workflow } from '../../swagger/model/workflow';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../validationMessages.model';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
-import { SessionQuery } from '../../session/session.query';
+import { Base } from '../../base';
 
 @Component({
   selector: 'app-register-checker-workflow',
   templateUrl: './register-checker-workflow.component.html',
   styleUrls: ['./register-checker-workflow.component.scss']
 })
-export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecked {
+export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
 
   constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
     private checkerWorkflowService: CheckerWorkflowService, private errorService: ErrorService,
-    private descriptorLanguageService: DescriptorLanguageService, private sessionQuery: SessionQuery) { }
+    private descriptorLanguageService: DescriptorLanguageService, private sessionQuery: SessionQuery,
+    private checkerWorkflowQuery: CheckerWorkflowQuery) {
+      super();
+    }
   public registerError: HttpErrorResponse;
   public isModalShown$: Observable<boolean>;
   public workflowPath: string;
@@ -59,12 +64,18 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
 
   ngOnInit() {
     this.clearForm();
-    this.checkerWorkflowService.entry$.subscribe((entry: Entry) => {
+    this.checkerWorkflowQuery.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
       this.entry = entry;
-      this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
-      this.isWorkflow = this.checkerWorkflowService.isEntryAWorkflow(entry);
-      if (this.isWorkflow) {
-        this.descriptorType = (<Workflow>this.entry).descriptorType;
+      if (entry) {
+        this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
+        this.isWorkflow = this.checkerWorkflowQuery.isEntryAWorkflow(entry);
+        if (this.isWorkflow) {
+          this.descriptorType = (<Workflow>this.entry).descriptorType;
+        }
+      } else {
+        this.testParameterFilePath = null;
+        this.isWorkflow = null;
+        this.descriptorType = null;
       }
     });
     this.registerCheckerWorkflowService.errorObj$.subscribe((error: HttpErrorResponse) => {

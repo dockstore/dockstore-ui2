@@ -489,6 +489,15 @@ export class CheckerWorkflowStubService {
     isEntryAWorkflow() {
         return true;
     }
+    clearAll() {
+      return;
+    }
+    getCheckerWorkflowURLObservable() {
+      return observableOf(null);
+    }
+    canAdd() {
+      return observableOf(false);
+    }
 }
 
 export class DescriptorLanguageStubService {

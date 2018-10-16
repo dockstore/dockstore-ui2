@@ -17,6 +17,7 @@ import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 
 import { ExtendedDockstoreToolService } from '../extended-dockstoreTool/extended-dockstoreTool.service';
+import { CheckerWorkflowService } from '../state/checker-workflow.service';
 import { DockstoreTool, Tag } from '../swagger';
 import { ToolQuery } from './tool.query';
 import { ToolStore } from './tool.store';
@@ -27,7 +28,7 @@ import { ToolStore } from './tool.store';
 export class ToolService {
 
   constructor(private toolStore: ToolStore, private extendedDockstoreToolService: ExtendedDockstoreToolService,
-    private toolQuery: ToolQuery) { }
+    private toolQuery: ToolQuery, private checkerWorkflowService: CheckerWorkflowService) { }
 
   @transaction()
   setTool(tool: (DockstoreTool | null)) {

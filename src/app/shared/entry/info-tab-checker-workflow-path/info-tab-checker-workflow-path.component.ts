@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { CheckerWorkflowService } from '../../checker-workflow.service';
 import { SessionQuery } from '../../session/session.query';
+import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { Workflow } from '../../swagger/model/workflow';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 
@@ -29,33 +30,31 @@ import { RegisterCheckerWorkflowService } from '../register-checker-workflow/reg
 })
 export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;
-  checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
-  checkerWorkflowPath: string;
+  parentId$: Observable<number>;
+  checkerWorkflowURL$: Observable<string>;
   refreshMessage$: Observable<string>;
+  checkerId$: Observable<number>;
+  canAdd$: Observable<boolean>;
+  canView$: Observable<boolean>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  parentId = null;
-  constructor(private checkerWorkflowService: CheckerWorkflowService,
+  constructor(private checkerWorkflowService: CheckerWorkflowService, private checkerWorkflowQuery: CheckerWorkflowQuery,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
     private sessionQuery: SessionQuery
   ) { }
 
   ngOnInit(): void {
     this.refreshMessage$ = this.sessionQuery.refreshMessage$;
-    this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
-    this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {
-      this.parentId = this.checkerWorkflowService.parentId;
-    });
-    this.isPublic$ = this.checkerWorkflowService.publicPage$;
-    this.isStub$ = this.checkerWorkflowService.isStub$;
-    this.checkerWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
-      if (workflow) {
-        this.checkerWorkflowPath = this.viewCheckerWorkflow();
-      }
-    });
+    this.parentId$ = this.checkerWorkflowQuery.parentId$;
+    this.isPublic$ = this.sessionQuery.isPublic$;
+    this.isStub$ = this.checkerWorkflowQuery.isStub$;
+    this.checkerWorkflowURL$ = this.checkerWorkflowService.getCheckerWorkflowURLObservable(
+      this.checkerWorkflowQuery.checkerWorkflow$, this.isPublic$);
+    this.checkerId$ = this.checkerWorkflowQuery.checkerId$;
+    this.canAdd$ = this.checkerWorkflowService.canAdd(this.checkerId$, this.parentId$, this.isStub$);
   }
 
   ngOnDestroy() {
@@ -67,14 +66,15 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
     this.registerCheckerWorkflowService.add();
   }
 
-  viewCheckerWorkflow(): string {
-    return this.checkerWorkflowService.getCheckerWorkflowURL();
-  }
-
   delete(): void {
     this.registerCheckerWorkflowService.delete();
   }
 
+  /**
+   * This is bad, change it to get the URL and make the button a link instead
+   *
+   * @memberof InfoTabCheckerWorkflowPathComponent
+   */
   viewParentEntry(): void {
     this.checkerWorkflowService.goToParentEntry();
   }

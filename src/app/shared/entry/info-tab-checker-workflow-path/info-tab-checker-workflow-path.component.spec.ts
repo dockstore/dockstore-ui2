@@ -20,7 +20,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';
-import { CheckerWorkflowService } from '../../checker-workflow.service';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
 
