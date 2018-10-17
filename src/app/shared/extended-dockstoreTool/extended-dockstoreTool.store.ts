@@ -21,7 +21,7 @@ import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 @Injectable({
   providedIn: 'root'
 })
-@StoreConfig({ name: 'extended-dockstoreTool'})
+@StoreConfig({ name: 'extendedDockstoreTool'})
 export class ExtendedDockstoreToolStore extends Store<ExtendedDockstoreTool> {
   constructor() {
     super({});
