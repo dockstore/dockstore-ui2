@@ -26,7 +26,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
-      this.originalSourceFiles =  [...value.sourceFiles];
+      this.originalSourceFiles =  JSON.parse(JSON.stringify(value.sourceFiles));
       this.loadVersionSourcefiles();
     }
   }
@@ -47,8 +47,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
-    this.descriptorFiles = this.getDescriptorFiles(this._selectedVersion.sourceFiles);
-    this.testParameterFiles = this.getTestFiles(this._selectedVersion.sourceFiles);
+    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this._selectedVersion.sourceFiles)));
+    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this._selectedVersion.sourceFiles)));
   }
 
   /**
