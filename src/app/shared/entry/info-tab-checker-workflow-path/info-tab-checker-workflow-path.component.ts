@@ -14,13 +14,12 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
+import { Base } from '../../base';
 import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
-import { Workflow } from '../../swagger/model/workflow';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 
 @Component({
@@ -28,7 +27,7 @@ import { RegisterCheckerWorkflowService } from '../register-checker-workflow/reg
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss']
 })
-export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
+export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;
   isStub$: Observable<boolean>;
   parentId$: Observable<number>;
@@ -40,11 +39,11 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
-  private ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private checkerWorkflowService: CheckerWorkflowService, private checkerWorkflowQuery: CheckerWorkflowQuery,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
-    private sessionQuery: SessionQuery
-  ) { }
+    private sessionQuery: SessionQuery) {
+    super();
+  }
 
   ngOnInit(): void {
     this.refreshMessage$ = this.sessionQuery.refreshMessage$;
@@ -55,11 +54,6 @@ export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
       this.checkerWorkflowQuery.checkerWorkflow$, this.isPublic$);
     this.checkerId$ = this.checkerWorkflowQuery.checkerId$;
     this.canAdd$ = this.checkerWorkflowService.canAdd(this.checkerId$, this.parentId$, this.isStub$);
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   add(): void {
