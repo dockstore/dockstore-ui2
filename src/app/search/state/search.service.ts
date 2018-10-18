@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,26 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
 import { BehaviorSubject } from 'rxjs';
-import { URLSearchParams} from '@angular/http';
-import { Dockstore } from '../shared/dockstore.model';
-import { SubBucket } from '../shared/models/SubBucket';
 
-@Injectable()
+import { Dockstore } from '../../shared/dockstore.model';
+import { SubBucket } from '../../shared/models/SubBucket';
+import { SearchStore } from './search.store';
+import { SearchQuery } from './search.query';
+import { ProviderService } from '../../shared/provider.service';
+
+@Injectable({ providedIn: 'root' })
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
-  public values$ = new BehaviorSubject<string>('');
   public searchTerm$ = new BehaviorSubject<boolean>(false);
   public tagClicked$ = new BehaviorSubject<boolean>(false);
   searchInfo$ = this.searchInfoSource.asObservable();
-  /* Observable */
-  public toolhit$ = new BehaviorSubject<any>(null);
 
-  /* Observable */
-  public workflowhit$ = new BehaviorSubject<any>(null);
   /**
    * These are the terms which use "must" filters
    * Example: Results returned can be private or public but never both
@@ -40,34 +39,104 @@ export class SearchService {
    * @memberof SearchService
    */
   public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'is_checker', 'has_checker'];
-  setSearchInfo(searchInfo) {
-    this.searchInfoSource.next(searchInfo);
+
+
+  constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService) {
   }
-  constructor() {
+
+  // Given a URL, will attempt to shorten it
+  // TODO: Find another method for shortening URLs
+  setShortUrl(url: string) {
+    this.searchStore.setState(state => {
+      return {
+        ...state,
+        shortUrl: url
+      };
+    });
   }
+
+  setSearchText(text: string) {
+    this.searchStore.setState(state => {
+      return {
+        ...state,
+        searchText: text
+      };
+    });
+  }
+
+  setShowTagCloud(entryType: 'tool' | 'workflow') {
+    if (entryType === 'tool') {
+      const showTagCloud: boolean = this.searchQuery.getSnapshot().showToolTagCloud;
+      this.searchStore.setState(state => {
+        return {
+          ...state,
+          showToolTagCloud: !showTagCloud
+        };
+      });
+    } else {
+      const showTagCloud: boolean = this.searchQuery.getSnapshot().showWorkflowTagCloud;
+      this.searchStore.setState(state => {
+        return {
+          ...state,
+          showWorkflowTagCloud: !showTagCloud
+        };
+      });
+    }
+  }
+
+
   /**
-   * By default, bodybuilder will create a aggregation name called agg_<aggregationType>_<fieldToAggregate>
-   * This converts it to just <fieldToAggregate>
-   * @param {string} aggregationName the default aggregation name
-   * @returns {string} the fieldToAggregate
+   * Seperates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Also sets up provider information
+   * @param {Array<any>} hits
+   * @param {number} query_size
    * @memberof SearchService
    */
+  filterEntry(hits: Array<any>, query_size: number) {
+    const workflowHits = [];
+    const toolHits = [];
+    hits.forEach(hit => {
+      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+      if (workflowHits.length + toolHits.length < query_size - 1) {
+        if (hit['_type'] === 'tool') {
+          toolHits.push(hit);
+        } else if (hit['_type'] === 'workflow') {
+          workflowHits.push(hit);
+        }
+      }
+    });
+    this.setHits(toolHits, workflowHits);
+  }
+
+  setHits(toolHit: any, workflowHit: any) {
+    this.searchStore.setState(state => {
+      return {
+        ...state,
+        toolhit: toolHit,
+        workflowhit: workflowHit
+      };
+    });
+  }
+
+  /**
+    * By default, bodybuilder will create a aggregation name called agg_<aggregationType>_<fieldToAggregate>
+    * This converts it to just <fieldToAggregate>
+    * @param {string} aggregationName the default aggregation name
+    * @returns {string} the fieldToAggregate
+    * @memberof SearchService
+    */
   aggregationNameToTerm(aggregationName: string): string {
     return aggregationName.replace('agg_terms_', '');
   }
 
-
-  haveNoHits(object: Object[]): boolean {
-    if (!object || object.length === 0) {
-      return true;
-    } else {
-      return false;
-    }
+  setSearchInfo(searchInfo) {
+    this.searchInfoSource.next(searchInfo);
   }
+
   // Given a search info object, will create the permalink for the current search
   createPermalinks(searchInfo) {
     // For local testing, use LOCAL_URI, else use HOSTNAME
-    const url = `${ Dockstore.HOSTNAME }/search`;
+    const url = `${Dockstore.HOSTNAME}/search`;
     const params = new URLSearchParams();
     const filter = searchInfo.filter;
     filter.forEach(
@@ -103,7 +172,7 @@ export class SearchService {
     orderedArray = orderedArray.sort((a, b) => {
       if (orderMode) {
         return a.key > b.key ? 1 : -1;
-      } else  {
+      } else {
         return a.key < b.key ? 1 : -1;
       }
     });
@@ -162,7 +231,7 @@ export class SearchService {
    * @param filter
    */
   handleFilters(category: string, categoryValue: string, filters: any) {
-    if (typeof(categoryValue) === 'number') {
+    if (typeof (categoryValue) === 'number') {
       categoryValue = String(categoryValue);
     }
     if (filters.has(category) && filters.get(category).has(categoryValue)) {
@@ -306,10 +375,10 @@ export class SearchService {
   */
   hasFilters(filters: any) {
     let count = 0;
-      filters.forEach(filter => {
-        count += filter.size;
-      });
-      return count > 0;
+    filters.forEach(filter => {
+      count += filter.size;
+    });
+    return count > 0;
   }
 
   /**

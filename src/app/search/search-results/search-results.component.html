@@ -15,17 +15,17 @@
   -->
 
 <tabset class="homeComponent" type="tabs">
-  <tab id="toolTab" [active] = "activeToolBar" [customClass]="browseToolsTab" [disabled]="haveNoHits(toolHits)">
+  <tab id="toolTab" [active] = "(activeToolTab$ | async)" [customClass]="browseToolsTab" [disabled]="(noToolHits$ | async)">
     <ng-template tabHeading>
       <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
       Browse Tools
     </ng-template>
     <div *ngIf="toolTagCloudData">
       <button type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
-        <i [class]="showToolTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+        <i [class]="(showToolTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
         <span>Tag Cloud</span>
       </button>
-      <div class="tagCloud tool" *ngIf="showToolTagCloud">
+      <div class="tagCloud tool" *ngIf="(showToolTagCloud$ | async)">
         <angular-tag-cloud
           [data]="toolTagCloudData"
           [width]="options.width"
@@ -41,13 +41,13 @@
     </span>
   </tab>
 
-  <tab id="workflowTab" [active] = "!activeToolBar" [customClass]="browseWorkflowsTab" [disabled]="haveNoHits(workflowHits)">
+  <tab id="workflowTab" [active] = "!(activeToolTab$ | async)" [customClass]="browseWorkflowsTab" [disabled]="(noWorkflowHits$ | async)">
     <div *ngIf="workflowTagCloudData">
       <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
-        <i [class]="showWorkflowTagCloud ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+        <i [class]="(showWorkflowTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
         <span>Tag Cloud</span>
       </button>
-      <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud">
+      <div class="tagCloud workflow" *ngIf="(showWorkflowTagCloud$ | async)">
         <angular-tag-cloud
           [data]="workflowTagCloudData"
           [width]="options.width"

@@ -25,7 +25,7 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
-import { SearchService } from './search.service';
+import { SearchService } from './state/search.service';
 
 /* tslint:disable:no-unused-variable */
 describe('SearchComponent', () => {

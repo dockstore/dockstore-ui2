@@ -18,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material';
 import { Router } from '@angular/router/';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../shared/constants';
@@ -29,7 +29,8 @@ import { ProviderService } from '../shared/provider.service';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
-import { SearchService } from './search.service';
+import { SearchService } from './state/search.service';
+import { SearchQuery } from './state/search.query';
 
 @Component({
   selector: 'app-search',
@@ -40,7 +41,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
-  public shortUrl: string;
+  public shortUrl$: Observable<string>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -49,7 +50,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private toolSource = new BehaviorSubject<any>(null);
   private curURL = '';
   toolhit$ = this.toolSource.asObservable();
-  _timeout = false;
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public toolHits: Object[] = [];
@@ -63,7 +63,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
-  public query_size = 201;
+  public readonly query_size = 201;
   searchTerm = false;
   autocompleteTerms: Array<string> = new Array<string>();
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -109,17 +109,18 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @type {string}
    */
   public values = '';
-  private values$: Subject<string> = new Subject();
+
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
   constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
-    public searchService: SearchService,
+    public searchService: SearchService, private searchQuery: SearchQuery,
     private advancedSearchService: AdvancedSearchService,
     private router: Router,
     private locationService: Location,
     private http: HttpClient) {
+    this.shortUrl$ = this.searchQuery.shortUrl$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -142,16 +143,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchService.values$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(values => {
-      this.values = values;
-      if (this.values) {
-        this.tagClicked();
-      }
-    });
-    this.values$.pipe(
+    this.searchQuery.searchText$.pipe(
       debounceTime(formInputDebounceTime),
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)).subscribe((value: string) => {
+        this.values = value;
         this.onKey();
       });
     this.hits = [];
@@ -264,11 +260,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  tagClicked(): void {
-    this.searchTerm = true;
-    this.updateQuery();
-  }
-
   /** This function takes care of the problem of non-verified items containing the set of verified items.
    * this function calls a third elastic query which will get the correct number count of the non-verified items
    * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
@@ -374,7 +365,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     const linkArray = this.searchService.createPermalinks(searchInfo);
     this.locationService.go('search?' + linkArray[1]);
-    this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
+    this.searchService.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 
   /**===============================================
@@ -426,11 +417,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       body: value
     }).then(hits => {
       this.hits = hits.hits.hits;
-      this.workflowHits = [];
-      this.toolHits = [];
-      this.filterEntry();
-      this.searchService.toolhit$.next(this.toolHits);
-      this.searchService.workflowhit$.next(this.workflowHits);
+      this.searchService.filterEntry(this.hits, this.query_size);
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
@@ -438,12 +425,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.suggestKeyTerm();
       }
     }).catch(error => console.log(error));
-  }
-
-  // Given a URL, will attempt to shorten it
-  // TODO: Find another method for shortening URLs
-  setShortUrl(url: string) {
-    this.shortUrl = url;
   }
 
   /**===============================================
@@ -477,7 +458,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
   onInputChange(event) {
-    this.values$.next(event);
+    this.searchService.setSearchText(event);
   }
 
   onKey() {
@@ -511,18 +492,12 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       );
     }).catch(error => console.log(error));
-    if (!this._timeout) {
-      this.advancedSearchObject.toAdvanceSearch = false;
-      this.searchTerm = true;
-      this._timeout = true;
-      window.setTimeout(() => {
-        if ((!this.values || 0 === this.values.length)) {
-          this.searchTerm = false;
-        }
-        this.updateQuery();
-        this._timeout = false;
-      }, 500);
+    this.advancedSearchObject.toAdvanceSearch = false;
+    this.searchTerm = true;
+    if ((!this.values || 0 === this.values.length)) {
+      this.searchTerm = false;
     }
+    this.updateQuery();
   }
   /*TODO: FOR DEMO USE, make this better later...*/
   suggestKeyTerm() {
@@ -608,27 +583,6 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ===============================================
    *
    */
-
-  filterEntry() {
-    this.workflowHits = [];
-    this.toolHits = [];
-    let counter = 0;
-    for (const hit of this.hits) {
-      /**TODO: this is not good, make it faster.../
-       */
-      // Do not add 201st result if it exists
-      if (!(counter === this.hits.length - 1 && this.hits.length === this.query_size)) {
-        hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-        if (hit['_type'] === 'tool') {
-          this.toolHits.push(hit);
-        } else if (hit['_type'] === 'workflow') {
-          this.workflowHits.push(hit);
-        }
-      }
-
-      counter++;
-    }
-  }
 
   getFilterKeys() {
     return Array.from(this.filters.keys());

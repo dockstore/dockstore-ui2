@@ -13,13 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { Observable } from 'rxjs';
 
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
-import { QueryBuilderService } from './../query-builder.service';
-import { SearchService } from './../search.service';
+import { QueryBuilderService } from '../query-builder.service';
+import { SearchQuery } from '../state/search.query';
+import { SearchService } from '../state/search.service';
 
 @Component({
   selector: 'app-search-results',
@@ -27,33 +28,29 @@ import { SearchService } from './../search.service';
   styleUrls: ['./search-results.component.scss']
 })
 export class SearchResultsComponent implements OnInit {
-  public activeToolBar = true;
-  public workflowHits: any;
-  public toolHits: any;
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
+  public activeToolTab$: Observable<boolean>;
+  public noToolHits$: Observable<boolean>;
+  public noWorkflowHits$: Observable<boolean>;
+  public showWorkflowTagCloud$: Observable<boolean>;
+  public showToolTagCloud$: Observable<boolean>;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
-  showToolTagCloud = false;
-  showWorkflowTagCloud = false;
   options: CloudOptions = {
     width: 600,
     height: 200,
     overflow: false,
   };
-  constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService) {
-
+  constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
+    this.activeToolTab$ = this.searchQuery.activeToolTab$;
+    this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
+    this.noToolHits$ = this.searchQuery.noToolHits$;
+    this.showToolTagCloud$ = this.searchQuery.showToolTagCloud$;
+    this.showWorkflowTagCloud$ = this.searchQuery.showWorkflowTagCloud$;
   }
 
   ngOnInit() {
-    this.searchService.workflowhit$.subscribe(workflowHits => {
-      this.workflowHits = workflowHits;
-      this.setTabActive();
-    });
-    this.searchService.toolhit$.subscribe(toolHits => {
-      this.toolHits = toolHits;
-      this.setTabActive();
-    });
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
   }
@@ -63,12 +60,8 @@ export class SearchResultsComponent implements OnInit {
     this.createToolTagCloud(toolQuery, type);
   }
 
-  clickTagCloudBtn(type: string) {
-    if (type === 'tool') {
-      this.showToolTagCloud = !this.showToolTagCloud;
-    } else {
-      this.showWorkflowTagCloud = !this.showWorkflowTagCloud;
-    }
+  clickTagCloudBtn(type: 'tool' | 'workflow') {
+    this.searchService.setShowTagCloud(type);
   }
 
   createToolTagCloud(toolQuery, type) {
@@ -116,31 +109,7 @@ export class SearchResultsComponent implements OnInit {
 
   tagClicked(clicked: CloudData) {
     this.searchService.searchTerm$.next(true);
-    this.searchService.values$.next(clicked.text);
+    this.searchService.setSearchText(clicked.text);
     this.searchService.tagClicked$.next(true);
-  }
-
-  /**
-   * This handles the which tab (tool or workflow) is set to active based on hits.
-   * The default is tool if both have hits
-   *
-   * @memberof SearchResultsComponent
-   */
-  setTabActive(): void {
-    if (!this.toolHits || !this.workflowHits) {
-      this.activeToolBar = true;
-      return;
-    }
-    if (this.toolHits.length === 0 && this.workflowHits.length > 0) {
-      this.activeToolBar = false;
-    } else if (this.workflowHits.length === 0 && this.toolHits.length > 0) {
-      this.activeToolBar = true;
-    } else {
-      this.activeToolBar = true;
-    }
-  }
-
-  haveNoHits(object: Object[]): boolean {
-    return this.searchService.haveNoHits(object);
   }
 }

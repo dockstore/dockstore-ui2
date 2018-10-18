@@ -13,15 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
 
+import { ProviderService } from '../../shared/provider.service';
+import { ProviderStubService } from '../../test/service-stubs';
 import { SearchService } from './search.service';
-import { register } from 'ts-node/dist';
-import { TestBed, inject } from '@angular/core/testing';
 
 describe('SearchService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [SearchService]
+            providers: [SearchService,
+            {provide: ProviderService, useClass: ProviderStubService}
+          ]
         });
     });
 
@@ -36,10 +39,6 @@ describe('SearchService', () => {
         service.searchInfo$.subscribe(result => {
             expect(result).toEqual('stuff');
         });
-    }));
-    it('should decide whether to disable tabs or not', inject([SearchService], (service: SearchService) => {
-        expect(service.haveNoHits([])).toEqual(true);
-        expect(service.haveNoHits([{'asdf': 'asdf'}])).toEqual(false);
     }));
 
     it('should not crash on null advancedSearchObject', inject([SearchService], (service: SearchService) => {

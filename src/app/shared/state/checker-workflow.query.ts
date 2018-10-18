@@ -15,12 +15,12 @@
  */
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { SessionQuery } from '../session/session.query';
 import { Entry, Workflow } from '../swagger';
 import { CheckerWorkflowState, CheckerWorkflowStore } from './checker-workflow.store';
-import { SessionQuery } from '../session/session.query';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
