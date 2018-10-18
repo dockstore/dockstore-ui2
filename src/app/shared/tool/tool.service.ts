@@ -34,11 +34,11 @@ export class ToolService {
   setTool(tool: (DockstoreTool | null)) {
     if (tool) {
       this.toolStore.createOrReplace(tool.id, tool);
-      this.extendedDockstoreToolService.updateExtendedDockstoreTool(tool);
+      this.extendedDockstoreToolService.update(tool);
       this.toolStore.setActive(tool.id);
     } else {
       this.toolStore.remove();
-      this.extendedDockstoreToolService.removeExtendedDockstoreTool();
+      this.extendedDockstoreToolService.remove();
     }
   }
 
@@ -49,6 +49,6 @@ export class ToolService {
         ...active.tags, tags
       };
     });
-    this.extendedDockstoreToolService.updateExtendedDockstoreTool(this.toolQuery.getActive());
+    this.extendedDockstoreToolService.update(this.toolQuery.getActive());
   }
 }

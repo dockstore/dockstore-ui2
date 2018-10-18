@@ -14,15 +14,16 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ErrorService } from '../../shared/error.service';
-import { ExtendedWorkflowService } from '../../shared/extended-workflow.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { SessionService } from '../../shared/session/session.service';
+import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -50,14 +51,14 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   }
 
   constructor(dockstoreService: DockstoreService, dateService: DateService, private sessionService: SessionService,
-    private errorService: ErrorService, private extendedWorkflowService: ExtendedWorkflowService,
+    private errorService: ErrorService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
     private workflowsService: WorkflowsService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
     this.publicPageSubscription();
-    this.extendedWorkflowService.extendedWorkflow$.subscribe(workflow => {
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;

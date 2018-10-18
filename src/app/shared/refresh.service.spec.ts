@@ -26,6 +26,9 @@ import {
   GA4GHStubService,
   UsersStubService,
   WorkflowsStubService,
+  DockstoreStubService,
+  DateStubService,
+  ProviderStubService,
 } from '../test/service-stubs';
 import { ContainerService } from './container.service';
 import { RefreshService } from './refresh.service';
@@ -38,6 +41,10 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
 import { WorkflowService } from './state/workflow.service';
 import { WorkflowQuery } from './state/workflow.query';
+import { ToolQuery } from './tool/tool.query';
+import { DockstoreService } from './dockstore.service';
+import { DateService } from './date.service';
+import { ProviderService } from './provider.service';
 
 describe('RefreshService', () => {
     beforeEach(() => {
@@ -48,8 +55,11 @@ describe('RefreshService', () => {
                 { provide: ErrorService, useClass: ErrorStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: ContainerService, useClass: ContainerStubService },
-                SessionQuery,
                 WorkflowQuery,
+                ToolQuery,
+                { provide: ProviderService, useClass: ProviderStubService },
+                { provide: DateService, useClass: DateStubService },
+                { provide: DockstoreService, useClass: DockstoreStubService },
                 { provide: GA4GHService, useClass: GA4GHStubService },
                 { provide: WorkflowService, useClass: WorkflowService },
                 { provide: UsersService, useClass: UsersStubService }

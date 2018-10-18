@@ -41,10 +41,10 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { ExtendedWorkflowService } from '../shared/extended-workflow.service';
 import { Observable } from 'rxjs';
 import { WorkflowService } from '../shared/state/workflow.service';
 import { WorkflowQuery } from '../shared/state/workflow.query';
+import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -79,7 +79,7 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService, private extendedWorkflowService: ExtendedWorkflowService,
+    router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
     errorService: ErrorService, urlResolverService: UrlResolverService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
       gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery) {
@@ -89,7 +89,7 @@ export class WorkflowComponent extends Entry {
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
-    this.extendedWorkflow$ = this.extendedWorkflowService.extendedWorkflow$;
+    this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
   }
 
   private processPermissions(userPermissions: Permission[]): void {

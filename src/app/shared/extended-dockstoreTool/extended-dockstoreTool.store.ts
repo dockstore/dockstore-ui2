@@ -17,13 +17,13 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
-​
-@Injectable({
-  providedIn: 'root'
-})
-@StoreConfig({ name: 'extendedDockstoreTool'})
+
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'extendedDockstoreTool' })
 export class ExtendedDockstoreToolStore extends Store<ExtendedDockstoreTool> {
+
   constructor() {
     super({});
   }
+
 }

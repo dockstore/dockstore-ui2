@@ -17,15 +17,14 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
-import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
-import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
+import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
+import { ExtendedWorkflowStore } from './extended-workflow.store';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ExtendedDockstoreToolQuery extends Query<ExtendedDockstoreTool> {
-  extendedDockstoreTool$: Observable<ExtendedDockstoreTool> = this.select();
-  constructor(protected store: ExtendedDockstoreToolStore) {
+@Injectable({ providedIn: 'root' })
+export class ExtendedWorkflowQuery extends Query<ExtendedWorkflow> {
+  extendedWorkflow$: Observable<ExtendedWorkflow> = this.select();
+  constructor(protected store: ExtendedWorkflowStore) {
     super(store);
   }
+
 }

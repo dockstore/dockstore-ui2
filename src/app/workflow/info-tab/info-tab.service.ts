@@ -18,13 +18,13 @@ import { BehaviorSubject } from 'rxjs';
 
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { ErrorService } from '../../shared/error.service';
-import { ExtendedWorkflowService } from '../../shared/extended-workflow.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionService } from '../../shared/session/session.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
+import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 
 @Injectable()
 export class InfoTabService {
@@ -54,9 +54,9 @@ export class InfoTabService {
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService,
       private sessionService: SessionService, private errorService: ErrorService, private refreshService: RefreshService,
-        private extendedWorkflowService: ExtendedWorkflowService,
+        private extendedWorkflowQuery: ExtendedWorkflowQuery,
         private descriptorLanguageService: DescriptorLanguageService) {
-        this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
+        this.extendedWorkflowQuery.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
             this.cancelEditing();
         });

@@ -35,24 +35,23 @@ export class ExtendedDockstoreToolService {
     private dockstoreService: DockstoreService, private extendedDockstoreToolStore: ExtendedDockstoreToolStore) { }
 
   /**
-   * Updates all GA4GH files from all descriptor types unless specific ones provided
+   * Updates the extendedDockstoreTool by extended the current tool
    *
-   * @param {string} id    GA4GH Tool ID
-   * @param {string} version  GA4GH Version name
-   * @param {Array<ToolDescriptor.TypeEnum>} [descriptorTypes]  Optional. Specific descriptor types to update
-   * @memberof GA4GHFilesService
+   * @param {DockstoreTool} tool
+   * @memberof ExtendedDockstoreToolService
    */
   @transaction()
-  updateExtendedDockstoreTool(tool: DockstoreTool) {
+  update(tool: DockstoreTool) {
     if (tool) {
       this.extendedDockstoreToolStore.update(this.extendTool(tool));
+    } else {
+      this.remove();
     }
   }
 
-  removeExtendedDockstoreTool() {
+  remove() {
     this.extendedDockstoreToolStore.update({});
   }
-
 
   extendTool(tool: DockstoreTool): ExtendedDockstoreTool {
     if (tool) {

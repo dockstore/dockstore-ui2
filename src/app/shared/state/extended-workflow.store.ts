@@ -14,18 +14,17 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Query } from '@datorama/akita';
-import { Observable } from 'rxjs';
+import { Store, StoreConfig } from '@datorama/akita';
 
-import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
-import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
+import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ExtendedDockstoreToolQuery extends Query<ExtendedDockstoreTool> {
-  extendedDockstoreTool$: Observable<ExtendedDockstoreTool> = this.select();
-  constructor(protected store: ExtendedDockstoreToolStore) {
-    super(store);
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'extendedWorkflow' })
+export class ExtendedWorkflowStore extends Store<ExtendedWorkflow> {
+
+  constructor() {
+    super({});
   }
+
 }
+

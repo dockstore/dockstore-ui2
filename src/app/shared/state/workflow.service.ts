@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Workflow } from '../swagger';
 import { WorkflowStore } from './workflow.store';
+import { ExtendedWorkflowService } from './extended-workflow.service';
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
@@ -13,16 +14,18 @@ export class WorkflowService {
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor(private workflowStore: WorkflowStore) {
+  constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {
   }
 
   @transaction()
   setWorkflow(workflow: (Workflow | null)) {
     if (workflow) {
       this.workflowStore.createOrReplace(workflow.id, workflow);
+      this.extendedWorkflowService.update(workflow);
       this.workflowStore.setActive(workflow.id);
     } else {
       this.workflowStore.remove();
+      this.extendedWorkflowService.remove();
     }
   }
 

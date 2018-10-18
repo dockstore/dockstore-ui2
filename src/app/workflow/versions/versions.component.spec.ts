@@ -34,26 +34,25 @@ import {
   ImageProviderStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
-import { ExtendedWorkflowService } from '../../shared/extended-workflow.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ContainersService } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
-  let workflowService: ExtendedWorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
-        ExtendedWorkflowService,
         { provide: WorkflowService, useClass: WorkflowStubService},
         { provide: WorkflowsService, useClass: WorkflowsStubService},
         ProviderService,
+        WorkflowQuery,
         { provide: ImageProviderService, useClass: ImageProviderStubService },
         { provide: ErrorService, useClass: ErrorStubService },
         { provide: RefreshService, useClass: RefreshStubService}
@@ -67,7 +66,6 @@ describe('VersionsWorkflowComponent', () => {
     component = fixture.componentInstance;
     component.versions = [];
     fixture.detectChanges();
-    workflowService = fixture.debugElement.injector.get(ExtendedWorkflowService);
   });
 
   it('should create', () => {

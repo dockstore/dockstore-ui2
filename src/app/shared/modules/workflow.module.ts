@@ -43,7 +43,6 @@ import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { DateService } from '../date.service';
-import { ExtendedWorkflowService } from '../extended-workflow.service';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -100,7 +99,6 @@ import { getTooltipConfig } from './../tooltip';
     EntryModule
   ],
   providers: [
-    ExtendedWorkflowService,
     { provide: TooltipConfig, useFactory: getTooltipConfig },
     DateService,
     FileService,
