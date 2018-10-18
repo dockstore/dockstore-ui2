@@ -13,18 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
-import { WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
-import { DagComponent } from './dag.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
+
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
+import { DagComponent } from './dag.component';
 
 /* tslint:disable:no-unused-variable */
 declare var cytoscape: any;

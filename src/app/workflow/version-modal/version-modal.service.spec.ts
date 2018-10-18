@@ -19,9 +19,10 @@ import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
 import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 describe('Service: version-modal.service.ts', () => {
     beforeEach(() => {
@@ -66,8 +67,9 @@ describe('Service: version-modal.service.ts', () => {
         service.setTestParameterFiles([]);
         service.testParameterFiles.subscribe(files => expect(files).toEqual([]));
     }));
-    it('should be able to save version and clear refreshing state', inject([VersionModalService, SessionQuery],
-        (service: VersionModalService, sessionQuery: SessionQuery) => {
+    it('should be able to save version and clear refreshing state', inject([VersionModalService, SessionQuery, WorkflowQuery],
+        (service: VersionModalService, sessionQuery: SessionQuery, workflowQuery: WorkflowQuery) => {
+          spyOn(workflowQuery, 'getActive').and.returnValue({id: 1});
         service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
         // Refresh service takes modifying the refreshMessage from the third message
         sessionQuery.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));

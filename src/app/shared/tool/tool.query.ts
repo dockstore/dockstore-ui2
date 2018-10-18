@@ -15,31 +15,19 @@
  */
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { DockstoreTool } from '../swagger';
 import { ToolState, ToolStore } from './tool.store';
-import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToolQuery extends QueryEntity<ToolState, DockstoreTool> {
-  public tool$ = this.selectActive();
-  public toolId$ = this.tool$.pipe(map((tool: DockstoreTool) => {
-    if (tool) {
-      return tool.id;
-    } else {
-      return null;
-    }
-  }));
-  public toolIsPublished$ = this.tool$.pipe(map((tool: DockstoreTool) => {
-    if (tool) {
-      return tool.is_published;
-    } else {
-      return null;
-    }
-  }));
+  public tool$: Observable<DockstoreTool> = this.selectActive();
+  public toolId$: Observable<number> = this.tool$.pipe(map((tool: DockstoreTool) => tool ? tool.id : null));
+  public toolIsPublished$: Observable<boolean> = this.tool$.pipe(map((tool: DockstoreTool) => tool ? tool.is_published : null));
   constructor(protected store: ToolStore) {
     super(store);
   }

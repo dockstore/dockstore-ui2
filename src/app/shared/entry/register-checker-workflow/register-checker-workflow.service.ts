@@ -26,7 +26,8 @@ import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
 import { Workflow } from '../../swagger/model/workflow';
 import { ToolQuery } from '../../tool/tool.query';
-import { WorkflowService } from '../../workflow.service';
+import { WorkflowService } from '../../state/workflow.service';
+import { WorkflowQuery } from '../../state/workflow.query';
 
 @Injectable()
 export class RegisterCheckerWorkflowService {
@@ -37,9 +38,9 @@ export class RegisterCheckerWorkflowService {
     public entryId: number;
     constructor(private sessionService: SessionService, private errorService: ErrorService, private workflowsService: WorkflowsService,
         private containerService: ContainerService, private workflowService: WorkflowService, private refreshService: RefreshService,
-        private toolQuery: ToolQuery) {
+        private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery) {
         this.errorObj$ = this.errorService.errorObj$;
-        this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowService.workflowId$).pipe(filter(x => x != null));
+        this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
         this.entryId$.subscribe((id: number) => {
             this.entryId = id;
         });

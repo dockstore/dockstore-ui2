@@ -18,7 +18,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
 import { TrackLoginService } from '../shared/track-login.service';
-import { WorkflowService } from '../shared/workflow.service';
 import {
   ContainerStubService,
   StarEntryStubService,
@@ -28,6 +27,7 @@ import {
 } from '../test/service-stubs';
 import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
+import { WorkflowService } from '../shared/state/workflow.service';
 
 describe('StarringComponent', () => {
   let component: StarringComponent;

@@ -14,7 +14,7 @@ import { ExtendedWorkflowService } from './extended-workflow.service';
 import { ImageProviderService } from './image-provider.service';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { ProviderService } from './provider.service';
-import { WorkflowService } from './workflow.service';
+import { WorkflowService } from './state/workflow.service';
 
 describe('Service: ExtendedWorkflow', () => {
   beforeEach(() => {

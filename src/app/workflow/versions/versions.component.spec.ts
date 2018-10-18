@@ -24,7 +24,6 @@ import { ErrorService } from '../../shared/error.service';
 import { OrderBy } from '../../shared/orderBy';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { WorkflowService } from '../../shared/workflow.service';
 import {
   DateStubService,
   ErrorStubService,
@@ -39,6 +38,7 @@ import { ExtendedWorkflowService } from '../../shared/extended-workflow.service'
 import { ProviderService } from '../../shared/provider.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ContainersService } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;

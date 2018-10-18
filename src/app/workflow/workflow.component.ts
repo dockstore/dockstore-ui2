@@ -39,11 +39,12 @@ import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { WorkflowService } from '../shared/workflow.service';
 
 import RoleEnum = Permission.RoleEnum;
 import { ExtendedWorkflowService } from '../shared/extended-workflow.service';
 import { Observable } from 'rxjs';
+import { WorkflowService } from '../shared/state/workflow.service';
+import { WorkflowQuery } from '../shared/state/workflow.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -81,7 +82,7 @@ export class WorkflowComponent extends Entry {
     router: Router, private workflowService: WorkflowService, private extendedWorkflowService: ExtendedWorkflowService,
     errorService: ErrorService, urlResolverService: UrlResolverService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
-      gA4GHFilesService: GA4GHFilesService) {
+      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery) {
     super(trackLoginService, providerService, router,
       errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
@@ -179,7 +180,7 @@ export class WorkflowComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
         if (workflow) {

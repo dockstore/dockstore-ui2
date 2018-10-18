@@ -15,7 +15,6 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CommunicatorService } from '../../shared/communicator.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
@@ -24,7 +23,6 @@ import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
-import { ContainerService } from './../../shared/container.service';
 import { ListContainersService } from './list.service';
 import { PublishedToolsDataSource } from './published-tools.datasource';
 
@@ -38,10 +36,8 @@ export class ListContainersComponent extends ToolLister implements OnInit {
   public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
 
   constructor(private listContainersService: ListContainersService,
-    private communicatorService: CommunicatorService,
     private dockstoreService: DockstoreService,
     private imageProviderService: ImageProviderService,
-    private containerService: ContainerService,
     private pagenumberService: PagenumberService,
     private containersService: ContainersService,
     protected providerService: ProviderService,

@@ -15,7 +15,6 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CommunicatorService } from '../../shared/communicator.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ListService } from '../../shared/list.service';
@@ -23,7 +22,6 @@ import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow, WorkflowsService } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
-import { WorkflowService } from '../../shared/workflow.service';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 
 @Component({
@@ -35,8 +33,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
 
   public displayedColumns = ['repository', 'stars', 'author', 'descriptorType', 'projectLinks'];
 
-  constructor(private communicatorService: CommunicatorService,
-    private workflowService: WorkflowService,
+  constructor(
     private dockstoreService: DockstoreService,
     private pagenumberService: PagenumberService,
     private workflowsService: WorkflowsService,

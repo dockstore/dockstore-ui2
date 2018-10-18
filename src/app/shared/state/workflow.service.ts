@@ -1,55 +1,46 @@
-/*
- *    Copyright 2017 OICR
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ID, transaction } from '@datorama/akita';
+import { BehaviorSubject } from 'rxjs';
 
-import { Workflow } from './swagger/model/workflow';
+import { Workflow } from '../swagger';
+import { WorkflowStore } from './workflow.store';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WorkflowService {
-  private workflowSource = new BehaviorSubject<any>(null);
-  // Observable streams
-  workflow$ = this.workflowSource.asObservable(); // This is the selected workflow
-  workflowId$: Observable<number>;
   workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
   sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted shared workflows
   nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
-  workflowIsPublished$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor() {
-    this.workflowId$ = this.workflow$.pipe(map((workflow: Workflow) => {
-      if (workflow) {
-        return workflow.id;
-      } else {
-        return null;
-      }
-    }));
-    this.workflowIsPublished$ = this.workflow$.pipe(map((workflow: Workflow) => {
-      if (workflow) {
-        return workflow.is_published;
-      } else {
-        return null;
-      }
-    }));
+  constructor(private workflowStore: WorkflowStore) {
   }
-  setWorkflow(workflow: Workflow) {
-    this.workflowSource.next(workflow);
+
+  @transaction()
+  setWorkflow(workflow: (Workflow | null)) {
+    if (workflow) {
+      this.workflowStore.createOrReplace(workflow.id, workflow);
+      this.workflowStore.setActive(workflow.id);
+    } else {
+      this.workflowStore.remove();
+    }
+  }
+
+  get() {
+    // Placeholder
+    // this.http.get('https://akita.com').subscribe((entities) => this.workflowStore.set(entities));
+  }
+
+  add(workflow: Workflow) {
+    this.workflowStore.add(workflow);
+  }
+
+  update(id, workflow: Partial<Workflow>) {
+    this.workflowStore.update(id, workflow);
+  }
+
+  remove(id: ID) {
+    this.workflowStore.remove(id);
   }
 
   setWorkflows(workflows: Array<Workflow>) {
@@ -111,5 +102,4 @@ export class WorkflowService {
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }
-
 }

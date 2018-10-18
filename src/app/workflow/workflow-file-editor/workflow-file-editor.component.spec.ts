@@ -7,7 +7,6 @@ import { CodeEditorComponent } from './../../shared/code-editor/code-editor.comp
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule,
   MatTooltipModule } from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowService } from './../../shared/workflow.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
@@ -16,6 +15,7 @@ import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-downl
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
 import { FileService } from './../../shared/file.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('WorkflowFileEditorComponent', () => {
   let component: WorkflowFileEditorComponent;

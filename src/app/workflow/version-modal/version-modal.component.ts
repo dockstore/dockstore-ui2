@@ -26,8 +26,8 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { WorkflowService } from '../../shared/workflow.service';
 import { VersionModalService } from './version-modal.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 @Component({
   selector: 'app-version-modal',
@@ -58,13 +58,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
-    private sessionQuery: SessionQuery, private workflowService: WorkflowService) {
+    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery) {
   }
 
   ngOnInit() {
     this.versionModalService.isModalShown$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = version);
-    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
     this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];

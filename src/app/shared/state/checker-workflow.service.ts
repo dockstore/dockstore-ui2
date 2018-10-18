@@ -27,20 +27,20 @@ import { DockstoreTool } from '../swagger/model/dockstoreTool';
 import { Entry } from '../swagger/model/entry';
 import { Workflow } from '../swagger/model/workflow';
 import { ToolQuery } from '../tool/tool.query';
-import { WorkflowService } from '../workflow.service';
 import { CheckerWorkflowQuery } from './checker-workflow.query';
 import { CheckerWorkflowStore } from './checker-workflow.store';
+import { WorkflowQuery } from './workflow.query';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowService extends Base {
   // The current public page status
   private publicPage: boolean;
-  constructor(private workflowsService: WorkflowsService, private sessionQuery: SessionQuery, private workflowService: WorkflowService,
+  constructor(private workflowsService: WorkflowsService, private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery,
     private router: Router, private containersService: ContainersService,
     private toolQuery: ToolQuery, private checkerWorkflowStore: CheckerWorkflowStore, private checkerWorkflowQuery: CheckerWorkflowQuery) {
     super();
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => this.publicPage = publicPage);
-    observableMerge(this.toolQuery.tool$, this.workflowService.workflow$).pipe(
+    observableMerge(this.toolQuery.tool$, this.workflowQuery.workflow$).pipe(
       filter(x => x != null),
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) =>

@@ -22,7 +22,6 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
-import { CommunicatorService } from '../shared/communicator.service';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -80,7 +79,6 @@ export class ContainerComponent extends Entry {
     private containersService: ContainersService,
     private emailService: EmailService,
     trackLoginService: TrackLoginService,
-    communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
     private containerService: ContainerService,

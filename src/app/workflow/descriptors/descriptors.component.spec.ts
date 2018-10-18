@@ -18,10 +18,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileService } from '../../shared/file.service';
 import { GA4GHService } from '../../shared/swagger';
-import { WorkflowService } from '../../shared/workflow.service';
 import { DescriptorsStubService, FileStubService, GA4GHStubService, WorkflowStubService } from '../../test/service-stubs';
 import { DescriptorsWorkflowComponent } from './descriptors.component';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('DescriptorsWorkflowComponent', () => {
   let component: DescriptorsWorkflowComponent;

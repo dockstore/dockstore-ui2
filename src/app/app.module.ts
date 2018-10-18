@@ -66,7 +66,6 @@ import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { SearchService } from './search/search.service';
 import { AuthConfig } from './shared/auth.model';
-import { CommunicatorService } from './shared/communicator.service';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
 import { Dockstore } from './shared/dockstore.model';
@@ -95,7 +94,6 @@ import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
-import { WorkflowService } from './shared/workflow.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
@@ -177,10 +175,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     DateService,
     TrackLoginService,
     ListService,
-    CommunicatorService,
     ProviderService,
     ContainerService,
-    WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,

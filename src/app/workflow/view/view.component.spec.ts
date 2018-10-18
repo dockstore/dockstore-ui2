@@ -19,7 +19,6 @@ import { DateService } from '../../shared/date.service';
 import { WorkflowsService } from '../../shared/swagger';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
 import {
   DateStubService,
   HostedStubService,
@@ -29,6 +28,7 @@ import {
 } from '../../test/service-stubs';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;

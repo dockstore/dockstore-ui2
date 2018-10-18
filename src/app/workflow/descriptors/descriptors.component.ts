@@ -21,9 +21,9 @@ import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { GA4GHService, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 @Component({
@@ -43,9 +43,9 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   public descriptorPath: string;
   constructor(private workflowDescriptorService: WorkflowDescriptorService, public gA4GHService: GA4GHService,
     public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    private workflowService: WorkflowService, private gA4GHFilesQuery: GA4GHFilesQuery) {
+    private workflowQuery: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery) {
     super(fileService, gA4GHFilesService, gA4GHService);
-    this.published$ = this.workflowService.workflowIsPublished$;
+    this.published$ = this.workflowQuery.workflowIsPublished$;
   }
   getDescriptors(version): Array<any> {
     return this.workflowDescriptorService.getDescriptors(this._selectedVersion);

@@ -15,10 +15,10 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
-import { WorkflowService } from './../../shared/workflow.service';
-import { WorkflowStubService } from './../../test/service-stubs';
-import { WorkflowLaunchService } from './workflow-launch.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowStubService } from '../../test/service-stubs';
+import { WorkflowLaunchService } from './workflow-launch.service';
 
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {

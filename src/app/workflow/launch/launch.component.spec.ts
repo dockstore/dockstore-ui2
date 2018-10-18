@@ -19,7 +19,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckerWorkflowService } from '../../shared/state/checker-workflow.service';
 import { ContainerService } from '../../shared/container.service';
 import { GA4GHService } from '../../shared/swagger';
-import { WorkflowService } from '../../shared/workflow.service';
 import {
   CheckerWorkflowStubService,
   ContainerStubService,
@@ -30,6 +29,7 @@ import {
 import { WorkflowDescriptorService } from '../descriptors/workflow-descriptor.service';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;

@@ -23,9 +23,9 @@ import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service'
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 @Component({
   selector: 'app-launch',
@@ -62,10 +62,10 @@ export class LaunchWorkflowComponent extends EntryTab {
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService,
+  constructor(private launchService: WorkflowLaunchService, private workflowQuery: WorkflowQuery,
     protected gA4GHFilesService: GA4GHFilesService, private gA4GHFilesQuery: GA4GHFilesQuery) {
     super();
-    this.published$ = this.workflowService.workflowIsPublished$;
+    this.published$ = this.workflowQuery.workflowIsPublished$;
   }
   reactToDescriptor(): void {
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name);

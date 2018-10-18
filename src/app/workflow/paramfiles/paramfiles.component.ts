@@ -22,9 +22,9 @@ import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { GA4GHService, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -44,7 +44,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
 
   constructor(private paramfilesService: ParamfilesService, protected gA4GHService: GA4GHService,
     public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    private workflowService: WorkflowService, private gA4GHFilesQuery: GA4GHFilesQuery) {
+    private workflowService: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery) {
     super(fileService, gA4GHFilesService, gA4GHService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }

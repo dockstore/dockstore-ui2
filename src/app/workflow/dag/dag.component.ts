@@ -17,9 +17,9 @@ import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, R
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
 import { DagService } from './dag.service';
 
 declare var cytoscape: any;
@@ -176,7 +176,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
     }
   }
 
-  constructor(private renderer: Renderer2, private dagService: DagService, private workflowService: WorkflowService) {
+  constructor(private renderer: Renderer2, private dagService: DagService, private workflowQuery: WorkflowQuery) {
     super();
   }
 
@@ -186,7 +186,7 @@ export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+    this.workflowQuery.workflow$.subscribe(workflow => this.workflow = workflow);
     this.style = this.dagService.style;
     this.missingTool = false;
   }

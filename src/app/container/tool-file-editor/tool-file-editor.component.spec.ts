@@ -15,8 +15,8 @@ import { PublicFileDownloadPipe } from './../../shared/entry/public-file-downloa
 import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
-import { WorkflowService } from './../../shared/workflow.service';
 import { FileService } from './../../shared/file.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('ToolFileEditorComponent', () => {
   let component: ToolFileEditorComponent;

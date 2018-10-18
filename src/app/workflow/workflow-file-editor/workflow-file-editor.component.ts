@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { FileEditing } from '../../shared/file-editing';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowService } from './../../shared/workflow.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 @Component({
   selector: 'app-workflow-file-editor',

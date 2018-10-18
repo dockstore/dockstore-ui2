@@ -17,9 +17,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule, MatIconModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 
 import { RefreshService } from '../../shared/refresh.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { RefreshStubService, UsersStubService, WorkflowStubService } from './../../test/service-stubs';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { RefreshStubService, UsersStubService, WorkflowStubService } from '../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
 
 describe('RefreshWorkflowOrganizationComponent', () => {

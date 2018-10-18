@@ -22,9 +22,10 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
-import { WorkflowService } from '../../shared/workflow.service';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { takeUntil } from 'rxjs/operators';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -42,7 +43,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public WorkflowType = Workflow;
 
   constructor(
-    private workflowService: WorkflowService,
+    private workflowService: WorkflowService, private workflowQuery: WorkflowQuery,
     private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
     private workflowsService: WorkflowsService,
     private hostedService: HostedService,
@@ -64,7 +65,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   ngOnInit() {
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
-    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
   }
 
   deleteHostedVersion() {

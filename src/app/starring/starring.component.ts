@@ -22,7 +22,6 @@ import { StarentryService } from '../shared/starentry.service';
 import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
-import { WorkflowService } from '../shared/workflow.service';
 import { StarringService } from './starring.service';
 
 @Component({
@@ -45,7 +44,6 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   private starredUsers: User[];
   constructor(private trackLoginService: TrackLoginService,
     private userQuery: UserQuery,
-    private workflowService: WorkflowService,
     private containerService: ContainerService,
     private starringService: StarringService,
     private starentryService: StarentryService) { }

@@ -22,7 +22,7 @@ import { SessionService } from '../../shared/session/session.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
-import { WorkflowService } from '../../shared/workflow.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 @Component({
   selector: 'app-refresh-workflow-organization',

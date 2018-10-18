@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
-import { WorkflowService } from '../../shared/workflow.service';
 import { Observable } from 'rxjs';
+
+import { WorkflowQuery } from '../state/workflow.query';
+import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
@@ -23,8 +24,8 @@ export class CodeEditorListComponent {
   NEXTFLOW_PATH = '/main.nf';
   public DescriptorType = ToolDescriptor.TypeEnum;
 
-  constructor(private workflowService: WorkflowService) {
-    this.published$ = this.workflowService.workflowIsPublished$;
+  constructor(private workflowQuery: WorkflowQuery) {
+    this.published$ = this.workflowQuery.workflowIsPublished$;
   }
 
   /**

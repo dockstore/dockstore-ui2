@@ -28,7 +28,6 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
-import { WorkflowService } from '../../shared/workflow.service';
 import { RouterLinkStubDirective } from '../../test';
 import { RouterOutletStubComponent } from '../../test/router-stubs';
 import {
@@ -45,6 +44,7 @@ import {
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;

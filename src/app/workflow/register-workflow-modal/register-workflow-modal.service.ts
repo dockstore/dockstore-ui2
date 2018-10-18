@@ -23,8 +23,8 @@ import { finalize } from 'rxjs/operators';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { SessionService } from '../../shared/session/session.service';
 import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/swagger';
-import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {

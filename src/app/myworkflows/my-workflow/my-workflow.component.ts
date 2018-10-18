@@ -36,10 +36,11 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
-import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 /**
  * How the workflow selection works:
@@ -79,7 +80,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected accountsService: AccountsService, private refreshService: RefreshService, private sessionService: SessionService,
     private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
     protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar,
-    protected tokenQuery: TokenQuery) {
+    protected tokenQuery: TokenQuery, protected workflowQuery: WorkflowQuery) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
   }
 
@@ -104,7 +105,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowService.setSharedWorkflows(null);
 
     // Updates selected workflow from service and selects in sidebar
-    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
 
     // Retrieve all of the workflows for the user and update the workflow service
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {

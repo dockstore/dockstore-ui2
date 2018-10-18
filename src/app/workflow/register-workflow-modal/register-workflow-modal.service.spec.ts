@@ -20,7 +20,6 @@ import { DescriptorLanguageService } from '../../shared/entry/descriptor-languag
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { WorkflowService } from '../../shared/workflow.service';
 import {
   DescriptorLanguageStubService,
   HostedStubService,
@@ -29,6 +28,7 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('Service: RegisterWorkflowModal', () => {
   beforeEach(() => {
