@@ -23,6 +23,7 @@ import { SubBucket } from '../../shared/models/SubBucket';
 import { SearchStore } from './search.store';
 import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
+import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
@@ -62,6 +63,11 @@ export class SearchService {
         searchText: text
       };
     });
+  }
+
+  searchSuggestTerm() {
+    const suggestTerm = this.searchQuery.getSnapshot().suggestTerm;
+    this.setSearchText(suggestTerm);
   }
 
   setShowTagCloud(entryType: 'tool' | 'workflow') {
@@ -114,6 +120,62 @@ export class SearchService {
         ...state,
         toolhit: toolHit,
         workflowhit: workflowHit
+      };
+    });
+  }
+
+  setFilterKeys(filters: Map<string, Set<string>>) {
+    this.searchStore.setState(state => {
+      return {
+        ...state,
+        filterKeys: filters ? Array.from(filters.keys()) : []
+      };
+    });
+  }
+
+  suggestSearchTerm(searchText: string) {
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: {
+        'suggest': {
+          'do_you_mean': {
+            'text': searchText,
+            'term': {
+              'field': 'description'
+            }
+          }
+        }
+      }
+    }).then(hits => {
+      if (hits['suggest']['do_you_mean'][0].options.length > 0) {
+        this.setSuggestTerm(hits['suggest']['do_you_mean'][0].options[0].text);
+      } else {
+        this.setSuggestTerm('');
+      }
+    }).catch(error => console.log(error));
+  }
+
+  setSuggestTerm(suggestTerm: string) {
+    this.searchStore.setState(state => {
+      return {
+        ...state,
+        suggestTerm: suggestTerm
+      };
+    });
+  }
+
+  setAutoCompleteTerms(hits: any) {
+    const autocompleteTerms = [];
+    hits.aggregations.autocomplete.buckets.forEach(
+      term => {
+        autocompleteTerms.push(term.key);
+      }
+    );
+    this.searchStore.setState(state => {
+      return {
+        ...state,
+        autocompleteTerms: autocompleteTerms
       };
     });
   }
@@ -246,6 +308,8 @@ export class SearchService {
       }
       filters.get(category).add(categoryValue);
     }
+    console.log(filters);
+    this.setFilterKeys(filters);
     return filters;
   }
 

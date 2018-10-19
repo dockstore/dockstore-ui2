@@ -58,14 +58,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // TODO: Comment on why shard_size is 10,000
   private shard_size = 10000;
-  public suggestTerm = '';
   private firstInit = true;
 
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
   searchTerm = false;
-  autocompleteTerms: Array<string> = new Array<string>();
+  public autocompleteTerms$: Observable<Array<string>>;
+  public hasAutoCompleteTerms$: Observable<boolean>;
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -84,7 +84,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Maps from filter -> values that have been chosen to filter by
    * @type {Map<String, Set<string>>}
    */
-  public filters: Map<String, Set<string>> = new Map<String, Set<string>>();
+  public filters: Map<String, Set<string>> = new Map<string, Set<string>>();
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
@@ -104,6 +104,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     'toAdvanceSearch'
   ];
 
+  public filterKeys$: Observable<Array<string>>;
+  public suggestTerm$: Observable<string>;
   /**
    * The current text search
    * @type {string}
@@ -121,6 +123,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     private locationService: Location,
     private http: HttpClient) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
+    this.filterKeys$ = this.searchQuery.filterKeys$;
+    this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
+    this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
+    this.suggestTerm$ = this.searchQuery.suggestTerm$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -376,11 +382,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   // Called when any change to the search is made to update the results
   updateQuery() {
     this.updatePermalink();
-    // calculate number of filters
-    let count = 0;
-    this.filters.forEach(filter => {
-      count += filter.size;
-    });
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -422,7 +423,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchTerm = true;
       }
       if (this.searchTerm && this.hits.length === 0) {
-        this.suggestKeyTerm();
+        this.searchService.suggestSearchTerm(this.values);
       }
     }).catch(error => console.log(error));
   }
@@ -485,12 +486,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       }
     }).then(hits => {
-      this.autocompleteTerms = [];
-      hits.aggregations.autocomplete.buckets.forEach(
-        term => {
-          this.autocompleteTerms.push(term.key);
-        }
-      );
+      this.searchService.setAutoCompleteTerms(hits);
     }).catch(error => console.log(error));
     this.advancedSearchObject.toAdvanceSearch = false;
     this.searchTerm = true;
@@ -499,33 +495,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     this.updateQuery();
   }
-  /*TODO: FOR DEMO USE, make this better later...*/
-  suggestKeyTerm() {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        'suggest': {
-          'do_you_mean': {
-            'text': this.values,
-            'term': {
-              'field': 'description'
-            }
-          }
-        }
-      }
-    }).then(hits => {
-      if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-        this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
-      } else {
-        this.suggestTerm = '';
-      }
-    }).catch(error => console.log(error));
-  }
 
   searchSuggestTerm() {
-    this.values = this.suggestTerm;
-    this.updateQuery();
+    this.searchService.searchSuggestTerm();
   }
   /**
    * This handles clicking a facet and doing the search
@@ -583,10 +555,6 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ===============================================
    *
    */
-
-  getFilterKeys() {
-    return Array.from(this.filters.keys());
-  }
 
   getBucketKeys(key: string) {
     return Array.from(this.orderedBuckets.get(key).SelectedItems.keys());

@@ -33,8 +33,8 @@
           <input matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
                   type="text" list="suggestions" class="search-box form-control w-100 mb-3" [(ngModel)]="values"
                   (ngModelChange)="onInputChange($event)" placeholder="Enter search term" />
-          <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
-            <div *ngFor="let term of autocompleteTerms">
+          <datalist id="suggestions" *ngIf="(hasAutoCompleteTerms$ | async)">
+            <div *ngFor="let term of (autocompleteTerms$ | async)">
               <option [value]="term">
             </div>
           </datalist>
@@ -117,7 +117,7 @@
       <div class="hits">
         <div *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
           Sorry, no matches found for <strong>{{searchService.joinComma(values)}}</strong>.
-          <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
+          <span *ngIf="(suggestTerm$ | async)">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{(suggestTerm$ | async)}}</strong>?</span>
         </div>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
@@ -157,8 +157,7 @@
             </span>
             <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">AND </span>
             <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">Search: </strong>
-
-            <span *ngFor="let key of getFilterKeys(); let i = index">
+            <span *ngFor="let key of (filterKeys$ | async); let i = index">
               the <strong>{{friendlyNames.get(key)}}</strong> is
               <span *ngFor='let subBucket of filters.get(key); let j = index'>
                 <strong>{{( key | mapFriendlyValue : subBucket)}}</strong>

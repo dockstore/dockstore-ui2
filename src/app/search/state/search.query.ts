@@ -28,6 +28,10 @@ export class SearchQuery extends Query<SearchState> {
   public searchText$: Observable<string> = this.select(state => state.searchText);
   public showToolTagCloud$: Observable<boolean> = this.select(state => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select(state => state.showWorkflowTagCloud);
+  public filterKeys$: Observable<Array<string>> = this.select(state => state.filterKeys);
+  public autoCompleteTerms$: Observable<Array<string>> = this.select(state => state.autocompleteTerms);
+  public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map(terms => terms.length > 0));
+  public suggestTerm$: Observable<string> = this.select(state => state.suggestTerm);
 
   constructor(protected store: SearchStore) {
     super(store);

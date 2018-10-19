@@ -23,6 +23,9 @@ export interface SearchState {
    showToolTagCloud: boolean;
    showWorkflowTagCloud: boolean;
    searchText: string;
+   filterKeys: Array<string>;
+   autocompleteTerms: Array<string>;
+   suggestTerm: string;
 }
 
 export function createInitialState(): SearchState {
@@ -32,7 +35,10 @@ export function createInitialState(): SearchState {
     toolhit: null,
     showToolTagCloud: false,
     showWorkflowTagCloud: false,
-    searchText: ''
+    searchText: '',
+    filterKeys: [],
+    autocompleteTerms: [],
+    suggestTerm: ''
   };
 }
 
