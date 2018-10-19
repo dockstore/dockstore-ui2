@@ -72,6 +72,7 @@ export class SearchResultsComponent implements OnInit {
     }).then(hits => {
       let weight = 10;
       let count = 0;
+      if (hits && hits.aggregations && hits.aggregations.tagcloud) {
       hits.aggregations.tagcloud.buckets.forEach(
         tag => {
           const theTag = {
@@ -99,6 +100,7 @@ export class SearchResultsComponent implements OnInit {
           count--;
         }
       );
+      }
     }).catch(error => console.log(error));
   }
 

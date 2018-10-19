@@ -104,6 +104,7 @@ export class GA4GHStubService {
 }
 
 export class SearchStubService {
+
     workflowhit$ = observableOf([]);
     toolhit$ = observableOf([]);
     searchInfo$ = observableOf({});
@@ -118,6 +119,9 @@ export class SearchStubService {
         } else {
             return false;
         }
+    }
+    setAutoCompleteTerms() {
+
     }
 
     noResults(searchTerm: string, hits: any) {
@@ -153,9 +157,8 @@ export class SearchStubService {
         return 'thisisafakepermalink';
     }
 
-    createURIParams(cururl) {
-        const url = cururl.substr('/search'.length + 1);
-        const params = new URLSearchParams(url);
+    createURIParams() {
+        const params = new URLSearchParams('/search');
         return params;
     }
     initializeFriendlyNames() {
@@ -196,6 +199,8 @@ export class SearchStubService {
                 ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']
             ])]
         ]);
+    }
+    handleLink(linkArray: Array<string>) {
     }
 }
 

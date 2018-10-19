@@ -24,6 +24,7 @@ import { SearchStore } from './search.store';
 import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
+import { Location } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
@@ -43,7 +44,7 @@ export class SearchService {
 
 
   constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService,
-    private router: Router) {
+    private router: Router, private location: Location) {
   }
 
   // Given a URL, will attempt to shorten it
@@ -225,7 +226,12 @@ export class SearchService {
     return [url, params.toString()];
   }
 
-  createURIParams() {
+  handleLink(linkArray: Array<string>) {
+    this.location.go('search?' + linkArray[1]);
+    this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
+  }
+
+  createURIParams(): URLSearchParams {
     const curURL = this.router.url;
     const url = curURL.substr('/search'.length + 1);
     const params = new URLSearchParams(url);

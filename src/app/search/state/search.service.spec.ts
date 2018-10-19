@@ -14,34 +14,41 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProviderService } from '../../shared/provider.service';
 import { ProviderStubService } from '../../test/service-stubs';
 import { SearchService } from './search.service';
+import { SearchStore } from './search.store';
 
 describe('SearchService', () => {
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [SearchService,
-            {provide: ProviderService, useClass: ProviderStubService}
-          ]
-        });
+  let searchStore: SearchStore;
+  let searchService: SearchService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [SearchService, SearchStore,
+        { provide: ProviderService, useClass: ProviderStubService }
+      ]
     });
+    searchService = TestBed.get(SearchService);
+    searchStore = TestBed.get(SearchStore);
+  });
 
-    it('should be created', inject([SearchService], (service: SearchService) => {
-        expect(service).toBeTruthy();
-    }));
-    it('should get term from aggergation name', inject([SearchService], (service: SearchService) => {
-        expect(service.aggregationNameToTerm('agg_terms_type')).toEqual('type');
-    }));
-    it('should set observables', inject([SearchService], (service: SearchService) => {
-        service.setSearchInfo('stuff');
-        service.searchInfo$.subscribe(result => {
-            expect(result).toEqual('stuff');
-        });
-    }));
+  it('should be created', inject([SearchService], (service: SearchService) => {
+    expect(service).toBeTruthy();
+  }));
+  it('should get term from aggergation name', inject([SearchService], (service: SearchService) => {
+    expect(service.aggregationNameToTerm('agg_terms_type')).toEqual('type');
+  }));
+  it('should set observables', inject([SearchService], (service: SearchService) => {
+    service.setSearchInfo('stuff');
+    service.searchInfo$.subscribe(result => {
+      expect(result).toEqual('stuff');
+    });
+  }));
 
-    it('should not crash on null advancedSearchObject', inject([SearchService], (service: SearchService) => {
-        expect(service.hasSearchText(null, null, null)).toEqual(false);
-    }));
+  it('should not crash on null advancedSearchObject', inject([SearchService], (service: SearchService) => {
+    expect(service.hasSearchText(null, null, null)).toEqual(false);
+  }));
 });

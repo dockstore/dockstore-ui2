@@ -57,7 +57,7 @@ describe('VersionModalComponent', () => {
   });
   it('should have the correct docker pull command', () => {
     // Inject the real tool and real tag
-    const fakeTool = sampleTool1;
+    const fakeTool = Object.assign({}, sampleTool1);
     fakeTool.path = 'quay.io\/wtsicgp\/dockstore-cgpmap';
     component.tool = fakeTool;
     const fakeTag = Object.assign({}, sampleTag);

@@ -13,12 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material';
-import { Router } from '@angular/router/';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../shared/constants';
@@ -29,8 +26,8 @@ import { ProviderService } from '../shared/provider.service';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
-import { SearchService } from './state/search.service';
 import { SearchQuery } from './state/search.query';
+import { SearchService } from './state/search.service';
 
 @Component({
   selector: 'app-search',
@@ -111,10 +108,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
     public searchService: SearchService, private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService,
-    private router: Router,
-    private locationService: Location,
-    private http: HttpClient) {
+    private advancedSearchService: AdvancedSearchService) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
@@ -355,13 +349,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     const searchInfo = {
       filter: this.filters,
       searchValues: this.values,
-      advancedSearchObject: this.advancedSearchObject,
+      advancedSearchObject: Object.assign({}, this.advancedSearchObject),
       searchTerm: this.searchTerm
     };
-
     const linkArray = this.searchService.createPermalinks(searchInfo);
-    this.locationService.go('search?' + linkArray[1]);
-    this.searchService.setShortUrl(linkArray[0] + '?' + linkArray[1]);
+    this.searchService.handleLink(linkArray);
   }
 
   /**===============================================
@@ -473,7 +465,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }).then(hits => {
       this.searchService.setAutoCompleteTerms(hits);
     }).catch(error => console.log(error));
-    this.advancedSearchObject.toAdvanceSearch = false;
+    this.advancedSearchObject = {...this.advancedSearchObject, toAdvanceSearch: false};
     this.searchTerm = true;
     if ((!this.values || 0 === this.values.length)) {
       this.searchTerm = false;
