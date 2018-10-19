@@ -17,7 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { BehaviorSubject } from 'rxjs';
-
+import { Router } from '@angular/router/';
 import { Dockstore } from '../../shared/dockstore.model';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { SearchStore } from './search.store';
@@ -42,7 +42,8 @@ export class SearchService {
   public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'is_checker', 'has_checker'];
 
 
-  constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService) {
+  constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService,
+    private router: Router) {
   }
 
   // Given a URL, will attempt to shorten it
@@ -224,8 +225,9 @@ export class SearchService {
     return [url, params.toString()];
   }
 
-  createURIParams(cururl) {
-    const url = cururl.substr('/search'.length + 1);
+  createURIParams() {
+    const curURL = this.router.url;
+    const url = curURL.substr('/search'.length + 1);
     const params = new URLSearchParams(url);
     return params;
   }

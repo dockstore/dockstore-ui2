@@ -46,26 +46,19 @@ export class SearchComponent implements OnInit, OnDestroy {
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
-  /* Observable */
-  private toolSource = new BehaviorSubject<any>(null);
-  private curURL = '';
-  toolhit$ = this.toolSource.asObservable();
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public toolHits: Object[] = [];
-  public workflowHits: Object[] = [];
   public hits: Object[];
 
   // TODO: Comment on why shard_size is 10,000
-  private shard_size = 10000;
+  private readonly shard_size = 10000;
   private firstInit = true;
 
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
   searchTerm = false;
-  public autocompleteTerms$: Observable<Array<string>>;
-  public hasAutoCompleteTerms$: Observable<boolean>;
+
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -124,8 +117,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     private http: HttpClient) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
-    this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
-    this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
@@ -157,7 +148,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.onKey();
       });
     this.hits = [];
-    this.curURL = this.router.url;
     this.advancedSearchObject = {
       ANDSplitFilter: '',
       ANDNoSplitFilter: '',
@@ -179,7 +169,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   */
   parseParams() {
     let useAdvSearch = false;
-    const URIParams = this.searchService.createURIParams(this.curURL);
+    const URIParams = this.searchService.createURIParams();
     if (!URIParams.paramsMap) {
       return;
     }
@@ -440,8 +430,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.sortModeMap.clear();
     this.setFilter = false;
     this.hits = [];
-    this.workflowHits = [];
-    this.toolHits = [];
     this.searchService.setSearchInfo(null);
     this.resetEntryOrder();
     this.advancedSearchService.clear();
@@ -458,9 +446,6 @@ export class SearchComponent implements OnInit, OnDestroy {
    *                Event Functions
    * ==============================================
    */
-  onInputChange(event) {
-    this.searchService.setSearchText(event);
-  }
 
   onKey() {
     /*TODO: FOR DEMO USE, make this better later...*/
@@ -512,14 +497,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     this.updateQuery();
   }
-  /**
-   * Handles the clicking of the "Open Advanced Search" button
-   * This sets up and opens the advanced search modal
-   * @memberof SearchComponent
-   */
-  openAdvancedSearch(): void {
-    this.advancedSearchService.setShowModal(true);
-  }
+
   clickExpand(key: string) {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);

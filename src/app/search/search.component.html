@@ -26,24 +26,7 @@
         <button mat-raised-button color="accent" (click)="accordion.closeAll()">Collapse All<mat-icon>unfold_less</mat-icon></button>
       </div>
       <mat-accordion multi>
-        <mat-expansion-panel expanded>
-          <mat-expansion-panel-header>
-            Search
-          </mat-expansion-panel-header>
-          <input matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
-                  type="text" list="suggestions" class="search-box form-control w-100 mb-3" [(ngModel)]="values"
-                  (ngModelChange)="onInputChange($event)" placeholder="Enter search term" />
-          <datalist id="suggestions" *ngIf="(hasAutoCompleteTerms$ | async)">
-            <div *ngFor="let term of (autocompleteTerms$ | async)">
-              <option [value]="term">
-            </div>
-          </datalist>
-
-          <button mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
-            Open Advanced Search
-          </button>
-          <app-advancedsearch></app-advancedsearch>
-        </mat-expansion-panel>
+        <app-basic-search></app-basic-search>
         <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
           <mat-expansion-panel-header>
             {{friendlyNames.get(key)}}
