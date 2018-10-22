@@ -25,6 +25,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['private_access', new Map([
       ['1', 'private'], ['0', 'public']
     ])],
+    ['descriptorType', new Map([
+      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
+    ])],
     ['descriptor_type', new Map([
       ['CWL', 'CWL'], ['WDL', 'WDL'],
       ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']

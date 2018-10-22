@@ -57,11 +57,9 @@ describe('VersionModalComponent', () => {
   });
   it('should have the correct docker pull command', () => {
     // Inject the real tool and real tag
-    const fakeTool = Object.assign({}, sampleTool1);
-    fakeTool.path = 'quay.io\/wtsicgp\/dockstore-cgpmap';
+    const fakeTool = {...sampleTool1, path: 'quay.io\/wtsicgp\/dockstore-cgpmap'};
     component.tool = fakeTool;
-    const fakeTag = Object.assign({}, sampleTag);
-    fakeTag.name = '3.0.0-rc8';
+    const fakeTag = {...sampleTag, name: '3.0.0-rc8'};
     component.version = fakeTag;
     // Manually trigger the update
     component.updateDockerPullCommand();
