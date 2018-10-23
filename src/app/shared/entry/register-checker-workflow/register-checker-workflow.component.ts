@@ -116,7 +116,22 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
   }
 
   registerCheckerWorkflow(): void {
-    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, this.descriptorType);
+    let descriptorType: 'cwl' | 'wdl';
+    switch (this.descriptorType) {
+      case 'cwl': {
+        descriptorType = 'cwl';
+        break;
+      }
+      case 'wdl': {
+        descriptorType = 'wdl';
+        break;
+      }
+      default: {
+        console.error('Unrecognized descriptor type: ' + this.descriptorType);
+        return;
+      }
+    }
+    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, descriptorType, this.testParameterFilePath );
   }
 
   clearError(): void {

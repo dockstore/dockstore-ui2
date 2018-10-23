@@ -46,12 +46,12 @@ export class RegisterCheckerWorkflowService {
         });
     }
 
-    registerCheckerWorkflow(workflowPath: string, descriptorType: string, testParameterFilePath: string): void {
+    registerCheckerWorkflow(workflowPath: string, descriptorType: 'cwl' | 'wdl', testParameterFilePath: string): void {
         if (this.entryId) {
             const message = 'Registering checker workflow';
             this.stateService.setRefreshMessage(message);
             // Figure out why testParameterFilePath and descriptorType is swapped
-            this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, testParameterFilePath, descriptorType).
+            this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, descriptorType, testParameterFilePath, ).
                 subscribe((entry: Entry) => {
                     // Only update our current list of workflows when the current entry is a workflow
                     // Switching to my-workflows will automatically update the entire list with a fresh HTTP request

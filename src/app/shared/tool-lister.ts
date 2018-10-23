@@ -95,9 +95,23 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
    * @memberof ToolLister
    */
   loadPublishedEntries() {
+    let direction: 'asc' | 'desc';
+    switch (this.sort.direction) {
+      case 'asc': {
+        direction = 'asc';
+        break;
+      }
+      case 'desc': {
+        direction = 'desc';
+        break;
+      }
+      default: {
+        direction = 'desc';
+      }
+    }
     this.dataSource.loadEntries(
       this.input.nativeElement.value,
-      this.sort.direction,
+      direction,
       this.paginator.pageIndex * this.paginator.pageSize,
       this.paginator.pageSize,
       this.sort.active);

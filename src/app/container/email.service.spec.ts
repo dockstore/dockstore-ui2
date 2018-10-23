@@ -14,13 +14,14 @@ describe('Service: Email', () => {
     });
   });
 
-  const tool: ExtendedDockstoreTool = sampleTool1;
-  tool.tool_maintainer_email = 'fake@maintainer.email.ca';
-  tool.email = 'fake@email.ca';
-  tool.registry_string = 'registry.hub.docker.com';
-  tool.registry = DockstoreTool.RegistryEnum.DOCKERHUB;
-  tool.imgProvider = 'Docker Hub';
-  tool.tool_path = 'registry.hub.docker.com/postgres/postgres';
+  const tool: ExtendedDockstoreTool = {...sampleTool1,
+  tool_maintainer_email: 'fake@maintainer.email.ca',
+  email: 'fake@email.ca',
+  registry_string: 'registry.hub.docker.com',
+  registry: DockstoreTool.RegistryEnum.DOCKERHUB,
+  imgProvider: 'Docker Hub',
+  tool_path: 'registry.hub.docker.com/postgres/postgres'
+  };
 
   it('should get the right request access email href', inject([EmailService], (service: EmailService) => {
     expect(service).toBeTruthy();

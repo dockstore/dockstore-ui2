@@ -33,7 +33,7 @@ export class AccountsInternalComponent implements OnInit {
    * @param {TokenSource} service  TokenSource.GITHUB or TokenSource.GOOGLE
    * @memberof AccountsInternalComponent
    */
-  sync(service: TokenSource) {
+  sync(service: TokenSource.GOOGLE | TokenSource.GITHUB) {
     this.syncing = true;
     this.usersService.updateLoggedInUserMetadata(service).subscribe((user: User) => {
       this.userService.setUser(user);
