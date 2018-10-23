@@ -217,7 +217,6 @@ export class WorkflowComponent extends Entry {
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
           }
-          this.providerService.setUpProvider(this.workflow);
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -345,7 +344,6 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-      this.providerService.setUpProvider(this.workflow);
     }
   }
 

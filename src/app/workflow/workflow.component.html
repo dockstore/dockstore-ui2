@@ -60,7 +60,7 @@
     </div>
 
     <p class="update">
-      Last Modified: {{ workflow?.agoMessage || 'n/a' }}
+      Last Modified: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}
     </p>
     <div *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>
@@ -200,9 +200,9 @@
       <div class="panel-body">
         <div class="container-source-repos">
           <p>
-            <span *ngIf="workflow.provider">
-              <a [href]="workflow.providerUrl" target="_blank">
-                {{workflow.provider}}
+            <span *ngIf="(extendedWorkflow$ | async).provider">
+              <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
+                {{(extendedWorkflow$ | async).provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
             </span>

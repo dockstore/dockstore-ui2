@@ -57,6 +57,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   transform(key: string, subBucket: string): string {
+    if (!subBucket) {
+      return subBucket;
+    }
     if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucket.toString())) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {
