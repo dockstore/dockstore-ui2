@@ -3,7 +3,7 @@ import {map} from 'rxjs/operators';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Provider } from '../shared/enum/provider.enum';
 import { Injectable } from '@angular/core';
-import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { AuthService } from 'ng2-ui-auth';
 import { BehaviorSubject ,  Observable, throwError } from 'rxjs';
 
 import { Configuration, TokensService } from '../shared/swagger';

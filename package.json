@@ -50,7 +50,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "jquery-colorbox": "^1.6.4",
-    "ng2-ui-auth": "^6.2.0",
+    "ng2-ui-auth": "^9.2.0",
     "ngx-bootstrap": "^3.0.1",
     "ngx-clipboard": "^11.1.0",
     "ngx-md": "^6.0.0",
