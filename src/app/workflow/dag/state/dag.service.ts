@@ -1,15 +1,14 @@
-import { Injectable, ElementRef, Renderer2 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { DagStore } from './dag.store';
-import { DagQuery } from './dag.query';
-import { WorkflowsService, WorkflowVersion, Workflow } from '../../../shared/swagger';
-import { DynamicPopover } from '../dynamicPopover.model';
+import { ElementRef, Injectable, OnDestroy, Renderer2 } from '@angular/core';
+
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
+import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
+import { DynamicPopover } from '../dynamicPopover.model';
+import { DagQuery } from './dag.query';
+import { DagStore } from './dag.store';
 
 declare var cytoscape: any;
-declare var window: any;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DagService {
   readonly style = [
     {

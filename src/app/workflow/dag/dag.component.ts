@@ -31,7 +31,7 @@ import { DagStore } from './state/dag.store';
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
-  providers: [DagService, DagStore, DagQuery]
+  providers: [DagStore, DagQuery, DagService]
 })
 export class DagComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions: Array<WorkflowVersion>;
@@ -42,7 +42,6 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
 
-  private element: any;
   public dagResult$: Observable<any>;
   private cy: any;
   public expanded: Boolean = false;

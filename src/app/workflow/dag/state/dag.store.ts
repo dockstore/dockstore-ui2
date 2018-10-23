@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { DynamicPopover } from '../dynamicPopover.model';
 
 export interface DagState {
   validVersions: any;
@@ -18,6 +17,7 @@ export function createInitialState(): DagState {
   };
 }
 
+@Injectable()
 @StoreConfig({ name: 'dag' })
 export class DagStore extends Store<DagState> {
 

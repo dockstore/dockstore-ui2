@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { DagStore, DagState } from './dag.store';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+import { DagState, DagStore } from './dag.store';
+
+@Injectable()
 export class DagQuery extends Query<DagState> {
   dagResults$ = this.select(state => state.dagResults);
   missingTool$: Observable<boolean> = this.dagResults$.pipe(map(dagResults => this.isMissingTool(dagResults)));

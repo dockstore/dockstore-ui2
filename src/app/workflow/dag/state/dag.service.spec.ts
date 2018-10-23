@@ -22,13 +22,14 @@ import { WorkflowsStubService } from '../../../test/service-stubs';
 import { DagService } from './dag.service';
 import { DagStore } from './dag.store';
 import { Renderer2 } from '@angular/core';
+import { DagQuery } from './dag.query';
 
 /* tslint:disable:no-unused-variable */
 
 describe('Service: Dag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DagService, DagStore, Renderer2,
+      providers: [DagService, DagStore, DagQuery, Renderer2,
         { provide: WorkflowsService, useClass: WorkflowsStubService }]
     });
   });
