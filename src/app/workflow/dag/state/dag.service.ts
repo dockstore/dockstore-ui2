@@ -150,15 +150,6 @@ export class DagService {
     }
   }
 
-  setCurrentVersion(newVersion: number): void {
-    this.dagStore.setState(state => {
-      return {
-        ...state,
-        currentVersion: newVersion
-      };
-    });
-  }
-
   setDagResults(results: any): void {
     this.dagStore.setState(state => {
       return {
