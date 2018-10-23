@@ -24,7 +24,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
-import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { OrderByModule } from '../../shared/modules/orderby.module';
@@ -88,7 +87,6 @@ import { getTooltipConfig } from './../tooltip';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
-    ShareButtonsModule.forRoot(),
     StarringModule,
     OrderByModule,
     FormsModule,
