@@ -24,7 +24,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
-import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
@@ -91,7 +90,6 @@ import { SelectModule } from './select.module';
     AccordionModule.forRoot(),
     AlertModule.forRoot(),
     FormsModule,
-    ShareButtonsModule.forRoot(),
     OrderByModule,
     PrivateIconModule,
     StarringModule,
