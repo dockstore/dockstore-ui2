@@ -20,77 +20,25 @@ install:
 
 jobs:
   include:
-    - stage: Lint and Unit Tests
+    - stage: test
       script:
         - ng lint
         - npm run prebuild
         - ng test --watch=false --code-coverage --browsers ChromeHeadless
-      env: RUN_PROD=false
-
-    - stage: integration-tests
+      env: 
+        - RUN_PROD=false
+        - TEST='Lint and Unit Tests'
+    - stage: test
       env:
         - RUN_PROD=false
-        - TEST='cypress/integration/app-spec.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/checkerWorkflow/**/*'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/disabledAccountControls.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/dropdown.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/hostedEntries/**/*'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/myEntries/**/*'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/sharedWorkflows.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/starDisabled.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/starEntry.js'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/entryDetails/**/*'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/entrySearch/**/*'
-      script: ./scripts/run-travis-script.sh
-    - stage: integration-tests
-      env:
-        - RUN_PROD=false
-        - TEST='cypress/integration/VersionModal.js'
+        - TEST='Integration tests'
       script: ./scripts/run-travis-script.sh
 
-      stage: prod-tests
+    - stage: test
       script: npm run build.prod
-      env: RUN_PROD=true
+      env: 
+        - RUN_PROD=true
+        - TEST='Production test'
 
 script: echo "overriding test"
 

@@ -13,9 +13,3 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-beforeEach(function () {
-	cy.exec('psql -c \'drop schema public cascade\' webservice_test -U dockstore', {failOnNonZeroExit: false} );
-  cy.exec('psql -c \'create schema public\' webservice_test -U dockstore', {failOnNonZeroExit: false} )
-  cy.exec('psql -f travisci/db_dump.sql webservice_test -U dockstore')
-  cy.exec('java -jar dockstore-webservice-*.jar db migrate -i 1.5.0 travisci/web.yml')
-});
