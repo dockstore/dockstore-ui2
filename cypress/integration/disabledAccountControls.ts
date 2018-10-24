@@ -1,3 +1,5 @@
+
+
 /*
  *     Copyright 2018 OICR
  *
@@ -13,21 +15,24 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { resetDB, setTokenUserViewPort } from '../support/commands';
+
 describe('Go to disabled Dockstore Account Controls', function () {
-  require('./helper.js')
+  resetDB();
+  setTokenUserViewPort();
   beforeEach(function () {
-    cy.visit(String(global.baseUrl))
-    cy.get('#dropdown-main').click()
-    cy.get('#dropdown-accounts').click()
-    cy.contains("Dockstore Account Controls").click()
+    cy.visit('');
+    cy.get('#dropdown-main').click();
+    cy.get('#dropdown-accounts').click();
+    cy.contains('Dockstore Account Controls').click();
   });
   it('Should have the danger alert', function () {
-    cy.contains("caution")
+    cy.contains('caution');
   });
   it('Should have the delete button disabled', function () {
-    cy.contains("Delete Dockstore Account").should('be.disabled');
+    cy.contains('Delete Dockstore Account').should('be.disabled');
   });
   it('Should have the change username button disabled', function () {
-    cy.contains("Update Username").should('be.disabled');
+    cy.contains('Update Username').should('be.disabled');
   });
 });
