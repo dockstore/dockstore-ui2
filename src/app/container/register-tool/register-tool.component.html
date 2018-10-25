@@ -293,7 +293,7 @@
             Tool Name:
           </label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" name="toolName" [(ngModel)]="hostedTool.entryName" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Dockstore Image path toolname suffix."
+            <input type="text" class="form-control" name="toolName" [(ngModel)]="hostedTool.entryName" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Name to distinguish between multiple tools within the same repository"
               placeholder="e.g. liftover-fast (optional)" />
             <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
           </div>
