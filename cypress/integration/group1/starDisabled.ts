@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB } from '../support/commands';
+import { resetDB } from '../../support/commands';
 
 describe('Workflow starring while not logged in', function() {
   resetDB();
