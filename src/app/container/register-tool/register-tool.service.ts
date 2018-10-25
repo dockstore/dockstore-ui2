@@ -138,7 +138,8 @@ export class RegisterToolService {
           name,
           'cwl',
           hostedTool.registry,
-          namespace).subscribe((result: DockstoreTool) => {
+          namespace,
+          hostedTool.entryName).subscribe((result: DockstoreTool) => {
             this.setToolRegisterError(null);
             this.stateService.setRefreshMessage(null);
             this.setIsModalShown(false);

@@ -49,8 +49,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public descriptorLanguages$: Observable<Array<string>>;
   public Tooltip = Tooltip;
   public hostedWorkflow = {
-    name: '',
-    descriptorType: 'cwl'
+    repository: '',
+    descriptorType: 'cwl',
+    entryName: null
   };
   public options = [
     {

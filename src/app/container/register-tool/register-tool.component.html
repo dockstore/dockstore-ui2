@@ -288,6 +288,16 @@
               name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" disabled/>
           </div>
         </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 control-label">
+            Tool Name:
+          </label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="toolName" [(ngModel)]="hostedTool.entryName" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Dockstore Image path toolname suffix."
+              placeholder="e.g. liftover-fast (optional)" />
+            <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
+          </div>
+        </div>
       </div>
       <div mat-dialog-actions class="pull-right">
         <button mat-button type="button" color="secondary" (click)="hideModal();clearToolRegisterError()">

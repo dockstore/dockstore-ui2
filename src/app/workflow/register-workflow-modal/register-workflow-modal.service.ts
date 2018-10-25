@@ -126,8 +126,11 @@ export class RegisterWorkflowModalService {
       this.clearWorkflowRegisterError();
       this.stateService.setRefreshMessage('Registering new workflow...');
       this.hostedService.createHostedWorkflow(
-          hostedWorkflow.name,
-          hostedWorkflow.descriptorType).pipe(finalize(() => {
+          hostedWorkflow.repository,
+          hostedWorkflow.descriptorType,
+          null,
+          null,
+          hostedWorkflow.entryName).pipe(finalize(() => {
             this.stateService.setRefreshMessage(null);
           })).subscribe(result => {
             this.workflows.push(result);

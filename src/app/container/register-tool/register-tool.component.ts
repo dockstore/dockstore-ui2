@@ -39,7 +39,8 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
   public hostedTool = {
     path: '',
     registry: 'quay.io',
-    registryProvider: 'Quay.io'
+    registryProvider: 'Quay.io',
+    entryName: null
   };
   public options = [
     {
