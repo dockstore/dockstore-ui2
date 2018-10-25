@@ -20,6 +20,8 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ListService } from '../../shared/list.service';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
+import { PaginatorQuery } from '../../shared/state/paginator.query';
+import { PaginatorService } from '../../shared/state/paginator.service';
 import { Workflow, WorkflowsService } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
@@ -32,18 +34,20 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
   public displayedColumns = ['repository', 'stars', 'author', 'descriptorType', 'projectLinks'];
-
+  type: 'tool' | 'workflow' = 'workflow';
   constructor(
     private dockstoreService: DockstoreService,
     private pagenumberService: PagenumberService,
     private workflowsService: WorkflowsService,
     protected providerService: ProviderService,
-    dateService: DateService,
-    listService: ListService) {
-    super(listService, providerService, dateService);
+    listService: ListService, paginatorService: PaginatorService,
+    dateService: DateService, protected paginatorQuery: PaginatorQuery
+  ) {
+    super(listService, paginatorService, providerService, dateService);
   }
 
   ngOnInit() {
+    this.pageSize$ = this.paginatorQuery.workflowPageSize$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);
     this.length$ = this.dataSource.entriesLengthSubject$;
   }

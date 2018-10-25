@@ -21,6 +21,8 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
+import { PaginatorQuery } from '../../shared/state/paginator.query';
+import { PaginatorService } from '../../shared/state/paginator.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
 import { ListContainersService } from './list.service';
@@ -34,19 +36,20 @@ export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
   public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
-
+  type: 'tool' | 'workflow' = 'tool';
   constructor(private listContainersService: ListContainersService,
     private dockstoreService: DockstoreService,
     private imageProviderService: ImageProviderService,
     private pagenumberService: PagenumberService,
     private containersService: ContainersService,
     protected providerService: ProviderService,
-    listService: ListService,
-    dateService: DateService
+    listService: ListService, paginatorService: PaginatorService,
+    dateService: DateService, private paginatorQuery: PaginatorQuery
   ) {
-    super(listService, providerService, dateService);
+    super(listService, paginatorService, providerService, dateService);
   }
   ngOnInit() {
+    this.pageSize$ = this.paginatorQuery.toolPageSize$;
     this.dataSource = new PublishedToolsDataSource(this.containersService, this.providerService, this.imageProviderService);
     this.length$ = this.dataSource.entriesLengthSubject$;
   }
