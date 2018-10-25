@@ -63,7 +63,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.versionModalService.isModalShown$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = version);
+    this.versionModalService.version.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = Object.assign({}, version));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
     this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
