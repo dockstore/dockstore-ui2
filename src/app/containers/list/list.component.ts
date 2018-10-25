@@ -50,6 +50,7 @@ export class ListContainersComponent extends ToolLister implements OnInit {
   }
   ngOnInit() {
     this.pageSize$ = this.paginatorQuery.toolPageSize$;
+    this.pageIndex$ = this.paginatorQuery.toolPageIndex$;
     this.dataSource = new PublishedToolsDataSource(this.containersService, this.providerService, this.imageProviderService);
     this.length$ = this.dataSource.entriesLengthSubject$;
   }

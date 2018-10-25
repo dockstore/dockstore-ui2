@@ -9,9 +9,10 @@ export class PaginatorService {
     private http: HttpClient) {
   }
 
-  setPaginatorSize(type: 'tool' | 'workflow', pageSize: number): void {
+  setPaginator(type: 'tool' | 'workflow', pageSize: number, pageNumber): void {
     const paginatorInfo: PaginatorInfo = {
-      pageSize: pageSize
+      pageSize: pageSize,
+      pageIndex: pageNumber
     };
     if (type === 'tool') {
       this.setToolPaginatorSize(paginatorInfo);

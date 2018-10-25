@@ -48,6 +48,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
 
   ngOnInit() {
     this.pageSize$ = this.paginatorQuery.workflowPageSize$;
+    this.pageIndex$ = this.paginatorQuery.workflowPageIndex$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);
     this.length$ = this.dataSource.entriesLengthSubject$;
   }

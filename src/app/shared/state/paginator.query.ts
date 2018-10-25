@@ -25,7 +25,8 @@ import { Router } from '@angular/router';
 export class PaginatorQuery extends Query<PaginatorState> {
   toolPageSize$: Observable<number> = this.select(state => this.router.url === '/' ? 10 : state.tool.pageSize);
   workflowPageSize$: Observable<number> = this.select(state => this.router.url === '/' ? 10 : state.workflow.pageSize);
-
+  toolPageIndex$: Observable<number> = this.select(state => this.router.url === '/' ? 0 : state.tool.pageIndex);
+  workflowPageIndex$: Observable<number> = this.select(state => this.router.url === '/' ? 0 : state.workflow.pageIndex);
   constructor(protected store: PaginatorStore, private router: Router) {
     super(store);
   }

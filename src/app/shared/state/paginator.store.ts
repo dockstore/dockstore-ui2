@@ -8,11 +8,13 @@ export interface PaginatorState {
 
 export interface PaginatorInfo {
    pageSize: number;
+   pageIndex: number;
 }
 
 const initialState: PaginatorState = {
-  tool: { pageSize: 10 },
-  workflow: { pageSize: 10 }
+  tool: { pageSize: 10,
+  pageIndex: 0 },
+  workflow: { pageSize: 10, pageIndex: 0 }
 };
 
 @Injectable({ providedIn: 'root' })

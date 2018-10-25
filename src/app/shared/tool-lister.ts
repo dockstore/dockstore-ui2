@@ -35,6 +35,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   protected verifiedLink: string;
   public length$: Observable<number>;
   public pageSize$: Observable<number>;
+  public pageIndex$: Observable<number>;
   constructor(private listService: ListService, private paginatorService: PaginatorService,
     protected providerService: ProviderService, private dateService: DateService) {
     this.verifiedLink = this.dateService.getVerifiedLink();
@@ -66,7 +67,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
         distinctUntilChanged(),
         tap(() => this.loadPublishedEntries()),
         takeUntil(this.ngUnsubscribe)
-      ).subscribe(() => this.paginatorService.setPaginatorSize(this.type, this.paginator.pageSize));
+      ).subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
 
       // Handle sort changes
       this.sort.sortChange.pipe(
