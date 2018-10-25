@@ -60,31 +60,22 @@ export class VersionModalService {
    */
   saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
     const message1 = 'Saving workflow version';
-    const message2 = 'Refreshing workflow';
-    const message3 = 'Modifying test parameter files';
+    const message2 = 'Modifying test parameter files';
     this.setIsModalShown(false);
     const workflowId = this.workflowQuery.getActive().id;
     this.sessionService.setRefreshMessage(message1 + '...');
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         response => {
-          this.refreshService.handleSuccess(message1);
-          this.sessionService.setRefreshMessage(message2 + '...');
-          this.workflowsService.refresh(workflowId).subscribe(workflow => {
-            this.refreshService.handleSuccess(message2);
-            this.sessionService.setRefreshMessage(message3 + '...');
+            this.sessionService.setRefreshMessage(message2 + '...');
             this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
               success => {
-                this.refreshService.handleSuccess(message3);
+                this.refreshService.handleSuccess(message2);
                 this.refreshService.refreshWorkflow();
               }, error => {
-                this.refreshService.handleError(message3, error);
+                this.refreshService.handleError(message2, error);
                 this.refreshService.refreshWorkflow();
               });
-          },
-            error => {
-              this.refreshService.handleError(message2, error);
-            });
         }, error => {
           this.refreshService.handleError(message1, error);
         }
