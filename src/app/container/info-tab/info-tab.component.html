@@ -166,8 +166,8 @@
     </li>
   </ul>
 
-  <span *ngIf="isValidVersion">
-    <button id="downloadZipButton" *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
+  <span *ngIf="isValidVersion" id="downloadZipButton">
+    <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
     <a [href]="downloadZipLink" *ngIf="tool?.is_published"  mat-raised-button>Export as ZIP</a>
   </span>
 
