@@ -125,7 +125,13 @@
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-launch>
+        <app-launch *ngIf="workflow?.workflowVersions.length > 0; else noVersions" [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-launch>
+
+        <ng-template #noVersions>
+          <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No versions exist for this workflow.
+          </div>
+        </ng-template>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">

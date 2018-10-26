@@ -144,7 +144,13 @@
         <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch *ngIf="tool?.tags.length > 0" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname"></app-launch>
+        <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname"></app-launch>
+
+        <ng-template #noTags>
+          <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No tags exist for this tool.
+          </div>
+        </ng-template>
       </tab>
       <tab id="versionTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions">
