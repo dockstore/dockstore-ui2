@@ -26,8 +26,8 @@ export class ToolLaunchService extends LaunchService {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
-    return '$ dockstore tool convert entry2json' + descriptor + ` --entry ${path}:${versionName} > Dockstore.json
-            \n$ vim Dockstore.json`;
+    return 'dockstore tool convert entry2json' + descriptor + ` --entry ${path}:${versionName} > Dockstore.json
+            \nvim Dockstore.json`;
   }
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
@@ -36,11 +36,11 @@ export class ToolLaunchService extends LaunchService {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
-    return `$ dockstore tool launch --entry ${path}:${versionName} --json Dockstore.json` + descriptor;
+    return `dockstore tool launch --entry ${path}:${versionName} --json Dockstore.json` + descriptor;
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return '$ cwl-runner ' +
+    return 'cwl-runner ' +
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }

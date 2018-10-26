@@ -64,21 +64,21 @@ describe('WorkflowLaunchService', () => {
   // tslint:disable:max-line-length
   it('should get the wget test parameter file command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', 'cwl', 'test.json'))
-      .toBe(`$ wget --header='Accept: text/plain' ` +
+      .toBe(`wget --header='Accept: text/plain' ` +
       `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_CWL/descriptor/test.json ` +
       `-O Dockstore.json`);
     expect(service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', 'wdl', 'test.json'))
-      .toBe(`$ wget --header='Accept: text/plain' ` +
+      .toBe(`wget --header='Accept: text/plain' ` +
       `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_WDL/descriptor/test.json ` +
       `-O Dockstore.json`);
     expect(service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', 'nfl', 'test.json'))
-      .toBe(`$ wget --header='Accept: text/plain' ` +
+      .toBe(`wget --header='Accept: text/plain' ` +
       `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_NFL/descriptor/test.json ` +
       `-O Dockstore.json`);
     expect(service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', 'potato', 'test.json'))
       .toBe(null);
     expect(service.getTestJsonString('#workflow/github.com/HumanCellAtlas/skylab/HCA_SmartSeq2', 'dockstore', 'wdl', '../../test/smartseq2_single_sample/pr/dockstore_test_inputs.json'))
-    .toBe(`$ wget --header='Accept: text/plain' ` +
+    .toBe(`wget --header='Accept: text/plain' ` +
       `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN_WDL/descriptor/..%2F..%2Ftest/smartseq2_single_sample/pr/dockstore_test_inputs.json ` +
       `-O Dockstore.json`);
   }));
