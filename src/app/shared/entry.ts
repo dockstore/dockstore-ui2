@@ -22,7 +22,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../shared/dockstore.model';
-import { ErrorService } from '../shared/error.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -46,7 +45,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   protected validVersions;
   protected defaultVersion;
   protected published: boolean;
-  protected refreshMessage: string;
   public labelPattern = validationDescriptorPatterns.label;
   public labelsEditMode: boolean;
   public error;
@@ -63,7 +61,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
-    private errorService: ErrorService,
     public dateService: DateService,
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
@@ -81,9 +78,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
-    this.errorService.errorObj$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolError => this.error = toolError);
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
-    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.trackLoginService.isLoggedIn$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(state => this.isLoggedIn = state);
   }
@@ -102,10 +97,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   getVerifiedLink(): string {
     return this.dateService.getVerifiedLink();
-  }
-
-  closeError(): void {
-    this.errorService.errorObj$.next(null);
   }
 
   starGazersChange(): void {

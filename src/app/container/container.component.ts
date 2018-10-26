@@ -36,7 +36,6 @@ import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
 import { TrackLoginService } from '../shared/track-login.service';
-import { ErrorService } from './../shared/error.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../shared/refresh.service';
 import { ContainersService } from './../shared/swagger/api/containers.service';
@@ -44,6 +43,9 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
+import { AlertService } from '../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertQuery } from '../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-container',
@@ -68,6 +70,7 @@ export class ContainerComponent extends Entry {
   unpublishMessage = 'Unpublish the tool to remove it from the public';
   pubUnpubMessage: string;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
+  public isRefreshing$: Observable<boolean>;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -82,13 +85,13 @@ export class ContainerComponent extends Entry {
     providerService: ProviderService,
     router: Router,
     private containerService: ContainerService,
-    errorService: ErrorService,
     location: Location,
     activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
-    protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery,
-    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery) {
-    super(trackLoginService, providerService, router, errorService, dateService, urlResolverService, activatedRoute,
+    protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery, private alertService: AlertService,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery) {
+    super(trackLoginService, providerService, router, dateService, urlResolverService, activatedRoute,
       location, sessionService, sessionQuery, gA4GHFilesService);
+      this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
 
     this._toolType = 'containers';
@@ -189,24 +192,27 @@ export class ContainerComponent extends Entry {
       const request: PublishRequest = {
         publish: this.published
       };
+      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
+      this.alertService.start(message);
       this.containersService.publish(this.tool.id, request).subscribe(
         response => {
           this.containerService.upsertToolToTools(response);
           this.containerService.setTool(response);
           this.setPublishMessage();
-        }, err => {
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
           this.published = !this.published;
-          this.refreshService.handleError('publish error', err);
+          this.alertService.detailedError(error);
         });
     }
   }
 
-  getValidVersions() {
-    this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
+  publishDisable(): boolean {
+    return !this.isContainerValid();
   }
 
-  publishDisable() {
-    return (this.refreshMessage !== null && this.refreshMessage !== undefined) || !this.isContainerValid();
+  getValidVersions() {
+    this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
 
   isContainerValid() {

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule, MatIconModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatToolbarModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -33,7 +33,8 @@ describe('RefreshWorkflowOrganizationComponent', () => {
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatSnackBarModule
       ],
       providers: [
         { provide: UsersService, useClass: UsersStubService },

@@ -28,6 +28,8 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { Observable } from 'rxjs';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-info-tab',
@@ -50,12 +52,12 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   defaultTestFilePathEditing: boolean;
   isPublic: boolean;
   trsLink: string;
-  public refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
   <b>FULL:</b> Full content synced from source control.<br />
   <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
   constructor(private workflowService: WorkflowService, private workflowsService: ExtendedWorkflowsService,
-    private sessionQuery: SessionQuery, private infoTabService: InfoTabService) {
+    private sessionQuery: SessionQuery, private infoTabService: InfoTabService, private alertQuery: AlertQuery) {
     super();
   }
 
@@ -74,11 +76,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(editing => this.workflowPathEditing = editing);
     this.infoTabService.defaultTestFilePathEditing$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(editing => this.defaultTestFilePathEditing = editing);
-    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   /**

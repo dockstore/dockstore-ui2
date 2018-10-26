@@ -19,17 +19,19 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
 import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil, finalize } from 'rxjs/operators';
 
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
 import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { SessionService } from '../../shared/session/session.service';
 import { TokenQuery } from '../../shared/state/token.query';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow } from '../../shared/swagger';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
@@ -39,8 +41,7 @@ import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 /**
  * How the workflow selection works:
@@ -71,20 +72,21 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflows: Array<Workflow>;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
-  public refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
-  constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration, private sessionQuery: SessionQuery,
-    private usersService: UsersService, private userQuery: UserQuery,
+  constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
+    private usersService: UsersService, private userQuery: UserQuery, private alertService: AlertService,
     private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
-    protected accountsService: AccountsService, private refreshService: RefreshService, private sessionService: SessionService,
+    protected accountsService: AccountsService, private refreshService: RefreshService,
     private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
     protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar,
-    protected tokenQuery: TokenQuery, protected workflowQuery: WorkflowQuery) {
+    protected tokenQuery: TokenQuery, protected workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
      * due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
@@ -111,17 +113,17 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
-        this.sessionService.setRefreshMessage('Fetching workflows');
+        this.alertService.start('Fetching workflows');
         forkJoin(this.usersService.userWorkflows(user.id).pipe(catchError(error => {
-          this.matSnackbar.open('Could not retrieve workflows');
+          this.alertService.detailedError(error);
           return observableOf([]);
         })), this.workflowsService.sharedWorkflows().pipe(catchError(error => {
-          this.matSnackbar.open('Could not retrieve shared workflows');
+          this.alertService.detailedError(error);
           return observableOf([]);
-        }))).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
+        }))).pipe(finalize(() => this.alertService.detailedSuccess()),
+        takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
           this.workflowService.setWorkflows(workflows);
           this.workflowService.setSharedWorkflows(sharedWorkflows);
-          this.sessionService.setRefreshMessage(null);
         }, error => {
           console.error('This should be impossible because both errors are caught already');
         });
@@ -152,8 +154,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       }, error => {
         console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
       });
-
-    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   /**

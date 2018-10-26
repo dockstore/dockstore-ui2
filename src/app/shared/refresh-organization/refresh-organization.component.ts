@@ -14,29 +14,25 @@
  *    limitations under the License.
  */
 import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { SessionQuery } from '../session/session.query';
 import { UserQuery } from '../user/user.query';
+import { AlertQuery } from '../alert/state/alert.query';
 
 @Injectable()
 export class RefreshOrganizationComponent implements OnInit, OnDestroy {
   protected userId: number;
   @Input() protected organization: string;
-  protected refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private userQuery: UserQuery, protected sessionQuery: SessionQuery) {
+  constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {
   }
 
   ngOnInit() {
     this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => this.userId = userId);
-    this.sessionQuery.refreshMessage$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
-  }
-
-  toDisable(): boolean {
-    return this.refreshMessage !== null && this.refreshMessage !== undefined;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   ngOnDestroy() {

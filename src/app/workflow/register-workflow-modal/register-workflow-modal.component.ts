@@ -30,6 +30,7 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-register-workflow-modal',
@@ -44,7 +45,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public workflow: Workflow;
   public workflowRegisterError;
   public isModalShown: boolean;
-  public refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
   public descriptorLanguages$: Observable<Array<string>>;
   public Tooltip = Tooltip;
@@ -70,7 +71,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
   constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private sessionQuery: SessionQuery,
-    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
+    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>, private alertQuery: AlertQuery) {
   }
 
   friendlyRepositoryKeys(): Array<string> {
@@ -82,12 +83,12 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
     this.registerWorkflowModalService.workflowRegisterError$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
     this.registerWorkflowModalService.isModalShown$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
     this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<string>) => {

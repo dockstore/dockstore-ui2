@@ -17,8 +17,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { SessionService } from '../../shared/session/session.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
@@ -30,7 +30,7 @@ export class VersionModalService {
   version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
   testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
   constructor(
-    private sessionService: SessionService, private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService,
+    private alertService: AlertService, private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService,
     private refreshService: RefreshService) {
   }
   setIsModalShown(isModalShown: boolean) {
@@ -63,29 +63,28 @@ export class VersionModalService {
     const message2 = 'Modifying test parameter files';
     this.setIsModalShown(false);
     const workflowId = this.workflowQuery.getActive().id;
-    this.sessionService.setRefreshMessage(message1 + '...');
+    this.alertService.start(message1);
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         response => {
-            this.sessionService.setRefreshMessage(message2 + '...');
             this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
               success => {
-                this.refreshService.handleSuccess(message2);
+                this.alertService.detailedSuccess();
                 this.refreshService.refreshWorkflow();
               }, error => {
-                this.refreshService.handleError(message2, error);
+                this.alertService.detailedError(error);
                 this.refreshService.refreshWorkflow();
               });
         }, error => {
-          this.refreshService.handleError(message1, error);
+          this.alertService.detailedError(error);
         }
       );
     } else {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         response => {
-          this.refreshService.handleSuccess(message1);
+          this.alertService.detailedSuccess();
         }, error => {
-          this.refreshService.handleError(message1, error);
+          this.alertService.detailedError(error);
         }
       );
     }

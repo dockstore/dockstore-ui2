@@ -12,6 +12,7 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 
 import RoleEnum = Permission.RoleEnum;
+import { AlertService } from '../../shared/alert/state/alert.service';
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
@@ -43,7 +44,7 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar,
+  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar, private alertService: AlertService,
     private tokenQuery: TokenQuery, private refreshService: RefreshService) {
   }
 
@@ -72,6 +73,7 @@ export class PermissionsComponent implements OnInit {
 
     if ((value || '').trim()) {
       this.updating++;
+      this.alertService.start('Updating permissions');
       this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }).subscribe(
         (userPermissions: Permission[]) => {
           this.updating--;
@@ -93,9 +95,9 @@ export class PermissionsComponent implements OnInit {
     this.updating--;
     const message = e.error || defaultMessage;
     if (e.status === 409) { // A more severe error that deserves more attention than a disappearing snackbar
-      this.refreshService.handleError(message, e);
+      this.alertService.detailedError(e);
     } else {
-      this.snackBar.open(message, 'Dismiss');
+      this.alertService.simpleError();
     }
   }
 

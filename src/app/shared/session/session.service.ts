@@ -32,13 +32,4 @@ export class SessionService {
       };
     });
   }
-
-  setRefreshMessage(message: string): void {
-    this.sessionStore.setState(state => {
-      return {
-        ...state,
-        refreshMessage: message
-      };
-    });
-  }
 }

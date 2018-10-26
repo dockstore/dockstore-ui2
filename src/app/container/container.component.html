@@ -85,16 +85,16 @@
       <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
           <button id="publishToolButton" mat-flat-button color="accent" (click)="publish()" [(ngModel)]="published"
-            [disabled]="publishDisable()" btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
+            [disabled]="(isRefreshing$ | async) || !this.isContainerValid()" btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
           <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool" class="mr-2">
             Delete
           </button>
-          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Sync the tool with the Docker image repository, etc" class="mr-2">
+          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="(isRefreshing$ | async)" matTooltip="Sync the tool with the Docker image repository, etc" class="mr-2">
             Refresh
           </button>
-          <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
+          <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="(isRefreshing$ | async)"></app-deregister-modal>
         </div>
       </div>
     </h3>

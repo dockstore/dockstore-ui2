@@ -15,11 +15,12 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
-import { SessionQuery } from '../../shared/session/session.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
 
@@ -35,9 +36,9 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public validationPatterns = validationDescriptorPatterns;
   public customDockerRegistryPath: string;
   public showCustomDockerRegistryPath: boolean;
-  public refreshMessage: string;
   public isModalShown: boolean;
   public disablePrivateCheckbox = false;
+  public isRefreshing$: Observable<boolean>;
   public hostedTool = {
     path: '',
     registry: 'quay.io',
@@ -58,7 +59,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
-  constructor(private registerToolService: RegisterToolService, private sessionQuery: SessionQuery) { }
+  constructor(private registerToolService: RegisterToolService, private alertQuery: AlertQuery, private alertService: AlertService) { }
 
   isInvalidCustomRegistry() {
     return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
@@ -105,13 +106,10 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.disablePrivateCheckbox = this.registerToolService.disabledPrivateCheckbox;
   }
 
-  clearToolRegisterError() {
-    this.registerToolService.setToolRegisterError(null);
-  }
 
   hideModal() {
     this.registerToolService.setIsModalShown(false);
-    this.clearToolRegisterError();
+    this.alertService.clearEverything();
   }
 
   showModal() {
@@ -130,8 +128,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
       takeUntil(this.ngUnsubscribe)).subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
     this.registerToolService.toolRegisterError.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(error => this.toolRegisterError = error);
-    this.sessionQuery.refreshMessage$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(status => this.refreshMessage = status);
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.registerToolService.isModalShown.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
   }

@@ -17,13 +17,11 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
 export interface SessionState {
-   refreshMessage: string;
    isPublic: boolean;
 }
 ​
 export function createInitialState(): SessionState {
   return {
-    refreshMessage: null,
     isPublic: true
   };
 }

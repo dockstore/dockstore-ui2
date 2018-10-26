@@ -18,13 +18,12 @@ import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { SessionService } from '../../shared/session/session.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/swagger';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
-import { WorkflowService } from '../../shared/state/workflow.service';
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -40,7 +39,7 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService,
         private workflowService: WorkflowService, private router: Router,
-        private sessionService: SessionService, private descriptorLanguageService: DescriptorLanguageService,
+        private alertService: AlertService, private descriptorLanguageService: DescriptorLanguageService,
         private metadataService: MetadataService, private hostedService: HostedService) {
         this.sampleWorkflow.repository = 'GitHub';
         this.sampleWorkflow.descriptorType = 'cwl';
@@ -92,7 +91,7 @@ export class RegisterWorkflowModalService {
 
     registerWorkflow(dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
         this.clearWorkflowRegisterError();
-        this.sessionService.setRefreshMessage('Registering new workflow...');
+        this.alertService.start('Registering new workflow');
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
@@ -100,17 +99,15 @@ export class RegisterWorkflowModalService {
             this.actualWorkflow.workflowName,
             this.actualWorkflow.descriptorType,
             this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
-              this.sessionService.setRefreshMessage('Refreshing new workflow...');
-                this.workflowsService.refresh(result.id).pipe(finalize(() => {
-                  this.sessionService.setRefreshMessage(null);
-                })).subscribe(refreshResult => {
+                this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
+                    this.alertService.detailedSuccess();
                     dialogRef.close();
                     this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
-                }, error => this.setWorkflowRegisterError(error));
-            }, error =>  {
-              this.sessionService.setRefreshMessage(null);
+                }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
+            }, (error: HttpErrorResponse) =>  {
+              this.alertService.detailedError(error);
               this.setWorkflowRegisterError(error);
             });
     }
@@ -121,19 +118,18 @@ export class RegisterWorkflowModalService {
      */
     registerHostedWorkflow(hostedWorkflow, dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
       this.clearWorkflowRegisterError();
-      this.sessionService.setRefreshMessage('Registering new workflow...');
+      this.alertService.start('Registering new workflow');
       this.hostedService.createHostedWorkflow(
           hostedWorkflow.name,
-          hostedWorkflow.descriptorType).pipe(finalize(() => {
-            this.sessionService.setRefreshMessage(null);
-          })).subscribe(result => {
+          hostedWorkflow.descriptorType).subscribe(result => {
+            this.alertService.detailedSuccess();
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);
             dialogRef.close();
             this.clearWorkflowRegisterError();
             this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
-          }, error =>  {
-            this.setWorkflowRegisterError(error);
+          }, (error: HttpErrorResponse) =>  {
+            this.alertService.detailedError(error);
           });
     }
 

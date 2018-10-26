@@ -8,6 +8,8 @@ import { Configuration, Profile, User } from '../../../shared/swagger';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { AlertQuery } from '../../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-accounts-internal',
@@ -21,11 +23,13 @@ export class AccountsInternalComponent implements OnInit {
   gitHubProfile: Profile;
   hasGitHubToken$: Observable<boolean>;
   hasGoogleToken$: Observable<boolean>;
-  public syncing = false;
+  public isRefreshing$: Observable<boolean>;
   constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
-    private tokenQuery: TokenQuery, private matSnackBar: MatSnackBar, private userQuery: UserQuery) {
+    private tokenQuery: TokenQuery, private matSnackBar: MatSnackBar, private userQuery: UserQuery, private alertQuery: AlertQuery,
+    private alertService: AlertService) {
     this.hasGitHubToken$ = this.tokenQuery.hasGitHubToken$;
     this.hasGoogleToken$ = this.tokenQuery.hasGoogleToken$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   /**
@@ -35,12 +39,12 @@ export class AccountsInternalComponent implements OnInit {
    * @memberof AccountsInternalComponent
    */
   sync(service: TokenSource) {
-    this.syncing = true;
+    this.alertService.start('Updating user metadata');
     this.usersService.updateLoggedInUserMetadata(service).subscribe((user: User) => {
       this.userService.updateUser(user);
-      this.syncing = false;
+      this.alertService.simpleSuccess();
     }, error => {
-      this.syncing = false;
+      this.alertService.simpleError();
     },
     );
   }

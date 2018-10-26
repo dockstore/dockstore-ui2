@@ -13,48 +13,73 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
 import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
-import { ErrorService } from '../../shared/error.service';
+import { ImageProviderService } from '../../shared/image-provider.service';
 import { OrderBy } from '../../shared/orderBy';
+import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import {
   DateStubService,
-  ErrorStubService,
+  ImageProviderStubService,
   RefreshStubService,
   WorkflowsStubService,
   WorkflowStubService,
-  ContainersStubService,
-  ImageProviderStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
-import { ProviderService } from '../../shared/provider.service';
-import { ImageProviderService } from '../../shared/image-provider.service';
-import { ContainersService } from '../../shared/swagger';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'ngx-bootstrap';
+
+
+@Component({
+  selector: 'app-view-workflow',
+  template: '<p>App View Component</p>'
+})
+class MockViewWorkflowComponent {
+  @Input() versions;
+  @Input() version;
+  @Input() workflowId;
+  @Input() canRead;
+  @Input() canWrite;
+  @Input() isOwner;
+}
+
+@Component({
+  selector: 'app-version-modal',
+  template: '<p>Version Modal Component</p>'
+})
+class MockVersionModalComponent {
+  @Input() canRead;
+  @Input() canWrite;
+  @Input() isOwner;
+}
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe ],
-      schemas: [ NO_ERRORS_SCHEMA ],
+      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule],
+      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe, MockViewWorkflowComponent,
+        MockVersionModalComponent ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
         { provide: WorkflowService, useClass: WorkflowStubService},
         { provide: WorkflowsService, useClass: WorkflowsStubService},
+        AlertQuery,
         ProviderService,
         WorkflowQuery,
         { provide: ImageProviderService, useClass: ImageProviderStubService },
-        { provide: ErrorService, useClass: ErrorStubService },
         { provide: RefreshService, useClass: RefreshStubService}
       ]
     })

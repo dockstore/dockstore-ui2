@@ -224,15 +224,6 @@ export class AuthStubService {
     }
 }
 
-export class ErrorStubService {
-    errorObj$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
-
-    setErrorAlert() {
-      return observableOf({});
-    }
-
-}
-
 export class ConfigurationStub {
     apiKeys = {
         accessToken: '',

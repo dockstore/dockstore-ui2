@@ -22,6 +22,7 @@ import {
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;
@@ -31,7 +32,7 @@ describe('VersionModalComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ VersionModalComponent],
-      imports: [ModalModule.forRoot(), FormsModule, ClipboardModule],
+      imports: [ModalModule.forRoot(), FormsModule, ClipboardModule, MatSnackBarModule],
       providers: [
         {provide: ParamfilesService, useClass: ParamFilesStubService},
         VersionModalService,

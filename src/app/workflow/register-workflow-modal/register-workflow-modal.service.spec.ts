@@ -29,6 +29,7 @@ import {
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('Service: RegisterWorkflowModal', () => {
   beforeEach(() => {
@@ -39,7 +40,7 @@ describe('Service: RegisterWorkflowModal', () => {
         { provide: MetadataService, useClass: MetadataStubService },
         { provide: HostedService, useClass: HostedStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-      ], imports: [RouterTestingModule]
+      ], imports: [RouterTestingModule, MatSnackBarModule]
     });
   });
   const expectedError: any = {

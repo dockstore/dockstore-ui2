@@ -7,12 +7,14 @@ import { UserStore } from './user.store';
 import { Md5 } from 'ts-md5/dist/md5';
 import { RefreshService } from '../refresh.service';
 import { TokenService } from '../state/token.service';
+import { AlertService } from '../alert/state/alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
   constructor(private userStore: UserStore, private authService: AuthService, private usersService: UsersService,
-    private configuration: Configuration, private refreshService: RefreshService, private tokenService: TokenService) {
+    private configuration: Configuration, private refreshService: RefreshService, private tokenService: TokenService,
+    private alertService: AlertService) {
     this.getUser();
   }
 
@@ -101,13 +103,13 @@ export class UserService {
  * Attempts to update the username to the new value given by the user
  */
   updateUsername(username: string): void {
+    this.alertService.start('Updating username');
     this.usersService.changeUsername(username).subscribe(
       (user: User) => {
         this.getUser();
-        this.refreshService.handleSuccess('Updating username');
+        this.alertService.detailedSuccess();
       }, error => {
-        console.error(error);
-        this.refreshService.handleError('Updating username', error);
+        this.alertService.detailedError(error);
       });
   }
 }

@@ -14,26 +14,31 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RefreshService } from '../../shared/refresh.service';
-import { SessionQuery } from '../../shared/session/session.query';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 describe('Service: version-modal.service.ts', () => {
+  let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
     beforeEach(() => {
         TestBed.configureTestingModule({
+          imports: [BrowserAnimationsModule, MatSnackBarModule],
             providers: [VersionModalService,
-              SessionQuery,
+              { provide: WorkflowQuery, useValue: jasmine.createSpyObj('WorkflowQuery', ['getActive'])},
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
                 { provide: RefreshService, useClass: RefreshStubService}
             ]
         });
+        workflowQuery = TestBed.get(WorkflowQuery);
     });
     const expectedError: any = {
         'message': 'oh no!',
@@ -67,12 +72,12 @@ describe('Service: version-modal.service.ts', () => {
         service.setTestParameterFiles([]);
         service.testParameterFiles.subscribe(files => expect(files).toEqual([]));
     }));
-    it('should be able to save version and clear refreshing state', inject([VersionModalService, SessionQuery, WorkflowQuery],
-        (service: VersionModalService, sessionQuery: SessionQuery, workflowQuery: WorkflowQuery) => {
-          spyOn(workflowQuery, 'getActive').and.returnValue({id: 1});
+    it('should be able to save version and clear refreshing state', inject([VersionModalService, AlertQuery],
+        (service: VersionModalService, alertQuery: AlertQuery) => {
+          workflowQuery.getActive.and.returnValue({id: 1});
         service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
-        // Refresh service takes modifying the refreshMessage from the third message
-        sessionQuery.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));
+        // Refresh; service; takes; modifying; the; refreshMessage; from; the; third; message;
+        alertQuery.message$.subscribe(refreshMessage => expect(refreshMessage).toEqual(''));
     }));
 
 });

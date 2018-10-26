@@ -114,7 +114,8 @@ import { SelectModule } from './select.module';
   ],
   exports: [
     ContainerComponent,
-    CustomMaterialModule
+    CustomMaterialModule,
+    EntryModule
   ]
 })
 export class ContainerModule {

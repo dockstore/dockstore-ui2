@@ -18,19 +18,22 @@ import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { ErrorService } from '../shared/error.service';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
 import { RefreshService } from '../shared/refresh.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
+import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { WorkflowService } from '../shared/state/workflow.service';
 import { Permission } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { PublishRequest } from '../shared/swagger/model/publishRequest';
@@ -41,10 +44,9 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { Observable } from 'rxjs';
-import { WorkflowService } from '../shared/state/workflow.service';
-import { WorkflowQuery } from '../shared/state/workflow.query';
-import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
+import { AlertService } from '../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertQuery } from '../shared/alert/state/alert.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -52,6 +54,7 @@ import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
+  public isRefreshing$: Observable<boolean>;
   public workflow: ExtendedWorkflow;
   public missingWarning: boolean;
   public title: string;
@@ -80,16 +83,17 @@ export class WorkflowComponent extends Entry {
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
     router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
-    errorService: ErrorService, urlResolverService: UrlResolverService,
+    urlResolverService: UrlResolverService, private alertService: AlertService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
-      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery) {
+      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
     super(trackLoginService, providerService, router,
-      errorService, dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
+      dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   private processPermissions(userPermissions: Permission[]): void {
@@ -241,9 +245,8 @@ export class WorkflowComponent extends Entry {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  publishDisable() {
-    return (this.refreshMessage !== null && this.refreshMessage !== undefined) || !this.isValid() ||
-    this.workflow.mode === Workflow.ModeEnum.STUB;
+  publishDisable(): boolean {
+    return !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB || !this.isOwner;
   }
 
   publish() {
@@ -253,19 +256,22 @@ export class WorkflowComponent extends Entry {
       const request: PublishRequest = {
         publish: this.published
       };
+      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
+      this.alertService.start(message);
       this.workflowsService.publish(this.workflow.id, request).subscribe(
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
           this.workflowService.setWorkflow(response);
           this.setPublishMessage();
+          this.alertService.detailedSuccess();
           if (response.checker_id) {
             this.workflowsService.getWorkflow(response.checker_id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
               this.workflowService.upsertWorkflowToWorkflow(workflow);
-            }, err => this.refreshService.handleError('publish error', err));
+            }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
           }
-        }, err => {
+        }, (error: HttpErrorResponse) => {
           this.published = !this.published;
-          this.refreshService.handleError('publish error', err);
+          this.alertService.detailedError(error);
         });
     }
   }

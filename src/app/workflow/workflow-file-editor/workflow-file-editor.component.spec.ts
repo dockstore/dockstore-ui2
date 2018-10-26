@@ -5,7 +5,8 @@ import { TabsModule } from 'ngx-bootstrap';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule,
-  MatTooltipModule } from '@angular/material';
+  MatTooltipModule,
+  MatSnackBarModule} from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
@@ -40,7 +41,8 @@ describe('WorkflowFileEditorComponent', () => {
         MatInputModule,
         MatFormFieldModule,
         MatTooltipModule,
-        ClipboardModule
+        ClipboardModule,
+        MatSnackBarModule
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },

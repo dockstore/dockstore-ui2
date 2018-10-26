@@ -71,7 +71,6 @@ import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
-import { ErrorService } from './shared/error.service';
 import { ExtendedToolsService } from './shared/extended-tools.service';
 import { ExtendedWorkflowsService } from './shared/extended-workflows.service';
 import { ImageProviderService } from './shared/image-provider.service';
@@ -97,6 +96,8 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { AlertModule } from 'ngx-bootstrap';
+import { RefreshAlertModule } from './shared/alert/alert.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -161,7 +162,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
-    CustomMaterialModule
+    CustomMaterialModule,
+    RefreshAlertModule
   ],
   providers: [
     AccountsService,
@@ -183,7 +185,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     PagenumberService,
     TwitterService,
     GA4GHService,
-    ErrorService,
     DescriptorLanguageService,
     UrlResolverService,
     MetadataService,

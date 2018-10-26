@@ -19,13 +19,13 @@ import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../../containers/list/list.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { SessionService } from '../../shared/session/session.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
@@ -69,9 +69,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
-    private listContainersService: ListContainersService, private containerService: ContainerService,
+    private listContainersService: ListContainersService, private containerService: ContainerService, private alertService: AlertService,
     private containersService: ContainersService, private containertagsService: ContainertagsService, private sessionQuery: SessionQuery,
-    private sessionService: SessionService, private dateService: DateService, private refreshService: RefreshService,
+    private dateService: DateService, private refreshService: RefreshService,
     private toolQuery: ToolQuery) {
   }
 
@@ -121,7 +121,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   editTag() {
     const message = 'Updating tag';
-    this.sessionService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     const id = this.tool.id;
     const tagName = this.version.name;
 
@@ -137,31 +137,31 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     const CWL = 'CWL';
     const WDL = 'WDL';
     if (newCWL && newCWL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newCWL, CWL, null, tagName).subscribe(response => {},
-        err => this.refreshService.handleError(message, err) );
+      this.containersService.addTestParameterFiles(id, newCWL, CWL, null, tagName).subscribe(response => { },
+        err => this.alertService.detailedError(err));
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingCWL, CWL, tagName).subscribe(response => {},
-        err => this.refreshService.handleError(message, err) );
+      this.containersService.deleteTestParameterFiles(id, missingCWL, CWL, tagName).subscribe(response => { },
+        err => this.alertService.detailedError(err));
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newWDL, WDL, null, tagName).subscribe(response => {},
-        err => this.refreshService.handleError(message, err) );
+      this.containersService.addTestParameterFiles(id, newWDL, WDL, null, tagName).subscribe(response => { },
+        err => this.alertService.detailedError(err));
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingWDL, WDL, tagName).subscribe(response => {},
-        err => this.refreshService.handleError(message, err) );
+      this.containersService.deleteTestParameterFiles(id, missingWDL, WDL, tagName).subscribe(response => { },
+        err => this.alertService.detailedError(err));
     }
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
-      this.tool = {...this.tool, tags: response};
+      this.tool = { ...this.tool, tags: response };
       this.containerService.setTool(this.tool);
       this.versionModalService.setIsModalShown(false);
-      this.refreshService.handleSuccess(message);
+      this.alertService.detailedSuccess();
     }, error => {
-      this.refreshService.handleError(message, error);
+      this.alertService.detailedError(error);
       this.versionModalService.setIsModalShown(false);
     });
   }
@@ -252,7 +252,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       if (!this.tool && this.isModalShown) {
         this.versionModalService.setIsModalShown(false);
       } else {
-        this.isModalShown = isModalShown; }
+        this.isModalShown = isModalShown;
+      }
     });
     this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (mode: TagEditorMode) => {

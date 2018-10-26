@@ -5,6 +5,7 @@ import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
+import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-tool-file-editor',
@@ -32,7 +33,8 @@ export class ToolFileEditorComponent extends FileEditing {
       }
   }
 
-  constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService) {
+  constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService,
+    private alertService: AlertService) {
     super();
   }
 
@@ -79,16 +81,16 @@ export class ToolFileEditorComponent extends FileEditing {
     const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
-
+    this.alertService.start('Editing hosted tool');
     this.hostedService.editHostedTool(
         this.id,
         newSourceFiles).subscribe(result => {
           this.toggleEdit();
           this.containerService.setTool(result);
-          this.refreshService.handleSuccess(message);
+          this.alertService.detailedSuccess();
         }, error =>  {
           if (error) {
-            this.refreshService.handleError(message, error);
+            this.alertService.detailedError(error);
           }
         }
       );

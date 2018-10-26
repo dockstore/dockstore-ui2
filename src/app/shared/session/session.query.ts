@@ -23,8 +23,6 @@ import { SessionState, SessionStore } from './session.store';
   providedIn: 'root'
 })
 export class SessionQuery extends Query<SessionState> {
-  isRefreshing$: Observable<boolean> = this.select(session => !!session.refreshMessage);
-  refreshMessage$: Observable<string> = this.select(session => session.refreshMessage);
   isPublic$: Observable<boolean> = this.select(session => session.isPublic);
   constructor(protected store: SessionStore) {
     super(store);

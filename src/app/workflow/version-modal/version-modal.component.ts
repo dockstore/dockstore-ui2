@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { formInputDebounceTime } from '../../shared/constants';
@@ -28,6 +28,7 @@ import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-version-modal',
@@ -48,7 +49,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   formErrors = formErrors;
   validationMessages = validationMessages;
   validationPatterns = validationDescriptorPatterns;
-  public refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   public WorkflowType = Workflow;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
@@ -58,10 +59,11 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
-    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery) {
+    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.versionModalService.isModalShown$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = Object.assign({}, version));
@@ -76,7 +78,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       }
     });
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.isPublic = publicPage);
-    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
   }
 
   removeTestParameterFile(index: number) {

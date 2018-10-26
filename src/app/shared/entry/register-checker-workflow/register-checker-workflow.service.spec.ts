@@ -22,16 +22,17 @@ import {
   WorkflowStubService,
 } from '../../../test/service-stubs';
 import { ContainerService } from '../../container.service';
-import { ErrorService } from '../../error.service';
 import { RefreshService } from '../../refresh.service';
 import { WorkflowsService } from '../../swagger/api/workflows.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 import { WorkflowService } from '../../state/workflow.service';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('Service: RegisterCheckerWorkflow', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RegisterCheckerWorkflowService, ErrorService,
+      imports: [MatSnackBarModule],
+      providers: [RegisterCheckerWorkflowService,
       {provide: WorkflowsService, useClass: WorkflowsStubService},
       {provide: ContainerService, useClass: ContainerStubService},
       {provide: WorkflowService, useClass: WorkflowStubService},

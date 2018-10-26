@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule, MatIconModule, MatTooltipModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { ContainerService } from './../../shared/container.service';
@@ -31,6 +31,7 @@ describe('RefreshToolOrganizationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RefreshToolOrganizationComponent],
       imports: [
+        MatSnackBarModule,
         MatIconModule,
         MatButtonModule,
         MatTooltipModule

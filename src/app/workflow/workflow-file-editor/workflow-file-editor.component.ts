@@ -6,6 +6,7 @@ import { RefreshService } from './../../shared/refresh.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -31,7 +32,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     }
   }
   constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService) {
+    private workflowsService: WorkflowsService, private alertService: AlertService) {
     super();
   }
 
@@ -73,18 +74,18 @@ export class WorkflowFileEditorComponent extends FileEditing {
     const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
-
+    this.alertService.start('Editing hosted workflow');
     this.hostedService.editHostedWorkflow(
         this.id,
         newSourceFiles).subscribe((workflow: Workflow) => {
           this.toggleEdit();
-          this.refreshService.handleSuccess(message);
           this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2: Workflow) => {
+            this.alertService.detailedSuccess();
             this.workflowService.setWorkflow(workflow2);
           });
         }, error =>  {
           if (error) {
-            this.refreshService.handleError(message, error);
+            this.alertService.detailedError(error);
           }
         }
       );

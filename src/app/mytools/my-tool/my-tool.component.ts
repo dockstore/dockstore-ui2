@@ -14,23 +14,25 @@
  *     limitations under the License.
  */
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { SessionService } from '../../shared/session/session.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
@@ -40,6 +42,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-my-tool',
@@ -50,21 +53,22 @@ import { MytoolsService } from '../mytools.service';
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
   tool: any;
+  isRefreshing$: Observable<boolean>;
   readonly pageName = '/my-tools';
-  public refreshMessage: string;
   private registerTool: Tool;
   public showSidebar = true;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
-    private userQuery: UserQuery, protected authService: AuthService, private sessionService: SessionService,
+    private userQuery: UserQuery, protected authService: AuthService,
     private containerService: ContainerService, private dialog: MatDialog, private location: Location,
-    private refreshService: RefreshService, protected accountsService: AccountsService,
+    private refreshService: RefreshService, protected accountsService: AccountsService, private alertService: AlertService,
     private registerToolService: RegisterToolService, protected tokenQuery: TokenQuery, private sessionQuery: SessionQuery,
     protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService,
-    private toolQuery: ToolQuery) {
+    private toolQuery: ToolQuery, private alertQuery: AlertQuery) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (this.groupEntriesObject) {
@@ -91,12 +95,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
-        this.sessionService.setRefreshMessage('Fetching tools');
+        this.alertService.start('Fetching tools');
         this.usersService.userContainers(user.id).subscribe(tools => {
           this.containerService.setTools(tools);
-          this.sessionService.setRefreshMessage(null);
-        }, (error: any) => {
-          this.sessionService.setRefreshMessage(null);
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         });
       }
     });
@@ -115,7 +119,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
       }
     });
 
-    this.sessionQuery.refreshMessage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(refreshMessage => this.refreshMessage = refreshMessage);
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.registerTool = tool);
   }
 

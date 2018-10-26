@@ -13,16 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
-import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { SessionService } from '../../shared/session/session.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
-import { WorkflowService } from '../../shared/state/workflow.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-workflow-organization',
@@ -33,17 +34,17 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
 
   constructor(private usersService: UsersService, userQuery: UserQuery, private workflowService: WorkflowService,
-    private sessionService: SessionService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
-      super(userQuery, sessionQuery);
+    private alertService: AlertService, protected alertQuery: AlertQuery) {
+      super(userQuery, alertQuery);
   }
 
   refreshOrganization(): void {
     const message = 'Refreshing ' + this.organization;
-    this.sessionService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     this.usersService.refreshWorkflowsByOrganization(this.userId, this.organization).subscribe(
       (success: Workflow[]) => {
         this.workflowService.setWorkflows(success);
-        this.refreshService.handleSuccess(message);
-      }, error => this.refreshService.handleError(message, error));
+        this.alertService.detailedSuccess();
+      }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
   }
 }

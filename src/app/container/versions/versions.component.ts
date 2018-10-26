@@ -16,13 +16,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { SessionService } from '../../shared/session/session.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
@@ -46,8 +46,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   tool: ExtendedDockstoreTool;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService, private refreshService: RefreshService,
-    private sessionService: SessionService, private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
+    dateService: DateService, private refreshService: RefreshService, private alertService: AlertService,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);
   }
@@ -79,13 +79,13 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default tool version';
-    this.sessionService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
-      this.refreshService.handleSuccess(message);
+      this.alertService.detailedSuccess();
       if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
         this.refreshService.refreshTool();
       }
-    }, error => this.refreshService.handleError(message, error));
+    }, error => this.alertService.detailedError(error));
   }
 
   // Updates the version and emits an event for the parent component

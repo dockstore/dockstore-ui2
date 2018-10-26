@@ -19,8 +19,8 @@ import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
-import { ErrorService } from '../../error.service';
 import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
@@ -30,7 +30,7 @@ import { Workflow } from '../../swagger/model/workflow';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../validationMessages.model';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
-import { Base } from '../../base';
+import { AlertQuery } from '../../alert/state/alert.query';
 
 @Component({
   selector: 'app-register-checker-workflow',
@@ -40,7 +40,7 @@ import { Base } from '../../base';
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
 
   constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
-    private checkerWorkflowService: CheckerWorkflowService, private errorService: ErrorService,
+    private checkerWorkflowService: CheckerWorkflowService, private alertQuery: AlertQuery,
     private descriptorLanguageService: DescriptorLanguageService, private sessionQuery: SessionQuery,
     private checkerWorkflowQuery: CheckerWorkflowQuery) {
       super();
@@ -53,7 +53,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   public formErrors = formErrors;
   public validationDescriptorPatterns = validationDescriptorPatterns;
   public validationMessages = validationMessages;
-  public refreshMessage$: Observable<string>;
+  public isRefreshing$: Observable<boolean>;
   public mode$: Observable<'add' | 'edit'>;
   public descriptorType: string;
   public descriptorLanguages: Array<string>;
@@ -78,16 +78,13 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         this.descriptorType = null;
       }
     });
-    this.registerCheckerWorkflowService.errorObj$.subscribe((error: HttpErrorResponse) => {
-      this.registerError = error;
-    });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
     this.isModalShown$ = this.registerCheckerWorkflowService.isModalShown$;
     this.syncTestJson = false;
-    this.refreshMessage$ = this.sessionQuery.refreshMessage$;
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
       this.descriptorLanguages = descriptorLanguages.filter((language: string) => language.toLowerCase() !== 'nfl');
     });
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   private clearForm(): void {
@@ -129,10 +126,6 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
 
   registerCheckerWorkflow(): void {
     this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, this.descriptorType);
-  }
-
-  clearError(): void {
-    this.registerCheckerWorkflowService.clearError();
   }
 
   /**

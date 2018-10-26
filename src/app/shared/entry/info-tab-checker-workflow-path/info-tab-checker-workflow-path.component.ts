@@ -16,6 +16,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
@@ -32,7 +33,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   isStub$: Observable<boolean>;
   parentId$: Observable<number>;
   checkerWorkflowURL$: Observable<string>;
-  refreshMessage$: Observable<string>;
+  isRefreshing$: Observable<boolean>;
   checkerId$: Observable<number>;
   canAdd$: Observable<boolean>;
   canView$: Observable<boolean>;
@@ -40,13 +41,13 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   constructor(private checkerWorkflowService: CheckerWorkflowService, private checkerWorkflowQuery: CheckerWorkflowQuery,
-    private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
     private sessionQuery: SessionQuery) {
     super();
   }
 
   ngOnInit(): void {
-    this.refreshMessage$ = this.sessionQuery.refreshMessage$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.parentId$ = this.checkerWorkflowQuery.parentId$;
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.isStub$ = this.checkerWorkflowQuery.isStub$;

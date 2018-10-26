@@ -17,12 +17,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { ContainerService } from '../../shared/container.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from '../../shared/refresh.service';
-import { SessionService } from '../../shared/session/session.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
@@ -52,7 +52,7 @@ export class InfoTabService extends Base {
    * @memberof InfoTabService
    */
   private currentTool: ExtendedDockstoreTool;
-  constructor(private containersService: ContainersService, private sessionService: SessionService,
+  constructor(private containersService: ContainersService, private alertService: AlertService,
     private containerService: ContainerService, private refreshService: RefreshService,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery) {
     super();
@@ -89,13 +89,13 @@ export class InfoTabService extends Base {
     const message = 'Tool Info';
     tool.tags = [];
     this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
-      this.sessionService.setRefreshMessage('Updating ' + message + '...');
+      this.alertService.start('Updating ' + message);
       this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
         this.containerService.replaceTool(this.tools, refreshResponse);
         this.containerService.setTool(refreshResponse);
-        this.refreshService.handleSuccess(message);
+        this.alertService.detailedSuccess();
       }, error => {
-        this.refreshService.handleError(message, error);
+        this.alertService.detailedError(error);
         this.restoreTool();
       });
     });

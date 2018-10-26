@@ -13,33 +13,31 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
+import { AlertService } from '../../alert/state/alert.service';
 import { ContainerService } from '../../container.service';
-import { ErrorService } from '../../error.service';
 import { RefreshService } from '../../refresh.service';
-import { SessionService } from '../../session/session.service';
+import { WorkflowQuery } from '../../state/workflow.query';
+import { WorkflowService } from '../../state/workflow.service';
 import { WorkflowsService } from '../../swagger/api/workflows.service';
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
 import { Workflow } from '../../swagger/model/workflow';
 import { ToolQuery } from '../../tool/tool.query';
-import { WorkflowService } from '../../state/workflow.service';
-import { WorkflowQuery } from '../../state/workflow.query';
 
 @Injectable()
 export class RegisterCheckerWorkflowService {
     public isModalShown$ = new BehaviorSubject<boolean>(false);
     public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
-    public errorObj$: Observable<any>;
     public entryId$: Observable<number>;
     public entryId: number;
-    constructor(private sessionService: SessionService, private errorService: ErrorService, private workflowsService: WorkflowsService,
+    constructor(private workflowsService: WorkflowsService,
         private containerService: ContainerService, private workflowService: WorkflowService, private refreshService: RefreshService,
-        private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery) {
-        this.errorObj$ = this.errorService.errorObj$;
+        private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery, private alertService: AlertService) {
         this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
         this.entryId$.subscribe((id: number) => {
             this.entryId = id;
@@ -49,7 +47,7 @@ export class RegisterCheckerWorkflowService {
     registerCheckerWorkflow(workflowPath: string, descriptorType: string, testParameterFilePath: string): void {
         if (this.entryId) {
             const message = 'Registering checker workflow';
-            this.sessionService.setRefreshMessage(message);
+            this.alertService.start(message);
             // Figure out why testParameterFilePath and descriptorType is swapped
             this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, testParameterFilePath, descriptorType).
                 subscribe((entry: Entry) => {
@@ -63,16 +61,15 @@ export class RegisterCheckerWorkflowService {
                         this.containerService.setTool(<DockstoreTool>entry);
                     }
                     const refreshCheckerMessage = 'Refreshing checker workflow';
-                    this.sessionService.setRefreshMessage(refreshCheckerMessage);
                     this.workflowsService.refresh(entry.checker_id).pipe(first()).subscribe((workflow: Workflow) => {
                         this.isModalShown$.next(false);
                         this.workflowService.upsertWorkflowToWorkflow(workflow);
-                        this.refreshService.handleSuccess(refreshCheckerMessage);
-                    }, error => {
-                      this.refreshService.handleError(refreshCheckerMessage, error);
+                        this.alertService.detailedSuccess();
+                    }, (error: HttpErrorResponse) => {
+                      this.alertService.detailedError(error);
                     });
-            }, error => {
-                this.refreshService.handleError('Could not register checker workflow', error);
+            }, (error: HttpErrorResponse) => {
+              this.alertService.detailedError(error);
             });
         }
     }
@@ -94,10 +91,5 @@ export class RegisterCheckerWorkflowService {
     hideModal(): void {
         this.isModalShown$.next(false);
     }
-
-    clearError(): void {
-        this.errorService.setErrorAlert(null);
-    }
-
 }
 

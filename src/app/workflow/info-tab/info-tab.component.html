@@ -57,7 +57,7 @@
           <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
             <span class="glyphicon glyphicon-remove"></span> Cancel
           </button>
-          <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (refreshMessage)" class="btn btn-link"
+          <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (isRefreshing$ | async)" class="btn btn-link"
             (click)="toggleEditWorkflowPath()">
             <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
             {{ workflowPathEditing ? 'Save' : 'Edit' }}
@@ -90,7 +90,7 @@
     <ng-template #modeTooltip><div [innerHtml]="modeTooltipContent"></div></ng-template>
     <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
-      [disabled]="refreshMessage">
+      [disabled]="(isRefreshing$ | async)">
       <span class="glyphicon glyphicon-remove"></span> Restub
     </button>
   </li>
