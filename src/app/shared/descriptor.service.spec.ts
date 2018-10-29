@@ -16,6 +16,7 @@
 
 import { DescriptorService } from './descriptor.service';
 import { TestBed, inject } from '@angular/core/testing';
+import { ToolDescriptor } from './swagger';
 
 describe('DescriptorService', () => {
     beforeEach(() => {
@@ -67,6 +68,6 @@ describe('DescriptorService', () => {
             'cwl_path': '/Dockstore.cwl',
             'wdl_path': '/Dockstore.wdl'
         };
-        expect(service.getDescriptors(sampleVersion)).toEqual(['cwl', 'wdl']);
+        expect(service.getDescriptors(sampleVersion)).toEqual([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL]);
     }));
 });

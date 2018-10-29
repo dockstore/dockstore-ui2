@@ -18,11 +18,12 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
 import { Dockstore } from './dockstore.model';
-import { SourceFile, Tag, WorkflowVersion } from './swagger';
+import { SourceFile, Tag, WorkflowVersion, ToolDescriptor } from './swagger';
+import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 
 @Injectable()
 export class FileService {
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer, private descriptorTypeCompatService: DescriptorTypeCompatService) { }
 
   /**
    * Get the download path of a descriptor
@@ -36,20 +37,20 @@ export class FileService {
    * @memberof FileService
    */
   getDescriptorPath(entryPath: string, entryVersion: (Tag | WorkflowVersion), sourceFile: SourceFile,
-    descriptorType: string, entryType: string): string {
+    descriptorType: ToolDescriptor.TypeEnum, entryType: string): string {
     if (!entryPath || !entryVersion || !sourceFile || !descriptorType || !entryType) {
       return null;
     } else {
       let type = '';
       switch (descriptorType) {
-        case 'wdl':
+        case ToolDescriptor.TypeEnum.WDL:
           type = 'PLAIN-WDL';
           break;
-        case 'cwl':
+        case ToolDescriptor.TypeEnum.CWL:
           type = 'PLAIN-CWL';
           break;
-        case 'nfl':
-          type = 'nfl';
+        case ToolDescriptor.TypeEnum.NFL:
+          type = 'PLAIN-NFL';
           break;
         default:
           console.error('Unhandled descriptor type: ' + descriptorType);

@@ -23,6 +23,7 @@ import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { Repository } from '../../shared/enum/Repository.enum';
+import { ToolDescriptor } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
@@ -112,7 +113,7 @@ export class RegisterToolService {
       this.alertService.start('Registering tool');
       this.hostedService.createHostedTool(
           name,
-          'cwl',
+          ToolDescriptor.TypeEnum.CWL,
           hostedTool.registry,
           namespace).subscribe((result: DockstoreTool) => {
             this.alertService.detailedSuccess();

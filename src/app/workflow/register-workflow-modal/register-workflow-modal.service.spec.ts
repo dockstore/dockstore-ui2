@@ -30,6 +30,7 @@ import {
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { MatSnackBarModule } from '@angular/material';
+import { ToolDescriptor } from '../../shared/swagger';
 
 describe('Service: RegisterWorkflowModal', () => {
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Service: RegisterWorkflowModal', () => {
   };
   const expectedWorkflow: any = {
     'repository': 'GitHub',
-    'descriptorType': 'cwl',
+    'descriptorType': ToolDescriptor.TypeEnum.CWL,
     'gitUrl': 'asdf',
     'workflowName': ''
   };

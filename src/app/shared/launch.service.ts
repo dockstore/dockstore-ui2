@@ -16,8 +16,10 @@
 import { Injectable } from '@angular/core';
 
 import { ga4ghPath } from './constants';
+import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
 import { EntryType } from './enum/entryType.enum';
+import { ToolDescriptor } from './swagger';
 
 @Injectable()
 export abstract class LaunchService {
@@ -29,7 +31,7 @@ export abstract class LaunchService {
     public readonly cwlrunnerTooltip = 'Commands for launching tools/workflows through cwl-runner. ' + this.nonStrict;
     public readonly cwltoolTooltip = 'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' +
     this.nonStrict;
-    constructor() { }
+    constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) { }
     abstract getParamsString(path: string, versionName: string, currentDescriptor: string);
     abstract getCliString(path: string, versionName: string, currentDescriptor: string);
     abstract getCwlString(path: string, versionName: string, mainDescriptor: string);
@@ -84,28 +86,28 @@ export abstract class LaunchService {
      *
      * @param {string} entryPath     The entry path
      * @param {string} versionName   The workflow version
-     * @param {string} type          The descriptor type (cwl, wdl, nfl)
+     * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor type (cwl, wdl, nfl)
      * @param {string} filePath      Relative file path of the the test parameter file
      * @returns {string}             The wget command
      * @memberof LaunchService
      */
-    getTestJsonString(entryPath: string, versionName: string, type: string, filePath: string): string {
+    getTestJsonString(entryPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum, filePath: string): string {
       if (!filePath) {
         return;
       }
       let urlType = 'PLAIN_NFL';
-      switch (type) {
-        case 'wdl':
+      switch (descriptorType) {
+        case ToolDescriptor.TypeEnum.WDL:
           urlType = 'PLAIN_WDL';
           break;
-        case 'cwl':
+        case ToolDescriptor.TypeEnum.CWL:
           urlType = 'PLAIN_CWL';
           break;
-        case 'nfl':
+        case ToolDescriptor.TypeEnum.NFL:
           urlType = 'PLAIN_NFL';
           break;
         default:
-          console.error('Unknown descriptor type: ' + type);
+          console.error('Unknown descriptor type: ' + descriptorType);
           return null;
       }
 

@@ -13,15 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MatRadioChange } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { SessionQuery } from '../../shared/session/session.query';
-import { Workflow } from '../../shared/swagger';
+import { ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
   exampleDescriptorPatterns,
@@ -30,7 +32,11 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
+
+export interface HostedWorkflowObject {
+  name: string;
+  descriptorType: ToolDescriptor.TypeEnum;
+}
 
 @Component({
   selector: 'app-register-workflow-modal',
@@ -47,11 +53,12 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public isModalShown: boolean;
   public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
-  public descriptorLanguages$: Observable<Array<string>>;
+  public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
   public Tooltip = Tooltip;
-  public hostedWorkflow = {
+  ToolDescriptor = ToolDescriptor;
+  public hostedWorkflow: HostedWorkflowObject = {
     name: '',
-    descriptorType: 'cwl'
+    descriptorType: ToolDescriptor.TypeEnum.CWL
   };
   public options = [
     {
@@ -91,9 +98,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
-    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<string>) => {
+    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<ToolDescriptor.TypeEnum>) => {
       if (languages && languages.length > 0) {
-        this.changeDescriptorType(languages[0].toLowerCase());
+        this.changeDescriptorType(languages[0]);
       }
     });
     this.selectInitialSourceControlRepository();
@@ -124,7 +131,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.dialogRef.close();
   }
 
-  // Validation starts here, should move most of these to a service somehow
+  // Validation starts here, should move most of these to a sHostedWorkflowervice somehow
   ngAfterViewChecked() {
     this.formChanged();
   }
@@ -183,20 +190,20 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * Change the descriptor pattern required for validation when this happens.
    * TODO: Also change the form error message and reset the others
    *
-   * @param {string} descriptorType  The current selected descriptor type
+   * @param {string} descriptor  The current selected descriptor type
    * @memberof RegisterWorkflowModalComponent
    */
-  changeDescriptorType(descriptorType: string): void {
+  changeDescriptorType(descriptorType: ToolDescriptor.TypeEnum): void {
     switch (descriptorType) {
-      case 'cwl': {
+      case ToolDescriptor.TypeEnum.CWL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
         break;
       }
-      case 'wdl': {
+      case ToolDescriptor.TypeEnum.WDL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
         break;
       }
-      case 'nfl': {
+      case ToolDescriptor.TypeEnum.NFL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
         break;
       }

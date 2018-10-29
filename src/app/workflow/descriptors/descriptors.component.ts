@@ -16,15 +16,14 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
-import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { GA4GHService, ToolFile } from '../../shared/swagger';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -41,17 +40,17 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   protected entryType: ('tool' | 'workflow') = 'workflow';
 
   public descriptorPath: string;
-  constructor(private workflowDescriptorService: WorkflowDescriptorService, public gA4GHService: GA4GHService,
+  constructor(private descriptorService: DescriptorService, public gA4GHService: GA4GHService,
     public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
     private workflowQuery: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery) {
     super(fileService, gA4GHFilesService, gA4GHService);
     this.published$ = this.workflowQuery.workflowIsPublished$;
   }
-  getDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
+  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+    return this.descriptorService.getDescriptors(this._selectedVersion);
   }
 
-  getFiles(descriptorType: WebserviceDescriptorType): Observable<Array<ToolFile>> {
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
     ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
   }

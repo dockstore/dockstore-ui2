@@ -18,7 +18,7 @@ import { QueryEntity } from '@datorama/akita';
 import { Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { WebserviceDescriptorType } from '../models/DescriptorType';
+import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
 import { ToolDescriptor, ToolFile } from '../swagger';
 import { GA4GHFiles } from './ga4gh-files.model';
 import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
@@ -27,11 +27,10 @@ import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
   providedIn: 'root'
 })
 export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
-  getToolFiles(descriptorType: WebserviceDescriptorType, fileTypes: Array<ToolFile.FileTypeEnum>): Observable<Array<ToolFile>> {
-    const descriptorTypeEnum = this.convertToToolDescriptorTypeEnum(descriptorType);
-    if (descriptorTypeEnum) {
+  getToolFiles(descriptorType: ToolDescriptor.TypeEnum, fileTypes: Array<ToolFile.FileTypeEnum>): Observable<Array<ToolFile>> {
+    if (descriptorType) {
       let toolFiles$: Observable<Array<ToolFile>>;
-      toolFiles$ = this.selectEntity(descriptorTypeEnum).pipe(
+      toolFiles$ = this.selectEntity(descriptorType).pipe(
         map((gA4GHFile: GA4GHFiles) => gA4GHFile ? gA4GHFile.toolFiles : [])
       );
       return toolFiles$.pipe(
@@ -41,33 +40,7 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
       return observableOf([]);
     }
   }
-  constructor(protected store: GA4GHFilesStore) {
+  constructor(protected store: GA4GHFilesStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(store);
-  }
-
-  /**
-   * Converts a WebserviceDescriptorType to a ToolDescriptor.TypeEnum
-   * Deprecate this function once all descriptor types are unified
-   *
-   * @param {WebserviceDescriptorType} descriptorType
-   * @returns {ToolDescriptor.TypeEnum}
-   * @memberof GA4GHFilesQuery
-   */
-  public convertToToolDescriptorTypeEnum(descriptorType: WebserviceDescriptorType): ToolDescriptor.TypeEnum {
-    switch (descriptorType) {
-      case 'cwl': {
-        return ToolDescriptor.TypeEnum.CWL;
-      }
-      case 'wdl': {
-        return ToolDescriptor.TypeEnum.WDL;
-      }
-      case 'nfl': {
-        return ToolDescriptor.TypeEnum.NFL;
-      }
-      default: {
-        console.error('Unknown descriptor type: ' + descriptorType);
-        return null;
-      }
-    }
   }
 }

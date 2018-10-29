@@ -67,6 +67,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     public locationService: Location,
     protected sessionService: SessionService, protected sessionQuery: SessionQuery, protected gA4GHFilesService: GA4GHFilesService) {
       this.location = locationService;
+      this.gA4GHFilesService.clearFiles();
   }
 
   ngOnInit() {
@@ -128,7 +129,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   protected initTool(): void {
-    this.gA4GHFilesService.clearFiles();
+    // this.gA4GHFilesService.clearFiles();
     this.setProperties();
     this.getValidVersions();
     this.chooseDefaultVersion();

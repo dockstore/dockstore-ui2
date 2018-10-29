@@ -43,7 +43,7 @@
                 <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
               </div>
             </div>
-            <div class="form-group form-group-sm" *ngIf="workflow?.descriptorType !== 'nfl'">
+            <div class="form-group form-group-sm" *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
               <label class="col-sm-3 col-md-3 col-lg-3 control-label">
                 Test Parameter File(s):
               </label>

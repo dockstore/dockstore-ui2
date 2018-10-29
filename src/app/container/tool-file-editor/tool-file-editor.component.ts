@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
+
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { Tag } from './../../shared/swagger/model/tag';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
-import { AlertService } from '../../shared/alert/state/alert.service';
+import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-tool-file-editor',
@@ -18,8 +20,9 @@ export class ToolFileEditorComponent extends FileEditing {
   testParameterFiles = [];
   originalSourceFiles = [];
   currentVersion: Tag;
-  selectedDescriptorType = 'cwl';
+  selectedDescriptorType: ToolDescriptor.TypeEnum = ToolDescriptor.TypeEnum.CWL;
   isNewestVersion = false;
+  ToolDescriptor = ToolDescriptor;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;

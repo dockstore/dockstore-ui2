@@ -15,20 +15,21 @@
  */
 import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor } from '../../shared/swagger';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-version-modal',
@@ -45,12 +46,14 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public tooltip = Tooltip;
   public testParameterFilePaths: string[];
   originalTestParameterFilePaths: string[];
+  ToolDescriptor = ToolDescriptor;
   public testParameterFilePath = '';
   formErrors = formErrors;
   validationMessages = validationMessages;
   validationPatterns = validationDescriptorPatterns;
   public isRefreshing$: Observable<boolean>;
   public WorkflowType = Workflow;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
@@ -63,6 +66,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.versionModalService.isModalShown$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.pipe(

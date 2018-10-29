@@ -1,12 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { FileEditing } from '../../shared/file-editing';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { RefreshService } from './../../shared/refresh.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from '../../shared/swagger';
-import { WorkflowService } from '../../shared/state/workflow.service';
+import { Observable } from 'rxjs';
+
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { FileEditing } from '../../shared/file-editing';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { ToolDescriptor, Workflow } from '../../shared/swagger';
+import { RefreshService } from './../../shared/refresh.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -19,7 +22,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
   originalSourceFiles = [];
   _selectedVersion: WorkflowVersion;
   isNewestVersion = false;
-  @Input() descriptorType: string;
+  public selectedDescriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  public isNFL$: Observable<boolean>;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
@@ -32,8 +36,10 @@ export class WorkflowFileEditorComponent extends FileEditing {
     }
   }
   constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService, private alertService: AlertService) {
+    private workflowsService: WorkflowsService, private alertService: AlertService, private workflowQuery: WorkflowQuery) {
     super();
+    this.selectedDescriptorType$ = this.workflowQuery.descriptorType$;
+    this.isNFL$ = this.workflowQuery.isNFL$;
   }
 
   checkIfNewestVersion(): boolean {

@@ -17,10 +17,10 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Files } from '../../shared/files';
-import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
-import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
+import { ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
 @Component({
@@ -30,12 +30,12 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 })
 export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: WorkflowVersion;
-  @Input() descriptorType: WebserviceDescriptorType;
+  @Input() descriptorType: ToolDescriptor.TypeEnum;
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
   constructor(private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService,
-    private gA4GHFilesQuery: GA4GHFilesQuery) {
+    private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super();
   }
 
@@ -47,7 +47,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
     if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
       // Only getting files for one descriptor type for workflows (subject to change)
       this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name,
-        [this.gA4GHFilesQuery.convertToToolDescriptorTypeEnum(this.descriptorType)]);
+        [this.descriptorType]);
       this.previousEntryPath = this.entrypath;
       this.previousVersionName = this.selectedVersion.name;
     }

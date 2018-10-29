@@ -15,21 +15,24 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
+import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { Observable } from 'rxjs';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-info-tab',
@@ -39,7 +42,8 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
-  @Input() workflow;
+  @Input() extendedWorkflow: ExtendedWorkflow;
+  public workflow: Workflow;
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
   isValidVersion = false;
@@ -52,16 +56,21 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   defaultTestFilePathEditing: boolean;
   isPublic: boolean;
   trsLink: string;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  isNFL$: Observable<boolean>;
+  ToolDescriptor = ToolDescriptor;
   public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
   <b>FULL:</b> Full content synced from source control.<br />
   <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
   constructor(private workflowService: WorkflowService, private workflowsService: ExtendedWorkflowsService,
-    private sessionQuery: SessionQuery, private infoTabService: InfoTabService, private alertQuery: AlertQuery) {
+    private sessionQuery: SessionQuery, private infoTabService: InfoTabService, private alertQuery: AlertQuery,
+    private workflowQuery: WorkflowQuery) {
     super();
   }
 
   ngOnChanges() {
+    this.workflow = JSON.parse(JSON.stringify(this.extendedWorkflow));
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
       this.trsLink = this.getTRSLink(this.workflow.full_workflow_path, this.selectedVersion.name, this.workflow.descriptorType,
@@ -76,6 +85,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.isNFL$ = this.workflowQuery.isNFL$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
     this.infoTabService.workflowPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(editing => this.workflowPathEditing = editing);

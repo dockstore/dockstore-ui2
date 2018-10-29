@@ -17,20 +17,18 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ContainerService } from '../../shared/container.service';
+import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
-import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, ToolFile } from '../../shared/swagger';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
-import { ToolDescriptorService } from './tool-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-container',
   templateUrl: './descriptors.component.html',
-  providers: [ToolDescriptorService],
   styleUrls: ['./descriptors.component.scss']
 })
 
@@ -46,24 +44,24 @@ export class DescriptorsComponent extends EntryFileSelector {
   protected entryType: ('tool' | 'workflow') = 'tool';
 
   constructor(private containerService: ContainerService,
-    private descriptorsService: ToolDescriptorService, protected gA4GHService: GA4GHService, private toolQuery: ToolQuery,
+    private descriptorsService: DescriptorService, protected gA4GHService: GA4GHService, private toolQuery: ToolQuery,
     private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService) {
     super(fileService, gA4GHFilesService, gA4GHService);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
-  getDescriptors(version): Array<any> {
+  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
   /**
-   * Get all the language-specific primary and secondary descriptors
    *
-   * @param {WebserviceDescriptorType} descriptor The descriptor language selected
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType The descriptor language selected
    * @returns {Observable<Array<ToolFile>>} The array of language-specific descriptors
    * @memberof DescriptorsComponent
    */
-  getFiles(descriptorType: WebserviceDescriptorType): Observable<Array<ToolFile>> {
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
     ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
   }

@@ -20,9 +20,8 @@ import { ContainerService } from '../../shared/container.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
-import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService, GA4GHService, ToolFile } from '../../shared/swagger';
+import { ContainersService, GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { ParamfilesService } from './paramfiles.service';
@@ -56,12 +55,12 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   /**
    * Get all the language-specific test parameter files
-   *
-   * @param {WebserviceDescriptorType} descriptor The descriptor language selected
-   * @returns {Observable<Array<ToolFile>>} The array of language-specific test parameter files
+
+   * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor language selected
+   * @returns {Observable<Array<ToolFile>>}  The array of language-specific test parameter files
    * @memberof ParamfilesComponent
    */
-  getFiles(descriptorType: WebserviceDescriptorType): Observable<Array<ToolFile>> {
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
   }
 }

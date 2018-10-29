@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService } from '../swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor } from '../swagger';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -30,7 +30,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
-  protected currentDescriptor;
+  protected currentDescriptor: ToolDescriptor.TypeEnum;
   protected descriptors: Array<any>;
   public nullDescriptors: boolean;
   public filePath: string;

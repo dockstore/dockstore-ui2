@@ -20,9 +20,10 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/swagger';
+import { HostedService, MetadataService, ToolDescriptor, Workflow, WorkflowsService } from '../../shared/swagger';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
 
 @Injectable()
@@ -34,15 +35,17 @@ export class RegisterWorkflowModalService {
     private sourceControlMap = [];
     workflows: any;
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public descriptorLanguages$: Observable<Array<string>>;
+    public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
-    constructor(private workflowsService: WorkflowsService,
+    constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
         private workflowService: WorkflowService, private router: Router,
         private alertService: AlertService, private descriptorLanguageService: DescriptorLanguageService,
         private metadataService: MetadataService, private hostedService: HostedService) {
         this.sampleWorkflow.repository = 'GitHub';
-        this.sampleWorkflow.descriptorType = 'cwl';
+        // Setting a ToolDescriptor.TypeEnum to a workflow's descriptorType is currently weird
+        // because it's not supposed to be compatible yet (in the webservice)
+        this.sampleWorkflow.descriptorType = ToolDescriptor.TypeEnum.CWL;
         this.sampleWorkflow.workflowName = '';
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
@@ -92,12 +95,13 @@ export class RegisterWorkflowModalService {
     registerWorkflow(dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
         this.clearWorkflowRegisterError();
         this.alertService.start('Registering new workflow');
+        const badDescriptorType = this.actualWorkflow.descriptorType.toLowerCase();
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
             this.actualWorkflow.workflow_path,
             this.actualWorkflow.workflowName,
-            this.actualWorkflow.descriptorType,
+            badDescriptorType,
             this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);

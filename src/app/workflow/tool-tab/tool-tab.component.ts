@@ -14,13 +14,13 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { EntryTab } from '../../shared/entry/entry-tab';
-import { WorkflowVersion } from '../../shared/swagger';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 @Component({
   selector: 'app-tool-tab',
@@ -31,6 +31,8 @@ export class ToolTabComponent extends EntryTab {
   workflow: Workflow;
   toolsContent: string = null;
   _selectedVersion: WorkflowVersion;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  ToolDescriptor = ToolDescriptor;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
         this.workflow = this.workflowQuery.getActive();
@@ -45,6 +47,7 @@ export class ToolTabComponent extends EntryTab {
   }
   constructor(private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService) {
     super();
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
   }
 
   /**

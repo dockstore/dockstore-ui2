@@ -21,6 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
@@ -45,11 +46,13 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   public dagResult$: Observable<any>;
   private cy: any;
   public expanded: Boolean = false;
-
   public workflow$: Observable<Workflow>;
+  public isNFL$: Observable<boolean>;
+  public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public missingTool$: Observable<boolean>;
   public dagType: 'classic' | 'cwlviewer' = 'classic';
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
+  ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
 
   @HostListener('window:keyup.escape', ['$event'])
@@ -94,6 +97,8 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.isNFL$ = this.workflowQuery.isNFL$;
     this.dagResult$ = this.dagQuery.dagResults$;
     this.workflow$ = this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;

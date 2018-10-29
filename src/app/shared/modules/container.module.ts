@@ -28,7 +28,6 @@ import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
-import { ToolDescriptorService } from '../../container/descriptors/tool-descriptor.service';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
 import { EmailService } from '../../container/email.service';
 import { FilesContainerComponent } from '../../container/files/files.component';
@@ -109,8 +108,7 @@ import { SelectModule } from './select.module';
     RegisterToolService,
     StarringService,
     VersionModalService,
-    InfoTabService,
-    ToolDescriptorService
+    InfoTabService
   ],
   exports: [
     ContainerComponent,

@@ -25,6 +25,8 @@ import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.quer
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable()
 export class InfoTabService {
@@ -54,7 +56,7 @@ export class InfoTabService {
 
     constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService,
       private alertService: AlertService, private refreshService: RefreshService,
-        private extendedWorkflowQuery: ExtendedWorkflowQuery,
+        private extendedWorkflowQuery: ExtendedWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService,
         private descriptorLanguageService: DescriptorLanguageService) {
         this.extendedWorkflowQuery.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
@@ -115,14 +117,15 @@ export class InfoTabService {
      * @memberof InfoTabService
      */
     private changeWorkflowPathToDefaults(workflow: Workflow): Workflow {
-        switch (workflow.descriptorType) {
-            case 'cwl':
+      const descriptorType: ToolDescriptor.TypeEnum = this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType);
+        switch (descriptorType) {
+            case ToolDescriptor.TypeEnum.CWL:
                 workflow.workflow_path = '/Dockstore.cwl';
                 break;
-            case 'wdl':
+            case ToolDescriptor.TypeEnum.WDL:
                 workflow.workflow_path = '/Dockstore.wdl';
                 break;
-            case 'nfl':
+            case ToolDescriptor.TypeEnum.NFL:
                 workflow.workflow_path = '/nextflow.config';
                 break;
             default:

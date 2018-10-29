@@ -134,25 +134,23 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
-    const CWL = 'CWL';
-    const WDL = 'WDL';
     if (newCWL && newCWL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newCWL, CWL, null, tagName).subscribe(response => { },
+      this.containersService.addTestParameterFiles(id, newCWL, ToolDescriptor.TypeEnum.CWL, null, tagName).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingCWL, CWL, tagName).subscribe(response => { },
+      this.containersService.deleteTestParameterFiles(id, missingCWL, ToolDescriptor.TypeEnum.CWL, tagName).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newWDL, WDL, null, tagName).subscribe(response => { },
+      this.containersService.addTestParameterFiles(id, newWDL, ToolDescriptor.TypeEnum.WDL, null, tagName).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingWDL, WDL, tagName).subscribe(response => { },
+      this.containersService.deleteTestParameterFiles(id, missingWDL, ToolDescriptor.TypeEnum.WDL, tagName).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
@@ -176,7 +174,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, 'CWL').subscribe(file => {
+    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL).subscribe(file => {
       this.savedCWLTestParameterFiles = file;
       this.savedCWLTestParameterFiles.forEach((fileObject) => {
         this.savedCWLTestParameterFilePaths.push(fileObject.path);
@@ -184,7 +182,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
 
     });
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, 'WDL').subscribe(file => {
+    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL).subscribe(file => {
       this.savedWDLTestParameterFiles = file;
       this.savedWDLTestParameterFiles.forEach((fileObject) => {
         this.savedWDLTestParameterFilePaths.push(fileObject.path);

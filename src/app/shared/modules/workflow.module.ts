@@ -31,7 +31,6 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
-import { WorkflowDescriptorService } from '../../workflow/descriptors/workflow-descriptor.service';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
@@ -104,7 +103,6 @@ import { getTooltipConfig } from './../tooltip';
     FileService,
     WorkflowLaunchService,
     ParamfilesService,
-    WorkflowDescriptorService,
     InfoTabService,
     RefreshService,
     RegisterWorkflowModalService,

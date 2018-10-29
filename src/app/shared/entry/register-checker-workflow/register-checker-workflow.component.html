@@ -34,7 +34,7 @@
               </label>
               <div class="col-sm-9">
                 <select class="form-control input-sm" [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">
-                  <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{descriptorLanguage | lowercase}}">{{descriptorLanguage | lowercase}}</option>
+                  <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{descriptorLanguage}}">{{descriptorLanguage}}</option>
                 </select>
               </div>
             </div>

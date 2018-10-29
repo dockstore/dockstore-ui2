@@ -28,6 +28,7 @@ import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
 import { Workflow } from '../../swagger/model/workflow';
 import { ToolQuery } from '../../tool/tool.query';
+import { ToolDescriptor } from '../../swagger';
 
 @Injectable()
 export class RegisterCheckerWorkflowService {
@@ -44,12 +45,14 @@ export class RegisterCheckerWorkflowService {
         });
     }
 
-    registerCheckerWorkflow(workflowPath: string, descriptorType: string, testParameterFilePath: string): void {
+    registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, descriptorType: ToolDescriptor.TypeEnum): void {
+      // The webservice currently does not accept the proper upper case descriptor types (CWL, WDL, NFL) when registering.
+      const badDescriptorType = descriptorType.toLowerCase();
         if (this.entryId) {
             const message = 'Registering checker workflow';
             this.alertService.start(message);
             // Figure out why testParameterFilePath and descriptorType is swapped
-            this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, testParameterFilePath, descriptorType).
+            this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, badDescriptorType, testParameterFilePath).
                 subscribe((entry: Entry) => {
                     // Only update our current list of workflows when the current entry is a workflow
                     // Switching to my-workflows will automatically update the entire list with a fresh HTTP request

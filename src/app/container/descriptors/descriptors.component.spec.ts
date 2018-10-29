@@ -19,10 +19,10 @@ import { Observable } from 'rxjs';
 
 import { ContainersStubService, ContainerStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
 import { ContainerService } from '../../shared/container.service';
+import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
 import { ContainersService, GA4GHService } from '../../shared/swagger';
 import { DescriptorsComponent } from './descriptors.component';
-import { ToolDescriptorService } from './tool-descriptor.service';
 
 describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;
@@ -31,17 +31,11 @@ describe('DescriptorsComponent', () => {
   class HttpStubService { }
   class FileStubService { }
   class HttpStub { }
-  class DescriptorsStubService {
-    getFiles(descriptor): Observable<any> {
-      return null;
-    }
-  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DescriptorsComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: ToolDescriptorService, useClass: DescriptorsStubService },
+      providers: [DescriptorService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService },

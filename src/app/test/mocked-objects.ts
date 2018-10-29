@@ -20,9 +20,10 @@ import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
+import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 
 export const updatedWorkflow: Workflow = {
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -36,7 +37,7 @@ export const updatedWorkflow: Workflow = {
 
 export const sampleWorkflow1: Workflow = {
     id: 1,
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -50,7 +51,7 @@ export const sampleWorkflow1: Workflow = {
 
 export const sampleWorkflow2: Workflow = {
     id: 2,
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -64,7 +65,7 @@ export const sampleWorkflow2: Workflow = {
 
 export const sampleWorkflow3: Workflow = {
     id: 3,
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'sampleGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'sampleOrganization',
@@ -79,7 +80,7 @@ export const sampleWorkflow3: Workflow = {
 
 export const sampleWdlWorkflow1: Workflow = {
   id: 4,
-  'descriptorType': 'wdl',
+  'descriptorType': WebserviceDescriptorTypeEnum.WDL,
   'gitUrl': 'sampleGitUrl',
   'mode': Workflow.ModeEnum.FULL,
   'organization': 'sampleOrganization',
