@@ -68,6 +68,19 @@ describe('Dockstore my tools', function() {
         cy.contains('Last Updated')
         cy.contains('Build Mode')
         cy.contains('Fully-Automated')
+        cy.contains('/Dockstore.cwl')
+        // Change the dockerfile path
+        cy.contains('button', ' Edit ').click();
+        cy.get('input').first().should('be.visible').clear().type('/thing/Dockerfile');
+        cy.contains('button', ' Save ').click();
+        cy.visit(String(global.baseUrl) + "/my-tools/quay.io/A2/b1")
+        cy.contains('/thing/Dockerfile')
+        // Change the dockerfile path back
+        cy.contains('button', ' Edit ').click();
+        cy.get('input').first().should('be.visible').clear().type('/Dockerfile');
+        cy.contains('button', ' Save ').click();
+        cy.visit(String(global.baseUrl) + "/my-tools/quay.io/A2/b1")
+        cy.contains('/Dockerfile')
       });
       it('add and remove test parameter file', function() {
         selectUnpublishedTab('quay.io/A2')

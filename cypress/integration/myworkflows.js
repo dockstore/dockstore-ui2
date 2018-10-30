@@ -1,9 +1,20 @@
+/*
+ *    Copyright 2018 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 describe('Dockstore my workflows', function() {
     require('./helper.js')
-
-    beforeEach(function() {
-        cy.visit(String(global.baseUrl) + "/my-workflows")
-    });
 
     const cwlDescriptorType = 'CWL';
     const wdlDescriptorType = 'WDL';
@@ -11,15 +22,28 @@ describe('Dockstore my workflows', function() {
 
     describe('Should contain extended Workflow properties', function() {
         it('visit another page then come back', function() {
+          cy.visit(String(global.baseUrl) + "/my-workflows")
             cy.get('a#home-nav-button').click()
             cy.contains('Browse Tools')
             cy.get('a#my-workflows-nav-button').click()
-
         });
-        it('Should contain the extended properties', function() {
+        it('Should contain the extended properties and be able to edit the info tab', function() {
           cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
           cy.contains('GitHub')
           cy.contains('https://github.com/A/g')
+          cy.contains('/Dockstore.cwl')
+          // Change the file path
+          cy.contains('button', ' Edit ').click();
+          cy.get('input').clear().type('/Dockstore2.cwl');
+          cy.contains('button', ' Save ').click();
+          cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
+          cy.contains('/Dockstore2.cwl')
+          // Change the file path back
+          cy.contains('button', ' Edit ').click();
+          cy.get('input').clear().type('/Dockstore.cwl');
+          cy.contains('button', ' Save ').click();
+          cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
+          cy.contains('/Dockstore.cwl')
         });
     });
 
@@ -50,6 +74,7 @@ describe('Dockstore my workflows', function() {
 
     describe('Test register workflow form validation', function() {
         it('It should have 3 seperate descriptor path validation patterns', function() {
+            cy.visit(String(global.baseUrl) + "/my-workflows")
             cy
                 .get('#registerWorkflowButton')
                 .should('be.visible')
