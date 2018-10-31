@@ -124,7 +124,6 @@
 
         <mat-form-field class="w-100">
           <mat-label>Repository</mat-label>
-          <span matPrefix>dockstore.org / &nbsp;</span>
           <input matInput id="hostedWorkflowRepository" name="hostedWorkflowRepository" #hostedWorkflowRepository="ngModel" [(ngModel)]="hostedWorkflow.repository" [pattern]="validationPatterns.workflowName"
             maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.repository"/>
           <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{validationMessage.repository.pattern}}</mat-error>
