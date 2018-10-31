@@ -140,8 +140,6 @@
     <tabset id="tool_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" (select)="setEntryTab('info')">
         <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [tool]="tool" [validVersions]="validVersions"></app-info-tab>
-        <hr *ngIf="publicPage">
-        <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
         <app-launch *ngIf="tool?.tags.length > 0" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname"></app-launch>
@@ -165,6 +163,7 @@
         </div>
       </tab>
     </tabset>
+    <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
   </div>
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
     <div class="panel panel-default" *ngIf="tool">
