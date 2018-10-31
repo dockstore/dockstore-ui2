@@ -23,6 +23,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
@@ -44,7 +45,6 @@ import {
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
-import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -53,9 +53,9 @@ describe('MyWorkflowsComponent', () => {
   let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule ],
+      declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule],
       providers: [
         UserQuery,
         { provide: Configuration, useClass: ConfigurationStub },
@@ -76,7 +76,7 @@ describe('MyWorkflowsComponent', () => {
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -96,7 +96,7 @@ describe('MyWorkflowsComponent', () => {
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
-    component.user = { id: 1};
+    component.user = { id: 1 };
     refreshService = fixture.debugElement.injector.get(RefreshService);
     spyOn(refreshService, 'refreshAllWorkflows');
     component.refreshAllEntries();

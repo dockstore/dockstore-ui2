@@ -13,12 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
 import { AlertQuery } from './alert.query';
 import { AlertStore } from './alert.store';
-import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * How to use this service:
@@ -26,8 +26,6 @@ import { HttpErrorResponse } from '@angular/common/http';
  * On final success (regardless of other intermediate calls, use simpleSuccess() or detailedSuccess())
  * On final error or intermediate error, use simpleError() or detailedError()
  *
- * simpleSuccess() doesn't show the snackbar notification, detailedSuccess() does show it
- * simpleError() shows the snackbar but not the alert, detailedError() shows both
  * @export
  * @class AlertService
  */
@@ -41,16 +39,32 @@ export class AlertService {
     this.setInfo(message);
   }
 
+  /**
+   * Handles successful HTTP response and shows success to the user by matSnackBar
+   *
+   * @memberof AlertService
+   */
   public detailedSuccess() {
     const previousMessage = this.alertQuery.getSnapshot().message;
     this.setInfo('');
     this.matSnackBar.open(previousMessage + ' succeeded', 'Dismiss');
   }
 
+  /**
+   * Handles successful HTTP response but don't show success to the user
+   *
+   * @memberof AlertService
+   */
   public simpleSuccess() {
     this.setInfo('');
   }
 
+  /**
+   * Handles error HTTP response and show both matSnackBar and an alert
+   *
+   * @param {HttpErrorResponse} error  The HttpErrorResponse received when the last HTTP request has errored
+   * @memberof AlertService
+   */
   public detailedError(error: HttpErrorResponse) {
     let message: string;
     let details: string;
@@ -67,12 +81,22 @@ export class AlertService {
     this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
   }
 
+  /**
+   * Handles error HTTP response and show matSnackBar
+   *
+   * @memberof AlertService
+   */
   public simpleError() {
     const previousMessage = this.alertQuery.getSnapshot().message;
     this.clearEverything();
     this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
   }
 
+  /**
+   * Resets the state of the alerts (as if the user has not interacted with anything)
+   *
+   * @memberof AlertService
+   */
   public clearEverything() {
     this.alertStore.setState(state => {
       return {
@@ -84,6 +108,14 @@ export class AlertService {
   }
 
 
+  /**
+   * Set error state
+   *
+   * @private
+   * @param {string} message  The short error message
+   * @param {string} details  The detailed error message
+   * @memberof AlertService
+   */
   private setError(message: string, details: string) {
     this.alertStore.setState(state => {
       return {
@@ -95,6 +127,13 @@ export class AlertService {
     });
   }
 
+  /**
+   * Set info state
+   *
+   * @private
+   * @param {string} message  The short message indicating what is currently happening
+   * @memberof AlertService
+   */
   private setInfo(message: string) {
     this.alertStore.setState(state => {
       return {
