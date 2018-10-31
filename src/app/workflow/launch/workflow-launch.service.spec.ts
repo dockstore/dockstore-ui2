@@ -57,8 +57,8 @@ describe('WorkflowLaunchService', () => {
   }));
   it('should get the right check workflow command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(service).toBeTruthy();
-    expect(service.getCheckWorkflowString('potato', null)).toBe('$ dockstore checker launch --entry potato --json checkparam.json');
-    expect(service.getCheckWorkflowString('potato', 'stew')).toBe('$ dockstore checker launch --entry potato:stew --json checkparam.json');
+    expect(service.getCheckWorkflowString('potato', null)).toBe('dockstore checker launch --entry potato --json checkparam.json');
+    expect(service.getCheckWorkflowString('potato', 'stew')).toBe('dockstore checker launch --entry potato:stew --json checkparam.json');
     expect(service.getCheckWorkflowString(null, null)).toBe('');
   }));
   // tslint:disable:max-line-length
