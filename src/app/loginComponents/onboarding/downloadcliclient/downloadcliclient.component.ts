@@ -118,15 +118,15 @@ exec newgrp docker
 #### Part 4 - Confirm installation
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
-dockstore --version
+$ dockstore --version
 Dockstore version ${this.dockstoreVersion}
-java -version
+$ java -version
 java version "1.8.0_144"
 Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
-cwltool --version
+$ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
-docker run hello-world
+$ docker run hello-world
 Hello from Docker!
 ...
 \`\`\`
