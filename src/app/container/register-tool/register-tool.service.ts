@@ -134,10 +134,13 @@ export class RegisterToolService {
       const namespace = splitPath[0];
       const name = splitPath[1];
       this.stateService.setRefreshMessage('Registering tool...');
+      if (hostedTool.entryName === null) {
+        hostedTool.entryName = undefined;
+      }
       this.hostedService.createHostedTool(
           name,
-          'cwl',
           hostedTool.registry,
+          undefined,
           namespace,
           hostedTool.entryName).subscribe((result: DockstoreTool) => {
             this.setToolRegisterError(null);

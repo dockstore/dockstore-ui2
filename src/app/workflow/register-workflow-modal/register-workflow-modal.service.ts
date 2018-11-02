@@ -125,11 +125,14 @@ export class RegisterWorkflowModalService {
     registerHostedWorkflow(hostedWorkflow, dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
       this.clearWorkflowRegisterError();
       this.stateService.setRefreshMessage('Registering new workflow...');
+      if (hostedWorkflow.entryName === null) {
+        hostedWorkflow.entryName = undefined;
+      }
       this.hostedService.createHostedWorkflow(
           hostedWorkflow.repository,
+          undefined,
           hostedWorkflow.descriptorType,
-          null,
-          null,
+          undefined,
           hostedWorkflow.entryName).pipe(finalize(() => {
             this.stateService.setRefreshMessage(null);
           })).subscribe(result => {

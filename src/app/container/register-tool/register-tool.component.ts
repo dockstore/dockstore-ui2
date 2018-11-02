@@ -40,7 +40,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked {
     path: '',
     registry: 'quay.io',
     registryProvider: 'Quay.io',
-    entryName: null
+    entryName: undefined
   };
   public options = [
     {
