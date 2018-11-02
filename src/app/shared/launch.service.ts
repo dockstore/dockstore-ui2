@@ -78,7 +78,23 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getNextflowNativeLaunchString(workflowPath: string, versionName: string) {
-      return `$ nextflow run http://${workflowPath} -r ${versionName} -with-docker`;
+      return `$ nextflow run http://${workflowPath} -r ${versionName}`;
+    }
+
+    /**
+     * Gets local launch command
+     */
+    getNextflowLocalLaunchString(): string {
+      return `$ nextflow run nextflow.config`;
+    }
+
+    /**
+     * Gets the download command
+     * @param workflowPath Path of the workflow
+     * @param versionName Name of the version
+     */
+    getNextflowDownload(workflowPath: string, versionName: string): string {
+      return `$ dockstore workflow download --entry ${workflowPath}:${versionName}`;
     }
 
     /**

@@ -19,6 +19,8 @@ import { Observable } from 'rxjs';
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { ToolDescriptor } from '../../shared/swagger';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Workflow } from '../../shared/swagger/model/workflow';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { Tag } from './../../shared/swagger/model/tag';
@@ -30,9 +32,10 @@ import { ToolLaunchService } from './tool-launch.service';
   styleUrls: ['./launch.component.css']
 })
 export class LaunchComponent {
-  @Input() basePath;
-  @Input() path;
-  @Input() toolname;
+  @Input() basePath: string;
+  @Input() path: string;
+  @Input() toolname: string;
+  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
 
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {

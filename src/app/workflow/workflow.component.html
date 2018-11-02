@@ -123,7 +123,7 @@
         <app-info-tab [validVersions]="validVersions" [extendedWorkflow]="(extendedWorkflow$ | async)" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-launch>
+        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">

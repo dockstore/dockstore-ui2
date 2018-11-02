@@ -166,7 +166,11 @@
     </li>
   </ul>
 
-  <button id="downloadZipButton" *ngIf="isValidVersion"  mat-raised-button (click)="downloadZip()">Export as ZIP</button>
+  <span *ngIf="isValidVersion" id="downloadZipButton">
+    <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
+    <a [href]="downloadZipLink" *ngIf="tool?.is_published"  mat-raised-button>Export as ZIP</a>
+  </span>
+
 
   <div *ngIf="tool?.description || !isPublic">
     <label matTooltip="Description of tool obtained from tool descriptor">

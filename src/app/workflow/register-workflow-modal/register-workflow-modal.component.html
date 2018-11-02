@@ -102,7 +102,7 @@
         <mat-radio-group id="descriptorTypeRadioButtons" position="before" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType" [disabled]="descriptorType === ToolDescriptor.TypeEnum.NFL">
+          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
             {{'descriptor_type' | mapFriendlyValue : descriptorType}}
           </mat-radio-button>
         </mat-radio-group>
