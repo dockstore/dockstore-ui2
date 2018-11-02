@@ -129,7 +129,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   protected initTool(): void {
-    // this.gA4GHFilesService.clearFiles();
     this.setProperties();
     this.getValidVersions();
     this.chooseDefaultVersion();

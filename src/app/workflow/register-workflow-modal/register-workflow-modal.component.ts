@@ -131,7 +131,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.dialogRef.close();
   }
 
-  // Validation starts here, should move most of these to a sHostedWorkflowervice somehow
+  // Validation starts here, should move most of these to a HostedWorkflowService somehow
   ngAfterViewChecked() {
     this.formChanged();
   }
@@ -190,7 +190,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * Change the descriptor pattern required for validation when this happens.
    * TODO: Also change the form error message and reset the others
    *
-   * @param {string} descriptor  The current selected descriptor type
+   * @param {ToolDescriptor.TypeEnum} descriptorType  The current selected descriptor type
    * @memberof RegisterWorkflowModalComponent
    */
   changeDescriptorType(descriptorType: ToolDescriptor.TypeEnum): void {

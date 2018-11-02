@@ -17,10 +17,10 @@ export class DagQuery extends Query<DagState> {
    * Based on the dagResults, determines whether or not it is missing tools
    *
    * @param {*} dagResults
-   * @returns
+   * @returns {boolean}  Whether the dagResults are missing
    * @memberof DagQuery
    */
-  isMissingTool(dagResults: any) {
+  isMissingTool(dagResults: any): boolean {
     if (!dagResults) {
       return true;
     } else {

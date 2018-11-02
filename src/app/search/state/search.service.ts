@@ -316,7 +316,6 @@ export class SearchService {
       }
       filters.get(category).add(categoryValue);
     }
-    console.log(filters);
     this.setFilterKeys(filters);
     return filters;
   }
