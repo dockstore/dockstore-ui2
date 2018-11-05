@@ -17,7 +17,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
-import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, takeUntil, finalize } from 'rxjs/operators';
 
