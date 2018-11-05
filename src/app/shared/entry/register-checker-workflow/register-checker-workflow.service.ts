@@ -45,9 +45,7 @@ export class RegisterCheckerWorkflowService {
         });
     }
 
-    registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, descriptorType: ToolDescriptor.TypeEnum): void {
-      // The webservice currently does not accept the proper upper case descriptor types (CWL, WDL, NFL) when registering.
-      const badDescriptorType = descriptorType.toLowerCase();
+    registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, badDescriptorType: 'cwl' | 'wdl'): void {
         if (this.entryId) {
             const message = 'Registering checker workflow';
             this.alertService.start(message);

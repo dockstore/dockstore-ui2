@@ -46,7 +46,7 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
    * @memberof PublishedToolsDataSource
    */
   loadEntries(filter: string,
-    sortDirection: string,
+    sortDirection: 'asc' | 'desc',
     pageIndex: number,
     pageSize: number,
     sortCol: string) {

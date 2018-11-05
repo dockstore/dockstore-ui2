@@ -142,9 +142,11 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         this.addTestParameterFile(this.DescriptorType.WDL);
       }
 
-      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, ToolDescriptor.TypeEnum.CWL, null, tagName).
+      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null).
         subscribe();
-      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, ToolDescriptor.TypeEnum.WDL, null, tagName).
+      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null).
         subscribe();
       this.containerService.setTool(this.tool);
       this.initializeTag();

@@ -135,22 +135,26 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newCWL, ToolDescriptor.TypeEnum.CWL, null, tagName).subscribe(response => { },
+      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.addTestParameterFiles(id, newCWL, 'CWL', tagName, null).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingCWL, ToolDescriptor.TypeEnum.CWL, tagName).subscribe(response => { },
+      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.deleteTestParameterFiles(id, missingCWL, 'CWL', tagName).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
-      this.containersService.addTestParameterFiles(id, newWDL, ToolDescriptor.TypeEnum.WDL, null, tagName).subscribe(response => { },
+      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.addTestParameterFiles(id, newWDL, 'WDL', tagName, null).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
-      this.containersService.deleteTestParameterFiles(id, missingWDL, ToolDescriptor.TypeEnum.WDL, tagName).subscribe(response => { },
+      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.deleteTestParameterFiles(id, missingWDL, 'WDL', tagName).subscribe(response => { },
         err => this.alertService.detailedError(err));
     }
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
