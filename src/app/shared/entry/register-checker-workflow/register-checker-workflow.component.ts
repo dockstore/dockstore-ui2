@@ -127,14 +127,14 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   }
 
   registerCheckerWorkflow(): void {
-    let badDescriptorType: 'cwl' | 'wdl';
+    let descriptorTypeNoNFL: 'cwl' | 'wdl';
     switch (this.descriptorType) {
       case ToolDescriptor.TypeEnum.CWL: {
-        badDescriptorType = 'cwl';
+        descriptorTypeNoNFL = 'cwl';
         break;
       }
       case ToolDescriptor.TypeEnum.WDL: {
-        badDescriptorType = 'wdl';
+        descriptorTypeNoNFL = 'wdl';
         break;
       }
       default: {
@@ -142,7 +142,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         return;
       }
     }
-    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, badDescriptorType);
+    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, descriptorTypeNoNFL);
   }
 
   /**

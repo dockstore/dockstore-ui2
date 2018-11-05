@@ -95,13 +95,13 @@ export class RegisterWorkflowModalService {
     registerWorkflow(dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
         this.clearWorkflowRegisterError();
         this.alertService.start('Registering new workflow');
-        const badDescriptorType = this.actualWorkflow.descriptorType.toLowerCase();
+        const lowerCaseDescriptorType = this.actualWorkflow.descriptorType.toLowerCase();
         this.workflowsService.manualRegister(
             this.actualWorkflow.repository,
             this.actualWorkflow.gitUrl,
             this.actualWorkflow.workflow_path,
             this.actualWorkflow.workflowName,
-            badDescriptorType,
+            lowerCaseDescriptorType,
             this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
