@@ -30,7 +30,7 @@
             {{ workflow?.provider}}
           </strong>:
           <a [href]="workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
-            {{ workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')}}
+            {{ workflow?.providerUrl | urlDeconstruct : (isPublic ? selectedVersion?.name : '')}}
           </a>
         </li>
       </span>
