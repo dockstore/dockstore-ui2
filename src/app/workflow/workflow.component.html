@@ -121,11 +121,9 @@
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
         <app-info-tab [validVersions]="validVersions" [workflow]="workflow" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
-        <hr *ngIf="publicPage">
-        <div *ngIf="publicPage" id='discourse-comments'></div>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-launch>
+        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">
@@ -169,6 +167,7 @@
         <app-permissions [workflow]="workflow"></app-permissions>
       </tab>
     </tabset>
+    <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
   </div>
   <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic">
     <div class="panel panel-default" *ngIf="workflow">
