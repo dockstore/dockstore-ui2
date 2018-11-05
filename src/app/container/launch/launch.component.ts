@@ -22,6 +22,8 @@ import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
 import { ContainerService } from '../../shared/container.service';
 import { Observable } from 'rxjs';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-launch',
@@ -29,9 +31,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./launch.component.css']
 })
 export class LaunchComponent {
-  @Input() basePath;
-  @Input() path;
-  @Input() toolname;
+  @Input() basePath: string;
+  @Input() path: string;
+  @Input() toolname: string;
+  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
 
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {

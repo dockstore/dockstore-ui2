@@ -24,6 +24,8 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-launch',
@@ -31,9 +33,10 @@ import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
   styleUrls: ['./launch.component.css']
 })
 export class LaunchWorkflowComponent extends EntryTab {
-  @Input() basePath;
-  @Input() path;
-  @Input() currentDescriptor;
+  @Input() basePath: string;
+  @Input() path: string;
+  @Input() currentDescriptor: string;
+  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
 
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -43,6 +46,8 @@ export class LaunchWorkflowComponent extends EntryTab {
     }
   }
 
+  DockstoreToolType = DockstoreTool;
+  WorkflowType = Workflow;
   params: string;
   cli: string;
   cwl: string;
@@ -52,6 +57,8 @@ export class LaunchWorkflowComponent extends EntryTab {
   consonance: string;
   wgetTestJsonDescription: string;
   nextflowNativeLaunchDescription: string;
+  nextflowLocalLaunchDescription: string;
+  nextflowDownloadFileDescription: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
@@ -77,6 +84,8 @@ export class LaunchWorkflowComponent extends EntryTab {
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
+    this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
+    this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName);
   }
 
