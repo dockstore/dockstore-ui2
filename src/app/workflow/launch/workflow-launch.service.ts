@@ -30,19 +30,19 @@ export class WorkflowLaunchService extends LaunchService {
   }
   getParamsString(path: string, versionName: string, currentDescriptor: ToolDescriptor.TypeEnum) {
     if (currentDescriptor === ToolDescriptor.TypeEnum.NFL) {
-      return `$ vim Dockstore.json`;
+      return `vim Dockstore.json`;
     }
-    return `$ dockstore ${this.type} convert entry2json --entry ${path}:${versionName} > Dockstore.json
-            \n$ vim Dockstore.json`;
+    return `dockstore ${this.type} convert entry2json --entry ${path}:${versionName} > Dockstore.json
+            \nvim Dockstore.json`;
   }
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
-    return `$ dockstore ${this.type} launch --entry ${path}:${versionName} --json Dockstore.json`;
+    return `dockstore ${this.type} launch --entry ${path}:${versionName} --json Dockstore.json`;
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
     const id = encodeURIComponent(ga4ghWorkflowIdPrefix + path);
-    return `$ cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${id}` +
+    return `cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${id}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }
 

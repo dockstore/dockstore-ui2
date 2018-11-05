@@ -37,7 +37,7 @@ export abstract class LaunchService {
     abstract getCwlString(path: string, versionName: string, mainDescriptor: string);
 
     getConsonanceString(path: string, versionName: string) {
-        return `$ consonance run --tool-dockstore-id ${path}:${versionName} ` +
+        return `consonance run --tool-dockstore-id ${path}:${versionName} ` +
             '--run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
     }
 
@@ -47,7 +47,7 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getDockstoreSupportedCwlLaunchString(path: string, versionName: string) {
-        return `$ cwltool ${path}:${versionName} Dockstore.json`;
+        return `cwltool ${path}:${versionName} Dockstore.json`;
     }
 
     /**
@@ -56,7 +56,7 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string) {
-        return `$ cwltool --make-template ${path}:${versionName} > input.yaml`;
+        return `cwltool --make-template ${path}:${versionName} > input.yaml`;
     }
 
     /**
@@ -67,7 +67,7 @@ export abstract class LaunchService {
     getCheckEntry(path: string, versionName: string, entryType: EntryType) {
         if (path) {
             const entryName = path + (versionName ? ':' + versionName : '');
-            return '$ dockstore checker launch --entry ' + entryName + ' --json checkparam.json';
+            return 'dockstore checker launch --entry ' + entryName + ' --json checkparam.json';
         } else {
             return '';
         }
@@ -78,14 +78,14 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getNextflowNativeLaunchString(workflowPath: string, versionName: string) {
-      return `$ nextflow run http://${workflowPath} -r ${versionName}`;
+      return `nextflow run http://${workflowPath} -r ${versionName}`;
     }
 
     /**
      * Gets local launch command
      */
     getNextflowLocalLaunchString(): string {
-      return `$ nextflow run nextflow.config`;
+      return `nextflow run nextflow.config`;
     }
 
     /**
@@ -94,7 +94,7 @@ export abstract class LaunchService {
      * @param versionName Name of the version
      */
     getNextflowDownload(workflowPath: string, versionName: string): string {
-      return `$ dockstore workflow download --entry ${workflowPath}:${versionName}`;
+      return `dockstore workflow download --entry ${workflowPath}:${versionName}`;
     }
 
     /**
@@ -127,7 +127,7 @@ export abstract class LaunchService {
           return null;
       }
 
-      const prefix = `$ wget --header='Accept: text/plain`;
+      const prefix = `wget --header='Accept: text/plain`;
       const outputFile = `-O Dockstore.json`;
       const id = encodeURIComponent(entryPath);
       const versionId = encodeURIComponent(versionName);

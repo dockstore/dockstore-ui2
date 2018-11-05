@@ -29,7 +29,7 @@ describe('ToolLaunchService', () => {
     }));
     it('should getParamsString', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service.getParamsString('quay.io/a/b', 'latest', 'WDL'))
-            .toContain('$ dockstore tool convert entry2json --descriptor wdl --entry quay.io/a/b:latest > Dockstore.json');
+            .toContain('dockstore tool convert entry2json --descriptor wdl --entry quay.io/a/b:latest > Dockstore.json');
     }));
     it('should getCliString', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service.getCliString('a/b', 'latest', 'CWL'))
@@ -58,8 +58,8 @@ describe('ToolLaunchService', () => {
     }));
     it('should get the right check tool command', inject([ToolLaunchService], (service: ToolLaunchService) => {
         expect(service).toBeTruthy();
-        expect(service.getCheckToolString('potato', null)).toBe('$ dockstore checker launch --entry potato --json checkparam.json');
-        expect(service.getCheckToolString('potato', 'stew')).toBe('$ dockstore checker launch --entry potato:stew --json checkparam.json');
+        expect(service.getCheckToolString('potato', null)).toBe('dockstore checker launch --entry potato --json checkparam.json');
+        expect(service.getCheckToolString('potato', 'stew')).toBe('dockstore checker launch --entry potato:stew --json checkparam.json');
         expect(service.getCheckToolString(null, null)).toBe('');
       }));
 });
