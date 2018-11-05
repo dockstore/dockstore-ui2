@@ -13,18 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { ContainertagsService } from './../../shared/swagger/api/containertags.service';
-import { ContainerService } from './../../shared/container.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
-import { StateService } from './../../shared/state.service';
-import { VersionModalService } from './../version-modal/version-modal.service';
-import { DateService } from './../../shared/date.service';
-import { Component, OnInit } from '@angular/core';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { View } from '../../shared/view';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { ContainerService } from '../../shared/container.service';
+import { DateService } from '../../shared/date.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { SessionQuery } from '../../shared/session/session.query';
+import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ToolQuery } from '../../shared/tool/tool.query';
+import { View } from '../../shared/view';
+import { VersionModalService } from '../version-modal/version-modal.service';
 
 @Component({
   selector: 'app-view-container',
@@ -36,9 +39,11 @@ export class ViewContainerComponent extends View implements OnInit {
   public TagEditorMode = TagEditorMode;
   public tool: DockstoreTool;
   public DockstoreToolType = DockstoreTool;
-  isPublic: boolean;
-  constructor(dateService: DateService, private versionModalService: VersionModalService, private stateService: StateService,
-    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService) {
+  isPublic$: Observable<boolean>;
+  isManualTool: boolean;
+  constructor(dateService: DateService, private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
+    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService,
+    private toolQuery: ToolQuery) {
     super(dateService);
   }
 
@@ -67,20 +72,20 @@ export class ViewContainerComponent extends View implements OnInit {
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
-        (result: DockstoreTool) => {
-            this.containerService.setTool(result);
-          }, (error: HttpErrorResponse) => {
-            console.log(error);
-          });
+        (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
+        (error: HttpErrorResponse) => console.log(error));
     }
   }
 
-  isManualTool(): boolean {
-    return this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
-  }
-
   ngOnInit() {
-    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
-    this.containerService.tool$.subscribe(tool => this.tool = tool);
+    this.isPublic$ = this.sessionQuery.isPublic$;
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+      this.tool = tool;
+      if (this.tool) {
+        this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
+      } else {
+        this.isManualTool = undefined;
+      }
+    });
   }
 }

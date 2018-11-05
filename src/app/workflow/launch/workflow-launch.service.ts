@@ -16,18 +16,20 @@
 import { Injectable } from '@angular/core';
 
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryType } from '../../shared/enum/entryType.enum';
 import { LaunchService } from '../../shared/launch.service';
+import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
   private type = 'workflow';
-  constructor() {
-    super();
+  constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {
+    super(descriptorTypeCompatService);
   }
-  getParamsString(path: string, versionName: string, currentDescriptor: string) {
-    if (currentDescriptor === 'nfl') {
+  getParamsString(path: string, versionName: string, currentDescriptor: ToolDescriptor.TypeEnum) {
+    if (currentDescriptor === ToolDescriptor.TypeEnum.NFL) {
       return `vim Dockstore.json`;
     }
     return `dockstore ${this.type} convert entry2json --entry ${path}:${versionName} > Dockstore.json

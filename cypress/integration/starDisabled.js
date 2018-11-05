@@ -1,5 +1,3 @@
-global.baseUrl = "http://localhost:9000";
-
 describe('Workflow starring while not logged in', function() {
   beforeEach(function() {
     cy.clearLocalStorage()

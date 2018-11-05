@@ -11,7 +11,9 @@
       <app-accounts-internal></app-accounts-internal>
     </mat-tab>
     <mat-tab label="Dockstore Account Controls">
-      <app-controls></app-controls>
+      <ng-template matTabContent>
+        <app-controls></app-controls>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>

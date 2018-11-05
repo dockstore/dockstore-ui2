@@ -15,11 +15,11 @@
  */
 
 import { SearchStubService } from './../test/service-stubs';
-import { SearchService } from './search.service';
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { QueryBuilderService } from './query-builder.service';
+import { SearchService } from './state/search.service';
 
 describe('Service: QueryBuilder', () => {
   beforeEach(() => {

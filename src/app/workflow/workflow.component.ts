@@ -18,19 +18,23 @@ import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { GA4GHFilesStateService } from '../shared/entry/GA4GHFiles.state.service';
-import { ErrorService } from '../shared/error.service';
+import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
 import { RefreshService } from '../shared/refresh.service';
-import { StateService } from '../shared/state.service';
-import { Permission } from '../shared/swagger';
+import { SessionQuery } from '../shared/session/session.query';
+import { SessionService } from '../shared/session/session.service';
+import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { WorkflowService } from '../shared/state/workflow.service';
+import { Permission, ToolDescriptor } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { PublishRequest } from '../shared/swagger/model/publishRequest';
 import { Tag } from '../shared/swagger/model/tag';
@@ -38,9 +42,11 @@ import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { WorkflowService } from '../shared/workflow.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { AlertService } from '../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertQuery } from '../shared/alert/state/alert.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -48,6 +54,7 @@ import RoleEnum = Permission.RoleEnum;
 })
 export class WorkflowComponent extends Entry {
   workflowEditData: any;
+  public isRefreshing$: Observable<boolean>;
   public workflow: ExtendedWorkflow;
   public missingWarning: boolean;
   public title: string;
@@ -58,6 +65,7 @@ export class WorkflowComponent extends Entry {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
+  public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
@@ -67,6 +75,7 @@ export class WorkflowComponent extends Entry {
   protected writers = [];
   protected owners = [];
   public schema;
+  public extendedWorkflow$: Observable<ExtendedWorkflow>;
   publishMessage = 'Publish the workflow to make it visible to the public';
   unpublishMessage = 'Unpublish the workflow to remove it from the public';
   pubUnpubMessage: string;
@@ -74,15 +83,19 @@ export class WorkflowComponent extends Entry {
 
   constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
     private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService, private ga4ghFilesStateService: GA4GHFilesStateService,
-    stateService: StateService, errorService: ErrorService, urlResolverService: UrlResolverService,
-    location: Location, activatedRoute: ActivatedRoute) {
+    router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
+    urlResolverService: UrlResolverService, private alertService: AlertService,
+    location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
+      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
     super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
+      dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
     this.redirectAndCallDiscourse('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
+    this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
   }
 
   private processPermissions(userPermissions: Permission[]): void {
@@ -125,12 +138,7 @@ export class WorkflowComponent extends Entry {
    * Populate the extra ExtendedWorkflow properties
    */
   setProperties() {
-    const workflowRef: ExtendedWorkflow = this.workflow;
     this.shareURL = window.location.href;
-    workflowRef.email = this.dockstoreService.stripMailTo(workflowRef.email);
-    workflowRef.agoMessage = this.dateService.getAgoMessage(new Date(workflowRef.last_modified_date).getTime());
-    workflowRef.versionVerified = this.dockstoreService.getVersionVerified(workflowRef.workflowVersions);
-    workflowRef.verifiedSources = this.dockstoreService.getVerifiedWorkflowSources(workflowRef);
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
@@ -148,10 +156,6 @@ export class WorkflowComponent extends Entry {
   private setUpWorkflow(workflow: any) {
     if (workflow) {
       this.workflow = workflow;
-      if (!workflow.providerUrl) {
-        this.providerService.setUpProvider(workflow);
-      }
-      this.workflow = Object.assign(workflow, this.workflow);
       this.title = this.workflow.full_workflow_path;
       this.initTool();
       this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
@@ -182,7 +186,7 @@ export class WorkflowComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.workflowService.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflow => {
         this.workflow = workflow;
         if (workflow) {
@@ -219,7 +223,6 @@ export class WorkflowComponent extends Entry {
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
           }
-          this.providerService.setUpProvider(this.workflow);
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -244,9 +247,8 @@ export class WorkflowComponent extends Entry {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  publishDisable() {
-    return (this.refreshMessage !== null && this.refreshMessage !== undefined) || !this.isValid() ||
-    this.workflow.mode === Workflow.ModeEnum.STUB;
+  publishDisable(): boolean {
+    return !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB || !this.isOwner;
   }
 
   publish() {
@@ -256,19 +258,22 @@ export class WorkflowComponent extends Entry {
       const request: PublishRequest = {
         publish: this.published
       };
+      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
+      this.alertService.start(message);
       this.workflowsService.publish(this.workflow.id, request).subscribe(
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
           this.workflowService.setWorkflow(response);
           this.setPublishMessage();
+          this.alertService.detailedSuccess();
           if (response.checker_id) {
             this.workflowsService.getWorkflow(response.checker_id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
               this.workflowService.upsertWorkflowToWorkflow(workflow);
-            }, err => this.refreshService.handleError('publish error', err));
+            }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
           }
-        }, err => {
+        }, (error: HttpErrorResponse) => {
           this.published = !this.published;
-          this.refreshService.handleError('publish error', err);
+          this.alertService.detailedError(error);
         });
     }
   }
@@ -347,7 +352,6 @@ export class WorkflowComponent extends Entry {
     this.selectedVersion = version;
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-      this.providerService.setUpProvider(this.workflow);
     }
   }
 

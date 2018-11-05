@@ -16,7 +16,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { CheckerWorkflowService } from './../../checker-workflow.service';
+import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 
 @Component({
   selector: 'app-launch-checker-workflow',
@@ -28,8 +28,8 @@ export class LaunchCheckerWorkflowComponent implements OnInit {
   @Input() versionName: string;
   command$: Observable<string>;
   checkerWorkflowPath$: Observable<string>;
-  constructor(private checkerWorkflowService: CheckerWorkflowService) {
-    this.checkerWorkflowPath$ = this.checkerWorkflowService.checkerWorkflowPath$;
+  constructor(private checkerWorkflowQuery: CheckerWorkflowQuery) {
+    this.checkerWorkflowPath$ = this.checkerWorkflowQuery.checkerWorkflowPath$;
   }
 
   ngOnInit() {

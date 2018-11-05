@@ -45,11 +45,12 @@ describe('Dockstore Home', function() {
             .should("visible")
       });
       it ('open and close video', function() {
+        cy.get('#youtubeModal').should("not.be.visible")
         cy
-          .get('.btn.youtube').click()
-          .get('#cboxContent').should("visible")
-          .get('#cboxClose').click()
-          .get('#cboxContent').should("not.visible")
+          .get('.btn.youtube').should("be.visible").click()
+        cy.get('#youtubeModal').should("be.visible")
+        cy.get('body').type('{esc}')
+        cy.get('#youtubeModal').should("not.be.visible")
       });
   });
 })

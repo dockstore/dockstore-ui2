@@ -14,48 +14,22 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
-import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { ToolService } from './tool/tool.service';
 
 @Injectable()
 export class ContainerService {
 
   private static readonly descriptorWdl = ' --descriptor wdl';
-  tool$ = new BehaviorSubject<any>(null); // This is the selected tool
-  toolId$: Observable<number>;
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
-  toolIsPublished$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
-  constructor() {
-    this.toolId$ = this.tool$.pipe(map((tool: ExtendedDockstoreTool) => {
-      if (tool) {
-        return tool.id;
-      } else {
-        return null;
-      }
-    }));
-    this.toolIsPublished$ = this.tool$.pipe(map((tool: ExtendedDockstoreTool) => {
-      if (tool) {
-        return tool.is_published;
-      } else {
-        return null;
-      }
-    }));
-    this.toolIsPublished$ = this.tool$.pipe(map((tool: ExtendedDockstoreTool) => {
-      if (tool) {
-        return tool.is_published;
-      } else {
-        return null;
-      }
-}));
-  }
+  constructor(private toolService: ToolService) { }
   setTool(tool: any) {
-    this.tool$.next(tool);
+    this.toolService.setTool(tool);
   }
   setTools(tools: any) {
     this.tools$.next(tools);
@@ -108,33 +82,4 @@ export class ContainerService {
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }
-
-  getBuildMode(mode: DockstoreTool.ModeEnum) {
-    switch (mode) {
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
-        return 'Fully-Automated';
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
-        return 'Partially-Automated';
-      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
-      case DockstoreTool.ModeEnum.HOSTED:
-        return 'Manual';
-      default:
-        return 'Unknown';
-    }
-  }
-
-  getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
-    switch (mode) {
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
-        return 'Fully-Automated: All versions are automated builds';
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
-        return 'Partially-Automated: At least one version is an automated build';
-      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
-      case DockstoreTool.ModeEnum.HOSTED:
-        return 'Manual: No versions are automated builds';
-      default:
-        return 'Unknown: Build information not known';
-    }
-  }
-
 }

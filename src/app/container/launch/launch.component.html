@@ -43,7 +43,7 @@
         Run locally with the Dockstore CLI
         <pre>{{ cli }}</pre>
       </mat-card>
-      <div *ngIf="(currentDescriptor | lowercase) === 'cwl' && (published$ | async)">
+      <div *ngIf="currentDescriptor === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
         <mat-card class="m-2" [matTooltip]="cwlrunnerTooltip">
           {{cwlrunnerDescription}}
           <pre>{{ cwl }}</pre>

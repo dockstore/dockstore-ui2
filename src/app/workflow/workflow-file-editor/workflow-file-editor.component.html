@@ -16,11 +16,11 @@
 
 <tabset [justified]="true">
   <tab heading="Descriptor Files" id="descriptorFilesTab">
-    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="(selectedDescriptorType$ | async)" [fileType]="'descriptor'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
   <tab heading="Test Parameter Files" id="testParameterFilesTab">
-    <app-code-editor-list *ngIf="descriptorType !== 'nfl'" [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
-    <div class="alert alert-info" role="alert" *ngIf="descriptorType === 'nfl'">
+    <app-code-editor-list *ngIf="!(isNFL$ | async)" [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="(selectedDescriptorType$ | async)" [fileType]="'testParam'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
+    <div class="alert alert-info" role="alert" *ngIf="(isNFL$ | async)">
       <span class="glyphicon glyphicon-warning-sign"></span>
       &nbsp;
       Nextflow does not have the concept of a test parameter file.

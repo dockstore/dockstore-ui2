@@ -16,28 +16,30 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService } from './../shared/error.service';
+import { AlertService } from './alert/state/alert.service';
 import { ContainerService } from './container.service';
-import { GA4GHFilesStateService } from './entry/GA4GHFiles.state.service';
-import { StateService } from './state.service';
+import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
+import { WorkflowQuery } from './state/workflow.query';
+import { WorkflowService } from './state/workflow.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
-import { WorkflowService } from './workflow.service';
+import { ToolQuery } from './tool/tool.query';
 
 @Injectable()
 export class RefreshService {
-    private tool: DockstoreTool;
+    public tool: DockstoreTool;
     private tools;
     private workflow: Workflow;
     private workflows;
-    constructor(private workflowsService: WorkflowsService, private containerService: ContainerService, private stateService: StateService,
+    constructor(private workflowsService: WorkflowsService, private containerService: ContainerService, private alertService: AlertService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
-        private ga4ghFilesStateService: GA4GHFilesStateService, private errorService: ErrorService, private snackBar: MatSnackBar) {
-        this.containerService.tool$.subscribe(tool => this.tool = tool);
-        this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+        private snackBar: MatSnackBar, private toolQuery: ToolQuery,
+        private gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery) {
+        this.toolQuery.tool$.subscribe(tool => this.tool = tool);
+        this.workflowQuery.workflow$.subscribe(workflow => this.workflow = workflow);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
@@ -48,39 +50,12 @@ export class RefreshService {
      */
     refreshTool(): void {
       const message = 'Refreshing ' + this.tool.tool_path;
-      this.stateService.setRefreshMessage(message + ' ...');
+      this.alertService.start(message);
       this.containersService.refresh(this.tool.id).subscribe((response: DockstoreTool) => {
           this.containerService.replaceTool(this.tools, response);
           this.containerService.setTool(response);
-          this.handleSuccess(message);
-      }, error => this.handleError(message, error)
-      );
-    }
-
-    /**
-     * This handles what happens after an API call returns successfully
-     * TODO: Move function to another service
-     * @param {string} message The custom success message that should be displayed
-     * @memberof RefreshService
-     */
-    handleSuccess(message: string): void {
-      this.stateService.setRefreshMessage(null);
-      this.snackBar.open(message + ' succeeded', 'Dismiss');
-      this.errorService.setErrorAlert(null);
-    }
-
-
-    /**
-     * This handles what happens after an API call returns an error
-     * TODO: Move function to another service
-     * @param {string} message The custom error message that should be displayed
-     * @param {*} error The error object returned when refresh failed
-     * @memberof RefreshService
-     */
-    handleError(message: string, error: any): void {
-      this.errorService.setErrorAlert(error);
-      this.stateService.setRefreshMessage(null);
-      this.snackBar.open(message + ' failed', 'Dismiss');
+          this.alertService.detailedSuccess();
+      }, error => this.alertService.detailedError(error));
     }
 
     /**
@@ -92,15 +67,15 @@ export class RefreshService {
      */
     refreshWorkflow(toolID?: string, versionName?: (string | null)): void {
       const message = 'Refreshing ' +  this.workflow.full_workflow_path;
-      this.stateService.setRefreshMessage(message + ' ...');
+      this.alertService.start(message);
       this.workflowsService.refresh(this.workflow.id).subscribe((refreshedWorkflow: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
           this.workflowService.setWorkflow(refreshedWorkflow);
-          this.handleSuccess(message);
+          this.alertService.detailedSuccess();
           if (toolID && versionName) {
-            this.ga4ghFilesStateService.update(toolID, versionName);
+            this.gA4GHFilesService.updateFiles(toolID, versionName);
           }
-      }, error => this.handleError(message, error));
+      }, error => this.alertService.detailedError(error));
     }
 
     /**
@@ -110,12 +85,12 @@ export class RefreshService {
      */
     refreshAllTools(userId: number): void {
       const message = 'Refreshing all tools';
-      this.stateService.setRefreshMessage(message + '...');
+      this.alertService.start(message);
       this.usersService.refresh(userId).subscribe(
           response => {
               this.containerService.setTools(response);
-              this.handleSuccess(message);
-          }, error => this.handleError(message, error));
+              this.alertService.detailedSuccess();
+          }, error => this.alertService.detailedError(error));
     }
 
 
@@ -126,12 +101,12 @@ export class RefreshService {
      */
     refreshAllWorkflows(userId: number): void {
       const message = 'Refreshing all workflows';
-      this.stateService.setRefreshMessage(message + '...');
+      this.alertService.start(message);
       this.usersService.refreshWorkflows(userId).subscribe(
           response => {
               this.workflowService.setWorkflows(response);
-              this.handleSuccess(message);
-          }, error => this.handleError(message, error));
+              this.alertService.detailedSuccess();
+          }, error => this.alertService.detailedError(error));
     }
 
     /**

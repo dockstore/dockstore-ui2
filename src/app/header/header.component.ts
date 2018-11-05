@@ -13,12 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { toExtendSite } from '../shared/helpers';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Subscription ,  Subject } from 'rxjs';
+
+import { toExtendSite } from '../shared/helpers';
 
 @Component({
   selector: 'app-header',

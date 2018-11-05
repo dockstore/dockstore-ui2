@@ -1,10 +1,13 @@
 import { Component, Input } from '@angular/core';
+
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { Tag } from './../../shared/swagger/model/tag';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
+import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
+import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
   selector: 'app-tool-file-editor',
@@ -17,8 +20,9 @@ export class ToolFileEditorComponent extends FileEditing {
   testParameterFiles = [];
   originalSourceFiles = [];
   currentVersion: Tag;
-  selectedDescriptorType = 'cwl';
+  selectedDescriptorType: ToolDescriptor.TypeEnum = ToolDescriptor.TypeEnum.CWL;
   isNewestVersion = false;
+  ToolDescriptor = ToolDescriptor;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
       this.currentVersion = value;
@@ -26,12 +30,14 @@ export class ToolFileEditorComponent extends FileEditing {
       this.editing = false;
       this.clearSourceFiles();
       if (value != null) {
-        this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
+        // Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
+        this.originalSourceFiles =  JSON.parse(JSON.stringify(value.sourceFiles));
         this.loadVersionSourcefiles();
       }
   }
 
-  constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService) {
+  constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService,
+    private alertService: AlertService) {
     super();
   }
 
@@ -44,12 +50,13 @@ export class ToolFileEditorComponent extends FileEditing {
   }
 
   /**
+   * Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles(): void {
-    this.descriptorFiles = this.getDescriptorFiles(this.currentVersion.sourceFiles);
-    this.testParameterFiles = this.getTestFiles(this.currentVersion.sourceFiles);
-    this.dockerFile = this.getDockerFile(this.currentVersion.sourceFiles);
+    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.currentVersion.sourceFiles)));
+    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.currentVersion.sourceFiles)));
+    this.dockerFile = JSON.parse(JSON.stringify(this.getDockerFile(this.currentVersion.sourceFiles)));
   }
 
   /**
@@ -77,16 +84,16 @@ export class ToolFileEditorComponent extends FileEditing {
     const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
-
+    this.alertService.start('Editing hosted tool');
     this.hostedService.editHostedTool(
         this.id,
         newSourceFiles).subscribe(result => {
           this.toggleEdit();
           this.containerService.setTool(result);
-          this.refreshService.handleSuccess(message);
+          this.alertService.detailedSuccess();
         }, error =>  {
           if (error) {
-            this.refreshService.handleError(message, error);
+            this.alertService.detailedError(error);
           }
         }
       );

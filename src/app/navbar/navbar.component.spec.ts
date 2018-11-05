@@ -13,19 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { PageInfo } from './../shared/models/PageInfo';
-import { PagenumberService } from './../shared/pagenumber.service';
-import { UserService } from './../loginComponents/user.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { LogoutStubService, UserStubService } from './../test/service-stubs';
-import { LogoutService } from '../shared/logout.service';
-import { TrackLoginService } from './../shared/track-login.service';
-import { PageNumberStubService, TrackLoginStubService } from '../test/service-stubs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule, MatToolbarModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { LogoutService } from '../shared/logout.service';
+import { PageInfo } from '../shared/models/PageInfo';
+import { PagenumberService } from '../shared/pagenumber.service';
+import { TrackLoginService } from '../shared/track-login.service';
+import { LogoutStubService, TrackLoginStubService } from '../test/service-stubs';
 import { NavbarComponent } from './navbar.component';
-import { MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, MatToolbarModule } from '@angular/material';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -45,8 +43,8 @@ describe('NavbarComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PagenumberService,
         { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: LogoutService, useClass: LogoutStubService },
-        { provide: UserService, useClass: UserStubService }]
+        { provide: LogoutService, useClass: LogoutStubService }
+      ]
     })
       .compileComponents();
   }));

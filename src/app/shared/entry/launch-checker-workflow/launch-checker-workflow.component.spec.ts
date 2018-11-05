@@ -16,7 +16,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckerWorkflowStubService } from './../../../test/service-stubs';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow.component';
 import { MatCardModule } from '@angular/material';
 describe('LaunchCheckerWorkflowComponent', () => {

@@ -14,15 +14,14 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../loginComponents/user.service';
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
 import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
-import { WorkflowService } from '../shared/workflow.service';
+import { UserQuery } from '../shared/user/user.query';
 import { StarringService } from './starring.service';
 
 @Component({
@@ -43,12 +42,8 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   public disable = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
-  private workflowSubscription: Subscription;
-  private toolSubscription: Subscription;
-  private loginSubscription: Subscription;
   constructor(private trackLoginService: TrackLoginService,
-    private userService: UserService,
-    private workflowService: WorkflowService,
+    private userQuery: UserQuery,
     private containerService: ContainerService,
     private starringService: StarringService,
     private starentryService: StarentryService) { }
@@ -56,7 +51,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     // get tool from the observer
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
       this.rate = this.calculateRate(this.starredUsers);
     });

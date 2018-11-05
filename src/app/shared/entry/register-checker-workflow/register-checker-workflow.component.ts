@@ -17,11 +17,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import { CheckerWorkflowService } from '../../checker-workflow.service';
+import { AlertQuery } from '../../alert/state/alert.query';
+import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
-import { ErrorService } from '../../error.service';
+import { DescriptorTypeCompatService } from '../../descriptor-type-compat.service';
+import { SessionQuery } from '../../session/session.query';
+import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
+import { ToolDescriptor } from '../../swagger';
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
 import { Workflow } from '../../swagger/model/workflow';
@@ -34,11 +39,14 @@ import { RegisterCheckerWorkflowService } from './register-checker-workflow.serv
   templateUrl: './register-checker-workflow.component.html',
   styleUrls: ['./register-checker-workflow.component.scss']
 })
-export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecked {
+export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
 
   constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
-    private checkerWorkflowService: CheckerWorkflowService, private errorService: ErrorService,
-    private descriptorLanguageService: DescriptorLanguageService) { }
+    private checkerWorkflowService: CheckerWorkflowService, private alertQuery: AlertQuery,
+    private descriptorLanguageService: DescriptorLanguageService, private sessionQuery: SessionQuery,
+    private checkerWorkflowQuery: CheckerWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService) {
+      super();
+    }
   public registerError: HttpErrorResponse;
   public isModalShown$: Observable<boolean>;
   public workflowPath: string;
@@ -47,9 +55,9 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
   public formErrors = formErrors;
   public validationDescriptorPatterns = validationDescriptorPatterns;
   public validationMessages = validationMessages;
-  public refreshMessage$: Observable<string>;
+  public isRefreshing$: Observable<boolean>;
   public mode$: Observable<'add' | 'edit'>;
-  public descriptorType: string;
+  public descriptorType: ToolDescriptor.TypeEnum;
   public descriptorLanguages: Array<string>;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
@@ -58,30 +66,33 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
 
   ngOnInit() {
     this.clearForm();
-    this.checkerWorkflowService.entry$.subscribe((entry: Entry) => {
+    this.checkerWorkflowQuery.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
       this.entry = entry;
-      this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
-      this.isWorkflow = this.checkerWorkflowService.isEntryAWorkflow(entry);
-      if (this.isWorkflow) {
-        this.descriptorType = (<Workflow>this.entry).descriptorType;
+      if (entry) {
+        this.isWorkflow = this.checkerWorkflowQuery.isEntryAWorkflow(entry);
+        this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
+        if (this.isWorkflow) {
+          this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType((<Workflow>this.entry).descriptorType);
+        }
+      } else {
+        this.testParameterFilePath = null;
+        this.isWorkflow = null;
+        this.descriptorType = null;
       }
-    });
-    this.registerCheckerWorkflowService.errorObj$.subscribe((error: HttpErrorResponse) => {
-      this.registerError = error;
     });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
     this.isModalShown$ = this.registerCheckerWorkflowService.isModalShown$;
     this.syncTestJson = false;
-    this.refreshMessage$ = this.registerCheckerWorkflowService.refreshMessage$;
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
-      this.descriptorLanguages = descriptorLanguages.filter((language: string) => language.toLowerCase() !== 'nfl');
+      this.descriptorLanguages = descriptorLanguages.filter((language: string) => language !== ToolDescriptor.TypeEnum.NFL);
     });
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   private clearForm(): void {
     this.workflowPath = '';
     this.testParameterFilePath = '';
-    this.descriptorType = 'cwl';
+    this.descriptorType = ToolDescriptor.TypeEnum.CWL;
   }
 
   /**
@@ -93,15 +104,15 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
    * @returns {string} The default test parameter file to populate the form
    * @memberof RegisterCheckerWorkflowComponent
    */
-  private getTestParameterFileDefault(entry: Entry, descriptorType: string): string {
+  private getTestParameterFileDefault(entry: Entry, descriptorType: ToolDescriptor.TypeEnum): string {
     if (this.isWorkflow) {
       return (<Workflow>entry).defaultTestParameterFilePath;
     } else {
       switch (descriptorType) {
-        case 'cwl': {
+        case ToolDescriptor.TypeEnum.CWL: {
           return (<DockstoreTool>entry).defaultCWLTestParameterFile;
         }
-        case 'wdl': {
+        case ToolDescriptor.TypeEnum.WDL: {
           return (<DockstoreTool>entry).defaultWDLTestParameterFile;
         }
         default: {
@@ -119,15 +130,11 @@ export class RegisterCheckerWorkflowComponent implements OnInit, AfterViewChecke
     this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, this.descriptorType);
   }
 
-  clearError(): void {
-    this.registerCheckerWorkflowService.clearError();
-  }
-
   /**
    * Handles the event where the descriptor type in the form has changed
    * @param descriptorType The descriptor type current selected in the form
    */
-  public onDescriptorTypeChange(descriptorType: string): void {
+  public onDescriptorTypeChange(descriptorType: ToolDescriptor.TypeEnum): void {
     this.testParameterFilePath = this.getTestParameterFileDefault(this.entry, descriptorType);
   }
 

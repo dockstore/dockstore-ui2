@@ -8,8 +8,8 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { DockstoreStubService, SearchStubService } from '../../test/service-stubs';
 import { DateService } from '../../shared/date.service';
-import { SearchService } from '../search.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SearchService } from '../state/search.service';
 
 describe('SearchWorkflowTableComponent', () => {
   let component: SearchWorkflowTableComponent;

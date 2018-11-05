@@ -26,20 +26,20 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 
+import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
+import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
-import { HeaderModule } from './../shared/modules/header.module';
-import { PipeModule } from './../shared/pipe/pipe.module';
-import { getTooltipConfig } from './../shared/tooltip';
+import { getTooltipConfig } from '../shared/tooltip';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
+import { BasicSearchComponent } from './basic-search/basic-search.component';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchToolTableComponent } from './search-tool-table/search-tool-table.component';
 import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
-import { SearchService } from './search.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,8 @@ import { SearchService } from './search.service';
     SearchComponent,
     SearchResultsComponent,
     SearchToolTableComponent,
-    SearchWorkflowTableComponent
+    SearchWorkflowTableComponent,
+    BasicSearchComponent
 ],
   imports: [
     CommonModule,
@@ -67,8 +68,7 @@ import { SearchService } from './search.service';
     HttpClientModule,
     PrivateIconModule
   ],
-  providers: [AdvancedSearchService,
-    SearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
+  providers: [AdvancedSearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
   exports: [SearchComponent]
 
 })

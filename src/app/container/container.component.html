@@ -37,7 +37,7 @@
   <ngx-json-ld [json]="schema"></ngx-json-ld>
   <div class="col-md-7">
     <h3 id="tool-path">
-      <span id="verifiedIcon" *ngIf="tool?.versionVerified">
+      <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
         <a href= {{getVerifiedLink()}} class="verified-check">
           <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
         </a>
@@ -56,7 +56,7 @@
       </mat-form-field>
     </div>
     <p class="update">
-      Last build: {{ tool?.agoMessage || 'n/a' }}
+      Last build: {{ (extendedTool$ | async)?.agoMessage || 'n/a' }}
     </p>
     <div *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>
@@ -73,7 +73,7 @@
           Request Access
         </a>
       </div>
-      <div class="mr-2" *ngIf="publicPage && tool?.email && !tool?.private_access">
+      <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
         <a mat-raised-button color="primary" [href]="contactAuthorHREF">
           Contact Author
         </a>
@@ -85,16 +85,16 @@
       <div class="pull-right my-entry-button-group">
         <div class="btn-group" role="group">
           <button id="publishToolButton" mat-flat-button color="accent" (click)="publish()" [(ngModel)]="published"
-            [disabled]="publishDisable()" btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
+            [disabled]="(isRefreshing$ | async) || !this.isContainerValid()" btnCheckbox [matTooltip]="pubUnpubMessage" class="mr-2">
             {{tool?.is_published ? 'Unpublish' : 'Publish'}}
           </button>
           <button *ngIf="tool?.is_published" mat-flat-button color="warn" [disabled]="tool?.is_published" matTooltip="Delete the tool" class="mr-2">
             Delete
           </button>
-          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" matTooltip="Sync the tool with the Docker image repository, etc" class="mr-2">
+          <button *ngIf="!isHosted()" mat-flat-button color="primary" (click)="refresh()" [disabled]="(isRefreshing$ | async)" matTooltip="Sync the tool with the Docker image repository, etc" class="mr-2">
             Refresh
           </button>
-          <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="refreshMessage"></app-deregister-modal>
+          <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="(isRefreshing$ | async)"></app-deregister-modal>
         </div>
       </div>
     </h3>
@@ -139,14 +139,14 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <tabset id="tool_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" (select)="setEntryTab('info')">
-        <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [tool]="tool" [validVersions]="validVersions"></app-info-tab>
+        <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [extendedDockstoreTool]="(extendedTool$ | async)" [validVersions]="validVersions"></app-info-tab>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
         <app-launch *ngIf="tool?.tags.length > 0" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
       </tab>
       <tab id="versionTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions">
-          <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="tool?.verifiedSources" [selectedVersion]="selectedVersion">
+          <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="(extendedTool$ | async)?.verifiedSources" [selectedVersion]="selectedVersion">
           </app-versions-container>
         </div>
       </tab>
@@ -204,7 +204,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default" *ngIf="tool">
+    <div class="panel panel-default" *ngIf="(extendedTool$ | async)">
       <div class="panel-heading">
         <h3>Source Repositories</h3>
       </div>
@@ -212,26 +212,26 @@
         <div class="container-source-repos">
           <p>
             Git Repository:
-            <span *ngIf="tool.provider">
-              <a [href]="tool.providerUrl" target="_blank">
-                {{tool.provider}}
+            <span *ngIf="(extendedTool$ | async).provider">
+              <a [href]="(extendedTool$ | async).providerUrl" target="_blank">
+                {{(extendedTool$ | async).provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
             </span>
           </p>
           <p>
             Docker Registry:
-            <span *ngIf="!tool.imgProviderUrl || privateOnlyRegistry"> {{tool?.imgProvider}}</span>
-            <span *ngIf="tool.imgProviderUrl && !privateOnlyRegistry">
-              <a *ngIf="tool.imgProviderUrl !== null" [href]="tool.imgProviderUrl" target="_blank">
-                {{tool?.imgProvider}}
+            <span *ngIf="!(extendedTool$ | async).imgProviderUrl || privateOnlyRegistry"> {{(extendedTool$ | async)?.imgProvider}}</span>
+            <span *ngIf="(extendedTool$ | async).imgProviderUrl && !privateOnlyRegistry">
+              <a *ngIf="(extendedTool$ | async).imgProviderUrl !== null" [href]="(extendedTool$ | async).imgProviderUrl" target="_blank">
+                {{(extendedTool$ | async)?.imgProvider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
-              <span *ngIf="tool.imgProviderUrl === null">{{tool?.imgProvider}}</span>
+              <span *ngIf="(extendedTool$ | async).imgProviderUrl === null">{{(extendedTool$ | async)?.imgProvider}}</span>
             </span>
-            <span *ngIf="tool.imgProviderUrl && tool.imgProviderUrl.startsWith('https://quay.io')" class="pull-right">
-              <a href="{{tool.imgProviderUrl}}" target="_blank">
-                <img src="{{tool.imgProviderUrl}}/status">
+            <span *ngIf="(extendedTool$ | async)?.imgProviderUrl && (extendedTool$ | async).imgProviderUrl.startsWith('https://quay.io')" class="pull-right">
+              <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank">
+                <img src="{{(extendedTool$ | async).imgProviderUrl}}/status">
               </a>
             </span>
           </p>

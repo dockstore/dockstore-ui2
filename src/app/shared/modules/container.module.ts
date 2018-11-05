@@ -28,7 +28,6 @@ import { ShareButtonsModule } from 'ngx-sharebuttons';
 
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
-import { ToolDescriptorService } from '../../container/descriptors/tool-descriptor.service';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
 import { EmailService } from '../../container/email.service';
 import { FilesContainerComponent } from '../../container/files/files.component';
@@ -54,7 +53,6 @@ import { VersionModalComponent } from './../../container/version-modal/version-m
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
 import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
-import { ExtendedToolService } from './../extended-tool.service';
 import { CustomMaterialModule } from './../modules/material.module';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
@@ -110,13 +108,12 @@ import { SelectModule } from './select.module';
     RegisterToolService,
     StarringService,
     VersionModalService,
-    InfoTabService,
-    ToolDescriptorService,
-    ExtendedToolService
+    InfoTabService
   ],
   exports: [
     ContainerComponent,
-    CustomMaterialModule
+    CustomMaterialModule,
+    EntryModule
   ]
 })
 export class ContainerModule {

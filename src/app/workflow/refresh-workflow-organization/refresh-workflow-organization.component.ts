@@ -13,16 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 
-import { UserService } from '../../loginComponents/user.service';
-import { RefreshService } from '../../shared/refresh.service';
-import { RefreshOrganizationComponent } from './../../shared/refresh-organization/refresh-organization.component';
-import { StateService } from './../../shared/state.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
+import { SessionQuery } from '../../shared/session/session.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { UserQuery } from '../../shared/user/user.query';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-workflow-organization',
@@ -32,18 +33,18 @@ import { WorkflowService } from './../../shared/workflow.service';
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
 
-  constructor(private usersService: UsersService, userService: UserService, private workflowService: WorkflowService,
-    public stateService: StateService, private refreshService: RefreshService) {
-      super(userService, stateService);
+  constructor(private usersService: UsersService, userQuery: UserQuery, private workflowService: WorkflowService,
+    private alertService: AlertService, protected alertQuery: AlertQuery) {
+      super(userQuery, alertQuery);
   }
 
   refreshOrganization(): void {
     const message = 'Refreshing ' + this.organization;
-    this.stateService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     this.usersService.refreshWorkflowsByOrganization(this.userId, this.organization).subscribe(
       (success: Workflow[]) => {
         this.workflowService.setWorkflows(success);
-        this.refreshService.handleSuccess(message);
-      }, error => this.refreshService.handleError(message, error));
+        this.alertService.detailedSuccess();
+      }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
   }
 }

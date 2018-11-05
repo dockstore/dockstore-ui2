@@ -14,12 +14,15 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
-import { ContainerService } from '../../shared/container.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
+import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
@@ -32,7 +35,6 @@ import { Versions } from '../../shared/versions';
 })
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<any>;
   versionTag: Tag;
   public DockstoreToolType = DockstoreTool;
   @Input() set selectedVersion(value: Tag) {
@@ -41,18 +43,18 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     }
   }
   @Output() selectedVersionChange = new EventEmitter<Tag>();
-  tool: any;
+  tool: ExtendedDockstoreTool;
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService, private refreshService: RefreshService,
-    protected stateService: StateService,
-    private containerService: ContainerService) {
-    super(dockstoreService, dateService, stateService);
+    dateService: DateService, private refreshService: RefreshService, private alertService: AlertService,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
+    protected sessionQuery: SessionQuery) {
+    super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
     this.publicPageSubscription();
-    this.containerService.tool$.subscribe(tool => {
+    this.extendedDockstoreToolQuery.extendedDockstoreTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: ExtendedDockstoreTool) => {
       this.tool = tool;
       if (tool) {
         this.defaultVersion = tool.defaultVersion;
@@ -77,17 +79,13 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default tool version';
-    this.stateService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
-      this.refreshService.handleSuccess(message);
+      this.alertService.detailedSuccess();
       if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
         this.refreshService.refreshTool();
       }
-    }, error => this.refreshService.handleError(message, error));
-  }
-
-  getVerifiedSource(name: string) {
-    this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
+    }, error => this.alertService.detailedError(error));
   }
 
   // Updates the version and emits an event for the parent component

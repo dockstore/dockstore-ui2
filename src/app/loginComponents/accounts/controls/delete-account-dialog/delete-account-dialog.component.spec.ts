@@ -5,9 +5,9 @@ import { MatDialogRef } from '@angular/material';
 import { LogoutService } from '../../../../shared/logout.service';
 import { CustomMaterialModule } from '../../../../shared/modules/material.module';
 import { UsersService } from '../../../../shared/swagger';
-import { LogoutStubService, UsersStubService, UserStubService } from '../../../../test/service-stubs';
-import { UserService } from '../../../user.service';
+import { LogoutStubService, UsersStubService } from '../../../../test/service-stubs';
 import { DeleteAccountDialogComponent } from './delete-account-dialog.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DeleteAccountDialogComponent', () => {
   let component: DeleteAccountDialogComponent;
@@ -16,9 +16,9 @@ describe('DeleteAccountDialogComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DeleteAccountDialogComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [CustomMaterialModule, ReactiveFormsModule],
       providers: [
-        { provide: UserService, useClass: UserStubService },
         { provide: LogoutService, useClass: LogoutStubService },
         { provide: UsersService, useClass: UsersStubService },
         {

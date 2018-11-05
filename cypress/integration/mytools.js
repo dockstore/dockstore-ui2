@@ -68,6 +68,19 @@ describe('Dockstore my tools', function() {
         cy.contains('Last Updated')
         cy.contains('Build Mode')
         cy.contains('Fully-Automated')
+        cy.contains('/Dockstore.cwl')
+        // Change the dockerfile path
+        cy.contains('button', ' Edit ').click();
+        cy.get('input').first().should('be.visible').clear().type('/thing/Dockerfile');
+        cy.contains('button', ' Save ').click();
+        cy.visit(String(global.baseUrl) + "/my-tools/quay.io/A2/b1")
+        cy.contains('/thing/Dockerfile')
+        // Change the dockerfile path back
+        cy.contains('button', ' Edit ').click();
+        cy.get('input').first().should('be.visible').clear().type('/Dockerfile');
+        cy.contains('button', ' Save ').click();
+        cy.visit(String(global.baseUrl) + "/my-tools/quay.io/A2/b1")
+        cy.contains('/Dockerfile')
       });
       it('add and remove test parameter file', function() {
         selectUnpublishedTab('quay.io/A2')
@@ -101,12 +114,16 @@ describe('Dockstore my tools', function() {
       });
     });
 
-    describe('Publish an existing Amazon ECR tool', function() {
-      it('publish', function() {
+    describe('Publish and unpublish an existing Amazon ECR tool', function() {
+      it('Publish and Unpublish', function() {
         cy.visit(String(global.baseUrl) + "/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a")
         cy
         .get('#publishToolButton')
+        .should('contain', 'Publish')
         .click()
+        .should('contain', 'Unpublish')
+        .click()
+        .should('contain', 'Publish')
       });
     });
 

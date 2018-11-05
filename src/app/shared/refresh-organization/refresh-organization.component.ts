@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,26 +13,30 @@ import { Injectable } from '@angular/core';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { StateService } from './../state.service';
-import { UserService } from '../../loginComponents/user.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { SessionQuery } from '../session/session.query';
+import { UserQuery } from '../user/user.query';
+import { AlertQuery } from '../alert/state/alert.query';
 
 @Injectable()
-export class RefreshOrganizationComponent implements OnInit {
+export class RefreshOrganizationComponent implements OnInit, OnDestroy {
   protected userId: number;
   @Input() protected organization: string;
-  protected refreshMessage: string;
-  constructor(private userService: UserService, protected stateService: StateService) {
+  public isRefreshing$: Observable<boolean>;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+  constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {
   }
 
   ngOnInit() {
-    this.userService.userId$.subscribe(userId => this.userId = userId);
-    this.stateService.refreshMessage$.subscribe((refreshMessage: string) => this.refreshMessage = refreshMessage);
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => this.userId = userId);
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
-  toDisable(): boolean {
-    return this.refreshMessage !== null && this.refreshMessage !== undefined;
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
-
 }

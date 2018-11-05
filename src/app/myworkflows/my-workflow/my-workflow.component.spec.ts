@@ -16,20 +16,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 
-import { RefreshService } from '../../shared/refresh.service';
-import { RouterLinkStubDirective } from '../../test';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { TokenService } from '../../loginComponents/token.service';
-import { UserService } from '../../loginComponents/user.service';
-import { StateService } from '../../shared/state.service';
+import { RefreshService } from '../../shared/refresh.service';
+import { TokenQuery } from '../../shared/state/token.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
-import { WorkflowService } from '../../shared/workflow.service';
+import { UserQuery } from '../../shared/user/user.query';
+import { RouterLinkStubDirective } from '../../test';
 import { RouterOutletStubComponent } from '../../test/router-stubs';
 import {
   AccountsStubService,
@@ -37,19 +37,14 @@ import {
   ConfigurationStub,
   RefreshStubService,
   RegisterWorkflowModalStubService,
-  StateStubService,
-  TokenStubService,
   UrlResolverStubService,
   UsersStubService,
-  UserStubService,
   WorkflowsStubService,
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowComponent } from './my-workflow.component';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MyWorkflowComponent } from './my-workflow.component';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -58,19 +53,18 @@ describe('MyWorkflowsComponent', () => {
   let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule ],
+      declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule],
       providers: [
+        UserQuery,
         { provide: Configuration, useClass: ConfigurationStub },
         { provide: UsersService, useClass: UsersStubService },
         { provide: AuthService, useClass: AuthStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        { provide: UserService, useClass: UserStubService },
-        { provide: StateService, useClass: StateStubService },
-        { provide: TokenService, useClass: TokenStubService },
+        TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService,
@@ -82,7 +76,7 @@ describe('MyWorkflowsComponent', () => {
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -102,6 +96,7 @@ describe('MyWorkflowsComponent', () => {
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
+    component.user = { id: 1 };
     refreshService = fixture.debugElement.injector.get(RefreshService);
     spyOn(refreshService, 'refreshAllWorkflows');
     component.refreshAllEntries();

@@ -38,6 +38,7 @@ import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
+import { RefreshAlertModule } from '../alert/alert.module';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     CustomMaterialModule,
     NgxJsonLdModule,
     ClipboardModule,
-    RouterModule
+    RouterModule,
+    RefreshAlertModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -77,7 +79,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
-    NgxJsonLdModule
+    NgxJsonLdModule,
+    RefreshAlertModule
   ]
 })
 export class EntryModule { }

@@ -14,13 +14,13 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { EntryTab } from '../../shared/entry/entry-tab';
-import { WorkflowVersion } from '../../shared/swagger';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
 
 @Component({
   selector: 'app-tool-tab',
@@ -31,24 +31,23 @@ export class ToolTabComponent extends EntryTab {
   workflow: Workflow;
   toolsContent: string = null;
   _selectedVersion: WorkflowVersion;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  ToolDescriptor = ToolDescriptor;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
-      this.workflowService.workflow$.pipe(first()).subscribe((workflow: Workflow) => {
-        this.workflow = workflow;
-        if (workflow) {
-          this.updateTableToolContent(workflow.id, value.id);
+        this.workflow = this.workflowQuery.getActive();
+        if (this.workflow) {
+          this.updateTableToolContent(this.workflow.id, value.id);
         } else {
           console.error('Should not be able to select version without a workflow');
         }
-      }, error => {
-        console.error('Something has gone terribly wrong with the workflow$ observable.');
-      });
     } else {
       this.toolsContent = null;
     }
   }
-  constructor(private workflowService: WorkflowService, private workflowsService: WorkflowsService) {
+  constructor(private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService) {
     super();
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
   }
 
   /**

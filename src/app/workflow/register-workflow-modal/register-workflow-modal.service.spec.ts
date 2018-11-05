@@ -17,11 +17,9 @@ import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { StateService } from '../../shared/state.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { WorkflowService } from '../../shared/workflow.service';
 import {
   DescriptorLanguageStubService,
   HostedStubService,
@@ -30,6 +28,9 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { MatSnackBarModule } from '@angular/material';
+import { ToolDescriptor } from '../../shared/swagger';
 
 describe('Service: RegisterWorkflowModal', () => {
   beforeEach(() => {
@@ -39,9 +40,8 @@ describe('Service: RegisterWorkflowModal', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: MetadataService, useClass: MetadataStubService },
         { provide: HostedService, useClass: HostedStubService },
-        StateService,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-      ], imports: [RouterTestingModule]
+      ], imports: [RouterTestingModule, MatSnackBarModule]
     });
   });
   const expectedError: any = {
@@ -50,7 +50,7 @@ describe('Service: RegisterWorkflowModal', () => {
   };
   const expectedWorkflow: any = {
     'repository': 'GitHub',
-    'descriptorType': 'cwl',
+    'descriptorType': ToolDescriptor.TypeEnum.CWL,
     'gitUrl': 'asdf',
     'workflowName': ''
   };

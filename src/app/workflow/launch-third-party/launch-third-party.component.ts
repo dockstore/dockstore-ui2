@@ -1,11 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { LaunchThirdPartyService } from './launch-third-party.service';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { ToolDescriptor, Workflow, WorkflowVersion } from '../../shared/swagger';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { LaunchThirdPartyService } from './launch-third-party.service';
 
 const importHttpRegEx: RegExp = new RegExp(/^\s*import\s+"https?/, 'm');
 
@@ -30,7 +31,7 @@ export class LaunchThirdPartyComponent implements OnChanges {
   wdlHasContent: boolean;
   isWdl: boolean;
 
-  constructor(private workflowsService: WorkflowsService,
+  constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
               private launchThirdPartyService: LaunchThirdPartyService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
@@ -43,7 +44,8 @@ export class LaunchThirdPartyComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.fireCloudURL = this.dnastackURL = this.dnanexusURL = null;
     this.wdlHasContent = this.wdlHasFileImports = this.wdlHasHttpImports = false;
-    this.isWdl = this.workflow && this.workflow && this.workflow.full_workflow_path && this.workflow.descriptorType === 'wdl';
+    this.isWdl = this.workflow && this.workflow && this.workflow.full_workflow_path &&
+      this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType) === ToolDescriptor.TypeEnum.WDL;
     if (this.isWdl && this.selectedVersion) {
       this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFile: SourceFile) => {
         if (sourceFile && sourceFile.content && sourceFile.content.length) {

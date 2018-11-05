@@ -13,33 +13,39 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ListContainersService } from '../containers/list/list.service';
-import { CommunicatorService } from '../shared/communicator.service';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
+import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
+import { SessionQuery } from '../shared/session/session.query';
+import { SessionService } from '../shared/session/session.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { ToolQuery } from '../shared/tool/tool.query';
 import { TrackLoginService } from '../shared/track-login.service';
-import { ErrorService } from './../shared/error.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../shared/refresh.service';
-import { StateService } from './../shared/state.service';
 import { ContainersService } from './../shared/swagger/api/containers.service';
+import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { AlertService } from '../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertQuery } from '../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-container',
@@ -53,9 +59,9 @@ export class ContainerComponent extends Entry {
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
-  public tool: ExtendedDockstoreTool;
+  public tool: DockstoreTool;
   public toolCopyBtn: string;
-  public sortedVersions: Array<Tag|WorkflowVersion> = [];
+  public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
@@ -63,6 +69,8 @@ export class ContainerComponent extends Entry {
   publishMessage = 'Publish the tool to make it visible to the public';
   unpublishMessage = 'Unpublish the tool to remove it from the public';
   pubUnpubMessage: string;
+  public extendedTool$: Observable<ExtendedDockstoreTool>;
+  public isRefreshing$: Observable<boolean>;
 
   constructor(private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -74,16 +82,18 @@ export class ContainerComponent extends Entry {
     private containersService: ContainersService,
     private emailService: EmailService,
     trackLoginService: TrackLoginService,
-    communicatorService: CommunicatorService,
     providerService: ProviderService,
     router: Router,
     private containerService: ContainerService,
-    stateService: StateService,
-    errorService: ErrorService,
     location: Location,
-    activatedRoute: ActivatedRoute) {
-    super(trackLoginService, providerService, router,
-      stateService, errorService, dateService, urlResolverService, activatedRoute, location);
+    activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
+    protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery, private alertService: AlertService,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery) {
+    super(trackLoginService, providerService, router, dateService, urlResolverService, activatedRoute,
+      location, sessionService, sessionQuery, gA4GHFilesService);
+      this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
+
     this._toolType = 'containers';
     this.redirectAndCallDiscourse('/my-tools');
   }
@@ -104,7 +114,6 @@ export class ContainerComponent extends Entry {
    * Populate the extra ExtendedDockstoreTool properties
    */
   setProperties() {
-    let toolRef: ExtendedDockstoreTool = this.tool;
     if (this.selectedVersion === null) {
       this.dockerPullCmd = null;
     } else {
@@ -113,15 +122,6 @@ export class ContainerComponent extends Entry {
     this.privateOnlyRegistry = this.imageProviderService.checkPrivateOnlyRegistry(this.tool);
     this.shareURL = window.location.href;
     this.labelsEditMode = false;
-    toolRef.agoMessage = this.dateService.getAgoMessage(new Date(this.tool.lastBuild).getTime());
-    toolRef.email = this.dockstoreService.stripMailTo(this.tool.email);
-    toolRef.lastBuildDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
-    toolRef.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(this.tool.lastBuild).getTime());
-    toolRef.versionVerified = this.dockstoreService.getVersionVerified(toolRef.tags);
-    toolRef.verifiedSources = this.dockstoreService.getVerifiedSources(toolRef);
-    if (!toolRef.imgProviderUrl) {
-      toolRef = this.imageProviderService.setUpImageProvider(toolRef);
-    }
     this.resetContainerEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
@@ -133,7 +133,7 @@ export class ContainerComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       tool => {
         this.tool = tool;
         if (tool) {
@@ -159,13 +159,6 @@ export class ContainerComponent extends Entry {
   protected setUpTool(tool: ExtendedDockstoreTool) {
     if (tool) {
       this.tool = tool;
-      if (!tool.providerUrl) {
-        this.providerService.setUpProvider(tool);
-      }
-      this.tool = Object.assign(tool, this.tool);
-      const toolRef: ExtendedDockstoreTool = this.tool;
-      toolRef.buildMode = this.containerService.getBuildMode(toolRef.mode);
-      toolRef.buildModeTooltip = this.containerService.getBuildModeTooltip(toolRef.mode);
       this.initTool();
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
@@ -186,7 +179,6 @@ export class ContainerComponent extends Entry {
           if (this.tool != null) {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
-          this.providerService.setUpProvider(this.tool);
         }, error => {
           this.router.navigate(['../']);
         });
@@ -200,24 +192,27 @@ export class ContainerComponent extends Entry {
       const request: PublishRequest = {
         publish: this.published
       };
+      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
+      this.alertService.start(message);
       this.containersService.publish(this.tool.id, request).subscribe(
         response => {
           this.containerService.upsertToolToTools(response);
           this.containerService.setTool(response);
           this.setPublishMessage();
-        }, err => {
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
           this.published = !this.published;
-          this.refreshService.handleError('publish error', err);
+          this.alertService.detailedError(error);
         });
     }
   }
 
-  getValidVersions() {
-    this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
+  publishDisable(): boolean {
+    return !this.isContainerValid();
   }
 
-  publishDisable() {
-    return (this.refreshMessage !== null && this.refreshMessage !== undefined) || !this.isContainerValid();
+  getValidVersions() {
+    this.validVersions = this.dockstoreService.getValidVersions(this.tool.tags);
   }
 
   isContainerValid() {
@@ -272,11 +267,11 @@ export class ContainerComponent extends Entry {
   setContainerLabels(): any {
     return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).
       subscribe(
-      tool => {
-        this.tool.labels = tool.labels;
-        this.updateContainer.setTool(tool);
-        this.labelsEditMode = false;
-      });
+        tool => {
+          this.tool.labels = tool.labels;
+          this.updateContainer.setTool(tool);
+          this.labelsEditMode = false;
+        });
   }
 
   cancelLabelChanges(): void {
@@ -301,51 +296,50 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
-      this.providerService.setUpProvider(this.tool);
     }
     this.onTagChange(tag);
   }
 
   setEntryTab(tabName: string): void {
-     this.currentTab = tabName;
-     if (this.tool != null) {
-       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
-     }
-   }
+    this.currentTab = tabName;
+    if (this.tool != null) {
+      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+    }
+  }
 
-   /**
-    * Will change the /tools in the current URL with /containers
-    * @return {void}
-    */
-   switchToolsToContainers(): void {
-     const url = window.location.href.replace('/tools', '/containers');
-     const toolsIndex = window.location.href.indexOf('/tools');
-     const newPath = url.substring(toolsIndex);
-     this.location.go(newPath);
-   }
+  /**
+   * Will change the /tools in the current URL with /containers
+   * @return {void}
+   */
+  switchToolsToContainers(): void {
+    const url = window.location.href.replace('/tools', '/containers');
+    const toolsIndex = window.location.href.indexOf('/tools');
+    const newPath = url.substring(toolsIndex);
+    this.location.go(newPath);
+  }
 
-   getPageIndex(): number {
-     let pageIndex = this.getIndexInURL('/containers');
-     if (pageIndex === -1) {
-       pageIndex = this.getIndexInURL('/tools');
-       this.switchToolsToContainers();
-     }
-     return pageIndex;
-   }
+  getPageIndex(): number {
+    let pageIndex = this.getIndexInURL('/containers');
+    if (pageIndex === -1) {
+      pageIndex = this.getIndexInURL('/tools');
+      this.switchToolsToContainers();
+    }
+    return pageIndex;
+  }
 
-   addToLabels(event: MatChipInputEvent): void {
-     const input = event.input;
-     const value = event.value;
-     if ((value || '').trim()) {
-       this.containerEditData.labels.push(value.trim());
-     }
+  addToLabels(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.containerEditData.labels.push(value.trim());
+    }
 
-     if (input) {
-       input.value = '';
-     }
-   }
+    if (input) {
+      input.value = '';
+    }
+  }
 
-   removeLabel(label: any): void {
+  removeLabel(label: any): void {
     const index = this.containerEditData.labels.indexOf(label);
 
     if (index >= 0) {
