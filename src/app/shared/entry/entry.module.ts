@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
+import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -50,7 +51,8 @@ import { RefreshAlertModule } from '../alert/alert.module';
     NgxJsonLdModule,
     ClipboardModule,
     RouterModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    ShareButtonsModule.forRoot()
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -80,7 +82,8 @@ import { RefreshAlertModule } from '../alert/alert.module';
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
     NgxJsonLdModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    ShareButtonsModule
   ]
 })
 export class EntryModule { }

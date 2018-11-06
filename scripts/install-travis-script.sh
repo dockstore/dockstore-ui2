@@ -4,7 +4,7 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
-npm install
+npm ci
 
 if [ "$RUN_PROD" = true ]; then
   ng version

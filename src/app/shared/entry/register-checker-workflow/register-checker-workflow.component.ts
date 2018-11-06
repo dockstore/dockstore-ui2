@@ -127,7 +127,22 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   }
 
   registerCheckerWorkflow(): void {
-    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, this.descriptorType);
+    let descriptorTypeNoNFL: 'cwl' | 'wdl';
+    switch (this.descriptorType) {
+      case ToolDescriptor.TypeEnum.CWL: {
+        descriptorTypeNoNFL = 'cwl';
+        break;
+      }
+      case ToolDescriptor.TypeEnum.WDL: {
+        descriptorTypeNoNFL = 'wdl';
+        break;
+      }
+      default: {
+        console.error('Unrecognized descriptor type: ' + this.descriptorType);
+        return;
+      }
+    }
+    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, descriptorTypeNoNFL);
   }
 
   /**
