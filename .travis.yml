@@ -25,35 +25,27 @@ jobs:
         - ng lint
         - npm run prebuild
         - ng test --watch=false --code-coverage --browsers ChromeHeadless
+        - ng version
+        - npm run build.prod
       env:
-        - RUN_PROD=false
-        - NAME='Lint and Unit Tests'
+        - NAME='Lint, Unit Test, and Prod Test'
     - stage: test
       env:
-        - RUN_PROD=false
-        - NAME='Integration tests'
+        - NAME='Integration test 1'
         - TEST='cypress/integration/group1/**/*'
       script: ./scripts/run-travis-script.sh
 
     - stage: test
       env:
-        - RUN_PROD=false
-        - NAME='Integration tests'
+        - NAME='Integration test 2'
         - TEST='cypress/integration/group2/**/*'
       script: ./scripts/run-travis-script.sh
 
     - stage: test
       env:
-        - RUN_PROD=false
-        - NAME='Integration tests'
+        - NAME='Integration test 3'
         - TEST='cypress/integration/group3/**/*'
       script: ./scripts/run-travis-script.sh
-
-    - stage: test
-      script: npm run build.prod
-      env:
-        - RUN_PROD=true
-        - NAME='Production test'
 
 script: echo "overriding test"
 
