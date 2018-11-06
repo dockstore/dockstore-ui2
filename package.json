@@ -86,6 +86,6 @@
     "protractor": "^5.4.1",
     "rxjs-tslint": "^0.1.5",
     "rxjs-tslint-rules": "^4.10.0",
-    "tslint": "~5.9.1"
+    "tslint": "^5.11.0"
   }
 }
