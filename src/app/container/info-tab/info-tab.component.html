@@ -40,7 +40,7 @@
     <li *ngIf="tool?.imgProviderUrl">
       <strong matTooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
       <a [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
-        {{ tool?.imgProviderUrl }}
+        {{ tool?.imgProviderUrl | urlDeconstruct}}
       </a>
       <span *ngIf="privateOnlyRegistry">
         {{ tool?.imgProviderUrl }}
