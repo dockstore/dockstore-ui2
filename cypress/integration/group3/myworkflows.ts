@@ -13,8 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { resetDB, setTokenUserViewPort } from '../../support/commands';
+
 describe('Dockstore my workflows', function() {
-    require('./helper.js')
+  resetDB();
+  setTokenUserViewPort();
 
     const cwlDescriptorType = 'CWL';
     const wdlDescriptorType = 'WDL';
@@ -22,152 +25,152 @@ describe('Dockstore my workflows', function() {
 
     describe('Should contain extended Workflow properties', function() {
         it('visit another page then come back', function() {
-          cy.visit(String(global.baseUrl) + "/my-workflows")
-            cy.get('a#home-nav-button').click()
-            cy.contains('Browse Tools')
-            cy.get('a#my-workflows-nav-button').click()
+          cy.visit( '/my-workflows');
+            cy.get('a#home-nav-button').click();
+            cy.contains('Browse Tools');
+            cy.get('a#my-workflows-nav-button').click();
         });
         it('Should contain the extended properties and be able to edit the info tab', function() {
-          cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
-          cy.contains('GitHub')
-          cy.contains('https://github.com/A/g')
-          cy.contains('/Dockstore.cwl')
+          cy.visit( '/my-workflows/github.com/A/g');
+          cy.contains('GitHub');
+          cy.contains('https://github.com/A/g');
+          cy.contains('/Dockstore.cwl');
           // Change the file path
           cy.contains('button', ' Edit ').click();
           cy.get('input').clear().type('/Dockstore2.cwl');
           cy.contains('button', ' Save ').click();
-          cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
-          cy.contains('/Dockstore2.cwl')
+          cy.visit( '/my-workflows/github.com/A/g');
+          cy.contains('/Dockstore2.cwl');
           // Change the file path back
           cy.contains('button', ' Edit ').click();
           cy.get('input').clear().type('/Dockstore.cwl');
           cy.contains('button', ' Save ').click();
-          cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
-          cy.contains('/Dockstore.cwl')
+          cy.visit( '/my-workflows/github.com/A/g');
+          cy.contains('/Dockstore.cwl');
         });
     });
 
     describe('Look at an invalid workflow', function() {
         it('Invalid workflow should not be publishable', function() {
-            cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/g")
+            cy.visit( '/my-workflows/github.com/A/g');
             cy
                 .get('#publishButton')
-                .should('be.disabled')
+                .should('be.disabled');
             cy
                 .get('#refreshButton')
-                .should('not.be.disabled')
+                .should('not.be.disabled');
         });
     });
 
     function haveAlert() {
         cy
             .get('.mat-error')
-            .should('be.visible')
+            .should('be.visible');
     }
 
 
     function notHaveAlert() {
         cy
             .get('.mat-error')
-            .should('not.be.visible')
+            .should('not.be.visible');
     }
 
     describe('Test register workflow form validation', function() {
         it('It should have 3 seperate descriptor path validation patterns', function() {
-            cy.visit(String(global.baseUrl) + "/my-workflows")
+            cy.visit( '/my-workflows');
             cy
                 .get('#registerWorkflowButton')
                 .should('be.visible')
                 .should('be.enabled')
-                .click()
+                .click();
             // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-            cy.wait(1000)
+            cy.wait(1000);
             cy
                 .contains('button', 'Next')
-                .click()
+                .click();
             // Untouched form should not have errors but is disabled
             cy.get('#submitButton').should('be.disabled');
-            notHaveAlert()
+            notHaveAlert();
             cy
                 .get('#sourceCodeRepositoryInput')
                 .clear()
-                .type('beef/stew')
+                .type('beef/stew');
             cy.get('#submitButton').should('be.disabled');
             cy
                 .get('#sourceCodeRepositoryWorkflowPathInput')
                 .clear()
-                .type('/Dockstore.cwl')
-            notHaveAlert()
+                .type('/Dockstore.cwl');
+            notHaveAlert();
             // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
-            cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click()
-            cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click()
-            haveAlert()
+            cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
+            cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
+            haveAlert();
             cy
                 .get('#sourceCodeRepositoryWorkflowPathInput')
                 .clear()
-                .type('/Dockstore.wdl')
-            notHaveAlert()
-            cy.get('#descriptorTypeRadioButtons').contains(nextflowDescriptorType).find('.mat-radio-container').click()
-            haveAlert()
+                .type('/Dockstore.wdl');
+            notHaveAlert();
+            cy.get('#descriptorTypeRadioButtons').contains(nextflowDescriptorType).find('.mat-radio-container').click();
+            haveAlert();
             cy
                 .get('#sourceCodeRepositoryWorkflowPathInput')
                 .clear()
-                .type('/Dockstore.config')
-            notHaveAlert()
-            cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click()
-            haveAlert()
+                .type('/Dockstore.config');
+            notHaveAlert();
+            cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
+            haveAlert();
             cy
                 .get('#sourceCodeRepositoryWorkflowPathInput')
                 .clear()
-                .type('/Dockstore.cwl')
-            notHaveAlert()
+                .type('/Dockstore.cwl');
+            notHaveAlert();
             cy
                 .get('#closeRegisterWorkflowModalButton')
                 .contains('button', 'Close')
                 .should('be.visible')
                 .should('be.enabled')
-                .click()
+                .click();
         });
     });
 
     describe('Look at a published workflow', function() {
         it('Look at each tab', function() {
-            cy.visit(String(global.baseUrl) + "/my-workflows/github.com/A/l")
-            cy.wait(3000)
+            cy.visit( '/my-workflows/github.com/A/l');
+            cy.wait(3000);
             cy
                 .get('.nav-link')
                 .contains('Info')
                 .parent()
                 .should('have.class', 'active')
-                .and('not.have.class', 'disabled')
+                .and('not.have.class', 'disabled');
             cy
                 .get('.nav-link')
                 .contains('Launch')
                 .parent()
-                .should('not.have.class', 'disabled')
+                .should('not.have.class', 'disabled');
             cy
                 .get('.nav-link')
                 .contains('Versions')
                 .parent()
-                .should('not.have.class', 'disabled')
+                .should('not.have.class', 'disabled');
             cy
                 .get('.nav-link')
                 .contains('Files')
                 .parent()
-                .should('not.have.class', 'disabled')
+                .should('not.have.class', 'disabled');
             cy
                 .get('.nav-link')
                 .contains('Tools')
                 .parent()
-                .should('not.have.class', 'disabled')
+                .should('not.have.class', 'disabled');
             cy
                 .get('.nav-link')
                 .contains('DAG')
                 .parent()
-                .should('not.have.class', 'disabled')
+                .should('not.have.class', 'disabled');
             cy
                 .get('table>tbody>tr')
-                .should('have.length', 3) // 2 Versions and warning line
+                .should('have.length', 3); // 2 Versions and warning line
 
             cy
                 .get('#publishButton')
@@ -175,7 +178,7 @@ describe('Dockstore my workflows', function() {
                 .click()
                 .should('contain', 'Publish')
                 .click()
-                .should('contain', 'Unpublish')
+                .should('contain', 'Unpublish');
         });
     });
-})
+});

@@ -1,21 +1,38 @@
+/*
+ *    Copyright 2018 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+import { setTokenUserViewPort } from '../../support/commands';
+
 describe('Dropdown test', function () {
   // TODO: GitLab tests are commented out
-  require('./helper.js')
+  setTokenUserViewPort();
 
   beforeEach(function () {
     cy
       .server()
       .route({
-        method: "GET",
+        method: 'GET',
         url: /extended/,
-        response: { "canChangeUsername": true }
-      })
-    cy.visit(String(global.baseUrl))
+        response: { 'canChangeUsername': true }
+      });
+    cy.visit('');
 
     // Select dropdown
     cy
       .get('#dropdown-main')
-      .click()
+      .click();
   });
 
   describe('Go to starred page', function () {
@@ -23,16 +40,16 @@ describe('Dropdown test', function () {
       // Select dropdown tokens
       cy
         .get('#dropdown-starred')
-        .click()
+        .click();
     });
 
     it('Should have nothing starred', function () {
       cy
         .get('#starCountButton')
-        .should('not.be.visible')
+        .should('not.be.visible');
       cy
         .get('#starringButton')
-        .should('not.be.visible')
+        .should('not.be.visible');
     });
   });
 
@@ -41,7 +58,7 @@ describe('Dropdown test', function () {
       // Select dropdown accounts
       cy
         .get('#dropdown-accounts')
-        .click()
+        .click();
     });
 
     it('Should show all accounts as linked (except GitLab and Bitbucket)', function () {
@@ -54,78 +71,78 @@ describe('Dropdown test', function () {
       cy
         .server()
         .route({
-          method: "DELETE",
-          url: "/users/user",
-          response: "true"
-        })
+          method: 'DELETE',
+          url: '/users/user',
+          response: 'true'
+        });
       cy
         .get('#dropdown-accounts')
-        .click()
-      cy.contains("Dockstore Account Controls").click()
+        .click();
+      cy.contains('Dockstore Account Controls').click();
     });
     it('Should have the delete button enabled', function () {
-      cy.contains("Delete Dockstore Account").should('not.be.disabled').click();
-      cy.contains("Yes, delete my account").should('be.disabled')
-      cy.get('#deleteUserUsernameInput').type('potato')
-      cy.contains("Yes, delete my account").should('be.disabled')
-      cy.get('#deleteUserUsernameInput').clear().type('user_A')
-      cy.contains("Yes, delete my account").should('not.be.disabled').click()
-      cy.url().should('eq', String(global.baseUrl) + '/login')
-    })
+      cy.contains('Delete Dockstore Account').should('not.be.disabled').click();
+      cy.contains('Yes, delete my account').should('be.disabled');
+      cy.get('#deleteUserUsernameInput').type('potato');
+      cy.contains('Yes, delete my account').should('be.disabled');
+      cy.get('#deleteUserUsernameInput').clear().type('user_A');
+      cy.contains('Yes, delete my account').should('not.be.disabled').click();
+      cy.url().should('eq', Cypress.config().baseUrl +   '/login');
+    });
     it('Should have the change username button enabled', function () {
-      cy.contains("Update Username").should('not.be.disabled');
+      cy.contains('Update Username').should('not.be.disabled');
     });
   });
-  var everythingOk = function () {
-    cy.get('#unlink-GitHub').should('be.visible')
-    cy.get('#unlink-Quay').should('be.visible')
-    cy.get('#link-Bitbucket').should('be.visible')
-    cy.get('#link-GitLab').should('be.visible')
-  }
+  const everythingOk = function () {
+    cy.get('#unlink-GitHub').should('be.visible');
+    cy.get('#unlink-Quay').should('be.visible');
+    cy.get('#link-Bitbucket').should('be.visible');
+    cy.get('#link-GitLab').should('be.visible');
+  };
 
-  var goToAccountsOnboarding = function () {
+  const goToAccountsOnboarding = function () {
     cy
       .contains('Link External Accounts')
-      .click()
-  }
+      .click();
+  };
   describe('Go to setup page', function () {
     beforeEach(function () {
 
       // Select dropdown setup
       cy
         .get('#dropdown-onboarding')
-        .click()
+        .click();
     });
 
     it('Should let you change your username if possible', function () {
 
       cy
         .get('#updateUsername')
-        .should('not.be.disabled')
+        .should('not.be.disabled');
       cy
         .get('#username')
-        .type('-')
+        .type('-');
       cy
         .get('#updateUsername')
-        .should('be.disabled')
+        .should('be.disabled');
       cy
         .get('#username')
-        .type('a')
+        .type('a');
       cy
         .get('#updateUsername')
-        .should('not.be.disabled')
+        .should('not.be.disabled');
       cy
         .get('#username')
-        .type('@')
+        .type('@');
       cy
         .get('#updateUsername')
-        .should('be.disabled')
+        .should('be.disabled');
     });
 
     it('Should show all accounts as linked (except GitLab and Bitbucket)', function () {
       // everythingOk();
       // goToAccountsOnboarding();
-      // cy.visit(String(global.baseUrl) + '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
+      // cy.visit( '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
       //     expect(resp.status).to.eq('')
       // })
       // goToAccountsOnboarding();
@@ -135,27 +152,27 @@ describe('Dropdown test', function () {
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit(String(global.baseUrl) + '/auth/bitbucket.org?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
-        expect(resp.status).to.eq('')
-      })
+      cy.visit( '/auth/bitbucket.org?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+        expect(resp.status).to.eq('');
+      });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit(String(global.baseUrl) + '/auth/potato.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
-        expect(resp.status).to.eq('')
-      })
+      cy.visit( '/auth/potato.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+        expect(resp.status).to.eq('');
+      });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit(String(global.baseUrl) + '/auth/github.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
-        expect(resp.status).to.eq('')
-      })
+      cy.visit( '/auth/github.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+        expect(resp.status).to.eq('');
+      });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit(String(global.baseUrl) + '/auth/quay.io?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
-        expect(resp.status).to.eq('')
-      })
+      cy.visit( '/auth/quay.io?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+        expect(resp.status).to.eq('');
+      });
       goToAccountsOnboarding();
       everythingOk();
     });
