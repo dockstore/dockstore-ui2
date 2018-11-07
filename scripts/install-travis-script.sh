@@ -6,12 +6,8 @@ set -o xtrace
 
 npm ci
 
-export CHROME_BIN=/usr/bin/google-chrome
-export DISPLAY=:99.0
-sh -e /etc/init.d/xvfb start
 wget --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar
 chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar
-sleep 3 # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
 ng version
 npm install codecov
 
