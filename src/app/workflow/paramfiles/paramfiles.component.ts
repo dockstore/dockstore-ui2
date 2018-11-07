@@ -24,6 +24,8 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { FilesService } from '../files/state/files.service';
+import { FilesQuery } from '../files/state/files.query';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -43,8 +45,9 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
 
   constructor(private paramfilesService: ParamfilesService, protected gA4GHService: GA4GHService,
     public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery,
-    private workflowService: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery) {
-    super(fileService, gA4GHFilesService, gA4GHService);
+    private workflowService: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery, protected filesService: FilesService,
+    protected filesQuery: FilesQuery) {
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.workflowService.workflowIsPublished$;
     this.isNFL$ = this.workflowQuery.isNFL$;
   }

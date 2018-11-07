@@ -18,13 +18,14 @@ import { transaction } from '@datorama/akita';
 
 import { GA4GHService, ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
+import { FilesService } from '../../workflow/files/state/files.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GA4GHFilesService {
 
-  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService) { }
+  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService, private filesService: FilesService) { }
 
   /**
    * Updates all GA4GH files from all descriptor types unless specific ones provided
@@ -38,6 +39,7 @@ export class GA4GHFilesService {
   @transaction()
   updateFiles(id: string, version: string, descriptorTypes?: Array<ToolDescriptor.TypeEnum>) {
     this.clearFiles();
+    this.filesService.removeAll();
     if (!descriptorTypes) {
       descriptorTypes = [ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL];
     }
