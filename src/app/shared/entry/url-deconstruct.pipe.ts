@@ -1,35 +1,36 @@
-/**
- * Pipe for deconstructing URLs, represented as string objects, into just the important information.
- *
- * E.G. https://github.com/agduncan94/hello-dockstore-workflow should be shortened to agduncan94/hello-dockstore-workflow
- *
- * @param {string}    providerUrl
- * @param {string}    versionName
- *
- * @return {string}   The pathname of providerUrl
- */
-
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'urlDeconstruct'
 })
 export class UrlDeconstructPipe implements PipeTransform {
+  /**
+   * Pipe for deconstructing URLs, represented as string objects, into just the important information.
+   * E.g. https://github.com/agduncan94/hello-dockstore-workflow should be shortened to agduncan94/hello-dockstore-workflow
+   *
+   * @param providerUrl
+   * @param versionName
+   * @returns {string} The pathname of providerUrl
+   */
 
-  transform(providerUrl: string, versionName: string): any {
-    const PATHNAME = 3;
+  transform(providerUrl: string, versionName: string): string {
+    const PATHNAME = 1;
+    providerUrl = providerUrl.split(/:\/\//).pop();     // Removes protocol from providerUrl
 
-    if (providerUrl.includes('github.com') && versionName) {
-      return providerUrl.split('github.com/').pop() + '/tree/' + versionName;
+    if (providerUrl.startsWith('github.com') && versionName) {
+      return providerUrl.replace('github.com/', '') + '/tree/' + versionName;
     }
-    if (providerUrl.includes('bitbucket.org') && versionName) {
-      return providerUrl.split('bitbucket.org/').pop() + '/src/' + versionName;
+    if (providerUrl.startsWith('bitbucket.org') && versionName) {
+      return providerUrl.replace('bitbucket.org/', '') + '/src/' + versionName;
     }
-    if (providerUrl.includes('quay.io')) {
-      return providerUrl.split('/repository/').pop();
+    if (providerUrl.startsWith('gitlab.com') && versionName) {
+      return providerUrl.replace('gitlab.com/', '') + '/tree/' + versionName;
     }
-    if (providerUrl.includes('hub.docker.com')) {
-      return providerUrl.split('/r/').pop();
+    if (providerUrl.startsWith('quay.io')) {
+      return providerUrl.replace('quay.io/repository/', '');
+    }
+    if (providerUrl.startsWith('hub.docker.com')) {
+      return providerUrl.replace('hub.docker.com/r/', '');
     }
     // Return the url starting from its pathname
     return providerUrl.split('/').slice(PATHNAME).join('/');
