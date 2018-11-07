@@ -15,43 +15,43 @@
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Variations of URL', function () {
+describe('Variations of URL', () => {
   resetDB();
   setTokenUserViewPort();
-  it('Should redirect to canonical url (encoding)', function () {
+  it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=info');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
-  it('Should redirect to canonical url (version)', function () {
+  it('Should redirect to canonical url (version)', () => {
     cy.visit('/workflows/github.com/A/l:master');
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=info');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
-  it('Should redirect to canonical url (tab)', function () {
+  it('Should redirect to canonical url (tab)', () => {
     cy.visit('/workflows/github.com/A/l?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
-  it('Should redirect to canonical url (version + tab)', function () {
+  it('Should redirect to canonical url (version + tab)', () => {
     cy.visit('/workflows/github.com/A/l:master?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
-  it('Should redirect to canonical url (encoding + version + tab)', function () {
+  it('Should redirect to canonical url (encoding + version + tab)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl:master?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
 });
 
-describe('Dockstore Workflow Details', function () {
+describe('Dockstore Workflow Details', () => {
   resetDB();
   setTokenUserViewPort();
-  beforeEach(function () {
+  beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
     cy
       .get('tab')
       .should('have.length', 8); // 8 Tabs include all top level tabs plus 2 tabs in the files tab
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=info');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
 
-  it('should not show Edit Button', function () {
+  it('should not show Edit Button', () => {
     // edit button should only appear inside "My Workflows"
     // unless logged in as the author, edit button should not be present in "Workflows"
     cy
@@ -59,16 +59,16 @@ describe('Dockstore Workflow Details', function () {
       .should('not.exist');
   });
 
-  it('Change tab to launch', function () {
+  it('Change tab to launch', () => {
     cy
       .get('.nav-link')
       .contains('Launch')
       .parent()
       .click();
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=launch');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=launch');
   });
 
-  it('Change tab to versions', function () {
+  it('Change tab to versions', () => {
     cy
       .get('.nav-link')
       .contains('Versions')
@@ -77,20 +77,20 @@ describe('Dockstore Workflow Details', function () {
     cy
       .get('tbody>tr')
       .should('have.length', 2); // 1 Version and warning line
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=versions');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
   });
 
-  describe('Change tab to files', function () {
-    beforeEach(function () {
+  describe('Change tab to files', () => {
+    beforeEach(() => {
       cy
         .get('.nav-link')
         .contains('Files')
         .parent()
         .click();
-      cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=files');
+      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
     });
 
-    it('Should have Descriptor files tab selected', function () {
+    it('Should have Descriptor files tab selected', () => {
       cy
         .get('.nav-link')
         .contains('Descriptor Files')
@@ -99,14 +99,14 @@ describe('Dockstore Workflow Details', function () {
         .should('have.class', 'active');
     });
 
-    it('Should have content in file viewer', function () {
+    it('Should have content in file viewer', () => {
       cy
         .get('.ace_content')
         .should('be.visible');
     });
 
-    describe('Change tab to Test Parameters', function () {
-      beforeEach(function () {
+    describe('Change tab to Test Parameters', () => {
+      beforeEach(() => {
         cy
           .get('.nav-link')
           .contains('Test Parameter Files')
@@ -114,7 +114,7 @@ describe('Dockstore Workflow Details', function () {
           .click();
       });
 
-      it('Should not have content in file viewer', function () {
+      it('Should not have content in file viewer', () => {
         cy
           .get('.ace_content')
           .children()
@@ -123,26 +123,26 @@ describe('Dockstore Workflow Details', function () {
     });
   });
 
-  it('Change tab to tools', function () {
+  it('Change tab to tools', () => {
     cy
       .get('.nav-link')
       .contains('Tools')
       .parent()
       .click();
-    cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=tools');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=tools');
   });
 
-  describe('Change tab to dag', function () {
-    beforeEach(function () {
+  describe('Change tab to dag', () => {
+    beforeEach(() => {
       cy
         .get('.nav-link')
         .contains('DAG')
         .parent()
         .click();
-      cy.url().should('eq', Cypress.config().baseUrl +  '/workflows/github.com/A/l:master?tab=dag');
+      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=dag');
     });
 
-    it('Change to fullscreen and back', function () {
+    it('Change to fullscreen and back', () => {
       cy
         .get('#dag_fullscreen')
         .click()

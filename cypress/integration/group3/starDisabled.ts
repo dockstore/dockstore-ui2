@@ -15,15 +15,15 @@
  */
 import { resetDB } from '../../support/commands';
 
-describe('Workflow starring while not logged in', function () {
+describe('Workflow starring while not logged in', () => {
   resetDB();
-  beforeEach(function () {
+  beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('/workflows/github.com/A/l');
   });
 
-  describe('Select a Workflow', function () {
-    it('Workflow can\'t be starred/unstarred when not logged in', function () {
+  describe('Select a Workflow', () => {
+    it('Workflow can\'t be starred/unstarred when not logged in', () => {
       cy
         .get('#starringButton')
         .should('be.disabled');
@@ -35,14 +35,14 @@ describe('Workflow starring while not logged in', function () {
   });
 });
 
-describe('Tool starring while not logged in', function () {
-  beforeEach(function () {
+describe('Tool starring while not logged in', () => {
+  beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('/containers/quay.io/A2/a');
   });
 
-  describe('Select a tool', function () {
-    it('Tool can\'t be starred/unstarred when not logged in', function () {
+  describe('Select a tool', () => {
+    it('Tool can\'t be starred/unstarred when not logged in', () => {
       cy
         .get('#starringButton')
         .should('be.disabled');

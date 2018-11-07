@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
-describe('Checker workflow test from my-tools', function () {
+
+describe('Checker workflow test from my-tools', () => {
   resetDB();
   setTokenUserViewPort();
-  beforeEach(function () {
+  beforeEach(() => {
     // Visit my-tools page
     cy.visit('/my-tools');
   });
@@ -29,8 +30,8 @@ describe('Checker workflow test from my-tools', function () {
       .should('be.visible').click();
   }
 
-  describe('Should be able to register and publish a checker workflow from a tool', function () {
-    it('visit a tool and have the correct buttons and be able to register a checker workflow', function () {
+  describe('Should be able to register and publish a checker workflow from a tool', () => {
+    it('visit a tool and have the correct buttons and be able to register a checker workflow', () => {
       goToB3();
 
       cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
@@ -48,7 +49,7 @@ describe('Checker workflow test from my-tools', function () {
 
       cy.get('#submitButton').click();
     });
-    it('visit the tool and its checker workflow and have the correct buttons', function () {
+    it('visit the tool and its checker workflow and have the correct buttons', () => {
       goToB3();
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
@@ -79,7 +80,7 @@ describe('Checker workflow test from my-tools', function () {
       goToTab('Info');
       cy.get('#viewCheckerWorkflowButton').should('visible');
     });
-    it('visit the tool and have its publish/unpublish reflected in the checker workflow', function () {
+    it('visit the tool and have its publish/unpublish reflected in the checker workflow', () => {
       goToB3();
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
@@ -108,8 +109,8 @@ describe('Checker workflow test from my-tools', function () {
     });
   });
 });
-describe('Should be able to see the checker workflow from a tool', function () {
-  it('visit the tool with a checker workflow and have the correct buttons', function () {
+describe('Should be able to see the checker workflow from a tool', () => {
+  it('visit the tool with a checker workflow and have the correct buttons', () => {
     setTokenUserViewPort();
     cy.visit('/search-containers');
     cy.get('mat-cell')

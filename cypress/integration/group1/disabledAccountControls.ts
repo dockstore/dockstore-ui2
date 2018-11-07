@@ -15,22 +15,22 @@
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Go to disabled Dockstore Account Controls', function () {
+describe('Go to disabled Dockstore Account Controls', () => {
   resetDB();
   setTokenUserViewPort();
-  beforeEach(function () {
+  beforeEach(() => {
     cy.visit('');
     cy.get('#dropdown-main').click();
     cy.get('#dropdown-accounts').click();
     cy.contains('Dockstore Account Controls').click();
   });
-  it('Should have the danger alert', function () {
+  it('Should have the danger alert', () => {
     cy.contains('caution');
   });
-  it('Should have the delete button disabled', function () {
+  it('Should have the delete button disabled', () => {
     cy.contains('Delete Dockstore Account').should('be.disabled');
   });
-  it('Should have the change username button disabled', function () {
+  it('Should have the change username button disabled', () => {
     cy.contains('Update Username').should('be.disabled');
   });
 });

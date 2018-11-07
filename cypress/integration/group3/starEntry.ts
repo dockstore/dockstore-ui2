@@ -15,7 +15,7 @@
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Tool and Workflow starring', function () {
+describe('Tool and Workflow starring', () => {
   resetDB();
   setTokenUserViewPort();
 
@@ -118,14 +118,14 @@ describe('Tool and Workflow starring', function () {
       .should('exist');
   }
 
-  describe('Workflow starring', function () {
-    it('Workflow can be starred/unstarred', function () {
+  describe('Workflow starring', () => {
+    it('Workflow can be starred/unstarred', () => {
       entryStarring('/workflows/github.com/A/l');
 
     });
   });
-  describe('Tool Starring', function () {
-    it('Tool can be starred/unstarred', function () {
+  describe('Tool Starring', () => {
+    it('Tool can be starred/unstarred', () => {
       entryStarring('/containers/quay.io/A2/a');
     });
   });

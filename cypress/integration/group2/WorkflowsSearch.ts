@@ -15,14 +15,14 @@
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Dockstore workflow list page', function () {
+describe('Dockstore workflow list page', () => {
   resetDB();
   setTokenUserViewPort();
-  describe('Select a workflow', function () {
-    it('Should be able to go to the workflows search page', function () {
-      cy.visit( '/search-workflows');
+  describe('Select a workflow', () => {
+    it('Should be able to go to the workflows search page', () => {
+      cy.visit('/search-workflows');
     });
-    it('Should display the correct url', function () {
+    it('Should display the correct url', () => {
       cy.get('mat-cell')
         .find('a')
         .contains(/\bl\b/)
@@ -30,12 +30,12 @@ describe('Dockstore workflow list page', function () {
         .should('not.have.attr', 'href', '/workflows/github.com%20A%20l');
     });
     // 1 workflow A/l, no checkers from other tests added
-    it('Should have 1 workflow', function () {
+    it('Should have 1 workflow', () => {
       cy
         .get('mat-row')
         .should('have.length', 1);
     });
-    it('Should be able to go to the github.com/A/l workflow', function () {
+    it('Should be able to go to the github.com/A/l workflow', () => {
       cy
         .get('mat-cell')
         .find('a')

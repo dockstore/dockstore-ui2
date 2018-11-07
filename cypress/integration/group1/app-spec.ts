@@ -13,55 +13,54 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-/* https://github.com/angular/protractor/blob/master/docs/getting-started.md */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
-describe('Dockstore Home', function () {
+
+describe('Dockstore Home', () => {
   resetDB();
   setTokenUserViewPort();
-  beforeEach(function () {
+  beforeEach(() => {
     cy.visit('');
   });
 
-  it('cy.should - assert that <title> is correct', function () {
+  it('cy.should - assert that <title> is correct', () => {
     cy.title().should('include', 'Dockstore');
     // ignoring for now, not working in combination with API display
     // expect(browser.getLocationAbsUrl()).toMatch("/");
   });
 
-  describe('Browse tabs', function () {
-    it('should have tool tab selected', function () {
+  describe('Browse tabs', () => {
+    it('should have tool tab selected', () => {
       cy
         .get('#toolTab')
         .should('exist');
     });
-    it('should not have workflow tab selected', function () {
+    it('should not have workflow tab selected', () => {
       cy
         .get('#workflowTab')
         .should('exist');
     });
   });
 
-  describe('Navigation', function () {
-    it('My Tools visible', function () {
+  describe('Navigation', () => {
+    it('My Tools visible', () => {
       cy
         .get('#my-tools-nav-button')
         .should('visible');
     });
-    it('My Workflows visible', function () {
+    it('My Workflows visible', () => {
       cy
         .get('#my-workflows-nav-button')
         .should('visible');
     });
   });
 
-  describe('Landing Video', function () {
-    it('video button visible', function () {
+  describe('Landing Video', () => {
+    it('video button visible', () => {
       cy
         .get('.btn.youtube')
         .should('visible');
     });
-    it('open and close video', function () {
+    it('open and close video', () => {
       cy.get('#youtubeModal').should('not.be.visible');
       cy
         .get('.btn.youtube').should('be.visible').click();

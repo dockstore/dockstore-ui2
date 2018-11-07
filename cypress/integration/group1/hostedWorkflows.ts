@@ -15,11 +15,11 @@
  */
 import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Dockstore hosted workflows', function () {
+describe('Dockstore hosted workflows', () => {
   resetDB();
   setTokenUserViewPort();
 
-  beforeEach(function () {
+  beforeEach(() => {
     cy.visit('/my-workflows');
   });
 
@@ -28,8 +28,8 @@ describe('Dockstore hosted workflows', function () {
   }
 
   // Ensure tabs are correct for the hosted workflow, try adding a version
-  describe('Should be able to register a hosted workflow and add files to it', function () {
-    it('Register the workflow', function () {
+  describe('Should be able to register a hosted workflow and add files to it', () => {
+    it('Register the workflow', () => {
       // Select the hosted workflow
       getWorkflow();
 

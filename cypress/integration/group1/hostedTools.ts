@@ -15,11 +15,11 @@
  */
 import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Dockstore hosted tools', function () {
+describe('Dockstore hosted tools', () => {
   resetDB();
   setTokenUserViewPort();
 
-  beforeEach(function () {
+  beforeEach(() => {
     cy.visit('/my-tools');
   });
 
@@ -28,8 +28,8 @@ describe('Dockstore hosted tools', function () {
   }
 
   // Ensure tabs are correct for the hosted tool, try adding a version
-  describe('Should be able to register a hosted tool and add files to it', function () {
-    it('Register the tool', function () {
+  describe('Should be able to register a hosted tool and add files to it', () => {
+    it('Register the tool', () => {
       // Select the hosted tool
       getTool();
 

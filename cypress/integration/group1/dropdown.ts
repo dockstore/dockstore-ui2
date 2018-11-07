@@ -15,11 +15,11 @@
  */
 import { setTokenUserViewPort } from '../../support/commands';
 
-describe('Dropdown test', function () {
+describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
   setTokenUserViewPort();
 
-  beforeEach(function () {
+  beforeEach(() => {
     cy
       .server()
       .route({
@@ -35,15 +35,15 @@ describe('Dropdown test', function () {
       .click();
   });
 
-  describe('Go to starred page', function () {
-    beforeEach(function () {
+  describe('Go to starred page', () => {
+    beforeEach(() => {
       // Select dropdown tokens
       cy
         .get('#dropdown-starred')
         .click();
     });
 
-    it('Should have nothing starred', function () {
+    it('Should have nothing starred', () => {
       cy
         .get('#starCountButton')
         .should('not.be.visible');
@@ -53,20 +53,20 @@ describe('Dropdown test', function () {
     });
   });
 
-  describe('Go to accounts page', function () {
-    beforeEach(function () {
+  describe('Go to accounts page', () => {
+    beforeEach(() => {
       // Select dropdown accounts
       cy
         .get('#dropdown-accounts')
         .click();
     });
 
-    it('Should show all accounts as linked (except GitLab and Bitbucket)', function () {
+    it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
       everythingOk();
     });
   });
-  describe('Go to enabled Dockstore Account Controls', function () {
-    beforeEach(function () {
+  describe('Go to enabled Dockstore Account Controls', () => {
+    beforeEach(() => {
       // Select dropdown accounts
       cy
         .server()
@@ -80,33 +80,33 @@ describe('Dropdown test', function () {
         .click();
       cy.contains('Dockstore Account Controls').click();
     });
-    it('Should have the delete button enabled', function () {
+    it('Should have the delete button enabled', () => {
       cy.contains('Delete Dockstore Account').should('not.be.disabled').click();
       cy.contains('Yes, delete my account').should('be.disabled');
       cy.get('#deleteUserUsernameInput').type('potato');
       cy.contains('Yes, delete my account').should('be.disabled');
       cy.get('#deleteUserUsernameInput').clear().type('user_A');
       cy.contains('Yes, delete my account').should('not.be.disabled').click();
-      cy.url().should('eq', Cypress.config().baseUrl +   '/login');
+      cy.url().should('eq', Cypress.config().baseUrl + '/login');
     });
-    it('Should have the change username button enabled', function () {
+    it('Should have the change username button enabled', () => {
       cy.contains('Update Username').should('not.be.disabled');
     });
   });
-  const everythingOk = function () {
+  const everythingOk = () => {
     cy.get('#unlink-GitHub').should('be.visible');
     cy.get('#unlink-Quay').should('be.visible');
     cy.get('#link-Bitbucket').should('be.visible');
     cy.get('#link-GitLab').should('be.visible');
   };
 
-  const goToAccountsOnboarding = function () {
+  const goToAccountsOnboarding = () => {
     cy
       .contains('Link External Accounts')
       .click();
   };
-  describe('Go to setup page', function () {
-    beforeEach(function () {
+  describe('Go to setup page', () => {
+    beforeEach(() => {
 
       // Select dropdown setup
       cy
@@ -114,7 +114,7 @@ describe('Dropdown test', function () {
         .click();
     });
 
-    it('Should let you change your username if possible', function () {
+    it('Should let you change your username if possible', () => {
 
       cy
         .get('#updateUsername')
@@ -139,7 +139,7 @@ describe('Dropdown test', function () {
         .should('be.disabled');
     });
 
-    it('Should show all accounts as linked (except GitLab and Bitbucket)', function () {
+    it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
       // everythingOk();
       // goToAccountsOnboarding();
       // cy.visit( '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
@@ -152,32 +152,32 @@ describe('Dropdown test', function () {
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit( '/auth/bitbucket.org?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/bitbucket.org?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit( '/auth/potato.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/potato.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit( '/auth/github.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/github.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit( '/auth/quay.io?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/quay.io?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
     });
     // TODO: this part of the wizard has been reworked
-    // it('Go through steps', function() {
+    // it('Go through steps', () => {
     //     // Should start on step 1
     //     cy
     //         .get('h3').contains('Step 1')

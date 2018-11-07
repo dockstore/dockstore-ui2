@@ -15,14 +15,14 @@
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Dockstore tool list page', function () {
+describe('Dockstore tool list page', () => {
   resetDB();
   setTokenUserViewPort();
-  describe('Select a tool', function () {
-    it('Should be able to go to the tools search page', function () {
-      cy.visit( '/search-containers');
+  describe('Select a tool', () => {
+    it('Should be able to go to the tools search page', () => {
+      cy.visit('/search-containers');
     });
-    it('Should display the correct url', function () {
+    it('Should display the correct url', () => {
       cy.get('mat-cell')
         .find('a')
         .contains(/\ba\b/)
@@ -35,12 +35,12 @@ describe('Dockstore tool list page', function () {
         .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3');
     });
     // a, b3, dockstore-cgpmap
-    it('Should have 3 tools', function () {
+    it('Should have 3 tools', () => {
       cy
         .get('mat-row')
         .should('have.length', 3);
     });
-    it('Should be able to go to the quay.io/A2/a tool', function () {
+    it('Should be able to go to the quay.io/A2/a tool', () => {
       cy
         .get('mat-cell')
         .find('a')

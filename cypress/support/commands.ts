@@ -22,7 +22,7 @@ export function goToTab(tabName: string) {
     .click();
 }
 export function resetDB() {
-  before(function () {
+  before(() => {
     cy.exec('psql -c \'drop schema if exists public cascade\' webservice_test -U dockstore');
     cy.exec('psql -c \'create schema public\' webservice_test -U dockstore', { failOnNonZeroExit: false });
     cy.exec('psql -f travisci/db_dump.sql webservice_test -U dockstore');
@@ -30,7 +30,7 @@ export function resetDB() {
   });
 }
 export function setTokenUserViewPort() {
-  beforeEach(function () {
+  beforeEach(() => {
     // Login by adding user obj and token to local storage
     localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\"}');
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken');
