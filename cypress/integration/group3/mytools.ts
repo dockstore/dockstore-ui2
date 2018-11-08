@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -44,11 +44,7 @@ describe('Dockstore my tools', () => {
   describe('Go to published tool A2/b3', () => {
     it('Should have two versions visible', () => {
       selectTool('b3');
-      cy
-        .get('.nav-link')
-        .contains('Versions')
-        .parent()
-        .click();
+      goToTab('Versions');
       cy
         .get('tbody>tr')
         .should('have.length', 2);

@@ -14,13 +14,22 @@
  *    limitations under the License.
  */
 
-export function goToTab(tabName: string) {
-  cy
-    .get('.nav-link')
-    .contains(tabName)
-    .parent()
-    .click();
+export function goToTab(tabName: string): any {
+  return cy
+  .get('.mat-tab-labels')
+  .should('be.visible')
+  .contains('div', tabName)
+  .should('be.visible').click();
 }
+
+export function getTab(tabName: string): any {
+  return cy
+      .get('.mat-tab-labels')
+      .should('be.visible')
+      .contains('div', tabName)
+      .should('be.visible');
+}
+
 export function resetDB() {
   before(() => {
     cy.exec('psql -c \'drop schema if exists public cascade\' webservice_test -U dockstore');

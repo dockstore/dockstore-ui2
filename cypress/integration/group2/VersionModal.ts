@@ -13,24 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 
 describe('Public Version Modal', () => {
   resetDB();
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    cy
-      .get('tab')
-      .should('have.length', 7);
+    cy.get('.mat-tab-label').should('have.length', 4);
   });
 
   it('Change tab to versions', () => {
-    cy
-      .get('.nav-link')
-      .contains('Versions')
-      .parent()
-      .click();
+    goToTab('Versions');
 
     cy
       .contains('View')

@@ -39,7 +39,7 @@ import { RegisterCheckerWorkflowService } from './register-checker-workflow.serv
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
 
   constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
-    private descriptorLanguageService: DescriptorLanguageService, 
+    private descriptorLanguageService: DescriptorLanguageService,
     private checkerWorkflowQuery: CheckerWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService) {
       super();
     }

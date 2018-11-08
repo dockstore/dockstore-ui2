@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { MatDialog } from '@angular/material';
-import { VersionModalComponent } from '../../container/version-modal/version-modal.component';
+import { VersionModalComponent } from '../version-modal/version-modal.component';
 
 @Component({
   selector: 'app-view-workflow',

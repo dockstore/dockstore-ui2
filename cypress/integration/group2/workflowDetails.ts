@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, goToTab, getTab } from '../../support/commands';
 
 describe('Variations of URL', () => {
   resetDB();
@@ -45,9 +45,8 @@ describe('Dockstore Workflow Details', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
-    cy
-      .get('tab')
-      .should('have.length', 8); // 8 Tabs include all top level tabs plus 2 tabs in the files tab
+    // Info, Launch, Version, Files, Tools, DAG
+    cy.get('.mat-tab-label').should('have.length', 6);
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
 
@@ -60,43 +59,26 @@ describe('Dockstore Workflow Details', () => {
   });
 
   it('Change tab to launch', () => {
-    cy
-      .get('.nav-link')
-      .contains('Launch')
-      .parent()
-      .click();
+    goToTab('Launch');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=launch');
   });
 
   it('Change tab to versions', () => {
-    cy
-      .get('.nav-link')
-      .contains('Versions')
-      .parent()
-      .click();
+    goToTab('Versions');
     cy
       .get('tbody>tr')
-      .should('have.length', 2); // 1 Version and warning line
+      .should('have.length', 1); // 1 Version and no warning line
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
   });
 
   describe('Change tab to files', () => {
     beforeEach(() => {
-      cy
-        .get('.nav-link')
-        .contains('Files')
-        .parent()
-        .click();
+      goToTab('Files');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
     });
 
     it('Should have Descriptor files tab selected', () => {
-      cy
-        .get('.nav-link')
-        .contains('Descriptor Files')
-        .parent()
-        .click()
-        .should('have.class', 'active');
+      getTab('Descriptor Files').parent().should('have.class', 'mat-tab-label-active');
     });
 
     it('Should have content in file viewer', () => {
@@ -107,38 +89,27 @@ describe('Dockstore Workflow Details', () => {
 
     describe('Change tab to Test Parameters', () => {
       beforeEach(() => {
-        cy
-          .get('.nav-link')
-          .contains('Test Parameter Files')
-          .parent()
-          .click();
+        goToTab('Test Parameter Files');
       });
 
       it('Should not have content in file viewer', () => {
         cy
           .get('.ace_content')
-          .children()
           .should('not.be.visible');
       });
     });
   });
 
   it('Change tab to tools', () => {
-    cy
-      .get('.nav-link')
-      .contains('Tools')
-      .parent()
-      .click();
+    cy.get('.mat-tab-header-pagination-after').click();
+    goToTab('Tools');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=tools');
   });
 
   describe('Change tab to dag', () => {
     beforeEach(() => {
-      cy
-        .get('.nav-link')
-        .contains('DAG')
-        .parent()
-        .click();
+      cy.get('.mat-tab-header-pagination-after').click();
+      goToTab('DAG');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=dag');
     });
 

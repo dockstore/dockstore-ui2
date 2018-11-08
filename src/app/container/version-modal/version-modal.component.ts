@@ -245,6 +245,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      (mode: TagEditorMode) => this.mode = mode);
     this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);

@@ -28,8 +28,8 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
-import { VersionModalComponent } from '../../workflow/version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { VersionModalComponent } from '../version-modal/version-modal.component';
 
 @Component({
   selector: 'app-view-container',

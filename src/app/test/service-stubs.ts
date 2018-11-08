@@ -30,6 +30,7 @@ import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, u
 import { Permission, ToolDescriptor } from './../shared/swagger';
 import RoleEnum = Permission.RoleEnum;
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
+import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -759,6 +760,7 @@ export class ContainersStubService {
 
 export class VersionModalStubService {
   version = observableOf(sampleTag);
+  mode = observableOf(TagEditorMode.View);
   unsavedTestCWLFile = observableOf([]);
   unsavedTestWDLFile = observableOf([]);
 }
