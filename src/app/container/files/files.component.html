@@ -14,22 +14,26 @@
   ~    limitations under the License.
   -->
 
-<tabset [justified]="true">
-  <tab heading="Dockerfile">
+<mat-tab-group mat-stretch-tabs>
+  <mat-tab label="Dockerfile">
     <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
     </app-dockerfile>
-  </tab>
+  </mat-tab>
 
-  <tab heading="Descriptor Files">
+  <mat-tab label="Descriptor Files">
+    <ng-template matTabContent>
     <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
     </app-descriptors-container>
-  </tab>
+  </ng-template>
+  </mat-tab>
 
-  <tab heading="Test Parameter Files">
+  <mat-tab label="Test Parameter Files">
+      <ng-template matTabContent>
     <app-paramfiles-container [entrypath]="entrypath" [id]="id"  [selectedVersion]="selectedVersion">
     </app-paramfiles-container>
-  </tab>
-</tabset>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
 
 <div *ngIf="!versions">
   <div class="alert alert-info">

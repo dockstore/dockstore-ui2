@@ -57,6 +57,7 @@ export class GA4GHFilesService {
    */
   clearFiles() {
     this.ga4ghFilesStore.remove();
+    this.filesService.removeAll();
   }
 
   /**
