@@ -13,16 +13,9 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="isModalShown">
-<div [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{TagEditorMode[mode]}} Version Tag</h4>
-      </div>
+  <h4 mat-dialog-title>{{TagEditorMode[mode]}} Version Tag</h4>
       <app-alert></app-alert>
-      <form #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
+      <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
@@ -69,7 +62,7 @@
               CWL Descriptor:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
+              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
               <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
                 {{formErrors.cwlPath}}
               </div>
@@ -80,7 +73,7 @@
               WDL Descriptor:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
+              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
               <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
                 {{formErrors.wdlPath}}
               </div>
@@ -239,7 +232,3 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
-</div>
-</div>

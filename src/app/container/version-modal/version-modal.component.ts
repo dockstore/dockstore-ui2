@@ -35,6 +35,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-version-modal',
@@ -44,7 +45,6 @@ import { VersionModalService } from './version-modal.service';
 export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
-  public isModalShown: boolean;
   public editMode: boolean;
   public mode: TagEditorMode;
   public tool: DockstoreTool;
@@ -53,8 +53,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
-  public unsavedCWLTestParameterFilePaths: Array<string>;
-  public unsavedWDLTestParameterFilePaths: Array<string>;
+  public unsavedCWLTestParameterFilePaths: Array<string> = [];
+  public unsavedWDLTestParameterFilePaths: Array<string> = [];
   public unsavedTestCWLFile = '';
   public unsavedTestWDLFile = '';
   public dockerPullCommand = '';
@@ -71,7 +71,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
     private listContainersService: ListContainersService, private containerService: ContainerService, private alertService: AlertService,
     private containersService: ContainersService, private containertagsService: ContainertagsService, private sessionQuery: SessionQuery,
-    private dateService: DateService, private refreshService: RefreshService,
+    private dateService: DateService, private matDialog: MatDialog,
     private toolQuery: ToolQuery) {
   }
 
@@ -160,17 +160,17 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
       this.tool = { ...this.tool, tags: response };
       this.containerService.setTool(this.tool);
-      this.versionModalService.setIsModalShown(false);
       this.alertService.detailedSuccess();
+      this.matDialog.closeAll();
     }, error => {
       this.alertService.detailedError(error);
-      this.versionModalService.setIsModalShown(false);
+      this.matDialog.closeAll();
     });
   }
 
   onHidden() {
-    this.versionModalService.setIsModalShown(false);
     this.versionModalService.setCurrentMode(null);
+    this.matDialog.closeAll();
   }
 
   setMode(mode: TagEditorMode) {
@@ -250,25 +250,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       this.unsavedVersion = Object.assign({}, this.version);
       this.updateDockerPullCommand();
     });
-    this.versionModalService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => {
-      if (!this.tool && this.isModalShown) {
-        this.versionModalService.setIsModalShown(false);
-      } else {
-        this.isModalShown = isModalShown;
-      }
-    });
-    this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      (mode: TagEditorMode) => {
-        this.mode = mode;
-        if (mode !== null && this.tool) {
-          this.setMode(mode);
-        }
-      }
-    );
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.editMode = !publicPage);
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       this.updateDockerPullCommand();
+      if (this.mode !== null && this.tool) {
+        this.setMode(this.mode);
+      }
     });
     this.versionModalService.unsavedTestCWLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (file: string) => {

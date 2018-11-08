@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -30,6 +30,13 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+
+export interface Dialogdata {
+  canRead: boolean;
+  canWrite: boolean;
+  isOwner: boolean;
+}
 
 @Component({
   selector: 'app-version-modal',
@@ -62,13 +69,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
-    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
+    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
+    private matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: Dialogdata) {
   }
 
   ngOnInit() {
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.versionModalService.isModalShown$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.versionModalService.version.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = Object.assign({}, version));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
@@ -91,10 +98,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   addTestParameterFile() {
     this.testParameterFilePaths.push(this.testParameterFilePath);
     this.testParameterFilePath = '';
-  }
-
-  public hideModal(): void {
-    this.versionModalService.setIsModalShown(false);
   }
 
   public getDateTimeMessage(timestamp) {

@@ -26,6 +26,8 @@ import { VersionModalService } from '../version-modal/version-modal.service';
 import { takeUntil } from 'rxjs/operators';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { MatDialog } from '@angular/material';
+import { VersionModalComponent } from '../../container/version-modal/version-modal.component';
 
 @Component({
   selector: 'app-view-workflow',
@@ -45,7 +47,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   constructor(
     private workflowService: WorkflowService, private workflowQuery: WorkflowQuery,
     private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
-    private workflowsService: WorkflowsService,
+    private workflowsService: WorkflowsService, private matDialog: MatDialog,
     private hostedService: HostedService,
     dateService: DateService) {
     super(dateService);
@@ -57,9 +59,23 @@ export class ViewWorkflowComponent extends View implements OnInit {
       .subscribe(items => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
-        this.versionModalService.setIsModalShown(true);
+        this.openVersionModal();
       }, error => {
-        this.versionModalService.setIsModalShown(true);
+        this.openVersionModal();
+      });
+  }
+
+  /**
+   * Opens the version modal
+   *
+   * @private
+   * @memberof ViewWorkflowComponent
+   */
+  private openVersionModal(): void {
+    const dialogRef = this.matDialog.open(VersionModalComponent,
+      {
+        width: '600px',
+        data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
       });
   }
 

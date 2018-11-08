@@ -15,8 +15,10 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { ContainersService } from '../../shared/swagger';
@@ -26,7 +28,6 @@ import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
-import { Base } from '../../shared/base';
 
 @Component({
   selector: 'app-add-tag',
@@ -48,7 +49,8 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private paramFilesService: ParamfilesService, private toolQuery: ToolQuery) {
+    private containersService: ContainersService, private paramFilesService: ParamfilesService, private toolQuery: ToolQuery,
+    private matDialog: MatDialog) {
       super();
   }
 
@@ -151,6 +153,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
       this.containerService.setTool(this.tool);
       this.initializeTag();
       this.loadDefaults();
+      this.matDialog.closeAll();
     }, error => console.log(error));
   }
 

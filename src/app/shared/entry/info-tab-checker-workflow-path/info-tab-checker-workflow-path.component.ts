@@ -22,6 +22,8 @@ import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
+import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/register-checker-workflow.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
@@ -42,7 +44,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   @Input() isOwner: boolean;
   constructor(private checkerWorkflowService: CheckerWorkflowService, private checkerWorkflowQuery: CheckerWorkflowQuery,
     private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
-    private sessionQuery: SessionQuery) {
+    private sessionQuery: SessionQuery, private matDialog: MatDialog) {
     super();
   }
 
@@ -59,6 +61,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
 
   add(): void {
     this.registerCheckerWorkflowService.add();
+    const dialogRef = this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px'});
   }
 
   delete(): void {
