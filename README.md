@@ -38,8 +38,11 @@ $nodejs -v
 v7.10.0
 $npm -v
 4.2.0
+```
+Follow https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-two-change-npms-default-directory to fix permissions and then...
 
-$npm install -g @angular/cli@1.3.1		
+```
+$npm i -g @angular/cli@1.3.1		
 ```
 
 #### NPM
