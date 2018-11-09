@@ -19,7 +19,7 @@ Table of Contents
       * [Further help](#further-help)
 
 
-# DockstoreUi2
+# Dockstore UI2
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.4.
 
@@ -27,7 +27,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Prerequisites
 
-Angular CLI requires Node 6.9.0 or higher, together with NPM 3 or higher.
+Angular CLI requires Node and NPM.  See [.travis.yml](.travis.yml) for the correct versions of Node, NPM and Angular CLI.
 Then make sure Angular CLI has been properly set up.
 
 [Install NPM and Node](https://nodejs.org/en/download/package-manager/)
@@ -39,7 +39,7 @@ v7.10.0
 $npm -v
 4.2.0
 
-$sudo npm install -g @angular/cli@1.3.1		
+$npm install -g @angular/cli@1.3.1		
 ```
 
 #### NPM
@@ -51,7 +51,7 @@ cd dockstore-ui2
 git checkout develop
 git pull
 
-npm install
+npm ci
 ```
 
 Check to make sure Angular CLI has been properly set up
@@ -91,13 +91,13 @@ Look at the setup in the [travis.yml](.travis.yml)
 
 ## Project Set Up
 
-The Dockstore class in `dockstore-ui2/src/app/shared/dockstore.model.ts` is for integrating supported services.
+The Dockstore class in [src/app/shared/dockstore.model.ts](src/app/shared/dockstore.model.ts) is for integrating supported services.
 
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
 ## Pre-build/serve
 
-Run `npm run-script prebuild` before running or building the project. This command will automatically generate a file which contains the UI tag version.
+Run `npm run prebuild` before running or building the project. This command will automatically generate a file which contains the UI tag version.
 
 ## Development server
 
@@ -106,12 +106,11 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Updating dependencies
 
-Run `npm shrinkwrap`. Note that due to a problem with angular-tag-cloud, you will need to manually edit its dependencies in the file node\_modules/angular-tag-cloud-module/package.json . 
-Change its peer dependency to 4.3.6.
+Run `npm update`. This will automatically update package.json and package-lock.json.
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+Run `ng g component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.  See https://github.com/datorama/akita-schematics#create-a-new-feature for how to generate Akita-related components.
 
 ## Build
 
@@ -123,8 +122,11 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+Run `$(npm bin)/cypress open` or `$(npm bin)/cypress run` to execute the end-to-end tests via Cypress.io.
+Before running the tests make sure you:
+- serve the app via `ng serve`.
+- run the Dockstore webservice
+- have a webservice jar in the root directory
 
 ## Further help
 
