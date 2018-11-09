@@ -67,12 +67,13 @@
     "@angular-devkit/build-angular": "^0.10.4",
     "@angular/cli": "^7.0.4",
     "@angular/compiler-cli": "^7.0.2",
+    "@bahmutov/add-typescript-to-cypress": "^2.0.0",
     "@datorama/akita-ngdevtools": "^1.0.2",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "akita-schematics": "^1.0.2",
     "codelyzer": "^4.2.1",
-    "cypress": "^2.1.0",
+    "cypress": "^3.1.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^2.0.5",
@@ -85,6 +86,6 @@
     "protractor": "^5.4.1",
     "rxjs-tslint": "^0.1.5",
     "rxjs-tslint-rules": "^4.10.0",
-    "tslint": "~5.9.1"
+    "tslint": "^5.11.0"
   }
 }
