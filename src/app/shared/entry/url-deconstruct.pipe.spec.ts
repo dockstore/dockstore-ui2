@@ -21,17 +21,17 @@ describe('Pipe: urlDeconstruct', () => {
 
     // External service link tests
     expect(pipe.transform('https://github.com/agduncan94/hello-dockstore-workflow', 'master'))
-      .toBe('agduncan94/hello-dockstore-workflow/tree/master');
+      .toBe('agduncan94/hello-dockstore-workflow:master');
     expect(pipe.transform('https://bitbucket.org/rjbautis/hello-dockstore', 'develop'))
-      .toBe('rjbautis/hello-dockstore/src/develop');
+      .toBe('rjbautis/hello-dockstore:develop');
     expect(pipe.transform('https://gitlab.com/rjbautis/hello-world', 'develop'))
-      .toBe('rjbautis/hello-world/tree/develop');
+      .toBe('rjbautis/hello-world:develop');
 
     // Edge cases: tests for multiple occurrences of an external service inside one string
     expect(pipe.transform('https://github.com/denis-yuen/test.github.com', 'develop'))
-      .toBe('denis-yuen/test.github.com/tree/develop');
+      .toBe('denis-yuen/test.github.com:develop');
     expect(pipe.transform('https://bitbucket.org/denis-yuen/test.github.com', 'master'))
-      .toBe('denis-yuen/test.github.com/src/master');
+      .toBe('denis-yuen/test.github.com:master');
     expect(pipe.transform('https://gitlab.com/rjbautis/test.bitbucket.org', null))
       .toBe('rjbautis/test.bitbucket.org');
 
@@ -42,8 +42,10 @@ describe('Pipe: urlDeconstruct', () => {
 
     // HTTP and HTTPS tests
     expect(pipe.transform('https://website.com/pathname/hello-world', 'example'))
-      .toBe('pathname/hello-world');
+      .toBe('pathname/hello-world:example');
     expect(pipe.transform('http://website.com/pathname/hello-world', 'example'))
-      .toBe('pathname/hello-world');
+      .toBe('pathname/hello-world:example');
+    expect(pipe.transform('source', 'version'))
+      .toBe('source');
   });
 });

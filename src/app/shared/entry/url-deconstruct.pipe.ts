@@ -14,25 +14,19 @@ export class UrlDeconstructPipe implements PipeTransform {
    */
 
   transform(providerUrl: string, versionName: string): string {
-    const PATHNAME = 1;
-    providerUrl = providerUrl.split(/:\/\//).pop();     // Removes protocol from providerUrl
+    let re = /^(https?:)?\/\/(www\.)?([\w-.]+\.com|[\w-.]+\.org|[\w-.]+\.io)(\/[\w-.]+)?\/([\w-.]+)\/([\w-.]+)$/;
 
-    if (providerUrl.startsWith('github.com') && versionName) {
-      return providerUrl.replace('github.com/', '') + '/tree/' + versionName;
+    const USERNAME = 5;
+    const REPONAME = 6;
+
+    let split = providerUrl.match(re);
+
+    if (split && versionName) {
+      return `${split[USERNAME]}/${split[REPONAME]}:${versionName}`;
     }
-    if (providerUrl.startsWith('bitbucket.org') && versionName) {
-      return providerUrl.replace('bitbucket.org/', '') + '/src/' + versionName;
+    if (split) {
+      return `${split[USERNAME]}/${split[REPONAME]}`;
     }
-    if (providerUrl.startsWith('gitlab.com') && versionName) {
-      return providerUrl.replace('gitlab.com/', '') + '/tree/' + versionName;
-    }
-    if (providerUrl.startsWith('quay.io')) {
-      return providerUrl.replace('quay.io/repository/', '');
-    }
-    if (providerUrl.startsWith('hub.docker.com')) {
-      return providerUrl.replace('hub.docker.com/r/', '');
-    }
-    // Return the url starting from its pathname
-    return providerUrl.split('/').slice(PATHNAME).join('/');
+    return providerUrl.split(/https?:\/\//).pop();
   }
 }
