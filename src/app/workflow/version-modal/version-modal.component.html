@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>{{isPublic || !data.canWrite ? 'View' : 'Edit'}} Version Tag</h4>
+<div mat-dialog-content>
 <app-alert></app-alert>
 <form #versionEditorForm="ngForm" class="form-horizontal">
   <div class="modal-body tagEditor">
@@ -123,3 +124,4 @@
     </button>
   </div>
 </form>
+</div>

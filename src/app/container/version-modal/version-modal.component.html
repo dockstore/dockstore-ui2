@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
   <h4 mat-dialog-title>{{TagEditorMode[mode]}} Version Tag</h4>
+  <div mat-dialog-content>
       <app-alert></app-alert>
       <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
         <div class="modal-body tagEditor">
@@ -232,3 +233,4 @@
           </button>
         </div>
       </form>
+</div>
