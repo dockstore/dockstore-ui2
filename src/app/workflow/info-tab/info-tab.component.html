@@ -57,14 +57,14 @@
           <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
             <span class="glyphicon glyphicon-remove"></span> Cancel
           </button>
-          <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (refreshMessage)" class="btn btn-link"
+          <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (isRefreshing$ | async)" class="btn btn-link"
             (click)="toggleEditWorkflowPath()">
             <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
             {{ workflowPathEditing ? 'Save' : 'Edit' }}
           </button>
         </div>
       </form>
-      <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="workflow?.descriptorType !== 'nfl'">
+      <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="!(isNFL$ | async)">
         <div class="form-group">
           <strong matTooltip="Path in Git repository to main descriptor file">Test File Path: </strong>
           <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
@@ -81,16 +81,16 @@
       </form>
     </li>
 </span>
-  <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && workflow?.descriptorType !== 'nfl'" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
+  <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && !(isNFL$ | async)" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
   <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
-  <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || workflow?.descriptorType === 'nfl'">
+  <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
     <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
   </div>
   <li *ngIf="!isPublic">
     <ng-template #modeTooltip><div [innerHtml]="modeTooltipContent"></div></ng-template>
     <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
-      [disabled]="refreshMessage">
+      [disabled]="(isRefreshing$ | async)">
       <span class="glyphicon glyphicon-remove"></span> Restub
     </button>
   </li>
@@ -123,16 +123,16 @@
       <span class="glyphicon glyphicon-warning-sign"></span>
       <span ng-show="!containerObj.description">
         No description associated with this workflow. See
-        <span *ngIf="workflow?.descriptorType === 'cwl'">
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
           <a href="https://docs.dockstore.org/docs/publisher-tutorials/best-practices/#authorship-metadata">CWL Best Practices</a> and
           <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description for this tool.
         </span>
 
-        <span *ngIf="workflow?.descriptorType === 'wdl'">
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
           <a href="https://docs.dockstore.org/docs/publisher-tutorials/wdl-best-practices/#authorship-metadata">WDL Best Practices</a>.
         </span>
 
-        <span *ngIf="workflow?.descriptorType === 'nfl'">
+        <span *ngIf="(isNFL$ | async)">
           <a href="https://docs.dockstore.org/docs/publisher-tutorials/nfl-best-practices/#authorship-metadata">Nextflow Best Practices</a>.
         </span>
       </span>

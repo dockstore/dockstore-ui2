@@ -14,14 +14,16 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { EntryTab } from '../../shared/entry/entry-tab';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
-import { ToolFile } from '../../shared/swagger';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { Workflow } from '../../shared/swagger/model/workflow';
@@ -33,9 +35,9 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
   styleUrls: ['./launch.component.css']
 })
 export class LaunchWorkflowComponent extends EntryTab {
-  @Input() basePath: string;
-  @Input() path: string;
-  @Input() currentDescriptor: string;
+  @Input() basePath;
+  @Input() path;
+  currentDescriptor: ToolDescriptor.TypeEnum;
   @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
 
   _selectedVersion: WorkflowVersion;
@@ -64,20 +66,28 @@ export class LaunchWorkflowComponent extends EntryTab {
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
   testParameterPath: string;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  isNFL$: Observable<boolean>;
+  ToolDescriptor = ToolDescriptor;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private launchService: WorkflowLaunchService, private workflowService: WorkflowService,
-    protected gA4GHFilesStateService: GA4GHFilesStateService) {
+  constructor(private launchService: WorkflowLaunchService, private workflowQuery: WorkflowQuery,
+    protected gA4GHFilesService: GA4GHFilesService, private gA4GHFilesQuery: GA4GHFilesQuery,
+    private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super();
-    this.published$ = this.workflowService.workflowIsPublished$;
+    this.published$ = this.workflowQuery.workflowIsPublished$;
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.descriptorType$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe((descriptorType: ToolDescriptor.TypeEnum) => this.currentDescriptor = descriptorType);
+    this.isNFL$ = this.workflowQuery.isNFL$;
   }
   reactToDescriptor(): void {
-    this.changeMessages(this.basePath, this.path, this._selectedVersion.name);
+    this.changeMessages(this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
   }
-  private changeMessages(basePath: string, workflowPath: string, versionName: string) {
-    this.params = this.launchService.getParamsString(workflowPath, versionName, this.currentDescriptor);
-    this.cli = this.launchService.getCliString(workflowPath, versionName, this.currentDescriptor);
+  private changeMessages(basePath: string, workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum) {
+    this.params = this.launchService.getParamsString(workflowPath, versionName, descriptorType);
+    this.cli = this.launchService.getCliString(workflowPath, versionName, descriptorType);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
@@ -86,7 +96,7 @@ export class LaunchWorkflowComponent extends EntryTab {
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
-    this.updateWgetTestJsonString(workflowPath, versionName);
+    this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
   }
 
   /**
@@ -94,40 +104,17 @@ export class LaunchWorkflowComponent extends EntryTab {
    * @param workflowPath
    * @param versionName
    */
-  updateWgetTestJsonString(workflowPath: string, versionName: string): void {
-    let descriptorToolFiles$: BehaviorSubject<Array<ToolFile>>;
-    switch (this.currentDescriptor) {
-      case 'wdl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
-        break;
-      }
-      case 'cwl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
-        break;
-      }
-      case 'nfl': {
-        descriptorToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
-        break;
-      }
-      default: {
-        console.error('Unknown descriptor type: ' + this.currentDescriptor);
-      }
+  updateWgetTestJsonString(workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum): void {
+      let toolFiles$: Observable<Array<ToolFile>>;
+      toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
+      toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
+        if (toolFiles.length > 0) {
+          this.testParameterPath = toolFiles[0].path;
+        } else {
+          this.testParameterPath = null;
+        }
+        this.wgetTestJsonDescription = this.launchService.getTestJsonString(ga4ghWorkflowIdPrefix + workflowPath, versionName,
+          descriptorType, this.testParameterPath);
+      });
     }
-
-    descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (toolFiles) {
-        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
-      } else {
-        return [];
-      }
-    })).pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
-      if (toolFiles.length > 0) {
-        this.testParameterPath = toolFiles[0].path;
-      } else {
-        this.testParameterPath = null;
-      }
-      this.wgetTestJsonDescription = this.launchService.getTestJsonString(ga4ghWorkflowIdPrefix + workflowPath, versionName,
-        this.currentDescriptor, this.testParameterPath);
-    });
-  }
 }

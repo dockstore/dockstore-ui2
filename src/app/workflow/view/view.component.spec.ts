@@ -13,26 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from '../../shared/swagger';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { DateService } from './../../shared/date.service';
-import { StateService } from '../../shared/state.service';
-import { VersionModalService } from '../version-modal/version-modal.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-
-import {
-    DateStubService,
-    StateStubService,
-    VersionModalStubService,
-    WorkflowsStubService,
-    WorkflowStubService,
-    HostedStubService
-} from './../../test/service-stubs';
-import { WorkflowService } from '../../shared/workflow.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DateService } from '../../shared/date.service';
+import { WorkflowsService } from '../../shared/swagger';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import {
+  DateStubService,
+  HostedStubService,
+  VersionModalStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+} from '../../test/service-stubs';
+import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
@@ -45,7 +41,6 @@ describe('ViewWorkflowComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: VersionModalService, useClass: VersionModalStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService},
-        { provide: StateService, useClass: StateStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: HostedService, useClass: HostedStubService }
       ]

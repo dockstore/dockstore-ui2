@@ -13,15 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MatRadioChange } from '@angular/material';
-import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
-import { StateService } from '../../shared/state.service';
-import { Workflow } from '../../shared/swagger';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
   exampleDescriptorPatterns,
@@ -31,12 +33,17 @@ import {
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 
+export interface HostedWorkflowObject {
+  name: string;
+  descriptorType: ToolDescriptor.TypeEnum;
+}
+
 @Component({
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
   styleUrls: ['./register-workflow-modal.component.scss']
 })
-export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked {
+export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
   public validationMessage = validationMessages;
@@ -44,13 +51,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   public workflow: Workflow;
   public workflowRegisterError;
   public isModalShown: boolean;
-  public refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
-  public descriptorLanguages$: Observable<Array<string>>;
+  public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
   public Tooltip = Tooltip;
   public hostedWorkflow = {
     repository: '',
-    descriptorType: 'cwl',
+    descriptorType: ToolDescriptor.TypeEnum.CWL,
     entryName: null
   };
   public options = [
@@ -65,11 +72,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   ];
   public selectedOption = this.options[0];
 
+  private ngUnsubscribe: Subject<{}> = new Subject();
+
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private stateService: StateService,
-    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
+  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private sessionQuery: SessionQuery,
+    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>, private alertQuery: AlertQuery) {
   }
 
   friendlyRepositoryKeys(): Array<string> {
@@ -81,16 +90,17 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
   }
 
   ngOnInit() {
-    this.registerWorkflowModalService.workflow.subscribe(workflow => this.workflow = workflow);
-    this.registerWorkflowModalService.workflowRegisterError$.subscribe(
+    this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.registerWorkflowModalService.workflowRegisterError$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
-    this.registerWorkflowModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.registerWorkflowModalService.isModalShown$.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
-    this.descriptorLanguages$.subscribe((languages: Array<string>) => {
+    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<ToolDescriptor.TypeEnum>) => {
       if (languages && languages.length > 0) {
-        this.changeDescriptorType(languages[0].toLowerCase());
+        this.changeDescriptorType(languages[0]);
       }
     });
     this.selectInitialSourceControlRepository();
@@ -121,7 +131,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     this.dialogRef.close();
   }
 
-  // Validation starts here, should move most of these to a service somehow
+  // Validation starts here, should move most of these to a HostedWorkflowService somehow
   ngAfterViewChecked() {
     this.formChanged();
   }
@@ -130,7 +140,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
     if (this.currentForm === this.registerWorkflowForm) { return; }
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
-      this.registerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.registerWorkflowForm.valueChanges.pipe(
+        debounceTime(formInputDebounceTime),
+        takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }
@@ -178,20 +190,20 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
    * Change the descriptor pattern required for validation when this happens.
    * TODO: Also change the form error message and reset the others
    *
-   * @param {string} descriptorType  The current selected descriptor type
+   * @param {ToolDescriptor.TypeEnum} descriptorType  The current selected descriptor type
    * @memberof RegisterWorkflowModalComponent
    */
-  changeDescriptorType(descriptorType: string): void {
+  changeDescriptorType(descriptorType: ToolDescriptor.TypeEnum): void {
     switch (descriptorType) {
-      case 'cwl': {
+      case ToolDescriptor.TypeEnum.CWL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
         break;
       }
-      case 'wdl': {
+      case ToolDescriptor.TypeEnum.WDL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
         break;
       }
-      case 'nfl': {
+      case ToolDescriptor.TypeEnum.NFL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
         break;
       }
@@ -200,5 +212,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked 
         this.descriptorValidationPattern = '.*';
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

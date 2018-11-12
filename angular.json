@@ -18,11 +18,11 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/manifest.json"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/jquery-colorbox/example1/colorbox.css",
               "src/jquery.qtip.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/bootstrap-social/bootstrap-social.css",
@@ -47,7 +47,6 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/jquery-colorbox/jquery.colorbox.js",
               "node_modules/cytoscape/dist/cytoscape.js",
               "node_modules/dagre/dist/dagre.min.js",
               "node_modules/cytoscape-dagre/cytoscape-dagre.js",
@@ -121,7 +120,6 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/jquery-colorbox/jquery.colorbox.js",
               "node_modules/cytoscape/dist/cytoscape.js",
               "node_modules/dagre/dist/dagre.min.js",
               "node_modules/cytoscape-dagre/cytoscape-dagre.js",
@@ -130,7 +128,6 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/jquery-colorbox/example1/colorbox.css",
               "src/jquery.qtip.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/bootstrap-social/bootstrap-social.css",
@@ -195,5 +192,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "defaultCollection": "akita-schematics"
   }
 }

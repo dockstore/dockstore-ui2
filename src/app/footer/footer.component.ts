@@ -14,31 +14,34 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
 import { MetadataService } from '../metadata/metadata.service';
+import { Base } from '../shared/base';
+import { Dockstore } from './../shared/dockstore.model';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { versions } from './versions';
-import { Subscription } from 'rxjs';
-import { Dockstore } from './../shared/dockstore.model';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit, OnDestroy {
+export class FooterComponent extends Base implements OnInit {
   version: string;
   tag: string;
   public prod = true;
-  mdService: Subscription;
   public dsServerURI: any;
 
-  constructor(private metadataService: MetadataService) { }
+  constructor(private metadataService: MetadataService) {
+    super();
+  }
 
   ngOnInit() {
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;
-    this.mdService = this.metadataService.getMetadata()
+    this.metadataService.getMetadata().pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
@@ -53,9 +56,5 @@ export class FooterComponent implements OnInit, OnDestroy {
           }
         }
       );
-  }
-
-  ngOnDestroy() {
-    this.mdService.unsubscribe();
   }
 }

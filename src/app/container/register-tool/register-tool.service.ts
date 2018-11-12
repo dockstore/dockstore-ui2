@@ -20,17 +20,16 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { ContainerService } from './../../shared/container.service';
-import { Repository } from './../../shared/enum/Repository.enum';
-import { StateService } from './../../shared/state.service';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { MetadataService } from './../../shared/swagger/api/metadata.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { ContainerService } from '../../shared/container.service';
+import { Repository } from '../../shared/enum/Repository.enum';
+import { ToolDescriptor } from '../../shared/swagger';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { Tool } from './tool';
-
-// This line is super important for jQuery to work across the website for some reason
-import * as $ from 'jquery';
 
 @Injectable()
 export class RegisterToolService {
@@ -38,6 +37,7 @@ export class RegisterToolService {
     customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
     private repositories = Repository;
     public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public disabledPrivateCheckbox = false;
     private dockerRegistryMap = [];
     private sourceControlMap = [];
     refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -51,13 +51,14 @@ export class RegisterToolService {
             '/test.cwl.json', '/test.wdl.json',
             'Quay.io', '', false, '', ''));
     constructor(private containersService: ContainersService, private matSnackBar: MatSnackBar,
-        private containerService: ContainerService,
-        private stateService: StateService, private router: Router,
-        private metadataService: MetadataService, private hostedService: HostedService) {
+        private containerService: ContainerService, private alertService: AlertService,
+        private router: Router,
+        private metadataService: MetadataService, private hostedService: HostedService,
+        private toolQuery: ToolQuery) {
         this.metadataService.getDockerRegistries().subscribe(map => this.dockerRegistryMap = map);
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.containerService.tools$.subscribe(tools => this.tools = tools);
-        this.containerService.tool$.subscribe(tool => this.selectedTool = tool);
+        this.toolQuery.tool$.subscribe(tool => this.selectedTool = tool);
     }
     deregisterTool() {
       this.containersService.deleteContainer(this.selectedTool.id).subscribe(response => {
@@ -82,46 +83,22 @@ export class RegisterToolService {
         this.isModalShown.next(isModalShown);
     }
 
-    setToolRegisterError(error: HttpErrorResponse) {
-        let errorObj = null;
-        if (error) {
-          if (error.status === 0) {
-            errorObj = {
-              message: 'The webservice is currently down, possibly due to load. Please wait and try again later.',
-              errorDetails: ''
-            };
-          } else {
-            errorObj = {
-                message: 'The webservice encountered an error trying to create this ' +
-                'tool, please ensure that the tool attributes are ' +
-                'valid and the same image has not already been registered.',
-                errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
-                error.error
-            };
-          }
-        }
-        this.toolRegisterError.next(errorObj);
-    }
-
     registerTool(newTool: Tool, customDockerRegistryPath) {
-      this.setToolRegisterError(null);
       this.setTool(newTool);
-      this.stateService.setRefreshMessage('Registering new tool...');
+      this.alertService.start('Registering new tool');
       const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
       this.containersService.registerManual(normalizedToolObj)
         .subscribe((registeredDockstoreTool: DockstoreTool) => {
-          this.stateService.setRefreshMessage('Refreshing new tool...');
           this.containersService.refresh(registeredDockstoreTool.id).pipe(finalize(() => {
-            this.stateService.setRefreshMessage(null);
           })).subscribe((refreshedDockstoreTool: DockstoreTool) => {
             this.setIsModalShown(false);
+            this.alertService.detailedSuccess();
             this.containerService.addToTools(this.tools, refreshedDockstoreTool);
             this.containerService.setTool(refreshedDockstoreTool);
             this.router.navigateByUrl('/my-tools' + '/' + refreshedDockstoreTool.tool_path);
-          }, (error: HttpErrorResponse) => this.setToolRegisterError(error));
+          }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
         }, (error: HttpErrorResponse) => {
-          this.stateService.setRefreshMessage(null);
-          this.setToolRegisterError(error);
+          this.alertService.detailedError(error);
         });
     }
 
@@ -133,22 +110,20 @@ export class RegisterToolService {
       const splitPath = hostedTool.path.split('/');
       const namespace = splitPath[0];
       const name = splitPath[1];
-      this.stateService.setRefreshMessage('Registering tool...');
+      this.alertService.start('Registering tool');
       this.hostedService.createHostedTool(
           name,
           hostedTool.registry,
           undefined,
           namespace,
           hostedTool.entryName ? hostedTool.entryName : undefined).subscribe((result: DockstoreTool) => {
-            this.setToolRegisterError(null);
-            this.stateService.setRefreshMessage(null);
+            this.alertService.detailedSuccess();
             this.setIsModalShown(false);
             this.containerService.addToTools(this.tools, result);
             this.containerService.setTool(result);
             this.router.navigateByUrl('/my-tools' + '/' + result.tool_path);
           }, error =>  {
-                this.stateService.setRefreshMessage(null);
-                this.setToolRegisterError(error);
+            this.alertService.detailedError(error);
             }
           );
     }
@@ -230,14 +205,14 @@ export class RegisterToolService {
         return path;
     }
 
-    checkForSpecialDockerRegistry(toolObj: Tool) {
+    checkForSpecialDockerRegistry(toolObj: Tool): void {
         for (const registry of this.dockerRegistryMap) {
             if (toolObj.irProvider === registry.friendlyName) {
                 if (registry.privateOnly === 'true') {
                     toolObj.private_access = true;
-                    $('#privateTool').attr('disabled', 'disabled');
+                    this.disabledPrivateCheckbox = true;
                 } else {
-                    $('#privateTool').removeAttr('disabled');
+                    this.disabledPrivateCheckbox = false;
                 }
 
                 if (registry.customDockerPath === 'true') {

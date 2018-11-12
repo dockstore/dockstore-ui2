@@ -15,22 +15,7 @@
 -->
 <h4 mat-dialog-title>Register Workflow</h4>
 <div mat-dialog-content>
-  <div class="alert alert-danger alert-dismissable" role="alert" *ngIf="workflowRegisterError">
-    <button type="button" class="close" data-dismiss="alert" (click)="clearWorkflowRegisterError()">
-      &times;
-    </button>
-    <p>
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      {{workflowRegisterError.message}}
-    </p>
-    <p class="error-output">{{workflowRegisterError.errorDetails}}</p>
-  </div>
-  <div *ngIf="refreshMessage; else placeholder">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  <ng-template #placeholder>
-    <div class="pt-2"></div>
-  </ng-template>
+  <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
@@ -78,7 +63,7 @@
         <mat-radio-group class="w-100 radio-group" position="before" id="descriptorTypeRadioButtons" [(ngModel)]="workflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
+          <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
             {{'descriptor_type' | mapFriendlyValue : descriptorType}}
           </mat-radio-button>
         </mat-radio-group>
@@ -107,7 +92,7 @@
           <button mat-button type="button" id="closeRegisterWorkflowModalButton" color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
-          <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerWorkflowForm.form.valid || refreshMessage">
+          <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerWorkflowForm.form.valid || (isRefreshing$ | async)">
             Register Workflow
           </button>
         </div>
@@ -117,7 +102,7 @@
         <mat-radio-group id="descriptorTypeRadioButtons" position="before" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
+          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
             {{'descriptor_type' | mapFriendlyValue : descriptorType}}
           </mat-radio-button>
         </mat-radio-group>

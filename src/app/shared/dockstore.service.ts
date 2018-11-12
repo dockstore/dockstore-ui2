@@ -45,7 +45,19 @@ export class DockstoreService {
     }
   }
 
-  getVerifiedSource(name: string, verifiedSource: any) {
+  /**
+   * Turn this into a pipe to prevent it from being called so often
+   *
+   * @param {string} name
+   * @param {*} verifiedSource
+   * @returns {string}
+   * @memberof DockstoreService
+   */
+  getVerifiedSource(name: string, verifiedSource: any): string {
+    if (!verifiedSource || !name) {
+      console.error('verifiedSource or name is falsey');
+      return '';
+    }
     for (const source of verifiedSource) {
       if (source.version === name) {
         return source.verifiedSource;

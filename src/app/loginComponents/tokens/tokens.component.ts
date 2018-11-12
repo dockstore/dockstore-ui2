@@ -1,15 +1,12 @@
-import { Token } from './../../shared/swagger/model/token';
-import { UsersService } from './../../shared/swagger/api/users.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable ,  Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
-import { Logout } from '../logout';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { TokenService } from '../token.service';
-import { UserService } from '../user.service';
-import { TrackLoginService } from '../../shared/track-login.service';
 import { LogoutService } from '../../shared/logout.service';
+import { TokenQuery } from '../../shared/state/token.query';
+import { TokenService } from '../../shared/state/token.service';
+import { TrackLoginService } from '../../shared/track-login.service';
+import { Logout } from '../logout';
 
 @Component({
   selector: 'app-tokens',
@@ -22,15 +19,14 @@ export class TokensComponent extends Logout implements OnInit {
   sortReverse: boolean;
 
   constructor(private dockstoreService: DockstoreService,
-              private tokenService: TokenService,
-              private userService: UserService, private usersService: UsersService,
+              private tokenService: TokenService, private tokenQuery: TokenQuery,
               trackLoginService: TrackLoginService,
               logoutService: LogoutService,
               router: Router) {
     super(trackLoginService, logoutService, router);
   }
   ngOnInit() {
-    this.tokenService.tokens$.subscribe(tokens => {
+    this.tokenQuery.tokens$.subscribe(tokens => {
       this.tokens = tokens;
       if (tokens) {
         this.setProperty();

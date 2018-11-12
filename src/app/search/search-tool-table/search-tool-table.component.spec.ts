@@ -8,8 +8,8 @@ import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
-import { SearchService } from '../search.service';
 import { SearchToolTableComponent } from './search-tool-table.component';
+import { SearchService } from '../state/search.service';
 
 describe('SearchToolTableComponent', () => {
   let component: SearchToolTableComponent;

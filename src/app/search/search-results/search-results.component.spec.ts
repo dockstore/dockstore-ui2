@@ -16,7 +16,6 @@
 
 import { QueryBuilderService } from './../query-builder.service';
 import { SearchStubService, QueryBuilderStubService } from './../../test/service-stubs';
-import { SearchService } from './../search.service';
 import { FormsModule } from '@angular/forms';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -26,6 +25,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { SearchResultsComponent } from './search-results.component';
+import { SearchService } from '../state/search.service';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;

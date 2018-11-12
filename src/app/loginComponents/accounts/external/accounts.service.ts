@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
 
 import { LoginService } from '../../../login/login.service';
-import { TokenService } from '../../token.service';
-import { UserService } from '../../user.service';
-import { TokenSource } from './../../../shared/enum/token-source.enum';
+import { TokenSource } from '../../../shared/enum/token-source.enum';
+import { UserService } from '../../../shared/user/user.service';
 import { Links } from './links.model';
 
 @Injectable()
 export class AccountsService {
 
-    constructor(private loginService: LoginService, private tokenService: TokenService, private userService: UserService) { }
+    constructor(private loginService: LoginService, private userService: UserService) { }
 
     private stripSpace(url: string): string {
         return url.replace(/\s/g, '');
@@ -46,7 +45,7 @@ export class AccountsService {
                   // TODO: Hook up to snackbar
                 }, () => {
                   // Also update user to get the new profile, which causes the token service to trigger and update the tokens too
-                  this.userService.updateUser();
+                  this.userService.getUser();
                 });
                 break;
         }

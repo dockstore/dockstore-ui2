@@ -24,7 +24,6 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import {
   RefreshToolOrganizationComponent,
 } from '../container/refresh-tool-organization/refresh-tool-organization.component';
-import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
@@ -54,7 +53,6 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     mytoolsRouting,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
-    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
     CustomMaterialModule,

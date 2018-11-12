@@ -19,16 +19,17 @@ import { map } from 'rxjs/operators';
 
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
+import { ToolDescriptor } from '../swagger';
 
 @Injectable()
 export class DescriptorLanguageService {
-  public descriptorLanguages$: Observable<Array<string>>;
+  public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   constructor(private metadataService: MetadataService) {
       this.update();
       this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(map(descriptorLanguageMap => {
           if (descriptorLanguageMap) {
-              return descriptorLanguageMap.map((descriptorLanguage) => descriptorLanguage.value.toString());
+              return descriptorLanguageMap.map((descriptorLanguage) => <ToolDescriptor.TypeEnum>descriptorLanguage.value.toString());
           }
       }));
   }

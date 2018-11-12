@@ -14,16 +14,17 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { ToolDescriptorService } from '../descriptors/tool-descriptor.service';
+import { ContainerService } from '../../shared/container.service';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { ToolDescriptor } from '../../shared/swagger';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { DescriptorLanguageBean } from './../../shared/swagger/model/descriptorLanguageBean';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
-import { ContainerService } from '../../shared/container.service';
-import { Observable } from 'rxjs';
-import { Workflow } from '../../shared/swagger/model/workflow';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-launch',
@@ -52,27 +53,29 @@ export class LaunchComponent {
   dockstoreSupportedCwlMakeTemplate: string;
   checkEntryCommand: string;
   consonance: string;
-  descriptors: Array<string>;
+  descriptors: Array<ToolDescriptor.TypeEnum>;
   validDescriptors: Array<string>;
-  currentDescriptor: string;
+  currentDescriptor: ToolDescriptor.TypeEnum;
+  ToolDescriptor = ToolDescriptor;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  currentDescriptorType: ToolDescriptor.TypeEnum;
   protected published$: Observable<boolean>;
 
-  constructor(private launchService: ToolLaunchService,
-    private toolDescriptorService: ToolDescriptorService,
-    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService) {
-    this.descriptorLanguageService.descriptorLanguages$.subscribe(map => {
-      this.descriptors = map;
+  constructor(private launchService: ToolLaunchService, private toolQuery: ToolQuery,
+    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService,
+    private descriptorTypeCompatService: DescriptorTypeCompatService) {
+    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
+      this.descriptors = descriptors;
       this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
-    this.published$ = this.containerService.toolIsPublished$;
+    this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<string>, version: Tag): Array<string> {
-    const newDescriptors = [];
+  filterDescriptors(descriptors: Array<ToolDescriptor.TypeEnum>, version: Tag): Array<string> {
+    const newDescriptors: Array<ToolDescriptor.TypeEnum> = [];
 
     // Return empty array if no descriptors present yet
     if (descriptors === undefined || version === undefined) {
@@ -93,7 +96,7 @@ export class LaunchComponent {
 
     // Create a list of valid descriptors
     for (const descriptor of descriptors) {
-      if ((descriptor === 'CWL' && hasCwl) || (descriptor === 'WDL' && hasWdl)) {
+      if ((descriptor === ToolDescriptor.TypeEnum.CWL && hasCwl) || (descriptor === ToolDescriptor.TypeEnum.WDL && hasWdl)) {
         newDescriptors.push(descriptor);
       }
     }
@@ -117,5 +120,4 @@ export class LaunchComponent {
     this.checkEntryCommand = this.launchService.getCheckToolString(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
   }
-
 }

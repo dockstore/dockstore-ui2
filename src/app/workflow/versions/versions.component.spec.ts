@@ -1,6 +1,3 @@
-import { RefreshService } from '../../shared/refresh.service';
-import { ErrorService } from './../../shared/error.service';
-import { StateService } from './../../shared/state.service';
 /*
  *    Copyright 2017 OICR
  *
@@ -16,36 +13,73 @@ import { StateService } from './../../shared/state.service';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { DateService } from './../../shared/date.service';
-import { DateStubService, ErrorStubService, DockstoreStubService, WorkflowStubService, WorkflowsStubService,
-  StateStubService, RefreshStubService } from './../../test/service-stubs';
-import { DockstoreService } from './../../shared/dockstore.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { OrderBy } from '../../shared/orderBy';
 
-import { VersionsWorkflowComponent } from './versions.component';
+import { DateService } from '../../shared/date.service';
+import { DockstoreService } from '../../shared/dockstore.service';
 import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
 import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
+import { ImageProviderService } from '../../shared/image-provider.service';
+import { OrderBy } from '../../shared/orderBy';
+import { ProviderService } from '../../shared/provider.service';
+import { RefreshService } from '../../shared/refresh.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import {
+  DateStubService,
+  ImageProviderStubService,
+  RefreshStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+} from '../../test/service-stubs';
+import { VersionsWorkflowComponent } from './versions.component';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'ngx-bootstrap';
+
+
+@Component({
+  selector: 'app-view-workflow',
+  template: '<p>App View Component</p>'
+})
+class MockViewWorkflowComponent {
+  @Input() versions;
+  @Input() version;
+  @Input() workflowId;
+  @Input() canRead;
+  @Input() canWrite;
+  @Input() isOwner;
+}
+
+@Component({
+  selector: 'app-version-modal',
+  template: '<p>Version Modal Component</p>'
+})
+class MockVersionModalComponent {
+  @Input() canRead;
+  @Input() canWrite;
+  @Input() isOwner;
+}
 
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
-  let workflowService: WorkflowService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe ],
-      schemas: [ NO_ERRORS_SCHEMA ],
+      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule],
+      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe, MockViewWorkflowComponent,
+        MockVersionModalComponent ],
       providers: [DockstoreService,
         { provide: DateService, useClass: DateStubService},
         { provide: WorkflowService, useClass: WorkflowStubService},
         { provide: WorkflowsService, useClass: WorkflowsStubService},
-        StateService,
-        { provide: ErrorService, useClass: ErrorStubService },
+        AlertQuery,
+        ProviderService,
+        WorkflowQuery,
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
         { provide: RefreshService, useClass: RefreshStubService}
       ]
     })
@@ -57,7 +91,6 @@ describe('VersionsWorkflowComponent', () => {
     component = fixture.componentInstance;
     component.versions = [];
     fixture.detectChanges();
-    workflowService = fixture.debugElement.injector.get(WorkflowService);
   });
 
   it('should create', () => {

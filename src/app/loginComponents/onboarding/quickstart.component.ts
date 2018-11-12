@@ -13,12 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { TokenService } from '../token.service';
-import { UsersService } from '../../shared/swagger';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-onboarding',
@@ -27,7 +22,7 @@ import { UserService } from '../user.service';
 export class QuickStartComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete;
-  constructor(private tokenService: TokenService) {
+  constructor() {
   }
   ngOnInit() {
     localStorage.setItem('page', '/quick-start');

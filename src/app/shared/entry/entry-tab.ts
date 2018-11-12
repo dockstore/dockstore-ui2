@@ -14,12 +14,20 @@
  *    limitations under the License.
  */
 
-import { Input } from '@angular/core';
+import { Input, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
 
-export abstract class EntryTab {
+export abstract class EntryTab implements OnDestroy {
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
 
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+
   constructor() {}
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

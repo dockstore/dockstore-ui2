@@ -27,8 +27,9 @@ import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
-import { Permission } from './../shared/swagger';
+import { Permission, ToolDescriptor } from './../shared/swagger';
 import RoleEnum = Permission.RoleEnum;
+import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -104,6 +105,7 @@ export class GA4GHStubService {
 }
 
 export class SearchStubService {
+
     workflowhit$ = observableOf([]);
     toolhit$ = observableOf([]);
     searchInfo$ = observableOf({});
@@ -118,6 +120,9 @@ export class SearchStubService {
         } else {
             return false;
         }
+    }
+    setAutoCompleteTerms() {
+
     }
 
     noResults(searchTerm: string, hits: any) {
@@ -153,9 +158,8 @@ export class SearchStubService {
         return 'thisisafakepermalink';
     }
 
-    createURIParams(cururl) {
-        const url = cururl.substr('/search'.length + 1);
-        const params = new URLSearchParams(url);
+    createURIParams() {
+        const params = new URLSearchParams('/search');
         return params;
     }
     initializeFriendlyNames() {
@@ -197,6 +201,8 @@ export class SearchStubService {
             ])]
         ]);
     }
+    handleLink(linkArray: Array<string>) {
+    }
 }
 
 export class ListContainersStubService {
@@ -217,15 +223,6 @@ export class AuthStubService {
     authenticate() {
         return observableOf({});
     }
-}
-
-export class ErrorStubService {
-    errorObj$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
-
-    setErrorAlert() {
-      return observableOf({});
-    }
-
 }
 
 export class ConfigurationStub {
@@ -370,11 +367,11 @@ export class MetadataStubService {
 
     descriptorLanguageList = observableOf([
         {
-            'value': 'CWL',
+            'value': ToolDescriptor.TypeEnum.CWL,
             'friendlyName': 'Common Workflow Language'
         },
         {
-            'value': 'WDL',
+            'value': ToolDescriptor.TypeEnum.WDL,
             'friendlyName': 'Workflow Description Language'
         }
     ]);
@@ -439,6 +436,9 @@ export class UserStubService {
     extendedUser$ = observableOf({});
     updateUser() {
     }
+    getExtendedUserData() {
+
+    }
 }
 
 export class TokenStubService {
@@ -486,10 +486,19 @@ export class CheckerWorkflowStubService {
     isEntryAWorkflow() {
         return true;
     }
+    clearAll() {
+      return;
+    }
+    getCheckerWorkflowURLObservable() {
+      return observableOf(null);
+    }
+    canAdd() {
+      return observableOf(false);
+    }
 }
 
 export class DescriptorLanguageStubService {
-    descriptorLanguages$ = observableOf(['cwl', 'wdl', 'nextflow']);
+    descriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
 }
 
 export class RegisterCheckerWorkflowStubService {
@@ -531,10 +540,10 @@ export class DescriptorsStubService {
             const typesAvailable = new Array();
             for (const file of version.sourceFiles) {
                 const type = file.type;
-                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
-                    typesAvailable.push('cwl');
-                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes('wdl')) {
-                    typesAvailable.push('wdl');
+                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.CWL)) {
+                    typesAvailable.push(WebserviceDescriptorTypeEnum.CWL);
+                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.WDL)) {
+                    typesAvailable.push(WebserviceDescriptorTypeEnum.WDL);
                 }
             }
             return typesAvailable;
@@ -622,7 +631,7 @@ export class WorkflowsStubService {
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
-            'descriptorType': 'cwl',
+            'descriptorType': WebserviceDescriptorTypeEnum.CWL,
             'gitUrl': 'refreshedGitUrl',
             'mode': Workflow.ModeEnum.FULL,
             'organization': 'refreshedOrganization',
@@ -750,10 +759,4 @@ export class ContainersStubService {
 
 export class VersionModalStubService {
 
-}
-
-
-export class StateStubService {
-    publicPage$ = observableOf(false);
-    refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 }

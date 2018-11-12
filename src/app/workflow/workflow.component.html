@@ -60,7 +60,7 @@
     </div>
 
     <p class="update">
-      Last Modified: {{ workflow?.agoMessage || 'n/a' }}
+      Last Modified: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}
     </p>
     <div *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>
@@ -75,8 +75,8 @@
   <div *ngIf="!publicPage" class="col-md-5">
     <h3>
       <div class="pull-right my-entry-button-group">
-        <button mat-flat-button id="publishButton" class="mr-2" color="accent" (click)="publish()" [(ngModel)]="published" [disabled]="publishDisable() || !isOwner" [matTooltip]="pubUnpubMessage" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
-        <button mat-flat-button color="primary" (click)="refresh()" [disabled]="refreshMessage" *ngIf="!isHosted() && canWrite" matTooltip="Sync the workflow with the source control repository">Refresh</button>
+        <button mat-flat-button id="publishButton" class="mr-2" color="accent" (click)="publish()" [(ngModel)]="published" [disabled]="(isRefreshing$ | async) || publishDisable()" [matTooltip]="pubUnpubMessage" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
+        <button mat-flat-button color="primary" (click)="refresh()" [disabled]="(isRefreshing$ | async)" *ngIf="!isHosted() && canWrite" matTooltip="Sync the workflow with the source control repository">Refresh</button>
       </div>
     </h3>
   </div>
@@ -120,10 +120,10 @@
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <tabset id="workflow_tabs" #entryTabs justified="true">
       <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
-        <app-info-tab [validVersions]="validVersions" [workflow]="workflow" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
+        <app-info-tab [validVersions]="validVersions" [extendedWorkflow]="(extendedWorkflow$ | async)" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch *ngIf="workflow?.workflowVersions.length > 0; else noVersions" [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [currentDescriptor]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-launch>
+        <app-launch *ngIf="workflow?.workflowVersions.length > 0; else noVersions" [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
 
         <ng-template #noVersions>
           <div class="alert alert-warning" role="alert">
@@ -133,7 +133,7 @@
       </tab>
       <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
         <div *ngIf="validVersions && !isStub()">
-          <app-versions-workflow [versions]="workflow?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="workflow?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+          <app-versions-workflow [versions]="(extendedWorkflow$ | async)?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-versions-workflow>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
@@ -142,11 +142,11 @@
       </tab>
       <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
         <div *ngIf="validVersions && !isStub() && !isHosted()">
-          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [descriptorType]="workflow.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+          <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [descriptorType]="(descriptorType$ | async)" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-files-workflow>
         </div>
         <div *ngIf="validVersions && isHosted()">
-          <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage" [descriptorType]="workflow?.descriptorType" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+          <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-workflow-file-editor>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
@@ -205,9 +205,9 @@
       <div class="panel-body">
         <div class="container-source-repos">
           <p>
-            <span *ngIf="workflow.provider">
-              <a [href]="workflow.providerUrl" target="_blank">
-                {{workflow.provider}}
+            <span *ngIf="(extendedWorkflow$ | async).provider">
+              <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
+                {{(extendedWorkflow$ | async).provider}}
                 <span class="glyphicon glyphicon-new-window"></span>
               </a>
             </span>
@@ -223,8 +223,7 @@
       </div>
       <div class="panel-body">
         <div class="container-sharing">
-          <share-buttons class="withCount" [url]="shareURL" [google]="false" [whatsApp]="false" [stumbleUpOn]="false" [pinterest]="false" [tumblr]="false" [showCount]="true" (count)="sumCounts($event)">
-          </share-buttons>
+          <share-buttons [include]="['facebook','twitter','linkedin','reddit']" [show]="5" [showCount]="true" [url]="shareURL" [autoSetMeta]="false"></share-buttons>
         </div>
       </div>
     </div>
