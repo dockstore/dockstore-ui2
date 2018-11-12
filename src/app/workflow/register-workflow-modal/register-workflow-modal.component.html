@@ -129,12 +129,13 @@
           <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{validationMessage.repository.pattern}}</mat-error>
         </mat-form-field>
 
-        <mat-form-field class="w-100">
+        <!-- Optional workflow name, uncomment if implemented -->
+        <!-- <mat-form-field class="w-100">
           <mat-label>Workflow Name</mat-label>
           <input matInput id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" [(ngModel)]="hostedWorkflow.entryName" maxlength="256" [pattern]="validationPatterns.workflowName" [matTooltip]="Tooltip.workflowName"
             placeholder="e.g. liftover-fast (optional)" />
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
 
         <div mat-dialog-actions class="pull-right">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
