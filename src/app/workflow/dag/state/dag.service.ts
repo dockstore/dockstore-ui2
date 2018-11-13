@@ -1,12 +1,14 @@
 import { ElementRef, Injectable, Renderer2 } from '@angular/core';
 import { CytoscapeOptions } from 'cytoscape';
-import cytoscape = require('cytoscape');
 
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
+import * as cytoscape from 'cytoscape';
+import ext from 'cytoscape-dagre';
+import qtipExtension from 'cytoscape-qtip';
 
 @Injectable()
 export class DagService {
@@ -200,6 +202,8 @@ export class DagService {
         style: this.style,
         elements: dagResult
       };
+      cytoscape.use(ext);
+      cytoscape.use(qtipExtension);
       cyto = cytoscape(cytoscapeOptions);
 
 

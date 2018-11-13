@@ -51,7 +51,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-social": "^5.1.1",
     "core-js": "^2.5.4",
-    "cytoscape": "^3.1.1",
+    "cytoscape": "^3.2.20",
     "cytoscape-dagre": "^1.6.0",
     "cytoscape-qtip": "^2.7.1",
     "elasticsearch-browser": "^15.0.0",
