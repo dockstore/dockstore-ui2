@@ -1,12 +1,12 @@
-import { ElementRef, Injectable, OnDestroy, Renderer2 } from '@angular/core';
+import { ElementRef, Injectable, Renderer2 } from '@angular/core';
+import { CytoscapeOptions } from 'cytoscape';
+import cytoscape = require('cytoscape');
 
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
-
-declare var cytoscape: any;
 
 @Injectable()
 export class DagService {
@@ -186,11 +186,11 @@ export class DagService {
     }
   }
 
-  refreshDocument(cy: any, element): any {
+  refreshDocument(cyto: any, element): any {
     const self = this;
     const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
     if (dagResult) {
-      cy = cytoscape({
+      const cytoscapeOptions: CytoscapeOptions = {
         container: element,
         boxSelectionEnabled: false,
         autounselectify: true,
@@ -199,9 +199,11 @@ export class DagService {
         },
         style: this.style,
         elements: dagResult
-      });
+      };
+      cyto = cytoscape(cytoscapeOptions);
 
-      cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+
+      cyto.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
         const node = this;
         const name = this.data('name');
         const tool = this.data('tool');
@@ -225,15 +227,15 @@ export class DagService {
         api.toggle(true);
       });
 
-      cy.on('mouseout mousedown', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+      cyto.on('mouseout mousedown', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
         const node = this;
         const api = node.qtip('api');
         api.destroy();
       });
 
-      cy.on('mouseout', 'node', function () {
+      cyto.on('mouseout', 'node', function () {
         const node = this;
-        cy.elements().removeClass('notselected');
+        cyto.elements().removeClass('notselected');
         node.connectedEdges().animate({
           style: {
             'line-color': '#9dbaea',
@@ -245,9 +247,9 @@ export class DagService {
           });
       });
 
-      cy.on('mouseover', 'node', function () {
+      cyto.on('mouseover', 'node', function () {
         const node = this;
-        cy.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
+        cyto.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
 
         node.outgoers('edge').animate({
           style: {
@@ -269,7 +271,7 @@ export class DagService {
           });
       });
 
-      cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+      cyto.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
         try { // your browser may block popups
           if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
             window.open(this.data('tool'));
@@ -281,6 +283,6 @@ export class DagService {
         }
       });
     }
-    return cy;
+    return cyto;
   }
 }

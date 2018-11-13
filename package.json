@@ -40,6 +40,7 @@
     "@ngx-share/button": "^6.0.1",
     "@ngx-share/buttons": "^6.0.1",
     "@ngx-share/core": "^6.0.1",
+    "@types/cytoscape": "^3.2.8",
     "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.14",
     "@types/jquery": "^3.3.15",
