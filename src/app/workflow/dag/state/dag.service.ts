@@ -1,14 +1,15 @@
 import { ElementRef, Injectable, Renderer2 } from '@angular/core';
 import { CytoscapeOptions } from 'cytoscape';
+import * as cytoscape from 'cytoscape';
+import dagreExtension from 'cytoscape-dagre';
+import popperExtension from 'cytoscape-popper';
 
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
-import * as cytoscape from 'cytoscape';
-import dagreExtension from 'cytoscape-dagre';
-import popperExtension from 'cytoscape-popper';
+
 @Injectable()
 export class DagService {
   readonly style = [
@@ -160,7 +161,7 @@ export class DagService {
     });
   }
 
-  download(cy: any, versionName: string, exportLink: ElementRef) {
+  download(cy: cytoscape.Core, versionName: string, exportLink: ElementRef) {
     if (cy) {
       const pngDAG = cy.png({ full: true, scale: 2 });
       const name = this.workflowQuery.getActive().repository + '_' + versionName + '.png';
@@ -243,7 +244,7 @@ export class DagService {
     node.on('mouseout mousedown', destroy);
   }
 
-  refreshDocument(cy: cytoscape.Core, element): any {
+  refreshDocument(cy: cytoscape.Core, element): cytoscape.Core {
     const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
     if (dagResult) {
       const cytoscapeOptions: CytoscapeOptions = {
@@ -262,7 +263,7 @@ export class DagService {
 
       // Sets up popups on all nodes (except begin and end)
       const nodes: cytoscape.NodeCollection = cy.nodes().filter(node => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
-      nodes.forEach((node: any) => this.setDAGNodeTooltip(node));
+      nodes.forEach((node: cytoscape.NodeSingular) => this.setDAGNodeTooltip(node));
 
       cy.on('mouseout', 'node', function () {
         const node = this;
