@@ -87,11 +87,6 @@ os: linux x64
 If you wish to serve the dist folder in a VM, make sure you have nginx and security rules set up properly.
 [Nginx](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04)
 
-## Swagger
-
-You will need to generate the Dockstore client classes (version numbers may change frequently).
-Look at the setup in the [travis.yml](.travis.yml)
-
 ## Project Set Up
 
 The Dockstore class in [src/app/shared/dockstore.model.ts](src/app/shared/dockstore.model.ts) is for integrating supported services.
@@ -100,7 +95,10 @@ In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to
 
 ## Pre-build/serve
 
-Run `npm run prebuild` before running or building the project. This command will automatically generate a file which contains the UI tag version.
+Run `npm run prebuild` before running or building the project. This command will:
+- generate a file which contains the UI tag version 
+- download the openapi codegen
+- generate code from the swagger.yaml
 
 ## Development server
 
