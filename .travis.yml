@@ -23,7 +23,6 @@ jobs:
     - stage: test
       script:
         - ng lint
-        - npm run prebuild
         - ng test --watch=false --code-coverage --browsers ChromeHeadless
         - ng version
         - npm run build.prod
