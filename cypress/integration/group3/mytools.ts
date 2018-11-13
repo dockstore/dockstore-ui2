@@ -60,13 +60,12 @@ describe('Dockstore my tools', () => {
       cy.get('a#home-nav-button').click();
       cy.contains('Browse Tools');
       cy.get('a#my-tools-nav-button').click();
-      cy.contains('github.com');
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
       cy.contains('GitHub');
-      cy.contains('https://github.com/A2/b1');
+      cy.contains('A2/b1');
       cy.contains('Quay.io');
-      cy.contains('quay.io/A2/b1');
+      cy.contains('A2/b1');
       cy.contains('Last Build');
       cy.contains('Last Updated');
       cy.contains('Build Mode');
