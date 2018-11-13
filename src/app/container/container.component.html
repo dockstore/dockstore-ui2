@@ -142,7 +142,7 @@
         <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [extendedDockstoreTool]="(extendedTool$ | async)" [validVersions]="validVersions"></app-info-tab>
       </tab>
       <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname"></app-launch>
+        <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
 
         <ng-template #noTags>
           <div class="alert alert-warning" role="alert">
