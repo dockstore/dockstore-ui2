@@ -7,9 +7,8 @@ import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
 import * as cytoscape from 'cytoscape';
-import ext from 'cytoscape-dagre';
-import qtipExtension from 'cytoscape-qtip';
-
+import dagreExtension from 'cytoscape-dagre';
+import popperExtension from 'cytoscape-popper';
 @Injectable()
 export class DagService {
   readonly style = [
@@ -188,8 +187,63 @@ export class DagService {
     }
   }
 
-  refreshDocument(cyto: any, element): any {
-    const self = this;
+  /**
+   * Create the tooltip HTMLDivElement from scratch because popper doesn't have a default
+   *
+   * @private
+   * @param {string} name  Name of the node
+   * @param {string} runText  Most text for the node
+   * @returns {HTMLDivElement}  The tooltip HTML element that still uses qtip styles
+   * @memberof DagService
+   */
+  private createPopupHTML(name: string, runText: string): HTMLDivElement {
+    const div = document.createElement('div');
+    const title = document.createElement('div');
+    title.innerHTML = name;
+    title.setAttribute('class', 'qtip-titlebar');
+    div.appendChild(title);
+    const content = document.createElement('div');
+    content.innerHTML = runText;
+    content.setAttribute('class', 'qtip-content');
+    div.appendChild(content);
+    div.setAttribute('class', 'qtip-bootstrap bootstrap-tooltip-z-index');
+    document.body.appendChild(div);
+    return div;
+  }
+
+  /**
+   * Creates event handlers for a single node
+   *
+   * @private
+   * @param {cytoscape.NodeSingular} node  The node to create event handlers for
+   * @memberof DagService
+   */
+  private setDAGNodeTooltip(node: cytoscape.NodeSingular): void {
+    let popper: any;
+    const name = node.data('name');
+    const tool = node.data('tool');
+    const type = node.data('type');
+    const docker = node.data('docker');
+    const run = node.data('run');
+    const runText = this.getTooltipText(name, tool, type, docker, run);
+    const update = () => {
+      // popper() doesn't exist on type cytoscape.NodeSingular because type definitions don't know about extensions
+      popper = (<any>node).popper({
+        content: () => {
+          return this.createPopupHTML(name, runText);
+        },
+        popper: {removeOnDestroy: true}
+      });
+      popper.scheduleUpdate();
+    };
+    const destroy = () => {
+      popper.destroy();
+    };
+    node.on('mouseover', update);
+    node.on('mouseout mousedown', destroy);
+  }
+
+  refreshDocument(cy: cytoscape.Core, element): any {
     const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
     if (dagResult) {
       const cytoscapeOptions: CytoscapeOptions = {
@@ -202,44 +256,17 @@ export class DagService {
         style: this.style,
         elements: dagResult
       };
-      cytoscape.use(ext);
-      cytoscape.use(qtipExtension);
-      cyto = cytoscape(cytoscapeOptions);
+      cytoscape.use(dagreExtension);
+      cytoscape.use(popperExtension);
+      cy = cytoscape(cytoscapeOptions);
 
+      // Sets up popups on all nodes (except begin and end)
+      const nodes: cytoscape.NodeCollection = cy.nodes().filter(node => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
+      nodes.forEach((node: any) => this.setDAGNodeTooltip(node));
 
-      cyto.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+      cy.on('mouseout', 'node', function () {
         const node = this;
-        const name = this.data('name');
-        const tool = this.data('tool');
-        const type = this.data('type');
-        const docker = this.data('docker');
-        const run = this.data('run');
-        const runText = self.getTooltipText(name, tool, type, docker, run);
-        const tooltip = node.qtip({
-          content: {
-            text: runText,
-            title: node.data('name')
-          },
-          show: {
-            solo: true
-          },
-          style: {
-            classes: 'qtip-bootstrap',
-          }
-        });
-        const api = tooltip.qtip('api');
-        api.toggle(true);
-      });
-
-      cyto.on('mouseout mousedown', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-        const node = this;
-        const api = node.qtip('api');
-        api.destroy();
-      });
-
-      cyto.on('mouseout', 'node', function () {
-        const node = this;
-        cyto.elements().removeClass('notselected');
+        cy.elements().removeClass('notselected');
         node.connectedEdges().animate({
           style: {
             'line-color': '#9dbaea',
@@ -251,9 +278,9 @@ export class DagService {
           });
       });
 
-      cyto.on('mouseover', 'node', function () {
+      cy.on('mouseover', 'node', function () {
         const node = this;
-        cyto.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
+        cy.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
 
         node.outgoers('edge').animate({
           style: {
@@ -275,7 +302,7 @@ export class DagService {
           });
       });
 
-      cyto.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+      cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
         try { // your browser may block popups
           if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
             window.open(this.data('tool'));
@@ -287,6 +314,6 @@ export class DagService {
         }
       });
     }
-    return cyto;
+    return cy;
   }
 }

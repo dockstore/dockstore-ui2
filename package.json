@@ -53,6 +53,7 @@
     "core-js": "^2.5.4",
     "cytoscape": "^3.2.20",
     "cytoscape-dagre": "^1.6.0",
+    "cytoscape-popper": "^1.0.2",
     "cytoscape-qtip": "^2.7.1",
     "elasticsearch-browser": "^15.0.0",
     "font-awesome": "^4.7.0",
