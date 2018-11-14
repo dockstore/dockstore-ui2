@@ -14,12 +14,12 @@ export class UrlDeconstructPipe implements PipeTransform {
    */
 
   transform(providerUrl: string, versionName: string): string {
-    let re = /^(https?:)?\/\/(www\.)?([\w-.]+\.com|[\w-.]+\.org|[\w-.]+\.io)(\/[\w-.]+)?\/([\w-.]+)\/([\w-.]+)$/;
+    const re = /^(https?:)?\/\/(www\.)?([\w-.]+\.com|[\w-.]+\.org|[\w-.]+\.io)(\/[\w-.]+)?\/([\w-.]+)\/([\w-.]+)$/;
 
     const USERNAME = 5;
     const REPONAME = 6;
 
-    let split = providerUrl.match(re);
+    const split = providerUrl.match(re);
 
     if (split && versionName) {
       return `${split[USERNAME]}/${split[REPONAME]}:${versionName}`;

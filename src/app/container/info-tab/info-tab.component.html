@@ -29,7 +29,7 @@
       <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">
         {{ tool?.provider}}
       </strong>:
-      <a [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
+      <a id="sourceRepository" [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
         {{ tool?.providerUrl | urlDeconstruct : (isPublic ? selectedVersion?.name : '') }}
       </a>
     </li>
@@ -39,7 +39,7 @@
     </li>
     <li *ngIf="tool?.imgProviderUrl">
       <strong matTooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
-      <a [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
+      <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
         {{ tool?.imgProviderUrl | urlDeconstruct}}
       </a>
       <span *ngIf="privateOnlyRegistry">

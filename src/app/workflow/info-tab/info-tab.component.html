@@ -29,7 +29,7 @@
           <strong matTooltip="Git repository for the associated descriptors">
             {{ workflow?.provider}}
           </strong>:
-          <a [href]="workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
+          <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
             {{ workflow?.providerUrl | urlDeconstruct : (isPublic ? selectedVersion?.name : '')}}
           </a>
         </li>
