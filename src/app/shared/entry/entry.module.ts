@@ -84,6 +84,7 @@ import { RefreshAlertModule } from '../alert/alert.module';
     NgxJsonLdModule,
     RefreshAlertModule,
     ShareButtonsModule
-  ]
+  ],
+  entryComponents: [RegisterCheckerWorkflowComponent]
 })
 export class EntryModule { }

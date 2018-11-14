@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 import {
   CheckerWorkflowStubService,
@@ -26,8 +27,7 @@ import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow.component';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material';
+import { DescriptorTypeCompatService } from '../../descriptor-type-compat.service';
 
 describe('RegisterCheckerWorkflowComponent', () => {
   let component: RegisterCheckerWorkflowComponent;
@@ -37,9 +37,10 @@ describe('RegisterCheckerWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RegisterCheckerWorkflowComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [ModalModule.forRoot(), FormsModule, MatSnackBarModule],
+      imports: [FormsModule, MatSnackBarModule, MatDialogModule],
       providers: [{provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService},
         {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+        DescriptorTypeCompatService,
         {provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService}
       ]
     })

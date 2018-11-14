@@ -26,10 +26,11 @@ import { Token } from './../shared/swagger/model/token';
 import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
-import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow, sampleTag } from './mocked-objects';
 import { Permission, ToolDescriptor } from './../shared/swagger';
 import RoleEnum = Permission.RoleEnum;
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
+import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -758,5 +759,8 @@ export class ContainersStubService {
 }
 
 export class VersionModalStubService {
-
+  version = observableOf(sampleTag);
+  mode = observableOf(TagEditorMode.View);
+  unsavedTestCWLFile = observableOf([]);
+  unsavedTestWDLFile = observableOf([]);
 }

@@ -15,7 +15,8 @@
  */
 import { Location } from '@angular/common';
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
@@ -58,6 +59,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public publicPage: boolean;
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  protected selected = new FormControl(0);
   constructor(private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
@@ -66,8 +68,8 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     public activatedRoute: ActivatedRoute,
     public locationService: Location,
     protected sessionService: SessionService, protected sessionQuery: SessionQuery, protected gA4GHFilesService: GA4GHFilesService) {
-      this.location = locationService;
-      this.gA4GHFilesService.clearFiles();
+    this.location = locationService;
+    this.gA4GHFilesService.clearFiles();
   }
 
   ngOnInit() {
@@ -222,7 +224,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @returns {void}
    */
   selectTab(tabIndex: number): void {
-    this.entryTabs.tabs[tabIndex].active = true;
+    this.selected.setValue(tabIndex);
   }
 
   /**
@@ -230,28 +232,28 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {number} tabIndex - index of tab to select
    * @returns {void}
    */
-   abstract setEntryTab(tabName: string): void;
+  abstract setEntryTab(tabName: string): void;
 
   /**
    * Updates the URL with both tab and version information
    * @returns {void}
    */
-   updateUrl(entryPath: string, myEntry: string, entry: string): void {
-     if (this.publicPage) {
-       let currentPath = '';
-       if (this.router.url.indexOf(myEntry) !== -1) {
-         currentPath += '/' + myEntry + '/';
-       } else {
-         currentPath += '/' + entry + '/';
-       }
-       currentPath += entryPath;
-       if (this.selectedVersion !== null) {
-         currentPath += ':' + this.selectedVersion.name;
-       }
-       currentPath += '?tab=' + this.currentTab;
-       this.location.replaceState(currentPath);
-     }
-   }
+  updateUrl(entryPath: string, myEntry: string, entry: string): void {
+    if (this.publicPage) {
+      let currentPath = '';
+      if (this.router.url.indexOf(myEntry) !== -1) {
+        currentPath += '/' + myEntry + '/';
+      } else {
+        currentPath += '/' + entry + '/';
+      }
+      currentPath += entryPath;
+      if (this.selectedVersion !== null) {
+        currentPath += ':' + this.selectedVersion.name;
+      }
+      currentPath += '?tab=' + this.currentTab;
+      this.location.replaceState(currentPath);
+    }
+  }
 
   /**
    * Sorts two entries by last modified, and then verified
@@ -274,6 +276,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+
+  selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
+    this.selected.setValue(matTabChangeEvent.index);
+    this.setEntryTab(matTabChangeEvent.tab.textLabel.toLowerCase());
+  }
+
 
   /**
    * Sorts a list of versions by verified and then last_modified, returning a subset of the versions (1 default + 5 other versions max)
