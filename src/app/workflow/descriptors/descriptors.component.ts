@@ -15,15 +15,15 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
+import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, ToolFile } from '../../shared/swagger';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
-import { WorkflowDescriptorService } from './workflow-descriptor.service';
 
 @Component({
   selector: 'app-descriptors-workflow',
@@ -41,18 +41,19 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   protected entryType: ('tool' | 'workflow') = 'workflow';
 
   public descriptorPath: string;
-  constructor(private workflowDescriptorService: WorkflowDescriptorService, public gA4GHService: GA4GHService,
-    public fileService: FileService, public gA4GHFilesStateService: GA4GHFilesStateService,
-    private workflowService: WorkflowService) {
-    super(fileService, gA4GHFilesStateService, gA4GHService);
-    this.published$ = this.workflowService.workflowIsPublished$;
+  constructor(private descriptorService: DescriptorService, public gA4GHService: GA4GHService,
+    public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
+    private workflowQuery: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery) {
+    super(fileService, gA4GHFilesService, gA4GHService);
+    this.published$ = this.workflowQuery.workflowIsPublished$;
   }
-  getDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
+
+  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+    return this.descriptorService.getDescriptors(this._selectedVersion);
   }
 
   getValidDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getValidDescriptors(this._selectedVersion);
+    return this.descriptorService.getValidDescriptors(this._selectedVersion);
   }
 
   /**
@@ -64,10 +65,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
    * @returns {Observable<Array<ToolFile>>}  The array of primary or secondary descriptor ToolFiles
    * @memberof DescriptorsWorkflowComponent
    */
-  getFiles(descriptor): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesStateService.descriptorToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR ||
-        toolFile.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
-    }));
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+    ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
   }
 }

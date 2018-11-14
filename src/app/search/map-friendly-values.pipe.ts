@@ -25,6 +25,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['private_access', new Map([
       ['1', 'private'], ['0', 'public']
     ])],
+    ['descriptorType', new Map([
+      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
+    ])],
     ['descriptor_type', new Map([
       ['CWL', 'CWL'], ['WDL', 'WDL'],
       ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
@@ -38,7 +41,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ])],
     ['descriptor_tooltip', new Map([
       ['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'],
-      ['NFL', 'Nextflow coming soon!']
+      ['NFL', 'Nextflow']
     ])],
     ['author', new Map([
       ['', 'n/a']
@@ -54,6 +57,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   transform(key: string, subBucket: string): string {
+    if (!subBucket) {
+      return subBucket;
+    }
     if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucket.toString())) {
       return this.friendlyValueNames.get(key).get(subBucket.toString());
     } else {

@@ -16,21 +16,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckerWorkflowService } from './../../shared/checker-workflow.service';
-import { ContainerService } from './../../shared/container.service';
-import { WorkflowService } from './../../shared/workflow.service';
+import { ContainerService } from '../../shared/container.service';
+import { DescriptorService } from '../../shared/descriptor.service';
+import { CheckerWorkflowService } from '../../shared/state/checker-workflow.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { GA4GHService } from '../../shared/swagger';
 import {
   CheckerWorkflowStubService,
   ContainerStubService,
   DescriptorsStubService,
+  GA4GHStubService,
   WorkflowStubService,
-  GA4GHStubService
-} from './../../test/service-stubs';
-import { WorkflowDescriptorService } from './../descriptors/workflow-descriptor.service';
+} from '../../test/service-stubs';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
-import { GA4GHService } from '../../shared/swagger';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
@@ -41,11 +40,11 @@ describe('LaunchWorkflowComponent', () => {
       declarations: [LaunchWorkflowComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [WorkflowLaunchService, { provide: ContainerService, useClass: ContainerStubService },
-        { provide: WorkflowDescriptorService, useClass: DescriptorsStubService },
+        { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         { provide: WorkflowService, useClass: WorkflowStubService},
-        { provide: GA4GHService, useClass: GA4GHStubService},
-        GA4GHFilesStateService]
+        { provide: GA4GHService, useClass: GA4GHStubService}
+      ]
     })
       .compileComponents();
   }));

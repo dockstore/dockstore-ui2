@@ -21,12 +21,13 @@ import {
   CheckerWorkflowStubService,
   DescriptorLanguageStubService,
   RegisterCheckerWorkflowStubService,
-} from './../../../test/service-stubs';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { ErrorService } from './../../error.service';
-import { DescriptorLanguageService } from './../descriptor-language.service';
+} from '../../../test/service-stubs';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
+import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow.component';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('RegisterCheckerWorkflowComponent', () => {
   let component: RegisterCheckerWorkflowComponent;
@@ -35,9 +36,10 @@ describe('RegisterCheckerWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterCheckerWorkflowComponent],
-      imports: [ModalModule.forRoot(), FormsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ModalModule.forRoot(), FormsModule, MatSnackBarModule],
       providers: [{provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService},
-        {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }, ErrorService,
+        {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         {provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService}
       ]
     })

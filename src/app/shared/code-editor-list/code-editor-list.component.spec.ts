@@ -5,12 +5,12 @@ import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInp
   MatTooltipModule } from '@angular/material';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { WorkflowStubService } from './../../test/service-stubs';
-import { WorkflowService } from './../workflow.service';
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
 import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
 import { FileService } from './../../shared/file.service';
+import { WorkflowService } from '../state/workflow.service';
 
 describe('CodeEditorListComponent', () => {
   let component: CodeEditorListComponent;

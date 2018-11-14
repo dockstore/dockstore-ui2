@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="workflow?.descriptorType === 'nfl' && dagType === 'classic'">
+<div *ngIf="(isNFL$ | async) && dagType === 'classic'">
   <span class="alert alert-warning col-md-12" role="alert">
     <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;DAG display is still experimental for Nextflow.
   </span>
@@ -22,7 +22,7 @@
 <div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div [ngClass]="{'fullscreen-dropdown': expanded}">
-      <div *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl' && workflow?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
+      <div *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
         <label class="radio-inline">
           <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
         </label>
@@ -31,7 +31,7 @@
         </label>
       </div>
       <div>
-        <a *ngIf="dagType === 'classic' && dagResult" href id="exportLink" (click)="download()">
+        <a *ngIf="dagType === 'classic' && (dagResult$ | async)" href #exportLink id="exportLink" (click)="download()">
           <span class="glyphicon glyphicon-export"></span>Export to PNG</a>
         <!-- This following div is shared by both viewers -->
         <div class="btn-group pull-right" role="group" style="width:auto">
@@ -46,27 +46,27 @@
       </div>
     </div>
 
-    <div *ngIf="dagType === 'classic' && workflow?.descriptorType !== 'nfl'">
-      <div class="alert alert-warning" role="alert" *ngIf="!dagResult">
+    <div *ngIf="dagType === 'classic' && !(isNFL$ | async)">
+      <div class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async)">
         <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
-        <span *ngIf="workflow?.descriptorType === 'wdl'">
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
           A Descriptor associated with this workflow could not be found.
         </span>
-        <span *ngIf="workflow?.descriptorType === 'cwl'">
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
           Please ensure that the Descriptor is a valid CWL 1.0 workflow.
         </span>
       </div>
 
-      <div class="alert alert-warning" role="alert" *ngIf="workflow?.descriptorType === 'cwl' && missingTool">
+      <div class="alert alert-warning" role="alert" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async)">
         <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools
         are missing from Github repo.
       </div>
     </div>
 
-    <app-cwl-viewer *ngIf="enableCwlViewer && workflow?.descriptorType === 'cwl' && workflow?.source_control_provider === 'GITHUB'" [hidden]="dagType !== 'cwlviewer'"
-                    [workflow]="workflow" [selectedVersion]="_selectedVersion" [refresh]="refreshCounter" [expanded]="expanded">
+    <app-cwl-viewer *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'" [hidden]="dagType !== 'cwlviewer'"
+                    [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [refresh]="refreshCounter" [expanded]="expanded">
     </app-cwl-viewer>
 
-    <div #cy id="cy" *ngIf="dagResult !== null && !missingTool" [hidden]="dagType !== 'classic'" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
+    <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" [hidden]="dagType !== 'classic'" [ngClass]="{'fullscreen-element large-dag': expanded}" class="mini-dag"></div>
   </div>
 </div>

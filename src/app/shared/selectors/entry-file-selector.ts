@@ -13,21 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { OnDestroy } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../constants';
-import { GA4GHFilesStateService } from '../entry/GA4GHFiles.state.service';
 import { FileService } from '../file.service';
-import { FileWrapper, GA4GHService } from '../swagger';
+import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
+import { FileWrapper, GA4GHService, ToolDescriptor } from '../swagger';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
 */
-export abstract class EntryFileSelector {
+export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
 
-  protected currentDescriptor;
+  private ngUnsubscribe: Subject<{}> = new Subject();
+  protected currentDescriptor: ToolDescriptor.TypeEnum;
   protected descriptors: Array<any>;
   protected validDescriptors: Array<any>;
   public nullDescriptors: boolean;
@@ -47,7 +50,7 @@ export abstract class EntryFileSelector {
   abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
-  constructor(protected fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
+  constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
     protected gA4GHService: GA4GHService) {
   }
 
@@ -77,8 +80,13 @@ export abstract class EntryFileSelector {
     this.reactToDescriptor();
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   reactToDescriptor() {
-    this.getFiles(this.currentDescriptor)
+    this.getFiles(this.currentDescriptor).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
         this.files = files;
         if (this.files.length) {
@@ -122,7 +130,7 @@ export abstract class EntryFileSelector {
    * @memberof EntryFileSelector
    */
   reactToFile(): void {
-    this.gA4GHFilesStateService.injectAuthorizationToken(this.gA4GHService);
+    this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
     // TODO: Memoize this
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
       this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,

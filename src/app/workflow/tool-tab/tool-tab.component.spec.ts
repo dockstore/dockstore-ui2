@@ -13,16 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from '../../shared/swagger';
-import { WorkflowService } from './../../shared/workflow.service';
-import { WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
-import { FormsModule } from '@angular/forms';
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowsService } from '../../shared/swagger';
+import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
 
 describe('ToolTabComponent', () => {

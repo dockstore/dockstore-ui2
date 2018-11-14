@@ -15,13 +15,14 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../../../../loginComponents/user.service';
 import { formInputDebounceTime } from '../../../../shared/constants';
 import { MyErrorStateMatcher } from '../../../../shared/error-state-matcher';
 import { User } from '../../../../shared/swagger/model/user';
+import { UserQuery } from '../../../../shared/user/user.query';
+import { UserService } from '../../../../shared/user/user.service';
 import { RefreshService } from './../../../../shared/refresh.service';
 import { UsersService } from './../../../../shared/swagger/api/users.service';
 
@@ -36,7 +37,7 @@ export class ChangeUsernameComponent implements OnInit {
   user: User;
   usernameTaken = false;
   checkingIfValid = false;
-  extendedUser: any;
+  canChangeUsername$: Observable<boolean>;
   showEmailWarning = false;
   matcher = new MyErrorStateMatcher();
   usernameFormControl = new FormControl('', [
@@ -45,17 +46,18 @@ export class ChangeUsernameComponent implements OnInit {
     Validators.maxLength(39)
   ]);
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService) { }
+  constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService,
+    private userQuery: UserQuery) { }
 
   ngOnInit() {
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
         this.username = user.username;
         this.showEmailWarning = this.user.username.includes('@');
       }
     });
-    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.canChangeUsername$ = this.userQuery.canChangeUsername$;
     this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe(value => {
       if (this.usernameFormControl.valid) {
         this.checkIfUsernameExists(value);
@@ -87,13 +89,6 @@ export class ChangeUsernameComponent implements OnInit {
    * Attempts to update the username to the new value given by the user
    */
   updateUsername() {
-    this.usersService.changeUsername(this.username).subscribe(
-      (user: User) => {
-        this.userService.updateUser();
-        this.refreshService.handleSuccess('Updating username');
-      }, error => {
-        console.error(error);
-        this.refreshService.handleError('Updating username', error);
-      });
+    this.userService.updateUsername(this.username);
   }
 }

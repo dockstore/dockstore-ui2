@@ -19,6 +19,7 @@ import { sampleSourceFile, sampleTag } from '../test/mocked-objects';
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 import { FileService } from './file.service';
+import { ToolDescriptor } from './swagger';
 
 describe('FileService', () => {
   beforeEach(() => {
@@ -30,7 +31,7 @@ describe('FileService', () => {
   it('should get descriptor path', inject([FileService], (fileService: FileService) => {
     const tag = sampleTag;
     const sourceFile = sampleSourceFile;
-    const descriptorType = 'cwl';
+    const descriptorType = ToolDescriptor.TypeEnum.CWL;
     const entryType = 'tool';
     const url = fileService.getDescriptorPath('quay.io/org/repo', tag, sourceFile, descriptorType, entryType);
     expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor//cwl.json');

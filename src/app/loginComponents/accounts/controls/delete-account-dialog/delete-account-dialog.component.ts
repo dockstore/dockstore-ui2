@@ -3,11 +3,11 @@ import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
-import { finalize, map, takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 import { LogoutService } from '../../../../shared/logout.service';
-import { User, UsersService } from '../../../../shared/swagger';
-import { UserService } from '../../../user.service';
+import { UsersService } from '../../../../shared/swagger';
+import { UserQuery } from '../../../../shared/user/user.query';
 
 @Component({
   selector: 'app-delete-account-dialog',
@@ -20,11 +20,9 @@ export class DeleteAccountDialogComponent implements OnDestroy {
   usernameForm: FormGroup;
   loading = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(public userService: UserService, public form: FormBuilder, public dialogRef: MatDialogRef<DeleteAccountDialogComponent>,
+  constructor(public userQuery: UserQuery, public form: FormBuilder, public dialogRef: MatDialogRef<DeleteAccountDialogComponent>,
     private logoutService: LogoutService, private matSnackBar: MatSnackBar, private usersService: UsersService) {
-    this.userService.user$.pipe(map((user: User) => {
-      return user.username;
-    }), takeUntil(this.ngUnsubscribe)).subscribe((username: string) => {
+    this.userQuery.username$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((username: string) => {
       this.setupForm(username);
     }, error => {
       console.error('Could not get username from userService');

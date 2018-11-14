@@ -16,58 +16,13 @@
 import { Injectable } from '@angular/core';
 import { zip as observableZip } from 'rxjs';
 
-import { SourceFile } from './swagger';
+import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
+import { SourceFile, ToolDescriptor } from './swagger';
 
-@Injectable()
-export abstract class DescriptorService {
+@Injectable({ providedIn: 'root'})
+export class DescriptorService {
 
     constructor() { }
-    protected abstract getSecondaryWdl(id: number, versionName: string);
-    protected abstract getWdl(id: number, versionName: string);
-    protected abstract getSecondaryCwl(id: number, versionName: string);
-    protected abstract getCwl(id: number, versionName: string);
-    protected abstract getSecondaryNextFlow(id: number, versionName: string);
-    protected abstract getNextFlow(id: number, versionName: string);
-    getFiles(id: number, versionName: string, descriptor: string) {
-        let observable;
-        if (descriptor === 'cwl') {
-            observable = this.getCwlFiles(id, versionName);
-        } else if (descriptor === 'wdl') {
-            observable = this.getWdlFiles(id, versionName);
-        } else if (descriptor === 'nfl') {
-            observable = this.getNextflowFiles(id, versionName);
-        }
-        return observable.map(filesArray => {
-            const files = [];
-            files.push(filesArray[0]);
-            for (const file of filesArray[1]) {
-                files.push(file);
-            }
-            return files;
-        });
-    }
-
-    private getCwlFiles(id: number, versionName: string) {
-        return observableZip(
-            this.getCwl(id, versionName),
-            this.getSecondaryCwl(id, versionName)
-        );
-    }
-
-    private getWdlFiles(id: number, versionName: string) {
-        return observableZip(
-            this.getWdl(id, versionName),
-            this.getSecondaryWdl(id, versionName)
-        );
-    }
-
-    private getNextflowFiles(id: number, versionName: string) {
-      return observableZip(
-        this.getNextFlow(id, versionName),
-        this.getSecondaryNextFlow(id, versionName)
-      );
-    }
-
 
     /**
      * Gets the descriptor types (cwl/wdl/nfl) that the version has a sourcefile of
@@ -76,17 +31,17 @@ export abstract class DescriptorService {
      * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
      * @memberof DescriptorService
      */
-    getDescriptors(version) {
+    getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
         if (version) {
-            const descriptorTypes = [];
+            const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
             unique.forEach(element => {
                 if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
-                    descriptorTypes.push('cwl');
+                    descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
                 } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
-                    descriptorTypes.push('wdl');
+                    descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
                 } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
-                    descriptorTypes.push('nfl');
+                    descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
                 }
             });
             return descriptorTypes;

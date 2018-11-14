@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
-import { SearchService } from '../search.service';
+import { SearchQuery } from '../state/search.query';
+import { SearchService } from '../state/search.service';
 
 @Component({
   selector: 'app-search-workflow-table',
@@ -16,16 +17,13 @@ import { SearchService } from '../search.service';
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   public displayedColumns = ['repository', 'starredUsers', 'author', 'descriptorType', 'projectLinks'];
   public dataSource: MatTableDataSource<Workflow>;
-  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService) {
+  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService,
+    private searchQuery: SearchQuery) {
     super(dateService);
   }
 
   privateNgOnInit(): void {
-    this.searchService.workflowhit$.pipe(map((elasticSearchResults: Array<any>) => {
-      if (elasticSearchResults) {
-        return elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source);
-      }
-    }), takeUntil(this.ngUnsubscribe)).subscribe((entries: Array<Workflow>) => {
+    this.searchQuery.workflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entries: Array<Workflow>) => {
       if (entries) {
         this.dataSource.data = entries;
       }

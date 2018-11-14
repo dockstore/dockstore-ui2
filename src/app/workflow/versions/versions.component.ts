@@ -13,18 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { ErrorService } from '../../shared/error.service';
+import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
-import { WorkflowService } from '../../shared/workflow.service';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -33,7 +36,6 @@ import { WorkflowService } from '../../shared/workflow.service';
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
-  @Input() verifiedSource: Array<any>;
   @Input() workflowId: number;
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -43,20 +45,20 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   }
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
   public WorkflowType = Workflow;
-  workflow: any;
+  workflow: ExtendedWorkflow;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService, dateService: DateService, protected stateService: StateService,
-    private errorService: ErrorService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService) {
-    super(dockstoreService, dateService, stateService);
+  constructor(dockstoreService: DockstoreService, dateService: DateService, private alertService: AlertService,
+    private extendedWorkflowQuery: ExtendedWorkflowQuery,
+    private workflowsService: WorkflowsService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
+    super(dockstoreService, dateService, sessionQuery);
   }
 
   ngOnInit() {
     this.publicPageSubscription();
-    this.workflowService.workflow$.subscribe(workflow => {
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
@@ -79,18 +81,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
       return;
     }
     const message = 'Updating default workflow version';
-    this.stateService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
-        this.refreshService.handleSuccess(message);
+        this.alertService.detailedSuccess();
         if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {
           this.refreshService.refreshWorkflow();
         }
-      }, error => this.refreshService.handleError(message, error));
+      }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
   }
 
-  getVerifiedSource(name: string) {
-    return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
-  }
 
   /**
    * Updates the version and emits an event for the parent component

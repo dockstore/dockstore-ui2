@@ -25,7 +25,7 @@
   </div>
   <div *ngIf="_selectedVersion.valid">
     <div>
-      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nfl'" class="m-2" matTooltip="Commands for creating a runtime JSON template">
+      <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for creating a runtime JSON template">
         Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
         <pre>{{ params }}</pre>
         <span *ngIf="wgetTestJsonDescription">
@@ -33,18 +33,29 @@
           <pre>{{ wgetTestJsonDescription }}</pre>
         </span>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) !== 'nfl'" class="m-2" matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+      <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
         Run locally with the Dockstore CLI
         <pre>{{ cli }}</pre>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) === 'nfl'" class="m-2">
+      <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode)" class="m-2">
         <div matTooltip="Nextflow can conveniently run a workflow off of source control">
           Run with nextflow
           <pre>{{ nextflowNativeLaunchDescription }}</pre>
           <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
         </div>
       </mat-card>
-      <mat-card *ngIf="(currentDescriptor | lowercase) === 'cwl' && (published$ | async)"  class="m-2">
+
+      <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)" class="m-2">
+        <div matTooltip="Nextflow can also run a local workflow">
+          Download the workflow files
+          <pre>{{ nextflowDownloadFileDescription }}</pre>
+
+          Run with nextflow
+          <pre>{{ nextflowLocalLaunchDescription }}</pre>
+        </div>
+      </mat-card>
+
+      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)"  class="m-2">
         <div [matTooltip]="cwlrunnerTooltip">
           {{cwlrunnerDescription}}
           <pre>{{ cwl }}</pre>

@@ -24,6 +24,7 @@ import { formInputDebounceTime } from './constants';
 import { DateService } from './date.service';
 import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
+import { PaginatorService } from './state/paginator.service';
 import { DockstoreTool, Workflow } from './swagger';
 
 export abstract class ToolLister implements AfterViewInit, OnDestroy {
@@ -33,11 +34,14 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   protected publishedTools = [];
   protected verifiedLink: string;
   public length$: Observable<number>;
-  constructor(private listService: ListService,
+  public pageSize$: Observable<number>;
+  public pageIndex$: Observable<number>;
+  constructor(private listService: ListService, private paginatorService: PaginatorService,
     protected providerService: ProviderService, private dateService: DateService) {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
+  abstract type: ('tool' | 'workflow');
   abstract displayedColumns: Array<string>;
   public dataSource: (PublishedWorkflowsDataSource | PublishedToolsDataSource);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -63,8 +67,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
         distinctUntilChanged(),
         tap(() => this.loadPublishedEntries()),
         takeUntil(this.ngUnsubscribe)
-      )
-        .subscribe();
+      ).subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
 
       // Handle sort changes
       this.sort.sortChange.pipe(
@@ -95,9 +98,23 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
    * @memberof ToolLister
    */
   loadPublishedEntries() {
+    let direction: 'asc' | 'desc';
+    switch (this.sort.direction) {
+      case 'asc': {
+        direction = 'asc';
+        break;
+      }
+      case 'desc': {
+        direction = 'desc';
+        break;
+      }
+      default: {
+        direction = 'desc';
+      }
+    }
     this.dataSource.loadEntries(
       this.input.nativeElement.value,
-      this.sort.direction,
+      direction,
       this.paginator.pageIndex * this.paginator.pageSize,
       this.paginator.pageSize,
       this.sort.active);

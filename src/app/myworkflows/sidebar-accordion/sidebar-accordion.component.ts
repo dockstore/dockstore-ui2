@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 
-import { WorkflowService } from '../../shared/workflow.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 
 @Component({
@@ -17,10 +17,10 @@ export class SidebarAccordionComponent implements OnInit {
   public workflowId$: Observable<number>;
   activeTab = 0;
 
-  constructor(private workflowService: WorkflowService,
+  constructor(private workflowQuery: WorkflowQuery,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.workflowId$ = this.workflowService.workflowId$;
+    this.workflowId$ = this.workflowQuery.workflowId$;
   }
 }

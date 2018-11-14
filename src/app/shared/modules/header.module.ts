@@ -16,12 +16,14 @@
 
 import { NgModule } from '@angular/core';
 import { HeaderComponent } from '../../header/header.component';
+import { AlertModule } from 'ngx-bootstrap';
+import { RefreshAlertModule } from '../alert/alert.module';
 
 @NgModule({
   declarations: [
     HeaderComponent
   ],
-  imports: [],
+  imports: [RefreshAlertModule],
   providers: [],
   exports: [
     HeaderComponent

@@ -1,4 +1,3 @@
-import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,57 +13,49 @@ import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatAccordion } from '@angular/material';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router/';
-import { HttpClient } from '@angular/common/http';
-import { Dockstore } from './../shared/dockstore.model';
+import { formInputDebounceTime } from '../shared/constants';
+import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { ProviderService } from '../shared/provider.service';
-import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
-import { SearchService } from './search.service';
-import { MatAccordion } from '@angular/material';
+import { SearchQuery } from './state/search.query';
+import { SearchService } from './state/search.service';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
-  private routeSub: Subscription;
-  public shortUrl: string;
+  public shortUrl$: Observable<string>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
-  /* Observable */
-  private toolSource = new BehaviorSubject<any>(null);
-  private curURL = '';
-  toolhit$ = this.toolSource.asObservable();
-  _timeout = false;
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public toolHits: Object[] = [];
-  public workflowHits: Object[] = [];
   public hits: Object[];
 
   // TODO: Comment on why shard_size is 10,000
-  private shard_size = 10000;
-  public suggestTerm = '';
+  private readonly shard_size = 10000;
   private firstInit = true;
 
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
-  public query_size = 201;
+  public readonly query_size = 201;
   searchTerm = false;
-  autocompleteTerms: Array<string> = new Array<string>();
+
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
   /** TODO: Note that the key (the name) might not be unique...*/
@@ -83,7 +74,7 @@ export class SearchComponent implements OnInit {
    * Maps from filter -> values that have been chosen to filter by
    * @type {Map<String, Set<string>>}
    */
-  public filters: Map<String, Set<string>> = new Map<String, Set<string>>();
+  public filters: Map<String, Set<string>> = new Map<string, Set<string>>();
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
@@ -103,21 +94,24 @@ export class SearchComponent implements OnInit {
     'toAdvanceSearch'
   ];
 
+  public filterKeys$: Observable<Array<string>>;
+  public suggestTerm$: Observable<string>;
   /**
    * The current text search
    * @type {string}
    */
   public values = '';
+
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
   constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
-    public searchService: SearchService,
-    private advancedSearchService: AdvancedSearchService,
-    private router: Router,
-    private locationService: Location,
-    private http: HttpClient) {
+    public searchService: SearchService, private searchQuery: SearchQuery,
+    private advancedSearchService: AdvancedSearchService) {
+    this.shortUrl$ = this.searchQuery.shortUrl$;
+    this.filterKeys$ = this.searchQuery.filterKeys$;
+    this.suggestTerm$ = this.searchQuery.suggestTerm$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -128,21 +122,26 @@ export class SearchComponent implements OnInit {
     return Array.from(map.keys());
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   ngOnInit() {
-    this.searchService.toSaveSearch$.subscribe(toSaveSearch => {
+    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchService.values$.subscribe(values => {
-      this.values = values;
-      if (this.values) {
-        this.tagClicked();
-      }
-    });
+    this.searchQuery.searchText$.pipe(
+      debounceTime(formInputDebounceTime),
+      distinctUntilChanged(),
+      takeUntil(this.ngUnsubscribe)).subscribe((value: string) => {
+        this.values = value;
+        this.onKey();
+      });
     this.hits = [];
-    this.curURL = this.router.url;
     this.advancedSearchObject = {
       ANDSplitFilter: '',
       ANDNoSplitFilter: '',
@@ -153,7 +152,7 @@ export class SearchComponent implements OnInit {
     };
     this.parseParams();
 
-    this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+    this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
@@ -164,7 +163,7 @@ export class SearchComponent implements OnInit {
   */
   parseParams() {
     let useAdvSearch = false;
-    const URIParams = this.searchService.createURIParams(this.curURL);
+    const URIParams = this.searchService.createURIParams();
     if (!URIParams.paramsMap) {
       return;
     }
@@ -249,11 +248,6 @@ export class SearchComponent implements OnInit {
         }
       }
     });
-  }
-
-  tagClicked(): void {
-    this.searchTerm = true;
-    this.updateQuery();
   }
 
   /** This function takes care of the problem of non-verified items containing the set of verified items.
@@ -355,13 +349,11 @@ export class SearchComponent implements OnInit {
     const searchInfo = {
       filter: this.filters,
       searchValues: this.values,
-      advancedSearchObject: this.advancedSearchObject,
+      advancedSearchObject: Object.assign({}, this.advancedSearchObject),
       searchTerm: this.searchTerm
     };
-
     const linkArray = this.searchService.createPermalinks(searchInfo);
-    this.locationService.go('search?' + linkArray[1]);
-    this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
+    this.searchService.handleLink(linkArray);
   }
 
   /**===============================================
@@ -372,11 +364,6 @@ export class SearchComponent implements OnInit {
   // Called when any change to the search is made to update the results
   updateQuery() {
     this.updatePermalink();
-    // calculate number of filters
-    let count = 0;
-    this.filters.forEach(filter => {
-      count += filter.size;
-    });
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -413,24 +400,14 @@ export class SearchComponent implements OnInit {
       body: value
     }).then(hits => {
       this.hits = hits.hits.hits;
-      this.workflowHits = [];
-      this.toolHits = [];
-      this.filterEntry();
-      this.searchService.toolhit$.next(this.toolHits);
-      this.searchService.workflowhit$.next(this.workflowHits);
+      this.searchService.filterEntry(this.hits, this.query_size);
       if (this.values.length > 0 && hits) {
         this.searchTerm = true;
       }
       if (this.searchTerm && this.hits.length === 0) {
-        this.suggestKeyTerm();
+        this.searchService.suggestSearchTerm(this.values);
       }
     }).catch(error => console.log(error));
-  }
-
-  // Given a URL, will attempt to shorten it
-  // TODO: Find another method for shortening URLs
-  setShortUrl(url: string) {
-    this.shortUrl = url;
   }
 
   /**===============================================
@@ -445,8 +422,6 @@ export class SearchComponent implements OnInit {
     this.sortModeMap.clear();
     this.setFilter = false;
     this.hits = [];
-    this.workflowHits = [];
-    this.toolHits = [];
     this.searchService.setSearchInfo(null);
     this.resetEntryOrder();
     this.advancedSearchService.clear();
@@ -463,6 +438,7 @@ export class SearchComponent implements OnInit {
    *                Event Functions
    * ==============================================
    */
+
   onKey() {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = this.values + '.*';
@@ -487,53 +463,18 @@ export class SearchComponent implements OnInit {
         }
       }
     }).then(hits => {
-      this.autocompleteTerms = [];
-      hits.aggregations.autocomplete.buckets.forEach(
-        term => {
-          this.autocompleteTerms.push(term.key);
-        }
-      );
+      this.searchService.setAutoCompleteTerms(hits);
     }).catch(error => console.log(error));
-    if (!this._timeout) {
-      this.advancedSearchObject.toAdvanceSearch = false;
-      this.searchTerm = true;
-      this._timeout = true;
-      window.setTimeout(() => {
-        if ((!this.values || 0 === this.values.length)) {
-          this.searchTerm = false;
-        }
-        this.updateQuery();
-        this._timeout = false;
-      }, 500);
+    this.advancedSearchObject = {...this.advancedSearchObject, toAdvanceSearch: false};
+    this.searchTerm = true;
+    if ((!this.values || 0 === this.values.length)) {
+      this.searchTerm = false;
     }
-  }
-  /*TODO: FOR DEMO USE, make this better later...*/
-  suggestKeyTerm() {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        'suggest': {
-          'do_you_mean': {
-            'text': this.values,
-            'term': {
-              'field': 'description'
-            }
-          }
-        }
-      }
-    }).then(hits => {
-      if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-        this.suggestTerm = hits['suggest']['do_you_mean'][0].options[0].text;
-      } else {
-        this.suggestTerm = '';
-      }
-    }).catch(error => console.log(error));
+    this.updateQuery();
   }
 
   searchSuggestTerm() {
-    this.values = this.suggestTerm;
-    this.updateQuery();
+    this.searchService.searchSuggestTerm();
   }
   /**
    * This handles clicking a facet and doing the search
@@ -548,14 +489,7 @@ export class SearchComponent implements OnInit {
     }
     this.updateQuery();
   }
-  /**
-   * Handles the clicking of the "Open Advanced Search" button
-   * This sets up and opens the advanced search modal
-   * @memberof SearchComponent
-   */
-  openAdvancedSearch(): void {
-    this.advancedSearchService.setShowModal(true);
-  }
+
   clickExpand(key: string) {
     const isExpanded = this.fullyExpandMap.get(key);
     this.fullyExpandMap.set(key, !isExpanded);
@@ -591,31 +525,6 @@ export class SearchComponent implements OnInit {
    * ===============================================
    *
    */
-
-  filterEntry() {
-    this.workflowHits = [];
-    this.toolHits = [];
-    let counter = 0;
-    for (const hit of this.hits) {
-      /**TODO: this is not good, make it faster.../
-       */
-      // Do not add 201st result if it exists
-      if (!(counter === this.hits.length - 1 && this.hits.length === this.query_size)) {
-        hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-        if (hit['_type'] === 'tool') {
-          this.toolHits.push(hit);
-        } else if (hit['_type'] === 'workflow') {
-          this.workflowHits.push(hit);
-        }
-      }
-
-      counter++;
-    }
-  }
-
-  getFilterKeys() {
-    return Array.from(this.filters.keys());
-  }
 
   getBucketKeys(key: string) {
     return Array.from(this.orderedBuckets.get(key).SelectedItems.keys());

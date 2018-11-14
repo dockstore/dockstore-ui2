@@ -4,12 +4,11 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
-if [ "$RUN_PROD" = true ]; then
-  npm install --production
-  ng version
-else
-  npm install
-  git diff --exit-code
-  ng version
-  npm install codecov
-fi
+npm ci
+
+wget --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar
+chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar
+ng version
+npm install codecov
+
+npm run prebuild

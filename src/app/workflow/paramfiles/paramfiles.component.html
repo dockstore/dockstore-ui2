@@ -18,11 +18,11 @@
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;{{validationMessage}}
   </alert>
-  <alert type="warning" *ngIf="!content && descriptorType !== 'nfl'">
+  <alert type="warning" *ngIf="!content && !(isNFL$ | async)">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp; A Test Parameter File associated with this workflow could not be found.
   </alert>
-  <alert type="info" *ngIf="descriptorType === 'nfl'">
+  <alert type="info" *ngIf="(isNFL$ | async)">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;
     Nextflow does not have the concept of a test parameter file.

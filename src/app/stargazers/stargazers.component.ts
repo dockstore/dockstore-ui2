@@ -13,27 +13,31 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
-import {Component, Input, OnInit} from '@angular/core';
-import { StarringService } from '../starring/starring.service';
-import { UserService } from '../loginComponents/user.service';
-import {Subscription} from 'rxjs';
+import { Base } from '../shared/base';
 import { StarentryService } from '../shared/starentry.service';
+import { UserService } from '../shared/user/user.service';
+import { StarringService } from '../starring/starring.service';
+
 @Component({
   selector: 'app-stargazers',
   templateUrl: './stargazers.component.html',
   styleUrls: ['./stargazers.component.css'],
 
 })
-export class StargazersComponent implements OnInit {
+export class StargazersComponent extends Base implements OnInit {
   starGazers: any;
-  private entrySubscription: Subscription;
+
   constructor(private starringService: StarringService,
-              private userService: UserService,
-              private starentryService: StarentryService) {}
+    private userService: UserService,
+    private starentryService: StarentryService) {
+    super();
+  }
 
   ngOnInit() {
-    this.entrySubscription = this.starentryService.starEntry$.subscribe(
+    this.starentryService.starEntry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       entry => {
         if (entry && entry.theEntry) {
           this.starringService.getStarring(entry.theEntry.id, entry.theEntryType).subscribe(
