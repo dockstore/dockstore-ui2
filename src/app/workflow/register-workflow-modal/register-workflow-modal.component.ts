@@ -55,10 +55,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public descriptorValidationPattern;
   public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
   public Tooltip = Tooltip;
-  ToolDescriptor = ToolDescriptor;
-  public hostedWorkflow: HostedWorkflowObject = {
-    name: '',
-    descriptorType: ToolDescriptor.TypeEnum.CWL
+  public hostedWorkflow = {
+    repository: '',
+    descriptorType: ToolDescriptor.TypeEnum.CWL,
+    entryName: null
   };
   public options = [
     {

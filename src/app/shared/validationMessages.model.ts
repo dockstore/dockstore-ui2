@@ -143,6 +143,10 @@ export const validationMessages = {
     'pattern': 'Must begin with \'/\' and end with \'*.cwl\', \'*.yml\', \'*.yaml\', \'*.config\', or\'*.wdl\' ' +
     'depending on the descriptor type.'
   },
+  'repository': {
+    'maxlength': 'Repository Name is too long. (Max 256 characters.)',
+    'pattern': 'A Repository may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
+  },
   'workflowName': {
     'maxlength': 'Workflow Name is too long. (Max 256 characters.)',
     'pattern': 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
