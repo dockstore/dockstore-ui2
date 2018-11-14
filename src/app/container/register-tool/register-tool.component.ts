@@ -42,7 +42,8 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public hostedTool = {
     path: '',
     registry: 'quay.io',
-    registryProvider: 'Quay.io'
+    registryProvider: 'Quay.io',
+    entryName: undefined
   };
   public options = [
     {

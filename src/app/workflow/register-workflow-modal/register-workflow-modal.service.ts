@@ -124,8 +124,11 @@ export class RegisterWorkflowModalService {
       this.clearWorkflowRegisterError();
       this.alertService.start('Registering new workflow');
       this.hostedService.createHostedWorkflow(
-          hostedWorkflow.name,
-          hostedWorkflow.descriptorType).subscribe(result => {
+        hostedWorkflow.repository,
+        undefined,
+        hostedWorkflow.descriptorType,
+        undefined,
+        hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined).subscribe(result => {
             this.alertService.detailedSuccess();
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);
