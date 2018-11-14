@@ -199,15 +199,11 @@ export class DagService {
    */
   private createPopupHTML(name: string, runText: string): HTMLDivElement {
     const div = document.createElement('div');
-    const title = document.createElement('div');
-    title.innerHTML = name;
-    title.setAttribute('class', 'qtip-titlebar');
-    div.appendChild(title);
-    const content = document.createElement('div');
-    content.innerHTML = runText;
-    content.setAttribute('class', 'qtip-content');
-    div.appendChild(content);
-    div.setAttribute('class', 'qtip-bootstrap bootstrap-tooltip-z-index');
+    div.innerHTML = `
+    <div class="qtip-titlebar">${name}</div>
+    <div class="qtip-content">${runText}</div>
+    `;
+    div.setAttribute('class', 'opaq qtip-bootstrap bootstrap-tooltip-z-index');
     document.body.appendChild(div);
     return div;
   }
