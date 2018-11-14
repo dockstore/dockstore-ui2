@@ -43,7 +43,7 @@ export abstract class EntryFileSelector {
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
 
-  abstract getAllDescriptors(version): Array<any>;
+  abstract getDescriptors(version): Array<any>;
   abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
@@ -56,7 +56,7 @@ export abstract class EntryFileSelector {
   }
 
   reactToVersion(): void {
-    this.descriptors = this.getAllDescriptors(this._selectedVersion);
+    this.descriptors = this.getDescriptors(this._selectedVersion);
     this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
     if (this.descriptors) {
       this.nullDescriptors = false;

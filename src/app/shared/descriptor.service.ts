@@ -76,7 +76,7 @@ export abstract class DescriptorService {
      * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
      * @memberof DescriptorService
      */
-    getAllDescriptors(version) {
+    getDescriptors(version) {
         if (version) {
             const descriptorTypes = [];
             const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));

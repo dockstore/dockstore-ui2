@@ -53,8 +53,8 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.published$ = this.containerService.toolIsPublished$;
   }
 
-  getAllDescriptors(version): Array<any> {
-    return this.descriptorsService.getAllDescriptors(this._selectedVersion);
+  getDescriptors(version): Array<any> {
+    return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
   getValidDescriptors(version): Array<any> {

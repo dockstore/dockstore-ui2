@@ -52,7 +52,7 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.published$ = this.containerService.toolIsPublished$;
   }
 
-  getAllDescriptors(version): Array<any> {
+  getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 

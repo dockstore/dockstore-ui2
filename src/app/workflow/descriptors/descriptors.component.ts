@@ -47,8 +47,8 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     super(fileService, gA4GHFilesStateService, gA4GHService);
     this.published$ = this.workflowService.workflowIsPublished$;
   }
-  getAllDescriptors(version): Array<any> {
-    return this.workflowDescriptorService.getAllDescriptors(this._selectedVersion);
+  getDescriptors(version): Array<any> {
+    return this.workflowDescriptorService.getDescriptors(this._selectedVersion);
   }
 
   getValidDescriptors(version): Array<any> {
