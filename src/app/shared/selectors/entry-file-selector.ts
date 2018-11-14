@@ -144,17 +144,17 @@ export abstract class EntryFileSelector implements OnDestroy {
 
   checkIfValid(isDescriptor: boolean, version: any): void {
     let fileEnum = null;
-    if (this.currentDescriptor === 'cwl') {
+    if (this.currentDescriptor === ToolDescriptor.TypeEnum.CWL) {
       if (isDescriptor) {
         fileEnum = 'DOCKSTORE_CWL';
       } else {
         fileEnum = 'CWL_TEST_JSON';
       }
-    } else if (this.currentDescriptor === 'wdl') {
+    } else if (this.currentDescriptor === ToolDescriptor.TypeEnum.WDL) {
       if (isDescriptor) {
-        fileEnum = 'DOCKSTORE_CWL';
+        fileEnum = 'DOCKSTORE_WDL';
       } else {
-        fileEnum = 'CWL_TEST_JSON';
+        fileEnum = 'WDL_TEST_JSON';
       }
     }
     if (version) {
