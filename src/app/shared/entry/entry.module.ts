@@ -40,6 +40,7 @@ import { VerifiedDisplayComponent } from './verified-display/verified-display.co
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 import { RefreshAlertModule } from '../alert/alert.module';
+import { UrlDeconstructPipe } from './url-deconstruct.pipe';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { RefreshAlertModule } from '../alert/alert.module';
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
     PrivateFileDownloadPipe,
-    PrivateFilePathPipe
+    PrivateFilePathPipe,
+    UrlDeconstructPipe
   ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
@@ -83,7 +85,8 @@ import { RefreshAlertModule } from '../alert/alert.module';
     PublicFileDownloadPipe,
     NgxJsonLdModule,
     RefreshAlertModule,
-    ShareButtonsModule
+    ShareButtonsModule,
+    UrlDeconstructPipe
   ],
   entryComponents: [RegisterCheckerWorkflowComponent]
 })

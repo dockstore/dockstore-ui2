@@ -29,8 +29,8 @@
       <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">
         {{ tool?.provider}}
       </strong>:
-      <a [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
-        {{ tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '') }}
+      <a id="sourceRepository" [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
+        {{ tool?.providerUrl | urlDeconstruct : (isPublic ? selectedVersion?.name : '') }}
       </a>
     </li>
     <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
@@ -39,8 +39,8 @@
     </li>
     <li *ngIf="tool?.imgProviderUrl">
       <strong matTooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
-      <a [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
-        {{ tool?.imgProviderUrl }}
+      <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
+        {{ tool?.imgProviderUrl | urlDeconstruct}}
       </a>
       <span *ngIf="privateOnlyRegistry">
         {{ tool?.imgProviderUrl }}

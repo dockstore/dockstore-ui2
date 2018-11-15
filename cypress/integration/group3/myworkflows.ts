@@ -33,7 +33,7 @@ describe('Dockstore my workflows', () => {
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('GitHub');
-      cy.contains('https://github.com/A/g');
+      cy.get('a#sourceRepository').contains('A/g').should('have.attr', 'href', 'https://github.com/A/g');
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
