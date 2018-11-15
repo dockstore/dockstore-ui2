@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule, MatDialogModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RefreshService } from '../../shared/refresh.service';
@@ -30,7 +30,7 @@ describe('Service: version-modal.service.ts', () => {
   let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
     beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [BrowserAnimationsModule, MatSnackBarModule],
+          imports: [BrowserAnimationsModule, MatSnackBarModule, MatDialogModule],
             providers: [VersionModalService,
               { provide: WorkflowQuery, useValue: jasmine.createSpyObj('WorkflowQuery', ['getActive'])},
                 { provide: WorkflowService, useClass: WorkflowStubService },
@@ -56,13 +56,6 @@ describe('Service: version-modal.service.ts', () => {
     };
     it('should ...', inject([VersionModalService], (service: VersionModalService) => {
         expect(service).toBeTruthy();
-    }));
-    it('should be initially not visible', inject([VersionModalService], (service: VersionModalService) => {
-        service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeFalsy());
-    }));
-    it('should be shown after set to true', inject([VersionModalService], (service: VersionModalService) => {
-        service.setIsModalShown(true);
-        service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeTruthy());
     }));
     it('should be able to set version', inject([VersionModalService], (service: VersionModalService) => {
         service.setVersion(expectedVersion);

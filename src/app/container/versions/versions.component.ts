@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -27,6 +28,7 @@ import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
+import { AddTagComponent } from '../add-tag/add-tag.component';
 
 @Component({
   selector: 'app-versions-container',
@@ -47,7 +49,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
     dateService: DateService, private refreshService: RefreshService, private alertService: AlertService,
-    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private matDialog: MatDialog,
     protected sessionQuery: SessionQuery) {
     super(dockstoreService, dateService, sessionQuery);
   }
@@ -92,5 +94,9 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   setVersion(version: Tag) {
     this.versionTag = version;
     this.selectedVersionChange.emit(this.versionTag);
+  }
+
+  showAddTagModal() {
+    this.matDialog.open(AddTagComponent, {width: '600px'});
   }
 }

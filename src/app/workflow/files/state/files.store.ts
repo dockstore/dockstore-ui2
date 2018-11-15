@@ -13,23 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
+import { Injectable } from '@angular/core';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { FileWrapper } from '../../../shared/swagger';
 
-describe('Public Version Modal', () => {
-  resetDB();
-  setTokenUserViewPort();
-  beforeEach(() => {
-    cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    cy.get('.mat-tab-label').should('have.length', 4);
-  });
+export interface FilesState extends EntityState<FileWrapper> {}
 
-  it('Change tab to versions', () => {
-    goToTab('Versions');
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'files' })
+export class FilesStore extends EntityStore<FilesState, FileWrapper> {
 
-    cy
-      .contains('View')
-      .click();
-    cy.get('form');
-    cy.get('#dockerPullCommand').should('be.visible').should('have.value', 'docker pull quay.io/garyluu/dockstore-cgpmap:3.0.0-rc8');
-  });
-});
+  constructor() {
+    super({});
+  }
+
+}
+

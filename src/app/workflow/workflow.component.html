@@ -118,14 +118,19 @@
 </div>
 <div class="row m-1" *ngIf="!starGazersClicked && !showRedirect">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
-    <tabset id="workflow_tabs" #entryTabs justified="true">
-      <tab id="infoTab" heading="Info" id="infoTab" (select)="setEntryTab('info')">
+    <mat-tab-group [selectedIndex]="selected.value" dynamicHeight class="ds-tabs" id="workflow_tabs" #entryTabs  (selectedTabChange)="selectedTabChange($event)" mat-stretch-tabs>
+      <mat-tab id="infoTab" label="Info" id="infoTab">
         <app-info-tab [validVersions]="validVersions" [extendedWorkflow]="(extendedWorkflow$ | async)" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
-      </tab>
-      <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
-        <app-launch [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
-      </tab>
-      <tab id="versionsTab" heading="Versions" (select)="setEntryTab('versions')">
+      </mat-tab>
+      <mat-tab id="launchTab" label="Launch">
+        <app-launch *ngIf="workflow?.workflowVersions.length > 0; else noVersions" [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
+        <ng-template #noVersions>
+          <div class="alert alert-warning" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No versions exist for this workflow.
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab id="versionsTab" label="Versions">
         <div *ngIf="validVersions && !isStub()">
           <app-versions-workflow [versions]="(extendedWorkflow$ | async)?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)" [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources" [workflowId]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-versions-workflow>
@@ -133,8 +138,9 @@
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see versions, please refresh the workflow.
         </div>
-      </tab>
-      <tab id="fileTab" heading="Files" (select)="setEntryTab('files')">
+      </mat-tab>
+      <mat-tab id="fileTab" label="Files">
+        <ng-template matTabContent>
         <div *ngIf="validVersions && !isStub() && !isHosted()">
           <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [descriptorType]="(descriptorType$ | async)" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
           </app-files-workflow>
@@ -146,27 +152,30 @@
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.
         </div>
-      </tab>
-      <tab id="toolsTab"  heading="Tools" (select)="setEntryTab('tools')">
+      </ng-template>
+      </mat-tab>
+      <mat-tab id="toolsTab"  label="Tools">
         <div *ngIf="validVersions && !isStub()">
           <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-tool-tab>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
         </div>
-      </tab>
-      <tab id="dagTab" heading="DAG" (select)="setEntryTab('dag')">
-        <div *ngIf="validVersions && !isStub() && currentTab == 'dag'">
-          <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
-        </div>
+      </mat-tab>
+      <mat-tab id="dagTab" label="DAG">
+        <ng-template matTabContent>
+          <div *ngIf="validVersions && !isStub()">
+            <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
+          </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
         </div>
-      </tab>
-      <tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" heading="Permissions" (select)="setEntryTab('permissions')">
+      </ng-template>
+      </mat-tab>
+      <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
         <app-permissions [workflow]="workflow"></app-permissions>
-      </tab>
-    </tabset>
+      </mat-tab>
+    </mat-tab-group>
     <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
   </div>
   <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic">

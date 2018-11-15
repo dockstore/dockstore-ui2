@@ -106,12 +106,22 @@
             {{'descriptor_type' | mapFriendlyValue : descriptorType}}
           </mat-radio-button>
         </mat-radio-group>
+
         <mat-form-field class="w-100">
-          <mat-label>Workflow Name</mat-label>
-          <input matInput id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" [(ngModel)]="hostedWorkflow.name" [pattern]="validationPatterns.workflowName"
-            maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.workflowName"/>
-          <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
+          <mat-label>Repository</mat-label>
+          <input matInput id="hostedWorkflowRepository" name="hostedWorkflowRepository" #hostedWorkflowRepository="ngModel" [(ngModel)]="hostedWorkflow.repository" [pattern]="validationPatterns.workflowName"
+            maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.repository"/>
+          <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{validationMessage.repository.pattern}}</mat-error>
         </mat-form-field>
+
+        <!-- Optional workflow name, uncomment if implemented -->
+        <!-- <mat-form-field class="w-100">
+          <mat-label>Workflow Name</mat-label>
+          <input matInput id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" [(ngModel)]="hostedWorkflow.entryName" maxlength="256" [pattern]="validationPatterns.workflowName" [matTooltip]="Tooltip.workflowName"
+            placeholder="e.g. liftover-fast (optional)" />
+          <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
+        </mat-form-field> -->
+
         <div mat-dialog-actions class="pull-right">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close

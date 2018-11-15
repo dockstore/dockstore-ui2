@@ -18,11 +18,12 @@ import {
   DateStubService,
   ParamFilesStubService,
   RefreshStubService,
+  VersionModalStubService,
 } from '../../test/service-stubs';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule, MatDialogModule } from '@angular/material';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;
@@ -32,16 +33,15 @@ describe('VersionModalComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ VersionModalComponent],
-      imports: [ModalModule.forRoot(), FormsModule, ClipboardModule, MatSnackBarModule],
+      imports: [FormsModule, ClipboardModule, MatSnackBarModule, MatDialogModule],
       providers: [
         {provide: ParamfilesService, useClass: ParamFilesStubService},
-        VersionModalService,
+        {provide: VersionModalService, useClass: VersionModalStubService },
         {provide: ListContainersService, useClass: ListContainersService},
         {provide: ContainerService, useClass: ContainerStubService},
         {provide: ContainersService, useClass: ContainersStubService},
         {provide: ContainertagsService, useClass: ContainertagsStubService},
-        {provide: DateService, useClass: DateStubService},
-        {provide: RefreshService, useClass: RefreshStubService},
+        {provide: DateService, useClass: DateStubService}
       ]
     })
     .compileComponents();

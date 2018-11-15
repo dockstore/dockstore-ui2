@@ -23,9 +23,7 @@ import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
 import { DescriptorTypeCompatService } from '../../descriptor-type-compat.service';
-import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
-import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { ToolDescriptor } from '../../swagger';
 import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
@@ -35,20 +33,17 @@ import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
 @Component({
-  selector: 'app-register-checker-workflow',
   templateUrl: './register-checker-workflow.component.html',
   styleUrls: ['./register-checker-workflow.component.scss']
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
 
-  constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
-    private checkerWorkflowService: CheckerWorkflowService, private alertQuery: AlertQuery,
-    private descriptorLanguageService: DescriptorLanguageService, private sessionQuery: SessionQuery,
+  constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
+    private descriptorLanguageService: DescriptorLanguageService,
     private checkerWorkflowQuery: CheckerWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService) {
       super();
     }
   public registerError: HttpErrorResponse;
-  public isModalShown$: Observable<boolean>;
   public workflowPath: string;
   public testParameterFilePath: string;
   public syncTestJson: boolean;
@@ -81,7 +76,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
       }
     });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
-    this.isModalShown$ = this.registerCheckerWorkflowService.isModalShown$;
+
     this.syncTestJson = false;
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
       this.descriptorLanguages = descriptorLanguages.filter((language: string) => language !== ToolDescriptor.TypeEnum.NFL);
@@ -120,10 +115,6 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         }
       }
     }
-  }
-
-  hideModal(): void {
-    this.registerCheckerWorkflowService.isModalShown$.next(false);
   }
 
   registerCheckerWorkflow(): void {

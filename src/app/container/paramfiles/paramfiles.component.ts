@@ -25,6 +25,8 @@ import { ContainersService, GA4GHService, ToolDescriptor, ToolFile } from '../..
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { ParamfilesService } from './paramfiles.service';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { FilesQuery } from '../../workflow/files/state/files.query';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -45,8 +47,9 @@ export class ParamfilesComponent extends EntryFileSelector {
   public downloadFilePath: string;
   constructor(private containerService: ContainerService, private containersService: ContainersService,
     protected gA4GHService: GA4GHService, private paramfilesService: ParamfilesService, protected gA4GHFilesService: GA4GHFilesService,
-    public fileService: FileService, private gA4GHFilesQuery: GA4GHFilesQuery, private toolQuery: ToolQuery) {
-    super(fileService, gA4GHFilesService, gA4GHService);
+    public fileService: FileService, private gA4GHFilesQuery: GA4GHFilesQuery, private toolQuery: ToolQuery,
+    protected filesService: FilesService, protected filesQuery: FilesQuery) {
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
   getDescriptors(version): Array<any> {

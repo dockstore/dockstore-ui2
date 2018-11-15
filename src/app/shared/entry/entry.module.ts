@@ -87,6 +87,7 @@ import { UrlDeconstructPipe } from './url-deconstruct.pipe';
     RefreshAlertModule,
     ShareButtonsModule,
     UrlDeconstructPipe
-  ]
+  ],
+  entryComponents: [RegisterCheckerWorkflowComponent]
 })
 export class EntryModule { }

@@ -113,9 +113,10 @@ export class RegisterToolService {
       this.alertService.start('Registering tool');
       this.hostedService.createHostedTool(
           name,
-          ToolDescriptor.TypeEnum.CWL,
           hostedTool.registry,
-          namespace).subscribe((result: DockstoreTool) => {
+          undefined,
+          namespace,
+          hostedTool.entryName ? hostedTool.entryName : undefined).subscribe((result: DockstoreTool) => {
             this.alertService.detailedSuccess();
             this.setIsModalShown(false);
             this.containerService.addToTools(this.tools, result);

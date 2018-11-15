@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>Register Tool</h4>
+<div mat-dialog-content>
 <app-alert></app-alert>
 <mat-horizontal-stepper #stepper>
   <ng-template matStepperIcon="edit">
@@ -273,6 +274,16 @@
               name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" disabled/>
           </div>
         </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 control-label">
+            Tool Name:
+          </label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="toolName" [(ngModel)]="hostedTool.entryName" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Name to distinguish between multiple tools within the same repository"
+              placeholder="e.g. liftover-fast (optional)" />
+            <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
+          </div>
+        </div>
       </div>
       <div mat-dialog-actions class="pull-right">
         <button mat-button type="button" color="secondary" (click)="hideModal()">
@@ -285,3 +296,4 @@
     </form>
   </mat-step>
 </mat-horizontal-stepper>
+</div>

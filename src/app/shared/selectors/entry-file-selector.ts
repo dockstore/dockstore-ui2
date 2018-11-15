@@ -21,7 +21,9 @@ import { takeUntil } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor } from '../swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from '../swagger';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { FilesQuery } from '../../workflow/files/state/files.query';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -35,7 +37,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   public nullDescriptors: boolean;
   public filePath: string;
   public currentFile;
-  public files: Array<any>;
+  public files: Array<ToolFile>;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
@@ -48,7 +50,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   abstract getFiles(descriptor): Observable<any>;
 
   constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    protected gA4GHService: GA4GHService) {
+    protected gA4GHService: GA4GHService, protected filesService: FilesService, protected filesQuery: FilesQuery) {
   }
 
   protected getDescriptorPath(path: string, entryType: ('tool' | 'workflow')): string {
@@ -123,14 +125,22 @@ export abstract class EntryFileSelector implements OnDestroy {
    */
   reactToFile(): void {
     this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
-    // TODO: Memoize this
+    const existingFileWrapper = this.filesQuery.getEntity(this.currentFile.path);
+    if (existingFileWrapper) {
+      this.content = existingFileWrapper.content;
+        this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
+        this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.updateCustomDownloadFileButtonAttributes();
+    } else {
     this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
       this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
       this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
+        this.filesService.update(this.currentFile.path, file);
         this.content = file.content;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
         this.filePath = this.fileService.getFilePath(this.currentFile);
         this.updateCustomDownloadFileButtonAttributes();
       });
+    }
   }
 }

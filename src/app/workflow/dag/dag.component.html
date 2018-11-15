@@ -19,8 +19,8 @@
   </span>
 </div>
 
-<div class="row" id="dag-holder" [ngClass]="{'fullscreen': expanded}">
-  <div class="col-md-12" id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
+<div id="dag-holder" [ngClass]="{'fullscreen': expanded}">
+  <div id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
     <div [ngClass]="{'fullscreen-dropdown': expanded}">
       <div *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
         <label class="radio-inline">
