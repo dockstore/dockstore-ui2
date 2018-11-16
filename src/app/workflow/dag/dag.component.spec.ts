@@ -14,25 +14,18 @@
  *    limitations under the License.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 import { DagQuery } from './state/dag.query';
-import { of } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { DagStore } from './state/dag.store';
-import { DagService } from './state/dag.service';
-import { By } from '@angular/platform-browser';
 
-/* tslint:disable:no-unused-variable */
-declare var cytoscape: any;
 describe('DagComponent', () => {
   let component: DagComponent;
   let fixture: ComponentFixture<DagComponent>;
