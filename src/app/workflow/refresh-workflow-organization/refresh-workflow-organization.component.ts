@@ -31,10 +31,10 @@ import { WorkflowService } from './../../shared/workflow.service';
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
-
   constructor(private usersService: UsersService, userService: UserService, private workflowService: WorkflowService,
     public stateService: StateService, private refreshService: RefreshService) {
       super(userService, stateService);
+      this.buttonText = 'Refresh Organization';
   }
 
   refreshOrganization(): void {
