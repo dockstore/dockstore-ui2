@@ -34,7 +34,7 @@
             <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
           </a>
         </span>
-        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
