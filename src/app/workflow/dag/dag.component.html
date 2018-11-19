@@ -21,7 +21,7 @@
 
 <div id="dag-holder" [ngClass]="{'fullscreen': expanded}">
   <div id="dag-col" [ngClass]="{'fullscreen-element': expanded}">
-    <div [ngClass]="{'fullscreen-dropdown': expanded}">
+    <div [ngClass]="{'fullscreen-dropdown': expanded}" *ngIf="_selectedVersion?.valid">
       <div *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
         <label class="radio-inline">
           <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
@@ -47,7 +47,7 @@
     </div>
 
     <div *ngIf="dagType === 'classic' && !(isNFL$ | async)">
-      <div class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async)">
+      <div class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !_selectionVersion?.valid">
         <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
           A Descriptor associated with this workflow could not be found.
@@ -57,7 +57,7 @@
         </span>
       </div>
 
-      <div class="alert alert-warning" role="alert" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async)">
+      <div class="alert alert-warning" role="alert" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async) && selectedVersion?.valid">
         <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools
         are missing from Github repo.
       </div>

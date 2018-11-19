@@ -24,6 +24,7 @@ import { AlertQuery } from '../alert/state/alert.query';
 @Injectable()
 export class RefreshOrganizationComponent implements OnInit, OnDestroy {
   protected userId: number;
+  buttonText: string;
   @Input() protected organization: string;
   public isRefreshing$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();

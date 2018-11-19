@@ -35,8 +35,6 @@ import { DagStore } from './state/dag.store';
   providers: [DagStore, DagQuery, DagService]
 })
 export class DagComponent extends EntryTab implements OnInit, OnChanges {
-  @Input() validVersions: Array<WorkflowVersion>;
-  @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
 

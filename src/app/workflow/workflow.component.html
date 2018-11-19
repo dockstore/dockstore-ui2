@@ -164,7 +164,6 @@
       </mat-tab>
       <mat-tab id="dagTab" label="DAG">
         <ng-template matTabContent>
-          <div *ngIf="validVersions && !isStub()">
             <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
           </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
