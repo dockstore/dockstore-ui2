@@ -42,19 +42,22 @@ describe('Service: paramFiles.service.ts', () => {
         'id': 272,
         'type': SourceFile.TypeEnum.DOCKSTOREWDL,
         'content': '',
-        'path': '/Dockstore.wdl'
+        'path': '/Dockstore.wdl',
+        'absolutePath': '/Dockstore.wdl'
       },
       {
         'id': 273,
         'type': SourceFile.TypeEnum.DOCKERFILE,
         'content': '',
-        'path': '/Dockerfile'
+        'path': '/Dockerfile',
+        'absolutePath': '/Dockerfile'
       },
       {
         'id': 271,
         'type': SourceFile.TypeEnum.DOCKSTORECWL,
         'content': '',
-        'path': '/Dockstore.cwl'
+        'path': '/Dockstore.cwl',
+        'absolutePath': '/Dockstore.cwl'
       }
     ],
     'hidden': false,
@@ -78,25 +81,29 @@ describe('Service: paramFiles.service.ts', () => {
         'id': 276,
         'type': SourceFile.TypeEnum.DOCKERFILE,
         'content': '',
-        'path': '/Dockerfile'
+        'path': '/Dockerfile',
+        'absolutePath': '/Dockerfile'
       },
       {
         'id': 275,
         'type': SourceFile.TypeEnum.DOCKSTOREWDL,
         'content': '',
-        'path': '/Dockstore.wdl'
+        'path': '/Dockstore.wdl',
+        'absolutePath': '/Dockstore.wdl'
       },
       {
         'id': 274,
         'type': SourceFile.TypeEnum.DOCKSTORECWL,
         'content': '',
-        'path': '/Dockstore.cwl'
+        'path': '/Dockstore.cwl',
+        'absolutePath': '/Dockstore.cwl'
       },
       {
         'id': 277,
         'type': SourceFile.TypeEnum.CWLTESTJSON,
         'content': '',
-        'path': '/test.json'
+        'path': '/test.json',
+        'absolutePath': '/test.json'
       }
     ],
     'hidden': false,
@@ -121,25 +128,29 @@ describe('Service: paramFiles.service.ts', () => {
         'id': 276,
         'type': SourceFile.TypeEnum.DOCKERFILE,
         'content': '',
-        'path': '/Dockerfile'
+        'path': '/Dockerfile',
+        'absolutePath': '/Dockerfile'
       },
       {
         'id': 275,
         'type': SourceFile.TypeEnum.DOCKSTOREWDL,
         'content': '',
-        'path': '/Dockstore.wdl'
+        'path': '/Dockstore.wdl',
+        'absolutePath': '/Dockstore.wdl'
       },
       {
         'id': 274,
         'type': SourceFile.TypeEnum.DOCKSTORECWL,
         'content': '',
-        'path': '/Dockstore.cwl'
+        'path': '/Dockstore.cwl',
+        'absolutePath': '/Dockstore.cwl'
       },
       {
         'id': 277,
         'type': SourceFile.TypeEnum.WDLTESTJSON,
         'content': '',
-        'path': '/test.json'
+        'path': '/test.json',
+        'absolutePath': '/test.json'
       }
     ],
     'hidden': false,
