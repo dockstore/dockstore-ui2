@@ -164,8 +164,7 @@
       </mat-tab>
       <mat-tab id="dagTab" label="DAG">
         <ng-template matTabContent>
-            <app-dag [id]="workflow?.id" [validVersions]="validVersions" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
-          </div>
+            <app-dag [id]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
         </div>
