@@ -13,24 +13,26 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <div class="container">
   <div class="row text-center">
     <h5 style="color:#21335B">In Affiliation With</h5><br />
     <!-- TODO: Will need to adjust spacing once the Broad Logo is added -->
-    <div *ngFor="let sponsor of sponsors" class="col-md-3 col-sm-6 sponsor-row">
-      <a href="{{sponsor.url}}" target="_blank">
-        <img [src]="sponsor.current" class="img-responsive center-image"/>
-      </a>
+    <div fxLayout="row" fxLayoutAlign="space-around stretch" class="pb-5">
+      <div *ngFor="let sponsor of sponsors">
+        <a href="{{sponsor.url}}" target="_blank">
+          <img [src]="sponsor.current" />
+        </a>
+      </div>
     </div>
   </div>
-
   <div *ngIf="showSecondRow" class="row text-center">
     <h5 style="color:#21335B">Works With</h5><br />
-    <div *ngFor="let partner of partners" class="col-md-3 col-sm-6 sponsor-row">
-      <a href="{{partner.url}}" target="_blank">
-        <img [src]="partner.current" class="img-responsive center-image"/>
-      </a>
+    <div fxLayout="row" fxLayoutAlign="space-around stretch" class="pb-5">
+      <div *ngFor="let partner of partners">
+        <a href="{{partner.url}}" target="_blank">
+          <img [src]="partner.current" />
+        </a>
+      </div>
     </div>
   </div>
 </div>
