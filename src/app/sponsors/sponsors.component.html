@@ -17,8 +17,8 @@
   <div class="row text-center">
     <h5 style="color:#21335B">In Affiliation With</h5><br />
     <!-- TODO: Will need to adjust spacing once the Broad Logo is added -->
-    <div fxLayout="row" fxLayoutAlign="space-around stretch" class="pb-5">
-      <div *ngFor="let sponsor of sponsors">
+    <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
+      <div *ngFor="let sponsor of sponsors" class="pb-5 px-1">
         <a href="{{sponsor.url}}" target="_blank">
           <img [src]="sponsor.current" />
         </a>
@@ -27,8 +27,8 @@
   </div>
   <div *ngIf="showSecondRow" class="row text-center">
     <h5 style="color:#21335B">Works With</h5><br />
-    <div fxLayout="row" fxLayoutAlign="space-around stretch" class="pb-5">
-      <div *ngFor="let partner of partners">
+    <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
+      <div *ngFor="let partner of partners" class="pb-5 px-1">
         <a href="{{partner.url}}" target="_blank">
           <img [src]="partner.current" />
         </a>
