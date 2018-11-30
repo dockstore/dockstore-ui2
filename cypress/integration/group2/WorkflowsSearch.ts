@@ -25,7 +25,7 @@ describe('Dockstore workflow list page', () => {
     it('Should display the correct url', () => {
       cy.get('mat-cell')
         .find('a')
-        .contains(/\bl\b/)
+        .contains(/^l$/)
         .should('have.attr', 'href', '/workflows/github.com/A/l')
         .should('not.have.attr', 'href', '/workflows/github.com%20A%20l');
     });
@@ -39,7 +39,7 @@ describe('Dockstore workflow list page', () => {
       cy
         .get('mat-cell')
         .find('a')
-        .contains(/\bl\b/)
+        .contains(/^l$/)
         .click()
         .get('#workflow-path')
         .should('contain', 'github.com/A/l');

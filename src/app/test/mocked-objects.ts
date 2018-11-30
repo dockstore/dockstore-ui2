@@ -228,6 +228,7 @@ export const wdlSourceFile: SourceFile = {
   content: 'task foo {}',
   id: 0,
   path: '',
+  absolutePath: '',
   type: 'DOCKSTORE_WDL'
 };
 
@@ -235,6 +236,7 @@ export const emptyWdlSourceFile: SourceFile = {
   content: '',
   id: 1,
   path: '/foo.wdl',
+  absolutePath: '',
   type: 'DOCKSTORE_WDL'
 };
 
@@ -242,6 +244,7 @@ export const wdlSourceFileWithHttpImport: SourceFile = {
   content: 'import http://example.com/foo',
   id: 2,
   path: '/goo.wdl',
+  absolutePath: '',
   type: 'DOCKSTORE_WDL'
 };
 
@@ -249,6 +252,7 @@ export const sampleSourceFile: SourceFile = {
   content: 'potato',
   id: 1,
   path: '/cwl.json',
+  absolutePath: '',
   type: SourceFile.TypeEnum.CWLTESTJSON
 };
 
@@ -257,6 +261,7 @@ export const testSourceFiles: Array<SourceFile> = [
     'content': 'potato',
     'id': 3071652,
     'path': '\/Dockerfile',
+    'absolutePath': '',
     'type': SourceFile.TypeEnum.DOCKERFILE,
     'verifiedBySource': {
 
@@ -266,6 +271,7 @@ export const testSourceFiles: Array<SourceFile> = [
     'content': 'potato',
     'id': 3071752,
     'path': '\/Dockstore-BTCA-SG.json',
+    'absolutePath': '',
     'type': SourceFile.TypeEnum.CWLTESTJSON,
     'verifiedBySource': {
       'Dockstore CLI': {
@@ -278,6 +284,7 @@ export const testSourceFiles: Array<SourceFile> = [
     'content': 'potato',
     'id': 3071602,
     'path': '\/Dockstore.cwl',
+    'absolutePath': '',
     'type': SourceFile.TypeEnum.DOCKSTORECWL,
     'verifiedBySource': {
 
@@ -287,6 +294,7 @@ export const testSourceFiles: Array<SourceFile> = [
     'content': 'potato',
     'id': 3071702,
     'path': '\/Dockstore.json',
+    'absolutePath': '',
     'type': SourceFile.TypeEnum.CWLTESTJSON,
     'verifiedBySource': {
       'Dockstore CLI': {
