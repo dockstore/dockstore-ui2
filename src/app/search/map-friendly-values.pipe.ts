@@ -52,11 +52,12 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * This pipe searches the friendly value names map for the key whose value is 'subBucket'
    *
    * @param {string} key The key (e.g. file_formats.keyword)
-   * @param {string} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
+   * @param {(string | number)} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
    * @returns {string} The friendly name if found, otherwise the same name
    * @memberof MapFriendlyValuesPipe
    */
-  transform(key: string, subBucket: string): string {
+  transform(key: string, subBucket: string | number): string {
+    subBucket = subBucket.toString();
     if (!subBucket) {
       return subBucket;
     }
