@@ -19,6 +19,7 @@ img {
   height: 65px;
   /* align with text */
   vertical-align: middle;
+  filter: grayscale(100%)
 }
 
 ul {
@@ -35,4 +36,8 @@ li {
 a {
   /* removes underline for links */
   text-decoration: none;
+}
+
+img:hover {
+  filter: none
 }
