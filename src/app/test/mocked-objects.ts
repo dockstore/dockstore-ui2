@@ -276,7 +276,8 @@ export const testSourceFiles: Array<SourceFile> = [
     'verifiedBySource': {
       'Dockstore CLI': {
         'metadata': 'Docktesters group',
-        'verified': true
+        'verified': true,
+        'platformVersion': '1.0.0'
       }
     }
   },
@@ -299,7 +300,8 @@ export const testSourceFiles: Array<SourceFile> = [
     'verifiedBySource': {
       'Dockstore CLI': {
         'metadata': 'Docktesters group',
-        'verified': true
+        'verified': true,
+        'platformVersion': null,
       }
     }
   }

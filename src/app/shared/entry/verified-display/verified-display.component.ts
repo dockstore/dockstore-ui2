@@ -27,7 +27,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() sourceFiles: SourceFile[];
   @ViewChild(MatSort) sort: MatSort;
   public dataSource: MatTableDataSource<any>;
-  public displayedColumns = ['platform', 'verifier', 'path'];
+  public displayedColumns = ['platform', 'platformVersion', 'path', 'metadata'];
   constructor() {
     this.dataSource = new MatTableDataSource([]);
   }
@@ -49,7 +49,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
    * @memberof VerifiedDisplayComponent
    */
   getCustomVerificationInformationArray(sourceFiles: Array<SourceFile>): Array<any> {
-    const customVerificationInformationArray: Array<CustomVerificationInformationObject> = new Array();
+    const customVerificationInformationArray: Array<VerificationInformation> = new Array();
     sourceFiles.forEach((sourceFile: SourceFile) => {
       const verifiedBySource = sourceFile.verifiedBySource;
       const verifiedBySourceArray = Object.entries(verifiedBySource);
@@ -61,7 +61,8 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
             // This allows the string to break after every slash for word-wrapping purposes
             path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
             platform: platform,
-            verifier: verifiedInformation.metadata
+            platformVersion: verifiedInformation.platformVersion ? verifiedInformation.platformVersion : 'N/A',
+            metadata: verifiedInformation.metadata
           };
           customVerificationInformationArray.push(customVerificationInformationObject);
         }
@@ -69,15 +70,4 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
     });
     return customVerificationInformationArray;
   }
-}
-
-/**
- * Custom Verification Information Object that is to be displayed in a table
- *
- * @class CustomVerificationInformationObject
- */
-class CustomVerificationInformationObject {
-  path: string;
-  platform: string;
-  verifier: string;
 }
