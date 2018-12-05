@@ -20,6 +20,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 
 import { TwitterService } from '../shared/twitter.service';
 import { HomeComponent } from './home.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -31,6 +32,7 @@ describe('HomeComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TabsModule.forRoot(),
+        RouterTestingModule,
         MatButtonModule,
         MatIconModule,
         MatDialogModule
