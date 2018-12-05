@@ -1,0 +1,8 @@
+org-button-align {
+  flex-direction: row !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  max-height: 100% !important;
+  place-content: center flex-start !important;
+  align-items: center !important;
+}
