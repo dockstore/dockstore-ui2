@@ -53,7 +53,7 @@
     </mat-toolbar>
     <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
   </div>
-  <alert type="warning" *ngIf="!content">
+  <alert type="warning" *ngIf="!nullDescriptors">
     <mat-icon>warning</mat-icon>
     &nbsp;A Descriptor File associated with this Docker container could not be found.
   </alert>
