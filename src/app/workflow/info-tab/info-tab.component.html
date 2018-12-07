@@ -101,7 +101,7 @@
         <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option>
       </select>
     </div>
-    <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB">
+    <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
       <Strong matTooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' | mapFriendlyValue : workflow?.descriptorType }}</div>
   </li>
 </ul>
