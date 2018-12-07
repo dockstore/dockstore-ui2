@@ -59,6 +59,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
   transform(key: string, subBucket: string | number): string {
     // Handle null or undefined
     if (subBucket === null || subBucket === undefined) {
+      console.error('null/undefined passed into the pipe along with the key: ' + key);
       return null;
     }
     // Handle number
