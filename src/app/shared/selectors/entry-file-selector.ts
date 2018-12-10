@@ -42,6 +42,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
+  public loading = true;
   abstract entrypath: string;
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
@@ -80,15 +81,19 @@ export abstract class EntryFileSelector implements OnDestroy {
   }
 
   reactToDescriptor() {
+    this.loading = true;
     this.getFiles(this.currentDescriptor).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
-        this.files = files;
-        if (this.files.length) {
-          this.onFileChange(this.files[0]);
-        } else {
-          this.currentFile = null;
-          this.content = null;
-        }}
+          this.files = files;
+          if (this.files.length) {
+            this.onFileChange(this.files[0]);
+          } else {
+            this.currentFile = null;
+            this.content = null;
+          }
+          this.loading = false;
+          },
+        () => {}
       );
   }
 
@@ -124,9 +129,11 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @memberof EntryFileSelector
    */
   reactToFile(): void {
+    this.loading = true;
     this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
     const existingFileWrapper = this.filesQuery.getEntity(this.currentFile.path);
     if (existingFileWrapper) {
+      this.loading = false;
       this.content = existingFileWrapper.content;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
         this.filePath = this.fileService.getFilePath(this.currentFile);
@@ -139,6 +146,7 @@ export abstract class EntryFileSelector implements OnDestroy {
         this.content = file.content;
         this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
         this.filePath = this.fileService.getFilePath(this.currentFile);
+        this.loading = false;
         this.updateCustomDownloadFileButtonAttributes();
       });
     }
