@@ -42,11 +42,11 @@ export class DockerfileComponent {
   }
   content: string;
   filePath: string;
-  nullContent: boolean;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
+  public loading = false;
   constructor(public fileService: FileService, private toolQuery: ToolQuery,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.filePath = '/Dockerfile';
@@ -55,14 +55,17 @@ export class DockerfileComponent {
 
   reactToVersion(): void {
     if (this._selectedVersion) {
+      this.loading = true;
       this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first())
         .subscribe(file => {
+            this.loading = false;
             this.content = file.content;
             this.filePath = file.path;
             this.downloadFilePath = this.getContainerfilePath();
             this.customDownloadFile();
           }, error => {
             this.content = null;
+            this.loading = false;
           }
         );
     } else {

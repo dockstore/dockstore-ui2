@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from '../swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion } from '../swagger';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
 
@@ -42,7 +42,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
-  public loading = true;
+  public loading = false;
   abstract entrypath: string;
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
@@ -81,7 +81,6 @@ export abstract class EntryFileSelector implements OnDestroy {
   }
 
   reactToDescriptor() {
-    this.loading = true;
     this.getFiles(this.currentDescriptor).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
           this.files = files;
@@ -91,9 +90,9 @@ export abstract class EntryFileSelector implements OnDestroy {
             this.currentFile = null;
             this.content = null;
           }
-          this.loading = false;
-          },
-        () => {}
+        },
+        () => {
+        }
       );
   }
 
@@ -129,7 +128,7 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @memberof EntryFileSelector
    */
   reactToFile(): void {
-    this.loading = true;
+    if (this._selectedVersion.valid) {this.loading = true;}
     this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
     const existingFileWrapper = this.filesQuery.getEntity(this.currentFile.path);
     if (existingFileWrapper) {
