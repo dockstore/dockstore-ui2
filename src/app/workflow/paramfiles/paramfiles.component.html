@@ -18,26 +18,31 @@
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;This version of the workflow is invalid.
   </alert>
-  <alert type="warning" *ngIf="!content && !(isNFL$ | async)">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp; A Test Parameter File associated with this workflow could not be found.
-  </alert>
   <alert type="info" *ngIf="(isNFL$ | async)">
     <span class="glyphicon glyphicon-warning-sign"></span>
     &nbsp;
     Nextflow does not have the concept of a test parameter file.
   </alert>
-  <div [hidden]="!content">
+  <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
+  <ng-template #loaded>
+    <alert type="warning" *ngIf="!content && !(isNFL$ | async)">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      &nbsp; A Test Parameter File associated with this workflow could not be found.
+    </alert>
+    <div [hidden]="!content">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <app-select  [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+          <app-select [items]="files" [default]="currentFile" [field]="'path'"
+                      (select)="onFileChange($event)"></app-select>
           <span class="spacer"></span>
           <div class="btn-group pull-right" role="group">
-            <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+            <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink"
+               download [href]="downloadFilePath" type="button" title="{{filePath}}">
               <mat-icon>save_alt</mat-icon>
             </a>
             <ng-template #unpublishedDownloadLink>
-              <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+              <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF"
+                 [download]="customDownloadPath" type="button" title="{{filePath}}">
                 <mat-icon>save_alt</mat-icon>
               </a>
             </ng-template>
@@ -47,6 +52,7 @@
           </div>
         </mat-toolbar-row>
       </mat-toolbar>
-    <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
-  </div>
+      <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
+    </div>
+  </ng-template>
 </div>
