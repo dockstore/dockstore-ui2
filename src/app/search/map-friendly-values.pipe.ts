@@ -57,14 +57,18 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   transform(key: string, subBucket: string | number): string {
-    subBucket = subBucket.toString();
-    if (!subBucket) {
-      return subBucket;
+    // Handle null or undefined
+    if (subBucket === null || subBucket === undefined) {
+      console.error('null/undefined passed into the pipe along with the key: ' + key);
+      return null;
     }
-    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucket.toString())) {
-      return this.friendlyValueNames.get(key).get(subBucket.toString());
+    // Handle number
+    const subBucketString: string = subBucket.toString();
+    // Handle string
+    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {
+      return this.friendlyValueNames.get(key).get(subBucketString);
     } else {
-      return subBucket;
+      return subBucketString;
     }
   }
 }
