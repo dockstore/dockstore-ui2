@@ -63,12 +63,12 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       return null;
     }
     // Handle number
-    subBucket = subBucket.toString();
+    const subBucketString: string = subBucket.toString();
     // Handle string
-    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucket.toString())) {
-      return this.friendlyValueNames.get(key).get(subBucket.toString());
+    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {
+      return this.friendlyValueNames.get(key).get(subBucketString);
     } else {
-      return subBucket;
+      return subBucketString;
     }
   }
 }
