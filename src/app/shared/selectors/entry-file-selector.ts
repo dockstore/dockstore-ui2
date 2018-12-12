@@ -128,7 +128,9 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @memberof EntryFileSelector
    */
   reactToFile(): void {
-    if (this._selectedVersion.valid) {this.loading = true;}
+    if (this._selectedVersion.valid) {
+      this.loading = true;
+    }
     this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
     const existingFileWrapper = this.filesQuery.getEntity(this.currentFile.path);
     if (existingFileWrapper) {
