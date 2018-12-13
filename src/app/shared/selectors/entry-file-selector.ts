@@ -16,7 +16,7 @@
 import { OnDestroy } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {finalize, takeUntil} from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
@@ -136,19 +136,20 @@ export abstract class EntryFileSelector implements OnDestroy {
     if (existingFileWrapper) {
       this.loading = false;
       this.content = existingFileWrapper.content;
-        this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
-        this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.updateCustomDownloadFileButtonAttributes();
+      this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
+      this.filePath = this.fileService.getFilePath(this.currentFile);
+      this.updateCustomDownloadFileButtonAttributes();
     } else {
-    this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
-      this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
-      this._selectedVersion.name, this.currentFile.path).subscribe((file: FileWrapper) => {
-        this.filesService.update(this.currentFile.path, file);
-        this.content = file.content;
-        this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
-        this.filePath = this.fileService.getFilePath(this.currentFile);
-        this.loading = false;
-        this.updateCustomDownloadFileButtonAttributes();
+      this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
+        this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
+        this._selectedVersion.name, this.currentFile.path).pipe(
+          finalize( () => this.loading = false))
+        .subscribe((file: FileWrapper) => {
+          this.filesService.update(this.currentFile.path, file);
+          this.content = file.content;
+          this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
+          this.filePath = this.fileService.getFilePath(this.currentFile);
+          this.updateCustomDownloadFileButtonAttributes();
       });
     }
   }
