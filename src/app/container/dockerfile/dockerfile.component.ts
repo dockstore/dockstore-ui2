@@ -16,7 +16,7 @@
 import { Component, Input } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import {finalize, first} from 'rxjs/operators';
 
 import { ga4ghPath } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
@@ -46,7 +46,7 @@ export class DockerfileComponent {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
-  public loading = false;
+  public loading = true;
   constructor(public fileService: FileService, private toolQuery: ToolQuery,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.filePath = '/Dockerfile';
@@ -56,20 +56,20 @@ export class DockerfileComponent {
   reactToVersion(): void {
     if (this._selectedVersion) {
       this.loading = true;
-      this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first())
+      this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first(),
+        finalize(() => this.loading = false))
         .subscribe(file => {
-            this.loading = false;
             this.content = file.content;
             this.filePath = file.path;
             this.downloadFilePath = this.getContainerfilePath();
             this.customDownloadFile();
           }, error => {
             this.content = null;
-            this.loading = false;
           }
         );
     } else {
       this.content = null;
+      this.loading = false;
     }
   }
 
