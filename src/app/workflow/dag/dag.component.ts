@@ -27,6 +27,10 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
+import {Files} from "../../shared/files";
+import {ParamfilesService} from "../../container/paramfiles/paramfiles.service";
+import {GA4GHFilesService} from "../../shared/ga4gh-files/ga4gh-files.service";
+import {ga4ghWorkflowIdPrefix} from "../../shared/constants";
 
 @Component({
   selector: 'app-dag',
@@ -34,9 +38,11 @@ import { DagStore } from './state/dag.store';
   styleUrls: ['./dag.component.scss'],
   providers: [DagStore, DagQuery, DagService]
 })
-export class DagComponent extends EntryTab implements OnInit, OnChanges {
-  @Input() id: number;
+
+// Files class extends EntryTab already, so have DagComponent extend Files
+export class DagComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: WorkflowVersion;
+  @Input() descriptorType: ToolDescriptor.TypeEnum;
 
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
@@ -46,12 +52,18 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   public expanded: Boolean = false;
   public workflow$: Observable<Workflow>;
   public isNFL$: Observable<boolean>;
+  public isWDL$: Observable<boolean>;
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public missingTool$: Observable<boolean>;
-  public dagType: 'classic' | 'cwlviewer' = 'classic';
+  public dagType: 'classic' | 'cwlviewer' | 'wdlviewer' = 'classic';
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
+  public enableWdlViewer = Dockstore.FEATURES.enableWdlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
+
+  versionsWithParamfiles: Array<any>;
+  previousEntryPath: string;
+  previousVersionName: string;
 
   @HostListener('window:keyup.escape', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -66,7 +78,8 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
     this.refreshDocument(this.cy);
   }
 
-  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery) {
+  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery,
+              private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
     super();
   }
 
@@ -97,16 +110,27 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   ngOnInit() {
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
+    this.isWDL$ = this.workflowQuery.isWDL$;
     this.dagResult$ = this.dagQuery.dagResults$;
     this.workflow$ = this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe)).subscribe(dagResults => {
       this.refreshDocument(this.cy);
     }, error => console.error('Something went terribly wrong with dagResult$'));
+    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 
   ngOnChanges() {
     this.dagService.getDAGResults(this.selectedVersion, this.id);
+    // Retrieve the files for this path from the API, and store in global storage on view change
+    if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
+      // Only getting files for one descriptor type for workflows (subject to change)
+      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name,
+        [this.descriptorType]);
+      this.previousEntryPath = this.entrypath;
+      this.previousVersionName = this.selectedVersion.name;
+    }
+    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 
   download() {
