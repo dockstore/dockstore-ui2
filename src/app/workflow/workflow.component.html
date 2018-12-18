@@ -180,7 +180,7 @@
   </div>
 
   <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic">
-    <div class="panel panel-default" *ngIf="workflow">
+    <div class="panel panel-default mb-3" *ngIf="workflow">
       <div class="panel-heading">
         <h3>Recent Versions</h3>
       </div>
@@ -202,7 +202,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default" *ngIf="!isStub() && !isHosted()">
+    <div class="panel panel-default mb-3" *ngIf="!isStub() && !isHosted()">
       <div class="panel-heading">
         <h3>Source Repositories</h3>
       </div>
@@ -221,7 +221,7 @@
     </div>
     <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
     <app-verified-by [version]="selectedVersion"></app-verified-by>
-    <div class="panel panel-default" *ngIf="workflow">
+    <div class="panel panel-default mb-3" *ngIf="workflow">
       <div class="panel-heading">
         <h3>Sharing</h3>
       </div>
@@ -232,7 +232,7 @@
       </div>
     </div>
     <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
-    <!-- <div class="panel panel-default">
+    <!-- <div class="panel panel-default mb-3">
       <div class="panel-heading">
         <h3>DOI</h3>
       </div>
