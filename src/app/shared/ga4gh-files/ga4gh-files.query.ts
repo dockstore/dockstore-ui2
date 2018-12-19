@@ -31,10 +31,10 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
     if (descriptorType) {
       let toolFiles$: Observable<Array<ToolFile>>;
       toolFiles$ = this.selectEntity(descriptorType).pipe(
-        map((gA4GHFile: GA4GHFiles) => gA4GHFile ? gA4GHFile.toolFiles : [])
+        map((gA4GHFile: GA4GHFiles) => gA4GHFile ? gA4GHFile.toolFiles : null)
       );
       return toolFiles$.pipe(
-        map((toolFiles: Array<ToolFile>) => toolFiles ? toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type)) : [])
+        map((toolFiles: Array<ToolFile>) => toolFiles ? toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type)) : null)
       );
     } else {
       return observableOf([]);

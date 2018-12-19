@@ -108,7 +108,7 @@ export class LaunchWorkflowComponent extends EntryTab {
       let toolFiles$: Observable<Array<ToolFile>>;
       toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
       toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
-        if (toolFiles.length > 0) {
+        if (toolFiles && toolFiles.length > 0) {
           this.testParameterPath = toolFiles[0].path;
         } else {
           this.testParameterPath = null;

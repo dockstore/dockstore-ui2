@@ -46,7 +46,8 @@ export class GA4GHFilesService {
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach(descriptorType => {
       this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
-        files => this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: files }));
+        files => this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: files }),
+        () => this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: []}));
     });
   }
 
