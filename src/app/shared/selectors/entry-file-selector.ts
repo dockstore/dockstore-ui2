@@ -18,12 +18,12 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import {finalize, takeUntil} from 'rxjs/operators';
 
+import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FilesService } from '../../workflow/files/state/files.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion } from '../swagger';
-import { FilesService } from '../../workflow/files/state/files.service';
-import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from '../swagger';
 
 /**
 * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -42,7 +42,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
-  public loading = false;
+  public loading = true;
   abstract entrypath: string;
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
@@ -67,6 +67,7 @@ export abstract class EntryFileSelector implements OnDestroy {
       }
     } else {
       this.nullDescriptors = true;
+      this.setContent(null);
     }
   }
 
@@ -88,10 +89,8 @@ export abstract class EntryFileSelector implements OnDestroy {
             this.onFileChange(this.files[0]);
           } else {
             this.currentFile = null;
-            this.content = null;
+            this.setContent(null);
           }
-        },
-        () => {
         }
       );
   }
@@ -109,7 +108,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   }
 
   clearContent() {
-    this.content = null;
+    this.setContent(null);
   }
 
   /**
@@ -152,5 +151,17 @@ export abstract class EntryFileSelector implements OnDestroy {
           this.updateCustomDownloadFileButtonAttributes();
       });
     }
+  }
+
+  /**
+   * Sets the content and clears the loading state
+   *
+   * @private
+   * @param {string} content  The file contents
+   * @memberof EntryFileSelector
+   */
+  private setContent(content: string | null) {
+    this.content = content;
+    this.loading = false;
   }
 }
