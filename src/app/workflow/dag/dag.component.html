@@ -15,7 +15,7 @@
   -->
 <div *ngIf="(isNFL$ | async) && dagType === 'classic'">
   <span class="alert alert-warning col-md-12" role="alert">
-    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;DAG display is still experimental for Nextflow.
+    <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
   </span>
 </div>
 
@@ -48,7 +48,7 @@
 
     <div *ngIf="dagType === 'classic' && !(isNFL$ | async)">
       <div class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
-        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+        <mat-icon>warning</mat-icon>&nbsp;
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
           A Descriptor associated with this workflow could not be found.
         </span>
@@ -58,7 +58,7 @@
       </div>
 
       <div class="alert alert-warning" role="alert" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async) && selectedVersion?.valid">
-        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp; DAG cannot be created because some required tools
+        <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required tools
         are missing from Github repo.
       </div>
     </div>

@@ -120,7 +120,7 @@
       <ngx-md [data]="workflow?.description"></ngx-md>
     </div>
     <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
-      <span class="glyphicon glyphicon-warning-sign"></span>
+      <mat-icon>warning</mat-icon>
       <span ng-show="!containerObj.description">
         No description associated with this workflow. See
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
