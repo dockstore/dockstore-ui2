@@ -221,7 +221,7 @@
             <span *ngIf="(extendedTool$ | async).provider">
               <a [href]="(extendedTool$ | async).providerUrl" target="_blank">
                 {{(extendedTool$ | async).provider}}
-                <span class="glyphicon glyphicon-new-window"></span>
+                <mat-icon>open_in_new</mat-icon>
               </a>
             </span>
           </p>
@@ -231,7 +231,7 @@
             <span *ngIf="(extendedTool$ | async).imgProviderUrl && !privateOnlyRegistry">
               <a *ngIf="(extendedTool$ | async).imgProviderUrl !== null" [href]="(extendedTool$ | async).imgProviderUrl" target="_blank">
                 {{(extendedTool$ | async)?.imgProvider}}
-                <span class="glyphicon glyphicon-new-window"></span>
+                <mat-icon>open_in_new</mat-icon>
               </a>
               <span *ngIf="(extendedTool$ | async).imgProviderUrl === null">{{(extendedTool$ | async)?.imgProvider}}</span>
             </span>

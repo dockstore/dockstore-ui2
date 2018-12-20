@@ -208,7 +208,7 @@
             <span *ngIf="(extendedWorkflow$ | async).provider">
               <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
                 {{(extendedWorkflow$ | async).provider}}
-                <span class="glyphicon glyphicon-new-window"></span>
+                <mat-icon>open_in_new</mat-icon>
               </a>
             </span>
           </p>
