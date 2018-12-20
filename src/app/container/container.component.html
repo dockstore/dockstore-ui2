@@ -126,10 +126,10 @@
         </mat-chip-list>
       </mat-form-field>
       <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
-         <span class="glyphicon glyphicon-remove"></span> Cancel
+         <mat-icon>clear</mat-icon>Cancel
       </button>
       <button type="button"(click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
-        <span class="glyphicon glyphicon-floppy-save"></span>Save
+        <mat-icon>save</mat-icon>Save
       </button>
     </span>
   </div>
@@ -144,7 +144,7 @@
         <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
         <ng-template #noTags>
           <div class="alert alert-warning" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No tags exist for this tool.
+            <mat-icon>warning</mat-icon> No tags exist for this tool.
           </div>
         </ng-template>
       </mat-tab>

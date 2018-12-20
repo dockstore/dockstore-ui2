@@ -15,7 +15,7 @@
   -->
 
 <div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see launch with, please select a version.
+  <mat-icon>warning</mat-icon> To see launch with, please select a version.
 </div>
 <div *ngIf="_selectedVersion">
   <div *ngIf="!_selectedVersion.valid">

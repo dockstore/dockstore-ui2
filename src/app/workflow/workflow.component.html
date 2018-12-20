@@ -125,7 +125,7 @@
         <app-launch *ngIf="workflow?.workflowVersions.length > 0; else noVersions" [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
         <ng-template #noVersions>
           <div class="alert alert-warning" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No versions exist for this workflow.
+            <mat-icon>warning</mat-icon> No versions exist for this workflow.
           </div>
         </ng-template>
       </mat-tab>
@@ -135,7 +135,7 @@
           </app-versions-workflow>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see versions, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see versions, please refresh the workflow.
         </div>
       </mat-tab>
       <mat-tab id="fileTab" label="Files">
@@ -149,7 +149,7 @@
           </app-workflow-file-editor>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see files, please refresh the workflow.
         </div>
       </ng-template>
       </mat-tab>
@@ -158,14 +158,14 @@
           <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-tool-tab>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see tools, please refresh the workflow.
         </div>
       </mat-tab>
       <mat-tab id="dagTab" label="DAG">
         <ng-template matTabContent>
             <app-dag [id]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
         </div>
       </ng-template>
       </mat-tab>
