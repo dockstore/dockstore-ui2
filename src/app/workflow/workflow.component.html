@@ -107,7 +107,7 @@
         </mat-chip-list>
       </mat-form-field>
       <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-        <span class="glyphicon glyphicon-remove"></span> Cancel
+        <mat-icon>cancel</mat-icon>Cancel
       </button>
       <button type="button"(click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
         <span class="glyphicon glyphicon-floppy-save"></span> Save
