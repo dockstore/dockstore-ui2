@@ -27,7 +27,6 @@ import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { ParamfilesService } from '../paramfiles/paramfiles.service';
 
 @Component({
   selector: 'app-add-tag',
@@ -49,7 +48,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private paramFilesService: ParamfilesService, private toolQuery: ToolQuery,
+    private containersService: ContainersService, private toolQuery: ToolQuery,
     private matDialog: MatDialog) {
       super();
   }
@@ -90,7 +89,8 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.initializeTag();
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
-      this.tool = tool;
+      // One day, we will figure out how to handle form changes with state management's read only state
+      this.tool = JSON.parse(JSON.stringify(tool));
       this.loadDefaults();
     });
   }
