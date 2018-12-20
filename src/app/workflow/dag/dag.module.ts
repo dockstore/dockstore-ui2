@@ -23,12 +23,14 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { getTooltipConfig } from './../../shared/tooltip';
 import { DagComponent } from './dag.component';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
+import { MatIconModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    TooltipModule
+    TooltipModule,
+    MatIconModule
   ],
   declarations: [DagComponent, CwlViewerComponent],
   exports: [DagComponent],

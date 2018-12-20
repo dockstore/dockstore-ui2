@@ -109,15 +109,15 @@
       <td *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
       <td>{{ getDateTimeString(version.last_modified) }}</td>
       <td>
-        <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
-        <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
+          <mat-icon *ngIf="version.valid">check</mat-icon>
+          <mat-icon *ngIf="!version.valid">close</mat-icon>
       </td>
       <td>
-        <a href={{verifiedLink}}>
-          <span class="glyphicon glyphicon-ok" *ngIf="version.verified" matTooltip="{{getVerifiedSource(version.name)}}"></span>
+        <a href={{verifiedLink}} *ngIf="version.verified" matTooltip="{{getVerifiedSource(version.name)}}">
+          <mat-icon>check</mat-icon>
         </a>
         {{version?.sourceFiles | verifiedPlatforms }}
-        <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
+        <mat-icon *ngIf="!version.verified">close</mat-icon>
       </td>
       <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
       <!-- <td>

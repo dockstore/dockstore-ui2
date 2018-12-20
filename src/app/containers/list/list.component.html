@@ -29,9 +29,9 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool: Tool">
-        <span *ngIf="getVerified(tool)">
-          <a style="text-decoration: none" matTooltip="Verified" class="glyphicon glyphicon-ok" href= {{verifiedLink}}></a>
-        </span>
+        <a *ngIf="getVerified(tool)" href= {{verifiedLink}}>
+          <mat-icon matTooltip="Verified">check</mat-icon>
+        </a>
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
