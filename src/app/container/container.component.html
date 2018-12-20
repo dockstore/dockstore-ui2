@@ -38,7 +38,7 @@
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
         <a href= {{getVerifiedLink()}} class="verified-check">
-          <mat-icon  matTooltip="Verified">done</mat-icon>
+          <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </span>
       <span *ngIf="tool?.private_access" class="private-lock" matTooltip="Private">
@@ -182,7 +182,7 @@
             <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
-                  <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+                  <mat-icon matTooltip="Verified">done</mat-icon>
                 </a>
               </span>
               <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}} </a>
@@ -202,9 +202,9 @@
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
           <span class="input-group-btn">
-            <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
+            <button class="btn btn-default form-sm-button-material" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
               (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
-              <span class="glyphicon glyphicon-copy"></span>
+              <mat-icon>file_copy</mat-icon>
             </button>
           </span>
         </div>

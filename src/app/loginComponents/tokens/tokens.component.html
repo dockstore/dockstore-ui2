@@ -37,7 +37,7 @@
               <button class="btn btn-default" [ngClass]="{'btn-copy':token.copyClass}" type="button" ngxClipboard
                       [cbContent]="token.token"
                       (cbOnSuccess)="token.copyClass = true" (click)="tokenCopyClassSwitch(token.id)">
-                <span class="glyphicon glyphicon-copy"></span>
+                <mat-icon>file_copy</mat-icon>
               </button>
             </span>
               </div>
