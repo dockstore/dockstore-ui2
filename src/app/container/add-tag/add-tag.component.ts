@@ -27,6 +27,7 @@ import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
+import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-add-tag',
@@ -48,7 +49,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private toolQuery: ToolQuery,
+    private containersService: ContainersService, private toolQuery: ToolQuery, private alertService: AlertService,
     private matDialog: MatDialog) {
       super();
   }
@@ -132,6 +133,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   }
 
   addTag() {
+    this.alertService.start('Adding tag');
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
       this.tool.tags = response;
       const id = this.tool.id;
@@ -154,7 +156,8 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
       this.initializeTag();
       this.loadDefaults();
       this.matDialog.closeAll();
-    }, error => console.log(error));
+      this.alertService.detailedSuccess();
+    }, error => this.alertService.detailedError(error));
   }
 
   // Validation starts here, should move most of these to a service somehow
