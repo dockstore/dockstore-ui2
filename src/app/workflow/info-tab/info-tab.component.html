@@ -91,7 +91,7 @@
     <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
     <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
       [disabled]="(isRefreshing$ | async)">
-      <span class="glyphicon glyphicon-remove"></span> Restub
+      <mat-icon>clear</mat-icon> Restub
     </button>
   </li>
   <li>

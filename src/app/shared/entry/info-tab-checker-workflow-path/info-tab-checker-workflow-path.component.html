@@ -10,10 +10,10 @@
       </a>
       <span *ngIf="!(isPublic$ | async)">
         <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="(canAdd$ | async) && canWrite" type="button" class="btn btn-link" (click)="add()">
-          <span class="glyphicon glyphicon-plus"></span> Add
+          <mat-icon>add</mat-icon> Add
         </button>
         <!-- <button *ngIf="checkerWorkflowPath" type="button" class="btn btn-link" (click)="delete()">
-          <span class="glyphicon glyphicon-remove"></span> Delete
+          <mat-icon>clear</mat-icon> Delete
         </button> -->
       </span>
     </div>
