@@ -58,12 +58,6 @@
     <p class="update">
       Last build: {{ (extendedTool$ | async)?.agoMessage || 'n/a' }}
     </p>
-    <div *ngIf="starGazersClicked">
-      <app-stargazers></app-stargazers>
-      <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked=false">
-        <mat-icon>chevron_left</mat-icon>Back to details
-      </button>
-    </div>
   </div>
   <div class="col-md-5">
     <app-starring [tool]="tool" class="pull-right starring-button" *ngIf="isToolPublic && tool" (change)="starGazersChange()"></app-starring>
@@ -135,6 +129,13 @@
     </span>
   </div>
 </div>
+<div class="row m-4" *ngIf="starGazersClicked">
+  <app-stargazers></app-stargazers>
+  <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked=false">
+    <mat-icon>chevron_left</mat-icon>Back to details
+  </button>
+</div>
+
 <div class="row m-1" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <mat-tab-group dynamicHeight [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs (selectedTabChange)="selectedTabChange($event)">
