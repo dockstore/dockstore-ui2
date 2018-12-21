@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 
 import { Tag, WorkflowVersion } from './swagger';
-
+import { faSort, faSortAlphaDown, faSortAlphaUp } from '@fortawesome/free-solid-svg-icons';
 @Injectable()
 export class DockstoreService {
   constructor() {
@@ -116,10 +116,10 @@ export class DockstoreService {
 
   getIconClass(columnName: string, sortColumn: string, sortReverse: boolean) {
     if (sortColumn === columnName) {
-      return !sortReverse ? 'glyphicon-sort-by-alphabet' :
-        'glyphicon-sort-by-alphabet-alt';
+      return !sortReverse ? faSortAlphaDown :
+        faSortAlphaUp;
     } else {
-      return 'glyphicon-sort';
+      return faSort;
     }
   }
 
