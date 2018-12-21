@@ -39,6 +39,7 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { MatSnackBarModule, MatTooltipModule, MatIconModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @Component({
@@ -69,7 +70,7 @@ describe('VersionsWorkflowComponent', () => {
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule, MatIconModule],
+      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule, MatIconModule, FontAwesomeModule],
       declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe, MockViewWorkflowComponent,
         MockVersionModalComponent ],
       providers: [DockstoreService,

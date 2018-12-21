@@ -22,6 +22,7 @@ import { WorkflowVersion } from './swagger/model/workflowVersion';
 import { DockstoreService } from './dockstore.service';
 
 import { TestBed, inject } from '@angular/core/testing';
+import { faSortAlphaDown, faSort, faSortAlphaUp } from '@fortawesome/free-solid-svg-icons';
 
 describe('DockstoreService', () => {
     beforeEach(() => {
@@ -126,8 +127,8 @@ describe('DockstoreService', () => {
     }));
 
     it('should get icon class', inject([DockstoreService], (service: DockstoreService) => {
-        expect(service.getIconClass('a', 'a', true)).toEqual('glyphicon-sort-by-alphabet-alt');
-        expect(service.getIconClass('a', 'b', true)).toEqual('glyphicon-sort');
-        expect(service.getIconClass('a', 'a', false)).toEqual('glyphicon-sort-by-alphabet');
+        expect(service.getIconClass('a', 'a', true)).toEqual(faSortAlphaUp);
+        expect(service.getIconClass('a', 'b', true)).toEqual(faSort);
+        expect(service.getIconClass('a', 'a', false)).toEqual(faSortAlphaDown);
     }));
 });

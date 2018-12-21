@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -24,7 +25,6 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 describe('Service: version-modal.service.ts', () => {
   let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
