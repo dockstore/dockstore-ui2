@@ -58,7 +58,6 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
-import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -130,7 +129,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     AuthComponent,
     GetTokenUsernamePipe,
     GetTokenContentPipe,
-    TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
