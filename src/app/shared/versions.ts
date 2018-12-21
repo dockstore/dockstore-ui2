@@ -23,6 +23,7 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
 import { Tooltip } from './tooltip';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 export abstract class Versions extends EntryTab {
 
@@ -66,7 +67,7 @@ export abstract class Versions extends EntryTab {
       this.sortReverse = false;
     }
   }
-  getIconClass(columnName): string {
+  getIconClass(columnName): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
   convertSorting(): string {
