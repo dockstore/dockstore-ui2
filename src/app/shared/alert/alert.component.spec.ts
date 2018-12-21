@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AlertComponent } from './alert.component';
-import { MatProgressBarModule, MatSnackBarModule } from '@angular/material';
+import { MatProgressBarModule, MatSnackBarModule, MatIconModule } from '@angular/material';
 
 describe('RefreshAlertComponent', () => {
   let component: AlertComponent;
@@ -9,7 +9,7 @@ describe('RefreshAlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, MatSnackBarModule],
+      imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule],
       declarations: [AlertComponent]
     })
       .compileComponents();

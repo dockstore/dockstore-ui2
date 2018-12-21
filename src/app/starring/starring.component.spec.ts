@@ -28,6 +28,7 @@ import {
 import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
 import { WorkflowService } from '../shared/state/workflow.service';
+import { MatIconModule } from '@angular/material';
 
 describe('StarringComponent', () => {
   let component: StarringComponent;
@@ -36,6 +37,7 @@ describe('StarringComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StarringComponent],
+      imports: [MatIconModule],
       providers: [
         { provide: StarringService, useClass: StarringStubService },
         { provide: TrackLoginService, useClass: TrackLoginStubService },
