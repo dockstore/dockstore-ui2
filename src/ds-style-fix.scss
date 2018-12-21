@@ -223,9 +223,6 @@ div.tab-content {
   pre {
     margin: 0 0;
   }
-  span.glyphicon-edit, span.glyphicon-floppy-save {
-    margin-right: 4px;
-  }
 }
 
 div.view-content.ns-containers {
@@ -325,11 +322,6 @@ div.panel-container-label.selected {
       }
     }
   }
-}
-
-.glyphicon-refresh-animate {
-    animation: spin .7s infinite linear;
-    transform-origin: 48% 50%;
 }
 
 @keyframes spin {
@@ -492,9 +484,6 @@ button.add-container-ns {
   position: relative;
   top: 5px;
   margin-right: 5px;
-  span.glyphicon {
-    left: 1px;
-  }
 }
 
 div.modal-header + div.alert {

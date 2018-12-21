@@ -74,7 +74,8 @@
           </button>
           <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"  class="btn btn-link"
             (click)="toggleEditDockerFile()">
-            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !dockerFileEditing, 'glyphicon-save': dockerFileEditing }"></span>
+            <mat-icon *ngIf="dockerFileEditing">save</mat-icon>
+            <mat-icon *ngIf="!dockerFileEditing">edit</mat-icon>
             {{ dockerFileEditing ? 'Save' : 'Edit' }}
           </button>
         </div>
@@ -94,7 +95,8 @@
           </button>
           <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))" class="btn btn-link"
             (click)="toggleEditCWLPath()">
-            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlPathEditing, 'glyphicon-save': cwlPathEditing }"></span>
+            <mat-icon *ngIf="cwlPathEditing">save</mat-icon>
+            <mat-icon *ngIf="!cwlPathEditing">edit</mat-icon>
             {{ cwlPathEditing ? 'Save' : 'Edit' }}
           </button>
         </div>
@@ -114,7 +116,8 @@
           </button>
           <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))" class="btn btn-link"
             (click)="toggleEditWDLPath()">
-            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlPathEditing, 'glyphicon-save': wdlPathEditing }"></span>
+            <mat-icon *ngIf="wdlPathEditing">save</mat-icon>
+            <mat-icon *ngIf="!wdlPathEditing">edit</mat-icon>
             {{ wdlPathEditing ? 'Save' : 'Edit' }}
           </button>
         </div>
@@ -129,7 +132,8 @@
         </div>
         <button *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))" class="btn btn-link push-right"
           (click)="toggleEditCWLTestPath()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !cwlTestPathEditing, 'glyphicon-save': cwlTestPathEditing }"></span>
+          <mat-icon *ngIf="cwlTestPathEditing">save</mat-icon>
+          <mat-icon *ngIf="!cwlTestPathEditing">edit</mat-icon>
           {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
         </button>
       </form>
@@ -145,7 +149,8 @@
         </div>
         <button *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))" class="btn btn-link push-right"
           (click)="toggleEditWDLTestPath()">
-          <span class="glyphicon" [ngClass]="{'glyphicon-edit': !wdlTestPathEditing, 'glyphicon-save': wdlTestPathEditing }"></span>
+          <mat-icon *ngIf="wdlTestPathEditing">save</mat-icon>
+          <mat-icon *ngIf="!wdlTestPathEditing">edit</mat-icon>
           {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
         </button>
       </form>

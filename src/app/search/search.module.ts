@@ -40,6 +40,7 @@ import { SearchToolTableComponent } from './search-tool-table/search-tool-table.
 import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { searchRouting } from './search.routing';
   imports: [
     CommonModule,
     CustomMaterialModule,
+    FontAwesomeModule,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,

@@ -20,23 +20,15 @@
         <tr>
           <th>
             Workflow Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
           <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
             Tool Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
           <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
             Task Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
           <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
             Process Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
         </tr>
       </thead>

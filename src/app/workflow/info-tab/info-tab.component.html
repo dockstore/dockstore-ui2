@@ -59,7 +59,8 @@
           </button>
           <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (isRefreshing$ | async)" class="btn btn-link"
             (click)="toggleEditWorkflowPath()">
-            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
+            <mat-icon *ngIf="workflowPathEditing">save</mat-icon>
+            <mat-icon *ngIf="!workflowPathEditing">edit</mat-icon>
             {{ workflowPathEditing ? 'Save' : 'Edit' }}
           </button>
         </div>
@@ -74,7 +75,8 @@
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)" class="btn btn-link push-right"
             (click)="toggleEditDefaultTestFilePath()">
-            <span class="glyphicon" [ngClass]="{'glyphicon-edit': !defaultTestFilePathEditing, 'glyphicon-save': defaultTestFilePathEditing }"></span>
+            <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
+            <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
             {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
           </button>
         </span>

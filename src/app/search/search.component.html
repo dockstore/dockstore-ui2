@@ -33,12 +33,11 @@
           </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button mat-stroked-button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                  [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+              <fa-icon [icon]="sortModeMap.get(key).AlphabetOrderBy ? faSortAlphaUp : faSortAlphaDown"></fa-icon>
+              Alphabetical
             </button>
             <button mat-stroked-button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                  [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+                  <fa-icon [icon]="sortModeMap.get(key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon> Count
             </button>
           </div>
           <div *ngFor='let subBucket of getBucketKeys(key); let i = index'>
