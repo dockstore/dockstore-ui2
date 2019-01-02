@@ -14,14 +14,9 @@
   ~    limitations under the License.
   -->
 
-<button id="addTagButton" type="button" mat-flat-button color="primary" (click)="addTagModal.show()">
-  Add Tag</button>
-<div class="modal fade" bsModal #addTagModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Add Version Tag</h4>
-      </div>
+  <h4 mat-dialog-title>Add Version Tag</h4>
+  <div mat-dialog-content>
+      <app-alert></app-alert>
       <form #addTagForm="ngForm" class="form-horizontal" name="addTagForm">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
@@ -176,12 +171,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" mat-button color="secondary" (click)="addTagModal.hide()">Close</button>
-          <button id="addVersionTagButton" type="button" mat-flat-button color="primary" (click)="addTagModal.hide(); addTag()" [disabled]="!addTagForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)">
+          <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
+          <button id="addVersionTagButton" type="button" mat-flat-button color="primary" (click)="addTag()" [disabled]="!addTagForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)">
             Add Tag
           </button>
         </div>
       </form>
     </div>
-  </div>
-</div>

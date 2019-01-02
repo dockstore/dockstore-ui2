@@ -35,8 +35,6 @@ import { DagStore } from './state/dag.store';
   providers: [DagStore, DagQuery, DagService]
 })
 export class DagComponent extends EntryTab implements OnInit, OnChanges {
-  @Input() validVersions: Array<WorkflowVersion>;
-  @Input() defaultVersion: WorkflowVersion;
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
 
@@ -44,7 +42,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   @ViewChild('cy') cyElement: ElementRef;
 
   public dagResult$: Observable<any>;
-  private cy: any;
+  private cy: cytoscape.Core;
   public expanded: Boolean = false;
   public workflow$: Observable<Workflow>;
   public isNFL$: Observable<boolean>;
@@ -79,7 +77,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
    *
    * @memberof DagComponent
    */
-  refreshDocument(cy: any) {
+  refreshDocument(cy: cytoscape.Core) {
     const self = this;
     function step() {
       if (self.cyElement) {

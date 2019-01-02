@@ -64,11 +64,15 @@ export class CodeEditorListComponent {
   }
 
   /**
-   * Deletes the file at the given index
+   * Deletes the file at the given index by setting content to null.
+   * If it is a new file being deleted (not from previous version) then just remove from the list
    * @param  index index of file to delete
    */
   deleteFile(index: number) {
     this.sourcefiles[index].content = null;
+    if (this.sourcefiles[index].id === undefined || this.sourcefiles[index].id === null) {
+      this.sourcefiles.splice(index, 1);
+    }
   }
 
   /**

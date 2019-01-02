@@ -15,6 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
@@ -28,17 +29,16 @@ import { DockstoreTool } from '../../swagger/model/dockstoreTool';
 import { Entry } from '../../swagger/model/entry';
 import { Workflow } from '../../swagger/model/workflow';
 import { ToolQuery } from '../../tool/tool.query';
-import { ToolDescriptor } from '../../swagger';
 
 @Injectable()
 export class RegisterCheckerWorkflowService {
-    public isModalShown$ = new BehaviorSubject<boolean>(false);
     public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
     public entryId$: Observable<number>;
     public entryId: number;
     constructor(private workflowsService: WorkflowsService,
         private containerService: ContainerService, private workflowService: WorkflowService, private refreshService: RefreshService,
-        private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery, private alertService: AlertService) {
+        private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery, private alertService: AlertService,
+        private matDialog: MatDialog) {
         this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
         this.entryId$.subscribe((id: number) => {
             this.entryId = id;
@@ -63,9 +63,9 @@ export class RegisterCheckerWorkflowService {
                     }
                     const refreshCheckerMessage = 'Refreshing checker workflow';
                     this.workflowsService.refresh(entry.checker_id).pipe(first()).subscribe((workflow: Workflow) => {
-                        this.isModalShown$.next(false);
                         this.workflowService.upsertWorkflowToWorkflow(workflow);
                         this.alertService.detailedSuccess();
+                        this.matDialog.closeAll();
                     }, (error: HttpErrorResponse) => {
                       this.alertService.detailedError(error);
                     });
@@ -77,20 +77,10 @@ export class RegisterCheckerWorkflowService {
 
     add(): void {
         this.mode$.next('add');
-        this.showModal();
-        // Placeholder for endpoint
     }
 
     delete(): void {
         // Placeholder for endpoint
-    }
-
-    showModal(): void {
-        this.isModalShown$.next(true);
-    }
-
-    hideModal(): void {
-        this.isModalShown$.next(false);
     }
 }
 

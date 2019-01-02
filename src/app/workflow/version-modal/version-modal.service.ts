@@ -23,18 +23,15 @@ import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { MatDialog } from '@angular/material';
 
 @Injectable()
 export class VersionModalService {
-  isModalShown$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
   testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
   constructor(
     private alertService: AlertService, private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService) {
-  }
-  setIsModalShown(isModalShown: boolean) {
-    this.isModalShown$.next(isModalShown);
+    private refreshService: RefreshService, private matDialog: MatDialog) {
   }
 
   setVersion(version: WorkflowVersion) {
@@ -61,7 +58,6 @@ export class VersionModalService {
   saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
     const message1 = 'Saving workflow version';
     const message2 = 'Modifying test parameter files';
-    this.setIsModalShown(false);
     const workflowId = this.workflowQuery.getActive().id;
     this.alertService.start(message1);
     if (workflowMode !== 'HOSTED') {
@@ -71,6 +67,7 @@ export class VersionModalService {
               success => {
                 this.alertService.detailedSuccess();
                 this.refreshService.refreshWorkflow();
+                this.matDialog.closeAll();
               }, error => {
                 this.alertService.detailedError(error);
                 this.refreshService.refreshWorkflow();
@@ -83,6 +80,7 @@ export class VersionModalService {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         response => {
           this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
         }, error => {
           this.alertService.detailedError(error);
         }

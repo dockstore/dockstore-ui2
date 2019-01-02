@@ -25,6 +25,8 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { FilesQuery } from '../../workflow/files/state/files.query';
 
 @Component({
   selector: 'app-descriptors-container',
@@ -47,8 +49,9 @@ export class DescriptorsComponent extends EntryFileSelector {
 
   constructor(private containerService: ContainerService,
     private descriptorsService: DescriptorService, protected gA4GHService: GA4GHService, private toolQuery: ToolQuery,
-    private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService) {
-    super(fileService, gA4GHFilesService, gA4GHService);
+    private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
+    protected filesService: FilesService, protected filesQuery: FilesQuery) {
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 

@@ -67,7 +67,7 @@
                   <p>({{ orderedBuckets.get(key).Items.get(subBucket) }})</p>
                 </div>
               </div>
-              <div *ngIf="i >= 5 && fullyExpandMap.get(key)" class="panel-container-label search-facet-holder">
+              <div *ngIf="i >= 5 && fullyExpandMap.get(key)" class="search-facet-holder">
                 <div class="container-name-oflw search-facet-left">
                   <span matTooltip="{{( key | mapFriendlyValue : subBucket)}}" [matTooltipPosition]="'after'">
                     <mat-checkbox matTooltip="{{subBucket}}" [matTooltipPosition]="'after'" type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key,subBucket)"></mat-checkbox>
@@ -92,7 +92,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <button mat-raised-button color="accent" (click) = resetFilters() type="button" class="w-100 mt-3">
+      <button mat-raised-button color="accent" (click) = resetFilters() type="button" class="w-100 mt-3 mb-3">
         Reset Filters
       </button>
     </div>

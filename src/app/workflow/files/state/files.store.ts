@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,16 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { FileWrapper } from '../../../shared/swagger';
 
-export class Sponsor {
-  private static colouredPath = '../assets/images/sponsors/coloured/';
+export interface FilesState extends EntityState<FileWrapper> {}
 
-  private current: string;
-  private coloured: string;
-  private url: URL;
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'files' })
+export class FilesStore extends EntityStore<FilesState, FileWrapper> {
 
-  constructor(image: string, url: URL) {
-    this.current = Sponsor.colouredPath + image;
-    this.url = url;
+  constructor() {
+    super({});
   }
+
 }
+

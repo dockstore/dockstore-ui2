@@ -110,6 +110,7 @@ import { getTooltipConfig } from './../tooltip';
     WorkflowComponent,
     CustomMaterialModule,
     EntryModule
-  ]
+  ],
+  entryComponents: [VersionModalComponent]
 })
 export class WorkflowModule { }

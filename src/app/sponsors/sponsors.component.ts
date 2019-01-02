@@ -40,14 +40,6 @@ export class SponsorsComponent implements OnInit {
     });
   }
 
-  onMouseOver(sponsor: Sponsor): void {
-    sponsor.setToColoured();
-  }
-
-  onMouseOut(sponsor: Sponsor): void {
-    sponsor.setToBW();
-  }
-
   ngOnInit() {
     // Initialize sponsors and partners
     this.sponsors = this.sponsorsService.getSponsors();

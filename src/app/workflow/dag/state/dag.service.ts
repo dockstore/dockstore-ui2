@@ -1,12 +1,14 @@
-import { ElementRef, Injectable, OnDestroy, Renderer2 } from '@angular/core';
+import { ElementRef, Injectable, Renderer2 } from '@angular/core';
+import { CytoscapeOptions } from 'cytoscape';
+import * as cytoscape from 'cytoscape';
+import dagreExtension from 'cytoscape-dagre';
+import popperExtension from 'cytoscape-popper';
 
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
-
-declare var cytoscape: any;
 
 @Injectable()
 export class DagService {
@@ -159,7 +161,7 @@ export class DagService {
     });
   }
 
-  download(cy: any, versionName: string, exportLink: ElementRef) {
+  download(cy: cytoscape.Core, versionName: string, exportLink: ElementRef) {
     if (cy) {
       const pngDAG = cy.png({ full: true, scale: 2 });
       const name = this.workflowQuery.getActive().repository + '_' + versionName + '.png';
@@ -186,11 +188,62 @@ export class DagService {
     }
   }
 
-  refreshDocument(cy: any, element): any {
-    const self = this;
+  /**
+   * Create the tooltip HTMLDivElement from scratch because popper doesn't have a default
+   *
+   * @private
+   * @param {string} name  Name of the node
+   * @param {string} runText  Most text for the node
+   * @returns {HTMLDivElement}  The tooltip HTML element that still uses qtip styles
+   * @memberof DagService
+   */
+  private createPopupHTML(name: string, runText: string): HTMLDivElement {
+    const div = document.createElement('div');
+    div.innerHTML = `
+    <div class="qtip-titlebar">${name}</div>
+    <div class="qtip-content">${runText}</div>
+    `;
+    div.setAttribute('class', 'opaq qtip-bootstrap bootstrap-tooltip-z-index');
+    document.body.appendChild(div);
+    return div;
+  }
+
+  /**
+   * Creates event handlers for a single node
+   *
+   * @private
+   * @param {cytoscape.NodeSingular} node  The node to create event handlers for
+   * @memberof DagService
+   */
+  private setDAGNodeTooltip(node: cytoscape.NodeSingular): void {
+    let popper: any;
+    const name = node.data('name');
+    const tool = node.data('tool');
+    const type = node.data('type');
+    const docker = node.data('docker');
+    const run = node.data('run');
+    const runText = this.getTooltipText(name, tool, type, docker, run);
+    const update = () => {
+      // popper() doesn't exist on type cytoscape.NodeSingular because type definitions don't know about extensions
+      popper = (<any>node).popper({
+        content: () => {
+          return this.createPopupHTML(name, runText);
+        },
+        popper: {removeOnDestroy: true}
+      });
+      popper.scheduleUpdate();
+    };
+    const destroy = () => {
+      popper.destroy();
+    };
+    node.on('mouseover', update);
+    node.on('mouseout mousedown', destroy);
+  }
+
+  refreshDocument(cy: cytoscape.Core, element): cytoscape.Core {
     const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
     if (dagResult) {
-      cy = cytoscape({
+      const cytoscapeOptions: CytoscapeOptions = {
         container: element,
         boxSelectionEnabled: false,
         autounselectify: true,
@@ -199,37 +252,14 @@ export class DagService {
         },
         style: this.style,
         elements: dagResult
-      });
+      };
+      cytoscape.use(dagreExtension);
+      cytoscape.use(popperExtension);
+      cy = cytoscape(cytoscapeOptions);
 
-      cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-        const node = this;
-        const name = this.data('name');
-        const tool = this.data('tool');
-        const type = this.data('type');
-        const docker = this.data('docker');
-        const run = this.data('run');
-        const runText = self.getTooltipText(name, tool, type, docker, run);
-        const tooltip = node.qtip({
-          content: {
-            text: runText,
-            title: node.data('name')
-          },
-          show: {
-            solo: true
-          },
-          style: {
-            classes: 'qtip-bootstrap',
-          }
-        });
-        const api = tooltip.qtip('api');
-        api.toggle(true);
-      });
-
-      cy.on('mouseout mousedown', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-        const node = this;
-        const api = node.qtip('api');
-        api.destroy();
-      });
+      // Sets up popups on all nodes (except begin and end)
+      const nodes: cytoscape.NodeCollection = cy.nodes().filter(node => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
+      nodes.forEach((node: cytoscape.NodeSingular) => this.setDAGNodeTooltip(node));
 
       cy.on('mouseout', 'node', function () {
         const node = this;

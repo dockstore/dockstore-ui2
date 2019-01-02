@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, getTab, goToTab } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -33,7 +33,7 @@ describe('Dockstore my workflows', () => {
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('GitHub');
-      cy.contains('https://github.com/A/g');
+      cy.get('a#sourceRepository').contains('A/g').should('have.attr', 'href', 'https://github.com/A/g');
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
@@ -135,42 +135,18 @@ describe('Dockstore my workflows', () => {
 
   describe('Look at a published workflow', () => {
     it('Look at each tab', () => {
+      const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
-      cy.wait(3000);
-      cy
-        .get('.nav-link')
-        .contains('Info')
-        .parent()
-        .should('have.class', 'active')
-        .and('not.have.class', 'disabled');
-      cy
-        .get('.nav-link')
-        .contains('Launch')
-        .parent()
-        .should('not.have.class', 'disabled');
-      cy
-        .get('.nav-link')
-        .contains('Versions')
-        .parent()
-        .should('not.have.class', 'disabled');
-      cy
-        .get('.nav-link')
-        .contains('Files')
-        .parent()
-        .should('not.have.class', 'disabled');
-      cy
-        .get('.nav-link')
-        .contains('Tools')
-        .parent()
-        .should('not.have.class', 'disabled');
-      cy
-        .get('.nav-link')
-        .contains('DAG')
-        .parent()
-        .should('not.have.class', 'disabled');
-      cy
-        .get('table>tbody>tr')
-        .should('have.length', 3); // 2 Versions and warning line
+      getTab('Info').parent()
+      .should('have.class', 'mat-tab-label-active');
+      tabs.forEach(tab => {
+        goToTab(tab).parent().should('have.class', 'mat-tab-label-active');
+        if (tab === 'Versions') {
+          cy
+          .get('table>tbody>tr')
+          .should('have.length', 2); // 2 Versions and no warning line
+        }
+      });
 
       cy
         .get('#publishButton')

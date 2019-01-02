@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -44,11 +44,7 @@ describe('Dockstore my tools', () => {
   describe('Go to published tool A2/b3', () => {
     it('Should have two versions visible', () => {
       selectTool('b3');
-      cy
-        .get('.nav-link')
-        .contains('Versions')
-        .parent()
-        .click();
+      goToTab('Versions');
       cy
         .get('tbody>tr')
         .should('have.length', 2);
@@ -60,13 +56,12 @@ describe('Dockstore my tools', () => {
       cy.get('a#home-nav-button').click();
       cy.contains('Browse Tools');
       cy.get('a#my-tools-nav-button').click();
-      cy.contains('github.com');
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
       cy.contains('GitHub');
-      cy.contains('https://github.com/A2/b1');
+      cy.get('a#sourceRepository').contains('A2/b1').should('have.attr', 'href', 'https://github.com/A2/b1');
       cy.contains('Quay.io');
-      cy.contains('quay.io/A2/b1');
+      cy.get('a#imageRegistry').contains('A2/b1').should('have.attr', 'href', 'https://quay.io/repository/A2/b1');
       cy.contains('Last Build');
       cy.contains('Last Updated');
       cy.contains('Build Mode');

@@ -32,10 +32,10 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
-
   constructor(private usersService: UsersService, userQuery: UserQuery, private workflowService: WorkflowService,
     private alertService: AlertService, protected alertQuery: AlertQuery) {
       super(userQuery, alertQuery);
+      this.buttonText = 'Refresh Organization';
   }
 
   refreshOrganization(): void {

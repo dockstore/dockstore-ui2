@@ -186,9 +186,8 @@ table.hosted-tool-versions-grid {
 div.details-container {
   margin-bottom: 14px;
 }
-div.ds-tabs > div {
+div.ds-tabs {
   border: solid 1px #cfd1d7;
-  max-width: 870px;
 }
 
 ul.nav-tabs {
@@ -649,12 +648,6 @@ div.modal form {
   }
 }
 
-.center-image {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .private-lock {
   color: #487980;
 }
@@ -719,10 +712,6 @@ div.modal form {
 
 #support-footer-link {
   padding-left:55px;
-}
-
-.sponsor-row {
-   padding-bottom:30px;
 }
 
 .funding-img {

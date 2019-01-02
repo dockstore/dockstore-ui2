@@ -137,26 +137,26 @@
 </div>
 <div class="row m-1" *ngIf="!starGazersClicked">
   <div class="ds-tabs col-sm-12" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
-    <tabset id="tool_tabs" #entryTabs justified="true">
-      <tab id="infoTab" heading="Info" (select)="setEntryTab('info')">
+    <mat-tab-group dynamicHeight [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs (selectedTabChange)="selectedTabChange($event)">
+      <mat-tab id="infoTab" label="Info">
         <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry" [extendedDockstoreTool]="(extendedTool$ | async)" [validVersions]="validVersions"></app-info-tab>
-      </tab>
-      <tab id="launchTab" heading="Launch" (select)="setEntryTab('launch')">
+      </mat-tab>
+      <mat-tab id="launchTab" label="Launch">
         <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion" [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
-
         <ng-template #noTags>
           <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No tags exist for this tool.
           </div>
         </ng-template>
-      </tab>
-      <tab id="versionTab" heading="Versions" (select)="setEntryTab('versions')">
+      </mat-tab>
+      <mat-tab id="versionTab" label="Versions">
         <div *ngIf="validVersions">
           <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)" id="versionsTab" [verifiedSource]="(extendedTool$ | async)?.verifiedSources" [selectedVersion]="selectedVersion">
           </app-versions-container>
         </div>
-      </tab>
-      <tab heading="Files" (select)="setEntryTab('files')">
+      </mat-tab>
+      <mat-tab label="Files">
+        <ng-template matTabContent>
         <div *ngIf="validVersions">
           <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
@@ -167,8 +167,9 @@
             </app-tool-file-editor>
           </div>
         </div>
-      </tab>
-    </tabset>
+      </ng-template>
+      </mat-tab>
+    </mat-tab-group>
     <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
   </div>
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic">
