@@ -254,7 +254,11 @@ export class DagService {
         elements: dagResult
       };
       cytoscape.use(dagreExtension);
-      cytoscape.use(popperExtension);
+      // Check if extension is registered already. If it is, don't try to re-register.
+      // Typedef doesn't have 2 argument overload, using <any> to override.
+      if (typeof (<any>cytoscape)('core', 'popper') !== 'function') {
+        cytoscape.use(popperExtension);
+      }
       cy = cytoscape(cytoscapeOptions);
 
       // Sets up popups on all nodes (except begin and end)

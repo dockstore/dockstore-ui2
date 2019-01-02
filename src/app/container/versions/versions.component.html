@@ -24,42 +24,34 @@
             Version
           </label>
           <a *ngIf="!publicPage" href="http://docs.dockstore.org/faq/#what-is-a-default-version-of-a-tool-or-workflow"
-             target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a>
-          <span class="glyphicon pull-right" [ngClass]="getIconClass('name')" (click)="clickSortColumn('name')">
-          </span>
+             target="_blank"><mat-icon>info</mat-icon></a>
+            <fa-icon class="pull-right" [icon]="getIconClass('name')" (click)="clickSortColumn('name')"></fa-icon>
         </th>
         <th *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-        <span class="glyphicon pull-right"
-              [ngClass]="getIconClass('author')"
-              (click)="clickSortColumn('author')">
-        </span>
+          <fa-icon class="pull-right" [icon]="getIconClass('author')" (click)="clickSortColumn('author')"></fa-icon>
         <label placement="top" matTooltip="The editing author as collected by Dockstore">Author</label>
       </th>
         <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
           <label placement="top" matTooltip="Git branches/tags">
             Git Reference
           </label>
-          <span class="glyphicon pull-right" [ngClass]="getIconClass('reference')" (click)="clickSortColumn('reference')">
-          </span>
+          <fa-icon class="pull-right" [icon]="getIconClass('reference')" (click)="clickSortColumn('reference')"></fa-icon>
         </th>
         <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
           <label placement="top" matTooltip="Date of last build of the Docker image">Date Built</label>
-          <span class="glyphicon pull-right" [ngClass]="getIconClass('last_modified')" (click)="clickSortColumn('last_modified')">
-          </span>
+          <fa-icon class="pull-right" [icon]="getIconClass('last_modified')" (click)="clickSortColumn('last_modified')"></fa-icon>
         </th>
         <th>
           <label placement="top" matTooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
             Valid
           </label>
-          <span class="glyphicon pull-right" [ngClass]="getIconClass('valid')" (click)="clickSortColumn('valid')">
-          </span>
+          <fa-icon class="pull-right" [icon]="getIconClass('valid')" (click)="clickSortColumn('valid')"></fa-icon>
         </th>
         <th>
           <label placement="top" matTooltip="A version is verified if it has been verified to work by a person/group">
             Verified Platforms
           </label>
-          <span class="glyphicon pull-right" [ngClass]="getIconClass('verified')" (click)="clickSortColumn('verified')">
-          </span>
+          <fa-icon class="pull-right" [icon]="getIconClass('verified')" (click)="clickSortColumn('verified')"></fa-icon>
         </th>
         <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
         <!-- <th>
@@ -98,15 +90,15 @@
         </td>
         <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ getDateTimeString(version.last_modified) }}</td>
         <td>
-          <span class="glyphicon glyphicon-ok" *ngIf="version.valid"></span>
-          <span class="glyphicon glyphicon-remove" *ngIf="!version.valid"></span>
+          <mat-icon *ngIf="version.valid">check</mat-icon>
+          <mat-icon *ngIf="!version.valid">close</mat-icon>
         </td>
         <td>
-          <a href= {{verifiedLink}}>
-            <span class="glyphicon glyphicon-ok" *ngIf="version.verified" matTooltip="{{getVerifiedSource(version.name)}}"></span>
+          <a *ngIf="version.verified" href= {{verifiedLink}} matTooltip="{{getVerifiedSource(version.name)}}">
+              <mat-icon>check</mat-icon>
           </a>
           {{version?.sourceFiles | verifiedPlatforms }}
-          <span class="glyphicon glyphicon-remove" *ngIf="!version.verified"></span>
+          <mat-icon *ngIf="!version.verified">close</mat-icon>
         </td>
         <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
         <!-- <td>

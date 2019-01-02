@@ -13,9 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TooltipModule } from 'ngx-bootstrap';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
@@ -35,10 +40,6 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { MatSnackBarModule, MatTooltipModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
-import { TooltipModule } from 'ngx-bootstrap';
 
 
 @Component({
@@ -69,7 +70,7 @@ describe('VersionsWorkflowComponent', () => {
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule],
+      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule, MatIconModule, FontAwesomeModule],
       declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe, MockViewWorkflowComponent,
         MockVersionModalComponent ],
       providers: [DockstoreService,

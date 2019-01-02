@@ -13,27 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MatIconModule, MatProgressBarModule, MatTooltipModule } from '@angular/material';
 
-import { getTooltipConfig } from './../../shared/tooltip';
-import { DagComponent } from './dag.component';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
+import { DagComponent } from './dag.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    TooltipModule
+    MatIconModule,
+    MatProgressBarModule,
+    MatTooltipModule
   ],
   declarations: [DagComponent, CwlViewerComponent],
-  exports: [DagComponent],
-  providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
-  ]
+  exports: [DagComponent]
 })
 export class DagModule { }

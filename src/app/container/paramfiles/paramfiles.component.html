@@ -15,13 +15,13 @@
   -->
 <div *ngIf="!_selectedVersion">
   <alert type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;No versions exist for this tool.
   </alert>
 </div>
 <div *ngIf="_selectedVersion">
   <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;This version of the tool is invalid.
   </alert>
   <div *ngIf="content">
@@ -32,7 +32,7 @@
     </span>
   </div>
   <alert type="warning" *ngIf="!content">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
   </alert>
   <div [hidden]="!content || !_selectedVersion?.valid">

@@ -20,8 +20,7 @@
       <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
         &times;
       </button>
-      <span class="glyphicon glyphicon-warning-sign">
-      </span>
+      <mat-icon>warning</mat-icon>
     </div>
   </div>
 </div>
@@ -45,7 +44,7 @@
     <h3 id="workflow-path">
       <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
         <a href= {{getVerifiedLink()}} class="verified-check">
-          <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+          <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </span>
       {{ title }}<span *ngIf="workflow?.workflowVersions.length > 0">:<span class="ds-green">{{ selectedVersion?.name }}</span></span>
@@ -108,10 +107,10 @@
         </mat-chip-list>
       </mat-form-field>
       <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-        <span class="glyphicon glyphicon-remove"></span> Cancel
+        <mat-icon>cancel</mat-icon>Cancel
       </button>
       <button type="button"(click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-        <span class="glyphicon glyphicon-floppy-save"></span> Save
+        <mat-icon>save</mat-icon> Save
       </button>
     </span>
   </div>
@@ -126,7 +125,7 @@
         <app-launch *ngIf="workflow?.workflowVersions.length > 0; else noVersions" [selectedVersion]="selectedVersion" [basePath]="workflow?.path" [path]="workflow?.full_workflow_path" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner" [mode]="workflow?.mode"></app-launch>
         <ng-template #noVersions>
           <div class="alert alert-warning" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No versions exist for this workflow.
+            <mat-icon>warning</mat-icon> No versions exist for this workflow.
           </div>
         </ng-template>
       </mat-tab>
@@ -136,7 +135,7 @@
           </app-versions-workflow>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see versions, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see versions, please refresh the workflow.
         </div>
       </mat-tab>
       <mat-tab id="fileTab" label="Files">
@@ -150,7 +149,7 @@
           </app-workflow-file-editor>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see files, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see files, please refresh the workflow.
         </div>
       </ng-template>
       </mat-tab>
@@ -159,14 +158,14 @@
           <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-tool-tab>
         </div>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see tools, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see tools, please refresh the workflow.
         </div>
       </mat-tab>
       <mat-tab id="dagTab" label="DAG">
         <ng-template matTabContent>
             <app-dag [id]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-dag>
         <div *ngIf="isStub()" class="alert alert-warning" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> To see the DAG, please refresh the workflow.
+          <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
         </div>
       </ng-template>
       </mat-tab>
@@ -187,7 +186,7 @@
             <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
                 <a href= {{getVerifiedLink()}} class="verified-check">
-                  <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+                  <mat-icon matTooltip="Verified">done</mat-icon>
                 </a>
               </span>
               <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}} </a>
@@ -209,7 +208,7 @@
             <span *ngIf="(extendedWorkflow$ | async).provider">
               <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
                 {{(extendedWorkflow$ | async).provider}}
-                <span class="glyphicon glyphicon-new-window"></span>
+                <mat-icon>open_in_new</mat-icon>
               </a>
             </span>
           </p>

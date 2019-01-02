@@ -15,15 +15,15 @@
   -->
 <div>
   <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;This version of the workflow is invalid.
   </alert>
   <alert type="warning" *ngIf="!content && !(isNFL$ | async)">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp; A Test Parameter File associated with this workflow could not be found.
   </alert>
   <alert type="info" *ngIf="(isNFL$ | async)">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;
     Nextflow does not have the concept of a test parameter file.
   </alert>

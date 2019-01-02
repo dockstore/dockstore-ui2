@@ -82,7 +82,7 @@ export class ViewContainerComponent extends View implements OnInit {
   ngOnInit() {
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
-      this.tool = tool;
+      this.tool = JSON.parse(JSON.stringify(tool));
       if (this.tool) {
         this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
       } else {

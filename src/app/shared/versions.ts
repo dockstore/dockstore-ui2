@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 import { Input } from '@angular/core';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { EntryTab } from '../shared/entry/entry-tab';
-import { Tag } from './../shared/swagger/model/tag';
+import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
@@ -66,7 +67,7 @@ export abstract class Versions extends EntryTab {
       this.sortReverse = false;
     }
   }
-  getIconClass(columnName): string {
+  getIconClass(columnName): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
   convertSorting(): string {
