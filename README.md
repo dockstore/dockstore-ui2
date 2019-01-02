@@ -94,6 +94,7 @@ The Dockstore class in [src/app/shared/dockstore.model.ts](src/app/shared/dockst
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
 ## Pre-build/serve
+Run `export WEBSERVICE_VERSION=[dockstore release version number]`
 
 Run `npm run prebuild` before running or building the project. This command will:
 - generate a file which contains the UI tag version 
