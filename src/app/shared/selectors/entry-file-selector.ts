@@ -34,7 +34,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected currentDescriptor: ToolDescriptor.TypeEnum;
   protected descriptors: Array<any>;
-  public nullDescriptors: boolean;
+  public nullDescriptors = false;
   public filePath: string;
   public currentFile;
   public files: Array<ToolFile>;
@@ -83,15 +83,16 @@ export abstract class EntryFileSelector implements OnDestroy {
   reactToDescriptor() {
     this.getFiles(this.currentDescriptor).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
+          this.nullDescriptors = false;
           this.files = files;
-          if (this.files.length) {
+          if (!this.files) {
+            this.nullDescriptors = true;
+          } else if (this.files.length) {
             this.onFileChange(this.files[0]);
           } else {
             this.currentFile = null;
             this.content = null;
           }
-        },
-        () => {
         }
       );
   }
