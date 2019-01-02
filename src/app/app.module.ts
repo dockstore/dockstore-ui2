@@ -24,6 +24,7 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -96,7 +97,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,

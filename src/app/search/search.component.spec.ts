@@ -15,6 +15,7 @@
  */
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PopoverModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { of } from 'rxjs';
@@ -33,7 +34,6 @@ import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-search-results',

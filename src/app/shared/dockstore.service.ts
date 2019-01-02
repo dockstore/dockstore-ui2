@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { Tag, WorkflowVersion } from './swagger';
-import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+
 @Injectable()
 export class DockstoreService {
   constructor() {

@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material';
 
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
+import { WorkflowService } from '../shared/state/workflow.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import {
   ContainerStubService,
@@ -27,8 +29,6 @@ import {
 } from '../test/service-stubs';
 import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
-import { WorkflowService } from '../shared/state/workflow.service';
-import { MatIconModule } from '@angular/material';
 
 describe('StarringComponent', () => {
   let component: StarringComponent;

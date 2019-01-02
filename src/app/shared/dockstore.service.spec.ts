@@ -13,16 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
+import { faSort, faSortAlphaDown, faSortAlphaUp } from '@fortawesome/free-solid-svg-icons';
 
-import { Label } from './swagger/model/label';
-import { WorkflowsService } from './swagger/api/workflows.service';
-import { ContainersStubService, WorkflowsStubService } from '../test/service-stubs';
-import { ContainersService } from './swagger';
-import { WorkflowVersion } from './swagger/model/workflowVersion';
 import { DockstoreService } from './dockstore.service';
-
-import { TestBed, inject } from '@angular/core/testing';
-import { faSortAlphaDown, faSort, faSortAlphaUp } from '@fortawesome/free-solid-svg-icons';
+import { Label } from './swagger/model/label';
+import { WorkflowVersion } from './swagger/model/workflowVersion';
 
 describe('DockstoreService', () => {
     beforeEach(() => {

@@ -23,7 +23,7 @@ import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
+import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
 
 describe('Service: version-modal.service.ts', () => {

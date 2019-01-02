@@ -14,16 +14,16 @@
  *    limitations under the License.
  */
 import { Input } from '@angular/core';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 
 import { DockstoreService } from '../shared/dockstore.service';
 import { EntryTab } from '../shared/entry/entry-tab';
-import { Tag } from './../shared/swagger/model/tag';
+import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
 import { Tooltip } from './tooltip';
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 export abstract class Versions extends EntryTab {
 

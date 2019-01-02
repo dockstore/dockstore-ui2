@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -40,7 +41,6 @@ import { SearchToolTableComponent } from './search-tool-table/search-tool-table.
 import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [

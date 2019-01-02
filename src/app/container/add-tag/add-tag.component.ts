@@ -18,6 +18,7 @@ import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
@@ -27,7 +28,6 @@ import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-add-tag',

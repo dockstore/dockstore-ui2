@@ -18,7 +18,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule, MatProgressBarModule, MatTooltipModule } from '@angular/material';
 
-import { getTooltipConfig } from './../../shared/tooltip';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 
