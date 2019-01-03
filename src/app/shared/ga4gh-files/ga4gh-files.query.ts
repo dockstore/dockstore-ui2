@@ -15,8 +15,8 @@
  */
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import {Observable, of, of as observableOf} from 'rxjs';
-import {map, mergeMap, switchMap} from 'rxjs/operators';
+import { Observable, of as observableOf } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
 import { ToolDescriptor, ToolFile } from '../swagger';
@@ -38,7 +38,7 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
       let toolFiles$: Observable<Array<ToolFile>>;
       toolFiles$ = this.selectError().pipe(switchMap(
         error => {
-          return error != null ? of(null) : this.selectEntity(descriptorType).pipe(
+          return error != null ? observableOf(null) : this.selectEntity(descriptorType).pipe(
             map((gA4GHFile: GA4GHFiles) => (gA4GHFile ? gA4GHFile.toolFiles : [])));
         }
       ));
