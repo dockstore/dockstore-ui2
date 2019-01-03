@@ -785,3 +785,6 @@ mat-panel-title.org-accordion-header {
 .spacer {
   flex: 1 1 auto;
 }
+.mat-drawer-inner-container {
+  overflow: visible !important;
+}
