@@ -48,7 +48,7 @@
             placeholder="e.g. /test.json" disabled ng-class="!isPublic ? 'test_parameter_input' : ''" readonly [tooltip]="tooltip.testParameterFile" />
           <span class="input-group-btn">
             <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
-              <span class="glyphicon glyphicon-remove"></span>
+              <mat-icon>clear</mat-icon>
             </button>
           </span>
         </div>
@@ -61,11 +61,11 @@
           <span class="input-group-btn">
             <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
               (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
-              <span class="glyphicon glyphicon-plus"></span>
+              <mat-icon>add</mat-icon>
             </button>
             <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
               *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
-              <span class="glyphicon glyphicon-plus"></span>
+              <mat-icon>add</mat-icon>
             </button>
           </span>
         </div>

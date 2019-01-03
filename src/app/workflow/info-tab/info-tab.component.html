@@ -58,11 +58,12 @@
           <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group push-right" role="group"
             aria-label="Basic example">
             <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-              <span class="glyphicon glyphicon-remove"></span> Cancel
+              <mat-icon>cancel</mat-icon> Cancel
             </button>
             <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (isRefreshing$ | async)"
               class="btn btn-link" (click)="toggleEditWorkflowPath()">
-              <span class="glyphicon" [ngClass]="{'glyphicon-edit': !workflowPathEditing, 'glyphicon-save': workflowPathEditing }"></span>
+              <mat-icon *ngIf="workflowPathEditing">save</mat-icon>
+              <mat-icon *ngIf="!workflowPathEditing">edit</mat-icon>
               {{ workflowPathEditing ? 'Save' : 'Edit' }}
             </button>
           </div>
@@ -78,7 +79,8 @@
           <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
             <button *ngIf="!isPublic" type="button" [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)"
               class="btn btn-link push-right" (click)="toggleEditDefaultTestFilePath()">
-              <span class="glyphicon" [ngClass]="{'glyphicon-edit': !defaultTestFilePathEditing, 'glyphicon-save': defaultTestFilePathEditing }"></span>
+              <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
+              <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
               {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
             </button>
           </span>
@@ -99,7 +101,7 @@
       <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
       <button class="btn btn-link push-right" type="button" *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published"
         (click)="restubWorkflow()" [disabled]="(isRefreshing$ | async)">
-        <span class="glyphicon glyphicon-remove"></span> Restub
+        <mat-icon>clear</mat-icon> Restub
       </button>
     </li>
     <li>
@@ -130,7 +132,7 @@
         <ngx-md [data]="workflow?.description"></ngx-md>
       </div>
       <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
-        <span class="glyphicon glyphicon-warning-sign"></span>
+        <mat-icon>warning</mat-icon>
         <span ng-show="!containerObj.description">
           No description associated with this workflow. See
           <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">

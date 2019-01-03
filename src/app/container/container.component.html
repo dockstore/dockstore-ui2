@@ -19,17 +19,15 @@
       <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
         &times;
       </button>
-      <span class="glyphicon glyphicon-warning-sign">
-      </span>
-      {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: '}}
-      {{missingContent}}
+      <mat-icon>warning</mat-icon>
+      {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: '}} {{missingContent}}
     </div>
   </div>
 </div>
 
 <div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.tags?.length === 0">
   <div class="alert alert-info" role="alert">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     Your manually added tool does not have any tags. Go to the versions tab to add one.
   </div>
 </div>
@@ -39,8 +37,8 @@
   <div class="col-md-7">
     <h3 id="tool-path">
       <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
-        <a href={{getVerifiedLink()}} class="verified-check">
-          <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+        <a href= {{getVerifiedLink()}} class="verified-check">
+          <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </span>
       <span *ngIf="tool?.private_access" class="private-lock" matTooltip="Private">
@@ -60,12 +58,6 @@
     <p class="update">
       Last build: {{ (extendedTool$ | async)?.agoMessage || 'n/a' }}
     </p>
-    <div *ngIf="starGazersClicked">
-      <app-stargazers></app-stargazers>
-      <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked=false">
-        <mat-icon>chevron_left</mat-icon>Back to details
-      </button>
-    </div>
   </div>
   <div class="col-md-5">
     <app-starring [tool]="tool" class="pull-right starring-button" *ngIf="isToolPublic && tool" (change)="starGazersChange()"></app-starring>
@@ -127,15 +119,22 @@
             [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addToLabels($event)" />
         </mat-chip-list>
       </mat-form-field>
-      <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
-        <span class="glyphicon glyphicon-remove"></span> Cancel
+      <button type="button"(click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+         <mat-icon>clear</mat-icon>Cancel
       </button>
-      <button type="button" (click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
-        <span class="glyphicon glyphicon-floppy-save"></span>Save
+      <button type="button"(click)="submitContainerEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
+        <mat-icon>save</mat-icon>Save
       </button>
     </span>
   </div>
 </div>
+<div class="row ml-4 mr-4" *ngIf="starGazersClicked">
+  <app-stargazers></app-stargazers>
+  <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked=false">
+    <mat-icon>chevron_left</mat-icon>Back to details
+  </button>
+</div>
+
 <div class="row m-1" *ngIf="!starGazersClicked">
   <div class="col-sm-12 p-0" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <div class="ds-tabs" [ngClass]="{'mr-3': isToolPublic}">
@@ -150,7 +149,7 @@
             [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
           <ng-template #noTags>
             <div class="alert alert-warning" role="alert">
-              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No tags exist for this
+              <mat-icon>warning</mat-icon> No tags exist for this
               tool.
             </div>
           </ng-template>
@@ -194,8 +193,8 @@
           <span *ngFor="let sortedVersion of sortedVersions">
             <p class="top-down-padding m-0">
               <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                <a href={{getVerifiedLink()}} class="verified-check">
-                  <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+                <a href= {{getVerifiedLink()}} class="verified-check">
+                  <mat-icon matTooltip="Verified">done</mat-icon>
                 </a>
               </span>
               <a (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion?.name}} </a>
@@ -215,9 +214,9 @@
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{dockerPullCmd}}" readonly>
           <span class="input-group-btn">
-            <button class="btn btn-default" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button"
-              ngxClipboard [cbContent]="dockerPullCmd" (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
-              <span class="glyphicon glyphicon-copy"></span>
+            <button class="btn btn-default form-sm-button-material" [ngClass]="{'btn-copy':toolCopyBtn === 'docker_pull_command'}" type="button" ngxClipboard [cbContent]="dockerPullCmd"
+              (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')">
+              <mat-icon>file_copy</mat-icon>
             </button>
           </span>
         </div>
@@ -234,7 +233,7 @@
             <span *ngIf="(extendedTool$ | async).provider">
               <a [href]="(extendedTool$ | async).providerUrl" target="_blank">
                 {{(extendedTool$ | async).provider}}
-                <span class="glyphicon glyphicon-new-window"></span>
+                <mat-icon>open_in_new</mat-icon>
               </a>
             </span>
           </p>
@@ -246,7 +245,7 @@
               <a *ngIf="(extendedTool$ | async).imgProviderUrl !== null" [href]="(extendedTool$ | async).imgProviderUrl"
                 target="_blank">
                 {{(extendedTool$ | async)?.imgProvider}}
-                <span class="glyphicon glyphicon-new-window"></span>
+                <mat-icon>open_in_new</mat-icon>
               </a>
               <span *ngIf="(extendedTool$ | async).imgProviderUrl === null">{{(extendedTool$ | async)?.imgProvider}}</span>
             </span>

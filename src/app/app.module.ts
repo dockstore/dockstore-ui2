@@ -24,6 +24,7 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -58,12 +59,12 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
-import { TokensComponent } from './loginComponents/tokens/tokens.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
+import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
@@ -96,8 +97,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { AlertModule } from 'ngx-bootstrap';
-import { RefreshAlertModule } from './shared/alert/alert.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -130,7 +129,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     AuthComponent,
     GetTokenUsernamePipe,
     GetTokenContentPipe,
-    TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
@@ -141,6 +139,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
 ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
+    FontAwesomeModule,
     BrowserAnimationsModule,
     FormsModule,
     Ng2UiAuthModule.forRoot(AuthConfig),
