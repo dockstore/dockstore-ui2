@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {WorkflowVersion} from '../../../shared/swagger/model/workflowVersion';
 import {ExtendedWorkflow} from '../../../shared/models/ExtendedWorkflow';
 import * as pipeline from 'pipeline-builder';
@@ -29,6 +29,10 @@ import {ga4ghWorkflowIdPrefix} from "../../../shared/constants";
 @Component({
   selector: 'app-wdl-viewer',
   templateUrl: './wdl-viewer.html',
+  styleUrls: [
+    './wdl-viewer.component.scss'
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class WdlViewerComponent implements OnInit, AfterViewInit {
   private files: Array<ToolFile>;
@@ -63,28 +67,39 @@ export class WdlViewerComponent implements OnInit, AfterViewInit {
       .subscribe(files => {
         this.files = files;
 
-
-        this.primaryFile = this.files.filter(file => file.file_type === "PRIMARY_DESCRIPTOR")[0];
-
-        if (this.primaryFile != undefined) {
-          this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.workflow.descriptorType, ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path,
-            this.selectedVersion.name, this.primaryFile.path).subscribe((file: FileWrapper) => {
-
-            const diagram = new pipeline.Visualizer(document.getElementById('diagram'));
-            console.log(document.getElementById('diagram'));
-            // diagram.attachTo(createFlow());
-
-            pipeline.parse(file.content).then((res) => {
-              let flow1 = res.model[0];
-              diagram.attachTo(flow1);
-            }).catch((message) => {
-              throw new Error(message);
-            });
-
-            console.log(this.workflow);
-
-          });
+        if (this.files.length > 1) {
+          console.log('Multi-file wdl');
+        } else {
+          this.createSingleFileVisualization(this.files);
         }
+      })
+  }
+
+  /**
+   * Creates EPAM pipeline builder visualization for wdl files without imports
+   * @param files
+   */
+  createSingleFileVisualization(files: any[]): void {
+
+    this.primaryFile = files.filter(file => file.file_type === "PRIMARY_DESCRIPTOR")[0];
+
+    if (this.primaryFile) {
+      // Retrieve content of primary file
+      this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.workflow.descriptorType, ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path,
+        this.selectedVersion.name, this.primaryFile.path).subscribe((file: FileWrapper) => {
+
+        const diagram = new pipeline.Visualizer(document.getElementById('diagram'));
+
+        pipeline.parse(file.content).then((res) => {
+          let flow = res.model[0];
+          diagram.attachTo(flow);
+        }).catch((message) => {
+          throw new Error(message);
+        });
+
+        // console.log(this.workflow);
+
       });
+    }
   }
 }
