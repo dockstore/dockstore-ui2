@@ -13,23 +13,23 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="!_selectedVersion">
+<div *ngIf="!_selectedVersion" class="p-3">
   <alert type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;No versions exist for this tool.
   </alert>
 </div>
-<div *ngIf="_selectedVersion">
-    <span *ngIf="!publicPage">
-      <alert *ngIf="validationMessage !== null">
-        <span class="glyphicon glyphicon-warning-sign"></span>
-        &nbsp;{{validationMessage}}
-      </alert>
-    </span>
-    <alert type="warning" *ngIf="!content">
+<div *ngIf="_selectedVersion" class="p-3">
+  <alert *ngIf="!_selectedVersion?.valid" type="warning">
+    <mat-icon>warning</mat-icon>
+    &nbsp;This version of the tool is invalid.
+  </alert>
+  <span *ngIf="!publicPage">
+    <alert *ngIf="validationMessage !== null">
       <span class="glyphicon glyphicon-warning-sign"></span>
-      &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
+      &nbsp;{{validationMessage}}
     </alert>
+  </span>
   <div *ngIf="content">
     <span class="row m-0">
       <span class="col-sm-4">
@@ -38,7 +38,11 @@
       </span>
     </span>
   </div>
-  <div [hidden]="!content">
+  <alert type="warning" *ngIf="!content">
+    <mat-icon>warning</mat-icon>
+    &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
+  </alert>
+  <div [hidden]="!content || !_selectedVersion?.valid">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
         <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>

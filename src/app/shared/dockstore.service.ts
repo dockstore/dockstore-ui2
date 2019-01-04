@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { Tag, WorkflowVersion } from './swagger';
 
@@ -114,12 +115,12 @@ export class DockstoreService {
     return null;
   }
 
-  getIconClass(columnName: string, sortColumn: string, sortReverse: boolean) {
+  getIconClass(columnName: string, sortColumn: string, sortReverse: boolean): IconDefinition {
     if (sortColumn === columnName) {
-      return !sortReverse ? 'glyphicon-sort-by-alphabet' :
-        'glyphicon-sort-by-alphabet-alt';
+      return !sortReverse ? faSortAlphaDown :
+        faSortAlphaUp;
     } else {
-      return 'glyphicon-sort';
+      return faSort;
     }
   }
 

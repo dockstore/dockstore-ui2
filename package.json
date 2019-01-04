@@ -36,6 +36,7 @@
     "@fortawesome/angular-fontawesome": "^0.2.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.6",
     "@fortawesome/free-brands-svg-icons": "^5.4.1",
+    "@fortawesome/free-solid-svg-icons": "^5.6.3",
     "@ngx-lite/json-ld": "^0.4.2",
     "@ngx-share/button": "^6.0.1",
     "@ngx-share/buttons": "^6.0.1",

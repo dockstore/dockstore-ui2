@@ -22,7 +22,7 @@ describe('Tool and Workflow starring', () => {
   function beUnstarred() {
     cy
       .get('#starringButtonIcon')
-      .should('have.class', 'glyphicon-star-empty');
+      .should('be.visible');
     cy
       .get('#starCountButton')
       .should('contain', '0');
@@ -30,8 +30,8 @@ describe('Tool and Workflow starring', () => {
 
   function beStarred() {
     cy
-      .get('#starringButtonIcon')
-      .should('have.class', 'glyphicon-star');
+      .get('#unstarringButtonIcon')
+      .should('be.visible');
     cy
       .get('#starCountButton')
       .should('contain', '1');

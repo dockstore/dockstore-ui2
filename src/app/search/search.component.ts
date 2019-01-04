@@ -28,6 +28,7 @@ import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
+import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search',
@@ -35,6 +36,11 @@ import { SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  faSort = faSort;
+  faSortAlphaDown = faSortAlphaDown;
+  faSortAlphaUp = faSortAlphaUp;
+  faSortNumericDown = faSortNumericDown;
+  faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
