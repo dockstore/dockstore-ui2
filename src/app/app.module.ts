@@ -79,7 +79,6 @@ import { LogoutService } from './shared/logout.service';
 import { HeaderModule } from './shared/modules/header.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { ListOrganisationsModule } from './shared/modules/list-organisations.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
@@ -148,7 +147,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    ListOrganisationsModule,
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),

@@ -75,7 +75,7 @@
     "@datorama/akita-ngdevtools": "^1.0.2",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
-    "akita-schematics": "^1.0.2",
+    "akita-schematics": "^2.0.1",
     "codelyzer": "^4.2.1",
     "cypress": "^3.1.1",
     "jasmine-core": "~2.99.1",

@@ -16,15 +16,13 @@
 
 import { RouterModule, Routes } from '@angular/router';
 
-import { OrganisationsComponent } from './organisations.component';
-import { SearchOrganisationsComponent } from './search/search.component';
+import { OrganizationComponent } from './organization/organization.component';
+import { OrganizationsComponent } from './organizations/organizations.component';
 
-const ORGANISATIONS_ROUTES: Routes = [
-  {
-    path: '', component: OrganisationsComponent, children: [
-      { path: '', component: SearchOrganisationsComponent }
-    ]
-  }
+const ORGANIZATIONS_ROUTES: Routes = [
+  { path: '', component: OrganizationsComponent },
+  { path: ':id', component: OrganizationComponent },
+  { path: '**', redirectTo: '' }
 ];
 
-export const organisationsRouting = RouterModule.forChild(ORGANISATIONS_ROUTES);
+export const OrganizationsRouting = RouterModule.forChild(ORGANIZATIONS_ROUTES);
