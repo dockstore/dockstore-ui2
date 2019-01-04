@@ -13,8 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable } from 'rxjs';
 
@@ -49,8 +50,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('youtube') youtube: ElementRef;
 
-  constructor(private dialog: MatDialog, private renderer: Renderer2, private twitterService: TwitterService,
-    private userQuery: UserQuery) {
+  constructor(private dialog: MatDialog, private twitterService: TwitterService,
+    private userQuery: UserQuery, private router: Router) {
   }
 
   ngOnInit() {
@@ -61,7 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   goToSearch(searchValue: string) {
-    window.location.href = '/search?search=' + searchValue;
+    this.router.navigate(['/search'], {queryParams: {is_checker: 0, search: searchValue}});
   }
 
   onSelect(data: TabDirective): void {

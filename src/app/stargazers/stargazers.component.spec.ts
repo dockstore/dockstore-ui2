@@ -20,6 +20,7 @@ import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
 import { StarEntryStubService, StarringStubService, UserStubService } from '../test/service-stubs';
 import { StargazersComponent } from './stargazers.component';
+import { MatIconModule } from '@angular/material';
 
 describe('StargazersComponent', () => {
   let component: StargazersComponent;
@@ -28,6 +29,7 @@ describe('StargazersComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StargazersComponent],
+      imports: [MatIconModule],
       providers: [
         { provide: UserService, useClass: UserStubService},
         { provide: StarringService, useClass: StarringStubService },

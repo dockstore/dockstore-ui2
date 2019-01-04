@@ -6,14 +6,14 @@
     <span *ngIf="!(checkerId$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
       <a [routerLink]="(checkerWorkflowURL$ | async)" id=viewCheckerWorkflowButton *ngIf="(checkerId$ | async) && !(isRefreshing$ | async)" type="button" class="btn btn-link">
-        <span class="glyphicon glyphicon-eye-open"></span> View
+        <mat-icon>visibility</mat-icon> View
       </a>
       <span *ngIf="!(isPublic$ | async)">
         <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton *ngIf="(canAdd$ | async) && canWrite" type="button" class="btn btn-link" (click)="add()">
-          <span class="glyphicon glyphicon-plus"></span> Add
+          <mat-icon>add</mat-icon> Add
         </button>
         <!-- <button *ngIf="checkerWorkflowPath" type="button" class="btn btn-link" (click)="delete()">
-          <span class="glyphicon glyphicon-remove"></span> Delete
+          <mat-icon>clear</mat-icon> Delete
         </button> -->
       </span>
     </div>
@@ -28,7 +28,7 @@
       <span>
         <div class="btn-group" role="group">
           <button id=viewParentEntryButton type="button" class="btn btn-link" (click)="viewParentEntry()">
-            <span class="glyphicon glyphicon-eye-open"></span> View
+            <mat-icon>visibility</mat-icon> View
           </button>
         </div>
       </span>

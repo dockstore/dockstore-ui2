@@ -1,15 +1,15 @@
 <div [ngClass]="{'fullscreen-element large-dag': expanded}" class="cwl-viewer" >
   <div *ngIf="cwlViewerError" class="alert alert-warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+    <mat-icon>warning</mat-icon>&nbsp;
     <div>The Common Workflow Language Viewer was unable to process the CWL. <span *ngIf="errorMessage">It returned the following error:</span></div>
     <div>{{errorMessage}}</div>
   </div>
   <div>
-    <span *ngIf="!cwlViewerError">See on <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <span class="glyphicon glyphicon-new-window"></span></a></span>
+    <span *ngIf="!cwlViewerError">See on <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a></span>
   </div>
   <div class="mini-dag image" [ngClass]="{'fullscreen-element large-dag': expanded}">
     <div *ngIf="loading" class="text-center viewer-loading">
-      <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ></span>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <img [hidden]="!cwlViewerDescriptor" [style.width.%]="cwlViewerPercentageZoom" [style.height.%]="cwlViewerPercentageZoom" [src]="cwlViewerDescriptor?.svgUrl" (wheel)="onWheel($event)">
   </div>

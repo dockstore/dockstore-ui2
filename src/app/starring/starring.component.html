@@ -18,12 +18,11 @@
   <button id="starringButton" type="button" (click)="setStarring()"
           [disabled]="!isLoggedIn || disable" class="btn btn-default"
           [ngClass]="(rate)?'btn btn-default active':'btn btn-default'">
-    <span id="starringButtonIcon"
-          [ngClass]="(rate)?'glyphicon glyphicon-star':'glyphicon glyphicon-star-empty'"
-    ></span>
+          <mat-icon id="unstarringButtonIcon" *ngIf="rate">star</mat-icon>
+          <mat-icon id="starringButtonIcon" *ngIf="!rate">star_border</mat-icon>
   </button>
   <button id="starCountButton"
-          (click)="getStargazers()"
+          (click)="getStargazers()" style="height:38px"
           class="btn btn-default">{{total_stars}}
   </button>
 </div>

@@ -13,15 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatIconModule } from '@angular/material';
+
+import { StarentryService } from '../shared/starentry.service';
 import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
-import { StarentryService } from '../shared/starentry.service';
+
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MatIconModule
   ],
   declarations: [
     StarringComponent

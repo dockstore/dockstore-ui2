@@ -31,7 +31,7 @@
       <mat-cell *matCellDef="let workflow: Workflow">
         <span id="verifiedIcon" *ngIf="getVerified(workflow)">
           <a href= {{verifiedLink}}>
-            <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+            <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
         <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
