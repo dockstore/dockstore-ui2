@@ -23,6 +23,7 @@ import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
 import { StarringService } from './starring.service';
+import { AlertService } from '../shared/alert/state/alert.service'
 
 @Component({
   selector: 'app-starring',
@@ -46,7 +47,8 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
     private userQuery: UserQuery,
     private containerService: ContainerService,
     private starringService: StarringService,
-    private starentryService: StarentryService) { }
+    private starentryService: StarentryService,
+    private alertService: AlertService) { }
 
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
