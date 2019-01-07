@@ -30,30 +30,29 @@ import { OrganizationsService } from '../state/organizations.service';
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss']
 })
-export class OrganizationsComponent extends Base implements OnInit  {
-  public organizations$: Observable<Array<Organisation>>;
+export class OrganizationsComponent extends Base implements OnInit {
+  public filteredOrganizations$: Observable<Array<Organisation>>;
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
 
   constructor(private organizationsService: OrganizationsService, private organizationsQuery: OrganizationsQuery,
     private formBuilder: FormBuilder, private alertQuery: AlertQuery) {
-      super();
-    }
+    super();
+  }
 
   ngOnInit() {
-    this.organizationSearchForm = this.formBuilder.group({name: ''});
+    this.organizationSearchForm = this.formBuilder.group({ name: '' });
     this.loading$ = this.alertQuery.showInfo$;
     // The real loading$ is currently not being used because the alertQuery global loading is used instead
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsService.updateOrganizations();
-    this.organizations$ = this.organizationsQuery.filteredOrganizations;
+    this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
     this.organizationSearchForm.get('name').valueChanges.pipe(
       debounceTime(formInputDebounceTime),
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)
-    )
-      .subscribe((searchName: string) => {
-        this.organizationsService.updateOrganizationSearchName(searchName);
-      });
+    ).subscribe((searchName: string) => {
+      this.organizationsService.updateOrganizationSearchName(searchName);
+    });
   }
 }

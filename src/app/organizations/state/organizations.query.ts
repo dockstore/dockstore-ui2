@@ -10,7 +10,7 @@ import { OrganizationsState, OrganizationsStore } from './organizations.store';
 export class OrganizationsQuery extends Query<OrganizationsState> {
   organizations$: Observable<Array<Organisation>> = this.select(state => state.organizations);
   searchName$: Observable<string> = this.select(state => state.searchName);
-  filteredOrganizations = combineLatest(this.organizations$, this.searchName$).pipe(
+  filteredOrganizations$: Observable<Array<Organisation>> = combineLatest(this.organizations$, this.searchName$).pipe(
     map(([organizations, searchName]: [Array<Organisation>, string]) => {
       return this.filterOrganizations(organizations, searchName);
     }));
