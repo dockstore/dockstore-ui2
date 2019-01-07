@@ -152,6 +152,11 @@ export abstract class EntryFileSelector implements OnDestroy {
     }
   }
 
+  /**
+   * Retrieve the correct validation messages
+   * @param isDescriptor Yes if looking at descriptor, false otherwise (test params)
+   * @param version The version of interest
+   */
   checkIfValid(isDescriptor: boolean, version: any): void {
     let fileEnum = null;
     if (this.currentDescriptor === ToolDescriptor.TypeEnum.CWL) {
