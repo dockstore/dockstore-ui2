@@ -55,4 +55,18 @@ describe('RegisterOrganizationService', () => {
     // Upon error, the dialog would not close
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });
+
+  it('should have the correct URL regex', () => {
+    const regexp = new RegExp(registerOrganizationService.urlRegex);
+    expect(regexp.test('https://www.google.ca')).toBeTruthy();
+    expect(regexp.test('http://www.google.ca')).toBeTruthy();
+    expect(regexp.test('https://google.ca')).toBeTruthy();
+    expect(regexp.test('http://google.ca')).toBeTruthy();
+    expect(regexp.test('http://google.com')).toBeTruthy();
+    expect(regexp.test('http://google.ca/potato')).toBeTruthy();
+    expect(regexp.test('http://numb3r5.ca')).toBeTruthy();
+    expect(regexp.test('httpz://google.ca')).toBeFalsy();
+    expect(regexp.test('httpsz://google.ca')).toBeFalsy();
+    expect(regexp.test('https://google.tooLongTLD')).toBeFalsy();
+  });
 });

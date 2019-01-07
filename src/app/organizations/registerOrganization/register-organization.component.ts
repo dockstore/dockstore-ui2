@@ -49,7 +49,7 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
     this.registerOrganizationForm = this.builder.group({
       name: [null, [Validators.required, Validators.maxLength(39), Validators.minLength(3)]],
       description: [null, Validators.required],
-      link: [null],
+      link: [null, Validators.pattern(this.registerOrganizationService.urlRegex)],
       location: [null],
       contactEmail: [null, [Validators.required, Validators.email]],
     });

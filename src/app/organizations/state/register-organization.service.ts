@@ -9,6 +9,8 @@ import { FormsState } from '../registerOrganization/register-organization.compon
 @Injectable({ providedIn: 'root' })
 export class RegisterOrganizationService {
 
+  readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+
   constructor(private organisationsService: OrganisationsService, private alertService: AlertService, private matDialog: MatDialog) {
   }
 

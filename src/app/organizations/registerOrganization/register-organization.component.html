@@ -30,6 +30,7 @@
     </mat-form-field>
     <mat-form-field>
       <input type="text" matInput formControlName="link" placeholder="Link to Organization Website">
+      <mat-error *ngIf="link.hasError('pattern')">Link must be a valid URL and start with http:// or https://</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input type="text" matInput formControlName="location" placeholder="Location">
