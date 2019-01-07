@@ -17,6 +17,7 @@ import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChil
 import { filterNil } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 
 import { Dockstore } from '../../shared/dockstore.model';
