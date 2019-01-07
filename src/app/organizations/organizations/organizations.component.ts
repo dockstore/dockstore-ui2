@@ -55,4 +55,13 @@ export class OrganizationsComponent extends Base implements OnInit {
       this.organizationsService.updateOrganizationSearchName(searchName);
     });
   }
+
+  /**
+   * Opens the dialog to create organization
+   *
+   * @memberof OrganizationsComponent
+   */
+  createOrganization(): void {
+    console.log('Placeholder until createOrganizationDialog is hooked up');
+  }
 }

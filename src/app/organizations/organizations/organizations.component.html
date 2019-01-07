@@ -18,6 +18,7 @@
   Available Organizations
 </app-header>
 <div *ngIf="!(loading$ | async)" class="container">
+  <button class="pull-right" color="primary" mat-raised-button (click)="createOrganization()">CREATE ORGANIZATION</button>
   <div *ngIf="(filteredOrganizations$ | async) as organizations ; else noOrganizationsFound">
     <form [formGroup]="organizationSearchForm">
       <mat-form-field>
