@@ -17,33 +17,36 @@
   <img src="../assets/images/dockstore/dockstore-workflows-green.png">
   Available Organizations
 </app-header>
-<div class="container">
-  <div class="row">
-    <div>
-      <mat-card *ngFor="let org of organizations$ | async" class="my-2">
-        <mat-card-header>
-          <mat-card-title>
-            <a [routerLink]="org.name">{{org.name}}</a>
-          </mat-card-title>
-          <mat-card-subtitle>{{ org.description }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div fxLayout="row" fxLayoutGap="10px">
-            <span *ngIf="org?.email">
-              <mat-icon>email</mat-icon>
-              <a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a>
-            </span>
-            <span *ngIf="org?.link">
-              <mat-icon>link</mat-icon>
-              <a [href]="org.link" target="_blank">{{ org.link }}</a>
-            </span>
-            <span *ngIf="org?.location">
-              <mat-icon>location_on</mat-icon>
-              <span>{{ org.location }}</span>
-            </span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+<div *ngIf="!(loading$ | async)" class="container">
+  <form [formGroup]="organizationSearchForm">
+  <mat-form-field>
+      <input matInput placeholder="Search organizations" formControlName="name">
+  </mat-form-field>
+</form>
+  <div fxLayoutAlign="start stretch" fxFlexFill fxLayout="row wrap" fxLayoutGap="10px">
+    <mat-card fxFlex *ngFor="let org of organizations$ | async" class="my-2">
+      <mat-card-header>
+        <mat-card-title>
+          <a [routerLink]="org.name">{{org.name}}</a>
+        </mat-card-title>
+        <mat-card-subtitle>{{ org.description }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <span *ngIf="org?.email">
+            <mat-icon>email</mat-icon>
+            <a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a>
+          </span>
+          <span *ngIf="org?.link">
+            <mat-icon>link</mat-icon>
+            <a [href]="org.link" target="_blank">{{ org.link }}</a>
+          </span>
+          <span *ngIf="org?.location">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ org.location }}</span>
+          </span>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { OrganizationsStore } from './organizations.store';
+import { OrganizationsStore, OrganizationsState } from './organizations.store';
 import { OrganisationsService, Organisation } from '../../shared/swagger';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { finalize } from 'rxjs/operators';
@@ -21,8 +21,19 @@ export class OrganizationsService {
         this.updateOrganizationState(organizations);
         this.alertService.simpleSuccess();
       }, () => {
+        this.updateOrganizationState(null);
+        this.organizationsStore.setError(true);
         this.alertService.simpleError();
       });
+  }
+
+  updateOrganizationSearchName(searchName: string) {
+    this.organizationsStore.setState((state: OrganizationsState) => {
+      return {
+        ...state,
+        searchName: searchName
+      };
+    });
   }
 
   updateOrganizationState(organizations: Array<Organisation>) {

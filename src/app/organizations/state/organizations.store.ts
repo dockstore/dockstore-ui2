@@ -4,11 +4,13 @@ import { Organisation } from '../../shared/swagger';
 
 export interface OrganizationsState {
    organizations: Array<Organisation>;
+   searchName: string;
 }
 
 export function createInitialState(): OrganizationsState {
   return {
-    organizations: null
+    organizations: null,
+    searchName: ''
   };
 }
 

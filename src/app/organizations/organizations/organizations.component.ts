@@ -14,8 +14,13 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { Base } from '../../shared/base';
+import { formInputDebounceTime } from '../../shared/constants';
 import { Organisation } from '../../shared/swagger';
 import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsService } from '../state/organizations.service';
@@ -25,16 +30,30 @@ import { OrganizationsService } from '../state/organizations.service';
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss']
 })
-export class OrganizationsComponent implements OnInit  {
+export class OrganizationsComponent extends Base implements OnInit  {
   public organizations$: Observable<Array<Organisation>>;
-  // loading$ is currently not being used because the alertService loading is used instead
-  // public loading$: Observable<boolean>;
-  constructor(private organizationsService: OrganizationsService, private organizationsQuery: OrganizationsQuery) { }
+  public organizationSearchForm: FormGroup;
+  public loading$: Observable<boolean>;
 
+  constructor(private organizationsService: OrganizationsService, private organizationsQuery: OrganizationsQuery,
+    private formBuilder: FormBuilder, private alertQuery: AlertQuery) {
+      super();
+    }
 
   ngOnInit() {
+    this.organizationSearchForm = this.formBuilder.group({name: ''});
+    this.loading$ = this.alertQuery.showInfo$;
+    // The real loading$ is currently not being used because the alertQuery global loading is used instead
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsService.updateOrganizations();
-    this.organizations$ = this.organizationsQuery.organizations$;
+    this.organizations$ = this.organizationsQuery.filteredOrganizations;
+    this.organizationSearchForm.get('name').valueChanges.pipe(
+      debounceTime(formInputDebounceTime),
+      distinctUntilChanged(),
+      takeUntil(this.ngUnsubscribe)
+    )
+      .subscribe((searchName: string) => {
+        this.organizationsService.updateOrganizationSearchName(searchName);
+      });
   }
 }

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule, MatCardModule, MatIconModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule } from '@angular/material';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { OrganizationModule } from './organization.module';
@@ -16,8 +17,10 @@ import { OrganizationsComponent } from './organizations/organizations.component'
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    MatInputModule,
     OrganizationModule,
-    OrganizationsRouting
+    OrganizationsRouting,
+    ReactiveFormsModule
   ],
   declarations: [OrganizationsComponent]
 })
