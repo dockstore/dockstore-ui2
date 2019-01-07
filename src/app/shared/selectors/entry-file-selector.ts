@@ -167,10 +167,16 @@ export abstract class EntryFileSelector implements OnDestroy {
         fileEnum = 'WDL_TEST_JSON';
       }
     }
-    if (version) {
+    if (version && version.validations) {
       for (const validation of version.validations) {
         if (validation.type === fileEnum) {
-          this.validationMessage = validation.message;
+          const validationObject = JSON.parse(validation.message);
+
+          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+            this.validationMessage = null;
+          } else {
+            this.validationMessage = validationObject;
+          }
           break;
         }
       }

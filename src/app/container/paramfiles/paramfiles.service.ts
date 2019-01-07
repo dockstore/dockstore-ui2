@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor, SourceFile } from '../../shared/swagger';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 
@@ -56,26 +56,65 @@ export class ParamfilesService {
   }
 
   /**
-   * Gets the descriptor types (cwl/wdl/nfl) which have test parameter files and that is valid
+   * Gets the descriptor types (cwl/wdl/nfl) that are valid and have valid test parameter files
    * @param {any} version the current selected version of the workflow or tool
    * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
    * @memberof DescriptorService
    */
     getValidDescriptors(version) {
-      const descriptorsWithParamfiles = [];
       if (version) {
-        for (const file of version.sourceFiles) {
-          const type = file.type;
-          if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl') && version.cwlValidationMessage === null) {
-            descriptorsWithParamfiles.push('cwl');
-          } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl') && version.wdlValidationMessage === null) {
-            descriptorsWithParamfiles.push('wdl');
-          } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes('nfl')) {
-            descriptorsWithParamfiles.push('nfl');
+        const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
+        if (version.validations) {
+          if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL)) {
+            descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
+          }
+
+          if (this.checkValidFileType(version, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.DOCKSTOREWDL)) {
+            descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
+          }
+
+          if (this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG)) {
+            descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
           }
         }
+        return descriptorTypes;
       }
-      return descriptorsWithParamfiles;
+    }
+
+    /**
+     * A helper method that checks for a given version and file type,
+     * if the file type has a valid validation and at least one file is present.
+     * The related language must have a valid descriptor too.
+     * All these must be true to show the corresponding language in the dropdown
+     * @param version Version of interest
+     * @param fileType Ex. SourceFile.TypeEnum.CWLTESTJSON
+     * @param descriptorType Ex. SourceFile.TypeEnum.DOCKSTORECWL
+     */
+    checkValidFileType(version, fileType, descriptorType) {
+      // Check that the language has a valid descriptor
+      const descriptorValidation = version.validations.find((validation) => {
+        return validation.type === descriptorType;
+      });
+
+      if (!(descriptorValidation && descriptorValidation.valid)) {
+        return false;
+      }
+
+      // Check that at least one file is valid
+      const validationObject = version.validations.find((validation) => {
+        return validation.type === fileType;
+      });
+
+      if (!(validationObject && validationObject.valid)) {
+        return false;
+      }
+
+      // Check that at least one file is present
+      const langaugeFile = version.sourceFiles.find((sourceFile) => {
+        return sourceFile.type === fileType;
+      });
+
+      return langaugeFile !== undefined;
     }
 
   // get versions which have test parameter files

@@ -38,6 +38,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.clearContent();
     this.onVersionChange(value);
+    this.checkIfValid(false, value);
   }
   public isNFL$: Observable<boolean>;
   protected entryType: ('tool' | 'workflow') = 'workflow';

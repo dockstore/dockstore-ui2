@@ -14,13 +14,12 @@
   ~    limitations under the License.
   -->
 <div class="p-3">
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <mat-icon>warning</mat-icon>
-    &nbsp;This version of the workflow is invalid.
-  </alert>
   <alert *ngIf="validationMessage !== null">
     <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;{{validationMessage}}
+    &nbsp;
+    <span *ngFor="let item of validationMessage | keyvalue">
+      <strong>{{item.key}}</strong>: {{item.value}}
+    </span>
   </alert>
   <div [hidden]="!content">
     <mat-toolbar color="primary">

@@ -33,18 +33,18 @@ export class DescriptorService {
      */
     getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
         if (version) {
-            const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-            const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
-            unique.forEach(element => {
-                if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
-                    descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
-                } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
-                    descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
-                } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
-                    descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
-                }
-            });
-            return descriptorTypes;
+          const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
+          const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
+          unique.forEach(element => {
+              if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
+                  descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
+              } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
+                  descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
+              } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
+                  descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
+              }
+          });
+          return descriptorTypes;
         }
     }
 
@@ -56,18 +56,31 @@ export class DescriptorService {
      */
     getValidDescriptors(version) {
       if (version) {
-          const descriptorTypes = [];
-          const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
-          unique.forEach(element => {
-              if (element === SourceFile.TypeEnum.DOCKSTORECWL && version.cwlValidationMessage === null) {
-                  descriptorTypes.push('cwl');
-              } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL && version.wdlValidationMessage === null) {
-                  descriptorTypes.push('wdl');
-              } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
-                  descriptorTypes.push('nfl');
-              }
+        const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
+        if (version.validations) {
+          const cwlValidation = version.validations.find((validation) => {
+            return validation.type === SourceFile.TypeEnum.DOCKSTORECWL;
           });
-          return descriptorTypes;
+          if (cwlValidation && cwlValidation.valid) {
+            descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
+          }
+
+          const wdlValidation = version.validations.find((validation) => {
+            return validation.type === SourceFile.TypeEnum.DOCKSTOREWDL;
+          });
+          if (wdlValidation && wdlValidation.valid) {
+            descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
+          }
+
+          const nflValidation = version.validations.find((validation) => {
+            return validation.type === SourceFile.TypeEnum.NEXTFLOW ||
+             validation.type === SourceFile.TypeEnum.NEXTFLOWCONFIG;
+          });
+          if (nflValidation && nflValidation.valid) {
+            descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
+          }
+        }
+        return descriptorTypes;
       }
   }
 }

@@ -20,10 +20,6 @@
   </alert>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <mat-icon>warning</mat-icon>
-    &nbsp;This version of the tool is invalid.
-  </alert>
   <alert type="warning" *ngIf="!content">
     <mat-icon>warning</mat-icon>
     &nbsp;A Dockerfile associated with this Docker container could not be found.
