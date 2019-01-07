@@ -29,6 +29,9 @@
       </span>
     </alert>
   </span>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
+  <ng-template #loaded>
   <div *ngIf="content">
     <span class="row m-0">
       <span class="col-sm-4">
@@ -50,17 +53,19 @@
           <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
             <mat-icon>save_alt</mat-icon>
           </a>
-          <ng-template #unpublishedDownloadLink>
-            <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
-              <mat-icon>save_alt</mat-icon>
-            </a>
-          </ng-template>
-          <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
-            <mat-icon>file_copy</mat-icon>
-          </button>
-        </div>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
-  </div>
+            <ng-template #unpublishedDownloadLink>
+              <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF"
+                 [download]="customDownloadPath" type="button" title="{{filePath}}">
+                <mat-icon>save_alt</mat-icon>
+              </a>
+            </ng-template>
+            <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
+              <mat-icon>file_copy</mat-icon>
+            </button>
+          </div>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
+    </div>
+  </ng-template>
 </div>
