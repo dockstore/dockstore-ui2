@@ -14,17 +14,18 @@
  *    limitations under the License.
  */
 
-import {AfterViewInit, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {WorkflowVersion} from '../../../shared/swagger/model/workflowVersion';
-import {ExtendedWorkflow} from '../../../shared/models/ExtendedWorkflow';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
-import {FileService} from '../../../shared/file.service';
-import {Observable, Subject} from "rxjs";
-import {GA4GHFilesQuery} from "../../../shared/ga4gh-files/ga4gh-files.query";
-import {FileWrapper, GA4GHService, ToolDescriptor, ToolFile} from "../../../shared/swagger/index";
-import {takeUntil} from "rxjs/operators";
-import {ga4ghWorkflowIdPrefix} from "../../../shared/constants";
 
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ga4ghWorkflowIdPrefix } from '../../../shared/constants';
+import { GA4GHFiles } from '../../../shared/ga4gh-files/ga4gh-files.model';
+import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
+import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from '../../../shared/swagger/index';
+import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-wdl-viewer',
@@ -34,17 +35,18 @@ import {ga4ghWorkflowIdPrefix} from "../../../shared/constants";
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class WdlViewerComponent implements OnInit, AfterViewInit {
+export class WdlViewerComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   private files: Array<ToolFile>;
   private ngUnsubscribe: Subject<{}> = new Subject();
   private primaryFile: ToolFile;
+  private zipFile: JSZip = new JSZip();
 
   @Input() workflow: ExtendedWorkflow;
   @Input() selectedVersion: WorkflowVersion;
   @Input() expanded: boolean;
 
 
-  constructor(public fileService: FileService, private gA4GHFilesQuery: GA4GHFilesQuery, protected gA4GHService: GA4GHService) {
+  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, protected gA4GHService: GA4GHService) {
   }
 
   private getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
@@ -53,6 +55,10 @@ export class WdlViewerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    console.log("wdl-viewer onchanges");
   }
 
   ngOnDestroy() {
@@ -69,6 +75,7 @@ export class WdlViewerComponent implements OnInit, AfterViewInit {
 
         if (this.files.length > 1) {
           console.log('Multi-file wdl');
+          this.createMultiFileVisualization(this.files);
         } else {
           this.createSingleFileVisualization(this.files);
         }
@@ -80,7 +87,6 @@ export class WdlViewerComponent implements OnInit, AfterViewInit {
    * @param files
    */
   createSingleFileVisualization(files: any[]): void {
-
     this.primaryFile = files.filter(file => file.file_type === "PRIMARY_DESCRIPTOR")[0];
 
     if (this.primaryFile) {
@@ -101,5 +107,15 @@ export class WdlViewerComponent implements OnInit, AfterViewInit {
 
       });
     }
+  }
+
+
+  createMultiFileVisualization(files: any[]): void {
+    let secondaryFiles = files.filter(file => file.file_type === "SECONDARY_DESCRIPTOR");
+    console.log(secondaryFiles);
+
+    // For each secondary file, attempt to place into the global store if it does not already exist
+    secondaryFiles.forEach(file => {
+    })
   }
 }

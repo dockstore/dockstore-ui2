@@ -17,9 +17,11 @@ import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChil
 import { filterNil } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 
 import { Dockstore } from '../../shared/dockstore.model';
-import { EntryTab } from '../../shared/entry/entry-tab';
+import { Files } from '../../shared/files';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from './../../shared/swagger/model/workflow';
@@ -27,10 +29,6 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
-import {Files} from "../../shared/files";
-import {ParamfilesService} from "../../container/paramfiles/paramfiles.service";
-import {GA4GHFilesService} from "../../shared/ga4gh-files/ga4gh-files.service";
-import {ga4ghWorkflowIdPrefix} from "../../shared/constants";
 
 @Component({
   selector: 'app-dag',
@@ -120,17 +118,21 @@ export class DagComponent extends Files implements OnInit, OnChanges {
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 
+  // TODO: Check how often updateFiles is called on change. This onChange approach might not be reducing the amount of API calls
   ngOnChanges() {
-    this.dagService.getDAGResults(this.selectedVersion, this.id);
-    // Retrieve the files for this path from the API, and store in global storage on view change
-    if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
-      // Only getting files for one descriptor type for workflows (subject to change)
-      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name,
-        [this.descriptorType]);
-      this.previousEntryPath = this.entrypath;
-      this.previousVersionName = this.selectedVersion.name;
+    // Only WDL files should be stored in global store, since they are needed for EPAM pipeline-builder visualization
+    if (this.descriptorType === ToolDescriptor.TypeEnum.WDL) {
+      this.dagService.getDAGResults(this.selectedVersion, this.id);
+      // Retrieve the files for this path from the API, and store in global store on view change
+      if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
+        // Only getting files for one descriptor type for workflows (subject to change)
+        this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name,
+          [this.descriptorType]);
+        this.previousEntryPath = this.entrypath;
+        this.previousVersionName = this.selectedVersion.name;
+      }
+      this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
     }
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 
   download() {
