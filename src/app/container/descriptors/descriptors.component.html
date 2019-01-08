@@ -21,7 +21,7 @@
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
   <span *ngIf="!publicPage">
-    <alert *ngIf="validationMessage !== null">
+    <alert *ngIf="validationMessage">
       <mat-icon>warning</mat-icon>
       &nbsp;
       <span *ngFor="let item of validationMessage | keyvalue">

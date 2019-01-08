@@ -49,9 +49,9 @@ export class DescriptorService {
     }
 
     /**
-     * Gets the descriptor types (cwl/wdl/nfl) that a version has a sourcefile for and that is valid
+     * Gets the descriptor types (CWL/WDL/NFL) that a version has a sourcefile for and that is valid
      * @param {any} version the current selected version of the workflow or tool
-     * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
+     * @returns an array that may contain 'CWL' or 'WDL' or 'NFL'
      * @memberof DescriptorService
      */
     getValidDescriptors(version) {

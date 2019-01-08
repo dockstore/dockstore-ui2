@@ -59,7 +59,6 @@ export class ParamfilesService {
    * Gets the descriptor types (cwl/wdl/nfl) that are valid and have valid test parameter files
    * @param {any} version the current selected version of the workflow or tool
    * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
-   * @memberof DescriptorService
    */
     getValidDescriptors(version) {
       if (version) {

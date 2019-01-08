@@ -59,7 +59,7 @@ export class DescriptorsComponent extends EntryFileSelector {
     return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
-  getValidDescriptors(version): Array<any> {
+  getValidDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorsService.getValidDescriptors(this._selectedVersion);
   }
 

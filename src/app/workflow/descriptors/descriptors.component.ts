@@ -61,9 +61,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   /**
    * Get all the primary or secondary descriptors
    *
-   * @param {*} descriptor  This actually doesn't matter for the workflow components.
-   * Both tool and workflows uses the same abstract method, but only tool can have multiple descriptor types.
-   * Workflows won't use this until it also supports having multiple descriptor types.
+   * @param {*} descriptor
    * @returns {Observable<Array<ToolFile>>}  The array of primary or secondary descriptor ToolFiles
    * @memberof DescriptorsWorkflowComponent
    */
