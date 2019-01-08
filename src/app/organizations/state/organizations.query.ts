@@ -21,6 +21,16 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
     super(store);
   }
 
+  /**
+   * Filters the organization based on a string
+   * Case insensitive
+   * Partial match
+   *
+   * @param {Array<Organisation>} organizations  List of all approved organizations
+   * @param {string} searchName                  Search string
+   * @returns {(Array<Organisation> | null)}     Array of organizations that have been filtered by string
+   * @memberof OrganizationsQuery
+   */
   filterOrganizations(organizations: Array<Organisation>, searchName: string): Array<Organisation> | null {
     searchName = searchName.toLowerCase();
     if (organizations) {

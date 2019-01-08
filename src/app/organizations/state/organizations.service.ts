@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { OrganizationsStore, OrganizationsState } from './organizations.store';
-import { OrganisationsService, Organisation } from '../../shared/swagger';
-import { AlertService } from '../../shared/alert/state/alert.service';
 import { finalize } from 'rxjs/operators';
+
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { Organisation, OrganisationsService } from '../../shared/swagger';
+import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationsService {
@@ -12,7 +12,12 @@ export class OrganizationsService {
     private organisationsService: OrganisationsService) {
   }
 
-  updateOrganizations() {
+  /**
+   * Update the store with the current array of approved organizations
+   *
+   * @memberof OrganizationsService
+   */
+  updateOrganizations(): void {
     this.alertService.start('Getting approved organizations');
     this.organisationsService.getApprovedOrganisations().pipe(
       finalize(() => this.organizationsStore.setLoading(false)
@@ -27,7 +32,7 @@ export class OrganizationsService {
       });
   }
 
-  updateOrganizationSearchName(searchName: string) {
+  updateSearchNameState(searchName: string): void {
     this.organizationsStore.setState((state: OrganizationsState) => {
       return {
         ...state,
@@ -36,8 +41,8 @@ export class OrganizationsService {
     });
   }
 
-  updateOrganizationState(organizations: Array<Organisation>) {
-    this.organizationsStore.setState(state => {
+  updateOrganizationState(organizations: Array<Organisation>): void {
+    this.organizationsStore.setState((state: OrganizationsState) => {
       return {
         ...state,
         organizations: organizations

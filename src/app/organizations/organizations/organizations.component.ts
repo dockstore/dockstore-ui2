@@ -52,11 +52,12 @@ export class OrganizationsComponent extends Base implements OnInit {
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)
     ).subscribe((searchName: string) => {
-      this.organizationsService.updateOrganizationSearchName(searchName);
+      this.organizationsService.updateSearchNameState(searchName);
     });
   }
 
   /**
+   * When the create organization button is clicked.
    * Opens the dialog to create organization
    *
    * @memberof OrganizationsComponent
