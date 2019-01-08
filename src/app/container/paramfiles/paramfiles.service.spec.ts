@@ -22,6 +22,7 @@ import { WorkflowsStubService, ContainersStubService, RefreshStubService } from 
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { ParamfilesService } from './paramfiles.service';
 import { TestBed, async, inject } from '@angular/core/testing';
+import { ToolDescriptor } from './../../shared/swagger';
 
 describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {
@@ -146,6 +147,13 @@ describe('Service: paramFiles.service.ts', () => {
         'absolutePath': '/Dockstore.cwl'
       },
       {
+        'id': 278,
+        'type': SourceFile.TypeEnum.CWLTESTJSON,
+        'content': '',
+        'path': '/Dockstore.wdl',
+        'absolutePath': '/Dockstore.wdl'
+      },
+      {
         'id': 277,
         'type': SourceFile.TypeEnum.WDLTESTJSON,
         'content': '',
@@ -164,8 +172,41 @@ describe('Service: paramFiles.service.ts', () => {
     'image_id': '5f01c6b7ae8f6ba7701aa30b6643866c2ff6166a8f2221844840f46d636e1ed3',
     'dockerfile_path': '/Dockerfile',
     'cwl_path': '/Dockstore.cwl',
-    'wdl_path': '/Dockstore.wdl'
+    'wdl_path': '/Dockstore.wdl',
+    'validations': [
+      {
+        'id': 1,
+        'type': SourceFile.TypeEnum.DOCKERFILE,
+        'valid': true,
+        'message': '{}'
+      },
+      {
+        'id': 2,
+        'type': SourceFile.TypeEnum.DOCKSTORECWL,
+        'valid': true,
+        'message': '{}'
+      },
+      {
+        'id': 3,
+        'type': SourceFile.TypeEnum.DOCKSTOREWDL,
+        'valid': false,
+        'message': '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}'
+      },
+      {
+        'id': 4,
+        'type': SourceFile.TypeEnum.WDLTESTJSON,
+        'valid': true,
+        'message': '{}'
+      },
+      {
+        'id': 5,
+        'type': SourceFile.TypeEnum.CWLTESTJSON,
+        'valid': true,
+        'message': '{}'
+      }
+    ]
   };
+
   const versions: Tag[] = [tag1, tag2, tag3];
 
   it('should ...', inject([ParamfilesService], (service: ParamfilesService) => {
@@ -183,5 +224,9 @@ describe('Service: paramFiles.service.ts', () => {
   }));
   it('should get descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
     expect(service.getVersions(versions)).toEqual([tag2, tag3]);
+  }));
+  // Tests valid cwl descriptor and test file, but invalid wdl descriptor and valid wdl test file
+  it('should get valid descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
+    expect(service.getValidDescriptors(tag3)).toEqual([ToolDescriptor.TypeEnum.CWL]);
   }));
 });
