@@ -26,6 +26,7 @@ import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
 import { SearchService } from './search.service';
+import { MatAutocompleteModule } from '@angular/material';
 
 /* tslint:disable:no-unused-variable */
 describe('SearchComponent', () => {
@@ -36,7 +37,7 @@ describe('SearchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SearchComponent, MapFriendlyValuesPipe ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, AccordionModule.forRoot(), HttpClientModule],
+      imports: [RouterTestingModule, AccordionModule.forRoot(), HttpClientModule, MatAutocompleteModule],
       providers: [
         {provide: SearchService, useClass: SearchStubService},
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
