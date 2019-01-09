@@ -25,29 +25,28 @@
         <input matInput placeholder="Search organizations" formControlName="name">
       </mat-form-field>
     </form>
-    <!-- Far too many organizations async pipe, think of better solution -->
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
-      <div fxLayoutAlign="start stretch" fxFlexFill fxLayout="row wrap" fxLayoutGap="10px">
-        <mat-card fxFlex *ngFor="let org of organizations" class="my-2">
+      <div fxLayoutAlign="start stretch" fxLayout="row wrap">
+        <mat-card fxFlexOffset="10px" fxFlex *ngFor="let org of organizations" class="my-2">
           <mat-card-header>
             <mat-card-title>
               <a [routerLink]="org.name">{{org.name}}</a>
             </mat-card-title>
-            <mat-card-subtitle>{{ org.description }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ (org.description.length > 128)? (org.description | slice:0:128)+'...':(org.description) }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <div fxLayout="row" fxLayoutGap="10px">
-              <span *ngIf="org?.email">
+              <span fxLayout="row" *ngIf="org?.email">
                 <mat-icon>email</mat-icon>
-                <a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a>
+                <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
               </span>
-              <span *ngIf="org?.link">
+              <span fxLayout="row" *ngIf="org?.link">
                 <mat-icon>link</mat-icon>
-                <a [href]="org.link" target="_blank">{{ org.link }}</a>
+                <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
               </span>
-              <span *ngIf="org?.location">
+              <span fxLayout="row" *ngIf="org?.location">
                 <mat-icon>location_on</mat-icon>
-                <span>{{ org.location }}</span>
+                <span class="ellipsis-lines">{{ org.location }}</span>
               </span>
             </div>
           </mat-card-content>
