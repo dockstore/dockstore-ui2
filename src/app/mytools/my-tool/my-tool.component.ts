@@ -173,7 +173,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   selectEntry(tool: ExtendedDockstoreTool): void {
     if (tool !== null) {
-      this.containersService.getContainer(tool.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+      this.containersService.getContainer(tool.id, 'validations').pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
         this.location.go(this.pageName + '/' + result.tool_path);
         this.containerService.setTool(result);
       });

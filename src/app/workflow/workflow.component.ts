@@ -213,7 +213,7 @@ export class WorkflowComponent extends Entry {
     if (url.includes('workflows')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title)
+      this.workflowsService.getPublishedWorkflowByPath(this.title, 'validations')
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,

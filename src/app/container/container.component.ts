@@ -170,7 +170,7 @@ export class ContainerComponent extends Entry {
     if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.containersService.getPublishedContainerByToolPath(this.title)
+      this.containersService.getPublishedContainerByToolPath(this.title, 'validations')
         .subscribe(tool => {
           this.containerService.setTool(tool);
           this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion);

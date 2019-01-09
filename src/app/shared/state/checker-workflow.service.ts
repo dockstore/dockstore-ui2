@@ -73,7 +73,7 @@ export class CheckerWorkflowService extends Base {
   public updateCheckerWorkflow(id: number, isPublic: boolean, entry) {
     // This sets the checker-workflow.checkerWorkflow state
     if (isPublic) {
-      this.workflowsService.getPublishedWorkflow(id).pipe(first()).subscribe((workflow: Workflow) => {
+      this.workflowsService.getPublishedWorkflow(id, 'validations').pipe(first()).subscribe((workflow: Workflow) => {
         this.setState(workflow, entry);
       }, error => this.setState(null, entry));
     } else {

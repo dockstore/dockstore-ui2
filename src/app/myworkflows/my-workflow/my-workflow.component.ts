@@ -227,7 +227,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   selectEntry(workflow: ExtendedWorkflow): void {
     if (workflow !== null) {
-      this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+      this.workflowsService.getWorkflow(workflow.id, 'validations').pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
         this.location.go('/my-workflows/' + result.full_workflow_path);
         this.workflowService.setWorkflow(result);
       });
