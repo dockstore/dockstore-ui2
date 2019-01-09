@@ -8,6 +8,7 @@ import { HeaderModule } from '../shared/modules/header.module';
 import { OrganizationModule } from './organization.module';
 import { OrganizationsRouting } from './organizations.routing';
 import { OrganizationsComponent } from './organizations/organizations.component';
+import { RegisterOrganizationModule } from './register-organization.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { OrganizationsComponent } from './organizations/organizations.component'
     MatInputModule,
     OrganizationModule,
     OrganizationsRouting,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RegisterOrganizationModule
   ],
   declarations: [OrganizationsComponent]
 })
