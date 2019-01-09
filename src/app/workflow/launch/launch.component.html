@@ -14,59 +14,68 @@
   ~    limitations under the License.
   -->
 
-<div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
-  <mat-icon>warning</mat-icon> To see launch with, please refresh the workflow.
-</div>
-<div *ngIf="_selectedVersion">
-  <div *ngIf="!_selectedVersion.valid">
-    <div class="alert alert-warning" role="alert">
-      This section is only available for valid versions. A valid version requires a valid descriptor file.
-    </div>
+<div class="p-3">
+  <div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
+    <mat-icon>warning</mat-icon> To see launch with, please refresh
+    the
+    workflow.
   </div>
-  <div *ngIf="_selectedVersion.valid">
-    <div>
-      <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for creating a runtime JSON template">
-        Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-        <pre>{{ params }}</pre>
-        <span *ngIf="wgetTestJsonDescription">
-          or grab one that the workflow author has provided (if applicable)
-          <pre>{{ wgetTestJsonDescription }}</pre>
-        </span>
-      </mat-card>
-      <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
-        Run locally with the Dockstore CLI
-        <pre>{{ cli }}</pre>
-      </mat-card>
-      <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode)" class="m-2">
-        <div matTooltip="Nextflow can conveniently run a workflow off of source control">
-          Run with nextflow
-          <pre>{{ nextflowNativeLaunchDescription }}</pre>
-          <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
-        </div>
-      </mat-card>
+  <div *ngIf="_selectedVersion">
+    <div *ngIf="!_selectedVersion.valid">
+      <div class="alert alert-warning" role="alert">
+        This section is only available for valid versions. A valid version requires a valid descriptor file.
+      </div>
+    </div>
+    <div *ngIf="_selectedVersion.valid">
+      <div>
+        <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for creating a runtime JSON template">
+          Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+          <pre>{{ params }}</pre>
+          <span *ngIf="wgetTestJsonDescription">
+            or grab one that the workflow author has provided (if applicable)
+            <pre>{{ wgetTestJsonDescription }}</pre>
+          </span>
+        </mat-card>
+        <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+          Run locally with the Dockstore CLI
+          <pre>{{ cli }}</pre>
+        </mat-card>
+        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode)"
+          class="m-2">
+          <div matTooltip="Nextflow can conveniently run a workflow off of source control">
+            Run with nextflow
+            <pre>{{ nextflowNativeLaunchDescription }}</pre>
+            <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
+          </div>
+        </mat-card>
 
-      <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)" class="m-2">
-        <div matTooltip="Nextflow can also run a local workflow">
-          Download the workflow files
-          <pre>{{ nextflowDownloadFileDescription }}</pre>
+        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)"
+          class="m-2">
+          <div matTooltip="Nextflow can also run a local workflow">
+            Download the workflow files
+            <pre>{{ nextflowDownloadFileDescription }}</pre>
 
-          Run with nextflow
-          <pre>{{ nextflowLocalLaunchDescription }}</pre>
-        </div>
-      </mat-card>
+            Run with nextflow
+            <pre>{{ nextflowLocalLaunchDescription }}</pre>
+          </div>
+        </mat-card>
 
-      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)"  class="m-2">
-        <div [matTooltip]="cwlrunnerTooltip">
-          {{cwlrunnerDescription}}
-          <pre>{{ cwl }}</pre>
-        </div>
-        <div [matTooltip]="cwltoolTooltip">
-          Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
-          <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
-          <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
-        </div>
-      </mat-card>
-      <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
+        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)" class="m-2">
+          <div [matTooltip]="cwlrunnerTooltip">
+            {{cwlrunnerDescription}}
+            <pre>{{ cwl }}</pre>
+          </div>
+          <div [matTooltip]="cwltoolTooltip">
+            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently
+            run
+            a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH
+              tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
+            <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
+            <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
+          </div>
+        </mat-card>
+        <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
+      </div>
     </div>
   </div>
 </div>

@@ -14,13 +14,14 @@
   ~    limitations under the License.
   -->
 
-<div class="table-responsive">
-  <table class="table table-bordered table-condensed table-striped" style="overflow: auto;" [ngClass]="workflow?.mode !== WorkflowType.ModeEnum.HOSTED ? 'workflow-versions-grid' : 'hosted-workflow-versions-grid'">
-    <thead>
-    <tr>
-      <th>
-        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-          <label placement="top" matTooltip="Git branches/tags: The selected reference and tag will be used
+<div class="p-3">
+  <div class="table-responsive">
+    <table class="m-0 table table-bordered table-condensed table-striped" style="overflow: auto;" [ngClass]="workflow?.mode !== WorkflowType.ModeEnum.HOSTED ? 'workflow-versions-grid' : 'hosted-workflow-versions-grid'">
+      <thead>
+        <tr>
+          <th>
+            <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+              <label placement="top" matTooltip="Git branches/tags: The selected reference and tag will be used
                          to populate the info tab including 'launch with'">
             Git Reference
           </label>
@@ -107,10 +108,12 @@
       <!-- <td>
         <a href="https://zenodo.org/record/">Placeholder</a>
       </td> -->
-      <td *ngIf="version">
-        <app-view-workflow [version]="version" [workflowId]="this.workflowId" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-view-workflow>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+          <td *ngIf="version">
+            <app-view-workflow [version]="version" [workflowId]="this.workflowId" [canRead]="canRead" [canWrite]="canWrite"
+              [isOwner]="isOwner"></app-view-workflow>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
