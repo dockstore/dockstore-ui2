@@ -1,4 +1,3 @@
-import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,12 +13,16 @@ import { Observable ,  BehaviorSubject ,  Subscription } from 'rxjs';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router/';
 import { HttpClient } from '@angular/common/http';
-import { Dockstore } from './../shared/dockstore.model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatAccordion } from '@angular/material';
+import { Router } from '@angular/router/';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
+import { Base } from '../shared/base';
+import { formInputDebounceTime } from '../shared/constants';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { ProviderService } from '../shared/provider.service';
@@ -28,14 +31,13 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchService } from './search.service';
-import { MatAccordion } from '@angular/material';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent extends Base implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
   private routeSub: Subscription;
@@ -103,6 +105,9 @@ export class SearchComponent implements OnInit {
     'toAdvanceSearch'
   ];
 
+  // Allows subscribing to keyUp events. Deprecated if using reactive forms.
+  public keyUp$ = new Subject<string>();
+
   /**
    * The current text search
    * @type {string}
@@ -118,6 +123,7 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private locationService: Location,
     private http: HttpClient) {
+      super();
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -157,6 +163,10 @@ export class SearchComponent implements OnInit {
       this.advancedSearchObject = advancedSearch;
       this.updateQuery();
     });
+    this.keyUp$.pipe(
+      debounceTime(formInputDebounceTime),
+      distinctUntilChanged(),
+      takeUntil(this.ngUnsubscribe)).subscribe(() => this.onKey());
   }
 
   /**
@@ -488,24 +498,15 @@ export class SearchComponent implements OnInit {
       }
     }).then(hits => {
       this.autocompleteTerms = [];
-      hits.aggregations.autocomplete.buckets.forEach(
-        term => {
-          this.autocompleteTerms.push(term.key);
-        }
-      );
+      this.autocompleteTerms = this.setAutoCompleteTerms(hits);
     }).catch(error => console.log(error));
-    if (!this._timeout) {
       this.advancedSearchObject.toAdvanceSearch = false;
-      this.searchTerm = true;
-      this._timeout = true;
-      window.setTimeout(() => {
-        if ((!this.values || 0 === this.values.length)) {
-          this.searchTerm = false;
-        }
-        this.updateQuery();
-        this._timeout = false;
-      }, 500);
-    }
+      if ((!this.values || 0 === this.values.length)) {
+        this.searchTerm = false;
+      } else {
+        this.searchTerm = true;
+      }
+      this.updateQuery();
   }
   /*TODO: FOR DEMO USE, make this better later...*/
   suggestKeyTerm() {
@@ -529,6 +530,23 @@ export class SearchComponent implements OnInit {
         this.suggestTerm = '';
       }
     }).catch(error => console.log(error));
+  }
+
+  /**
+   * Gets autocomplete terms based on the elasticsearch results
+   *
+   * @param {*} hits           Elasticsearch results
+   * @returns {Array<string>}  The array of autocomplete terms
+   * @memberof SearchComponent
+   */
+  setAutoCompleteTerms(hits: any): Array<string> {
+    const autocompleteTerms = [];
+    hits.aggregations.autocomplete.buckets.forEach(
+      term => {
+        autocompleteTerms.push(term.key);
+      }
+    );
+    return autocompleteTerms;
   }
 
   searchSuggestTerm() {

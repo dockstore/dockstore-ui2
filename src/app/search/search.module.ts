@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -53,6 +54,7 @@ import { SearchService } from './search.service';
     CommonModule,
     CustomMaterialModule,
     AccordionModule.forRoot(),
+    MatAutocompleteModule,
     ModalModule.forRoot(),
     FormsModule,
     HeaderModule,
