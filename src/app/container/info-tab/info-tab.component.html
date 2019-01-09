@@ -188,14 +188,17 @@
         <mat-card-title>Version Information</mat-card-title>
       </mat-card-header>
       <mat-card-content class="p-3">
-        <div *ngIf="tool?.author">
-          <strong matTooltip="Author listed in descriptor">Author</strong>: {{ tool?.author }}
+        <div>
+          <strong matTooltip="Author listed in descriptor">Author</strong>: {{ tool?.author ? tool?.author : 'n/a' }}
         </div>
-        <div *ngIf="tool?.email">
+        <div>
           <strong matTooltip="E-mail of corresponding author for tool">E-mail</strong>:
-          <a href="mailto:{{tool?.email}}">
+          <a href="mailto:{{tool?.email}}" *ngIf="tool?.email">
             {{ tool?.email }}
           </a>
+          <span *ngIf="!tool?.email">
+            n/a
+          </span>
         </div>
         <span *ngIf="isValidVersion" id="downloadZipButton">
           <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
@@ -204,7 +207,7 @@
 
         <div *ngIf="tool?.description || !isPublic">
           <label matTooltip="Description of tool obtained from tool descriptor">
-            Description
+            Description:
           </label>
           <div *ngIf="tool?.description" class="well well-sm">
             <ngx-md [data]="tool?.description"></ngx-md>
