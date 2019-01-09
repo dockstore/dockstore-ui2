@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError } from 'rxjs';
 
 import { OrganisationsService } from '../../shared/swagger';
@@ -21,7 +22,7 @@ describe('RegisterOrganizationService', () => {
         { provide: OrganisationsService, useValue: organisationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub }
       ],
-      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule]
     });
 
     registerOrganizationService = TestBed.get(RegisterOrganizationService);
