@@ -15,6 +15,7 @@
 -->
 <h1 mat-dialog-title>Add Organization</h1>
 <div mat-dialog-content>
+  <p>Fill out the form to send an organization request to a Dockstore curator to approve.  Once approved, the organization will be publicly visible.</p>
   <app-alert></app-alert>
   <form [formGroup]="registerOrganizationForm">
     <mat-form-field>
@@ -45,5 +46,5 @@
 </div>
 <div mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [disabled]="!registerOrganizationForm.valid" (click)="addOrganization()" cdkFocusInitial>Send Organization Request</button>
+  <button matTooltip="Send Organization Request" mat-button [disabled]="!registerOrganizationForm.valid" (click)="addOrganization()" cdkFocusInitial>Send Organization Request</button>
 </div>
