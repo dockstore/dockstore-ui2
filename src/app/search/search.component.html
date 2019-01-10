@@ -30,14 +30,14 @@
           <mat-expansion-panel-header>
             Search
           </mat-expansion-panel-header>
-          <input matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
-                  type="text" list="suggestions" class="search-box form-control w-100 mb-3" [(ngModel)]="values"
-                  (ngModelChange)="onKey()" placeholder="Enter search term" />
-          <datalist id="suggestions" *ngIf="autocompleteTerms.length > 0">
-            <div *ngFor="let term of autocompleteTerms">
-              <option [value]="term">
-            </div>
-          </datalist>
+          <mat-form-field>
+          <input matInput [matAutocomplete]="auto" matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
+                  list="suggestions" class="w-100 mb-3" [(ngModel)]="values"
+                  (ngModelChange)="keyUp$.next($event)" placeholder="Enter search term" />
+          </mat-form-field>
+          <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of autocompleteTerms" [value]="option">{{option}}</mat-option>
+          </mat-autocomplete>
 
           <button mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
             Open Advanced Search
