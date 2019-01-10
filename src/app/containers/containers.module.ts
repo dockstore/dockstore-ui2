@@ -23,12 +23,10 @@ import { ListContainersModule } from '../shared/modules/list-containers.module';
 import { SelectModule } from '../shared/modules/select.module';
 import { ContainersComponent } from './containers.component';
 import { containersRouting } from './containers.routing';
-import { SearchContainersComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
-    ContainersComponent,
-    SearchContainersComponent
+    ContainersComponent
   ],
   imports: [
     CommonModule,

@@ -26,14 +26,12 @@ import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
 import { SelectModule } from '../shared/modules/select.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { getTooltipConfig } from './../shared/tooltip';
-import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowsComponent } from './workflows.component';
 import { workflowsRouting } from './workflows.routing';
 
 @NgModule({
   declarations: [
-    WorkflowsComponent,
-    SearchWorkflowsComponent
+    WorkflowsComponent
   ],
   imports: [
     CommonModule,
