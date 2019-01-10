@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
+import { Organisation } from '../../shared/swagger';
 
 export interface OrganizationState {
-   key: string;
+   organization: Organisation;
 }
 
 export function createInitialState(): OrganizationState {
   return {
-    key: ''
+    organization: null
   };
 }
 
