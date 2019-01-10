@@ -112,12 +112,7 @@ describe('Checker workflow test from my-tools', () => {
 describe('Should be able to see the checker workflow from a tool', () => {
   it('visit the tool with a checker workflow and have the correct buttons', () => {
     setTokenUserViewPort();
-    cy.visit('/search-containers');
-    cy.get('mat-cell')
-      .find('a')
-      .contains('b3')
-      .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3')
-      .should('have.attr', 'href', '/containers/quay.io/A2/b3').click();
+    cy.visit('tools/containers/quay.io/A2/b3');
 
     // In the parent tool right now
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');

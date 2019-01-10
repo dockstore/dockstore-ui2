@@ -137,13 +137,7 @@ describe('Checker workflow test from my-workflows', () => {
 describe('Should be able to see the checker workflow from a workflow', () => {
   it('visit the tool with a checker workflow and have the correct buttons', () => {
     setTokenUserViewPort();
-    cy.visit('/workflows');
-    cy.get('mat-cell')
-      .find('a')
-      // Grabbing the checker because couldn't figure out how to grab the 'l' workflow, it's not specific enough
-      .contains('l/_cwl_checker')
-      .should('not.have.attr', 'href', '/workflows/github.com%20A%20l')
-      .should('have.attr', 'href', '/workflows/github.com/A/l/_cwl_checker').click();
+    cy.visit('tools/workflows/A/l/_cwl_checker');
 
     // In the checker workflow right now
     // TODO: The version is not set because the checker does not actually have any versions. We should add some.
