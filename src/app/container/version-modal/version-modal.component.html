@@ -109,12 +109,12 @@
               </div>
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
                 <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>warning</mat-icon> {{formErrors.cwlTestParameterFilePath}}
+                  <mat-icon>error</mat-icon> {{formErrors.cwlTestParameterFilePath}}
                 </mat-card>
               </div>
               <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
                 <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>warning</mat-icon> Duplicate test json files are not allowed.
+                  <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
                 </mat-card>
               </div>
             </div>
@@ -151,12 +151,12 @@
               </div>
               <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
                 <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>warning</mat-icon> {{formErrors.wdlTestParameterFilePath}}
+                  <mat-icon>error</mat-icon> {{formErrors.wdlTestParameterFilePath}}
                 </mat-card>
               </div>
               <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
                 <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>warning</mat-icon> Duplicate test json files are not allowed.
+                  <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
                 </mat-card>
               </div>
             </div>
