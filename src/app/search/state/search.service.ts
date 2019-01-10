@@ -168,12 +168,13 @@ export class SearchService {
   }
 
   setAutoCompleteTerms(hits: any) {
-    const autocompleteTerms = [];
-    hits.aggregations.autocomplete.buckets.forEach(
-      term => {
-        autocompleteTerms.push(term.key);
-      }
-    );
+    let autocompleteTerms;
+    try {
+      autocompleteTerms = hits.aggregations.autocomplete.buckets.map(term => term.key);
+    } catch (error) {
+      console.error('Could not retrieve autocomplete terms');
+      autocompleteTerms = [];
+    }
     this.searchStore.setState(state => {
       return {
         ...state,
