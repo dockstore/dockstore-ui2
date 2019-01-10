@@ -30,7 +30,7 @@
         <h1>{{org.name}}</h1>
       </mat-card-title>
       <mat-card-subtitle>
-          {{org.description}}
+        {{org.description}}
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -51,7 +51,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions *ngIf="(canEdit$ | async)">
-      <button mat-button class="pull-right" (click)="editOrganization()">EDIT</button>
+      <button mat-button class="pull-right" (click)="editOrganization()">EDIT ORGANIZATION INFO</button>
     </mat-card-actions>
   </mat-card>
   <div fxFlex>
@@ -81,6 +81,9 @@
         enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
         reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
         in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <mat-action-row *ngIf="(canEdit$ | async)">
+        <button mat-button>ADD MEMBER</button>
+      </mat-action-row>
     </mat-expansion-panel>
   </div>
 </div>

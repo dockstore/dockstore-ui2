@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Create Collection</h1>
+<div mat-dialog-content>
+  <form [formGroup]="createCollectionForm" fxLayout="column">
+    <mat-form-field>
+      <input type="text" matInput formControlName="name" placeholder="Name" required>
+      <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+      <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters</mat-error>
+      <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters</mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters and start with an alphabet</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea cdkAutosizeMinRows="3" cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"
+        required></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
+  <button matTooltip="Create Collection" mat-button [disabled]="!createCollectionForm.valid" (click)="createCollection()" cdkFocusInitial>Create Collection</button>
+</div>
