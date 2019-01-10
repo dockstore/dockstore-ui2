@@ -234,7 +234,11 @@ export class DagService {
       popper.scheduleUpdate();
     };
     const destroy = () => {
-      popper.destroy();
+      try {
+        popper.destroy();
+      } catch (error) {
+        return;
+      }
     };
     node.on('mouseover', update);
     node.on('mouseout mousedown', destroy);
