@@ -86,8 +86,10 @@
         <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
           {{formErrors.cwlTestParameterFilePath}}
         </div>
-        <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)" class="alert alert-danger">
-          Duplicate test json files are not allowed.
+        <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
+          <mat-card class="alert alert-danger" role="alert">
+            <mat-icon>error</mat-icon> This section is only available for valid versions.
+          </mat-card>
         </div>
       </div>
       <div *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
@@ -125,11 +127,15 @@
             </button>
           </span>
         </div>
-        <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages alert alert-danger">
-          {{formErrors.wdlTestParameterFilePath}}
+        <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
+          <mat-card class="alert alert-danger" role="alert">
+            <mat-icon>error</mat-icon> {{formErrors.wdlTestParameterFilePath}}
+          </mat-card>
         </div>
-        <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)" class="alert alert-danger">
-          Duplicate test json files are not allowed.
+        <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
+          <mat-card class="alert alert-danger" role="alert">
+            <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
+          </mat-card>
         </div>
       </div>
       <div *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">

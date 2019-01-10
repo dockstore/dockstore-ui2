@@ -788,3 +788,24 @@ mat-panel-title.org-accordion-header {
 .mat-drawer-inner-container {
   overflow: visible !important;
 }
+
+.alert-warning {
+  color: #8a6d3b !important;
+  background-color: #fcf8e3 !important;
+  border-color: #faebcc !important;
+  border: 0px;
+}
+
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  border: 0px;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  border: 0px;
+}

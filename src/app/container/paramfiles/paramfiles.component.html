@@ -14,16 +14,16 @@
   ~    limitations under the License.
   -->
 <div *ngIf="!_selectedVersion" class="p-3">
-  <alert type="warning">
+  <mat-card class="alert alert-warning" role="alert">
     <mat-icon>warning</mat-icon>
     &nbsp;No versions exist for this tool.
-  </alert>
+  </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
+  <mat-card class="alert alert-warning" role="alert" *ngIf="!_selectedVersion?.valid">
     <mat-icon>warning</mat-icon>
     &nbsp;This version of the tool is invalid.
-  </alert>
+  </mat-card>
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
     <div *ngIf="content">
@@ -34,10 +34,10 @@
       </span>
     </span>
     </div>
-    <alert type="warning" *ngIf="!content">
+    <mat-card class="alert alert-warning" role="alert"*ngIf="!content && _selectedVersion?.valid">
       <mat-icon>warning</mat-icon>
       &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
-    </alert>
+    </mat-card>
     <div [hidden]="!content || !_selectedVersion?.valid">
       <mat-toolbar color="primary">
         <mat-toolbar-row>

@@ -14,10 +14,10 @@
     <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Tools</h3>
-          <div class="alert alert-info starred-header" role="alert" *ngIf="starredTools.length == 0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools.length == 0">
             <mat-icon>warning</mat-icon>
             You have no starred tools.
-          </div>
+          </mat-card>
         </div>
 
         <mat-list>
@@ -44,10 +44,10 @@
     <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Workflows</h3>
-          <div class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length==0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length==0">
             <mat-icon>warning</mat-icon>
             You have no starred workflows.
-          </div>
+          </mat-card>
         </div>
 
         <mat-list>
