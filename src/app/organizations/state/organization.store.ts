@@ -4,11 +4,13 @@ import { Organisation } from '../../shared/swagger';
 
 export interface OrganizationState {
    organization: Organisation;
+   canEdit: boolean;
 }
 
 export function createInitialState(): OrganizationState {
   return {
-    organization: null
+    organization: null,
+    canEdit: false
   };
 }
 

@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
+import { Organisation } from '../../shared/swagger';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import { Observable } from 'rxjs';
-import { Organisation } from '../../shared/swagger';
 
 @Component({
   selector: 'organization',
@@ -29,13 +30,23 @@ import { Organisation } from '../../shared/swagger';
 export class OrganizationComponent implements OnInit {
   organization$: Observable<Organisation>;
   loading$: Observable<boolean>;
-  constructor(private organizationQuery: OrganizationQuery, private router: Router,
-              private organizationService: OrganizationService
+  canEdit$: Observable<boolean>;
+  constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog
   ) { }
 
   ngOnInit() {
     this.loading$ = this.organizationQuery.loading$;
+    this.canEdit$ = this.organizationQuery.canEdit$;
     this.organizationService.updateOrganizationFromNameORID();
     this.organization$ = this.organizationQuery.organization$;
+ }
+
+ /**
+  * Handles when the edit button is clicked
+  *
+  * @memberof OrganizationComponent
+  */
+ editOrganization() {
+  //  Placeholder until editOrganizationDialog is created
  }
 }

@@ -34,7 +34,18 @@ export class OrganizationService {
     return organizationName.path;
   }
 
+  clearState(): void {
+    this.organizationStore.setState(state => {
+      return {
+        ...state,
+        organization: null,
+        canEdit: false
+      };
+    });
+  }
+
   updateOrganizationFromNameORID() {
+    this.clearState();
     const organizationNameOrID = this.getOrganizationNameOrIDFromURL();
     const organizationID = parseInt(organizationNameOrID, 10);
     if (isNaN(organizationID)) {
@@ -52,7 +63,8 @@ export class OrganizationService {
       this.organizationStore.setState(state => {
         return {
           ...state,
-          organization: organization
+          organization: organization,
+          canEdit: this.canEdit(organization)
         };
       });
     }, () => {
@@ -63,5 +75,17 @@ export class OrganizationService {
   updateOrganizationFromName(name: string): void {
     console.log('updateOrganizationFromName');
     // Placeholder until endpoint exists
+  }
+
+  /**
+   * Figures out whether the user can edit the organization info
+   *
+   * @param {Organisation} organization  The current organization being viewed
+   * @returns {boolean}                  Whether the user belongs to this organization and can edit
+   * @memberof OrganizationService
+   */
+  canEdit(organization: Organisation): boolean {
+    // Placeholder until we can figure out whether the user belongs to this organization or not
+    return true;
   }
 }
