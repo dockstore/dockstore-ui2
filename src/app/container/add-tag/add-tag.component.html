@@ -83,12 +83,12 @@
             </button>
           </span>
         </div>
-        <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
+        <mat-card *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger" role="alert">
           {{formErrors.cwlTestParameterFilePath}}
-        </div>
+        </mat-card>
         <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
           <mat-card class="alert alert-danger" role="alert">
-            <mat-icon>error</mat-icon> This section is only available for valid versions.
+            <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
           </mat-card>
         </div>
       </div>
