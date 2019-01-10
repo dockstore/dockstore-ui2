@@ -497,8 +497,7 @@ export class SearchComponent extends Base implements OnInit {
         }
       }
     }).then(hits => {
-      this.autocompleteTerms = [];
-      this.autocompleteTerms = this.setAutoCompleteTerms(hits);
+      this.setAutocompleteTerms(hits);
     }).catch(error => console.log(error));
       this.advancedSearchObject.toAdvanceSearch = false;
       if ((!this.values || 0 === this.values.length)) {
@@ -533,20 +532,18 @@ export class SearchComponent extends Base implements OnInit {
   }
 
   /**
-   * Gets autocomplete terms based on the elasticsearch results
+   * Sets autocomplete terms based on the elasticsearch results
    *
-   * @param {*} hits           Elasticsearch results
-   * @returns {Array<string>}  The array of autocomplete terms
+   * @param {*} hits  Elasticsearch results
    * @memberof SearchComponent
    */
-  setAutoCompleteTerms(hits: any): Array<string> {
-    const autocompleteTerms = [];
-    hits.aggregations.autocomplete.buckets.forEach(
-      term => {
-        autocompleteTerms.push(term.key);
-      }
-    );
-    return autocompleteTerms;
+  setAutocompleteTerms(hits: any): void {
+    try {
+      this.autocompleteTerms = hits.aggregations.autocomplete.buckets.map(term => term.key);
+    } catch (error) {
+      console.error('Could not retrieve autocomplete terms');
+      this.autocompleteTerms = [];
+    }
   }
 
   searchSuggestTerm() {
