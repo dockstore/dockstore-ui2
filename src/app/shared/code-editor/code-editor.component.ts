@@ -1,5 +1,8 @@
-import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+
 import { ace } from './../grammars/custom-grammars.js';
+
+let ACE_EDITOR_INSTANCE = 0;
 
 @Component({
   selector: 'app-code-editor',
@@ -30,7 +33,7 @@ export class CodeEditorComponent implements AfterViewInit {
       this.editorContent = content;
       if (this.editor !== undefined) {
         if (this.editorContent != null) {
-            this.editor.setValue(this.editorContent, -1);
+          this.editor.setValue(this.editorContent, -1);
         }
       }
     }
@@ -40,7 +43,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   constructor() {
     // The purpose of the aceId is to deal with cases where multiple editors exist on a page
-    this.aceId = 'aceEditor_' + Math.floor(Math.random() * 100000).toString();
+    this.aceId = 'aceEditor_' + ACE_EDITOR_INSTANCE++;
   }
 
   ngAfterViewInit() {

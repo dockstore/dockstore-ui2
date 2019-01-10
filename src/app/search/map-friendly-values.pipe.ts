@@ -25,6 +25,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['private_access', new Map([
       ['1', 'private'], ['0', 'public']
     ])],
+    ['descriptorType', new Map([
+      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
+    ])],
     ['descriptor_type', new Map([
       ['CWL', 'CWL'], ['WDL', 'WDL'],
       ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
@@ -38,7 +41,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ])],
     ['descriptor_tooltip', new Map([
       ['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'],
-      ['NFL', 'Nextflow coming soon!']
+      ['NFL', 'Nextflow']
     ])],
     ['author', new Map([
       ['', 'n/a']
@@ -49,15 +52,23 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * This pipe searches the friendly value names map for the key whose value is 'subBucket'
    *
    * @param {string} key The key (e.g. file_formats.keyword)
-   * @param {string} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
+   * @param {(string | number)} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
    * @returns {string} The friendly name if found, otherwise the same name
    * @memberof MapFriendlyValuesPipe
    */
-  transform(key: string, subBucket: string): string {
-    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucket.toString())) {
-      return this.friendlyValueNames.get(key).get(subBucket.toString());
+  transform(key: string, subBucket: string | number): string {
+    // Handle null or undefined
+    if (subBucket === null || subBucket === undefined) {
+      console.error('null/undefined passed into the pipe along with the key: ' + key);
+      return null;
+    }
+    // Handle number
+    const subBucketString: string = subBucket.toString();
+    // Handle string
+    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {
+      return this.friendlyValueNames.get(key).get(subBucketString);
     } else {
-      return subBucket;
+      return subBucketString;
     }
   }
 }

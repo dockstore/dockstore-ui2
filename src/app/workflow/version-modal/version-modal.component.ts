@@ -13,21 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor } from '../../shared/swagger';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { WorkflowService } from '../../shared/workflow.service';
 import { VersionModalService } from './version-modal.service';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+
+export interface Dialogdata {
+  canRead: boolean;
+  canWrite: boolean;
+  isOwner: boolean;
+}
 
 @Component({
   selector: 'app-version-modal',
@@ -44,27 +53,33 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public tooltip = Tooltip;
   public testParameterFilePaths: string[];
   originalTestParameterFilePaths: string[];
+  ToolDescriptor = ToolDescriptor;
   public testParameterFilePath = '';
   formErrors = formErrors;
   validationMessages = validationMessages;
   validationPatterns = validationDescriptorPatterns;
-  public refreshMessage: string;
+  public isRefreshing$: Observable<boolean>;
   public WorkflowType = Workflow;
-  workflowSubscription: Subscription;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
+  private ngUnsubscribe: Subject<{}> = new Subject();
+
   constructor(private versionModalService: VersionModalService, private dateService: DateService,
-    private stateService: StateService, private workflowService: WorkflowService) {
+    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
+    private matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: Dialogdata) {
   }
 
   ngOnInit() {
-    this.versionModalService.isModalShown$.subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.versionModalService.version.subscribe(version => this.version = version);
-    this.workflowSubscription = this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-    this.versionModalService.testParameterFiles.subscribe(testParameterFiles => {
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.versionModalService.version.pipe(
+      takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = Object.assign({}, version));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
       this.testParameterFiles = testParameterFiles;
@@ -73,8 +88,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         this.originalTestParameterFilePaths.push(testParameterFile.path);
       }
     });
-    this.stateService.publicPage$.subscribe(publicPage => this.isPublic = publicPage);
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.isPublic = publicPage);
   }
 
   removeTestParameterFile(index: number) {
@@ -84,10 +98,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   addTestParameterFile() {
     this.testParameterFilePaths.push(this.testParameterFilePath);
     this.testParameterFilePath = '';
-  }
-
-  public hideModal(): void {
-    this.versionModalService.setIsModalShown(false);
   }
 
   public getDateTimeMessage(timestamp) {
@@ -148,6 +158,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnDestroy() {
-    this.workflowSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

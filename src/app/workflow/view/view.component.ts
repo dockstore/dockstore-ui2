@@ -13,19 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { StateService } from './../../shared/state.service';
-import { VersionModalService } from './../version-modal/version-modal.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { AfterViewChecked, AfterViewInit, Component, Input, ViewChild, OnInit } from '@angular/core';
-import { Workflow } from './../../shared/swagger/model/workflow';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { View } from '../../shared/view';
 import { DateService } from '../../shared/date.service';
-import { WorkflowService } from '../../shared/workflow.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { View } from '../../shared/view';
+import { VersionModalService } from '../version-modal/version-modal.service';
+import { takeUntil } from 'rxjs/operators';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { MatDialog } from '@angular/material';
+import { VersionModalComponent } from '../version-modal/version-modal.component';
 
 @Component({
   selector: 'app-view-workflow',
@@ -43,10 +45,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public WorkflowType = Workflow;
 
   constructor(
-    private workflowService: WorkflowService,
-    private versionModalService: VersionModalService,
-    private stateService: StateService,
-    private workflowsService: WorkflowsService,
+    private workflowService: WorkflowService, private workflowQuery: WorkflowQuery,
+    private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
+    private workflowsService: WorkflowsService, private matDialog: MatDialog,
     private hostedService: HostedService,
     dateService: DateService) {
     super(dateService);
@@ -58,15 +59,29 @@ export class ViewWorkflowComponent extends View implements OnInit {
       .subscribe(items => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
-        this.versionModalService.setIsModalShown(true);
+        this.openVersionModal();
       }, error => {
-        this.versionModalService.setIsModalShown(true);
+        this.openVersionModal();
+      });
+  }
+
+  /**
+   * Opens the version modal
+   *
+   * @private
+   * @memberof ViewWorkflowComponent
+   */
+  private openVersionModal(): void {
+    const dialogRef = this.matDialog.open(VersionModalComponent,
+      {
+        width: '600px',
+        data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
       });
   }
 
   ngOnInit() {
-    this.stateService.publicPage$.subscribe(isPublic => this.isPublic = isPublic);
-    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
   }
 
   deleteHostedVersion() {

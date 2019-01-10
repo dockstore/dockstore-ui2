@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ContainerService } from '../../shared/container.service';
+
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
 
 @Component({
@@ -16,9 +17,9 @@ export class SidebarAccordionComponent implements OnInit {
   public toolId$: Observable<number>;
   activeTab = 0;
 
-  constructor(private toolService: ContainerService) { }
+  constructor(private toolQuery: ToolQuery) { }
 
   ngOnInit(): void {
-    this.toolId$ = this.toolService.toolId$;
+    this.toolId$ = this.toolQuery.toolId$;
   }
 }

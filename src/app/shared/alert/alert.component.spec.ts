@@ -1,11 +1,5 @@
-import { ErrorStubService } from './../../test/service-stubs';
-import { ErrorService } from './../../shared/error.service';
-import { StateStubService } from '../../test/service-stubs';
-import { StateService } from '../state.service';
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { MatIconModule, MatProgressBarModule, MatSnackBarModule } from '@angular/material';
 
 import { AlertComponent } from './alert.component';
 
@@ -15,11 +9,10 @@ describe('RefreshAlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlertComponent ],
-      providers: [ {provide: StateService, useClass: StateStubService},
-      { provide: ErrorService, useClass: ErrorStubService}]
+      imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule],
+      declarations: [AlertComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

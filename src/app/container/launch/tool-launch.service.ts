@@ -13,34 +13,42 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { ga4ghPath } from './../../shared/constants';
 import { Dockstore } from './../../shared/dockstore.model';
 import { EntryType } from './../../shared/enum/entryType.enum';
 import { LaunchService } from './../../shared/launch.service';
+import { Injectable } from '@angular/core';
+import { ToolDescriptor } from '../../shared/swagger';
 
+@Injectable()
 export class ToolLaunchService extends LaunchService {
+
+  constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {
+    super(descriptorTypeCompatService);
+  }
   getParamsString(path: string, versionName: string, currentDescriptor: string) {
     let descriptor = '';
 
-    if (currentDescriptor === 'WDL') {
+    if (currentDescriptor === ToolDescriptor.TypeEnum.WDL) {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
-    return '$ dockstore tool convert entry2json' + descriptor + ` --entry ${path}:${versionName} > Dockstore.json
-            \n$ vim Dockstore.json`;
+    return 'dockstore tool convert entry2json' + descriptor + ` --entry ${path}:${versionName} > Dockstore.json
+            \nvim Dockstore.json`;
   }
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
     let descriptor = '';
-    if (currentDescriptor === 'WDL') {
+    if (currentDescriptor === ToolDescriptor.TypeEnum.WDL) {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
-    return `$ dockstore tool launch --entry ${path}:${versionName} --json Dockstore.json` + descriptor;
+    return `dockstore tool launch --entry ${path}:${versionName} --json Dockstore.json` + descriptor;
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return '$ cwl-runner ' +
+    return 'cwl-runner ' +
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
   }

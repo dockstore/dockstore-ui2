@@ -17,8 +17,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 
-import { UserService } from '../loginComponents/user.service';
 import { TrackLoginService } from '../shared/track-login.service';
+import { UserService } from './user/user.service';
 
 @Injectable()
 export class LogoutService {
@@ -31,8 +31,7 @@ export class LogoutService {
     this.auth.logout()
       .subscribe({
         complete: () => {
-          this.userService.setUser(null);
-          this.userService.setExtendedUser(null);
+          this.userService.remove();
           this.trackLoginService.switchState(false);
           this.router.navigate(['/login']);
         }

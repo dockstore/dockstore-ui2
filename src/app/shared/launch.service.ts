@@ -16,8 +16,10 @@
 import { Injectable } from '@angular/core';
 
 import { ga4ghPath } from './constants';
+import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
 import { EntryType } from './enum/entryType.enum';
+import { ToolDescriptor } from './swagger';
 
 @Injectable()
 export abstract class LaunchService {
@@ -29,13 +31,13 @@ export abstract class LaunchService {
     public readonly cwlrunnerTooltip = 'Commands for launching tools/workflows through cwl-runner. ' + this.nonStrict;
     public readonly cwltoolTooltip = 'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' +
     this.nonStrict;
-    constructor() { }
+    constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) { }
     abstract getParamsString(path: string, versionName: string, currentDescriptor: string);
     abstract getCliString(path: string, versionName: string, currentDescriptor: string);
     abstract getCwlString(path: string, versionName: string, mainDescriptor: string);
 
     getConsonanceString(path: string, versionName: string) {
-        return `$ consonance run --tool-dockstore-id ${path}:${versionName} ` +
+        return `consonance run --tool-dockstore-id ${path}:${versionName} ` +
             '--run-descriptor Dockstore.json --flavour \<AWS instance-type\>';
     }
 
@@ -45,7 +47,7 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getDockstoreSupportedCwlLaunchString(path: string, versionName: string) {
-        return `$ cwltool ${path}:${versionName} Dockstore.json`;
+        return `cwltool ${path}:${versionName} Dockstore.json`;
     }
 
     /**
@@ -54,7 +56,7 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string) {
-        return `$ cwltool --make-template ${path}:${versionName} > input.yaml`;
+        return `cwltool --make-template ${path}:${versionName} > input.yaml`;
     }
 
     /**
@@ -65,7 +67,7 @@ export abstract class LaunchService {
     getCheckEntry(path: string, versionName: string, entryType: EntryType) {
         if (path) {
             const entryName = path + (versionName ? ':' + versionName : '');
-            return '$ dockstore checker launch --entry ' + entryName + ' --json checkparam.json';
+            return 'dockstore checker launch --entry ' + entryName + ' --json checkparam.json';
         } else {
             return '';
         }
@@ -76,7 +78,23 @@ export abstract class LaunchService {
      * @param versionName The ToolVersion's name
      */
     getNextflowNativeLaunchString(workflowPath: string, versionName: string) {
-      return `$ nextflow run http://${workflowPath} -r ${versionName} -with-docker`;
+      return `nextflow run http://${workflowPath} -r ${versionName}`;
+    }
+
+    /**
+     * Gets local launch command
+     */
+    getNextflowLocalLaunchString(): string {
+      return `nextflow run nextflow.config`;
+    }
+
+    /**
+     * Gets the download command
+     * @param workflowPath Path of the workflow
+     * @param versionName Name of the version
+     */
+    getNextflowDownload(workflowPath: string, versionName: string): string {
+      return `dockstore workflow download --entry ${workflowPath}:${versionName}`;
     }
 
     /**
@@ -84,32 +102,32 @@ export abstract class LaunchService {
      *
      * @param {string} entryPath     The entry path
      * @param {string} versionName   The workflow version
-     * @param {string} type          The descriptor type (cwl, wdl, nfl)
+     * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor type (cwl, wdl, nfl)
      * @param {string} filePath      Relative file path of the the test parameter file
      * @returns {string}             The wget command
      * @memberof LaunchService
      */
-    getTestJsonString(entryPath: string, versionName: string, type: string, filePath: string): string {
+    getTestJsonString(entryPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum, filePath: string): string {
       if (!filePath) {
         return;
       }
       let urlType = 'PLAIN_NFL';
-      switch (type) {
-        case 'wdl':
+      switch (descriptorType) {
+        case ToolDescriptor.TypeEnum.WDL:
           urlType = 'PLAIN_WDL';
           break;
-        case 'cwl':
+        case ToolDescriptor.TypeEnum.CWL:
           urlType = 'PLAIN_CWL';
           break;
-        case 'nfl':
+        case ToolDescriptor.TypeEnum.NFL:
           urlType = 'PLAIN_NFL';
           break;
         default:
-          console.error('Unknown descriptor type: ' + type);
+          console.error('Unknown descriptor type: ' + descriptorType);
           return null;
       }
 
-      const prefix = `$ wget --header='Accept: text/plain`;
+      const prefix = `wget --header='Accept: text/plain`;
       const outputFile = `-O Dockstore.json`;
       const id = encodeURIComponent(entryPath);
       const versionId = encodeURIComponent(versionName);

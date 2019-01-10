@@ -15,23 +15,26 @@
  */
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { ContainersService } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { ParamfilesService } from '../paramfiles/paramfiles.service';
-import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'app-add-tag',
   templateUrl: './add-tag.component.html',
   styleUrls: ['./add-tag.component.css']
 })
-export class AddTagComponent implements OnInit, AfterViewChecked {
+export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
   @ViewChild('addTagForm') currentForm: NgForm;
   public DescriptorType = ToolDescriptor.TypeEnum;
@@ -46,7 +49,9 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private paramFilesService: ParamfilesService) {
+    private containersService: ContainersService, private toolQuery: ToolQuery, private alertService: AlertService,
+    private matDialog: MatDialog) {
+      super();
   }
 
   initializeTag() {
@@ -84,8 +89,9 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.initializeTag();
-    this.containerService.tool$.subscribe(tool => {
-      this.tool = tool;
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+      // One day, we will figure out how to handle form changes with state management's read only state
+      this.tool = JSON.parse(JSON.stringify(tool));
       this.loadDefaults();
     });
   }
@@ -127,6 +133,7 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
   }
 
   addTag() {
+    this.alertService.start('Adding tag');
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
       this.tool.tags = response;
       const id = this.tool.id;
@@ -139,12 +146,18 @@ export class AddTagComponent implements OnInit, AfterViewChecked {
         this.addTestParameterFile(this.DescriptorType.WDL);
       }
 
-      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', null, tagName).subscribe();
-      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', null, tagName).subscribe();
+      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null).
+        subscribe();
+      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null).
+        subscribe();
       this.containerService.setTool(this.tool);
       this.initializeTag();
       this.loadDefaults();
-    }, error => console.log(error));
+      this.matDialog.closeAll();
+      this.alertService.detailedSuccess();
+    }, error => this.alertService.detailedError(error));
   }
 
   // Validation starts here, should move most of these to a service somehow

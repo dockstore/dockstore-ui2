@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Injectable } from '@angular/core';
 
+import { ToolDescriptor } from '../../shared/swagger';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+
 
 @Injectable()
 export class ParamfilesService {
@@ -28,7 +29,7 @@ export class ParamfilesService {
 
   constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) { }
 
-  getFiles(id: number, type: string, versionName?: string, descriptor?: string) {
+  getFiles(id: number, type: string, versionName?: string, descriptor?: ToolDescriptor.TypeEnum) {
     if (type === 'workflows') {
       return this.workflowsService.getTestParameterFiles(id, versionName);
     } else {
@@ -37,17 +38,17 @@ export class ParamfilesService {
   }
 
   // get descriptors which have test parameter files
-  getDescriptors(version) {
-    const descriptorsWithParamfiles = [];
+  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+    const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
     if (version) {
       for (const file of version.sourceFiles) {
         const type = file.type;
-        if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes('cwl')) {
-          descriptorsWithParamfiles.push('cwl');
-        } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes('wdl')) {
-          descriptorsWithParamfiles.push('wdl');
-        } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes('nfl')) {
-          descriptorsWithParamfiles.push('nfl');
+        if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.CWL)) {
+          descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.CWL);
+        } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.WDL)) {
+          descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.WDL);
+        } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
+          descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.NFL);
         }
       }
     }

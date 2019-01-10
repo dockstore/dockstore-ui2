@@ -16,7 +16,7 @@
 import { Component, Input } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import {finalize, first} from 'rxjs/operators';
 
 import { ga4ghPath } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
@@ -24,6 +24,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
 import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolQuery } from '../../shared/tool/tool.query';
 
 @Component({
   selector: 'app-dockerfile',
@@ -41,20 +42,22 @@ export class DockerfileComponent {
   }
   content: string;
   filePath: string;
-  nullContent: boolean;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
-  constructor(public fileService: FileService,
+  public loading = true;
+  constructor(public fileService: FileService, private toolQuery: ToolQuery,
               private containerService: ContainerService, private containersService: ContainersService) {
     this.filePath = '/Dockerfile';
-    this.published$ = this.containerService.toolIsPublished$;
+    this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   reactToVersion(): void {
     if (this._selectedVersion) {
-      this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first())
+      this.loading = true;
+      this.containersService.dockerfile(this.id, this._selectedVersion.name).pipe(first(),
+        finalize(() => this.loading = false))
         .subscribe(file => {
             this.content = file.content;
             this.filePath = file.path;
@@ -66,6 +69,7 @@ export class DockerfileComponent {
         );
     } else {
       this.content = null;
+      this.loading = false;
     }
   }
 

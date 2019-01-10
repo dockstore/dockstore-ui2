@@ -13,223 +13,103 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { filterNil } from '@datorama/akita';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
-import { DagService } from './dag.service';
-
-declare var cytoscape: any;
-declare var window: any;
+import { DagQuery } from './state/dag.query';
+import { DagService } from './state/dag.service';
+import { DagStore } from './state/dag.store';
 
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
-  providers: [DagService]
+  providers: [DagStore, DagQuery, DagService]
 })
-export class DagComponent extends EntryTab implements OnInit, AfterViewChecked {
+export class DagComponent extends EntryTab implements OnInit, OnChanges {
   @Input() id: number;
+  @Input() selectedVersion: WorkflowVersion;
 
-  _selectedVersion: WorkflowVersion;
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.onChange();
-    }
-  }
+  @ViewChild('exportLink') exportLink: ElementRef;
+  @ViewChild('cy') cyElement: ElementRef;
 
-  private element: any;
-  public dagResult: any;
-  private cy: any;
-
+  public dagResult$: Observable<any>;
+  private cy: cytoscape.Core;
   public expanded: Boolean = false;
-  @ViewChild('cy') el: ElementRef;
-  private style;
-  public workflow: Workflow;
-  private tooltip: string;
-  public missingTool;
-  private refresh = false;
-
+  public workflow$: Observable<Workflow>;
+  public isNFL$: Observable<boolean>;
+  public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  public missingTool$: Observable<boolean>;
   public dagType: 'classic' | 'cwlviewer' = 'classic';
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
+  ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
 
-  setDagResult(dagResult: any) {
-    this.dagResult = dagResult;
-  }
-
-  @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keyup.escape', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
+    if (this.expanded) {
       this.expanded = false;
-      this.refreshDocument();
+      this.refreshDocument(this.cy);
     }
   }
 
   reset() {
     this.refreshCounter++;
-    this.refreshDocument();
+    this.refreshDocument(this.cy);
   }
 
-  refreshDocument() {
-    const self = this;
-    if (this.dagResult) {
-      this.element = document.getElementById('cy');
-      this.cy = cytoscape({
-        container: this.element,
-        boxSelectionEnabled: false,
-        autounselectify: true,
-        layout: {
-          name: 'dagre'
-        },
-        style: this.style,
-        elements: this.dagResult
-      });
-
-         self.cy.on('mouseover', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-      const node = this;
-      const name = this.data('name');
-      const tool = this.data('tool');
-      const type = this.data('type');
-      const docker = this.data('docker');
-      const run = this.data('run');
-      const runText = self.dagService.getTooltipText(name, tool, type, docker, run);
-      const tooltip = node.qtip({
-        content: {
-          text: runText,
-          title: node.data('name')
-        },
-        show: {
-          solo: true
-        },
-        style: {
-          classes: 'qtip-bootstrap',
-        }
-      });
-      const api = tooltip.qtip('api');
-      api.toggle(true);
-    });
-
-    self.cy.on('mouseout mousedown', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-      const node = this;
-      const api = node.qtip('api');
-      api.destroy();
-    });
-
-    self.cy.on('mouseout', 'node', function () {
-      const node = this;
-      self.cy.elements().removeClass('notselected');
-      node.connectedEdges().animate({
-        style: {
-          'line-color': '#9dbaea',
-          'target-arrow-color': '#9dbaea',
-          'width': 3
-        }
-      }, {
-          duration: 150
-        });
-    });
-
-    self.cy.on('mouseover', 'node', function () {
-      const node = this;
-      self.cy.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
-
-      node.outgoers('edge').animate({
-        style: {
-          'line-color': '#e57373',
-          'target-arrow-color': '#e57373',
-          'width': 5
-        }
-      }, {
-          duration: 150
-        });
-      node.incomers('edge').animate({
-        style: {
-          'line-color': '#81c784',
-          'target-arrow-color': '#81c784',
-          'width': 5
-        }
-      }, {
-          duration: 150
-        });
-    });
-
-    self.cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-      try { // your browser may block popups
-        if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
-          window.open(this.data('tool'));
-        }
-      } catch (e) { // fall back on url change
-        if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
-          window.location.href = this.data('tool');
-        }
-      }
-    });
-    }
-  }
-
-  constructor(private dagService: DagService, private workflowService: WorkflowService) {
+  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery) {
     super();
+  }
+
+  /**
+   * For some reason the cy element is not guaranteed to be visible and ready when ngAfterViewinit is called.
+   * Using window.requestAnimationFrame() to wait for the element to be visible before subscribing to dagResult$
+   * In practice, the wait lasts around 181ms and recursively calls step once
+   *
+   * @memberof DagComponent
+   */
+  refreshDocument(cy: cytoscape.Core) {
+    const self = this;
+    function step() {
+      if (self.cyElement) {
+        self.cy = self.dagService.refreshDocument(cy, self.cyElement.nativeElement);
+      } else {
+        window.requestAnimationFrame(step);
+      }
+    }
+    window.requestAnimationFrame(step);
   }
 
   toggleExpand() {
     this.expanded = !this.expanded;
-    this.refresh = true;  // This will set the DAG after the view has been checked
+    this.refreshDocument(this.cy);
   }
 
   ngOnInit() {
-    this.workflowService.workflow$.subscribe(workflow => this.workflow = workflow);
-    this.style = this.dagService.style;
-    this.missingTool = false;
+    this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.isNFL$ = this.workflowQuery.isNFL$;
+    this.dagResult$ = this.dagQuery.dagResults$;
+    this.workflow$ = this.workflowQuery.workflow$;
+    this.missingTool$ = this.dagQuery.missingTool$;
+    this.dagResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe)).subscribe(dagResults => {
+      this.refreshDocument(this.cy);
+    }, error => console.error('Something went terribly wrong with dagResult$'));
   }
 
-  updateMissingTool() {
-    if (!this.dagResult) {
-      this.missingTool = true;
-    } else {
-      if (this.dagResult.edges.length < 1 && this.dagResult.nodes.length < 1) {
-        this.missingTool = true;
-      } else {
-        this.missingTool = false;
-      }
-    }
+  ngOnChanges() {
+    this.dagService.getDAGResults(this.selectedVersion, this.id);
   }
 
   download() {
-    if (this.cy) {
-      const pngDAG = this.cy.png({ full: true, scale: 2 });
-      const name = this.workflow.repository + '_' + this._selectedVersion.name + '.png';
-      $('#exportLink').attr('href', pngDAG).attr('download', name);
-    }
-  }
-  ngAfterViewChecked() {
-    if (this.refresh) {
-      this.refresh = false;
-      this.refreshDocument();
-    }
-  }
-
-  onChange() {
-    if (this._selectedVersion) {
-      this.getDag(this._selectedVersion.id);
-    }
-  }
-
-  getDag(versionId: number) {
-    this.dagService.getCurrentDAG(this.id, versionId).subscribe(result => {
-      this.handleDagResponse(result);
-    }, error => {
-      this.handleDagResponse(null);
-    });
-  }
-
-  handleDagResponse(result: any) {
-    this.setDagResult(result);
-    this.refresh = true;
-    this.updateMissingTool();
+    this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
   }
 }

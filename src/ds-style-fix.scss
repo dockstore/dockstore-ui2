@@ -186,9 +186,8 @@ table.hosted-tool-versions-grid {
 div.details-container {
   margin-bottom: 14px;
 }
-div.ds-tabs > div {
+div.ds-tabs {
   border: solid 1px #cfd1d7;
-  max-width: 870px;
 }
 
 ul.nav-tabs {
@@ -223,9 +222,6 @@ div.tab-content {
   }
   pre {
     margin: 0 0;
-  }
-  span.glyphicon-edit, span.glyphicon-floppy-save {
-    margin-right: 4px;
   }
 }
 
@@ -326,11 +322,6 @@ div.panel-container-label.selected {
       }
     }
   }
-}
-
-.glyphicon-refresh-animate {
-    animation: spin .7s infinite linear;
-    transform-origin: 48% 50%;
 }
 
 @keyframes spin {
@@ -493,9 +484,6 @@ button.add-container-ns {
   position: relative;
   top: 5px;
   margin-right: 5px;
-  span.glyphicon {
-    left: 1px;
-  }
 }
 
 div.modal-header + div.alert {
@@ -689,6 +677,10 @@ div.modal form {
   height: 30px;
 }
 
+.form-sm-button-material {
+  height: 34px;
+}
+
 .form-margin {
   margin-bottom: 15px;
 }
@@ -792,4 +784,7 @@ mat-panel-title.org-accordion-header {
 
 .spacer {
   flex: 1 1 auto;
+}
+.mat-drawer-inner-container {
+  overflow: visible !important;
 }

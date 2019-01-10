@@ -18,12 +18,12 @@ import { AuthService } from 'ng2-ui-auth';
 import { Subject } from 'rxjs';
 
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
-import { TokenService } from '../loginComponents/token.service';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
 import { TokenSource } from './enum/token-source.enum';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
+import { TokenQuery } from './state/token.query';
 import { Configuration, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
@@ -38,7 +38,7 @@ export abstract class MyEntry implements OnDestroy {
 
     protected ngUnsubscribe: Subject<{}> = new Subject();
     constructor(protected accountsService: AccountsService, protected authService: AuthService, protected configuration: Configuration,
-        protected tokenService: TokenService, protected urlResolverService: UrlResolverService) { }
+        protected tokenQuery: TokenQuery, protected urlResolverService: UrlResolverService) { }
 
     link() {
         this.accountsService.link(TokenSource.GITHUB);
@@ -89,7 +89,7 @@ export abstract class MyEntry implements OnDestroy {
         localStorage.setItem('page', this.pageName);
       const token = this.authService.getToken();
       this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
-        this.tokenService.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
+        this.tokenQuery.hasGitHubToken$.subscribe(hasGitHubToken => this.hasGitHubToken = hasGitHubToken);
     }
 
     ngOnDestroy() {

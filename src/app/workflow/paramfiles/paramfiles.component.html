@@ -13,24 +13,27 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div>
+<div class="p-3">
   <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     &nbsp;This version of the workflow is invalid.
   </alert>
-  <alert type="warning" *ngIf="!content && descriptorType !== 'nfl'">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp; A Test Parameter File associated with this workflow could not be found.
-  </alert>
-  <alert type="info" *ngIf="descriptorType === 'nfl'">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+  <alert type="info" *ngIf="(isNFL$ | async)">
+    <mat-icon>warning</mat-icon>
     &nbsp;
     Nextflow does not have the concept of a test parameter file.
   </alert>
-  <div [hidden]="!content">
+  <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
+  <ng-template #loaded>
+    <alert type="warning" *ngIf="!content && !(isNFL$ | async)">
+      <mat-icon>warning</mat-icon>
+      &nbsp; A Test Parameter File associated with this workflow could not be found.
+    </alert>
+    <div [hidden]="!content">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <app-select  [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+          <app-select [items]="files" [default]="currentFile" [field]="'path'"
+                      (select)="onFileChange($event)"></app-select>
           <span class="spacer"></span>
           <div class="btn-group pull-right" role="group">
             <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
@@ -47,6 +50,7 @@
           </div>
         </mat-toolbar-row>
       </mat-toolbar>
-    <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
-  </div>
+      <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
+    </div>
+  </ng-template>
 </div>

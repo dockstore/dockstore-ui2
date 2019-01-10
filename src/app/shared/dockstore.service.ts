@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { Tag, WorkflowVersion } from './swagger';
 
@@ -45,7 +46,19 @@ export class DockstoreService {
     }
   }
 
-  getVerifiedSource(name: string, verifiedSource: any) {
+  /**
+   * Turn this into a pipe to prevent it from being called so often
+   *
+   * @param {string} name
+   * @param {*} verifiedSource
+   * @returns {string}
+   * @memberof DockstoreService
+   */
+  getVerifiedSource(name: string, verifiedSource: any): string {
+    if (!verifiedSource || !name) {
+      console.error('verifiedSource or name is falsey');
+      return '';
+    }
     for (const source of verifiedSource) {
       if (source.version === name) {
         return source.verifiedSource;
@@ -102,12 +115,12 @@ export class DockstoreService {
     return null;
   }
 
-  getIconClass(columnName: string, sortColumn: string, sortReverse: boolean) {
+  getIconClass(columnName: string, sortColumn: string, sortReverse: boolean): IconDefinition {
     if (sortColumn === columnName) {
-      return !sortReverse ? 'glyphicon-sort-by-alphabet' :
-        'glyphicon-sort-by-alphabet-alt';
+      return !sortReverse ? faSortAlphaDown :
+        faSortAlphaUp;
     } else {
-      return 'glyphicon-sort';
+      return faSort;
     }
   }
 

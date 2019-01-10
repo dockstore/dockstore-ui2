@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 import { Component } from '@angular/core';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
-import { UserService } from './../loginComponents/user.service';
+import { UserService } from '../shared/user/user.service';
 import { LoginService } from './login.service';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +41,7 @@ export class LoginComponent {
     observable.subscribe(
       (response) => {
         this.trackLoginService.switchState(true);
-        this.userService.updateUser();
+        this.userService.getUser();
         this.router.navigate(['/onboarding']);
       },
       (error) => {

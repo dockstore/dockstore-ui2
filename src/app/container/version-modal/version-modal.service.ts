@@ -25,14 +25,9 @@ export class VersionModalService {
     mode: Subject<TagEditorMode> = new BehaviorSubject<TagEditorMode>(null);
     unsavedTestCWLFile: Subject<string> = new BehaviorSubject<string>('');
     unsavedTestWDLFile: Subject<string> = new BehaviorSubject<string>('');
-    isModalShown: Subject<boolean> = new BehaviorSubject<boolean>(false);
     version: Subject<Tag> = new BehaviorSubject<Tag>(null);
     public setCurrentMode(mode: TagEditorMode): void {
         this.mode.next(mode);
-    }
-
-    public setIsModalShown(isModalShown: boolean) {
-        this.isModalShown.next(isModalShown);
     }
 
     public setVersion(version: Tag) {

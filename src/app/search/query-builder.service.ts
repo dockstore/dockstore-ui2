@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import * as bodybuilder from 'bodybuilder';
 
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
-import { SearchService } from './search.service';
+import { SearchService } from './state/search.service';
 
 /**
  * This service constructs all the querys and should be only class that interacts with the bodybuilder library.

@@ -13,20 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 import {
   CheckerWorkflowStubService,
   DescriptorLanguageStubService,
   RegisterCheckerWorkflowStubService,
-} from './../../../test/service-stubs';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { ErrorService } from './../../error.service';
-import { DescriptorLanguageService } from './../descriptor-language.service';
+} from '../../../test/service-stubs';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
+import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow.component';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
+import { DescriptorTypeCompatService } from '../../descriptor-type-compat.service';
 
 describe('RegisterCheckerWorkflowComponent', () => {
   let component: RegisterCheckerWorkflowComponent;
@@ -35,9 +36,11 @@ describe('RegisterCheckerWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterCheckerWorkflowComponent],
-      imports: [ModalModule.forRoot(), FormsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [FormsModule, MatSnackBarModule, MatDialogModule],
       providers: [{provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService},
-        {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }, ErrorService,
+        {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+        DescriptorTypeCompatService,
         {provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService}
       ]
     })

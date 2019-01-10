@@ -23,6 +23,8 @@ import {
   MatTooltipDefaultOptions,
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -32,13 +34,14 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
 
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -56,26 +59,19 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
-import { TokenService } from './loginComponents/token.service';
-import { TokensComponent } from './loginComponents/tokens/tokens.component';
-import { UserService } from './loginComponents/user.service';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
-import { SearchService } from './search/search.service';
+import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
-import { CheckerWorkflowService } from './shared/checker-workflow.service';
-import { CommunicatorService } from './shared/communicator.service';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
 import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
-import { GA4GHFilesStateService } from './shared/entry/GA4GHFiles.state.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
-import { ErrorService } from './shared/error.service';
 import { ExtendedToolsService } from './shared/extended-tools.service';
 import { ExtendedWorkflowsService } from './shared/extended-workflows.service';
 import { ImageProviderService } from './shared/image-provider.service';
@@ -89,7 +85,6 @@ import { OrderByModule } from './shared/modules/orderby.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
-import { StateService } from './shared/state.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
@@ -98,7 +93,6 @@ import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
-import { WorkflowService } from './shared/workflow.service';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
@@ -135,15 +129,17 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     AuthComponent,
     GetTokenUsernamePipe,
     GetTokenContentPipe,
-    TokensComponent,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
     FundingComponent,
     BannerComponent,
-    ChangeUsernameComponent
+    ChangeUsernameComponent,
+    YoutubeComponent
 ],
   imports: [
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
+    FontAwesomeModule,
     BrowserAnimationsModule,
     FormsModule,
     Ng2UiAuthModule.forRoot(AuthConfig),
@@ -165,7 +161,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
-    CustomMaterialModule
+    CustomMaterialModule,
+    RefreshAlertModule
   ],
   providers: [
     AccountsService,
@@ -177,25 +174,16 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     DockstoreService,
     DateService,
     TrackLoginService,
-    TokenService,
-    UserService,
-    GA4GHFilesStateService,
     ListService,
-    CommunicatorService,
     ProviderService,
     ContainerService,
-    WorkflowService,
     ImageProviderService,
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,
     RefreshService,
-    StateService,
-    SearchService,
     PagenumberService,
     TwitterService,
     GA4GHService,
-    CheckerWorkflowService,
-    ErrorService,
     DescriptorLanguageService,
     UrlResolverService,
     MetadataService,
@@ -205,7 +193,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
-  entryComponents: [DeleteAccountDialogComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

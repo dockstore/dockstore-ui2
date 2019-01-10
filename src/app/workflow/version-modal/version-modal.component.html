@@ -13,139 +13,115 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="isModalShown">
-  <div [config]="{ show: true }" (onHidden)="hideModal()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
-    (onHide)=hideModal()>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">{{isPublic || !canWrite ? 'View' : 'Edit'}} Version Tag</h4>
-        </div>
-        <div class="alert alert-danger alert-dismissable" role="alert" *ngIf="VersionEditError">
-          <button type="button" class="close" data-dismiss="alert" (click)="clearVersionEditError()">
-            &times;
-          </button>
-          <p>
-            <span class="glyphicon glyphicon-warning-sign"></span>
-            {{VersionEditError.message}}
-          </p>
-          <p class="error-output">{{VersionEditError.errorDetails}}</p>
-        </div>
-        <div class="alert alert-info" role="alert" *ngIf="refreshing">
-          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
-          </span>
-          Please wait, retrieving workflow...
-        </div>
-        <form #versionEditorForm="ngForm" class="form-horizontal">
-          <div class="modal-body tagEditor">
-            <div class="form-group form-group-sm">
-              <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-                Git Reference:
-              </label>
-              <div class="col-sm-9 col-md-9 col-lg-9">
+<h4 mat-dialog-title>{{isPublic || !data.canWrite ? 'View' : 'Edit'}} Version Tag</h4>
+<div mat-dialog-content>
+<app-alert></app-alert>
+<form #versionEditorForm="ngForm" class="form-horizontal">
+  <div class="modal-body tagEditor">
+    <div class="form-group form-group-sm">
+      <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+        Git Reference:
+      </label>
+      <div class="col-sm-9 col-md-9 col-lg-9">
                 <input type="text" class="form-control" name="reference" ngModel="{{version.reference ? version.reference : 'n/a'}}" disabled/>
-              </div>
-            </div>
-            <div class="form-group form-group-sm">
-              <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-                Workflow Path:
-              </label>
-              <div class="col-sm-9 col-md-9 col-lg-9">
-                <input type="text" class="form-control" name="workflow_path" [(ngModel)]="version.workflow_path" minlength="3" maxlength="128" [pattern]="validationPatterns.workflowDescriptorPath"
-                  required [tooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" [readonly]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
-                />
-                <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
-              </div>
-            </div>
-            <div class="form-group form-group-sm" *ngIf="workflow?.descriptorType !== 'nfl'">
-              <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-                Test Parameter File(s):
-              </label>
-              <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
-                <div class="input-group">
-                  <input [ngClass]="{ 'input-right-button' : !isPublic, 'input-no-button' : isPublic }" type="text" class="form-control" name="testParameterFilePaths[{{i}}]"
-                    [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a Test Parameter File in the Git repository."
-                    placeholder="e.g. /test.json" disabled ng-class="!isPublic ? 'test_parameter_input' : ''" readonly [tooltip]="tooltip.testParameterFile"
-                  />
-                  <span class="input-group-btn">
-                    <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
-                      <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                  </span>
-                </div>
-              </div>
-              <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
-                <div class="input-group">
-                  <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="testParameterFilePath"
-                    minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json" [disabled]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
-                    ng-class="!isPublic ? 'test_parameter_input' : ''" />
-                  <span class="input-group-btn">
-                    <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
-                      (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
-                      <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
-                      *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
-                      <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                  </span>
-                </div>
-                <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
-                  {{formErrors.cwlTestParameterFilePath}}
-                </div>
-                <div *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
-                  Duplicate test json files are not allowed.
-                </div>
-              </div>
-              <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
-                <input class="form-control" placeholder="None provided" [disabled]="true" />
-              </div>
-            </div>
-            <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
-            </div>
-            <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">
-              <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-                Hidden:
-              </label>
-              <div class="col-sm-9 col-md-9 col-lg-9">
-                <div>
-                  <label>
-                    <input type="checkbox" name="checkbox" [disabled]="isPublic || !canWrite" [(ngModel)]="version.hidden" matTooltip="Hide tag from public view." />
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
-              <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-                Last Modified:
-              </label>
-              <div class="col-sm-9 col-md-9 col-lg-9">
-                <div class="label-value">
-                  {{getDateTimeMessage(version.last_modified)}}
-                </div>
-              </div>
-            </div>
-            <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
-              <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-                Valid:
-              </label>
-              <div class="col-sm-9 col-md-9 col-lg-9">
-                <div class="label-value">
-                  {{version.valid ? 'Yes' : 'No'}}
-                </div>
-              </div>
-            </div>
-            <app-verified-display *ngIf="version?.verified" [sourceFiles]=version?.sourceFiles></app-verified-display>
-          </div>
-          <div class="modal-footer">
-            <button type="button" mat-button color="secondary" (click)="hideModal()">Close</button>
-            <button type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid"
-              data-dismiss="modal">
-              Save Changes
-            </button>
-          </div>
-        </form>
       </div>
     </div>
+    <div class="form-group form-group-sm">
+      <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+        Workflow Path:
+      </label>
+      <div class="col-sm-9 col-md-9 col-lg-9">
+        <input type="text" class="form-control" name="workflow_path" [(ngModel)]="version.workflow_path" minlength="3" maxlength="128"
+          [pattern]="validationPatterns.workflowDescriptorPath" required [tooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
+          [readonly]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED" />
+        <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
+      </div>
+    </div>
+    <div class="form-group form-group-sm" *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
+      <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+        Test Parameter File(s):
+      </label>
+      <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
+        <div class="input-group">
+          <input [ngClass]="{ 'input-right-button' : !isPublic, 'input-no-button' : isPublic }" type="text" class="form-control" name="testParameterFilePaths[{{i}}]"
+            [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a Test Parameter File in the Git repository."
+            placeholder="e.g. /test.json" disabled ng-class="!isPublic ? 'test_parameter_input' : ''" readonly [tooltip]="tooltip.testParameterFile" />
+          <span class="input-group-btn">
+            <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
+        <div class="input-group">
+          <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
+            [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json"
+            [disabled]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED" ng-class="!isPublic ? 'test_parameter_input' : ''" />
+          <span class="input-group-btn">
+            <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
+              (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
+              <mat-icon>add</mat-icon>
+            </button>
+            <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
+              *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </span>
+        </div>
+        <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
+          {{formErrors.cwlTestParameterFilePath}}
+        </div>
+        <div *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
+          Duplicate test json files are not allowed.
+        </div>
+      </div>
+      <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
+        <input class="form-control" placeholder="None provided" [disabled]="true" />
+      </div>
+    </div>
+    <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
+    </div>
+    <div class="form-group form-group-sm" ng-if="editMode" style="clear:both;">
+      <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+        Hidden:
+      </label>
+      <div class="col-sm-9 col-md-9 col-lg-9">
+        <div>
+          <label>
+            <input type="checkbox" name="checkbox" [disabled]="isPublic || !canWrite" [(ngModel)]="version.hidden" matTooltip="Hide tag from public view." />
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
+      <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+        Last Modified:
+      </label>
+      <div class="col-sm-9 col-md-9 col-lg-9">
+        <div class="label-value">
+          {{getDateTimeMessage(version.last_modified)}}
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-group-sm" ng-if="!unsavedVersion.create">
+      <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+        Valid:
+      </label>
+      <div class="col-sm-9 col-md-9 col-lg-9">
+        <div class="label-value">
+          {{version.valid ? 'Yes' : 'No'}}
+        </div>
+      </div>
+    </div>
+    <app-verified-display *ngIf="version?.verified" [sourceFiles]=version?.sourceFiles></app-verified-display>
   </div>
+  <div class="modal-footer">
+    <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
+    <button type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid"
+      data-dismiss="modal">
+      Save Changes
+    </button>
+  </div>
+</form>
 </div>

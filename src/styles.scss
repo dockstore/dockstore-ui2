@@ -16,6 +16,8 @@
 
 @import "ds-style-fix.scss";
 @import "bootstrap4.scss";
+@import '~@ngx-share/button/styles/share-buttons';
+@import '~@ngx-share/button/styles/themes/default/default-theme';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
 
@@ -705,6 +707,10 @@ div.side-block img {
   width: 100%;
 }
 
+.mat-icon {
+  vertical-align: middle
+}
+
 div.side-block code {
   background: #fff;
   color: #000;
@@ -982,6 +988,15 @@ div.tabs>div:target>div,
   left: 0;
   padding: 10px;
   margin: 0px;
+}
+
+.bootstrap-tooltip-z-index {
+  z-index: 1070;
+
+}
+
+.opaq {
+  opacity: 0.825;
 }
 
 .fullscreen-element {

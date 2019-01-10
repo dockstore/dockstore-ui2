@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2019 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,36 +13,62 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientModule } from '@angular/common/http';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AccordionModule } from 'ngx-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PopoverModule } from 'ngx-bootstrap';
+import { ClipboardModule } from 'ngx-clipboard';
+import { of } from 'rxjs';
 
+import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
-import { AdvancedSearchStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
+import {
+  AdvancedSearchStubService,
+  ProviderStubService,
+  QueryBuilderStubService,
+  SearchStubService,
+} from './../test/service-stubs';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
-import { SearchService } from './search.service';
-import { MatAutocompleteModule } from '@angular/material';
+import { SearchQuery } from './state/search.query';
+import { SearchService } from './state/search.service';
+
+@Component({
+  selector: 'app-search-results',
+  template: ''
+})
+class SearchResultsComponent {}
+
+@Component({
+  selector: 'app-basic-search',
+  template: ''
+})
+class BasicSearchComponent {}
+
+@Component({
+  selector: 'app-header',
+  template: ''
+})
+class HeaderComponent {}
 
 /* tslint:disable:no-unused-variable */
 describe('SearchComponent', () => {
   let component: SearchComponent;
+  let searchQuery: jasmine.SpyObj<SearchQuery>;
   let fixture: ComponentFixture<SearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent, MapFriendlyValuesPipe ],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, AccordionModule.forRoot(), HttpClientModule, MatAutocompleteModule],
+      declarations: [ SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
+      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule],
       providers: [
-        {provide: SearchService, useClass: SearchStubService},
+        { provide: SearchService, useClass: SearchStubService},
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-        ProviderService,
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService}
+        { provide: ProviderService, useClass: ProviderStubService },
+        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService},
+        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select']) }
       ]
     })
     .compileComponents();
@@ -51,6 +77,8 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
+    searchQuery = TestBed.get(SearchQuery);
+    (searchQuery as any).searchText$ = of('');
     fixture.detectChanges();
   });
 

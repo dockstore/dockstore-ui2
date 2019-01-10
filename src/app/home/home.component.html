@@ -49,9 +49,9 @@
         </h4>
       </div>
       <div class="col-md-3 col-sm-12 row-center">
-        <a class='btn youtube' href="https://www.youtube.com/embed/RYHUX9jGx24" role="button">
+        <a class='btn youtube' role="button" (click)="openYoutube()">
           <div>
-            <span class="glyphicon glyphicon-play-circle"></span>
+            <mat-icon>play_circle_outline</mat-icon>
             <span>&nbsp;Video Overview</span>
           </div>
         </a>
@@ -59,11 +59,11 @@
       <div class="col-md-3 col-sm-12 row-center">
         <div class="row">
             <div class="button-row">
-              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=!user>
+              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf="!(user$ | async)">
                   <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
                   <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
               </div>
-              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf=user>
+              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf="(user$ | async)">
                 <a mat-raised-button color="accent" routerLink="onboarding">Setup Account <mat-icon>chevron_right</mat-icon></a>
               </div>
               <div class="col-sm-6 col-xs-12 col-md-12">

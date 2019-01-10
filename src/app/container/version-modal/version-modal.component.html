@@ -13,15 +13,10 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="isModalShown">
-<div [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{TagEditorMode[mode]}} Version Tag</h4>
-      </div>
-      <form #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
+  <h4 mat-dialog-title>{{TagEditorMode[mode]}} Version Tag</h4>
+  <div mat-dialog-content>
+      <app-alert></app-alert>
+      <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
@@ -68,7 +63,7 @@
               CWL Descriptor:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" ng-required="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
+              <input type="text" class="form-control" name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath" [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
               <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
                 {{formErrors.cwlPath}}
               </div>
@@ -79,7 +74,7 @@
               WDL Descriptor:
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
-              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path.length || unsavedVersion.wdl_path.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
+              <input type="text" class="form-control" name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath" [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" />
               <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
                 {{formErrors.wdlPath}}
               </div>
@@ -95,7 +90,7 @@
                 <input [ngClass]="{ 'input-right-button' : editMode, 'input-no-button' : !editMode }" type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" disabled ng-class="editMode ? 'test_parameter_input' : ''" />
                 <span class="input-group-btn">
                   <button id="removeCWLTestParameterFileButton" title="Remove CWL test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" (click)="removeTestParameterFile(i, DescriptorType.CWL)">
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <mat-icon>clear</mat-icon>
                   </button>
                 </span>
               </div>
@@ -105,10 +100,10 @@
                 <input id="addCWLField" [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" ng-class="editMode ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
                   <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson(DescriptorType.CWL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="addTestParameterFile(DescriptorType.CWL)" *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)">
-                    <span class="glyphicon glyphicon-plus"></span>
+                      <mat-icon>add</mat-icon>
                   </button>
                   <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || unsavedTestCWLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)">
-                    <span class="glyphicon glyphicon-plus"></span>
+                      <mat-icon>add</mat-icon>
                   </button>
                 </span>
               </div>
@@ -133,7 +128,7 @@
                 <input [ngClass]="{ 'input-right-button' : editMode, 'input-no-button' : !editMode }" type="text" class="form-control" name="unsavedWDLTestParameterFilePaths[{{i}}]" [(ngModel)]="unsavedWDLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" disabled ng-class="editMode ? 'test_parameter_input' : ''" />
                 <span class="input-group-btn">
                   <button id="removeWDLTestParameterFileButton" title="Remove WDL test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" (click)="removeTestParameterFile(i, DescriptorType.WDL)">
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <mat-icon>clear</mat-icon>
                   </button>
                 </span>
               </div>
@@ -143,10 +138,10 @@
                 <input id="addWDLField" [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" ng-class="editMode ? 'test_parameter_input' : ''"/>
                 <span class="input-group-btn">
                   <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button"[disabled]="hasDuplicateTestJson(DescriptorType.WDL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="addTestParameterFile(DescriptorType.WDL)" *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)">
-                    <span class="glyphicon glyphicon-plus"></span>
+                    <mat-icon>add</mat-icon>
                   </button>
                   <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || unsavedTestWDLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED" *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)">
-                    <span class="glyphicon glyphicon-plus"></span>
+                    <mat-icon>add</mat-icon>
                   </button>
                 </span>
               </div>
@@ -222,8 +217,8 @@
               <div class="input-group">
                 <input type="text" id="dockerPullCommand" class="form-control" value="{{ dockerPullCommand }}" aria-describedby="clipboard" #inputTarget disabled>
                 <span class="input-group-btn" id="clipboard">
-                  <button class="btn btn-default btn-sm" type="button" [ngxClipboard]="inputTarget">
-                    <span class="glyphicon glyphicon-copy"></span>
+                  <button class="btn btn-default btn-sm form-sm-button" type="button" [ngxClipboard]="inputTarget">
+                    <mat-icon>file_copy</mat-icon>
                   </button>
                 </span>
               </div>
@@ -238,7 +233,4 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
-</div>
 </div>

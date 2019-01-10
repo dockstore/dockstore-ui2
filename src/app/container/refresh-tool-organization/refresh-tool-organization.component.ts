@@ -13,16 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { RefreshService } from './../../shared/refresh.service';
 import { Component } from '@angular/core';
 
-import { UserService } from './../../loginComponents/user.service';
-import { ContainerService } from './../../shared/container.service';
-import { RefreshOrganizationComponent } from './../../shared/refresh-organization/refresh-organization.component';
-import { StateService } from './../../shared/state.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { ContainerService } from '../../shared/container.service';
+import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
+import { SessionQuery } from '../../shared/session/session.query';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { UserQuery } from '../../shared/user/user.query';
+import { RefreshService } from './../../shared/refresh.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-tool-organization',
@@ -31,9 +32,9 @@ import { DockstoreTool } from './../../shared/swagger/model/dockstoreTool';
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
-  constructor(userService: UserService, public stateService: StateService, private usersService: UsersService,
-    private containerService: ContainerService, private refreshService: RefreshService) {
-    super(userService, stateService);
+  constructor(userQuery: UserQuery, private alertService: AlertService, private usersService: UsersService,
+    private containerService: ContainerService, private refreshService: RefreshService, protected alertQuery: AlertQuery) {
+    super(userQuery, alertQuery);
     this.buttonText = 'Refresh Namespace';
   }
 
@@ -41,12 +42,12 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
     const message = 'Refreshing ' + this.organization;
     const splitOrganization: string[] = this.organization.split('/');
     const actualOrganization: string = splitOrganization[1];
-    this.stateService.setRefreshMessage(message + '...');
+    this.alertService.start(message);
     this.usersService.refreshToolsByOrganization(this.userId, actualOrganization).subscribe(
       (success: DockstoreTool[]) => {
         this.containerService.setTools(success);
-        this.refreshService.handleSuccess(message);
-      }, error => this.refreshService.handleError(message, error));
+        this.alertService.detailedSuccess();
+      }, error => this.alertService.detailedError(error));
   }
 
 }

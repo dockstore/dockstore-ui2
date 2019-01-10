@@ -14,31 +14,35 @@
  *     limitations under the License.
  */
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
+import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { UserService } from '../../loginComponents/user.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { ContainerService } from '../../shared/container.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
-import { StateService } from '../../shared/state.service';
+import { SessionQuery } from '../../shared/session/session.query';
+import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool } from '../../shared/swagger';
+import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { UsersService } from '../../shared/swagger/api/users.service';
+import { Configuration } from '../../shared/swagger/configuration';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
+import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-import { Tool } from './../../container/register-tool/tool';
-import { TokenService } from './../../loginComponents/token.service';
-import { ContainerService } from './../../shared/container.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { Configuration } from './../../shared/swagger/configuration';
-import { first, takeUntil } from 'rxjs/operators';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-
-import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-my-tool',
@@ -49,20 +53,22 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
   tool: any;
+  isRefreshing$: Observable<boolean>;
   readonly pageName = '/my-tools';
-  public refreshMessage: string;
   private registerTool: Tool;
   public showSidebar = true;
   constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
-    private userService: UserService, protected authService: AuthService, private stateService: StateService,
+    private userQuery: UserQuery, protected authService: AuthService,
     private containerService: ContainerService, private dialog: MatDialog, private location: Location,
-    private refreshService: RefreshService, protected accountsService: AccountsService,
-    private registerToolService: RegisterToolService, protected tokenService: TokenService,
-    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService) {
-    super(accountsService, authService, configuration, tokenService, urlResolverService);
+    private refreshService: RefreshService, protected accountsService: AccountsService, private alertService: AlertService,
+    private registerToolService: RegisterToolService, protected tokenQuery: TokenQuery, private sessionQuery: SessionQuery,
+    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService,
+    private toolQuery: ToolQuery, private alertQuery: AlertQuery) {
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (this.groupEntriesObject) {
@@ -72,7 +78,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         }
       }
     });
-    this.registerToolService.isModalShown.subscribe((isModalShown: boolean) => {
+    this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
       } else {
@@ -82,19 +88,19 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.setTools(null);
-    this.containerService.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
     });
 
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
-        this.stateService.setRefreshMessage('Fetching tools');
-        this.usersService.userContainers(user.id).pipe(first()).subscribe(tools => {
+        this.alertService.start('Fetching tools');
+        this.usersService.userContainers(user.id).subscribe(tools => {
           this.containerService.setTools(tools);
-          this.stateService.setRefreshMessage(null);
-        }, (error: any) => {
-          this.stateService.setRefreshMessage(null);
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         });
       }
     });
@@ -113,8 +119,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       }
     });
 
-    this.stateService.refreshMessage$.subscribe(refreshMessage => this.refreshMessage = refreshMessage);
-    this.registerToolService.tool.subscribe(tool => this.registerTool = tool);
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.registerTool = tool);
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {

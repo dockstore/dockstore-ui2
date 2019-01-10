@@ -15,15 +15,17 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, ToolFile } from '../../shared/swagger';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/workflow.service';
+import { FilesService } from '../files/state/files.service';
+import { FilesQuery } from '../files/state/files.query';
 
 @Component({
   selector: 'app-paramfiles-workflow',
@@ -33,21 +35,23 @@ import { WorkflowService } from '../../shared/workflow.service';
 export class ParamfilesWorkflowComponent extends EntryFileSelector {
   @Input() id: number;
   @Input() entrypath: string;
-  @Input() descriptorType: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.clearContent();
     this.onVersionChange(value);
   }
+  public isNFL$: Observable<boolean>;
   protected entryType: ('tool' | 'workflow') = 'workflow';
   public downloadFilePath: string;
 
   constructor(private paramfilesService: ParamfilesService, protected gA4GHService: GA4GHService,
-    public fileService: FileService, protected gA4GHFilesStateService: GA4GHFilesStateService,
-    private workflowService: WorkflowService) {
-    super(fileService, gA4GHFilesStateService, gA4GHService);
+    public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery,
+    private workflowService: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery, protected filesService: FilesService,
+    protected filesQuery: FilesQuery) {
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.workflowService.workflowIsPublished$;
+    this.isNFL$ = this.workflowQuery.isNFL$;
   }
-  getDescriptors(version): Array<any> {
+  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
@@ -60,9 +64,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
    * @returns {Observable<Array<ToolFile>>}  The array of test parameter ToolFiles
    * @memberof ParamfilesWorkflowComponent
    */
-  getFiles(descriptor): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesStateService.testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
-    }));
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
   }
 }
