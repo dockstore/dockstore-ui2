@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CreateCollectionService } from '../state/create-collection.service';
-import { CreateCollectionQuery } from '../state/create-collection.query';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+
+import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
+import { CreateCollectionQuery } from '../state/create-collection.query';
+import { CreateCollectionService } from '../state/create-collection.service';
 
 export interface FormsState {
   createCollection: {
@@ -17,19 +20,31 @@ export interface FormsState {
 })
 export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: FormGroup;
-
+  public title: string;
   constructor(private createCollectionQuery: CreateCollectionQuery,
-              private createCollectionService: CreateCollectionService,
+              private createCollectionService: CreateCollectionService, @Inject(MAT_DIALOG_DATA) public data: any,
               private builder: FormBuilder, private formsManager: AkitaNgFormsManager<FormsState>
   ) { }
 
   ngOnInit() {
     this.createCollectionService.clearState();
+    let name = null;
+    let description = null;
+    this.formsManager.remove('createCollection');
+    if (this.data.mode === TagEditorMode.Add) {
+      this.title = 'Create Collection';
+    } else {
+      this.title = 'Edit Collection';
+      name = this.data.collection.name;
+      description = this.data.collection.description;
+    }
     this.createCollectionForm = this.builder.group({
-      name: [null, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
-      description: [null]
+      name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
+      description: [description]
     });
     this.formsManager.upsert('createCollection', this.createCollectionForm);
+    this.extractData();
+
   }
 
   createCollection() {
@@ -46,5 +61,9 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.formsManager.unsubscribe();
+  }
+
+  extractData(): void {
+
   }
 }

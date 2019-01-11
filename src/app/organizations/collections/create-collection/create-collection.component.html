@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Create Collection</h1>
+<h1 mat-dialog-title>{{title}}</h1>
 <div mat-dialog-content>
   <form [formGroup]="createCollectionForm" fxLayout="column">
     <mat-form-field>
@@ -9,7 +9,7 @@
       <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters and start with an alphabet</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <textarea cdkAutosizeMinRows="3" cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"
+      <textarea cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"
         required></textarea>
     </mat-form-field>
   </form>
