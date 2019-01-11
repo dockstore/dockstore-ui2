@@ -61,9 +61,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public isRefreshing$: Observable<boolean>;
   public WorkflowType = Workflow;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
-  @Input() canRead: boolean;
-  @Input() canWrite: boolean;
-  @Input() isOwner: boolean;
+  canRead: boolean;
+  canWrite: boolean;
+  isOwner: boolean;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -74,6 +74,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    this.canRead = this.data.canRead;
+    this.canWrite = this.data.canWrite;
+    this.isOwner = this.data.isOwner;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.versionModalService.version.pipe(
