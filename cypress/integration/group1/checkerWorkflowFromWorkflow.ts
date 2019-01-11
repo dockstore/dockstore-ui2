@@ -137,7 +137,7 @@ describe('Checker workflow test from my-workflows', () => {
 describe('Should be able to see the checker workflow from a workflow', () => {
   it('visit the tool with a checker workflow and have the correct buttons', () => {
     setTokenUserViewPort();
-    cy.visit('tools/workflows/A/l/_cwl_checker');
+    cy.visit('/workflows/A/l/_cwl_checker');
 
     // In the checker workflow right now
     // TODO: The version is not set because the checker does not actually have any versions. We should add some.
