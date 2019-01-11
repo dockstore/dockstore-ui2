@@ -53,7 +53,7 @@
         </label>
       </th>
 
-      <th>
+      <th *ngIf="!publicPage">
         <fa-icon class="pull-right" [icon]="getIconClass('hidden')" (click)="clickSortColumn('hidden')"></fa-icon>
         <label placement="top" matTooltip="A hidden workflow version is only visible on the my workflows page and not publicly.">
           Hidden
@@ -105,7 +105,7 @@
           <mat-icon *ngIf="!version.valid">close</mat-icon>
       </td>
 
-      <td>
+      <td *ngIf="!publicPage">
           <mat-icon *ngIf="version.hidden">check</mat-icon>
           <mat-icon *ngIf="!version.hidden">close</mat-icon>
       </td>
