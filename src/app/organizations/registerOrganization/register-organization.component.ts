@@ -47,7 +47,7 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.registerOrganizationForm = this.builder.group({
-      name: [null, [Validators.required, Validators.maxLength(39), Validators.minLength(3)]],
+      name: [null, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
       description: [null, Validators.required],
       link: [null, Validators.pattern(this.registerOrganizationService.urlRegex)],
       location: [null],

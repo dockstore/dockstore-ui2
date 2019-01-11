@@ -23,6 +23,7 @@
       <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
       <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters</mat-error>
       <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters</mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters and start with an alphabet</mat-error>
     </mat-form-field>
     <mat-form-field>
       <textarea cdkAutosizeMinRows="3" cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"
