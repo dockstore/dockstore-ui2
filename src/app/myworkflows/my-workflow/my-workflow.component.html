@@ -24,7 +24,7 @@
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
-      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" id="parent">
+      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
         <div id="parent">
           <div id="child">
             <div class="clearfix sidebar-header" matTooltipPosition="after" [matTooltip]="(hasSourceControlToken$ | async)? '' : 'Requires source control token'">
