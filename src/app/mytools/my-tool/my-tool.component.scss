@@ -13,3 +13,15 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+ #parent{
+  height: 100%;
+  overflow: hidden;
+}
+
+#child{
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 17px;
+  box-sizing: content-box;
+}
