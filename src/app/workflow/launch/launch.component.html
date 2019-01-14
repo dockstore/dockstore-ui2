@@ -15,16 +15,16 @@
   -->
 
 <div class="p-3">
-  <div *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
+  <mat-card *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
     <mat-icon>warning</mat-icon> To see launch with, please refresh
     the
     workflow.
-  </div>
+  </mat-card>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <div class="alert alert-warning" role="alert">
+      <mat-card class="alert alert-warning" role="alert">
         This section is only available for valid versions. A valid version requires a valid descriptor file.
-      </div>
+      </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">
       <div>
