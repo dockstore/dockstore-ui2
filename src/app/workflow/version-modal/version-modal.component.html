@@ -45,8 +45,8 @@
           <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
             <div class="input-group">
               <input [ngClass]="{ 'input-right-button' : !isPublic, 'input-no-button' : isPublic }" type="text" class="form-control" name="testParameterFilePaths[{{i}}]"
-                [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a Test Parameter File in the Git repository."
-                placeholder="e.g. /test.json" disabled readonly [tooltip]="tooltip.testParameterFile" />
+                [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" [title]="tooltip.testParameterFile"
+                placeholder="e.g. /test.json" disabled readonly>
               <span class="input-group-btn">
                 <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
                   <mat-icon>clear</mat-icon>
@@ -58,7 +58,7 @@
             <div class="input-group">
               <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
                 [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json"
-                [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED" />
+                [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED" [matTooltip]="tooltip.testParameterFile"/>
               <span class="input-group-btn">
                 <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                   (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
