@@ -59,7 +59,6 @@ describe('RegisterOrganizationService', () => {
 
   fit('should have the correct URL regex', () => {
     const regexp: RegExp = new RegExp(registerOrganizationService.urlRegex);
-    console.log(regexp.toString());
     expect(regexp.test('https://www.google.ca')).toBeTruthy();
     expect(regexp.test('http://www.google.ca')).toBeTruthy();
     expect(regexp.test('https://google.ca')).toBeTruthy();
