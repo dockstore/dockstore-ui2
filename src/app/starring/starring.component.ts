@@ -119,8 +119,14 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
       this.setStar().subscribe(
         data => {
           // update total_stars
+          this.alertService.simpleSuccess();
           this.getStarredUsers();
-        }, error => this.disable = false);
+
+        },
+        (error) => {
+          this.alertService.detailedError(error);
+          this.disable = false;
+        });
     }
   }
   setStar(): any {
