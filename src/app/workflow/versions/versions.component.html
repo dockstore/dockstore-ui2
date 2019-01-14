@@ -53,6 +53,13 @@
         </label>
       </th>
 
+      <th *ngIf="!publicPage">
+        <fa-icon class="pull-right" [icon]="getIconClass('hidden')" (click)="clickSortColumn('hidden')"></fa-icon>
+        <label placement="top" matTooltip="A hidden workflow version is only visible on the my workflows page and not publicly.">
+          Hidden
+        </label>
+      </th>
+
       <th>
         <fa-icon class="pull-right" [icon]="getIconClass('verified')" (click)="clickSortColumn('verified')"></fa-icon>
         <label placement="top" matTooltip="A version is verified if it has been verified to work by a person/group">
@@ -97,6 +104,12 @@
           <mat-icon *ngIf="version.valid">check</mat-icon>
           <mat-icon *ngIf="!version.valid">close</mat-icon>
       </td>
+
+      <td *ngIf="!publicPage">
+          <mat-icon *ngIf="version.hidden">check</mat-icon>
+          <mat-icon *ngIf="!version.hidden">close</mat-icon>
+      </td>
+
       <td>
         <a href={{verifiedLink}} *ngIf="version.verified" matTooltip="{{getVerifiedSource(version.name)}}">
           <mat-icon>check</mat-icon>
