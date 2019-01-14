@@ -28,6 +28,7 @@ import { SearchComponent } from './search/search.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { FundingComponent } from './funding/funding.component';
+import { SitemapComponent } from './sitemap/sitemap.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
@@ -51,6 +52,7 @@ const APP_ROUTES: Routes = [
   { path: 'starred', component: StarredEntriesComponent },
   { path: 'maintenance', component: MaintenanceComponent },
   { path: 'funding', component: FundingComponent },
+  { path: 'sitemap', component: SitemapComponent },
   { path: '**', redirectTo: '' }
 ];
 
