@@ -17,12 +17,9 @@ import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChil
 import { filterNil } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 
 import { Dockstore } from '../../shared/dockstore.model';
-import { Files } from '../../shared/files';
-import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from './../../shared/swagger/model/workflow';
@@ -37,9 +34,8 @@ import { DagStore } from './state/dag.store';
   styleUrls: ['./dag.component.scss'],
   providers: [DagStore, DagQuery, DagService]
 })
-
-// Files class extends EntryTab already, so have DagComponent extend Files
-export class DagComponent extends Files implements OnInit, OnChanges {
+export class DagComponent extends EntryTab implements OnInit, OnChanges {
+  @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
 
@@ -60,10 +56,6 @@ export class DagComponent extends Files implements OnInit, OnChanges {
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
 
-  versionsWithParamfiles: Array<any>;
-  previousEntryPath: string;
-  previousVersionName: string;
-
   @HostListener('window:keyup.escape', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (this.expanded) {
@@ -77,8 +69,7 @@ export class DagComponent extends Files implements OnInit, OnChanges {
     this.refreshDocument(this.cy);
   }
 
-  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery,
-              private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
+  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery) {
     super();
   }
 
@@ -116,24 +107,10 @@ export class DagComponent extends Files implements OnInit, OnChanges {
     this.dagResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe)).subscribe(dagResults => {
       this.refreshDocument(this.cy);
     }, error => console.error('Something went terribly wrong with dagResult$'));
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 
-  // TODO: Check how often updateFiles is called on change. This onChange approach might not be reducing the amount of API calls
   ngOnChanges() {
-    // Only WDL files should be stored in global store, since they are needed for EPAM pipeline-builder visualization
-    if (this.descriptorType === ToolDescriptor.TypeEnum.WDL) {
-      this.dagService.getDAGResults(this.selectedVersion, this.id);
-      // Retrieve the files for this path from the API, and store in global store on view change
-      if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
-        // Only getting files for one descriptor type for workflows (subject to change)
-        this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name,
-          [this.descriptorType]);
-        this.previousEntryPath = this.entrypath;
-        this.previousVersionName = this.selectedVersion.name;
-      }
-      this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-    }
+    this.dagService.getDAGResults(this.selectedVersion, this.id);
   }
 
   download() {

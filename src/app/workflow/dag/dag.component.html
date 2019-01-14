@@ -37,7 +37,7 @@
             <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
           </label>
           <label class="radio-inline">
-            <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">Workflow Description Language Viewer
+            <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">EPAM Pipeline Builder
           </label>
         </div>
         <div>
@@ -79,7 +79,7 @@
         [refresh]="refreshCounter" [expanded]="expanded">
       </app-cwl-viewer>
       <app-wdl-viewer *ngIf="enableWdlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (workflow$ | async)?.source_control_provider === 'GITHUB'" [hidden]="dagType !== 'wdlviewer'"
-                      [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [expanded]="expanded">
+                      [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [expanded]="expanded" [descriptorType]="(descriptorType$ | async)">
       </app-wdl-viewer>
 
       <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" [hidden]="dagType !== 'classic'"
