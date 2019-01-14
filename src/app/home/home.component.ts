@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   goToSearch(searchValue: string) {
-    this.router.navigate(['/search'], {queryParams: {is_checker: 0, search: searchValue}});
+    this.router.navigate(['/search'], {queryParams: {search: searchValue}});
   }
 
   onSelect(data: TabDirective): void {
