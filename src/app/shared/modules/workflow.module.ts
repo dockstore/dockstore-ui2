@@ -57,6 +57,7 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { getTooltipConfig } from './../tooltip';
     CommonModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
+    FlexLayoutModule,
     NgxMdModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
