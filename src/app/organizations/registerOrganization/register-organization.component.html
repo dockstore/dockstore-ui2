@@ -23,7 +23,7 @@
       <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
       <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters</mat-error>
       <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters</mat-error>
-      <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters and start with an alphabet</mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
     </mat-form-field>
     <mat-form-field>
       <textarea cdkAutosizeMinRows="3" cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"
@@ -38,8 +38,7 @@
       <input type="text" matInput formControlName="location" placeholder="Location">
     </mat-form-field>
     <mat-form-field>
-      <input type="email" matInput formControlName="contactEmail" placeholder="Contact Email Address" required>
-      <mat-error *ngIf="contactEmail.hasError('required')">Contact email address is required</mat-error>
+      <input type="email" matInput formControlName="contactEmail" placeholder="Contact Email Address">
       <mat-error *ngIf="contactEmail.hasError('email')">Please enter a valid contact email address</mat-error>
       <mat-hint>Once approved, this email address will be publicly visible</mat-hint>
     </mat-form-field>

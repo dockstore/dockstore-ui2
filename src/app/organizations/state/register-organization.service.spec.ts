@@ -57,8 +57,9 @@ describe('RegisterOrganizationService', () => {
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });
 
-  it('should have the correct URL regex', () => {
-    const regexp = new RegExp(registerOrganizationService.urlRegex);
+  fit('should have the correct URL regex', () => {
+    const regexp: RegExp = new RegExp(registerOrganizationService.urlRegex);
+    console.log(regexp.toString());
     expect(regexp.test('https://www.google.ca')).toBeTruthy();
     expect(regexp.test('http://www.google.ca')).toBeTruthy();
     expect(regexp.test('https://google.ca')).toBeTruthy();
@@ -68,6 +69,15 @@ describe('RegisterOrganizationService', () => {
     expect(regexp.test('http://numb3r5.ca')).toBeTruthy();
     expect(regexp.test('httpz://google.ca')).toBeFalsy();
     expect(regexp.test('httpsz://google.ca')).toBeFalsy();
-    expect(regexp.test('https://google.tooLongTLD')).toBeFalsy();
+    expect(regexp.test('https://google.superLongTLDThatStillWorksForSomeReason')).toBeTruthy();
+    expect(regexp.test('HTTP://www.google.ca')).toBeTruthy();
+  });
+
+  it('should have the correct organization name regex', () => {
+    const regexp = new RegExp(registerOrganizationService.organizationNameRegex);
+    expect(regexp.test('1234')).toBeFalsy();
+    expect(regexp.test('1asdfasd')).toBeFalsy();
+    expect(regexp.test('我喜欢狗')).toBeFalsy();
+    expect(regexp.test('testname')).toBeTruthy();
   });
 });
