@@ -6,7 +6,7 @@ import { Organisation, OrganisationsService } from '../../shared/swagger';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
-export class OrganizationsService {
+export class OrganizationsStateService {
 
   constructor(private organizationsStore: OrganizationsStore, private alertService: AlertService,
     private organisationsService: OrganisationsService) {
@@ -15,7 +15,7 @@ export class OrganizationsService {
   /**
    * Update the store with the current array of approved organizations
    *
-   * @memberof OrganizationsService
+   * @memberof OrganizationsStateService
    */
   updateOrganizations(): void {
     this.alertService.start('Getting approved organizations');

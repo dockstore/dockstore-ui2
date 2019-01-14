@@ -23,7 +23,7 @@ import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Organisation } from '../../shared/swagger';
 import { OrganizationsQuery } from '../state/organizations.query';
-import { OrganizationsService } from '../state/organizations.service';
+import { OrganizationsStateService } from '../state/organizations.service';
 
 @Component({
   selector: 'organizations',
@@ -35,7 +35,7 @@ export class OrganizationsComponent extends Base implements OnInit {
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
 
-  constructor(private organizationsService: OrganizationsService, private organizationsQuery: OrganizationsQuery,
+  constructor(private organizationsStateService: OrganizationsStateService, private organizationsQuery: OrganizationsQuery,
     private formBuilder: FormBuilder, private alertQuery: AlertQuery) {
     super();
   }
@@ -45,14 +45,14 @@ export class OrganizationsComponent extends Base implements OnInit {
     this.loading$ = this.alertQuery.showInfo$;
     // The real loading$ is currently not being used because the alertQuery global loading is used instead
     // this.loading$ = this.organizationsQuery.loading$;
-    this.organizationsService.updateOrganizations();
+    this.organizationsStateService.updateOrganizations();
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
     this.organizationSearchForm.get('name').valueChanges.pipe(
       debounceTime(formInputDebounceTime),
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)
     ).subscribe((searchName: string) => {
-      this.organizationsService.updateSearchNameState(searchName);
+      this.organizationsStateService.updateSearchNameState(searchName);
     });
   }
 
