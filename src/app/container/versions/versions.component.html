@@ -48,6 +48,12 @@
           </label>
           <fa-icon class="pull-right" [icon]="getIconClass('valid')" (click)="clickSortColumn('valid')"></fa-icon>
         </th>
+        <th *ngIf="!publicPage">
+          <label placement="top" matTooltip="A hidden tag is only visible on the my tools page and not publicly.">
+            Hidden
+          </label>
+          <fa-icon class="pull-right" [icon]="getIconClass('hidden')" (click)="clickSortColumn('hidden')"></fa-icon>
+        </th>
         <th>
           <label placement="top" matTooltip="A version is verified if it has been verified to work by a person/group">
             Verified Platforms
@@ -93,6 +99,10 @@
         <td>
           <mat-icon *ngIf="version.valid">check</mat-icon>
           <mat-icon *ngIf="!version.valid">close</mat-icon>
+        </td>
+        <td *ngIf="!publicPage">
+          <mat-icon *ngIf="version.hidden">check</mat-icon>
+          <mat-icon *ngIf="!version.hidden">close</mat-icon>
         </td>
         <td>
           <a *ngIf="version.verified" href= {{verifiedLink}} matTooltip="{{getVerifiedSource(version.name)}}">

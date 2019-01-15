@@ -15,9 +15,9 @@
   -->
 <div class="p-3">
   <div *ngIf="(isNFL$ | async) && dagType === 'classic'">
-    <span class="alert alert-warning col-md-12" role="alert">
+    <mat-card class="alert alert-warning col-md-12" role="alert">
       <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
-    </span>
+    </mat-card>
   </div>
 
   <div id="dag-holder" [ngClass]="{'fullscreen': expanded}">
@@ -49,7 +49,7 @@
       </div>
 
       <div *ngIf="dagType === 'classic' && !(isNFL$ | async)">
-        <div class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
+        <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
           <mat-icon>warning</mat-icon>&nbsp;
           <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
             A Descriptor associated with this workflow could not be found.
@@ -57,13 +57,13 @@
           <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
             Please ensure that the Descriptor is a valid CWL 1.0 workflow.
           </span>
-        </div>
+        </mat-card>
 
-        <div class="alert alert-warning" role="alert" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async) && selectedVersion?.valid">
+        <mat-card class="alert alert-warning" role="alert" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async) && selectedVersion?.valid">
           <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required
           tools
           are missing from Github repo.
-        </div>
+        </mat-card>
       </div>
 
       <app-cwl-viewer *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"

@@ -21,12 +21,14 @@ import { MatIconModule } from '@angular/material';
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
 import { StargazersComponent } from './stargazers.component';
+import { CustomMaterialModule } from './../shared/modules/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MatIconModule
+    MatIconModule,
+    CustomMaterialModule
   ],
   declarations: [
     StargazersComponent

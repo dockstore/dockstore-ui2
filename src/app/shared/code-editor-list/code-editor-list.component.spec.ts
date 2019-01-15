@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CodeEditorListComponent } from './code-editor-list.component';
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule,
-  MatTooltipModule } from '@angular/material';
+  MatTooltipModule, MatCardModule } from '@angular/material';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { WorkflowStubService } from './../../test/service-stubs';
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
@@ -33,6 +33,7 @@ describe('CodeEditorListComponent', () => {
         MatInputModule,
         MatFormFieldModule,
         MatTooltipModule,
+        MatCardModule,
         ClipboardModule
       ],
       providers: [
