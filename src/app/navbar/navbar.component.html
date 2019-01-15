@@ -20,17 +20,11 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" alt="dockstore logo">
           <img src="../assets/images/dockstore/logo.png">
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/tools">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
-        </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/workflows">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
+        <a mat-button class="icon" [routerLink]="['/search']">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
         </a>
         <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
-          <mat-icon>people</mat-icon> Organizations
-        </a>
-        <a mat-button class="icon" [routerLink]="['/search']">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
+          <mat-icon class="hidden-sm">people</mat-icon> Organizations
         </a>
         <a mat-button class="icon" href="http://docs.dockstore.org/">
             <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Docs
@@ -106,9 +100,8 @@
 
   <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
-      <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/tools">Tools</a>
-      <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/workflows">Workflows</a>
       <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
+      <a mat-button class="icon icon-sm" routerLink="/organizations">Organizations</a>
       <a mat-button class="icon icon-sm" href="http://docs.dockstore.org/">Docs</a>
     </div>
   </mat-toolbar-row>
