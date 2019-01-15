@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SitemapComponent } from './sitemap.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SitemapComponent', () => {
   let component: SitemapComponent;
@@ -8,7 +8,8 @@ describe('SitemapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SitemapComponent ]
+      declarations: [ SitemapComponent ],
+      imports: [ RouterTestingModule ]
     })
     .compileComponents();
   }));
