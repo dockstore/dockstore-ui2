@@ -57,7 +57,7 @@ describe('RegisterOrganizationService', () => {
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });
 
-  fit('should have the correct URL regex', () => {
+  it('should have the correct URL regex', () => {
     const regexp: RegExp = new RegExp(registerOrganizationService.urlRegex);
     expect(regexp.test('https://www.google.ca')).toBeTruthy();
     expect(regexp.test('http://www.google.ca')).toBeTruthy();
