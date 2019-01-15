@@ -33,6 +33,7 @@
     "@angular/platform-server": "^7.0.2",
     "@angular/router": "^7.0.2",
     "@datorama/akita": "^1.11.0",
+    "@datorama/akita-ng-forms-manager": "^1.0.0-rc.4",
     "@fortawesome/angular-fontawesome": "^0.2.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.6",
     "@fortawesome/free-brands-svg-icons": "^5.4.1",
