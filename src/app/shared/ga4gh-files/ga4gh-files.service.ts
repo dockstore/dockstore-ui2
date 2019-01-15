@@ -38,6 +38,9 @@ export class GA4GHFilesService {
    */
   @transaction()
   updateFiles(id: string, version: string, descriptorTypes?: Array<ToolDescriptor.TypeEnum>) {
+    if (!version) {
+      return;
+    }
     this.clearFiles();
     this.filesService.removeAll();
     if (!descriptorTypes) {

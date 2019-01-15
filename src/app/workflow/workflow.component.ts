@@ -196,8 +196,10 @@ export class WorkflowComponent extends Entry {
           this.setPublishMessage();
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion);
-          this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
-            [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+          if (this.selectedVersion) {
+            this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
+              [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+          }
         }
         this.setUpWorkflow(workflow);
       }
@@ -351,8 +353,10 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
-    this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
-      [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+    if (this.selectVersion) {
+      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
+        [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+    }
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
     }
