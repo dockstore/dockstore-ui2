@@ -220,9 +220,6 @@ export class WorkflowComponent extends Entry {
       this.workflowsService.getPublishedWorkflowByPath(this.title)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
-          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion);
-
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
@@ -354,6 +351,8 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
+    this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
+      [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
     }
