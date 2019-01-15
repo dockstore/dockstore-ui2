@@ -14,16 +14,16 @@
   ~    limitations under the License.
   -->
 <div *ngIf="!_selectedVersion" class="p-3">
-  <alert type="warning">
-    <mat-icon>warning</mat-icon>
-    &nbsp;No versions exist for this tool.
-  </alert>
+  <mat-card class="alert alert-warning" role="alert">
+    <mat-icon>warning</mat-icon> No versions exist for this tool.
+  </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <mat-icon>warning</mat-icon>
-    &nbsp;This version of the tool is invalid.
-  </alert>
+  <div *ngIf="!_selectedVersion?.valid">
+    <mat-card class="alert alert-warning" role="alert">
+      <mat-icon>warning</mat-icon> This version of the tool is invalid.
+    </mat-card>
+  </div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
     <div *ngIf="content">
@@ -56,9 +56,8 @@
       </mat-toolbar>
       <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
     </div>
-    <alert type="warning" *ngIf="nullDescriptors">
-      <mat-icon>warning</mat-icon>
-      &nbsp;A Descriptor File associated with this Docker container could not be found.
-    </alert>
+    <mat-card class="alert alert-warning" role="alert" *ngIf="nullDescriptors">
+      <mat-icon>warning</mat-icon> A Descriptor File associated with this Docker container could not be found.
+    </mat-card>
   </ng-template>
 </div>

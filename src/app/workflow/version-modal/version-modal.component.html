@@ -13,10 +13,10 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<h4 mat-dialog-title>{{isPublic || !data.canWrite ? 'View' : 'Edit'}} Version Tag</h4>
+<h4 mat-dialog-title>{{isPublic || !canWrite ? 'View' : 'Edit'}} Version Tag</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <fieldset [disabled]="!data.canWrite || isPublic">
+  <fieldset [disabled]="!canWrite || isPublic">
     <form #versionEditorForm="ngForm" class="form-horizontal">
       <div class="modal-body tagEditor">
         <div class="form-group form-group-sm">
@@ -34,8 +34,8 @@
           <div class="col-sm-9 col-md-9 col-lg-9">
             <input type="text" class="form-control" name="workflow_path" [(ngModel)]="version.workflow_path" minlength="3" maxlength="128"
               [pattern]="validationPatterns.workflowDescriptorPath" required [matTooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
-              [readonly]="workflow?.mode === WorkflowType.ModeEnum.HOSTED" />
-            <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
+              [readonly]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED" />
+            <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
           </div>
         </div>
         <div class="form-group form-group-sm" *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
@@ -45,8 +45,7 @@
           <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3' : i > 0 }" *ngFor="let item of testParameterFilePaths; let i = index;trackBy:trackByIndex;">
             <div class="input-group">
               <input [ngClass]="{ 'input-right-button' : !isPublic, 'input-no-button' : isPublic }" type="text" class="form-control" name="testParameterFilePaths[{{i}}]"
-                [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" [title]="tooltip.testParameterFile"
-                placeholder="e.g. /test.json" disabled readonly>
+                [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.json" disabled readonly/>
               <span class="input-group-btn">
                 <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
                   <mat-icon>clear</mat-icon>
@@ -73,12 +72,12 @@
             <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
               {{formErrors.cwlTestParameterFilePath}}
             </div>
-            <div *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
+            <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
               Duplicate test json files are not allowed.
-            </div>
+            </mat-card>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
-            <input class="form-control" placeholder="None provided" disabled />
+            <input class="form-control" placeholder="None provided" disabled/>
           </div>
         </div>
         <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3">
@@ -119,10 +118,10 @@
       </div>
     </form>
   </fieldset>
-  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
-    <button type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic" [disabled]="!versionEditorForm.form.valid">
-      Save Changes
-    </button>
-  </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+  <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
+  <button type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid">
+    Save Changes
+  </button>
 </div>

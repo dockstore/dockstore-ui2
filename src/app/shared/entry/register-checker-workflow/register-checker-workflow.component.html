@@ -10,7 +10,7 @@
               <div class="col-sm-9">
                 <input type="text" id="checkerWorkflowPath" class="form-control" name="workflow_path" [(ngModel)]="workflowPath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
                   required matTooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
-                <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
+                <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
               </div>
             </div>
             <div class="form-group form-group-sm">
@@ -20,7 +20,7 @@
               <div class="col-sm-9">
                 <input type="text" id="checkerWorkflowTestParameterFilePath" class="form-control" name="testParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.testParameterFilePath"
                   required matTooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /test.json" />
-                <div *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </div>
+                <mat-card *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </mat-card>
               </div>
             </div>
             <div class="form-group form-group-sm" *ngIf="!isWorkflow">

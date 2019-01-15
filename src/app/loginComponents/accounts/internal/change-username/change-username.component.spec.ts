@@ -7,6 +7,7 @@ import {
   MatInputModule,
   MatProgressSpinnerModule,
   MatTooltipModule,
+  MatCardModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -31,6 +32,7 @@ describe('ChangeUsernameComponent', () => {
         MatProgressSpinnerModule,
         MatInputModule,
         MatFormFieldModule,
+        MatCardModule,
         BrowserAnimationsModule
       ],
       providers: [

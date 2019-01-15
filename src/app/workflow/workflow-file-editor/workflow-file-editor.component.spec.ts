@@ -6,7 +6,7 @@ import { CodeEditorListComponent } from './../../shared/code-editor-list/code-ed
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule, MatFormFieldModule,
   MatTooltipModule,
-  MatSnackBarModule} from '@angular/material';
+  MatSnackBarModule, MatCardModule} from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
@@ -42,7 +42,8 @@ describe('WorkflowFileEditorComponent', () => {
         MatFormFieldModule,
         MatTooltipModule,
         ClipboardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatCardModule
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
