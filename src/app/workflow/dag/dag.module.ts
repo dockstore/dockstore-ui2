@@ -20,6 +20,7 @@ import { MatIconModule, MatProgressBarModule, MatTooltipModule } from '@angular/
 
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
+import { CustomMaterialModule } from './../../shared/modules/material.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { DagComponent } from './dag.component';
     FormsModule,
     MatIconModule,
     MatProgressBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CustomMaterialModule
   ],
   declarations: [DagComponent, CwlViewerComponent],
   exports: [DagComponent]

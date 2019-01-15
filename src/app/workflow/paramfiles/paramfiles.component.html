@@ -14,24 +14,24 @@
   ~    limitations under the License.
   -->
 <div class="p-3">
-  <alert *ngIf="validationMessage">
+  <mat-card *ngIf="validationMessage">
     <mat-icon>warning</mat-icon>
     &nbsp;
     <span *ngFor="let item of validationMessage | keyvalue">
       <strong>{{item.key}}</strong>: {{item.value}}
     </span>
-  </alert>
-  <alert type="info" *ngIf="(isNFL$ | async)">
+  </mat-card>
+  <mat-card class="alert alert-info" role="alert" *ngIf="(isNFL$ | async)">
     <mat-icon>warning</mat-icon>
     &nbsp;
     Nextflow does not have the concept of a test parameter file.
-  </alert>
+  </mat-card>
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
-    <alert type="warning" *ngIf="!content && !(isNFL$ | async)">
+    <mat-card class="alert alert-warning" role="alert"*ngIf="!content && !(isNFL$ | async) && _selectedVersion?.valid">
       <mat-icon>warning</mat-icon>
       &nbsp; A Test Parameter File associated with this workflow could not be found.
-    </alert>
+    </mat-card>
     <div [hidden]="!content">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
