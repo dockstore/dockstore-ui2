@@ -20,7 +20,7 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" alt="dockstore logo">
           <img src="../assets/images/dockstore/logo.png">
         </a>
-        <a mat-button class="icon" [routerLink]="['/search']" [queryParams]="{is_checker: '0'}">
+        <a mat-button class="icon" [routerLink]="['/search']">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
         </a>
         <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
