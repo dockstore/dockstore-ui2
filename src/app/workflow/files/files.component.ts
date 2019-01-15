@@ -16,10 +16,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
-import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Files } from '../../shared/files';
-import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
@@ -34,7 +31,7 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
-  constructor(private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
+  constructor(private paramfilesService: ParamfilesService) {
     super();
   }
 
@@ -42,14 +39,6 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
-    // Change detection is messed up because of permissions changing
-    if (this.previousEntryPath !== this.entrypath || this.previousVersionName !== this.selectedVersion.name) {
-      // Only getting files for one descriptor type for workflows (subject to change)
-      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.entrypath, this.selectedVersion.name,
-        [this.descriptorType]);
-      this.previousEntryPath = this.entrypath;
-      this.previousVersionName = this.selectedVersion.name;
-    }
     this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }
