@@ -229,7 +229,7 @@
       </div>
     </div>
     <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-    <app-verified-by [version]="selectedVersion"></app-verified-by>
+    <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
     <div class="panel panel-default mb-3" *ngIf="workflow">
       <div class="panel-heading">
         <h3>Sharing</h3>
