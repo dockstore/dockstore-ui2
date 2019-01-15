@@ -245,7 +245,7 @@
         </div>
       </div>
     </div>
-    <app-verified-by [version]="selectedVersion"></app-verified-by>
+    <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
     <div class="panel panel-default" *ngIf="tool">
       <div class="panel-heading">
         <h3>Sharing</h3>
