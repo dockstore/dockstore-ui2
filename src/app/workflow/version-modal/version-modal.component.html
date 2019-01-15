@@ -34,7 +34,7 @@
         <input type="text" class="form-control" name="workflow_path" [(ngModel)]="version.workflow_path" minlength="3" maxlength="128"
           [pattern]="validationPatterns.workflowDescriptorPath" required [tooltip]="tooltip.workflowPath" placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
           [readonly]="isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED" />
-        <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
+        <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
       </div>
     </div>
     <div class="form-group form-group-sm" *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
@@ -48,7 +48,7 @@
             placeholder="e.g. /test.json" disabled ng-class="!isPublic ? 'test_parameter_input' : ''" readonly [tooltip]="tooltip.testParameterFile" />
           <span class="input-group-btn">
             <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
-              <span class="glyphicon glyphicon-remove"></span>
+              <mat-icon>clear</mat-icon>
             </button>
           </span>
         </div>
@@ -61,20 +61,20 @@
           <span class="input-group-btn">
             <button title="Add test parameter file" type="button" class="btn btn-default form-sm-button" [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
               (click)="addTestParameterFile()" *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)">
-              <span class="glyphicon glyphicon-plus"></span>
+              <mat-icon>add</mat-icon>
             </button>
             <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button" [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
               *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)">
-              <span class="glyphicon glyphicon-plus"></span>
+              <mat-icon>add</mat-icon>
             </button>
           </span>
         </div>
         <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
           {{formErrors.cwlTestParameterFilePath}}
         </div>
-        <div *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
+        <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
           Duplicate test json files are not allowed.
-        </div>
+        </mat-card>
       </div>
       <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
         <input class="form-control" placeholder="None provided" [disabled]="true" />

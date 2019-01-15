@@ -29,9 +29,9 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool: Tool">
-        <span *ngIf="getVerified(tool)">
-          <a style="text-decoration: none" matTooltip="Verified" class="glyphicon glyphicon-ok" href= {{verifiedLink}}></a>
-        </span>
+        <a *ngIf="getVerified(tool)" href= {{verifiedLink}}>
+          <mat-icon matTooltip="Verified">check</mat-icon>
+        </a>
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
@@ -69,8 +69,8 @@
           <input readonly type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.tool_path, tool.defaultVersion) }}" aria-describedby="clipboard"
             #inputTarget>
           <span class="input-group-btn" id="clipboard">
-            <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget">
-              <span class="glyphicon glyphicon-copy"></span>
+            <button class="btn btn-default form-sm-button-material" type="button" [ngxClipboard]="inputTarget">
+              <mat-icon>file_copy</mat-icon>
             </button>
           </span>
         </div>

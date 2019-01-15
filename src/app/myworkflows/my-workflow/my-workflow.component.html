@@ -20,7 +20,7 @@
 
 <button mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right" matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="(isRefreshing$ | async)"><mat-icon>add</mat-icon></button>
 
-<div class="container-fluid pt-3 sidebar-set-height">
+<div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
@@ -44,9 +44,9 @@
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
         <div *ngIf="!(isRefreshing$ | async) && ((groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))">
             <div class="col-md-12">
-              <div class="alert alert-info" role="alert">
+              <mat-card class="alert alert-info" role="alert">
                 <p>
-                  <span class="glyphicon glyphicon-info-sign"></span>
+                  <mat-icon>info</mat-icon>
                   There are currently no workflows registered under this account, to add your first workflow, do one of the following:
                 </p>
                 <ul>
@@ -64,7 +64,7 @@
                     <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
                   </a>
                 </div>
-              </div>
+              </mat-card>
             </div>
           </div>
         <div *ngIf="workflow">

@@ -1,14 +1,13 @@
 /* tslint:disable:no-unused-variable */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { BasicSearchComponent } from './basic-search.component';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { ProviderService } from '../../shared/provider.service';
 import { AdvancedSearchStubService } from '../../test/service-stubs';
 import { AdvancedSearchService } from '../advancedsearch/advanced-search.service';
-import { ProviderService } from '../../shared/provider.service';
-import { RouterTestingModule } from '@angular/router/testing';
+import { BasicSearchComponent } from './basic-search.component';
 
 describe('BasicSearchComponent', () => {
   let component: BasicSearchComponent;
@@ -17,7 +16,7 @@ describe('BasicSearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule],
+      imports: [ MatAutocompleteModule, RouterTestingModule],
       declarations: [ BasicSearchComponent ],
       providers: [
         ProviderService,

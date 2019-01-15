@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
 import { ToolDescriptor, ToolFile } from '../swagger';
@@ -27,14 +27,23 @@ import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
   providedIn: 'root'
 })
 export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
+  /**
+   * Returns an Observable array of ToolFile, unless the store is an error state, in which case it returns
+   * a null. The store can be in an error state, for example, if there was an error in the Ajax request.
+   * @param descriptorType
+   * @param fileTypes
+   */
   getToolFiles(descriptorType: ToolDescriptor.TypeEnum, fileTypes: Array<ToolFile.FileTypeEnum>): Observable<Array<ToolFile>> {
     if (descriptorType) {
       let toolFiles$: Observable<Array<ToolFile>>;
-      toolFiles$ = this.selectEntity(descriptorType).pipe(
-        map((gA4GHFile: GA4GHFiles) => gA4GHFile ? gA4GHFile.toolFiles : [])
-      );
+      toolFiles$ = this.selectError().pipe(switchMap(
+        error => {
+          return error != null ? observableOf(null) : this.selectEntity(descriptorType).pipe(
+            map((gA4GHFile: GA4GHFiles) => (gA4GHFile ? gA4GHFile.toolFiles : [])));
+        }
+      ));
       return toolFiles$.pipe(
-        map((toolFiles: Array<ToolFile>) => toolFiles ? toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type)) : [])
+        map((toolFiles: Array<ToolFile>) => toolFiles ? toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type)) : null)
       );
     } else {
       return observableOf([]);

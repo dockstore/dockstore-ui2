@@ -1,13 +1,13 @@
-<div class="alert alert-danger alert-dismissable" role="alert" *ngIf="(showError$ | async)">
+<mat-card class="alert alert-danger alert-dismissable" role="alert" *ngIf="(showError$ | async)">
   <button type="button" class="close" data-dismiss="alert" (click)="clear()">
     &times;
   </button>
   <p>
-    <span class="glyphicon glyphicon-warning-sign"></span>
+    <mat-icon>warning</mat-icon>
     {{(message$ | async)}}
   </p>
   <p class="error-output">{{(details$ | async)}}</p>
-</div>
+</mat-card>
 <div *ngIf="(showInfo$ | async); else placeholder">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>

@@ -13,17 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StargazersComponent } from './stargazers.component';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material';
+
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
+import { StargazersComponent } from './stargazers.component';
+import { CustomMaterialModule } from './../shared/modules/material.module';
+
 @NgModule({
   imports: [
     CommonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatIconModule,
+    CustomMaterialModule
   ],
   declarations: [
     StargazersComponent

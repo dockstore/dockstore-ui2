@@ -15,7 +15,7 @@
   -->
 
 <app-header>
-  <span class="glyphicon glyphicon-search"></span>
+  <mat-icon>search</mat-icon>
   Search
 </app-header>
 <div class="container search-container">
@@ -33,12 +33,11 @@
           </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button mat-stroked-button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                  [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+              <fa-icon [icon]="sortModeMap.get(key).AlphabetOrderBy ? faSortAlphaUp : faSortAlphaDown"></fa-icon>
+              Alphabetical
             </button>
             <button mat-stroked-button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                  [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+                  <fa-icon [icon]="sortModeMap.get(key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon> Count
             </button>
           </div>
           <div *ngFor='let subBucket of getBucketKeys(key); let i = index'>
@@ -98,13 +97,13 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-        <div *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
           Sorry, no matches found for <strong>{{searchService.joinComma(values)}}</strong>.
           <span *ngIf="(suggestTerm$ | async)">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{(suggestTerm$ | async)}}</strong>?</span>
-        </div>
+        </mat-card>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <div class="alert alert-info">
+          <mat-card class="alert alert-info">
             <ng-template #popTemplate>
               <div class="row">
                 <div class="input-group" style="padding:5px;">
@@ -112,7 +111,7 @@
                   <span class="input-group-btn">
                     <button class="btn btn-default" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="(shortUrl$ | async)"
                       (cbOnSuccess)="isCopied = true">
-                      <span class="glyphicon glyphicon-copy"></span>
+                      <mat-icon>file_copy</mat-icon>
                     </button>
                   </span>
                 </div>
@@ -152,12 +151,12 @@
               AND
               </span>
             </span>
-          </div>
+          </mat-card>
         </div>
-        <div class="alert alert-info" *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)">
+        <mat-card class="alert alert-info" *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)">
           <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
             We recommend that you narrow your search to find more relevant results.</p>
-        </div>
+          </mat-card>
         <app-search-results></app-search-results>
       </div>
     </div>
