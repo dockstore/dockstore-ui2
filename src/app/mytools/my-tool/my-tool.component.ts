@@ -47,7 +47,7 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
-  styleUrls: ['./my-tool.component.scss'],
+  styleUrls: ['../../shared/styles/my-entry.component.scss'],
   providers: [MytoolsService, DockstoreService]
 })
 export class MyToolComponent extends MyEntry implements OnInit {
