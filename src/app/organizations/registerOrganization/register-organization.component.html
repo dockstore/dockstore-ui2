@@ -21,8 +21,8 @@
     <mat-form-field>
       <input type="text" matInput formControlName="name" placeholder="Name" required>
       <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
-      <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters</mat-error>
-      <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters</mat-error>
+      <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
+      <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
       <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
     </mat-form-field>
     <mat-form-field>
