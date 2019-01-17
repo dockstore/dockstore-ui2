@@ -36,6 +36,5 @@
 </div>
 <div mat-dialog-actions class="pull-right">
   <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
-  <button matTooltip="Create Collection" mat-button [disabled]="!createCollectionForm.valid" (click)="createCollection()" cdkFocusInitial>Create
-    Collection</button>
+  <button [matTooltip]="title" mat-button [disabled]="!createCollectionForm.valid" (click)="createCollection()" cdkFocusInitial>{{title}}</button>
 </div>

@@ -38,8 +38,8 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
       this.title = 'Create Collection';
     } else {
       this.title = 'Edit Collection';
-      name = this.data.collection.name;
-      description = this.data.collection.description;
+      name = this.data.collection.value.name;
+      description = this.data.collection.value.description;
     }
     this.createCollectionForm = this.builder.group({
       name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
@@ -51,7 +51,11 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
   }
 
   createCollection() {
-    this.createCollectionService.createCollection(this.createCollectionForm.value);
+    if (this.data.mode === TagEditorMode.Add) {
+      this.createCollectionService.createCollection(this.createCollectionForm.value);
+    } else {
+      this.createCollectionService.editCollection(this.createCollectionForm.value, this.data.collection.value.id);
+    }
   }
 
   get name(): AbstractControl {

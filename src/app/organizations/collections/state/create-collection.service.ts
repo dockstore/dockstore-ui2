@@ -43,4 +43,25 @@ export class CreateCollectionService {
 
   }
 
+  editCollection(collectionFormState: FormsState['createCollection'], collectionID: number) {
+    let collection: Collection;
+    collection = {
+      name: collectionFormState.name,
+      description: collectionFormState.description
+    };
+    const organizationID = this.organizationQuery.getSnapshot().organization.id;
+    this.createCollectionStore.setLoading(true);
+    this.organisationsService.updateCollection(organizationID, collectionID, collection).pipe(
+      finalize(() => this.createCollectionStore.setLoading(false)))
+      .subscribe((newCollection: Collection) => {
+        this.createCollectionStore.setError(false);
+        this.matDialog.closeAll();
+        this.matSnackBar.open('Editing collection successful');
+        this.collectionsService.updateCollections();
+      }, error => {
+        this.createCollectionStore.setError(true);
+        this.matSnackBar.open('Editing collection failed');
+      });
+  }
+
 }

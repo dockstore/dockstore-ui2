@@ -8,6 +8,7 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatProgressBarModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
@@ -21,6 +22,7 @@ import { CreateCollectionComponent } from './create-collection/create-collection
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
+    MatTooltipModule,
     ReactiveFormsModule
   ],
   declarations: [CreateCollectionComponent],
