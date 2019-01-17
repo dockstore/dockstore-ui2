@@ -26,11 +26,15 @@ export class VerifiedByService {
           const verifiedBySourceArray = Object.entries(verifiedBySource);
           verifiedBySourceArray.forEach(arrayElement => {
             const platform: string = arrayElement[0];
-            if (arrayElement[1].verified) {
+            const verified: boolean = arrayElement[1].verified;
+            const platformVersion: string = arrayElement[1].platformVersion;
+            if (verified) {
               if (!verifiedSourceMap[platform]) {
                 verifiedSourceMap[platform] = new Set<string>();
               }
-              verifiedSourceMap[platform].add(arrayElement[1].metadata);
+              if (platformVersion) {
+                verifiedSourceMap[platform].add(platformVersion);
+              }
             }
           });
         }
@@ -38,9 +42,9 @@ export class VerifiedByService {
       const verifiedSourceArray = Object.entries(verifiedSourceMap);
       const verifiedByStringArray: Array<string> = [];
       verifiedSourceArray.forEach(arrayElement => {
-        const verifiers: Set<string> = arrayElement[1];
-        const arrayOfVerifiers = Array.from(verifiers);
-        verifiedByStringArray.push(arrayElement[0] + ' via ' + arrayOfVerifiers.join(', '));
+        const platformVersions: Set<string> = arrayElement[1];
+        const arrayOfPlatformVersions = Array.from(platformVersions);
+        verifiedByStringArray.push(arrayElement[0] + ' ' + arrayOfPlatformVersions.join(', '));
       });
       return verifiedByStringArray;
     } else {

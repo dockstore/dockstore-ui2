@@ -62,7 +62,7 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
-  styleUrls: ['./my-workflow.component.scss'],
+  styleUrls: ['../../shared/styles/my-entry.component.scss'],
   providers: [MyWorkflowsService, ProviderService,
     DockstoreService]
 })

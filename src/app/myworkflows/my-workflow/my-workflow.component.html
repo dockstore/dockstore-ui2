@@ -25,21 +25,25 @@
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-        <div class="clearfix sidebar-header" matTooltipPosition="after" [matTooltip]="(hasSourceControlToken$ | async)? '' : 'Requires source control token'">
-            <button mat-flat-button color="primary" matTooltipPosition="after" matTooltip="Find new workflows and sync all existing workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
-              Refresh All
-            </button>
-          <h3 class="sidebar-header">My workflows</h3>
-        </div>
-        <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
-        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
-        <br>
+        <div id="parent">
+          <div id="child">
+            <div class="clearfix sidebar-header" matTooltipPosition="after" [matTooltip]="(hasSourceControlToken$ | async)? '' : 'Requires source control token'">
+                <button mat-flat-button color="primary" matTooltipPosition="after" matTooltip="Find new workflows and sync all existing workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
+                  Refresh All
+                </button>
+              <h3 class="sidebar-header">My workflows</h3>
+            </div>
+            <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
+            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
+            <br>
 
-        <div class="clearfix sidebar-header">
-          <h3 class="sidebar-header">Shared with me</h3>
+            <div class="clearfix sidebar-header">
+              <h3 class="sidebar-header">Shared with me</h3>
+            </div>
+            <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
+            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+          </div>
         </div>
-        <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
-        <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
         <div *ngIf="!(isRefreshing$ | async) && ((groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))">
