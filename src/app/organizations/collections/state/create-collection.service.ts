@@ -6,12 +6,14 @@ import { Collection, OrganisationsService } from '../../../shared/swagger';
 import { OrganizationQuery } from '../../state/organization.query';
 import { FormsState } from '../create-collection/create-collection.component';
 import { CreateCollectionStore } from './create-collection.store';
+import { CollectionsService } from '../../state/collections.service';
 
 @Injectable({ providedIn: 'root' })
 export class CreateCollectionService {
 
   constructor(private createCollectionStore: CreateCollectionStore, private organisationsService: OrganisationsService,
-    private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private matSnackBar: MatSnackBar) {
+    private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private matSnackBar: MatSnackBar,
+    private collectionsService: CollectionsService) {
   }
 
   clearState() {
@@ -33,6 +35,7 @@ export class CreateCollectionService {
         this.createCollectionStore.setError(false);
         this.matDialog.closeAll();
         this.matSnackBar.open('Creating collection successful');
+        this.collectionsService.updateCollections();
       }, error => {
         this.createCollectionStore.setError(true);
         this.matSnackBar.open('Creating collection failed');

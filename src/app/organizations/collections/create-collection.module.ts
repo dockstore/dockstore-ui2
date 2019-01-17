@@ -1,13 +1,29 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CreateCollectionComponent } from './create-collection/create-collection.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatButtonModule, MatInputModule, MatDialogModule } from '@angular/material';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
+import {
+  MatButtonModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressBarModule,
+} from '@angular/material';
+
+import { CreateCollectionComponent } from './create-collection/create-collection.component';
 
 @NgModule({
-  imports: [ CommonModule, FlexLayoutModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule ],
-  declarations: [ CreateCollectionComponent ],
-  entryComponents: [ CreateCollectionComponent ]
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    ReactiveFormsModule
+  ],
+  declarations: [CreateCollectionComponent],
+  entryComponents: [CreateCollectionComponent]
 })
 export class CreateCollectionModule { }

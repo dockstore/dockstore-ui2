@@ -19,24 +19,30 @@
       Collections
     </mat-panel-title>
   </mat-expansion-panel-header>
-  <div fxLayout="row wrap">
-    <mat-card fxFlex fxFlexOffset="10px" *ngFor="let collection of ((collections$ | async) | keyvalue)">
-      <mat-card-header>
-        <mat-card-title>{{collection.value.name}}</mat-card-title>
-        <mat-card-subtitle>{{collection.value.description}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-          bred for hunting.
-        </p>
-      </mat-card-content>
-      <mat-card-actions *ngIf="(canEdit$ | async)">
-        <button mat-button class="pull-right" (click)="editCollection(collection)">EDIT COLLECTION</button>
-      </mat-card-actions>
-    </mat-card>
+  <div *ngIf="(loading$ | async); else notLoading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
+  <ng-template #notLoading>
+    <div class="pt-2"></div>
+    <div fxLayout="row wrap">
+      <mat-card fxFlex fxFlexOffset="10px" *ngFor="let collection of ((collections$ | async) | keyvalue)">
+        <mat-card-header>
+          <mat-card-title>{{collection.value.name}}</mat-card-title>
+          <mat-card-subtitle>{{collection.value.description}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+            bred for hunting.
+          </p>
+        </mat-card-content>
+        <mat-card-actions *ngIf="(canEdit$ | async)">
+          <button mat-button class="pull-right" (click)="editCollection(collection)">EDIT COLLECTION</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </ng-template>
   <mat-action-row *ngIf="(canEdit$ | async)">
     <button mat-button (click)="createCollection()">CREATE COLLECTION</button>
   </mat-action-row>

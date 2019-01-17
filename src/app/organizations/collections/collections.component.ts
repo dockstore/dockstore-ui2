@@ -32,6 +32,7 @@ import { HashMap } from '@datorama/akita';
 })
 export class CollectionsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
+  loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   collections$: Observable<HashMap<Collection>>;
   constructor(private collectionsQuery: CollectionsQuery, private organizationQuery: OrganizationQuery,
@@ -39,6 +40,7 @@ export class CollectionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.loading$ = this.collectionsQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.collections$ = this.collectionsQuery.collections$;
   }

@@ -2,6 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { Observable } from 'rxjs';
 
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
 import { CreateCollectionQuery } from '../state/create-collection.query';
@@ -21,12 +22,14 @@ export interface FormsState {
 export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: FormGroup;
   public title: string;
+  public loading$: Observable<boolean>;
   constructor(private createCollectionQuery: CreateCollectionQuery,
               private createCollectionService: CreateCollectionService, @Inject(MAT_DIALOG_DATA) public data: any,
               private builder: FormBuilder, private formsManager: AkitaNgFormsManager<FormsState>
   ) { }
 
   ngOnInit() {
+    this.loading$ = this.createCollectionQuery.loading$;
     this.createCollectionService.clearState();
     let name = null;
     let description = null;

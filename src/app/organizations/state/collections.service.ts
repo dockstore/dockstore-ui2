@@ -19,16 +19,20 @@ import { HttpClient } from '@angular/common/http';
 import { CollectionsStore } from './collections.store';
 import { OrganisationsService, Collection } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
+import { OrganizationQuery } from './organization.query';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
 
   constructor(private collectionsStore: CollectionsStore, private organisationsService: OrganisationsService,
-              private http: HttpClient) {
+              private http: HttpClient, private organizationStore: OrganizationQuery) {
   }
 
   // Get function
-  updateCollections(organizationID: number) {
+  updateCollections(organizationID?: number) {
+    if (!organizationID) {
+      organizationID = this.organizationStore.getSnapshot().organization.id;
+    }
     this.collectionsStore.setLoading(true);
     this.organisationsService.getCollectionsFromOrganisation(organizationID).pipe(
       finalize(() => this.collectionsStore.setLoading(false)))
