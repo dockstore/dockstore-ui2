@@ -18,14 +18,18 @@ import { Injectable } from '@angular/core';
 
 import { OrganizationStore } from './organization.store';
 import { UrlSegment, Router, PRIMARY_OUTLET } from '@angular/router';
-import { OrganisationsService, Organisation } from '../../shared/swagger';
+import { OrganisationsService, Organisation, OrganisationUser } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
+import { UserQuery } from '../../shared/user/user.query';
+import { OrganizationMembersService } from './organization-members.service';
+import { transaction } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
 
   constructor(private organizationStore: OrganizationStore, private router: Router,
-    private http: HttpClient, private organisationsService: OrganisationsService) {
+    private http: HttpClient, private organisationsService: OrganisationsService, private userQuery: UserQuery,
+    private organizationMembersService: OrganizationMembersService) {
   }
 
   getOrganizationNameOrIDFromURL(): string {
@@ -44,6 +48,7 @@ export class OrganizationService {
     });
   }
 
+  @transaction()
   updateOrganizationFromNameORID() {
     this.clearState();
     const organizationNameOrID = this.getOrganizationNameOrIDFromURL();
@@ -60,21 +65,32 @@ export class OrganizationService {
     this.organisationsService.getOrganisationById(id).pipe(finalize(() => this.organizationStore.setLoading(false)))
     .subscribe((organization: Organisation) => {
       this.organizationStore.setError(false);
-      this.organizationStore.setState(state => {
-        return {
-          ...state,
-          organization: organization,
-          canEdit: this.canEdit(organization)
-        };
-      });
+      this.updateOrganization(organization);
+      this.updateCanEdit(organization);
     }, () => {
       this.organizationStore.setError(true);
     });
   }
 
+  updateOrganization(organization: Organisation) {
+    this.organizationStore.setState(state => {
+      return {
+        ...state,
+        organization: organization,
+      };
+    });
+  }
+
   updateOrganizationFromName(name: string): void {
-    console.log('updateOrganizationFromName');
-    // Placeholder until endpoint exists
+    this.organizationStore.setLoading(true);
+    this.organisationsService.getOrganisationByName(name).pipe(finalize(() => this.organizationStore.setLoading(false)))
+    .subscribe((organization: Organisation) => {
+      this.organizationStore.setError(false);
+      this.updateOrganization(organization);
+      this.updateCanEdit(organization);
+    }, () => {
+      this.organizationStore.setError(true);
+    });
   }
 
   /**
@@ -84,8 +100,21 @@ export class OrganizationService {
    * @returns {boolean}                  Whether the user belongs to this organization and can edit
    * @memberof OrganizationService
    */
-  canEdit(organization: Organisation): boolean {
-    // Placeholder until we can figure out whether the user belongs to this organization or not
-    return true;
+  updateCanEdit(organization: Organisation) {
+    this.organisationsService.getOrganisationMembers(organization.id).subscribe((organizationUsers: OrganisationUser[]) => {
+      const currentUserId = this.userQuery.getSnapshot().user.id;
+      const canEdit = organizationUsers.some(user => user.id.userId === currentUserId);
+      this.setCanEditState(canEdit);
+      this.organizationMembersService.updateAll(organizationUsers);
+    });
+  }
+
+  setCanEditState(canEdit: boolean) {
+    this.organizationStore.setState(state => {
+      return {
+        ...state,
+        canEdit: canEdit
+      };
+    });
   }
 }
