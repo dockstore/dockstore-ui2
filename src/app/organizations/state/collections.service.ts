@@ -34,6 +34,7 @@ export class CollectionsService {
       organizationID = this.organizationStore.getSnapshot().organization.id;
     }
     this.collectionsStore.setLoading(true);
+    this.collectionsStore.remove();
     this.organisationsService.getCollectionsFromOrganisation(organizationID).pipe(
       finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe((collections: Array<Collection>) => {
