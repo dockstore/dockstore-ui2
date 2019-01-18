@@ -20,7 +20,7 @@
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
   <span *ngIf="!publicPage">
-    <mat-card *ngIf="validationMessage">
+    <mat-card *ngIf="validationMessage" class="alert alert-warning">
       <mat-icon>warning</mat-icon>
       &nbsp;
       <span *ngFor="let item of validationMessage | keyvalue">

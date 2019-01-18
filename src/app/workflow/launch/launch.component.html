@@ -23,7 +23,7 @@
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
       <mat-card class="alert alert-warning" role="alert">
-        This section is only available for valid versions. A valid version requires a valid descriptor file.
+        <mat-icon>warning</mat-icon> This section is only available for valid versions. A valid version requires a valid descriptor file.
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">
