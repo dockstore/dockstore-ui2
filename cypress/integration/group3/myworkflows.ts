@@ -161,7 +161,7 @@ describe('Dockstore my workflows', () => {
         .should('be.visible')
         .click();
 
-      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:latest?tab=info');
+      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
   });
 });

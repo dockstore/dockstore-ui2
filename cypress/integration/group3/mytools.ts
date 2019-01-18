@@ -117,7 +117,7 @@ describe('Dockstore my tools', () => {
         .should('be.visible')
         .click();
 
-      cy.url().should('eq', Cypress.config().baseUrl + '/tools/quay.io/A2/b1:latest?tab=info');
+      cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b1:latest?tab=info');
     });
   });
 
