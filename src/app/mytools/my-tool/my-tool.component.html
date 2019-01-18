@@ -25,19 +25,23 @@
       <div class="row containers-rsb" style="height:100%;">
         <mat-sidenav-container autosize class="sidebar-set-height">
           <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-            <div class="clearfix sidebar-header">
-                <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Find new tools and sync all existing tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async)">
-                  Refresh All
-                </button>
-              <h3 class="sidebar-header">My tools</h3>
+            <div id="parent">
+              <div id="child">
+                <div class="clearfix sidebar-header">
+                    <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Find new tools and sync all existing tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async)">
+                      Refresh All
+                    </button>
+                  <h3 class="sidebar-header">My tools</h3>
+                </div>
+                <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
+                <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
+              </div>
             </div>
-            <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
           </mat-sidenav>
           <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
             <div *ngIf="!(isRefreshing$ | async) && (groupEntriesObject?.length == 0 || !groupEntriesObject)">
               <div class="col-md-12">
-                <div class="alert alert-info" role="alert">
+                <mat-card class="alert alert-info" role="alert">
                   <p>
                     <mat-icon>info</mat-icon>
                     There are currently no tools registered under this account, to add your first tool, do one of the following:
@@ -59,7 +63,7 @@
                         <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
                       </a>
                     </div>
-                </div>
+                </mat-card>
               </div>
             </div>
             <div *ngIf="tool">

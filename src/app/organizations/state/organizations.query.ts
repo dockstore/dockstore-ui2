@@ -35,8 +35,7 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
     searchName = searchName.toLowerCase();
     if (organizations) {
       return searchName ? organizations.filter(organization => organization.name.toLowerCase().includes(searchName)) : organizations;
-    } else {
-      return null;
     }
+    return null;
   }
 }

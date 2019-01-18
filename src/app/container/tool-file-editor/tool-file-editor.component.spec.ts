@@ -5,7 +5,7 @@ import { TabsModule } from 'ngx-bootstrap';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule,
-  MatFormFieldModule, MatSelectModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
+  MatFormFieldModule, MatSelectModule, MatTooltipModule, MatSnackBarModule, MatCardModule } from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
@@ -43,6 +43,7 @@ describe('ToolFileEditorComponent', () => {
         MatFormFieldModule,
         MatSelectModule,
         MatTooltipModule,
+        MatCardModule,
         BrowserAnimationsModule,
         ClipboardModule
       ],

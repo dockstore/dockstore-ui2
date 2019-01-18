@@ -15,6 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -78,6 +79,7 @@ import { getTooltipConfig } from './../tooltip';
     CommonModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
+    FlexLayoutModule,
     NgxMdModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,

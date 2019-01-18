@@ -15,6 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -22,6 +23,8 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Organisation } from '../../shared/swagger';
+import { TrackLoginService } from '../../shared/track-login.service';
+import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';
 
@@ -34,13 +37,16 @@ export class OrganizationsComponent extends Base implements OnInit {
   public filteredOrganizations$: Observable<Array<Organisation>>;
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
+  public isLoggedIn$: Observable<boolean>;
 
   constructor(private organizationsStateService: OrganizationsStateService, private organizationsQuery: OrganizationsQuery,
-    private formBuilder: FormBuilder, private alertQuery: AlertQuery) {
+    private formBuilder: FormBuilder, private alertQuery: AlertQuery, private matDialog: MatDialog,
+    private trackLoginService: TrackLoginService) {
     super();
   }
 
   ngOnInit() {
+    this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
     this.organizationSearchForm = this.formBuilder.group({ name: '' });
     this.loading$ = this.alertQuery.showInfo$;
     // The real loading$ is currently not being used because the alertQuery global loading is used instead
@@ -63,6 +69,6 @@ export class OrganizationsComponent extends Base implements OnInit {
    * @memberof OrganizationsComponent
    */
   createOrganization(): void {
-    console.log('Placeholder until createOrganizationDialog is hooked up');
+    this.matDialog.open(RegisterOrganizationComponent, {width: '600px'});
   }
 }

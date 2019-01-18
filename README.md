@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58c43301d4b84c8ab74bdbeb2a962973)](https://app.codacy.com/app/dockstore/dockstore-ui2?utm_source=github.com&utm_medium=referral&utm_content=dockstore/dockstore-ui2&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/dockstore/dockstore-ui2.svg?branch=develop)](https://travis-ci.org/dockstore/dockstore-ui2)
 [![codecov](https://codecov.io/gh/dockstore/dockstore-ui2/branch/develop/graph/badge.svg)](https://codecov.io/gh/dockstore/dockstore-ui2)
 
@@ -94,6 +95,11 @@ The Dockstore class in [src/app/shared/dockstore.model.ts](src/app/shared/dockst
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
 ## Pre-build/serve
+<!-- 
+  Possible bash command
+  export WEBSERVICE_VERSION=`grep -oP 'WEBSERVICE_VERSION="\K[0-9].[0-9].[0-9]' .travis.yml`
+-->
+Run `export WEBSERVICE_VERSION=`[dockstore release version](https://github.com/dockstore/dockstore-ui2/blob/develop/.travis.yml#L12), for example `export WEBSERVICE_VERSION=1.5.3`.
 
 Run `npm run prebuild` before running or building the project. This command will:
 - generate a file which contains the UI tag version 

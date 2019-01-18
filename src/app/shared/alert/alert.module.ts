@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule, MatProgressBarModule } from '@angular/material';
+import { CustomMaterialModule } from './../modules/material.module';
 
 import { AlertComponent } from './alert.component';
 
@@ -13,7 +14,8 @@ import { AlertComponent } from './alert.component';
     MatProgressBarModule,
     MatIconModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    CustomMaterialModule
   ],
   exports: [AlertComponent]
 })
