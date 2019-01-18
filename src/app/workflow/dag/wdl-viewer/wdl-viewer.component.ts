@@ -149,29 +149,32 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
     this.filesQuery.getFileEntities(secondaryFiles).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(fileEntities => {
 
-        // Load each secondary file into the jszip object
-        fileEntities.forEach(file => this.zip.file(file.url.split('/').pop(), file.content));
+        if (fileEntities.length === secondaryFiles.length) {
 
-        // Retrieve primary file
-        this.filesQuery.getFileEntities(primaryFile).pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(primary => {
+          // Load each secondary file into the jszip object
+          fileEntities.forEach(file => this.zip.file(file.url.split('/').pop(), file.content));
 
-            if (primary[0]) {
-              // Generate the secondary files zip object as Blob object
-              this.zip.generateAsync({type: 'blob'}).then(content => {
-                const diagram = new pipeline.Visualizer(document.getElementById('diagram'));
+          // Retrieve primary file
+          this.filesQuery.getFileEntities(primaryFile).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(primary => {
 
-                if (content) {
-                  pipeline.parse(primary[0].content, { zipFile: content }).then((res) => {
-                    let flow = res.model[0];
-                    diagram.attachTo(flow);
-                  }).catch((message) => {
-                    console.log(message);
-                  });
-                }
-              });
-            }
-          });
+              if (primary[0]) {
+                // Generate the secondary files zip object as Blob object
+                this.zip.generateAsync({type: 'blob'}).then(content => {
+                  const diagram = new pipeline.Visualizer(document.getElementById('diagram'));
+
+                  if (content) {
+                    pipeline.parse(primary[0].content, { zipFile: content }).then((res) => {
+                      let flow = res.model[0];
+                      diagram.attachTo(flow);
+                    }).catch((message) => {
+                      console.log(message);
+                    });
+                  }
+                });
+              }
+            });
+        }
       });
   }
 }

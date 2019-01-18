@@ -39,7 +39,6 @@ export abstract class WdlViewerService extends Files implements OnDestroy {
   public published$: Observable<boolean>;
   protected abstract entryType: ('tool' | 'workflow');
   protected abstract workflow: ExtendedWorkflow;
-  content: string = null;
 
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
