@@ -15,29 +15,114 @@
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Workflow unstarring error message', () => {
+describe('Tool and workflow starring error messages', () => {
   resetDB();
   setTokenUserViewPort();
-  beforeEach(() => {
-    cy.visit('/workflows/github.com/A/l');
+
+  function starringError(url: string, type: string, routePath: string, name: string) {
+    cy.visit(url);
+    cy.server();
+    cy.route({
+      url:routePath,
+      method:'PUT',
+      status:400,
+      response: 'You cannot star the ' + type +' '+ name +' because you have not unstarred it.'
+    })
 
     cy
-      .server();
+      .get('#starringButtonIcon')
+      .click();
 
     cy
-      .route({
-        method: 'DELETE',
-        url: /workflows\/11\/unstar/,
-        response: ['DELETE']
-      }).as('unstarWorkflow');
-  });
+      .get('.alert')
+      .should('exist');
 
-  describe('Workflow unstarring error message', () => {
+    cy
+      .get('.error-output')
+      .contains('You cannot star the ' + type + ' '+ name + ' because you have not unstarred it.')
+      .should('exist')
+  }
+
+  function unstarringError(url: string, type: string, routePath: string, name: string) {
+    cy.visit(url);
+
+    cy
+      .get('#starringButtonIcon')
+      .click();
+
+    cy.server();
+    cy.route({
+      url: routePath,
+      method:'DELETE',
+      status:400,
+      response:'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.'
+    })
+
+    cy
+      .get('#unstarringButtonIcon')
+      .click();
+
+    cy
+      .get('.alert')
+      .should('exist');
+
+    cy
+      .get('.error-output')
+      .contains('You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.')
+      .should('exist')
+  }
+
+  function starringServerError(url: string, routePath: string){
+    cy.visit(url);
+    cy.server();
+
+    cy.route({
+      url: routePath,
+      method:'PUT',
+      status:500,
+      response: {}
+    })
+
+    cy
+      .get('#starringButtonIcon')
+      .click();
+
+    cy
+      .get('.alert')
+      .should('exist');
+
+    cy
+      .get('.error-output')
+      .contains('[HTTP 500] Internal Server Error:')
+      .should('exist');
+  }
+
+  describe('Workflow starring error message', () => {
+    it('Workflow server error message', () => {
+      starringServerError('/workflows/github.com/A/l', '/workflows/11/star');
+    })
+
+    it('Workflow cannot be starred if not already unstarred.', () => {
+      starringError('/workflows/github.com/A/l', 'workflow', '/workflows/11/star', 'github.com/A/l');
+    });
+
     it('Workflow cannot be unstarred if not already starred.', () => {
-      cy.wait('@unstarWorkflow');
-
+      unstarringError('/workflows/github.com/A/l', 'workflow', '/workflows/11/unstar', 'github.com/A/l');
     });
   });
+
+  describe('Tool starring error message', () =>{
+    it('Tool server error message', () => {
+      starringServerError('/containers/quay.io/A2/a:latest?tab=info', '/containers/5/star');
+    })
+    it('Tool cannot be starred if not already unstarred.', () => {
+      starringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '/containers/5/star', 'quay.io/A2/a');
+    })
+
+    it('Tool cannot be unstarred if not already starred.', () => {
+      unstarringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '/containers/5/unstar', 'quay.io/A2/a');
+    });
+  })
 });
 
 
