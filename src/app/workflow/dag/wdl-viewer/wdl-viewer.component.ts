@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { filterNil } from '@datorama/akita';
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
 
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../../../shared/constants';
 import { DescriptorService } from '../../../shared/descriptor.service';
@@ -50,11 +51,17 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
     this.onVersionChange(value);
   }
 
+  @ViewChild('diagram') diagram: ElementRef;
 
   previousEntryPath: string;
   previousVersionName: string;
+  public pipelineBuilderResult$: Observable<any>;
+  public errorMessage;
+  public isGenerated: boolean;
 
   protected entryType: ('tool' | 'workflow') = 'workflow';
+
+  private visualizer: any;
 
   constructor(public fileService: FileService, private descriptorsService: DescriptorService,
     private gA4GHFilesQuery: GA4GHFilesQuery, protected gA4GHFilesService: GA4GHFilesService, protected gA4GHService: GA4GHService,
@@ -89,6 +96,8 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
   }
 
   ngAfterViewInit() {
+    this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement);
+
     // Retrieve all files for this workflow from Ga4ghFiles entity Store
     this.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
@@ -116,15 +125,22 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
 
       this.filesQuery.getFileEntities(primaryFile).pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(primary => {
-          const diagram = new pipeline.Visualizer(document.getElementById('diagram'));
 
           if (primary[0]) {
-            pipeline.parse(primary[0].content).then((res) => {
-              let flow = res.model[0];
-              diagram.attachTo(flow);
-            }).catch((message) => {
-              console.log(message);
-            });
+            this.pipelineBuilderResult$ = from(pipeline.parse(primary[0].content));
+
+            // If the visualization was successfully generated, attach to DOM element
+            this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
+              .subscribe(
+                (primary) => {
+                  if (primary.model[0]) {
+                    this.isGenerated = true;
+                    this.visualizer.attachTo(primary.model[0]);
+                  }
+                },
+                (error) => {
+                  this.errorMessage = error || 'Unknown error';
+                });
           }
         });
     }
@@ -161,15 +177,22 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
               if (primary[0]) {
                 // Generate the secondary files zip object as Blob object
                 this.zip.generateAsync({type: 'blob'}).then(content => {
-                  const diagram = new pipeline.Visualizer(document.getElementById('diagram'));
 
                   if (content) {
-                    pipeline.parse(primary[0].content, { zipFile: content }).then((res) => {
-                      let flow = res.model[0];
-                      diagram.attachTo(flow);
-                    }).catch((message) => {
-                      console.log(message);
-                    });
+                    this.pipelineBuilderResult$ = from(pipeline.parse(primary[0].content, { zipFile: content}));
+
+                    // If the visualization was successfully generated, attach to DOM element
+                    this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
+                      .subscribe(
+                        (primary) => {
+                          if (primary.model[0]) {
+                            this.isGenerated = true;
+                            this.visualizer.attachTo(primary.model[0]);
+                          }
+                        },
+                        (error) => {
+                          this.errorMessage = error || 'Unknown error';
+                        });
                   }
                 });
               }

@@ -1,1 +1,10 @@
-<div class="mini-dag" [ngClass]="{'fullscreen-element large-dag': expanded}" id="diagram" #diagram></div>
+<div [ngClass]="{'fullscreen-element large-dag': expanded}" class="wdl-viewer">
+  <mat-card *ngIf="!(pipelineBuilderResult$ | async)" class="alert alert-warning">
+    <mat-icon>warning</mat-icon>&nbsp;
+    <div>One moment, EPAM Pipeline Builder is attempting to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
+    <div>{{errorMessage}}</div>
+  </mat-card>
+
+  <div [hidden]="!isGenerated" class="mini-dag" #diagram></div>
+</div>
+
