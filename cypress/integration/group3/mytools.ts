@@ -102,6 +102,11 @@ describe('Dockstore my tools', () => {
     it('publish and unpublish', () => {
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
+
+      cy
+        .get('#viewPublicToolButton')
+        .should('not.be.visible');
+
       cy
         .get('#publishToolButton')
         .should('contain', 'Publish')
