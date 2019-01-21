@@ -52,18 +52,18 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.published$ = this.workflowService.workflowIsPublished$;
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version: WorkflowVersion): Array<ToolDescriptor.TypeEnum> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
-  getValidDescriptors(version): Array<any> {
+  getValidDescriptors(version: WorkflowVersion): Array<any> {
     return this.paramfilesService.getValidDescriptors(this._selectedVersion);
   }
 
   /**
    * Get all the test parameter files
    *
-   * @param {*} descriptor  This actually doesn't matter for the workflow components.
+   * @param {ToolDescriptor.TypeEnum} descriptorType  This actually doesn't matter for the workflow components.
    * Both tool and workflows uses the same abstract method, but only tool can have multiple descriptor types.
    * Workflows won't use this until it also supports having multiple descriptor types.
    * @returns {Observable<Array<ToolFile>>}  The array of test parameter ToolFiles

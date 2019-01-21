@@ -15,10 +15,11 @@
  */
 import { Injectable } from '@angular/core';
 
-import { ToolDescriptor, SourceFile } from '../../shared/swagger';
+import { ToolDescriptor, SourceFile, Validation } from '../../shared/swagger';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { Tag } from './../../shared/swagger/model/tag';
 
 @Injectable()
 export class ParamfilesService {
@@ -38,7 +39,7 @@ export class ParamfilesService {
   }
 
   // get descriptors which have test parameter files
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version: (WorkflowVersion|Tag)): Array<ToolDescriptor.TypeEnum> {
     const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
     if (version) {
       for (const file of version.sourceFiles) {
@@ -56,11 +57,11 @@ export class ParamfilesService {
   }
 
   /**
-   * Gets the descriptor types (cwl/wdl/nfl) that are valid and have valid test parameter files
-   * @param {any} version the current selected version of the workflow or tool
-   * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
+   * Gets the descriptor types (CWL/WDL/NFL) that are valid and have valid test parameter files
+   * @param version the current selected version of the workflow or tool
+   * @returns an array that may contain 'CWL' or 'WDL' or 'NFL'
    */
-    getValidDescriptors(version) {
+    getValidDescriptors(version: (WorkflowVersion|Tag)) {
       if (version) {
         const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
         if (version.validations) {
@@ -89,9 +90,9 @@ export class ParamfilesService {
      * @param fileType Ex. SourceFile.TypeEnum.CWLTESTJSON
      * @param descriptorType Ex. SourceFile.TypeEnum.DOCKSTORECWL
      */
-    checkValidFileType(version, fileType, descriptorType) {
+    checkValidFileType(version: (WorkflowVersion|Tag), fileType: SourceFile.TypeEnum, descriptorType: SourceFile.TypeEnum) {
       // Check that the language has a valid descriptor
-      const descriptorValidation = version.validations.find((validation) => {
+      const descriptorValidation = version.validations.find((validation: Validation) => {
         return validation.type === descriptorType;
       });
 
@@ -100,7 +101,7 @@ export class ParamfilesService {
       }
 
       // Check that at least one file is valid
-      const validationObject = version.validations.find((validation) => {
+      const validationObject = version.validations.find((validation: Validation) => {
         return validation.type === fileType;
       });
 
@@ -117,7 +118,7 @@ export class ParamfilesService {
     }
 
   // get versions which have test parameter files
-  getVersions(versions) {
+  getVersions(versions: Array<Tag | WorkflowVersion>) {
     const versionsWithParamfiles = [];
     if (versions) {
       for (const version of versions) {

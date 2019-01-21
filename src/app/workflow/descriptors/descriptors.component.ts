@@ -50,18 +50,18 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     this.published$ = this.workflowQuery.workflowIsPublished$;
   }
 
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version: WorkflowVersion): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorService.getDescriptors(this._selectedVersion);
   }
 
-  getValidDescriptors(version): Array<any> {
+  getValidDescriptors(version: WorkflowVersion): Array<any> {
     return this.descriptorService.getValidDescriptors(this._selectedVersion);
   }
 
   /**
    * Get all the primary or secondary descriptors
    *
-   * @param {*} descriptor
+   * @param {ToolDescriptor.TypeEnum} descriptorType
    * @returns {Observable<Array<ToolFile>>}  The array of primary or secondary descriptor ToolFiles
    * @memberof DescriptorsWorkflowComponent
    */

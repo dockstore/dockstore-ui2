@@ -21,7 +21,7 @@ import {finalize, takeUntil} from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion } from '../swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion, Tag } from '../swagger';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
 
@@ -168,7 +168,7 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @param isDescriptor Yes if looking at descriptor, false otherwise (test params)
    * @param version The version of interest
    */
-  checkIfValid(isDescriptor: boolean, version: any): void {
+  checkIfValid(isDescriptor: boolean, version: (WorkflowVersion|Tag)): void {
     let fileEnum = null;
     if (this.currentDescriptor === ToolDescriptor.TypeEnum.CWL) {
       if (isDescriptor) {
@@ -182,8 +182,12 @@ export abstract class EntryFileSelector implements OnDestroy {
       } else {
         fileEnum = 'WDL_TEST_JSON';
       }
+    } else if (this.currentDescriptor === ToolDescriptor.TypeEnum.NFL) {
+      if (isDescriptor) {
+        fileEnum = 'NEXTFLOW_CONFIG';
+      }
     }
-    if (version && version.validations) {
+    if (fileEnum && version && version.validations) {
       for (const validation of version.validations) {
         if (validation.type === fileEnum) {
           const validationObject = JSON.parse(validation.message);

@@ -55,11 +55,11 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version: Tag): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorsService.getDescriptors(this._selectedVersion);
   }
 
-  getValidDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getValidDescriptors(version: Tag): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorsService.getValidDescriptors(this._selectedVersion);
   }
 
