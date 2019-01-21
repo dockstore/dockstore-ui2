@@ -151,10 +151,24 @@ describe('Dockstore my workflows', () => {
       cy
         .get('#publishButton')
         .should('contain', 'Unpublish')
-        .click()
+        .click();
+
+      cy
+        .get('#viewPublicWorkflowButton')
+        .should('not.be.visible');
+
+      cy
+        .get('#publishButton')
         .should('contain', 'Publish')
         .click()
         .should('contain', 'Unpublish');
+
+      cy
+        .get('#viewPublicWorkflowButton')
+        .should('be.visible')
+        .click();
+
+      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
   });
 });

@@ -102,13 +102,27 @@ describe('Dockstore my tools', () => {
     it('publish and unpublish', () => {
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
+
+      cy
+        .get('#viewPublicToolButton')
+        .should('not.be.visible');
+
       cy
         .get('#publishToolButton')
         .should('contain', 'Publish')
         .click()
         .should('contain', 'Unpublish')
         .click()
-        .should('contain', 'Publish');
+        .should('contain', 'Publish')
+        .click()
+        .should('contain', 'Unpublish');
+
+      cy
+        .get('#viewPublicToolButton')
+        .should('be.visible')
+        .click();
+
+      cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b1:latest?tab=info');
     });
   });
 

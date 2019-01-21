@@ -78,6 +78,7 @@ export class WorkflowComponent extends Entry {
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   publishMessage = 'Publish the workflow to make it visible to the public';
   unpublishMessage = 'Unpublish the workflow to remove it from the public';
+  viewPublicMessage = 'Go to the public page for this workflow';
   pubUnpubMessage: string;
   @Input() user;
 
