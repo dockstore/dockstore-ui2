@@ -45,6 +45,7 @@ import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
+import { RequestsComponent } from './loginComponents/requests/requests.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import {
   DeleteAccountDialogComponent,
@@ -127,6 +128,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     AccountsComponent,
     AccountsInternalComponent,
     AccountsExternalComponent,
+    RequestsComponent,
     AuthComponent,
     GetTokenUsernamePipe,
     GetTokenContentPipe,
