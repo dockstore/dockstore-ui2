@@ -10,11 +10,11 @@ import { FormsState } from '../registerOrganization/register-organization.compon
 @Injectable({ providedIn: 'root' })
 export class RegisterOrganizationService {
 
-  // Regex found from https://gist.github.com/dperini/729294 which validator.js uses except using a more simple version
+  // Regex found from https://gist.github.com/dperini/729294 which validator.js uses except using a more simple version and enforce http(s)
   readonly urlRegex = new RegExp(
     '^' +
         // protocol identifier (optional) + //
-        '(?:(?:https?:)?//)?' +
+        '(?:(?:https?:)?//)' +
         // user:pass authentication (optional)
         '(?:\\S+(?::\\S*)?@)?' +
         // host (optional) + domain + tld
@@ -46,7 +46,7 @@ export class RegisterOrganizationService {
       let newOrganization: Organisation;
       newOrganization = {
         name: organizationFormState.name,
-        description: organizationFormState.description,
+        topic: organizationFormState.topic,
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,

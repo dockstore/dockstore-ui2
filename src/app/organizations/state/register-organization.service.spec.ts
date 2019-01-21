@@ -70,6 +70,7 @@ describe('RegisterOrganizationService', () => {
     expect(regexp.test('httpsz://google.ca')).toBeFalsy();
     expect(regexp.test('https://google.superLongTLDThatStillWorksForSomeReason')).toBeTruthy();
     expect(regexp.test('HTTP://www.google.ca')).toBeTruthy();
+    expect(regexp.test('www.google.ca')).toBeFalsy();
   });
 
   it('should have the correct organization name regex', () => {

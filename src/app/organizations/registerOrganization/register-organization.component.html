@@ -26,7 +26,7 @@
       <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <textarea cdkAutosizeMinRows="3" cdkTextareaAutosize type="text" matInput formControlName="topic" placeholder="Topic"
+      <textarea cdkAutosizeMinRows="2" cdkTextareaAutosize type="text" matInput formControlName="topic" placeholder="Topic"
         required></textarea>
       <mat-error *ngIf="topic.hasError('required')">Topic is required</mat-error>
     </mat-form-field>
