@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
-import { Request } from '../state/request.model';
-import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { Organisation } from '../../shared/swagger';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'requests',
@@ -18,7 +17,8 @@ export class RequestsComponent implements OnInit {
 
   constructor(private requestsQuery: RequestsQuery,
               private requestsService: RequestsService,
-              private alertQuery: AlertQuery
+              private alertQuery: AlertQuery,
+              public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -26,4 +26,35 @@ export class RequestsComponent implements OnInit {
     this.requestsService.updateOrganizations();
     this.organizations$ = this.requestsQuery.organizations$;
   }
+
+  openDialog(name): void {
+    const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
+      width: '300px',
+      data: {name: name}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+}
+
+@Component({
+  selector: 'organization-request-confirm-dialog',
+  templateUrl: 'organization-request-confirm-dialog.html',
+})
+export class OrganizationRequestConfirmDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<OrganizationRequestConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface DialogData {
+  name: string;
 }

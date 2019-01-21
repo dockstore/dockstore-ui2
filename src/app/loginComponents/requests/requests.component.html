@@ -7,7 +7,7 @@
   <div class="p-3">
     <h3>Organization Requests</h3>
     <mat-card class="alert alert-info" role="alert">
-      <mat-icon>info</mat-icon> As a curator/admin, you can accept and reject organization requests.
+      <mat-icon>info</mat-icon> As a curator/admin, you can approve and reject organization requests.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card *ngFor="let org of (organizations$ | async)">
@@ -38,7 +38,7 @@
 
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button color="primary">Accept</button>
+          <button mat-flat-button color="primary" (click)="openDialog(org.name)"><mat-icon>done</mat-icon>Approve</button>
         </mat-card-actions>
       </mat-card>
     </div>

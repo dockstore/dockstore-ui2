@@ -45,7 +45,7 @@ import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
-import { RequestsComponent } from './loginComponents/requests/requests.component';
+import { RequestsComponent, OrganizationRequestConfirmDialogComponent } from './loginComponents/requests/requests.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import {
   DeleteAccountDialogComponent,
@@ -129,6 +129,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     AccountsInternalComponent,
     AccountsExternalComponent,
     RequestsComponent,
+    OrganizationRequestConfirmDialogComponent,
     AuthComponent,
     GetTokenUsernamePipe,
     GetTokenContentPipe,
@@ -197,7 +198,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, OrganizationRequestConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

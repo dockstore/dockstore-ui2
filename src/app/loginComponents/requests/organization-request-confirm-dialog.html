@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Approve Organization</h1>
+
+<div mat-dialog-content>
+  <p>Are you sure you want to approve the following organization?</p>
+  <h4>{{data.name}}</h4>
+</div>
+<div mat-dialog-actions>
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-flat-button>Approve</button>
+</div>
