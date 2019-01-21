@@ -14,6 +14,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 export class RequestsComponent implements OnInit {
   loading$: Observable<boolean>;
   public organizations$: Observable<Array<Organisation>>;
+  currentOrgId: number;
 
   constructor(private requestsQuery: RequestsQuery,
               private requestsService: RequestsService,
@@ -27,14 +28,16 @@ export class RequestsComponent implements OnInit {
     this.organizations$ = this.requestsQuery.organizations$;
   }
 
-  openDialog(name): void {
+  openDialog(name: string, id: number): void {
     const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
-      width: '300px',
-      data: {name: name}
+      width: '350px',
+      data: {name: name, id: id}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if (result) {
+        this.requestsService.approveOrganization(result);
+      }
     });
   }
 }
@@ -57,4 +60,5 @@ export class OrganizationRequestConfirmDialogComponent {
 
 export interface DialogData {
   name: string;
+  id: number;
 }

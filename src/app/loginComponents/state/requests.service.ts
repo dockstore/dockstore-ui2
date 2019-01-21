@@ -26,6 +26,21 @@ export class RequestsService {
     });
   }
 
+  approveOrganization(id: number): void {
+    this.alertService.start('Approving organization ' + id);
+    this.organisationsService.approveOrganisation(id, null, null).pipe(
+      finalize(() => this.requestsStore.setLoading(false)
+      ))
+      .subscribe((organization: Organisation) => {
+        this.alertService.simpleSuccess();
+        this.updateOrganizations();
+      }, () => {
+        this.updateOrganizationState(null);
+        this.requestsStore.setError(true);
+        this.alertService.simpleError();
+      })
+  }
+
   updateOrganizationState(organizations: Array<Organisation>): void {
     this.requestsStore.setState((state: RequestsState) => {
       return {

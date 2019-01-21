@@ -7,5 +7,5 @@
 <div mat-dialog-actions>
   <div fxFlex></div>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-flat-button>Approve</button>
+  <button mat-flat-button [mat-dialog-close]="data.id">Approve</button>
 </div>
