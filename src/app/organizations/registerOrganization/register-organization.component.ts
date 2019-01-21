@@ -24,7 +24,7 @@ import { RegisterOrganizationService } from '../state/register-organization.serv
 export interface FormsState {
   registerOrganization: {
     name: string;
-    description: string;
+    topic: string;
     link: string;
     location: string;
     contactEmail: string;
@@ -53,7 +53,7 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
         Validators.minLength(3),
         Validators.pattern(this.registerOrganizationService.organizationNameRegex)
       ]],
-      description: [null, Validators.required],
+      topic: [null, Validators.required],
       link: [null, Validators.pattern(this.registerOrganizationService.urlRegex)],
       location: [null],
       contactEmail: [null, [Validators.email]],
@@ -69,8 +69,8 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
     return this.registerOrganizationForm.get('name');
   }
 
-  get description(): AbstractControl {
-    return this.registerOrganizationForm.get('description');
+  get topic(): AbstractControl {
+    return this.registerOrganizationForm.get('topic');
   }
 
   get link(): AbstractControl {
