@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<h1 mat-dialog-title>Add Organization</h1>
+<h1 mat-dialog-title>{{title}}</h1>
 <div mat-dialog-content>
-  <p>Fill out the form to send an organization request to a Dockstore curator to approve.  Once approved, the organization will be publicly visible.</p>
+  <p *ngIf="data.mode === TagEditorMode.Add">Fill out the form to send an organization request to a Dockstore curator to approve.  Once approved, the organization will be publicly visible.</p>
   <app-alert></app-alert>
   <form [formGroup]="registerOrganizationForm">
     <mat-form-field>
@@ -26,7 +26,7 @@
       <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <textarea cdkAutosizeMinRows="2" cdkTextareaAutosize type="text" matInput formControlName="topic" placeholder="Topic"
+      <textarea cdkTextareaAutosize type="text" matInput formControlName="topic" placeholder="Topic"
         required></textarea>
       <mat-error *ngIf="topic.hasError('required')">Topic is required</mat-error>
     </mat-form-field>
@@ -46,5 +46,5 @@
 </div>
 <div mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button matTooltip="Send Organization Request" mat-button [disabled]="!registerOrganizationForm.valid" (click)="addOrganization()" cdkFocusInitial>Send Organization Request</button>
+  <button [matTooltip]="title" mat-button [disabled]="!registerOrganizationForm.valid" (click)="addOrganization()" cdkFocusInitial>{{title}}</button>
 </div>

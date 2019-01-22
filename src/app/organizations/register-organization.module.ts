@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatTooltipModule } from '@angular/material';
 
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { AlertService } from '../shared/alert/state/alert.service';
@@ -15,6 +15,7 @@ import { RegisterOrganizationComponent } from './registerOrganization/register-o
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     RefreshAlertModule
   ],

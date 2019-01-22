@@ -27,6 +27,7 @@ import { TrackLoginService } from '../../shared/track-login.service';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 
 @Component({
   selector: 'organizations',
@@ -69,6 +70,6 @@ export class OrganizationsComponent extends Base implements OnInit {
    * @memberof OrganizationsComponent
    */
   createOrganization(): void {
-    this.matDialog.open(RegisterOrganizationComponent, {width: '600px'});
+    this.matDialog.open(RegisterOrganizationComponent, {data: {organization: null, mode: TagEditorMode.Add}, width: '600px'});
   }
 }

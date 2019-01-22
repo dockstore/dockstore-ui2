@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 
 import { RegisterOrganizationService } from '../state/register-organization.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 
 // This is recorded into the Akita state
 export interface FormsState {
@@ -38,31 +39,53 @@ export interface FormsState {
 })
 export class RegisterOrganizationComponent implements OnInit, OnDestroy {
   registerOrganizationForm: FormGroup;
+  public title: string;
+  public TagEditorMode = TagEditorMode;
   constructor(
     public dialogref: MatDialogRef<RegisterOrganizationComponent>,
     private registerOrganizationService: RegisterOrganizationService,
     private formsManager: AkitaNgFormsManager<FormsState>,
-    private builder: FormBuilder
+    private builder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
+    this.formsManager.remove('registerOrganization');
+    let name = null;
+    let topic = null;
+    let link = null;
+    let location = null;
+    let contactEmail = null;
+    if (this.data.mode === TagEditorMode.Add) {
+      this.title = 'Add Organization';
+    } else {
+      this.title = 'Edit Organization';
+      name = this.data.organization.name;
+      topic = this.data.organization.topic;
+      link = this.data.organization.link;
+      location = this.data.organization.location;
+      contactEmail = this.data.organization.email;
+    }
     this.registerOrganizationForm = this.builder.group({
-      name: [null, [
+      name: [name, [
         Validators.required,
         Validators.maxLength(39),
         Validators.minLength(3),
         Validators.pattern(this.registerOrganizationService.organizationNameRegex)
       ]],
-      topic: [null, Validators.required],
-      link: [null, Validators.pattern(this.registerOrganizationService.urlRegex)],
-      location: [null],
-      contactEmail: [null, [Validators.email]],
+      topic: [topic, Validators.required],
+      link: [link, Validators.pattern(this.registerOrganizationService.urlRegex)],
+      location: [location],
+      contactEmail: [contactEmail, [Validators.email]],
     });
     this.formsManager.upsert('registerOrganization', this.registerOrganizationForm);
   }
 
   addOrganization(): void {
-    this.registerOrganizationService.addOrganization(this.registerOrganizationForm.value);
+    if (this.data.mode === TagEditorMode.Add) {
+      this.registerOrganizationService.addOrganization(this.registerOrganizationForm.value);
+    } else {
+      this.registerOrganizationService.editOrganization(this.registerOrganizationForm.value, this.data.organization.id);
+    }
   }
 
   get name(): AbstractControl {
