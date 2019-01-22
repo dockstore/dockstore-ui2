@@ -13,7 +13,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 })
 export class RequestsComponent implements OnInit {
   loading$: Observable<boolean>;
-  public organizations$: Observable<Array<Organisation>>;
+  public pendingOrganizations$: Observable<Array<Organisation>>;
   currentOrgId: number;
 
   constructor(private requestsQuery: RequestsQuery,
@@ -25,18 +25,25 @@ export class RequestsComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.alertQuery.showInfo$;
     this.requestsService.updateOrganizations();
-    this.organizations$ = this.requestsQuery.organizations$;
+    this.pendingOrganizations$ = this.requestsQuery.pendingOrganizations$;
   }
 
-  openDialog(name: string, id: number): void {
+  openDialog(name: string, id: number, approve: boolean): void {
     const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
       width: '350px',
-      data: {name: name, id: id}
+      data: { name: name, id: id, approve: approve }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.requestsService.approveOrganization(result);
+        console.log(result);
+        if (result.approve) {
+          console.log('approve');
+          // this.requestsService.approveOrganization(result.id);
+        } else {
+          console.log('reject');
+          // this.requestsService.rejectOrganization(result.id);
+        }
       }
     });
   }
@@ -61,4 +68,5 @@ export class OrganizationRequestConfirmDialogComponent {
 export interface DialogData {
   name: string;
   id: number;
+  approve: boolean; // true = approve, false = reject
 }

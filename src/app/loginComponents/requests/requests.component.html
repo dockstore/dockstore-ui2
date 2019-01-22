@@ -10,7 +10,7 @@
       <mat-icon>info</mat-icon> As a curator/admin, you can approve and reject organization requests.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of (organizations$ | async)">
+      <mat-card *ngFor="let org of (pendingOrganizations$ | async)">
         <mat-card-header>
           <mat-card-title>
             {{org.name}}
@@ -38,7 +38,8 @@
 
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button color="primary" (click)="openDialog(org.name, org.id)"><mat-icon>done</mat-icon>Approve</button>
+          <button mat-flat-button color="warn" class="mr-1" (click)="openDialog(org.name, org.id, false)"><mat-icon>clear</mat-icon>Reject</button>
+          <button mat-flat-button color="primary" (click)="openDialog(org.name, org.id, true)"><mat-icon>done</mat-icon>Approve</button>
         </mat-card-actions>
       </mat-card>
     </div>

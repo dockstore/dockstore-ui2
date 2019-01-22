@@ -12,12 +12,12 @@ export class RequestsService {
   }
 
   updateOrganizations(): void {
-    this.alertService.start('Getting unapproved organizations');
+    this.alertService.start('Getting pending organizations');
     this.organisationsService.getAllOrganisations('unapproved').pipe(
       finalize(() => this.requestsStore.setLoading(false)
       ))
-    .subscribe((organizations: Array<Organisation>) => {
-      this.updateOrganizationState(organizations);
+    .subscribe((pendingOrganizations: Array<Organisation>) => {
+      this.updateOrganizationState(pendingOrganizations);
       this.alertService.simpleSuccess();
     }, () => {
       this.updateOrganizationState(null);
@@ -38,14 +38,14 @@ export class RequestsService {
         this.updateOrganizationState(null);
         this.requestsStore.setError(true);
         this.alertService.simpleError();
-      })
+      });
   }
 
-  updateOrganizationState(organizations: Array<Organisation>): void {
+  updateOrganizationState(pendingOrganizations: Array<Organisation>): void {
     this.requestsStore.setState((state: RequestsState) => {
       return {
         ...state,
-        organizations: organizations
+        pendingOrganizations: pendingOrganizations
       };
     });
   }
