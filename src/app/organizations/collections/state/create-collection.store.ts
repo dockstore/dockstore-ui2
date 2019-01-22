@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
 export interface CreateCollectionState {
-   key: string;
+   title: string;
 }
 
 export function createInitialState(): CreateCollectionState {
   return {
-    key: ''
+    title: ''
   };
 }
 

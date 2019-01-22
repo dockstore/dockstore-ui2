@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
-import { User, OrganisationUser } from '../../shared/swagger';
+import { OrganisationUser } from '../../shared/swagger';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrganizationMembersService } from '../state/organization-members.service';
 import { OrganizationQuery } from '../state/organization.query';
@@ -29,7 +29,7 @@ import { OrganizationQuery } from '../state/organization.query';
 })
 export class OrganizationMembersComponent implements OnInit {
   organizationMembers$: Observable<OrganisationUser[]>;
-  isLoading$: Observable<boolean>;
+  loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
 
   constructor(private organizationMembersQuery: OrganizationMembersQuery, private organizationQuery: OrganizationQuery,
@@ -39,7 +39,7 @@ export class OrganizationMembersComponent implements OnInit {
   ngOnInit() {
     this.canEdit$ = this.organizationQuery.canEdit$;
       this.organizationMembers$ = this.organizationMembersQuery.selectAll();
-      this.isLoading$ = this.organizationMembersQuery.selectLoading();
+      this.loading$ = this.organizationMembersQuery.selectLoading();
     }
 
     add(organizationMember: OrganisationUser) {

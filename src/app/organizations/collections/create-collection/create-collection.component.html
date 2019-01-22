@@ -13,28 +13,30 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<h1 mat-dialog-title>{{title}}</h1>
-<div mat-dialog-content>
-  <div *ngIf="(loading$ | async); else notLoading">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<div *ngIf="title$ | async as title">
+  <h1 mat-dialog-title>{{title}}</h1>
+  <div mat-dialog-content>
+    <div *ngIf="(loading$ | async); else notLoading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <ng-template #notLoading>
+      <div class="pt-2"></div>
+    </ng-template>
+    <form [formGroup]="createCollectionForm" fxLayout="column">
+      <mat-form-field>
+        <input type="text" matInput formControlName="name" placeholder="Name" required>
+        <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+        <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
+        <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
+        <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description" required></textarea>
+      </mat-form-field>
+    </form>
   </div>
-  <ng-template #notLoading>
-    <div class="pt-2"></div>
-  </ng-template>
-  <form [formGroup]="createCollectionForm" fxLayout="column">
-    <mat-form-field>
-      <input type="text" matInput formControlName="name" placeholder="Name" required>
-      <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
-      <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
-      <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
-      <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <textarea cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description" required></textarea>
-    </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions class="pull-right">
-  <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
-  <button [matTooltip]="title" mat-button [disabled]="!createCollectionForm.valid" (click)="createCollection()" cdkFocusInitial>{{title}}</button>
+  <div mat-dialog-actions class="pull-right">
+    <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
+    <button [matTooltip]="title" mat-button [disabled]="!createCollectionForm.valid" (click)="createCollection()" cdkFocusInitial>{{title}}</button>
+  </div>
 </div>

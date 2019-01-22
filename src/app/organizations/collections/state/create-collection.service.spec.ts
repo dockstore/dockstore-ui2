@@ -4,6 +4,7 @@ import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
+import { FormBuilder } from '@angular/forms';
 
 describe('CreateCollectionService', () => {
   let createCollectionService: CreateCollectionService;
@@ -11,7 +12,7 @@ describe('CreateCollectionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CreateCollectionService, CreateCollectionStore],
+      providers: [CreateCollectionService, CreateCollectionStore, FormBuilder],
       imports: [ HttpClientTestingModule, MatDialogModule, MatSnackBarModule ]
     });
 

@@ -7,6 +7,7 @@ import { of as observableOf, throwError } from 'rxjs';
 
 import { OrganisationsService } from '../../shared/swagger';
 import { RegisterOrganizationService } from './register-organization.service';
+import { FormBuilder } from '@angular/forms';
 
 let organisationsServiceSpy: jasmine.SpyObj<OrganisationsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
@@ -18,7 +19,7 @@ describe('RegisterOrganizationService', () => {
     const organisationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganisation']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
-      providers: [RegisterOrganizationService,
+      providers: [RegisterOrganizationService, FormBuilder,
         { provide: OrganisationsService, useValue: organisationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub }
       ],
@@ -38,7 +39,7 @@ describe('RegisterOrganizationService', () => {
     organisationsServiceSpy.createOrganisation.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
-    registerOrganizationService.addOrganization(exampleFormState);
+    registerOrganizationService.createOrganization(exampleFormState);
 
     // Expected createOrganisation call to be called (and it will succeed)
     expect(organisationsServiceSpy.createOrganisation.calls.count()).toBe(1, 'spy method was called once');
@@ -49,7 +50,7 @@ describe('RegisterOrganizationService', () => {
   it('should handle error when adding an organization', () => {
     organisationsServiceSpy.createOrganisation.and.returnValue(throwError('test 404 error'));
 
-    registerOrganizationService.addOrganization(exampleFormState);
+    registerOrganizationService.createOrganization(exampleFormState);
 
     // Expected createOrganisation call to be called (even though it will fail)
     expect(organisationsServiceSpy.createOrganisation.calls.count()).toBe(1, 'spy method was called once');

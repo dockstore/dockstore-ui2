@@ -1,13 +1,33 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organisation, OrganisationsService } from '../../shared/swagger';
-import { FormsState } from '../registerOrganization/register-organization.component';
 import { OrganizationService } from './organization.service';
 
+// This is recorded into the Akita state
+export interface FormsState {
+  registerOrganization: {
+    name: string;
+    topic: string;
+    link: string;
+    location: string;
+    contactEmail: string;
+  };
+}
+
+/**
+ * This handles CU operations for organizations.
+ * It does not uses the standard Akita store (using Akita forms manager instead) but it should've used both
+ *
+ * @export
+ * @class RegisterOrganizationService
+ */
 @Injectable({ providedIn: 'root' })
 export class RegisterOrganizationService {
 
@@ -30,7 +50,73 @@ export class RegisterOrganizationService {
   // readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
   constructor(private organisationsService: OrganisationsService, private alertService: AlertService, private matDialog: MatDialog,
-    private router: Router, private organizationService: OrganizationService) {
+    private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
+  }
+
+  /**
+   * Create or update organization based on mode
+   *
+   * @param {*} data
+   * @param {FormGroup} form
+   * @memberof RegisterOrganizationService
+   */
+  createOrUpdateOrganization(data: any, form: FormGroup) {
+    if (data.mode === TagEditorMode.Add) {
+      this.createOrganization(form.value);
+    } else {
+      this.updateOrganization(form.value, data.organization.id);
+    }
+  }
+
+  /**
+   * Creates the organization (create and update) form based on the mode given
+   *
+   * @param {AkitaNgFormsManager<FormsState>} formsManager
+   * @param {*} data
+   * @returns {FormGroup}
+   * @memberof RegisterOrganizationService
+   */
+  createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
+    formsManager.remove('registerOrganization');
+    let name = null;
+    let topic = null;
+    let link = null;
+    let location = null;
+    let contactEmail = null;
+    if (data.mode !== TagEditorMode.Add) {
+      const organization: Organisation = data.organization;
+      name = organization.name;
+      topic = organization.topic;
+      link = organization.link;
+      location = organization.location;
+      contactEmail = organization.email;
+    }
+    const registerOrganizationForm = this.builder.group({
+      name: [name, [
+        Validators.required,
+        Validators.maxLength(39),
+        Validators.minLength(3),
+        Validators.pattern(this.organizationNameRegex)
+      ]],
+      topic: [topic, Validators.required],
+      link: [link, Validators.pattern(this.urlRegex)],
+      location: [location],
+      contactEmail: [contactEmail, [Validators.email]],
+    });
+    formsManager.upsert('registerOrganization', registerOrganizationForm);
+    return registerOrganizationForm;
+  }
+
+  /**
+   * Get the title based on the mode
+   *
+   * @param {*} data
+   * @returns {string}
+   * @memberof RegisterOrganizationService
+   */
+  getTitle(data: any): string {
+    const mode: TagEditorMode = data.mode;
+    return mode === TagEditorMode.Add ? 'Create Organization' : 'Edit Organization';
   }
 
   /**
@@ -39,7 +125,7 @@ export class RegisterOrganizationService {
    * @param {FormsState['organization']} organizationFormState  The organization form state
    * @memberof RegisterOrganizationService
    */
-  addOrganization(organizationFormState: FormsState['registerOrganization']): void {
+  createOrganization(organizationFormState: FormsState['registerOrganization']): void {
     if (!organizationFormState) {
       console.error('Something has gone terribly wrong with the form manager');
       return;
@@ -70,7 +156,16 @@ export class RegisterOrganizationService {
     }
   }
 
-  editOrganization(organizationFormState: FormsState['registerOrganization'], organizationId: number): void {
+  /**
+   * Update the organization
+   * TODO: change URL when the organization name changes
+   *
+   * @param {FormsState['registerOrganization']} organizationFormState
+   * @param {number} organizationId
+   * @returns {void}
+   * @memberof RegisterOrganizationService
+   */
+  updateOrganization(organizationFormState: FormsState['registerOrganization'], organizationId: number): void {
     if (!organizationFormState) {
       console.error('Something has gone terribly wrong with the form manager');
       return;
