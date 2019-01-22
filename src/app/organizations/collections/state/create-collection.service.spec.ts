@@ -1,5 +1,7 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
 
@@ -10,7 +12,7 @@ describe('CreateCollectionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CreateCollectionService, CreateCollectionStore],
-      imports: [ HttpClientTestingModule ]
+      imports: [ HttpClientTestingModule, MatDialogModule, MatSnackBarModule ]
     });
 
     createCollectionService = TestBed.get(CreateCollectionService);

@@ -14,18 +14,18 @@ export class RegisterOrganizationService {
   // Regex found from https://gist.github.com/dperini/729294 which validator.js uses except using a more simple version and enforce http(s)
   readonly urlRegex = new RegExp(
     '^' +
-        // protocol identifier (optional) + //
-        '(?:(?:https?:)?//)' +
-        // user:pass authentication (optional)
-        '(?:\\S+(?::\\S*)?@)?' +
-        // host (optional) + domain + tld
-        '(?:(?!-)[-a-z0-9\\u00a1-\\uffff]*[a-z0-9\\u00a1-\\uffff]+(?!./|\\.$)\\.?){2,}' +
-        // server port number (optional)
-        '(?::\\d{2,5})?' +
-        // resource path (optional)
-        '(?:/\\S*)?' +
+    // protocol identifier (optional) + //
+    '(?:(?:https?:)?//)' +
+    // user:pass authentication (optional)
+    '(?:\\S+(?::\\S*)?@)?' +
+    // host (optional) + domain + tld
+    '(?:(?!-)[-a-z0-9\\u00a1-\\uffff]*[a-z0-9\\u00a1-\\uffff]+(?!./|\\.$)\\.?){2,}' +
+    // server port number (optional)
+    '(?::\\d{2,5})?' +
+    // resource path (optional)
+    '(?:/\\S*)?' +
     '$', 'i'
-);
+  );
   // The old regex in case needed
   // readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
@@ -97,5 +97,6 @@ export class RegisterOrganizationService {
       }, (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
       });
+    }
   }
 }

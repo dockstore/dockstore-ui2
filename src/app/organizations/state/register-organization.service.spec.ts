@@ -13,7 +13,7 @@ let matDialogSpy: jasmine.SpyObj<MatDialog>;
 
 describe('RegisterOrganizationService', () => {
   let registerOrganizationService: RegisterOrganizationService;
-  const exampleFormState = { name: '', description: '', link: '', location: '', contactEmail: '' };
+  const exampleFormState = { name: '', topic: '', link: '', location: '', contactEmail: '' };
   beforeEach(() => {
     const organisationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganisation']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
