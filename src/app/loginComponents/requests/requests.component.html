@@ -1,21 +1,28 @@
-
 <ng-template #loading>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
 
 <div *ngIf="!(loading$ | async); else loading">
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
-    <h3>Organization Requests</h3>
+    <h3>Curator Requests</h3>
     <mat-card class="alert alert-info" role="alert">
       <mat-icon>info</mat-icon> As a curator/admin, you can approve and reject organization requests.
     </mat-card>
+
+    <!-- Curator/Admin Pending Organizations -->
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of (pendingOrganizations$ | async)">
+      <mat-card *ngFor="let org of (pendingOrganizationsAdminAndCurator$ | async)">
         <mat-card-header>
           <mat-card-title>
             {{org.name}}
           </mat-card-title>
-          <mat-card-subtitle>{{ org.topic }}</mat-card-subtitle>
+          <mat-card-subtitle>
+            <p>Requested by user(s)
+              <span *ngFor="let user of org?.users">
+                <strong>{{ user.user.name }}</strong>
+              </span>
+            </p>
+          </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div fxLayout="row" fxLayoutGap="10px">
@@ -34,12 +41,54 @@
           </div>
         </mat-card-content>
 
-        {{ (org.description.length > 128)? (org.description | slice:0:128)+'...':(org.description) }}
+        {{ org.topic }}
 
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button color="warn" class="mr-1" (click)="openDialog(org.name, org.id, false)"><mat-icon>clear</mat-icon>Reject</button>
-          <button mat-flat-button color="primary" (click)="openDialog(org.name, org.id, true)"><mat-icon>done</mat-icon>Approve</button>
+          <button mat-flat-button color="warn" class="mr-1" (click)="openDialog(org.name, org.id, false)">
+            <mat-icon>clear</mat-icon>Reject
+          </button>
+          <button mat-flat-button color="primary" (click)="openDialog(org.name, org.id, true)">
+            <mat-icon>done</mat-icon>Approve
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="p-3">
+    <h3>My Pending Requests</h3>
+    <mat-card class="alert alert-info" role="alert">
+      <mat-icon>info</mat-icon> The following organizations that you have created are pending approval.
+    </mat-card>
+    <!-- My Pending Organization Requests -->
+    <div fxLayout="column" fxLayoutGap="32px">
+      <mat-card *ngFor="let org of (myPendingOrganizations$ | async)">
+        <mat-card-header>
+          <mat-card-title>
+            {{org.name}}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div fxLayout="row" fxLayoutGap="10px">
+            <span fxLayout="row" *ngIf="org?.email">
+              <mat-icon>email</mat-icon>
+              <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
+            </span>
+            <span fxLayout="row" *ngIf="org?.link">
+              <mat-icon>link</mat-icon>
+              <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
+            </span>
+            <span fxLayout="row" *ngIf="org?.location">
+              <mat-icon>location_on</mat-icon>
+              <span class="ellipsis-lines">{{ org.location }}</span>
+            </span>
+          </div>
+        </mat-card-content>
+
+        {{ org.topic }}
+
+        <mat-card-actions>
         </mat-card-actions>
       </mat-card>
     </div>

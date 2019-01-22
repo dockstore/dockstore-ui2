@@ -14,10 +14,12 @@ import { UserQuery } from '../../shared/user/user.query';
 })
 export class RequestsComponent implements OnInit {
   loading$: Observable<boolean>;
-  public pendingOrganizations$: Observable<Array<Organisation>>;
+  public pendingOrganizationsAdminAndCurator$: Observable<Array<Organisation>>;
+  public myPendingOrganizations$: Observable<Array<Organisation>>;
   currentOrgId: number;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
+  userId$: Observable<number>;
 
   constructor(private requestsQuery: RequestsQuery,
               private requestsService: RequestsService,
@@ -29,9 +31,12 @@ export class RequestsComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.alertQuery.showInfo$;
     this.requestsService.updateOrganizations();
-    this.pendingOrganizations$ = this.requestsQuery.pendingOrganizations$;
+    this.requestsService.updateMyPendingOrganizations();
+    this.pendingOrganizationsAdminAndCurator$ = this.requestsQuery.pendingOrganizationsAdminAndCurator$;
+    this.myPendingOrganizations$ = this.requestsQuery.myPendingOrganizations$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.userId$ = this.userQuery.userId$;
   }
 
   openDialog(name: string, id: number, approve: boolean): void {

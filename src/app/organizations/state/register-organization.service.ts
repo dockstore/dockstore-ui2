@@ -51,7 +51,8 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        status: 'PENDING'
+        status: 'PENDING',
+        users: []
       };
       this.alertService.start('Adding organization');
       this.organisationsService.createOrganisation(newOrganization).subscribe((organization: Organisation) => {
