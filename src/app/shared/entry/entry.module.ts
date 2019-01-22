@@ -86,7 +86,8 @@ import { UrlDeconstructPipe } from './url-deconstruct.pipe';
     NgxJsonLdModule,
     RefreshAlertModule,
     ShareButtonsModule,
-    UrlDeconstructPipe
+    UrlDeconstructPipe,
+    RouterModule
   ],
   entryComponents: [RegisterCheckerWorkflowComponent]
 })

@@ -69,6 +69,7 @@ export class ContainerComponent extends Entry {
   public schema;
   publishMessage = 'Publish the tool to make it visible to the public';
   unpublishMessage = 'Unpublish the tool to remove it from the public';
+  viewPublicMessage = 'Go to the public page for this tool';
   pubUnpubMessage: string;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;

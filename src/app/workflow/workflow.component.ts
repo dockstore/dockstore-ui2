@@ -15,14 +15,18 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AlertQuery } from '../shared/alert/state/alert.query';
+import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
 import { DateService } from '../shared/date.service';
+import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
@@ -44,9 +48,6 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { AlertService } from '../shared/alert/state/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AlertQuery } from '../shared/alert/state/alert.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -78,6 +79,7 @@ export class WorkflowComponent extends Entry {
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   publishMessage = 'Publish the workflow to make it visible to the public';
   unpublishMessage = 'Unpublish the workflow to remove it from the public';
+  viewPublicMessage = 'Go to the public page for this workflow';
   pubUnpubMessage: string;
   @Input() user;
 
@@ -86,7 +88,8 @@ export class WorkflowComponent extends Entry {
     router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
     urlResolverService: UrlResolverService, private alertService: AlertService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
-      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
+      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
+      private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(trackLoginService, providerService, router,
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
@@ -194,6 +197,10 @@ export class WorkflowComponent extends Entry {
           this.setPublishMessage();
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion);
+          if (this.selectedVersion) {
+            this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
+              [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+          }
         }
         this.setUpWorkflow(workflow);
       }
@@ -216,9 +223,6 @@ export class WorkflowComponent extends Entry {
       this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
-          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion);
-
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.workflow != null) {
             this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
@@ -350,6 +354,10 @@ export class WorkflowComponent extends Entry {
    */
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
+    if (this.selectVersion) {
+      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
+        [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+    }
     if (this.workflow != null) {
       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
     }

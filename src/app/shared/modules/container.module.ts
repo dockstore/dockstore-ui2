@@ -58,6 +58,7 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { SelectModule } from './select.module';
     StarringModule,
     ModalModule,
     StargazersModule,
-    EntryModule
+    EntryModule,
+    RouterModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
