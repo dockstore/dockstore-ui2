@@ -46,5 +46,5 @@
 </div>
 <div mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button [matTooltip]="title" mat-button [disabled]="!registerOrganizationForm.valid" (click)="createOrUpdateOrganization()" cdkFocusInitial>{{title}}</button>
+  <button id="createOrUpdateOrganizationButton" [matTooltip]="title" mat-button [disabled]="!registerOrganizationForm.valid" (click)="createOrUpdateOrganization()" cdkFocusInitial>{{title}}</button>
 </div>
