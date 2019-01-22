@@ -36,13 +36,10 @@ export class RequestsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
         if (result.approve) {
-          console.log('approve');
-          // this.requestsService.approveOrganization(result.id);
+          this.requestsService.approveOrganization(result.id);
         } else {
-          console.log('reject');
-          // this.requestsService.rejectOrganization(result.id);
+          this.requestsService.rejectOrganization(result.id);
         }
       }
     });

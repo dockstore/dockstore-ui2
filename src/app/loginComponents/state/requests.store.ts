@@ -4,12 +4,12 @@ import { Request } from './request.model';
 import { Organisation } from '../../shared/swagger';
 
 export interface RequestsState extends EntityState<Request> {
-  organizations: Array<Organisation>;
+  pendingOrganizations: Array<Organisation>;
 }
 
 export function createInitialState(): RequestsState {
   return {
-    organizations: null
+    pendingOrganizations: null
   };
 }
 
