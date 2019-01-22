@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Organisation } from '../../shared/swagger';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'requests',
@@ -15,22 +16,27 @@ export class RequestsComponent implements OnInit {
   loading$: Observable<boolean>;
   public pendingOrganizations$: Observable<Array<Organisation>>;
   currentOrgId: number;
+  isAdmin$: Observable<boolean>;
+  isCurator$: Observable<boolean>;
 
   constructor(private requestsQuery: RequestsQuery,
               private requestsService: RequestsService,
               private alertQuery: AlertQuery,
-              public dialog: MatDialog
+              public dialog: MatDialog,
+              private userQuery: UserQuery
   ) { }
 
   ngOnInit() {
     this.loading$ = this.alertQuery.showInfo$;
     this.requestsService.updateOrganizations();
     this.pendingOrganizations$ = this.requestsQuery.pendingOrganizations$;
+    this.isAdmin$ = this.userQuery.isAdmin$;
+    this.isCurator$ = this.userQuery.isCurator$;
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
     const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
-      width: '350px',
+      width: '400px',
       data: { name: name, id: id, approve: approve }
     });
 
