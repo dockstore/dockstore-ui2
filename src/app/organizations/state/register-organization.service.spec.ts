@@ -16,7 +16,7 @@ describe('RegisterOrganizationService', () => {
   let registerOrganizationService: RegisterOrganizationService;
   const exampleFormState = { name: '', topic: '', link: '', location: '', contactEmail: '' };
   beforeEach(() => {
-    const organisationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganisation']);
+    const organisationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganisation', 'updateOrganisation']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
       providers: [RegisterOrganizationService, FormBuilder,
@@ -43,6 +43,29 @@ describe('RegisterOrganizationService', () => {
 
     // Expected createOrganisation call to be called (and it will succeed)
     expect(organisationsServiceSpy.createOrganisation.calls.count()).toBe(1, 'spy method was called once');
+    // Upon success, the dialog would close
+    expect(matDialogSpy.closeAll.calls.count()).toBe(1, 'spy method was not called once');
+  });
+
+  it('should handle error when updating an organization', () => {
+    organisationsServiceSpy.updateOrganisation.and.returnValue(throwError('test 404 error'));
+
+    registerOrganizationService.updateOrganization(exampleFormState, 1);
+
+    // Expected createOrganisation call to be called (even though it will fail)
+    expect(organisationsServiceSpy.updateOrganisation.calls.count()).toBe(1, 'spy method was called once');
+    // Upon error, the dialog would not close
+    expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
+  });
+
+  it('should try to update an organization', () => {
+    organisationsServiceSpy.updateOrganisation.and.returnValue(observableOf(null));
+    matDialogSpy.closeAll.and.returnValue(null);
+
+    registerOrganizationService.updateOrganization(exampleFormState, 1);
+
+    // Expected createOrganisation call to be called (and it will succeed)
+    expect(organisationsServiceSpy.updateOrganisation.calls.count()).toBe(1, 'spy method was called once');
     // Upon success, the dialog would close
     expect(matDialogSpy.closeAll.calls.count()).toBe(1, 'spy method was not called once');
   });
