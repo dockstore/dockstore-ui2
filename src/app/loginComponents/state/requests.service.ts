@@ -11,7 +11,7 @@ export class RequestsService {
               private organisationsService: OrganisationsService, private usersService: UsersService) {
   }
 
-  updateOrganizations(): void {
+  updateCuratorOrganizations(): void {
     this.alertService.start('Getting pending organizations');
     this.organisationsService.getAllOrganisations('pending').pipe(
       finalize(() => this.requestsStore.setLoading(false)
@@ -33,7 +33,7 @@ export class RequestsService {
       ))
       .subscribe((organization: Organisation) => {
         this.alertService.simpleSuccess();
-        this.updateOrganizations();
+        this.updateCuratorOrganizations();
       }, () => {
         this.updateOrganizationState(null);
         this.requestsStore.setError(true);
@@ -48,7 +48,7 @@ export class RequestsService {
       ))
       .subscribe((organization: Organisation) => {
         this.alertService.simpleSuccess();
-        this.updateOrganizations();
+        this.updateCuratorOrganizations();
       }, () => {
         this.updateOrganizationState(null);
         this.requestsStore.setError(true);
@@ -71,6 +71,7 @@ export class RequestsService {
       finalize(() => this.requestsStore.setLoading(false)
       ))
     .subscribe((myPendingOrganizations: Array<Organisation>) => {
+      myPendingOrganizations = myPendingOrganizations.filter(organisation => organisation.status === 'PENDING');
       this.updateMyOrganizationState(myPendingOrganizations);
       this.alertService.simpleSuccess();
     }, () => {

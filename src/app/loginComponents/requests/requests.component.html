@@ -19,12 +19,14 @@
           <mat-card-subtitle>
             <p>Requested by user(s)
               <span *ngFor="let user of org?.users">
-                <strong>{{ user.user.name }}</strong>
+                <strong>{{ user.user.username }}</strong>
               </span>
+              on {{ org.dbCreateDate | date}}
             </p>
           </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content class="px-4">
+          {{ org.topic }}
           <div fxLayout="row" fxLayoutGap="10px">
             <span fxLayout="row" *ngIf="org?.email">
               <mat-icon>email</mat-icon>
@@ -40,8 +42,6 @@
             </span>
           </div>
         </mat-card-content>
-
-        {{ org.topic }}
 
         <mat-card-actions>
           <div fxFlex></div>
@@ -68,8 +68,12 @@
           <mat-card-title>
             {{org.name}}
           </mat-card-title>
+          <mat-card-subtitle>
+            Requested on {{ org.dbCreateDate | date}}
+          </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content class="px-4">
+          {{ org.topic }}
           <div fxLayout="row" fxLayoutGap="10px">
             <span fxLayout="row" *ngIf="org?.email">
               <mat-icon>email</mat-icon>
@@ -85,11 +89,6 @@
             </span>
           </div>
         </mat-card-content>
-
-        {{ org.topic }}
-
-        <mat-card-actions>
-        </mat-card-actions>
       </mat-card>
     </div>
   </div>

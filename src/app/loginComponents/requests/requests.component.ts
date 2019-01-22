@@ -30,7 +30,7 @@ export class RequestsComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.alertQuery.showInfo$;
-    this.requestsService.updateOrganizations();
+    this.requestsService.updateCuratorOrganizations();
     this.requestsService.updateMyPendingOrganizations();
     this.pendingOrganizationsAdminAndCurator$ = this.requestsQuery.pendingOrganizationsAdminAndCurator$;
     this.myPendingOrganizations$ = this.requestsQuery.myPendingOrganizations$;
