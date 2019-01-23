@@ -135,11 +135,11 @@ export class CreateCollectionService {
       .subscribe((newCollection: Collection) => {
         this.createCollectionStore.setError(false);
         this.matDialog.closeAll();
-        this.matSnackBar.open('Editing collection successful');
+        this.matSnackBar.open('Updating collection successful');
         this.collectionsService.updateCollections();
       }, error => {
         this.createCollectionStore.setError(true);
-        this.matSnackBar.open('Editing collection failed');
+        this.matSnackBar.open('Updating collection failed');
       });
   }
 

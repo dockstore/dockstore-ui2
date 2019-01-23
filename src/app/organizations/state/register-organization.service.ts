@@ -179,7 +179,7 @@ export class RegisterOrganizationService {
         // Setting approved to true to appease compiler.  Webservice should completely ignore this.
         approved: true
       };
-      this.alertService.start('Editing organization');
+      this.alertService.start('Updating organization');
       this.organisationsService.updateOrganisation(organizationId, editedOrganization).subscribe((organization: Organisation) => {
         this.matDialog.closeAll();
         if (organization) {
