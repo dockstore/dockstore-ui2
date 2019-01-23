@@ -59,6 +59,19 @@ export class RequestsComponent implements OnInit {
       }
     });
   }
+
+  openInviteDialog(name: string, id: number, approve: boolean): void {
+    const dialogRef = this.dialog.open(OrganizationInviteConfirmDialogComponent, {
+      width: '400px',
+      data: { name: name, id: id, approve: approve }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
+      }
+    });
+  }
 }
 
 @Component({
@@ -69,6 +82,22 @@ export class OrganizationRequestConfirmDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<OrganizationRequestConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+@Component({
+  selector: 'organization-invite-confirm-dialog',
+  templateUrl: 'organization-invite-confirm-dialog.html',
+})
+export class OrganizationInviteConfirmDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {

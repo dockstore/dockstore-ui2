@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequestsStore, RequestsState } from './requests.store';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { Organisation, OrganisationsService, UsersService, OrganisationUser } from '../../shared/swagger';
+import { Organisation, OrganisationsService, UsersService, OrganisationUser, User } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -73,8 +73,9 @@ export class RequestsService {
       finalize(() => this.requestsStore.setLoading(false)
       ))
     .subscribe((myMemberships: Array<OrganisationUser>) => {
-      const myOrganizationInvites = myMemberships.filter(membership => membership.accepted);
-      const myPendingOrganizationRequests = myMemberships.filter(membership => membership.organisation.status === 'PENDING');
+      const myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
+      const myPendingOrganizationRequests = myMemberships.filter(membership => membership.organisation.status === 'PENDING'
+      && membership.accepted);
       this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests);
       this.alertService.simpleSuccess();
     }, () => {
@@ -94,5 +95,20 @@ export class RequestsService {
         myPendingOrganizationRequests: myPendingOrganizationRequests
       };
     });
+  }
+
+  acceptOrRejectOrganizationInvite(id: number, accept: boolean): void {
+    this.alertService.start('Approving organization ' + id);
+    this.organisationsService.acceptOrRejectInvitation(id, accept).pipe(
+      finalize(() => this.requestsStore.setLoading(false)
+      ))
+      .subscribe((user: User) => {
+        this.alertService.simpleSuccess();
+        this.updateMyMemberships();
+      }, () => {
+        this.updateMyMembershipState(null, null, null);
+        this.requestsStore.setError(true);
+        this.alertService.simpleError();
+      });
   }
 }

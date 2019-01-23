@@ -7,7 +7,7 @@
   <!-- Curator/Admin Pending Organizations -->
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>
-    <mat-card class="alert alert-info" role="alert">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(pendingOrganizationsAdminAndCurator$ | async).length > 0">
       <mat-icon>info</mat-icon> As a curator/admin, you can approve and reject organization requests.
     </mat-card>
 
@@ -60,7 +60,7 @@
   <!-- My Pending Organization Requests -->
   <div class="p-3">
     <h3>My Pending Requests</h3>
-    <mat-card class="alert alert-info" role="alert">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async).length > 0">
       <mat-icon>info</mat-icon> The following organizations that you have created are pending approval.
     </mat-card>
 
@@ -98,7 +98,7 @@
   <!-- Pending Organization Invites -->
   <div class="p-3">
     <h3>Organization Invites</h3>
-    <mat-card class="alert alert-info" role="alert">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async).length > 0">
       <mat-icon>info</mat-icon> You have been invited into the following organizations.
     </mat-card>
 
@@ -106,7 +106,7 @@
       <mat-card *ngFor="let membership of (myOrganizationInvites$ | async)">
         <mat-card-header>
           <mat-card-title>
-              {{ membership.organisation.name }}
+            {{ membership.organisation.name }}
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -132,11 +132,11 @@
         </mat-card-content>
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button color="warn" class="mr-1">
+          <button mat-flat-button color="warn" class="mr-1" (click)="openInviteDialog(membership.organisation.name, membership.organisation.id, false)">
             <mat-icon>clear</mat-icon>Reject
           </button>
-          <button mat-flat-button color="primary">
-            <mat-icon>done</mat-icon>Approve
+          <button mat-flat-button color="primary" (click)="openInviteDialog(membership.organisation.name, membership.organisation.id, true)">
+            <mat-icon>done</mat-icon>Accept
           </button>
         </mat-card-actions>
       </mat-card>
