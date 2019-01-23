@@ -31,9 +31,15 @@
         </mat-list-item>
         <mat-list-item>
           <h1 matLine>
-            <strong>Administrator:</strong>
+            <mat-icon>lock</mat-icon> <strong>Administrator:</strong>
           </h1>
           <p matLine id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</p>
+        </mat-list-item>
+        <mat-list-item>
+          <h1 matLine>
+            <mat-icon >lock</mat-icon><strong>Curator:</strong>
+          </h1>
+          <p matLine id="account-is-curator">{{ user?.curator ? 'Yes' : 'No' }}</p>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
