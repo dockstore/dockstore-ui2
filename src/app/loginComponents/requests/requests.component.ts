@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
 import { Observable } from 'rxjs';
-import { Organisation } from '../../shared/swagger';
+import { Organisation, OrganisationUser } from '../../shared/swagger';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
@@ -15,7 +15,8 @@ import { UserQuery } from '../../shared/user/user.query';
 export class RequestsComponent implements OnInit {
   loading$: Observable<boolean>;
   public pendingOrganizationsAdminAndCurator$: Observable<Array<Organisation>>;
-  public myPendingOrganizations$: Observable<Array<Organisation>>;
+  public myOrganizationInvites$: Observable<Array<OrganisationUser>>;
+  public myPendingOrganizationRequests$: Observable<Array<OrganisationUser>>;
   currentOrgId: number;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
@@ -31,9 +32,12 @@ export class RequestsComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.alertQuery.showInfo$;
     this.requestsService.updateCuratorOrganizations();
-    this.requestsService.updateMyPendingOrganizations();
+    this.requestsService.updateMyMemberships();
+
     this.pendingOrganizationsAdminAndCurator$ = this.requestsQuery.pendingOrganizationsAdminAndCurator$;
-    this.myPendingOrganizations$ = this.requestsQuery.myPendingOrganizations$;
+    this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
+    this.myPendingOrganizationRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
+
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;

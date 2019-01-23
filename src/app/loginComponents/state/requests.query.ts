@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { RequestsStore, RequestsState } from './requests.store';
 import { Request } from './request.model';
-import { Organisation } from '../../shared/swagger';
+import { Organisation, OrganisationUser } from '../../shared/swagger';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 })
 export class RequestsQuery extends QueryEntity<RequestsState, Request> {
   pendingOrganizationsAdminAndCurator$: Observable<Array<Organisation>> = this.select(state => state.pendingOrganizationsAdminAndCurator);
-  myPendingOrganizations$: Observable<Array<Organisation>> = this.select(state => state.myPendingOrganizations);
+  myMemberships$: Observable<Array<OrganisationUser>> = this.select(state => state.myMemberships);
+  myOrganizationInvites$: Observable<Array<OrganisationUser>> = this.select(state => state.myOrganizationInvites);
+  myPendingOrganizationRequests$: Observable<Array<OrganisationUser>> = this.select(state => state.myPendingOrganizationRequests);
 
   constructor(protected store: RequestsStore) {
     super(store);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequestsStore, RequestsState } from './requests.store';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { Organisation, OrganisationsService, UsersService } from '../../shared/swagger';
+import { Organisation, OrganisationsService, UsersService, OrganisationUser } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +11,7 @@ export class RequestsService {
               private organisationsService: OrganisationsService, private usersService: UsersService) {
   }
 
+  // Curator Organizations
   updateCuratorOrganizations(): void {
     this.alertService.start('Getting pending organizations');
     this.organisationsService.getAllOrganisations('pending').pipe(
@@ -65,27 +66,32 @@ export class RequestsService {
     });
   }
 
-  updateMyPendingOrganizations(): void {
-    this.alertService.start('Getting my pending organizations');
-    this.usersService.getUserOrganisations().pipe(
+  // My Memberships
+  updateMyMemberships(): void {
+    this.alertService.start('Getting my memberships');
+    this.usersService.getUserMemberships().pipe(
       finalize(() => this.requestsStore.setLoading(false)
       ))
-    .subscribe((myPendingOrganizations: Array<Organisation>) => {
-      myPendingOrganizations = myPendingOrganizations.filter(organisation => organisation.status === 'PENDING');
-      this.updateMyOrganizationState(myPendingOrganizations);
+    .subscribe((myMemberships: Array<OrganisationUser>) => {
+      const myOrganizationInvites = myMemberships.filter(membership => membership.accepted);
+      const myPendingOrganizationRequests = myMemberships.filter(membership => membership.organisation.status === 'PENDING');
+      this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests);
       this.alertService.simpleSuccess();
     }, () => {
-      this.updateMyOrganizationState(null);
+      this.updateMyMembershipState(null, null, null);
       this.requestsStore.setError(true);
       this.alertService.simpleError();
     });
   }
 
-  updateMyOrganizationState(myPendingOrganizations: Array<Organisation>): void {
+  updateMyMembershipState(myMemberships: Array<OrganisationUser>, myOrganizationInvites: Array<OrganisationUser>,
+    myPendingOrganizationRequests: Array<OrganisationUser>): void {
     this.requestsStore.setState((state: RequestsState) => {
       return {
         ...state,
-        myPendingOrganizations: myPendingOrganizations
+        myMemberships: myMemberships,
+        myOrganizationInvites: myOrganizationInvites,
+        myPendingOrganizationRequests: myPendingOrganizationRequests
       };
     });
   }
