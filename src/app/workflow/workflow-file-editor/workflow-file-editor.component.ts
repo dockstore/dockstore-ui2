@@ -80,7 +80,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
-    this.alertService.start('Editing hosted workflow');
+    this.alertService.start('Updating hosted workflow');
     this.hostedService.editHostedWorkflow(
         this.id,
         newSourceFiles).subscribe((workflow: Workflow) => {

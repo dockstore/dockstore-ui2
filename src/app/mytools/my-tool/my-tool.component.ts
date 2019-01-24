@@ -22,6 +22,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { includesValidation } from '../../shared/constants';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
@@ -173,7 +174,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   selectEntry(tool: ExtendedDockstoreTool): void {
     if (tool !== null) {
-      this.containersService.getContainer(tool.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+      this.containersService.getContainer(tool.id, includesValidation).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
         this.location.go(this.pageName + '/' + result.tool_path);
         this.containerService.setTool(result);
       });

@@ -21,7 +21,7 @@ import {finalize, takeUntil} from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion } from '../swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion, Tag } from '../swagger';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
 
@@ -34,6 +34,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected currentDescriptor: ToolDescriptor.TypeEnum;
   protected descriptors: Array<any>;
+  protected validDescriptors: Array<any>;
   public nullDescriptors = false;
   public filePath: string;
   public currentFile;
@@ -43,11 +44,13 @@ export abstract class EntryFileSelector implements OnDestroy {
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = false;
+  public validationMessage = null;
   abstract entrypath: string;
   protected abstract entryType: ('tool' | 'workflow');
   content: string = null;
 
   abstract getDescriptors(version): Array<any>;
+  abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
   constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
@@ -60,10 +63,15 @@ export abstract class EntryFileSelector implements OnDestroy {
 
   reactToVersion(): void {
     this.descriptors = this.getDescriptors(this._selectedVersion);
+    this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
     if (this.descriptors) {
       this.nullDescriptors = false;
       if (this.descriptors.length) {
-        this.onDescriptorChange(this.descriptors[0]);
+        if (this.validDescriptors && this.validDescriptors.length) {
+          this.onDescriptorChange(this.validDescriptors[0]);
+        } else {
+          this.onDescriptorChange(this.descriptors[0]);
+        }
       }
     } else {
       this.nullDescriptors = true;
@@ -152,6 +160,46 @@ export abstract class EntryFileSelector implements OnDestroy {
           this.filePath = this.fileService.getFilePath(this.currentFile);
           this.updateCustomDownloadFileButtonAttributes();
       });
+    }
+  }
+
+  /**
+   * Retrieve the correct validation messages
+   * @param isDescriptor Yes if looking at descriptor, false otherwise (test params)
+   * @param version The version of interest
+   */
+  checkIfValid(isDescriptor: boolean, version: (WorkflowVersion|Tag)): void {
+    let fileEnum = null;
+    if (this.currentDescriptor === ToolDescriptor.TypeEnum.CWL) {
+      if (isDescriptor) {
+        fileEnum = 'DOCKSTORE_CWL';
+      } else {
+        fileEnum = 'CWL_TEST_JSON';
+      }
+    } else if (this.currentDescriptor === ToolDescriptor.TypeEnum.WDL) {
+      if (isDescriptor) {
+        fileEnum = 'DOCKSTORE_WDL';
+      } else {
+        fileEnum = 'WDL_TEST_JSON';
+      }
+    } else if (this.currentDescriptor === ToolDescriptor.TypeEnum.NFL) {
+      if (isDescriptor) {
+        fileEnum = 'NEXTFLOW_CONFIG';
+      }
+    }
+    if (fileEnum && version && version.validations) {
+      for (const validation of version.validations) {
+        if (validation.type === fileEnum) {
+          const validationObject = JSON.parse(validation.message);
+
+          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+            this.validationMessage = null;
+          } else {
+            this.validationMessage = validationObject;
+          }
+          break;
+        }
+      }
     }
   }
 }

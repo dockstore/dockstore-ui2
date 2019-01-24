@@ -168,7 +168,7 @@
             <div *ngIf="validVersions">
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
                 <app-files-container [entrypath]="tool?.tool_path" [id]="tool?.id" [versions]="validVersions" [default]="defaultVersion"
-                  [selectedVersion]="selectedVersion">
+                  [selectedVersion]="selectedVersion" [publicPage]="publicPage">
                 </app-files-container>
               </div>
               <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">

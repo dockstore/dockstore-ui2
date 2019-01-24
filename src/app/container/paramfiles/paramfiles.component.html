@@ -20,33 +20,39 @@
   </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
-  <mat-card class="alert alert-warning" role="alert" *ngIf="!_selectedVersion?.valid">
-    <mat-icon>warning</mat-icon>
-    &nbsp;This version of the tool is invalid.
-  </mat-card>
+  <span *ngIf="!publicPage">
+    <mat-card class="alert alert-danger" role="alert" *ngIf="validationMessage">
+      <mat-icon>warning</mat-icon>
+      &nbsp;
+      <span *ngFor="let item of validationMessage | keyvalue">
+        <strong>{{item?.key}}</strong>: {{item?.value}}
+      </span>
+    </mat-card>
+  </span>
+
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
-    <div *ngIf="content">
+  <div *ngIf="content">
     <span class="row m-0">
       <span class="col-sm-4">
-        <app-select [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor"
-                    (select)="onDescriptorChange($event)"></app-select>
+        <app-select *ngIf="!publicPage" [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)"></app-select>
+        <app-select *ngIf="publicPage" [placeholder]="'Descriptor Type'" [items]="validDescriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)"></app-select>
       </span>
     </span>
-    </div>
-    <mat-card class="alert alert-warning" role="alert"*ngIf="!content && _selectedVersion?.valid">
-      <mat-icon>warning</mat-icon>
-      &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
-    </mat-card>
-    <div [hidden]="!content || !_selectedVersion?.valid">
-      <mat-toolbar color="primary">
-        <mat-toolbar-row>
-          <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-          <span class="spacer"></span>
-          <div class="btn-group pull-right" role="group">
-            <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink"  download [href]="downloadFilePath" type="button" title="{{filePath}}">
-              <mat-icon>save_alt</mat-icon>
-            </a>
+  </div>
+  <mat-card class="alert alert-warning" role="alert" *ngIf="!content">
+    <mat-icon>warning</mat-icon>
+    &nbsp;A Test Parameter File associated with this Docker container, descriptor type and version could not be found.
+  </mat-card>
+  <div [hidden]="!content">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
+        <span class="spacer"></span>
+        <div class="btn-group pull-right" role="group">
+          <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+            <mat-icon>save_alt</mat-icon>
+          </a>
             <ng-template #unpublishedDownloadLink>
               <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF"
                  [download]="customDownloadPath" type="button" title="{{filePath}}">

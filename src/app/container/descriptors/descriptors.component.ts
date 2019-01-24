@@ -38,9 +38,11 @@ export class DescriptorsComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
+    this.checkIfValid(true, value);
   }
 
   protected entryType: ('tool' | 'workflow') = 'tool';
@@ -53,8 +55,12 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version: Tag): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorsService.getDescriptors(this._selectedVersion);
+  }
+
+  getValidDescriptors(version: Tag): Array<ToolDescriptor.TypeEnum> {
+    return this.descriptorsService.getValidDescriptors(this._selectedVersion);
   }
 
   /**

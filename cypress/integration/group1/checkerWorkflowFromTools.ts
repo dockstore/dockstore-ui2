@@ -48,6 +48,8 @@ describe('Checker workflow test from my-tools', () => {
         .type('/test.json');
 
       cy.get('#submitButton').click();
+      cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+      cy.get('#viewCheckerWorkflowButton').should('be.visible');
     });
     it('visit the tool and its checker workflow and have the correct buttons', () => {
       goToB3();

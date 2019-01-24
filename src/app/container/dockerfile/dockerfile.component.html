@@ -20,25 +20,22 @@
   </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
-  <mat-card class="alert alert-warning" role="alert" *ngIf="!_selectedVersion?.valid">
+  <mat-card class="alert alert-warning" role="alert" *ngIf="!content">
     <mat-icon>warning</mat-icon>
-    &nbsp;This version of the tool is invalid.
+    &nbsp;A Dockerfile associated with this Docker container could not be found.
   </mat-card>
+
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
-    <mat-card class="alert alert-warning" role="alert"*ngIf="!content&& _selectedVersion?.valid">
-      <mat-icon>warning</mat-icon>
-      &nbsp;A Dockerfile associated with this Docker container could not be found.
-    </mat-card>
-    <div [hidden]="!content || !_selectedVersion?.valid">
-      <mat-toolbar color="primary">
-        <mat-toolbar-row>
-          <span>{{filePath}}</span>
-          <span class="spacer"></span>
-          <div class="btn-group pull-right" role="group">
-            <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
-              <mat-icon>save_alt</mat-icon>
-            </a>
+  <div [hidden]="!content">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span>{{filePath}}</span>
+        <span class="spacer"></span>
+        <div class="btn-group pull-right" role="group">
+          <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+            <mat-icon>save_alt</mat-icon>
+          </a>
             <ng-template #unpublishedDownloadLink>
               <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
                 <mat-icon>save_alt</mat-icon>

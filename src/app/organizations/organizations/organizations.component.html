@@ -32,7 +32,9 @@
             <mat-card-title>
               <a [routerLink]="org.name">{{org.name}}</a>
             </mat-card-title>
-            <mat-card-subtitle>{{ (org.description.length > 128)? (org.description | slice:0:128)+'...':(org.description) }}</mat-card-subtitle>
+            <mat-card-subtitle>
+                {{ org.description }}
+            </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <div fxLayout="row" fxLayoutGap="10px">

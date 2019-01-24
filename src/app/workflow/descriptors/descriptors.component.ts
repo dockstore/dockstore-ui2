@@ -37,6 +37,7 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
+    this.checkIfValid(true, value);
   }
 
   protected entryType: ('tool' | 'workflow') = 'workflow';
@@ -48,10 +49,22 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.workflowQuery.workflowIsPublished$;
   }
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+
+  getDescriptors(version: WorkflowVersion): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorService.getDescriptors(this._selectedVersion);
   }
 
+  getValidDescriptors(version: WorkflowVersion): Array<any> {
+    return this.descriptorService.getValidDescriptors(this._selectedVersion);
+  }
+
+  /**
+   * Get all the primary or secondary descriptors
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType
+   * @returns {Observable<Array<ToolFile>>}  The array of primary or secondary descriptor ToolFiles
+   * @memberof DescriptorsWorkflowComponent
+   */
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
     ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
