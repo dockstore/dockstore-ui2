@@ -14,7 +14,7 @@ import { UserQuery } from '../../shared/user/user.query';
 })
 export class RequestsComponent implements OnInit {
   loading$: Observable<boolean>;
-  public pendingOrganizationsAdminAndCurator$: Observable<Array<Organisation>>;
+  public allPendingOrganizations$: Observable<Array<Organisation>>;
   public myOrganizationInvites$: Observable<Array<OrganisationUser>>;
   public myPendingOrganizationRequests$: Observable<Array<OrganisationUser>>;
   currentOrgId: number;
@@ -34,7 +34,7 @@ export class RequestsComponent implements OnInit {
     this.requestsService.updateCuratorOrganizations();
     this.requestsService.updateMyMemberships();
 
-    this.pendingOrganizationsAdminAndCurator$ = this.requestsQuery.pendingOrganizationsAdminAndCurator$;
+    this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
     this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
     this.myPendingOrganizationRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
 

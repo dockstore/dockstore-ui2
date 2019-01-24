@@ -11,14 +11,16 @@ export class RequestsService {
               private organisationsService: OrganisationsService, private usersService: UsersService) {
   }
 
-  // Curator Organizations
+  /**
+   * Updates the list of organizations that the curator can approve or reject
+   */
   updateCuratorOrganizations(): void {
     this.alertService.start('Getting pending organizations');
     this.organisationsService.getAllOrganisations('pending').pipe(
       finalize(() => this.requestsStore.setLoading(false)
       ))
-    .subscribe((pendingOrganizationsAdminAndCurator: Array<Organisation>) => {
-      this.updateOrganizationState(pendingOrganizationsAdminAndCurator);
+    .subscribe((allPendingOrganizations: Array<Organisation>) => {
+      this.updateOrganizationState(allPendingOrganizations);
       this.alertService.simpleSuccess();
     }, () => {
       this.updateOrganizationState(null);
@@ -27,6 +29,10 @@ export class RequestsService {
     });
   }
 
+  /**
+   * Approves an organization and updates the list of organizations
+   * @param id Organization id
+   */
   approveOrganization(id: number): void {
     this.alertService.start('Approving organization ' + id);
     this.organisationsService.approveOrganisation(id, null, null).pipe(
@@ -42,6 +48,10 @@ export class RequestsService {
       });
   }
 
+  /**
+   * Rejects an organization and updates the list of organizations
+   * @param id Organization id
+   */
   rejectOrganization(id: number): void {
     this.alertService.start('Rejected organization ' + id);
     this.organisationsService.rejectOrganisation(id, null, null).pipe(
@@ -57,16 +67,22 @@ export class RequestsService {
       });
   }
 
-  updateOrganizationState(pendingOrganizationsAdminAndCurator: Array<Organisation>): void {
+  /**
+   * Updates the list of pending organizations
+   * @param allPendingOrganizations Newly updated list of pending organizations
+   */
+  updateOrganizationState(allPendingOrganizations: Array<Organisation>): void {
     this.requestsStore.setState((state: RequestsState) => {
       return {
         ...state,
-        pendingOrganizationsAdminAndCurator: pendingOrganizationsAdminAndCurator
+        allPendingOrganizations: allPendingOrganizations
       };
     });
   }
 
-  // My Memberships
+  /**
+   * Updates the list of memberships (OrganisationUser) for the logged in user
+   */
   updateMyMemberships(): void {
     this.alertService.start('Getting my memberships');
     this.usersService.getUserMemberships().pipe(
@@ -85,6 +101,12 @@ export class RequestsService {
     });
   }
 
+  /**
+   * Updates the store information for various lists of membership for the logged in user
+   * @param myMemberships
+   * @param myOrganizationInvites
+   * @param myPendingOrganizationRequests
+   */
   updateMyMembershipState(myMemberships: Array<OrganisationUser>, myOrganizationInvites: Array<OrganisationUser>,
     myPendingOrganizationRequests: Array<OrganisationUser>): void {
     this.requestsStore.setState((state: RequestsState) => {
@@ -97,6 +119,11 @@ export class RequestsService {
     });
   }
 
+  /**
+   * Accept/reject an invitation to join an organization, and update my memberships accordingly
+   * @param id Organization id
+   * @param accept True to accept invite, false to reject
+   */
   acceptOrRejectOrganizationInvite(id: number, accept: boolean): void {
     this.alertService.start('Approving organization ' + id);
     this.organisationsService.acceptOrRejectInvitation(id, accept).pipe(

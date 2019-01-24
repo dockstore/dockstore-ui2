@@ -7,15 +7,16 @@
   <!-- Curator/Admin Pending Organizations -->
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(pendingOrganizationsAdminAndCurator$ | async).length > 0">
-      <mat-icon>info</mat-icon> As a curator/admin, you can approve and reject organization requests.
+    <p>As a curator/admin, you can approve and reject organization requests.</p>
+    <mat-card class="alert alert-info" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length == 0">
+      <mat-icon>info</mat-icon> There are no organizations waiting for approval.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of (pendingOrganizationsAdminAndCurator$ | async)">
+      <mat-card *ngFor="let org of (allPendingOrganizations$ | async)">
         <mat-card-header>
           <mat-card-title>
-            {{org.name}}
+            <a [routerLink]="('/organizations/' + org.id )">{{org.name}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             <p>Requested by user(s)
@@ -60,15 +61,16 @@
   <!-- My Pending Organization Requests -->
   <div class="p-3">
     <h3>My Pending Requests</h3>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async).length > 0">
-      <mat-icon>info</mat-icon> The following organizations that you have created are pending approval.
+    <p>The following organizations that you have created are pending approval.</p>
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length == 0">
+      <mat-icon>info</mat-icon> You have no organizations pending approval.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async)">
         <mat-card-header>
           <mat-card-title>
-            {{membership.organisation.name}}
+            <a [routerLink]="('/organizations/' + membership.organisation.id )">{{membership.organisation.name}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -98,15 +100,16 @@
   <!-- Pending Organization Invites -->
   <div class="p-3">
     <h3>Organization Invites</h3>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async).length > 0">
-      <mat-icon>info</mat-icon> You have been invited into the following organizations.
+    <p>Accept and reject invitations to join organizations.</p>
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length == 0">
+      <mat-icon>info</mat-icon> You have not been invited to join any organizations.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card *ngFor="let membership of (myOrganizationInvites$ | async)">
         <mat-card-header>
           <mat-card-title>
-            {{ membership.organisation.name }}
+            <a [routerLink]="('/organizations/' + membership.organisation.id )">{{membership.organisation.name}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -128,7 +131,7 @@
               <span class="ellipsis-lines">{{ membership.organisation.location }}</span>
             </span>
           </div>
-          You have been invited to join the organization with the role of <strong>{{ membership.role | lowercase }}</strong>.
+          You have been invited to join the organization with the role <strong>{{ membership.role | lowercase }}</strong>.
         </mat-card-content>
         <mat-card-actions>
           <div fxFlex></div>

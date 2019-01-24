@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RequestsQuery extends QueryEntity<RequestsState, Request> {
-  pendingOrganizationsAdminAndCurator$: Observable<Array<Organisation>> = this.select(state => state.pendingOrganizationsAdminAndCurator);
+  allPendingOrganizations$: Observable<Array<Organisation>> = this.select(state => state.allPendingOrganizations);
   myMemberships$: Observable<Array<OrganisationUser>> = this.select(state => state.myMemberships);
   myOrganizationInvites$: Observable<Array<OrganisationUser>> = this.select(state => state.myOrganizationInvites);
   myPendingOrganizationRequests$: Observable<Array<OrganisationUser>> = this.select(state => state.myPendingOrganizationRequests);
