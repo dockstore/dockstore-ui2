@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Edit Organization Description</h1>
+<div mat-dialog-content>
+  <app-alert></app-alert>
+  <form [formGroup]="updateOrganizationDescriptionForm" fxLayout="column">
+    <mat-form-field>
+      <textarea cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button id="updateOrganizationDescriptionButton" matTooltip="Update Organization Description" mat-button [disabled]="!updateOrganizationDescriptionForm.valid" (click)="updateOrganizationDescription()" cdkFocusInitial>Update Organization Description</button>
+</div>
