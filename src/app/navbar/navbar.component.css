@@ -59,3 +59,7 @@ mat-menu {
 .icon-sm {
   width: 25%;
 }
+
+.material-icons.md-18 {
+  font-size: 18px;
+}
