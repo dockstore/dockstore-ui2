@@ -113,6 +113,9 @@ describe('Dockstore my workflows', () => {
       cy.contains('EDIT ORGANIZATION DESCRIPTION').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
+      cy.contains('Preview Mode').click();
+      cy.contains('fake organization description');
+      cy.contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');

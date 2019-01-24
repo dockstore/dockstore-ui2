@@ -3,14 +3,14 @@
   <app-alert></app-alert>
   <mat-tab-group mat-stretch-tabs>
     <mat-tab label="Edit Mode">
-      <form [formGroup]="updateOrganizationDescriptionForm" fxLayout="column">
+      <form class="p-1" [formGroup]="updateOrganizationDescriptionForm" fxLayout="column">
         <mat-form-field>
           <textarea cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"></textarea>
         </mat-form-field>
       </form>
     </mat-tab>
     <mat-tab label="Preview Mode">
-      <ngx-md [data]="descriptionValue"></ngx-md>
+      <ngx-md class="p-1" [data]="descriptionValue"></ngx-md>
     </mat-tab>
   </mat-tab-group>
 </div>
