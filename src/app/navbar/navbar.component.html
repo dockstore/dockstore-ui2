@@ -43,6 +43,17 @@
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menuLarge="matMenu">
+          <a
+            *ngIf="user.isAdmin; then loggedIn; else loggedOut"
+            mat-menu-item id="dropdown-accounts" routerLink="/accounts">
+            <mat-icon color="accent">lock</mat-icon>Account
+          </a>
+          <!--<a *ngIf="user.isAdmin" mat-menu-item id="dropdown-accounts" routerLink="/accounts">-->
+            <!--<mat-icon color="accent">lock</mat-icon>Account-->
+          <!--</a>-->
+          <!--<a *ngIf="user.curator" mat-menu-item id="dropdown-accounts" routerLink="/accounts">-->
+            <!--<mat-icon color="accent">event_note</mat-icon>Account-->
+          <!--</a>-->
           <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
             <mat-icon color="accent">account_circle</mat-icon>Account
           </a>
