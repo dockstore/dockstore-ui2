@@ -18,7 +18,7 @@ import { UpdateOrganizationDescriptionService } from '../state/update-organizati
 import { UpdateOrganizationDescriptionQuery } from '../state/update-organization-description.query';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
@@ -37,5 +37,9 @@ export class UpdateOrganizationDescriptionComponent implements OnInit {
 
   updateOrganizationDescription() {
     this.updateOrganizationDescriptionService.updateOrganizationDescription(this.updateOrganizationDescriptionForm);
+  }
+
+  get descriptionValue(): AbstractControl {
+    return this.updateOrganizationDescriptionForm.get('description').value;
   }
 }
