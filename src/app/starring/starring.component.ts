@@ -116,8 +116,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   setStarring() {
     this.disable = true;
     if (this.isLoggedIn) {
-      let type;
-      type = this.entryType === 'workflows' ? 'workflow' : 'tool';
+      const type = this.entryType === 'workflows' ? 'workflow' : 'tool';
 
       if (this.rate) {
         const message = 'Unstarring ' + type;
