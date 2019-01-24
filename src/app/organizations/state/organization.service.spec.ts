@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
@@ -11,7 +12,7 @@ describe('OrganizationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationService, OrganizationStore],
-      imports: [ HttpClientTestingModule ]
+      imports: [ HttpClientTestingModule, RouterTestingModule ]
     });
 
     organizationService = TestBed.get(OrganizationService);

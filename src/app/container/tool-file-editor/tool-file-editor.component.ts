@@ -84,7 +84,7 @@ export class ToolFileEditorComponent extends FileEditing {
     const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
-    this.alertService.start('Editing hosted tool');
+    this.alertService.start('Updating hosted tool');
     this.hostedService.editHostedTool(
         this.id,
         newSourceFiles).subscribe(result => {

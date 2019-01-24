@@ -26,7 +26,8 @@ import { Organisation } from '../../shared/swagger';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationsQuery } from '../state/organizations.query';
-import { OrganizationsService } from '../state/organizations.service';
+import { OrganizationsStateService } from '../state/organizations.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 
 @Component({
   selector: 'organizations',
@@ -39,7 +40,7 @@ export class OrganizationsComponent extends Base implements OnInit {
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
 
-  constructor(private organizationsService: OrganizationsService, private organizationsQuery: OrganizationsQuery,
+  constructor(private organizationsStateService: OrganizationsStateService, private organizationsQuery: OrganizationsQuery,
     private formBuilder: FormBuilder, private alertQuery: AlertQuery, private matDialog: MatDialog,
     private trackLoginService: TrackLoginService) {
     super();
@@ -51,14 +52,14 @@ export class OrganizationsComponent extends Base implements OnInit {
     this.loading$ = this.alertQuery.showInfo$;
     // The real loading$ is currently not being used because the alertQuery global loading is used instead
     // this.loading$ = this.organizationsQuery.loading$;
-    this.organizationsService.updateOrganizations();
+    this.organizationsStateService.updateOrganizations();
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
     this.organizationSearchForm.get('name').valueChanges.pipe(
       debounceTime(formInputDebounceTime),
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)
     ).subscribe((searchName: string) => {
-      this.organizationsService.updateSearchNameState(searchName);
+      this.organizationsStateService.updateSearchNameState(searchName);
     });
   }
 
@@ -69,6 +70,6 @@ export class OrganizationsComponent extends Base implements OnInit {
    * @memberof OrganizationsComponent
    */
   createOrganization(): void {
-    this.matDialog.open(RegisterOrganizationComponent, {width: '600px'});
+    this.matDialog.open(RegisterOrganizationComponent, {data: {organization: null, mode: TagEditorMode.Add}, width: '600px'});
   }
 }
