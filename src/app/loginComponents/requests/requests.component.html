@@ -13,7 +13,7 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of (allPendingOrganizations$ | async)">
+      <mat-card *ngFor="let org of (allPendingOrganizations$ | async); let i = index" [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="('/organizations/' + org.id )">{{org.name}}</a>
@@ -47,10 +47,10 @@
 
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button color="warn" class="mr-1" (click)="openDialog(org.name, org.id, false)">
+          <button mat-flat-button color="warn" [id]="'reject-pending-org-' + i" class="mr-1" (click)="openDialog(org.name, org.id, false)">
             <mat-icon>clear</mat-icon>Reject
           </button>
-          <button mat-flat-button color="primary" (click)="openDialog(org.name, org.id, true)">
+          <button mat-flat-button color="primary" [id]="'approve-pending-org-' + i" (click)="openDialog(org.name, org.id, true)">
             <mat-icon>done</mat-icon>Approve
           </button>
         </mat-card-actions>
@@ -67,7 +67,7 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async)">
+      <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="('/organizations/' + membership.organisation.id )">{{membership.organisation.name}}</a>
@@ -106,7 +106,7 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of (myOrganizationInvites$ | async)">
+      <mat-card *ngFor="let membership of (myOrganizationInvites$ | async); let i = index" [id]="'my-org-invites-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="('/organizations/' + membership.organisation.id )">{{membership.organisation.name}}</a>
@@ -135,10 +135,10 @@
         </mat-card-content>
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button color="warn" class="mr-1" (click)="openInviteDialog(membership.organisation.name, membership.organisation.id, false)">
+          <button mat-flat-button color="warn" class="mr-1" [id]="'reject-invite-org-' + i" (click)="openInviteDialog(membership.organisation.name, membership.organisation.id, false)">
             <mat-icon>clear</mat-icon>Reject
           </button>
-          <button mat-flat-button color="primary" (click)="openInviteDialog(membership.organisation.name, membership.organisation.id, true)">
+          <button mat-flat-button color="primary" [id]="'accept-invite-org-' + i" (click)="openInviteDialog(membership.organisation.name, membership.organisation.id, true)">
             <mat-icon>done</mat-icon>Accept
           </button>
         </mat-card-actions>

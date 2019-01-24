@@ -4,9 +4,6 @@
 </app-header>
 <div class="container separation">
   <mat-tab-group>
-    <mat-tab label="Requests">
-      <requests></requests>
-    </mat-tab>
     <mat-tab label="Accounts">
       <app-accounts-external></app-accounts-external>
     </mat-tab>
@@ -17,6 +14,9 @@
       <ng-template matTabContent>
         <app-controls></app-controls>
       </ng-template>
+    </mat-tab>
+    <mat-tab label="Requests">
+      <requests></requests>
     </mat-tab>
   </mat-tab-group>
 </div>

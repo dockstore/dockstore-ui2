@@ -27,6 +27,15 @@ describe('Dropdown test', () => {
         url: /extended/,
         response: { 'canChangeUsername': true }
       });
+
+    cy
+      .server()
+      .route({
+        method: 'GET',
+        url: /user/,
+        response: { 'isAdmin': true, 'curator': true }
+      });
+
     cy.visit('');
 
     // Select dropdown
@@ -65,6 +74,121 @@ describe('Dropdown test', () => {
       everythingOk();
     });
   });
+
+  describe('Go to requests page', ()  => {
+
+    beforeEach(() => {
+      // Pending orgs starts with two
+      const pendingOrganizations = [
+        { id: 1000, name: 'OrgOne', status: 'PENDING' },
+        { id: 1001, name: 'OrgTwo', status: 'PENDING' }
+      ];
+
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/organisations/all?type=pending',
+          response: pendingOrganizations
+        });
+
+      // Logged in user has two memberships, one is not accepted
+      const memberships = [
+        {id: 1, role: 'MAINTAINER', accepted: false, organisation: { id: 1000, status: 'PENDING', name: 'orgOne'}},
+        {id: 2, role: 'MAINTAINER', accepted: true, organisation: { id: 1001, status: 'PENDING', name: 'orgTwo'}}
+      ];
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/users/user/memberships',
+          response: memberships
+      });
+      // Choose dropdown
+      cy
+        .get('#dropdown-accounts')
+        .click();
+      cy.contains('Requests').click();
+    });
+
+    it('Should have two pending orgs', () => {
+      // Endpoint should return only one pending organisation after approval
+      const pendingOrganizations = [{ id: 1001, name: 'OrgTwo', status: 'PENDING' }];
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/organisations/all?type=pending',
+          response: pendingOrganizations
+        });
+
+      // Stub approve response
+      cy
+      .server()
+      .route({
+        method: 'POST',
+        url: '/organisations/1000/approve',
+        response: []
+      });
+
+      // Ensure that there are two orgs
+      cy.get('#pending-org-card-0').should('be.visible');
+      cy.get('#pending-org-card-1').should('be.visible');
+
+      // Accept first org
+      cy.get('#reject-pending-org-0').should('be.visible');
+      cy.get('#approve-pending-org-0').should('be.visible').click();
+      cy.get('#approve-pending-org-dialog').should('be.visible').click();
+
+      // Ensure that only one org exists now
+      cy.get('#pending-org-card-0').should('be.visible');
+      cy.get('#pending-org-card-1').should('not.be.visible');
+    });
+
+    it('Should have a pending invite', () => {
+      // Stub the accept invite response
+      cy
+        .server()
+        .route({
+          method: 'POST',
+          url: '/organisations/1000/invitation?accept=true',
+          response: []
+      });
+
+      // Membership should have two accepted entries
+      const memberships = [
+        { id: 1, role: 'MAINTAINER', accepted: true, organisation: { id: 1000, status: 'PENDING',  name: 'orgOne' }},
+        { id: 2, role: 'MAINTAINER', accepted: true, organisation: { id: 1001, status: 'PENDING', name: 'orgTwo' }}
+      ];
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/users/user/memberships',
+          response: memberships
+      });
+
+      // One invite should be visible
+      cy.get('#my-org-invites-card-0').should('be.visible');
+
+      // Accept org invite
+      cy.get('#reject-invite-org-0').should('be.visible');
+      cy.get('#accept-invite-org-0').should('be.visible').click();
+      cy.get('#accept-pending-org-dialog').should('be.visible').click();
+
+      // Should have two orgs in pending list
+      cy.get('#my-pending-org-card-0').should('be.visible');
+      cy.get('#my-pending-org-card-1').should('be.visible');
+    });
+
+    it('Should have a pending org request', () => {
+     // One pending org request should be visible
+     cy.get('#my-pending-org-card-0').should('be.visible');
+    });
+
+
+  });
+
   describe('Go to enabled Dockstore Account Controls', () => {
     beforeEach(() => {
       // Select dropdown accounts
