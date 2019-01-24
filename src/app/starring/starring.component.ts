@@ -23,6 +23,7 @@ import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
 import { StarringService } from './starring.service';
+import { AlertService } from '../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-starring',
@@ -46,7 +47,8 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
     private userQuery: UserQuery,
     private containerService: ContainerService,
     private starringService: StarringService,
-    private starentryService: StarentryService) { }
+    private starentryService: StarentryService,
+    private alertService: AlertService) { }
 
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
@@ -114,11 +116,27 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   setStarring() {
     this.disable = true;
     if (this.isLoggedIn) {
+      const type = this.entryType === 'workflows' ? 'workflow' : 'tool';
+
+      if (this.rate) {
+        const message = 'Unstarring ' + type;
+        this.alertService.start(message);
+      } else {
+        const message = 'Starring ' + type;
+        this.alertService.start(message);
+      }
+
       this.setStar().subscribe(
         data => {
           // update total_stars
+          this.alertService.simpleSuccess();
           this.getStarredUsers();
-        }, error => this.disable = false);
+
+        },
+        (error) => {
+          this.alertService.detailedError(error);
+          this.disable = false;
+        });
     }
   }
   setStar(): any {

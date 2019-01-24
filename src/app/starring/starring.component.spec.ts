@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatSnackBarModule } from '@angular/material';
 
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
@@ -37,7 +37,7 @@ describe('StarringComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StarringComponent],
-      imports: [MatIconModule],
+      imports: [MatIconModule, MatSnackBarModule],
       providers: [
         { provide: StarringService, useClass: StarringStubService },
         { provide: TrackLoginService, useClass: TrackLoginStubService },
