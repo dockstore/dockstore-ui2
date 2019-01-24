@@ -42,6 +42,7 @@ import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { includesValidation } from '../../shared/constants';
 
 /**
  * How the workflow selection works:
@@ -227,7 +228,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   selectEntry(workflow: ExtendedWorkflow): void {
     if (workflow !== null) {
-      this.workflowsService.getWorkflow(workflow.id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+      this.workflowsService.getWorkflow(workflow.id, includesValidation).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
         this.location.go('/my-workflows/' + result.full_workflow_path);
         this.workflowService.setWorkflow(result);
       });

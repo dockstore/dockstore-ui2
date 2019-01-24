@@ -16,20 +16,20 @@
 
 <mat-tab-group mat-stretch-tabs>
   <mat-tab label="Dockerfile">
-    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
+    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
     </app-dockerfile>
   </mat-tab>
 
   <mat-tab label="Descriptor Files">
     <ng-template matTabContent>
-    <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
+    <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
     </app-descriptors-container>
   </ng-template>
   </mat-tab>
 
   <mat-tab label="Test Parameter Files">
       <ng-template matTabContent>
-    <app-paramfiles-container [entrypath]="entrypath" [id]="id"  [selectedVersion]="selectedVersion">
+    <app-paramfiles-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
     </app-paramfiles-container>
     </ng-template>
   </mat-tab>

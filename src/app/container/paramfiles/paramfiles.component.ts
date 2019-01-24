@@ -38,9 +38,11 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
+    this.checkIfValid(false, value);
   }
   public filePath: string;
   protected entryType: ('tool' | 'workflow') = 'tool';
@@ -52,8 +54,13 @@ export class ParamfilesComponent extends EntryFileSelector {
     super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
+
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
+  }
+
+  getValidDescriptors(version): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
   }
 
   /**

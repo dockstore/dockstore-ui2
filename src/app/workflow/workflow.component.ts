@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { ga4ghWorkflowIdPrefix } from '../shared/constants';
+import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -220,7 +220,7 @@ export class WorkflowComponent extends Entry {
     if (url.includes('workflows')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title)
+      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation)
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectTab(this.validTabs.indexOf(this.currentTab));

@@ -35,6 +35,8 @@ export class DockerfileComponent {
 
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() publicPage: boolean;
+
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
     this._selectedVersion = value;

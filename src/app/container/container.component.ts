@@ -20,6 +20,7 @@ import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { includesValidation } from '../shared/constants';
 
 import { ListContainersService } from '../containers/list/list.service';
 import { ContainerService } from '../shared/container.service';
@@ -171,7 +172,7 @@ export class ContainerComponent extends Entry {
     if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.containersService.getPublishedContainerByToolPath(this.title)
+      this.containersService.getPublishedContainerByToolPath(this.title, includesValidation)
         .subscribe(tool => {
           this.containerService.setTool(tool);
           this.selectedVersion = this.selectVersion(this.tool.tags, this.urlVersion, this.tool.defaultVersion);

@@ -30,6 +30,7 @@ import { ToolQuery } from '../tool/tool.query';
 import { CheckerWorkflowQuery } from './checker-workflow.query';
 import { CheckerWorkflowStore } from './checker-workflow.store';
 import { WorkflowQuery } from './workflow.query';
+import { includesValidation } from '../constants';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowService extends Base {
@@ -73,7 +74,7 @@ export class CheckerWorkflowService extends Base {
   public updateCheckerWorkflow(id: number, isPublic: boolean, entry) {
     // This sets the checker-workflow.checkerWorkflow state
     if (isPublic) {
-      this.workflowsService.getPublishedWorkflow(id).pipe(first()).subscribe((workflow: Workflow) => {
+      this.workflowsService.getPublishedWorkflow(id, includesValidation).pipe(first()).subscribe((workflow: Workflow) => {
         this.setState(workflow, entry);
       }, error => this.setState(null, entry));
     } else {
