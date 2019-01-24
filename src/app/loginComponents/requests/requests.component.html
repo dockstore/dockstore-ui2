@@ -20,8 +20,8 @@
           </mat-card-title>
           <mat-card-subtitle>
             <p>Requested by user(s)
-              <span *ngFor="let user of org?.users">
-                <strong>{{ user.user.username }}</strong>
+              <span *ngFor="let user of org?.users; let last = last">
+                <strong *ngIf="user?.accepted">{{ user.user.username }}<span *ngIf="!last">, </span></strong>
               </span>
               on {{ org.dbCreateDate | date}}
             </p>
@@ -102,7 +102,7 @@
     <h3>Organization Invites</h3>
     <p>Accept and reject invitations to join organizations.</p>
     <mat-card class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length == 0">
-      <mat-icon>info</mat-icon> You have not been invited to join any organizations.
+      <mat-icon>info</mat-icon> You have no pending organization invites.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
