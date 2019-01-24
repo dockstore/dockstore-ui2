@@ -137,7 +137,6 @@ export class RegisterOrganizationService {
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        // Setting approved to true to appease compiler.  Webservice should completely ignore this.
         status: 'PENDING',
         users: []
       };
@@ -177,8 +176,8 @@ export class RegisterOrganizationService {
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        approved: true
+        status: 'PENDING',
+        users: []
       };
       this.alertService.start('Updating organization');
       this.organisationsService.updateOrganisation(organizationId, editedOrganization).subscribe((organization: Organisation) => {
