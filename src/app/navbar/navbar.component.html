@@ -38,26 +38,23 @@
         </a>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login/Register</a>
         <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
-          <mat-icon class="hidden-lg">account_circle</mat-icon>
+          <mat-icon class="hidden-lg" >account_circle</mat-icon>
           <span class="hidden-md hidden-sm">{{user?.username}}
-            <mat-icon *ngIf="user.curator" class = "material-icons md-18">edit</mat-icon>
-            <mat-icon *ngIf="user.isAdmin" class = "material-icons md-18">lock</mat-icon>
+            <mat-icon *ngIf="user?.curator" class = "material-icons md-18">edit</mat-icon>
+            <mat-icon *ngIf="user?.isAdmin" class = "material-icons md-18">lock</mat-icon>
           </span>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menuLarge="matMenu">
-          <!--<a-->
-            <!--*ngIf="user.isAdmin; then loggedIn; else loggedOut"-->
-            <!--mat-menu-item id="dropdown-accounts" routerLink="/accounts">-->
-            <!--<mat-icon color="accent">lock</mat-icon>Account-->
-          <!--</a>-->
-          <!--<a *ngIf="user.isAdmin" mat-menu-item id="dropdown-accounts" routerLink="/accounts">-->
-            <!--<mat-icon color="accent">lock</mat-icon>Account-->
-          <!--</a>-->
-          <!--<a *ngIf="user.curator" mat-menu-item id="dropdown-accounts" routerLink="/accounts">-->
-            <!--<mat-icon color="accent">edit</mat-icon>Account-->
-          <!--</a>-->
-          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
+          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts" *ngIf="user?.isAdmin">
+            <mat-icon color="accent">lock</mat-icon>Account
+          </a>
+
+          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts" *ngIf="user?.curator">
+            <mat-icon color="accent">edit</mat-icon>Account
+          </a>
+
+          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts" *ngIf="!user?.isAdmin && !user?.curator">
             <mat-icon color="accent">account_circle</mat-icon>Account
           </a>
 
