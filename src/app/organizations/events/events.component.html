@@ -1,0 +1,56 @@
+
+<ng-template #loading>Loading...</ng-template>
+
+<div *ngIf="!(isLoading$ | async); else loading">
+
+  <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Events
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list *ngFor="let event of (events$ | async); let last = last">
+        <mat-list-item *ngIf="event?.type === 'CREATE_ORG'">
+          <mat-chip-list>
+            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
+          </mat-chip-list>
+          &nbsp;created&nbsp;organization
+        </mat-list-item>
+
+        <mat-list-item *ngIf="event?.type === 'APPROVE_ORG_INVITE'">
+          <mat-chip-list>
+            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
+          </mat-chip-list>
+          &nbsp;joined&nbsp;organization
+        </mat-list-item>
+
+        <mat-list-item *ngIf="event?.type === 'MODIFY_ORG'">
+          <mat-chip-list>
+            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
+          </mat-chip-list>
+          &nbsp;updated&nbsp;organization
+        </mat-list-item>
+
+        <mat-list-item *ngIf="event?.type === 'CREATE_COLLECTION'">
+          <mat-chip-list>
+            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
+          </mat-chip-list>
+          &nbsp;created&nbsp;the&nbsp;collection&nbsp;
+          <mat-chip-list>
+            <mat-chip>{{ event.collection.name }}</mat-chip>
+          </mat-chip-list>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="event?.type === 'MODIFY_COLLECTION' || event?.type === 'ADD_TO_COLLECTION' || event?.type === 'REMOVE_FROM_COLLECTION'">
+          <mat-chip-list>
+            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
+          </mat-chip-list>
+          &nbsp;updated&nbsp;the&nbsp;collection&nbsp;
+          <mat-chip-list>
+            <mat-chip>{{ event.collection.name }}</mat-chip>
+          </mat-chip-list>
+        </mat-list-item>
+
+      </mat-list>
+    </mat-expansion-panel>
+  </div>
