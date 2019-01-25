@@ -53,4 +53,12 @@ export class OrganizationMembersComponent implements OnInit {
     remove(id: ID) {
       this.organizationMembersService.remove(id);
     }
+
+    editUser(organizationUser: OrganisationUser) {
+      this.organizationMembersService.editUser(organizationUser);
+    }
+
+    removeUser(organizationUser: OrganisationUser) {
+      this.organizationMembersService.removeUser(organizationUser);
+    }
 }
