@@ -14,16 +14,12 @@
  *    limitations under the License.
  */
 import { OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-
-import { ga4ghWorkflowIdPrefix } from '../../../shared/constants';
+import { Observable } from 'rxjs';
 import { FileService } from '../../../shared/file.service';
 import { Files } from '../../../shared/files';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from '../../../shared/swagger';
-import { FilesService } from '../../files/state/files.service';
-import { FilesQuery } from '../../files/state/files.query';
+import { ToolDescriptor, ToolFile, WorkflowsService } from '../../../shared/swagger';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -43,8 +39,7 @@ export abstract class WdlViewerService extends Files implements OnDestroy {
   abstract getDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
-  constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-              protected gA4GHService: GA4GHService, protected filesService: FilesService, protected filesQuery: FilesQuery) {
+  constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService, protected workflowsService: WorkflowsService) {
     super();
   }
 
@@ -72,25 +67,5 @@ export abstract class WdlViewerService extends Files implements OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-
-  /**
-   * Stores a File object into the Files entity store
-   *
-   * @memberof WdlViewerService
-   */
-  protected storeFileDescriptor(currFile: ToolFile): void {
-    this.gA4GHFilesService.injectAuthorizationToken(this.gA4GHService);
-    const existingFileWrapper = this.filesQuery.getEntity(currFile.path);
-
-    // If the current file does not exist, retrieve file using Swagger-generated API wrapper and place into the store
-    if (!existingFileWrapper) {
-      this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
-        this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path : this.workflow.full_workflow_path,
-        this._selectedVersion.name, currFile.path).subscribe((file: FileWrapper) => {
-        this.filesService.update(currFile.path, file);
-      });
-    }
   }
 }

@@ -19,18 +19,15 @@ import { filterNil } from '@datorama/akita';
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
 
-import { Observable, from } from 'rxjs';
+import { Observable, from, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ga4ghWorkflowIdPrefix } from '../../../shared/constants';
 import { DescriptorService } from '../../../shared/descriptor.service';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { GA4GHService, ToolDescriptor, ToolFile } from '../../../shared/swagger';
+import { ToolDescriptor, ToolFile, WorkflowsService, SourceFile } from '../../../shared/swagger';
 import { WorkflowVersion } from '../../../shared/swagger';
-import { FilesQuery } from '../../files/state/files.query';
-import { FilesService } from '../../files/state/files.service';
 import { WdlViewerService } from './wdl-viewer.service';
 
 @Component({
@@ -41,7 +38,7 @@ import { WdlViewerService } from './wdl-viewer.service';
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class WdlViewerComponent extends WdlViewerService implements OnChanges, AfterViewInit, OnDestroy {
+export class WdlViewerComponent extends WdlViewerService implements AfterViewInit, OnDestroy {
   private zip: JSZip = new JSZip();
 
   @Input() workflow: ExtendedWorkflow;
@@ -53,8 +50,6 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
 
   @ViewChild('diagram') diagram: ElementRef;
 
-  previousEntryPath: string;
-  previousVersionName: string;
   public pipelineBuilderResult$: Observable<any>;
   public errorMessage;
   public isGenerated: boolean;
@@ -64,9 +59,8 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
   private visualizer: any;
 
   constructor(public fileService: FileService, private descriptorsService: DescriptorService,
-    private gA4GHFilesQuery: GA4GHFilesQuery, protected gA4GHFilesService: GA4GHFilesService, protected gA4GHService: GA4GHService,
-    protected filesService: FilesService, protected filesQuery: FilesQuery) {
-    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
+    private gA4GHFilesQuery: GA4GHFilesQuery, protected gA4GHFilesService: GA4GHFilesService, protected workflowsService: WorkflowsService ) {
+    super(fileService, gA4GHFilesService, workflowsService);
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
@@ -76,18 +70,6 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
 
   getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     return this.descriptorsService.getDescriptors(this._selectedVersion);
-  }
-
-  // TODO: Check how often updateFiles is called on change. This onChange approach might not be reducing the amount of API calls
-  ngOnChanges() {
-    // Retrieve the files for this path from the API, and store in global store on view change
-    if (this.previousEntryPath !== this.workflow.full_workflow_path || this.previousVersionName !== this._selectedVersion.name) {
-      // Only getting files for one descriptor type for workflows (subject to change)
-      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this._selectedVersion.name,
-        [this.descriptorType]);
-      this.previousEntryPath = this.workflow.full_workflow_path;
-      this.previousVersionName = this._selectedVersion.name;
-    }
   }
 
   ngOnDestroy() {
@@ -105,37 +87,66 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
 
         if (this.files.length > 1) {
           console.log('Multi-file wdl');
-          this.createMultiFileVisualization(this.files);
+          this.createMultiFileVisualization();
         } else {
-          this.createSingleFileVisualization(this.files);
+          this.createSingleFileVisualization();
         }
-      })
+      });
   }
 
   /**
    * Creates EPAM pipeline builder visualization for WDL files without imports
-   * @param descriptorFiles
    */
-  createSingleFileVisualization(descriptorFiles: any[]): void {
-    const primaryFile = descriptorFiles.filter(file => file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR);
+  createSingleFileVisualization(): void {
+    this.workflowsService.wdl(this.workflow.id, this._selectedVersion.name).subscribe((primaryFile: SourceFile) => {
 
-    if (primaryFile[0]) {
-      // Store primary file into Files Store, if it does not already exist
-      this.storeFileDescriptor(primaryFile[0]);
+      // When the primary file is available and if there should only be one type of file
+      if (primaryFile && this.files.length == 1) {
+        this.pipelineBuilderResult$ = from(pipeline.parse(primaryFile.content));
 
-      this.filesQuery.getFileEntities(primaryFile).pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(primary => {
+        // If the visualization was successfully generated, attach to DOM element
+        this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
+          .subscribe((pipeline) => {
+              if (pipeline.model[0]) {
+                this.isGenerated = true;
+                this.visualizer.attachTo(pipeline.model[0]);
+              }
+            },
+            (error) => {
+              this.errorMessage = error || 'Unknown error';
+            });
+      }
+    });
 
-          if (primary[0]) {
-            this.pipelineBuilderResult$ = from(pipeline.parse(primary[0].content));
+  }
+
+  /**
+   * Creates EPAM pipeline builder visualization for WDL files with imports
+   */
+  createMultiFileVisualization(): void {
+
+    // Retrieve primary and secondary files from WDL workflow API endpoints
+    forkJoin(this.workflowsService.wdl(this.workflow.id, this._selectedVersion.name), this.workflowsService.secondaryWdl(this.workflow.id, this._selectedVersion.name))
+      .subscribe(results => {
+
+        const primaryFile = results[0];
+        const secondaryFiles = results[1];
+
+        // Load each secondary file into the zip file object
+        secondaryFiles.forEach(file => this.zip.file(file.path, file.content));
+
+        this.zip.generateAsync({type: 'blob'}).then(zipFile => {
+
+          // When both the primary file and zip object with secondary files are available
+          if (primaryFile && zipFile) {
+            this.pipelineBuilderResult$ = from(pipeline.parse(primaryFile.content, {zipFile: zipFile}));
 
             // If the visualization was successfully generated, attach to DOM element
             this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
-              .subscribe(
-                (primary) => {
-                  if (primary.model[0]) {
+              .subscribe((pipeline) => {
+                  if (pipeline.model[0]) {
                     this.isGenerated = true;
-                    this.visualizer.attachTo(primary.model[0]);
+                    this.visualizer.attachTo(pipeline.model[0]);
                   }
                 },
                 (error) => {
@@ -143,61 +154,6 @@ export class WdlViewerComponent extends WdlViewerService implements OnChanges, A
                 });
           }
         });
-    }
-  }
-
-  /**
-   * Creates EPAM pipeline builder visualization for WDL files with imports
-   * @param descriptorFiles
-   */
-  createMultiFileVisualization(descriptorFiles: ToolFile[]): void {
-    const primaryFile = descriptorFiles.filter(file => file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR);
-    const secondaryFiles = descriptorFiles.filter(file => file.file_type === ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR);
-
-    // Store each primary/secondary file into Files Store, if they does not already exist
-    descriptorFiles.forEach(file => {
-      if (primaryFile.indexOf(file) != -1 || secondaryFiles.indexOf(file) != -1) {
-        this.storeFileDescriptor(file);
-      }
-    });
-
-    // Retrieve secondary files and zip them together
-    this.filesQuery.getFileEntities(secondaryFiles).pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(fileEntities => {
-
-        if (fileEntities.length === secondaryFiles.length) {
-
-          // Load each secondary file into the jszip object
-          fileEntities.forEach(file => this.zip.file(file.url.split('/').pop(), file.content));
-
-          // Retrieve primary file
-          this.filesQuery.getFileEntities(primaryFile).pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(primary => {
-
-              if (primary[0]) {
-                // Generate the secondary files zip object as Blob object
-                this.zip.generateAsync({type: 'blob'}).then(content => {
-
-                  if (content) {
-                    this.pipelineBuilderResult$ = from(pipeline.parse(primary[0].content, { zipFile: content}));
-
-                    // If the visualization was successfully generated, attach to DOM element
-                    this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
-                      .subscribe(
-                        (primary) => {
-                          if (primary.model[0]) {
-                            this.isGenerated = true;
-                            this.visualizer.attachTo(primary.model[0]);
-                          }
-                        },
-                        (error) => {
-                          this.errorMessage = error || 'Unknown error';
-                        });
-                  }
-                });
-              }
-            });
-        }
       });
   }
 }
