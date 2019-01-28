@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCardModule, MatExpansionModule, MatProgressBarModule } from '@angular/material';
-
-import { OrganizationMembersComponent } from './organization-members/organization-members.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule, MatCardModule, MatExpansionModule, MatProgressBarModule, MatTooltipModule } from '@angular/material';
+
 import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { OrganizationMembersComponent } from './organization-members/organization-members.component';
+import { UpsertOrganizationMemberModule } from './upsert-organization-member.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,9 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
     MatCardModule,
     MatExpansionModule,
     MatProgressBarModule,
-    RefreshAlertModule
+    MatTooltipModule,
+    RefreshAlertModule,
+    UpsertOrganizationMemberModule,
   ],
   declarations: [OrganizationMembersComponent],
   exports: [OrganizationMembersComponent]

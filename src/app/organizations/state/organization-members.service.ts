@@ -19,8 +19,11 @@ export class OrganizationMembersService {
   }
 
   updateAll(organizationUsers: OrganisationUser[]) {
+    // Can't use set because Akita isn't able to figure out the entity id
     this.organizationMembersStore.remove();
-    this.organizationMembersStore.add(organizationUsers);
+    organizationUsers.forEach(organizationUser => {
+      this.organizationMembersStore.createOrReplace(organizationUser.id.userId, organizationUser);
+    });
   }
 
   add(organizationMember: OrganisationUser) {
@@ -42,13 +45,13 @@ export class OrganizationMembersService {
     this.organisationsService.deleteUserRole(organizationUser.user.id, organizationID)
       .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe(() => {
         this.alertService.simpleSuccess();
+        this.updateCanEdit(organizationID);
       }, error => {
         this.alertService.detailedError(error);
       });
   }
 
   editUser(organizationUser: OrganisationUser) {
-
   }
 
   /**

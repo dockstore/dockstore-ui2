@@ -24,18 +24,19 @@
   </div>
   <ng-template #notLoading>
     <div class="pt-2"></div>
-    <div *ngFor="let organizationUser of (organizationMembers$ | async)">
-      <div fxLayout="row wrap" fxLayoutAlign="start stretch">
-        <mat-card fxFlex="200px">
+    <div fxLayout="row wrap" fxLayoutAlign="start stretch">
+      <div *ngFor="let organizationUser of (organizationMembers$ | async)">
+        <mat-card class="my-2" fxFlex="200px" fxFlexOffset="10px">
           <mat-card-header>
             <mat-card-title>{{organizationUser.role}}</mat-card-title>
             <mat-card-subtitle>{{organizationUser.user?.username}}</mat-card-subtitle>
           </mat-card-header>
           <img mat-card-image *ngIf="organizationUser.user?.avatarUrl" [src]="organizationUser.user?.avatarUrl">
-          <mat-card-actions>
+          <img mat-card-image *ngIf="!organizationUser.user?.avatarUrl" src="https://via.placeholder.com/300x300?text=Avatar+Not+Found">
+          <mat-card-actions *ngIf="(canEdit$ | async)">
             <div fxLayout="row" fxLayoutAlign="end">
-              <button mat-button (click)="editUser(organizationUser)">EDIT</button>
-              <button mat-button (click)="removeUser(organizationUser)">REMOVE</button>
+              <button mat-button matTooltip="Edit user" [disabled]="organizationUser.user.id === (userId$ | async)" (click)="editUser(organizationUser)">EDIT</button>
+              <button mat-button matTooltip="Remove user" [disabled]="organizationUser.user.id === (userId$ | async)" (click)="removeUser(organizationUser)">REMOVE</button>
             </div>
           </mat-card-actions>
         </mat-card>
@@ -43,6 +44,6 @@
     </div>
   </ng-template>
   <mat-action-row *ngIf="(canEdit$ | async)">
-    <button (click)="addMember()" mat-button>ADD MEMBER</button>
+    <button (click)="addUser()" mat-button>ADD USER</button>
   </mat-action-row>
 </mat-expansion-panel>
