@@ -1,7 +1,7 @@
 
 <ng-template #loading>Loading...</ng-template>
 
-<div *ngIf="!(loading$ | async); else loading">
+<div *ngIf="!(isLoading$ | async); else loading">
 
   <mat-expansion-panel [expanded]="true">
       <mat-expansion-panel-header>
