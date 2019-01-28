@@ -27,6 +27,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
+import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 @Component({
   selector: 'app-dag',
@@ -41,6 +42,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
 
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
+  @ViewChild(WdlViewerComponent) wdlViewer: WdlViewerComponent;
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
@@ -67,6 +69,10 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   reset() {
     this.refreshCounter++;
     this.refreshDocument(this.cy);
+  }
+
+  resetWdl() {
+    this.wdlViewer.reset();
   }
 
   constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery) {

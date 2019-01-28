@@ -14,20 +14,19 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { filterNil } from '@datorama/akita';
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
 
 import { Observable, from, forkJoin } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, finalize } from 'rxjs/operators';
 import { DescriptorService } from '../../../shared/descriptor.service';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { ToolDescriptor, ToolFile, WorkflowsService, SourceFile } from '../../../shared/swagger';
-import { WorkflowVersion } from '../../../shared/swagger';
+import { ToolDescriptor, ToolFile, WorkflowsService, SourceFile, WorkflowVersion } from '../../../shared/swagger';
 import { WdlViewerService } from './wdl-viewer.service';
 
 @Component({
@@ -52,7 +51,9 @@ export class WdlViewerComponent extends WdlViewerService implements AfterViewIni
 
   public pipelineBuilderResult$: Observable<any>;
   public errorMessage;
-  public isGenerated: boolean;
+  public loading = false;
+  public wdlViewerError = false;
+
 
   protected entryType: ('tool' | 'workflow') = 'workflow';
 
@@ -77,8 +78,12 @@ export class WdlViewerComponent extends WdlViewerService implements AfterViewIni
     this.ngUnsubscribe.complete();
   }
 
+  ngOnInit() {
+    this.loading = true;
+  }
+
   ngAfterViewInit() {
-    this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement);
+    this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement, false);
 
     // Retrieve all files for this workflow from Ga4ghFiles entity Store
     this.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(takeUntil(this.ngUnsubscribe))
@@ -105,15 +110,17 @@ export class WdlViewerComponent extends WdlViewerService implements AfterViewIni
         this.pipelineBuilderResult$ = from(pipeline.parse(primaryFile.content));
 
         // If the visualization was successfully generated, attach to DOM element
-        this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
+        this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe), finalize(() => this.loading = false))
           .subscribe((pipeline) => {
               if (pipeline.model[0]) {
-                this.isGenerated = true;
                 this.visualizer.attachTo(pipeline.model[0]);
+                this.wdlViewerError = false;
               }
             },
             (error) => {
               this.errorMessage = error || 'Unknown error';
+              this.wdlViewerError = true;
+              this.diagram.nativeElement.remove();    // Remove the div element from the DOM, to remove empty div
             });
       }
     });
@@ -122,6 +129,7 @@ export class WdlViewerComponent extends WdlViewerService implements AfterViewIni
 
   /**
    * Creates EPAM pipeline builder visualization for WDL files with imports
+   * TODO: SVGs can’t scale rectangles, etc. properly for a div using [hidden] i.e. display: none. The alternative is to generate the SVG each time the radio button is selected, which is too costly
    */
   createMultiFileVisualization(): void {
 
@@ -142,18 +150,24 @@ export class WdlViewerComponent extends WdlViewerService implements AfterViewIni
             this.pipelineBuilderResult$ = from(pipeline.parse(primaryFile.content, {zipFile: zipFile}));
 
             // If the visualization was successfully generated, attach to DOM element
-            this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe))
+            this.pipelineBuilderResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe), finalize(() => this.loading = false))
               .subscribe((pipeline) => {
                   if (pipeline.model[0]) {
-                    this.isGenerated = true;
                     this.visualizer.attachTo(pipeline.model[0]);
+                    this.wdlViewerError = false;
                   }
                 },
                 (error) => {
                   this.errorMessage = error || 'Unknown error';
+                  this.wdlViewerError = true;
+                  this.diagram.nativeElement.remove();    // Remove the div element from the DOM, to remove empty div
                 });
           }
         });
       });
+  }
+
+  reset() {
+    this.visualizer.zoom.fitToPage();
   }
 }
