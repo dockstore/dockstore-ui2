@@ -33,7 +33,7 @@ export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
     this.title = this.upsertOrganizationMemberService.getTitle(this.data);
   }
 
-  createOrUpdateOrganization(): void {
+  upsertUser(): void {
     this.upsertOrganizationMemberService.upsertUser(this.form.value, this.data);
   }
 
