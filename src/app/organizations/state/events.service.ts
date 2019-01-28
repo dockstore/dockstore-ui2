@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ID } from '@datorama/akita';
 import { HttpClient } from '@angular/common/http';
-import { EventsStore, EventsState } from './events.store';
+import { EventsStore } from './events.store';
 import { Event } from '../../shared/swagger';
 import { OrganisationsService } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
@@ -15,9 +14,10 @@ export class EventsService {
   }
 
   /**
-   * Retrieves the events for an organization from the database and updates the entryStore
+   * Retrieves the events for an organization from the database and updates the entityStore
    */
   updateOrganizationEvents(id: number): void {
+    this.eventsStore.setLoading(true);
     this.organisationsService.getOrganisationEvents(id).pipe(
       finalize(() => this.eventsStore.setLoading(false)
       ))

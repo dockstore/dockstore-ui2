@@ -13,6 +13,7 @@ export class EventsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
   events$: Observable<Array<Event>>;
   isLoading$: Observable<boolean>;
+  EventType = Event.TypeEnum;
 
   constructor(private eventsQuery: EventsQuery,
               private eventsService: EventsService
