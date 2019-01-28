@@ -64,7 +64,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('https://www.google.ca');
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
-      cy.contains('Collections not found');
+      cy.contains('No collections found');
     });
     it('be able to edit organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
