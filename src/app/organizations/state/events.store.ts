@@ -3,13 +3,6 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Event } from '../../shared/swagger';
 
 export interface EventsState extends EntityState<Event> {
-  organizationEvents: Array<Event>;
-}
-
-export function createInitialState(): EventsState {
-  return {
-    organizationEvents: null
-  };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +10,7 @@ export function createInitialState(): EventsState {
 export class EventsStore extends EntityStore<EventsState, Event> {
 
   constructor() {
-    super(createInitialState());
+    super();
   }
 
 }

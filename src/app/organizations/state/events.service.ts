@@ -18,31 +18,17 @@ export class EventsService {
   /**
    * Updates the list of events for the current organisation
    */
-  updateOrginisationEvents(id: number): void {
+  updateOrganizationEvents(id: number): void {
     this.alertService.start('Getting organisation events');
     this.organisationsService.getOrganisationEvents(id).pipe(
       finalize(() => this.eventsStore.setLoading(false)
       ))
     .subscribe((organizationEvents: Array<Event>) => {
-      this.updateEventsState(organizationEvents);
+      this.eventsStore.set(organizationEvents);
       this.alertService.simpleSuccess();
     }, () => {
-      this.updateEventsState(null);
       this.eventsStore.setError(true);
       this.alertService.simpleError();
-    });
-  }
-
-  /**
-   * Updates the list of events
-   * @param organizationEvents Newly updated list of pending organizations
-   */
-  updateEventsState(organizationEvents: Array<Event>): void {
-    this.eventsStore.setState((state: EventsState) => {
-      return {
-        ...state,
-        organizationEvents: organizationEvents
-      };
     });
   }
 }

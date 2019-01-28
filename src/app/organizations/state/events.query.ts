@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EventsQuery extends QueryEntity<EventsState, Event> {
-  organizationEvents$: Observable<Array<Event>> = this.select(state => state.organizationEvents);
+  organizationEvents$: Observable<Array<Event>> = this.selectAll();
 
   constructor(protected store: EventsStore) {
     super(store);

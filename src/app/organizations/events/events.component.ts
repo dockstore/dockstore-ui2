@@ -26,6 +26,6 @@ export class EventsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.eventsService.updateOrginisationEvents(this.organizationID);
+    this.eventsService.updateOrganizationEvents(this.organizationID);
   }
 }
