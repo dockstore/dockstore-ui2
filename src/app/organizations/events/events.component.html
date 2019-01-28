@@ -10,7 +10,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
-        <span *ngFor="let event of (events$ | async); let last = last">
+        <span *ngFor="let event of (events$ | async)">
           <mat-list-item *ngIf="event?.type === 'CREATE_ORG'">
             <mat-chip-list>
               <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
