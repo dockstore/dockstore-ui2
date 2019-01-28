@@ -7,6 +7,8 @@ import {
   MatDialogModule,
   MatExpansionModule,
   MatProgressBarModule,
+  MatIconModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { CollectionsComponent } from './collections/collections.component';
@@ -21,7 +23,9 @@ import { CreateCollectionModule } from './collections/create-collection.module';
     MatCardModule,
     MatDialogModule,
     MatExpansionModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   declarations: [CollectionsComponent],
   exports: [CollectionsComponent]

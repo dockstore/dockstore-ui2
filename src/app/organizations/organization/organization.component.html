@@ -23,56 +23,70 @@
 <ng-template #placeholder>
   <div class="pt-2"></div>
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
-<div class="container" *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
-  <mat-card fxFlex class="my-2">
-    <mat-card-header>
-      <mat-card-title>
-        <h1>{{org.name}}</h1>
-      </mat-card-title>
-      <mat-card-subtitle>
-        {{org.topic}}
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div fxLayout="column" fxLayoutGap="10px">
-        <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.email">
-          <mat-icon>email</mat-icon>
-          <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
-        </span>
-        <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
-          <mat-icon>link</mat-icon>
-          <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
-        </span>
-        <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
-          <mat-icon>location_on</mat-icon>
-          <span class="ellipsis-lines">{{ org.location }}</span>
-        </span>
-        <p>Markdown description placeholder</p>
+  <div class="container" *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+    <mat-card fxFlex class="my-3">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <div>
+          <img src="https://via.placeholder.com/150" alt="Logo" class="img-circle">
+        </div>
+        <div>
+          <mat-card-header>
+            <mat-card-title>
+              <h1>{{org.name}}</h1>
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{org.topic}}
+            </mat-card-subtitle>
+          </mat-card-header>
+        </div>
       </div>
-    </mat-card-content>
-    <mat-card-actions *ngIf="(canEdit$ | async)">
-      <button mat-button class="pull-right" (click)="editOrganization()">EDIT ORGANIZATION INFO</button>
-    </mat-card-actions>
-  </mat-card>
-  <div fxFlex>
-    <collections [organizationID]="org.id"></collections>
-  </div>
-  <div fxFlex>
-    <mat-expansion-panel [expanded]="true">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Events
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-        in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </mat-expansion-panel>
-  </div>
-  <div fxFlex>
-    <organization-members></organization-members>
+      <mat-card-content>
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-evenly">
+          <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.email">
+            <mat-icon>email</mat-icon>
+            <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
+            <mat-icon>link</mat-icon>
+            <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
+            <mat-icon>location_on</mat-icon>
+            <span class="ellipsis-lines">{{ org.location }}</span>
+          </span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions *ngIf="(canEdit$ | async)">
+        <div fxFlex></div>
+        <button mat-button (click)="editOrganization()" id="editOrgInfo"><mat-icon>edit</mat-icon></button>
+      </mat-card-actions>
+    </mat-card>
 
+    <div fxLayout="row" fxLayoutGap="15px" class="my-3">
+      <div fxFlex fxGrow="3">
+        <mat-tab-group>
+          <mat-tab label="Collections">
+            <collections [organizationID]="org.id"></collections>
+          </mat-tab>
+          <mat-tab label="Readme">
+            <p>Readme goes here</p>
+          </mat-tab>
+          <mat-tab label="Members">
+            <organization-members></organization-members>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <div fxFlex fxGrow="1">
+        <mat-card>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. Ut
+          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+          cupidatat non proident, sunt
+          in culpa qui officia deserunt mollit anim id est laborum.
+        </mat-card>
+      </div>
+    </div>
   </div>
-</div>
 </ng-template>
