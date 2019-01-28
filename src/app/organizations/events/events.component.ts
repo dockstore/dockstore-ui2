@@ -3,7 +3,6 @@ import { EventsService } from '../state/events.service';
 import { EventsQuery } from '../state/events.query';
 import { Event } from '../../shared/swagger';
 import { Observable } from 'rxjs';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'events',
@@ -13,15 +12,14 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 export class EventsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
   events$: Observable<Array<Event>>;
-  loading$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
 
   constructor(private eventsQuery: EventsQuery,
-              private eventsService: EventsService,
-              private alertQuery: AlertQuery
+              private eventsService: EventsService
   ) { }
 
   ngOnInit() {
-    this.loading$ = this.alertQuery.showInfo$;
+    this.isLoading$ = this.eventsQuery.isLoading$;
     this.events$ = this.eventsQuery.organizationEvents$;
   }
 
