@@ -26,23 +26,28 @@ import { UsersService } from './../shared/swagger/api/users.service';
 export class StarringService {
   constructor(private usersService: UsersService, private containersService: ContainersService,
     private workflowsService: WorkflowsService) { }
+
   setUnstar(entryID: number, entryType: string): any {
+
     if (entryType === 'workflows') {
       return this.workflowsService.unstarEntry(entryID);
     } else {
       return this.containersService.unstarEntry(entryID);
     }
   }
+
   setStar(entryID: number, entryType: string): any {
     const body: StarRequest = {
       star: true
     };
+
     if (entryType === 'workflows') {
       return this.workflowsService.starEntry(entryID, body);
     } else {
       return this.containersService.starEntry(entryID, body);
     }
   }
+
   getStarring(entryID: number, entryType: string): Observable<Array<User>> {
     if (entryType === 'workflows') {
       return this.workflowsService.getStarredUsers(entryID);
