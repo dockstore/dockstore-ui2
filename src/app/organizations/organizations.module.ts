@@ -9,6 +9,7 @@ import { OrganizationModule } from './organization.module';
 import { OrganizationsRouting } from './organizations.routing';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { RegisterOrganizationModule } from './register-organization.module';
+import { CollectionModule } from './collection.module';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { RegisterOrganizationModule } from './register-organization.module';
     OrganizationModule,
     OrganizationsRouting,
     ReactiveFormsModule,
-    RegisterOrganizationModule
+    RegisterOrganizationModule,
+    CollectionModule
   ],
   declarations: [OrganizationsComponent]
 })

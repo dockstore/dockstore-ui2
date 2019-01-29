@@ -1,0 +1,75 @@
+<!--
+   Copyright 2019 OICR
+ *
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ *
+       http://www.apache.org/licenses/LICENSE-2.0
+ *
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<app-header>
+  <mat-icon>people</mat-icon>
+  Available Collections
+</app-header>
+<div *ngIf="(loading$ | async); else placeholder">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<ng-template #placeholder>
+  <div class="pt-2"></div>
+  <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column" fxLayoutGap="10px">
+    <mat-card fxFlex class="my-3">
+      <mat-card-header>
+        <mat-card-title>
+          <h1>{{collection.name}}</h1>
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{collection.description}}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <div fxLayoutGap="16px grid" fxLayout="row wrap">
+      <div *ngFor="let entry of collection?.entries" fxFlex="{{ 100/3 }}%">
+        <mat-card class="entryCard">
+          <mat-card-header *ngIf="entry?.full_workflow_path">
+            <mat-card-title>
+              <h4>
+                <a [routerLink]="['/workflows/', entry.full_workflow_path]">
+                  {{entry.full_workflow_path}}
+                </a>
+              </h4>
+            </mat-card-title>
+            <mat-card-subtitle>
+              Last updated {{ entry.dbUpdateDate | date }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-header *ngIf="entry?.tool_path">
+            <mat-card-title>
+              <h4>
+                <a [routerLink]="['/tools/', entry.tool_path]">
+                  {{entry.tool_path}}
+                </a>
+              </h4>
+            </mat-card-title>
+            <mat-card-subtitle>
+              Last updated {{ entry.dbUpdateDate | date }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content class="p-3">
+            <mat-chip-list>
+              <mat-chip *ngFor="let label of entry?.labels">{{ label.value }}</mat-chip>
+            </mat-chip-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</ng-template>
