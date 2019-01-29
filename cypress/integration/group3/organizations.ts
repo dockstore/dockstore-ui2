@@ -64,10 +64,10 @@ describe('Dockstore my workflows', () => {
       cy.contains('https://www.google.ca');
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
-      cy.contains('Collections not found');
+      cy.contains('No collections found');
     });
     it('be able to edit organization', () => {
-      cy.contains('EDIT ORGANIZATION INFO').should('be.visible').click();
+      cy.get('#editOrgInfo').should('be.visible').click();
       typeInInput('Name', 'Potatoe');
       typeInTextArea('Topic', 'Boil them, mash them, stick them in a stew');
       typeInInput('Link to Organization Website', 'https://www.google.com');
@@ -87,7 +87,7 @@ describe('Dockstore my workflows', () => {
 
   describe('Should be able to add/update collection', () => {
     it('be able to add a collection', () => {
-      cy.contains('CREATE COLLECTION').click();
+      cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'fakeCollectionName');
       typeInTextArea('Description', 'fake collection description');
@@ -97,7 +97,7 @@ describe('Dockstore my workflows', () => {
     });
 
     it('be able to update a collection', () => {
-      cy.contains('EDIT COLLECTION').click();
+      cy.get('#editCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description');

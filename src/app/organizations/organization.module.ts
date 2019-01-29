@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule, MatCardModule, MatExpansionModule, MatIconModule, MatProgressBarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatExpansionModule, MatIconModule, MatProgressBarModule, MatTabsModule } from '@angular/material';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { CollectionsModule } from './collections.module';
@@ -19,6 +19,7 @@ import { EventsModule } from './events.module';
     MatCardModule,
     MatExpansionModule,
     MatIconModule,
+    MatTabsModule,
     MatProgressBarModule,
     OrganizationMembersModule,
     EventsModule
