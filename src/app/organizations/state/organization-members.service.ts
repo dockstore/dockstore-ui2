@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { ID } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
@@ -6,15 +8,12 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { OrganisationsService, OrganisationUser } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { OrganizationMembersStore } from './organization-members.store';
-import { OrganizationQuery } from './organization.query';
 import { OrganizationStore } from './organization.store';
-import { MatSnackBar } from '@angular/material';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationMembersService {
 
-  constructor(private organizationMembersStore: OrganizationMembersStore, private organizationQuery: OrganizationQuery,
+  constructor(private organizationMembersStore: OrganizationMembersStore,
     private organisationsService: OrganisationsService, private userQuery: UserQuery, private organizationStore: OrganizationStore,
     private alertService: AlertService, private matSnackBar: MatSnackBar) {
   }
@@ -53,9 +52,8 @@ export class OrganizationMembersService {
    */
   removeUser(organizationUser: OrganisationUser) {
     this.alertService.start('Removing user');
-    const organizationID: number = this.organizationQuery.getSnapshot().organization.id;
-    this.organizationMembersStore.setError(false);
-    this.organizationMembersStore.setLoading(true);
+    const organizationID: number = organizationUser.organisation.id;
+    this.beforeCall();
     this.organisationsService.deleteUserRole(organizationUser.user.id, organizationID)
       .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe(() => {
         this.alertService.simpleSuccess();
@@ -75,8 +73,7 @@ export class OrganizationMembersService {
    * @memberof OrganizationService
    */
   updateCanEdit(organizationID: number) {
-    this.organizationMembersStore.setLoading(true);
-    this.organizationMembersStore.setError(false);
+    this.beforeCall();
     this.organisationsService.getOrganisationMembers(organizationID)
       .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe((organizationUsers: OrganisationUser[]) => {
         // This gets the current user's ID at this specific point in time.
@@ -89,9 +86,21 @@ export class OrganizationMembersService {
         this.updateAll(organizationUsers);
         this.organizationMembersStore.setError(false);
       }, (error: HttpErrorResponse) => {
+        this.organizationMembersStore.remove();
         this.organizationMembersStore.setError(true);
         this.matSnackBar.open('Could not get organization members: ' + error.message);
       });
+  }
+
+  /**
+   * Things to do before any sequence of HTTP calls
+   *
+   * @private
+   * @memberof OrganizationMembersService
+   */
+  private beforeCall() {
+    this.organizationMembersStore.setLoading(true);
+    this.organizationMembersStore.setError(false);
   }
 
   setCanEditState(canEdit: boolean) {

@@ -82,6 +82,7 @@ export class UpsertOrganizationMemberService {
       return;
     } else {
       this.upsertOrganizationMemberStore.setLoading(true);
+      this.upsertOrganizationMemberStore.setError(false);
       this.alertService.start('Adding/updating user');
       const organizationId = this.organizationQuery.getSnapshot().organization.id;
       // Have to grab the username from data because a disabled form value isn't recorded
@@ -91,9 +92,11 @@ export class UpsertOrganizationMemberService {
       .subscribe((organization: OrganisationUser) => {
         this.matDialog.closeAll();
         this.organizationMembersService.updateCanEdit(organizationId);
+        this.upsertOrganizationMemberStore.setError(false);
         this.alertService.simpleSuccess();
       }, (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
+        this.upsertOrganizationMemberStore.setError(true);
       });
     }
   }

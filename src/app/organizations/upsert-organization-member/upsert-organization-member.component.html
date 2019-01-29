@@ -11,7 +11,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-select formControlName="role" placeholder="Role">
-          <mat-option *ngFor="let item of keys" [value]="item">{{item}}</mat-option>
+          <mat-option *ngFor="let item of roleKeys" [value]="item">{{item | titlecase}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

@@ -15,13 +15,13 @@ import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-org
 })
 export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
 
-  keys: any;
+  roleKeys: any;
 
   constructor(private upsertOrganizationMemberQuery: UpsertOrganizationMemberQuery,
               private upsertOrganizationMemberService: UpsertOrganizationMemberService,
               private formsManager: AkitaNgFormsManager<FormsState>, @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.keys = Object.keys(this.RoleEnum);
+    this.roleKeys = Object.keys(this.RoleEnum);
   }
   RoleEnum = OrganisationUser.RoleEnum;
   form: FormGroup;
