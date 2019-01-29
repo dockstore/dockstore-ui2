@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CollectionService } from './collection.service';
 import { CollectionStore } from './collection.store';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CollectionService', () => {
   let collectionService: CollectionService;
@@ -10,7 +11,7 @@ describe('CollectionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CollectionService, CollectionStore],
-      imports: [ HttpClientTestingModule ]
+      imports: [ HttpClientTestingModule, RouterTestingModule ]
     });
 
     collectionService = TestBed.get(CollectionService);
