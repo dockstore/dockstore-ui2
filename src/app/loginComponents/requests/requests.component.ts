@@ -3,7 +3,6 @@ import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
 import { Observable } from 'rxjs';
 import { Organisation, OrganisationUser } from '../../shared/swagger';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
 
@@ -13,10 +12,10 @@ import { UserQuery } from '../../shared/user/user.query';
   styleUrls: ['./requests.component.scss']
 })
 export class RequestsComponent implements OnInit {
-  loading$: Observable<boolean>;
   public allPendingOrganizations$: Observable<Array<Organisation>>;
   public myOrganizationInvites$: Observable<Array<OrganisationUser>>;
   public myPendingOrganizationRequests$: Observable<Array<OrganisationUser>>;
+  isLoading$: Observable<boolean>;
   currentOrgId: number;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
@@ -24,13 +23,12 @@ export class RequestsComponent implements OnInit {
 
   constructor(private requestsQuery: RequestsQuery,
               private requestsService: RequestsService,
-              private alertQuery: AlertQuery,
               public dialog: MatDialog,
               private userQuery: UserQuery
   ) { }
 
   ngOnInit() {
-    this.loading$ = this.alertQuery.showInfo$;
+    this.isLoading$ = this.requestsQuery.isLoading$;
     this.requestsService.updateCuratorOrganizations();
     this.requestsService.updateMyMemberships();
 
