@@ -52,7 +52,10 @@ describe('Admin UI', () => {
         .click();
       cy
         .get('#account-is-admin')
-        .contains('Yes');
+        .should('exist');
+      cy
+        .get('#account-is-admin > .mat-icon')
+        .contains('lock');
     });
   });
 });

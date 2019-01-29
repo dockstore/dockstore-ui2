@@ -52,7 +52,10 @@ describe('Curator UI', () => {
         .click();
       cy
         .get('#account-is-curator')
-        .contains('Yes');
+        .should('exist');
+      cy
+        .get('#account-is-curator > .mat-icon')
+        .contains('edit');
     });
   });
 });
