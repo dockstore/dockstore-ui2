@@ -41,10 +41,6 @@ export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
     return this.form.get('username');
   }
 
-  get topic(): AbstractControl {
-    return this.form.get('role');
-  }
-
   ngOnDestroy(): void {
     this.formsManager.unsubscribe();
   }

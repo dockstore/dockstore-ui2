@@ -11,7 +11,7 @@ import { OrganizationMembersState, OrganizationMembersStore } from './organizati
 })
 export class OrganizationMembersQuery extends QueryEntity<OrganizationMembersState, OrganisationUser> {
   sortedOrganizationMembers$: Observable<Array<OrganisationUser>> = this.selectAll().pipe(map(organizationMembers => {
-    organizationMembers.sort((a, b) => this.sortOrganizationuser(a, b));
+    organizationMembers.sort((a, b) => this.sortOrganizationUser(a, b));
     return organizationMembers;
   }));
   constructor(protected store: OrganizationMembersStore) {
@@ -23,10 +23,10 @@ export class OrganizationMembersQuery extends QueryEntity<OrganizationMembersSta
    *
    * @param {OrganisationUser} a
    * @param {OrganisationUser} b
-   * @returns {number}
+   * @returns {number}  -1 if a is higher rank, 1 if b is higher rank
    * @memberof OrganizationMembersQuery
    */
-  sortOrganizationuser(a: OrganisationUser, b: OrganisationUser): number {
+  sortOrganizationUser(a: OrganisationUser, b: OrganisationUser): number {
     // If different roles, return the higher ranking role
     if (a.role !== b.role) {
       return a.role === OrganisationUser.RoleEnum.MAINTAINER ? -1 : 1;

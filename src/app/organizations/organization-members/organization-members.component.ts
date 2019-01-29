@@ -14,18 +14,18 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrganisationUser } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrganizationMembersService } from '../state/organization-members.service';
 import { OrganizationQuery } from '../state/organization.query';
-import { MatDialog } from '@angular/material';
 import { UpsertOrganizationMemberComponent } from '../upsert-organization-member/upsert-organization-member.component';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { UserQuery } from '../../shared/user/user.query';
-import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'organization-members',
@@ -38,42 +38,59 @@ export class OrganizationMembersComponent implements OnInit {
   canEdit$: Observable<boolean>;
   userId$: Observable<number>;
   constructor(private organizationMembersQuery: OrganizationMembersQuery, private organizationQuery: OrganizationQuery,
-              private organizationMembersService: OrganizationMembersService, private matDialog: MatDialog, private userQuery: UserQuery,
-              private alertService: AlertService
+    private organizationMembersService: OrganizationMembersService, private matDialog: MatDialog, private userQuery: UserQuery,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
     this.userId$ = this.userQuery.userId$;
     this.canEdit$ = this.organizationQuery.canEdit$;
-      this.organizationMembers$ = this.organizationMembersQuery.sortedOrganizationMembers$;
-      this.loading$ = this.organizationMembersQuery.selectLoading();
-    }
+    this.organizationMembers$ = this.organizationMembersQuery.sortedOrganizationMembers$;
+    this.loading$ = this.organizationMembersQuery.selectLoading();
+  }
 
-    add(organizationMember: OrganisationUser) {
-      this.organizationMembersService.add(organizationMember);
-    }
+  add(organizationMember: OrganisationUser) {
+    this.organizationMembersService.add(organizationMember);
+  }
 
-    update(id: ID, organizationMember: Partial<OrganisationUser>) {
-      this.organizationMembersService.update(id, organizationMember);
-    }
+  update(id: ID, organizationMember: Partial<OrganisationUser>) {
+    this.organizationMembersService.update(id, organizationMember);
+  }
 
-    remove(id: ID) {
-      this.organizationMembersService.remove(id);
-    }
+  remove(id: ID) {
+    this.organizationMembersService.remove(id);
+  }
 
-    editUser(organizationUser: OrganisationUser) {
-      this.alertService.clearEverything();
-      this.matDialog.open(UpsertOrganizationMemberComponent,
-        {data: {mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role }, width: '600px'});
-    }
+  /**
+   * Opens the dialog for editing a user of an organization
+   *
+   * @param {OrganisationUser} organizationUser  The organization user to edit
+   * @memberof OrganizationMembersComponent
+   */
+  editUser(organizationUser: OrganisationUser) {
+    this.alertService.clearEverything();
+    this.matDialog.open(UpsertOrganizationMemberComponent,
+      { data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role }, width: '600px' });
+  }
 
-    removeUser(organizationUser: OrganisationUser) {
-      this.organizationMembersService.removeUser(organizationUser);
-    }
+  /**
+   * Handles removing a user from an organization
+   *
+   * @param {OrganisationUser} organizationUser
+   * @memberof OrganizationMembersComponent
+   */
+  removeUser(organizationUser: OrganisationUser) {
+    this.organizationMembersService.removeUser(organizationUser);
+  }
 
-    addUser() {
-      this.alertService.clearEverything();
-      this.matDialog.open(UpsertOrganizationMemberComponent,
-        {data: {mode: TagEditorMode.Add, username: null, role: null }, width: '600px'});
-    }
+  /**
+   * Opens the dialog for adding a user to an organization
+   *
+   * @memberof OrganizationMembersComponent
+   */
+  addUser() {
+    this.alertService.clearEverything();
+    this.matDialog.open(UpsertOrganizationMemberComponent,
+      { data: { mode: TagEditorMode.Add, username: null, role: null }, width: '600px' });
+  }
 }
