@@ -29,7 +29,11 @@
         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
           <div fxFlex fxGrow="3">
             <mat-card-header>
-              <mat-card-title>{{collection.value.name}}</mat-card-title>
+              <mat-card-title>
+                <a [routerLink]="['/organizations/', organizationID, 'collections', collection?.value?.id]">
+                {{collection.value.name}}
+              </a>
+            </mat-card-title>
               <mat-card-subtitle>{{collection.value.description}}</mat-card-subtitle>
             </mat-card-header>
           </div>

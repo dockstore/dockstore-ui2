@@ -13,6 +13,7 @@ import {
 
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { CreateCollectionModule } from './collections/create-collection.module';
     MatExpansionModule,
     MatProgressBarModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    RouterModule
   ],
   declarations: [CollectionsComponent],
   exports: [CollectionsComponent]
