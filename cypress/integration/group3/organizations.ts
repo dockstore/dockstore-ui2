@@ -110,7 +110,7 @@ describe('Dockstore my workflows', () => {
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
-      cy.get('#descriptionTab').click();
+      cy.contains('Readme').click();
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
@@ -118,6 +118,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
+      cy.contains('Readme').click();
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
     });
