@@ -1,10 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CollectionService } from '../state/collection.service';
 import { CollectionQuery } from '../state/collection.query';
 import { Observable } from 'rxjs';
 import { Collection } from '../../shared/swagger';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+@Component({
+  selector: 'collection-entry-confirm-remove',
+  templateUrl: 'collection-entry-confirm-remove.html',
+})
+export class CollectionRemoveEntryDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<CollectionRemoveEntryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface DialogData {
+  collectionName: string;
+  collectionId: number;
+  entryName: string;
+  entryId: number;
+  organisationId: number;
+}
 
 @Component({
   selector: 'collection',
@@ -21,7 +46,8 @@ export class CollectionComponent implements OnInit {
   constructor(private collectionQuery: CollectionQuery,
               private collectionService: CollectionService,
               private organizationQuery: OrganizationQuery,
-              private organizationService: OrganizationService
+              private organizationService: OrganizationService,
+              public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -33,5 +59,30 @@ export class CollectionComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organizationService.updateOrganizationFromNameORID();
     this.organization$ = this.organizationQuery.organization$;
+  }
+
+  /**
+   * Opens a dialog which confirms the removal of an entry from a collection
+   * @param organizationId
+   * @param collectionId
+   * @param entryId
+   * @param collectionName
+   * @param entryName
+   */
+  openRemoveEntryDialog(organizationId: number, collectionId: number, entryId: number, collectionName: string, entryName: string) {
+    const dialogRef = this.dialog.open(CollectionRemoveEntryDialogComponent, {
+      width: '400px',
+      data: {
+        collectionName: collectionName, entryName: entryName,
+        collectionId: collectionId, entryId: entryId,
+        organizationId: organizationId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.collectionService.removeEntryFromCollection(result.organizationId, result.collectionId, result.entryId, result.entryName);
+      }
+    });
   }
 }
