@@ -3,6 +3,8 @@ import { CollectionService } from '../state/collection.service';
 import { CollectionQuery } from '../state/collection.query';
 import { Observable } from 'rxjs';
 import { Collection } from '../../shared/swagger';
+import { OrganizationQuery } from '../state/organization.query';
+import { OrganizationService } from '../state/organization.service';
 
 @Component({
   selector: 'collection',
@@ -11,14 +13,25 @@ import { Collection } from '../../shared/swagger';
 })
 export class CollectionComponent implements OnInit {
   collection$: Observable<Collection>;
-  loading$: Observable<boolean>;
+  loadingCollection$: Observable<boolean>;
+
+  organization$: Observable<Collection>;
+  loadingOrganization$: Observable<boolean>;
+  canEdit$: Observable<boolean>;
   constructor(private collectionQuery: CollectionQuery,
-              private collectionService: CollectionService
+              private collectionService: CollectionService,
+              private organizationQuery: OrganizationQuery,
+              private organizationService: OrganizationService
   ) { }
 
   ngOnInit() {
-    this.loading$ = this.collectionQuery.loading$;
+    this.loadingCollection$ = this.collectionQuery.loading$;
     this.collectionService.updateCollectionFromName();
     this.collection$ = this.collectionQuery.collection$;
+
+    this.loadingOrganization$ = this.organizationQuery.loading$;
+    this.canEdit$ = this.organizationQuery.canEdit$;
+    this.organizationService.updateOrganizationFromNameORID();
+    this.organization$ = this.organizationQuery.organization$;
   }
 }

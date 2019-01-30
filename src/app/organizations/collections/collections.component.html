@@ -19,8 +19,8 @@
 <ng-template #notLoading>
   <div class="pt-2"></div>
   <div *ngIf="(collections$ | async | json) === '{}' ; else hasCollections">
-    <mat-card class="alert alert-info" role="alert">
-      No collections found.
+    <mat-card class="alert alert-info mx-1" role="alert">
+        <mat-icon>info</mat-icon> No collections found.
     </mat-card>
   </div>
   <ng-template #hasCollections>
@@ -51,7 +51,8 @@
   </ng-template>
 </ng-template>
 <mat-action-row *ngIf="(canEdit$ | async)">
-  <button mat-flat-button class="pull-right" (click)="createCollection()" id="createCollection" matTooltip="Create a new collection">
+  <div fxFlex></div>
+  <button mat-flat-button color="primary" class="my-2" (click)="createCollection()" id="createCollection" matTooltip="Create a new collection">
     <mat-icon>add</mat-icon>Create collection
   </button>
 </mat-action-row>
