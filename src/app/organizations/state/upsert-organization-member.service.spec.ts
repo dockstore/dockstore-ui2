@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UpsertOrganizationMemberService } from './upsert-organization-member.service';
 import { UpsertOrganizationMemberStore } from './upsert-organization-member.store';
+import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { FormBuilder } from '@angular/forms';
 
 describe('UpsertOrganizationMemberService', () => {
   let upsertOrganizationMemberService: UpsertOrganizationMemberService;
@@ -9,8 +11,9 @@ describe('UpsertOrganizationMemberService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore],
-      imports: [ HttpClientTestingModule ]
+      providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore,
+      FormBuilder],
+      imports: [ HttpClientTestingModule, MatSnackBarModule, MatDialogModule ]
     });
 
     upsertOrganizationMemberService = TestBed.get(UpsertOrganizationMemberService);
