@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UpdateOrganizationDescriptionService } from './update-organization-description.service';
 import { UpdateOrganizationDescriptionStore } from './update-organization-description.store';
+import { FormBuilder } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatDialogModule } from '@angular/material';
 
 describe('UpdateOrganizationDescriptionService', () => {
   let updateOrganizationDescriptionService: UpdateOrganizationDescriptionService;
@@ -9,8 +12,9 @@ describe('UpdateOrganizationDescriptionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpdateOrganizationDescriptionService, UpdateOrganizationDescriptionStore],
-      imports: [ HttpClientTestingModule ]
+      providers: [UpdateOrganizationDescriptionService, UpdateOrganizationDescriptionStore,
+        FormBuilder],
+      imports: [ HttpClientTestingModule, RouterTestingModule, MatDialogModule ]
     });
 
     updateOrganizationDescriptionService = TestBed.get(UpdateOrganizationDescriptionService);
