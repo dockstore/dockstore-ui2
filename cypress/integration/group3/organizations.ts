@@ -109,6 +109,10 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Should be able to CRUD user', () => {
+    beforeEach(() => {
+      cy.contains('Members').click();
+    });
+
     it('be able to Read organization user', () => {
       cy.get('mat-card-title').contains('MAINTAINER');
       cy.contains('mat-card-subtitle', 'user_A').parent().parent().parent().contains(/^EDIT$/).should('be.disabled');
