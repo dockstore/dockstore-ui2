@@ -6,7 +6,5 @@
 <div mat-dialog-actions>
   <div fxFlex></div>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <span>
-    <button mat-flat-button id="accept-pending-org-dialog" [mat-dialog-close]="{ 'organizationId': data.organizationId, 'collectionId': data.collectionId, 'entryId': data.entryId, 'entryName': data.entryName }">Remove</button>
-  </span>
+  <button mat-flat-button id="accept-pending-org-dialog" [mat-dialog-close]="{ 'organizationId': data.organizationId, 'collectionId': data.collectionId, 'entryId': data.entryId, 'entryName': data.entryName }">Remove</button>
 </div>

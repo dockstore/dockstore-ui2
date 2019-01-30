@@ -71,7 +71,7 @@ export class CollectionComponent implements OnInit {
    */
   openRemoveEntryDialog(organizationId: number, collectionId: number, entryId: number, collectionName: string, entryName: string) {
     const dialogRef = this.dialog.open(CollectionRemoveEntryDialogComponent, {
-      width: '400px',
+      width: '500px',
       data: {
         collectionName: collectionName, entryName: entryName,
         collectionId: collectionId, entryId: entryId,

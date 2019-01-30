@@ -23,7 +23,7 @@
 <ng-template #collectionsList>
   <div class="pt-2"></div>
   <div *ngIf="(organization$ | async) as organization">
-    <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column" fxLayoutGap="10px">
+    <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column">
       <mat-card fxFlex class="my-3">
         <mat-card-header>
           <mat-card-title>
@@ -65,19 +65,21 @@
               </mat-chip-list>
             </mat-card-content>
             <mat-card-actions *ngIf="(canEdit$ | async)">
-              <div fxFlex></div>
               <span *ngIf="entry?.full_workflow_path; else toolRemoveButton">
                 <button mat-flat-button matTooltip="Remove entry from collection." (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.full_workflow_path)">
-                  <mat-icon>clear</mat-icon>
+                  <mat-icon>clear</mat-icon> Remove
                 </button>
               </span>
               <ng-template #toolRemoveButton>
                 <button mat-flat-button matTooltip="Remove entry from collection." (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.tool_path)">
-                  <mat-icon>clear</mat-icon>
+                  <mat-icon>clear</mat-icon> Remove
                 </button>
               </ng-template>
             </mat-card-actions>
           </mat-card>
+        </div>
+        <div fxFlex="{{ 100/3 }}%" *ngIf="(canEdit$ | async)">
+          <button fxFlex class="entryCard" mat-raised-button color="default" matTooltip="Add a new entry"><mat-icon>add</mat-icon></button>
         </div>
       </div>
     </div>
