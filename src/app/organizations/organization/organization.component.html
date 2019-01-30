@@ -65,21 +65,19 @@
     <div fxLayout="row" fxLayoutGap="15px" class="my-3">
       <div fxFlex fxGrow="4">
         <mat-tab-group>
-          <mat-tab label="Collections">
+          <mat-tab label="Collections" id="collectionsTab">
             <collections [organizationID]="org.id"></collections>
           </mat-tab>
-          <mat-tab label="Readme">
-            <mat-expansion-panel [expanded]="true">
-              <mat-expansion-panel-header>
-                Organization Description
-              </mat-expansion-panel-header>
-              <ngx-md [data]="org.description"></ngx-md>
-              <mat-action-row>
-                <button mat-button (click)="updateDescription()">EDIT ORGANIZATION DESCRIPTION</button>
-              </mat-action-row>
-            </mat-expansion-panel>
+          <mat-tab label="Readme" id="descriptionTab">
+            <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
+              <div fxLayout="row" fxLayoutGap="15px">
+                <div fxFlex></div>
+                <button mat-button (click)="updateDescription()" id="editOrgDescription"><mat-icon>edit</mat-icon></button>
+              </div>
+              <ngx-md fxFlex [data]="org.description"></ngx-md>
+            </mat-card>
           </mat-tab>
-          <mat-tab label="Members">
+          <mat-tab label="Members" id="membersTab">
             <organization-members></organization-members>
           </mat-tab>
         </mat-tab-group>
