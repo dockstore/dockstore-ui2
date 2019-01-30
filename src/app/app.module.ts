@@ -23,6 +23,7 @@ import {
   MatTooltipDefaultOptions,
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule, Title }  from '@angular/platform-browser';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -142,6 +143,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
     FontAwesomeModule,
+    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     Ng2UiAuthModule.forRoot(AuthConfig),
@@ -192,6 +194,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ExtendedWorkflowsService,
     ExtendedToolsService,
     VerifiedByService,
+    Title,
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
