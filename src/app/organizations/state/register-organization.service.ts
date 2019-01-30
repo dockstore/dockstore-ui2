@@ -138,7 +138,8 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        approved: true
+        status: 'APPROVED',
+        users: []
       };
       this.alertService.start('Adding organization');
       this.organisationsService.createOrganisation(newOrganization).subscribe((organization: Organisation) => {
@@ -177,7 +178,8 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        approved: true
+        status: 'APPROVED',
+        users: []
       };
       this.alertService.start('Updating organization');
       this.organisationsService.updateOrganisation(organizationId, editedOrganization).subscribe((organization: Organisation) => {

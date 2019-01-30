@@ -7,10 +7,13 @@ import {
   MatDialogModule,
   MatExpansionModule,
   MatProgressBarModule,
+  MatIconModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -21,7 +24,10 @@ import { CreateCollectionModule } from './collections/create-collection.module';
     MatCardModule,
     MatDialogModule,
     MatExpansionModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatIconModule,
+    MatTooltipModule,
+    RouterModule
   ],
   declarations: [CollectionsComponent],
   exports: [CollectionsComponent]
