@@ -45,8 +45,6 @@ import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
-import { RequestsComponent, OrganizationRequestConfirmDialogComponent,
-  OrganizationInviteConfirmDialogComponent } from './loginComponents/requests/requests.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import {
   DeleteAccountDialogComponent,
@@ -100,6 +98,7 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { SitemapComponent } from './sitemap/sitemap.component';
+import { RequestsModule } from './loginComponents/requests.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -129,9 +128,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     AccountsComponent,
     AccountsInternalComponent,
     AccountsExternalComponent,
-    RequestsComponent,
-    OrganizationRequestConfirmDialogComponent,
-    OrganizationInviteConfirmDialogComponent,
     AuthComponent,
     GetTokenUsernamePipe,
     GetTokenContentPipe,
@@ -169,7 +165,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     SearchModule,
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    RequestsModule
   ],
   providers: [
     AccountsService,
@@ -200,8 +197,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, OrganizationRequestConfirmDialogComponent,
-    OrganizationInviteConfirmDialogComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
