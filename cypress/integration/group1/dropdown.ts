@@ -28,14 +28,6 @@ describe('Dropdown test', () => {
         response: { 'canChangeUsername': true }
       });
 
-    cy
-      .server()
-      .route({
-        method: 'GET',
-        url: /user/,
-        response: { 'isAdmin': true, 'curator': true }
-      });
-
     cy.visit('');
 
     // Select dropdown

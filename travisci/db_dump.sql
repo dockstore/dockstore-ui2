@@ -16,14 +16,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -754,7 +754,7 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (1, NULL, NULL, NULL, NULL, false, NULL, 'user_A', NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (1, NULL, NULL, NULL, NULL, true, NULL, 'user_A', NULL, NULL, true);
 INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (2, '', NULL, '', '', false, NULL, 'potato', NULL, NULL, false);
 
 
