@@ -13,12 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<mat-expansion-panel [expanded]="true">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Members
-    </mat-panel-title>
-  </mat-expansion-panel-header>
+<div>
   <div *ngIf="(loading$ | async); else notLoading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
@@ -36,8 +31,10 @@
           <img mat-card-image *ngIf="!organizationUser.user?.avatarUrl" src="https://via.placeholder.com/300x300?text=Avatar+Not+Found">
           <mat-card-actions *ngIf="(canEdit$ | async)">
             <div fxLayout="row" fxLayoutAlign="end">
-              <button mat-button matTooltip="Edit user's role in organization" [disabled]="organizationUser.user.id === (userId$ | async)" (click)="editUser(organizationUser)">EDIT</button>
-              <button mat-button matTooltip="Remove user from organization" [disabled]="organizationUser.user.id === (userId$ | async)" (click)="removeUser(organizationUser)">REMOVE</button>
+              <button mat-button matTooltip="Edit user's role in organization" [disabled]="organizationUser.user.id === (userId$ | async)"
+                (click)="editUser(organizationUser)">EDIT</button>
+              <button mat-button matTooltip="Remove user from organization" [disabled]="organizationUser.user.id === (userId$ | async)"
+                (click)="removeUser(organizationUser)">REMOVE</button>
             </div>
           </mat-card-actions>
         </mat-card>
@@ -45,6 +42,9 @@
     </div>
   </ng-template>
   <mat-action-row *ngIf="(canEdit$ | async)">
-    <button matTooltip="Add user to organization" (click)="addUser()" mat-button>ADD USER</button>
+    <div fxFlex></div>
+    <button matTooltip="Add user to organization" (click)="addUser()" id="addUserToOrgButton" mat-button>
+      <mat-icon>add</mat-icon>Add user
+    </button>
   </mat-action-row>
-</mat-expansion-panel>
+</div>

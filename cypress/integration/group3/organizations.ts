@@ -115,7 +115,7 @@ describe('Dockstore my workflows', () => {
     });
 
     it('be able to Create organization user', () => {
-      cy.contains('ADD USER').click();
+      cy.get('#addUserToOrgButton').click();
       typeInInput('Username', 'potato');
       cy.get('mat-select').click();
       cy.get('mat-option').contains('MEMBER').click();

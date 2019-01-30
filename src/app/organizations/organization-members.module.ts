@@ -7,6 +7,7 @@ import {
   MatExpansionModule,
   MatProgressBarModule,
   MatTooltipModule,
+  MatIconModule,
 } from '@angular/material';
 
 import { RefreshAlertModule } from '../shared/alert/alert.module';
@@ -24,6 +25,7 @@ import { UpsertOrganizationMemberModule } from './upsert-organization-member.mod
     MatTooltipModule,
     RefreshAlertModule,
     UpsertOrganizationMemberModule,
+    MatIconModule
   ],
   declarations: [OrganizationMembersComponent],
   exports: [OrganizationMembersComponent]
