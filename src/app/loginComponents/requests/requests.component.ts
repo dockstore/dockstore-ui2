@@ -7,6 +7,45 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
+  selector: 'organization-request-confirm-dialog',
+  templateUrl: 'organization-request-confirm-dialog.html',
+})
+export class OrganizationRequestConfirmDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<OrganizationRequestConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+@Component({
+  selector: 'organization-invite-confirm-dialog',
+  templateUrl: 'organization-invite-confirm-dialog.html',
+})
+export class OrganizationInviteConfirmDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface DialogData {
+  name: string;
+  id: number;
+  approve: boolean; // true = approve, false = reject
+}
+
+
+@Component({
   selector: 'requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss']
@@ -70,42 +109,4 @@ export class RequestsComponent implements OnInit {
       }
     });
   }
-}
-
-@Component({
-  selector: 'organization-request-confirm-dialog',
-  templateUrl: 'organization-request-confirm-dialog.html',
-})
-export class OrganizationRequestConfirmDialogComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<OrganizationRequestConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-@Component({
-  selector: 'organization-invite-confirm-dialog',
-  templateUrl: 'organization-invite-confirm-dialog.html',
-})
-export class OrganizationInviteConfirmDialogComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-export interface DialogData {
-  name: string;
-  id: number;
-  approve: boolean; // true = approve, false = reject
 }

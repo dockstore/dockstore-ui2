@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RequestsService } from './requests.service';
 import { RequestsStore } from './requests.store';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('RequestsService', () => {
   let requestsService: RequestsService;
@@ -10,7 +11,8 @@ describe('RequestsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [RequestsService, RequestsStore],
-      imports: [ HttpClientTestingModule ]
+      imports: [ HttpClientTestingModule,
+        MatSnackBarModule ]
     });
 
     requestsService = TestBed.get(RequestsService);
