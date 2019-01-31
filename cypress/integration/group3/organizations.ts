@@ -109,6 +109,7 @@ describe('Dockstore my workflows', () => {
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
+      cy.contains('Readme').invoke('width').should('be.gt', 0);
       cy.contains('Readme').should('be.visible').click();
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
@@ -117,7 +118,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
-      cy.contains('Readme').click();
+      cy.contains('Readme').invoke('width').should('be.gt', 0);
+      cy.contains('Readme').should('be.visible').click();
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
     });
