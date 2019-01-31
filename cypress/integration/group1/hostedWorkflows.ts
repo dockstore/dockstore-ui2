@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
+import { Dockstore } from '../../../src/app/shared/dockstore.model';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();
@@ -21,6 +22,14 @@ describe('Dockstore hosted workflows', () => {
 
   beforeEach(() => {
     cy.visit('/my-workflows');
+
+    cy.server();
+
+    cy.route({
+      method: 'GET',
+      url: /workflows\/.+\/zip\/.+/,
+      response: 200
+    }).as('downloadZip');
   });
 
   function getWorkflow() {
@@ -85,6 +94,14 @@ describe('Dockstore hosted workflows', () => {
       cy
         .get('#downloadZipButton')
         .should('be.visible');
+
+      // Verify that clicking calls the correct endpoint
+      // https://github.com/ga4gh/dockstore/issues/2050
+      cy
+        .get('#downloadZipButton')
+        .click();
+
+      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');

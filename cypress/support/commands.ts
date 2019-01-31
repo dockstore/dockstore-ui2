@@ -45,6 +45,16 @@ export function setTokenUserViewPort() {
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken');
   });
 }
+
+export function setTokenUserViewPortCurator() {
+  beforeEach(() => {
+    // Login by adding user obj and token to local storage
+    localStorage.setItem('dockstore.ui.userObj',
+    '{\"id\": 4, \"username\": \"user_curator\", \"isAdmin\": \"false\", \"name\": \"user_curator\", \"curator\": \"true\"}');
+    localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken2');
+  });
+}
+
 export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp | string)) {
   // This is needed because of a possible defect in the implementation.
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
