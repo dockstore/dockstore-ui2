@@ -15,7 +15,7 @@
           </mat-card>
         </ng-template>
         <mat-form-field *ngIf="memberships && memberships.length > 0; else noMemberships">
-          <mat-select placeholder="Organization" [(value)]="selectedOrganisationId" (selectionChange)="onOrganisationChange($event)">
+          <mat-select id="selectOrganization" placeholder="Organization" [(value)]="selectedOrganisationId" (selectionChange)="onOrganisationChange($event)">
             <mat-option *ngFor="let membership of memberships" [value]="membership.organisation.id">
               {{membership.organisation.name}}
             </mat-option>
@@ -29,7 +29,7 @@
             <mat-icon>info</mat-icon> The selected organization has no collections
           </mat-card>
         </ng-template>
-        <mat-form-field *ngIf="selectedOrganisationId && collections && collections.length > 0; else noCollections">
+        <mat-form-field id="selectCollection" *ngIf="selectedOrganisationId && collections && collections.length > 0; else noCollections">
           <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganisationId">
             <mat-option *ngFor="let collection of collections" [value]="collection.id">
               {{collection.name}}
@@ -43,8 +43,8 @@
 
 <div mat-dialog-actions>
   <div fxFlex></div>
-  <button mat-button (click)="closeDialog()">Close</button>
-  <button mat-flat-button color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
+  <button mat-button id="closeDialogButton" (click)="closeDialog()">Close</button>
+  <button mat-flat-button id="addEntryToCollectionButton" color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
     <mat-icon>add</mat-icon>Add to collection
   </button>
 </div>
