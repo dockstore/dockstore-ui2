@@ -98,6 +98,7 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { SitemapComponent } from './sitemap/sitemap.component';
+import { RequestsModule } from './loginComponents/requests.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -164,7 +165,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     SearchModule,
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    RequestsModule
   ],
   providers: [
     AccountsService,

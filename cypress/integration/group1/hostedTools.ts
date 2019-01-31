@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
+import { Dockstore } from '../../../src/app/shared/dockstore.model';
 
 describe('Dockstore hosted tools', () => {
   resetDB();
@@ -21,6 +22,16 @@ describe('Dockstore hosted tools', () => {
 
   beforeEach(() => {
     cy.visit('/my-tools');
+
+    cy
+      .server();
+
+    cy.route({
+      method: 'GET',
+      url: /containers\/.+\/zip\/.+/,
+      response: 200
+    }).as('downloadZip');
+
   });
 
   function getTool() {
@@ -99,6 +110,14 @@ describe('Dockstore hosted tools', () => {
       cy
         .get('#downloadZipButton')
         .should('be.visible');
+
+      // Verify that clicking calls the correct endpoint
+      // https://github.com/ga4gh/dockstore/issues/2050
+      cy
+        .get('#downloadZipButton')
+        .click();
+
+      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
