@@ -102,15 +102,14 @@ describe('Dockstore my workflows', () => {
       typeInInput('Name', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
-      // Webservice 1.6.0-alpha.3 is broken at the time of this test, revert once new webservice comes out
-      // cy.contains('veryFakeCollectionName');
-      // cy.contains('very fake collection description');
+      cy.contains('veryFakeCollectionName');
+      cy.contains('very fake collection description');
     });
   });
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
-      cy.contains('Readme').click();
+      cy.contains('Readme').should('be.visible').click();
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
