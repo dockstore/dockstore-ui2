@@ -51,7 +51,7 @@ export class ExtendedToolsService extends ContainersService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<any>(`${this.basePath}/containers/${encodeURIComponent(String(toolId))}/zip/${encodeURIComponent(String(tagId))}`,
+        return this.httpClient.get<any>(`${this.configuration.basePath}/containers/${encodeURIComponent(String(toolId))}/zip/${encodeURIComponent(String(tagId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
