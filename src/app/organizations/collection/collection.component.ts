@@ -6,6 +6,7 @@ import { Collection } from '../../shared/swagger';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { AddEntryComponent } from './add-entry/add-entry.component';
 
 @Component({
   selector: 'collection-entry-confirm-remove',

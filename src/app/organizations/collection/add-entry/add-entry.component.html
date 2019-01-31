@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Add to collection</h1>
+<div mat-dialog-content>
+
+  <ng-template #loading>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </ng-template>
+
+  <div *ngIf="!(isLoading$ | async); else loading">
+    <div fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="space-evenly center">
+      <div fxFlex *ngIf="(memberships$ | async) as memberships">
+        <mat-form-field>
+          <mat-select placeholder="Organization" [(value)]="selectedOrganisationId" (selectionChange)="onOrganisationChange($event)">
+            <mat-option *ngFor="let membership of memberships" [value]="membership.organisation.id">
+              {{membership.organisation.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex>
+        <mat-form-field *ngIf="(collections$ | async) as collections">
+          <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganisationId">
+            <mat-option *ngFor="let collection of collections" [value]="collection.id">
+              {{collection.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-flat-button color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
+    <mat-icon>add</mat-icon>Add to collection
+  </button>
+</div>
