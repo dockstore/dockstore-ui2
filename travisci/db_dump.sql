@@ -756,6 +756,9 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 
 INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (1, NULL, NULL, NULL, NULL, true, NULL, 'user_A', NULL, NULL, true);
 INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (2, '', NULL, '', '', false, NULL, 'potato', NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (3, NULL, NULL, NULL, NULL, true, NULL, 'user_admin', NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, bio, company, email, isadmin, location, username, dbcreatedate, dbupdatedate, curator) VALUES (4, NULL, NULL, NULL, NULL, false, NULL, 'user_curator', NULL, NULL, true);
+
 
 
 --
@@ -1977,6 +1980,9 @@ SELECT pg_catalog.setval('public.tag_id_seq', 101, true);
 INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (1, 'imamafakedockstoretoken', NULL, 'dockstore', 1, 'user_A', NULL, NULL);
 INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (2, 'imamafakegithubtoken', NULL, 'github.com', 1, 'user_A', NULL, NULL);
 INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (4, 'imamafakequaytoken', NULL, 'quay.io', 1, 'user_A', NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (5, 'imamafakedockstoretoken2', NULL, 'dockstore', 4, 'user_curator', NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (6, 'imamafakegithubtoken2', NULL, 'github.com', 4, 'user_curator', NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (4, 'imamafakequaytoken2', NULL, 'quay.io', 4, 'user_curator', NULL, NULL);
 
 
 --

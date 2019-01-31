@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort } from '../../support/commands';
+import { setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
-  setTokenUserViewPort();
+  setTokenUserViewPortCurator();
 
   beforeEach(() => {
     cy
@@ -201,7 +201,7 @@ describe('Dropdown test', () => {
       cy.contains('Yes, delete my account').should('be.disabled');
       cy.get('#deleteUserUsernameInput').type('potato');
       cy.contains('Yes, delete my account').should('be.disabled');
-      cy.get('#deleteUserUsernameInput').clear().type('user_A');
+      cy.get('#deleteUserUsernameInput').clear().type('user_curator');
       cy.contains('Yes, delete my account').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/login');
     });
