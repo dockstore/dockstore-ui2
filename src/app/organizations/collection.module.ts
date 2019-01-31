@@ -6,12 +6,13 @@ import { MatCardModule, MatProgressBarModule, MatIconModule, MatChipsModule, Mat
 import { HeaderModule } from '../shared/modules/header.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
+import { CreateCollectionModule } from './collections/create-collection.module';
 
 @NgModule({
   imports: [ CommonModule, HeaderModule,
   MatCardModule, MatProgressBarModule, MatIconModule,
   FlexLayoutModule, RouterModule, MatChipsModule, MatButtonModule,
-  MatIconModule, MatTooltipModule, MatDialogModule ],
+  MatIconModule, MatTooltipModule, MatDialogModule, CreateCollectionModule ],
   declarations: [
     CollectionComponent,
     CollectionRemoveEntryDialogComponent

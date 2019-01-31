@@ -34,6 +34,13 @@
             {{collection.description}}
           </mat-card-subtitle>
         </mat-card-header>
+        <mat-card-actions>
+          <div fxFlex></div>
+          <button color="basic" *ngIf="(canEdit$ | async)" mat-icon-button (click)="editCollection(collection)" id="editCollection"
+          matTooltip="Edit the collection">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-card-actions>
       </mat-card>
 
       <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">

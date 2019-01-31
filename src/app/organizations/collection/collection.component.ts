@@ -6,7 +6,8 @@ import { Collection } from '../../shared/swagger';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { AddEntryComponent } from './add-entry/add-entry.component';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -84,6 +85,17 @@ export class CollectionComponent implements OnInit {
       if (result) {
         this.collectionService.removeEntryFromCollection(result.organizationId, result.collectionId, result.entryId, result.entryName);
       }
+    });
+  }
+
+  editCollection(collection: Collection) {
+    const collectionMap = { 'key': collection.id, 'value': collection};
+    const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {collection: collectionMap, mode: TagEditorMode.Edit},
+      width: '600px'});
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.collectionService.updateCollectionFromName();
+      this.collection$ = this.collectionQuery.collection$;
     });
   }
 }
