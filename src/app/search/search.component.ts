@@ -15,6 +15,13 @@
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material';
+import {
+  faSort,
+  faSortAlphaDown,
+  faSortAlphaUp,
+  faSortNumericDown,
+  faSortNumericUp,
+} from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -22,13 +29,11 @@ import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-import { ProviderService } from '../shared/provider.service';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search',
@@ -52,11 +57,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public hits: Object[];
-
-  // TODO: Comment on why shard_size is 10,000
-  private readonly shard_size = 10000;
-  private firstInit = true;
-
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
@@ -112,7 +112,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private providerService: ProviderService, private queryBuilderService: QueryBuilderService,
+  constructor(private queryBuilderService: QueryBuilderService,
     public searchService: SearchService, private searchQuery: SearchQuery,
     private advancedSearchService: AdvancedSearchService) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
@@ -179,11 +179,10 @@ export class SearchComponent implements OnInit, OnDestroy {
           categoryValue = decodeURIComponent(categoryValue);
           this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
         });
-        this.firstInit = false;
       } else if (key === 'search') {
         this.searchTerm = true;
         this.advancedSearchObject.toAdvanceSearch = false;
-        this.values = value[0];
+        this.searchService.setSearchText(value[0]);
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         if (key.includes('Filter')) {
           useAdvSearch = true;
