@@ -1,5 +1,6 @@
 <h1 mat-dialog-title>Add to collection</h1>
 <div mat-dialog-content>
+  <app-alert></app-alert>
 
   <ng-template #loading>
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -32,7 +33,7 @@
 
 <div mat-dialog-actions>
   <div fxFlex></div>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="closeDialog()">Close</button>
   <button mat-flat-button color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
     <mat-icon>add</mat-icon>Add to collection
   </button>

@@ -41,7 +41,7 @@ export class AddEntryComponent implements OnInit {
     }
   }
 
-  onNoClick(): void {
+  closeDialog(): void {
     this.dialogRef.close();
   }
 

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { AddEntryStore, AddEntryState } from './add-entry.store';
 import { OrganisationsService, UsersService, OrganisationUser, Collection } from '../../../shared/swagger';
 import { finalize } from 'rxjs/operators';
+import { AlertService } from '../../../shared/alert/state/alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class AddEntryService {
 
   constructor(private addEntryStore: AddEntryStore,
     private organisationsService: OrganisationsService,
-    private usersService: UsersService) {
+    private usersService: UsersService, private alertService: AlertService) {
   }
 
   updateMemberships(): void {
@@ -54,12 +55,15 @@ export class AddEntryService {
   }
 
   addEntryToCollection(organisationId: number, collectionId: number, entryId: number): void {
+    this.alertService.start('Adding to collection');
     this.organisationsService.addEntryToCollection(organisationId, collectionId, entryId).pipe(
       finalize(() => this.addEntryStore.setLoading(false)
       ))
       .subscribe((collection: Collection) => {
-        console.log('Added to the collection');
+        this.alertService.detailedSuccess();
+
       }, () => {
+        this.alertService.simpleError();
         this.addEntryStore.setError(true);
       });
   }
