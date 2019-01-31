@@ -102,6 +102,7 @@ describe('Dockstore my workflows', () => {
       typeInInput('Name', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#createOrUpdateCollectionButton').should('not.be.visible');
       cy.contains('veryFakeCollectionName');
       cy.contains('very fake collection description');
     });
@@ -109,7 +110,6 @@ describe('Dockstore my workflows', () => {
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
-      cy.contains('Readme').invoke('width').should('be.gt', 0);
       cy.contains('Readme').should('be.visible').click();
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
@@ -118,7 +118,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
-      cy.contains('Readme').invoke('width').should('be.gt', 0);
+      cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
       cy.contains('Readme').should('be.visible').click();
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
