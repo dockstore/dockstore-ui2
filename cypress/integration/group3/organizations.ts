@@ -125,6 +125,7 @@ describe('Dockstore my workflows', () => {
       cy.get('mat-option').contains('Member').click();
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#upsertUserDialogButton').should('not.be.visible');
       cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('Member');
     });
 
@@ -134,6 +135,7 @@ describe('Dockstore my workflows', () => {
       cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#upsertUserDialogButton').should('not.be.visible');
       cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('Maintainer');
     });
 
