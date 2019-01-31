@@ -114,7 +114,7 @@ describe('Dockstore my workflows', () => {
     });
 
     it('be able to Read organization user', () => {
-      cy.get('mat-card-title').contains('MAINTAINER');
+      cy.get('mat-card-title').contains('Maintainer');
       cy.contains('mat-card-subtitle', 'user_A').parent().parent().parent().contains(/^EDIT$/).should('be.disabled');
     });
 
@@ -122,19 +122,19 @@ describe('Dockstore my workflows', () => {
       cy.get('#addUserToOrgButton').click();
       typeInInput('Username', 'potato');
       cy.get('mat-select').click();
-      cy.get('mat-option').contains('MEMBER').click();
+      cy.get('mat-option').contains('Member').click();
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('MEMBER');
+      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('Member');
     });
 
     it('be able to Update organization user', () => {
       cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains(/^EDIT$/).should('not.be.disabled').click();
       cy.get('mat-select').click();
-      cy.get('mat-option').contains('MAINTAINER').click();
+      cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('MAINTAINER');
+      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('Maintainer');
     });
 
     it('be able to Delete organization user', () => {
