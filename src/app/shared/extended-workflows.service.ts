@@ -51,7 +51,7 @@ export class ExtendedWorkflowsService extends WorkflowsService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<any>(`${this.basePath}/workflows/${encodeURIComponent(String(workflowId))}/zip/${encodeURIComponent(String(workflowVersionId))}`,
+        return this.httpClient.get<any>(`${this.configuration.basePath}/workflows/${encodeURIComponent(String(workflowId))}/zip/${encodeURIComponent(String(workflowVersionId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

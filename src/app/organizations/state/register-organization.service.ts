@@ -116,7 +116,7 @@ export class RegisterOrganizationService {
    */
   getTitle(data: any): string {
     const mode: TagEditorMode = data.mode;
-    return mode === TagEditorMode.Add ? 'Create Organization' : 'Edit Organization';
+    return mode === TagEditorMode.Add ? 'Create Organization' : 'Save Changes';
   }
 
   /**
