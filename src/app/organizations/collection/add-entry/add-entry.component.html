@@ -7,9 +7,14 @@
   </ng-template>
 
   <div *ngIf="!(isLoading$ | async); else loading">
-    <div fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="space-evenly center">
+    <div fxLayout="column" fxLayoutGap="15px">
       <div fxFlex *ngIf="(memberships$ | async) as memberships">
-        <mat-form-field>
+        <ng-template #noMemberships>
+          <mat-card class="alert alert-info" role="alert">
+            <mat-icon>info</mat-icon> You must be part of an organization to add to a collection
+          </mat-card>
+        </ng-template>
+        <mat-form-field *ngIf="memberships && memberships.length > 0; else noMemberships">
           <mat-select placeholder="Organization" [(value)]="selectedOrganisationId" (selectionChange)="onOrganisationChange($event)">
             <mat-option *ngFor="let membership of memberships" [value]="membership.organisation.id">
               {{membership.organisation.name}}
@@ -18,8 +23,13 @@
         </mat-form-field>
       </div>
 
-      <div fxFlex>
-        <mat-form-field *ngIf="(collections$ | async) as collections">
+      <div fxFlex *ngIf="(collections$ | async) as collections">
+        <ng-template #noCollections>
+          <mat-card class="alert alert-info" role="alert">
+            <mat-icon>info</mat-icon> The selected organization has no collections
+          </mat-card>
+        </ng-template>
+        <mat-form-field *ngIf="selectedOrganisationId && collections && collections.length > 0; else noCollections">
           <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganisationId">
             <mat-option *ngFor="let collection of collections" [value]="collection.id">
               {{collection.name}}

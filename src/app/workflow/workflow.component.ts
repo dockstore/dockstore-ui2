@@ -398,7 +398,7 @@ export class WorkflowComponent extends Entry {
 
   addEntryToCollection() {
     this.dialog.open(AddEntryComponent, {
-      data: { entryId: this.workflow.id }, width: '400px'
+      data: { entryId: this.workflow.id }, width: '500px'
     });
   }
 

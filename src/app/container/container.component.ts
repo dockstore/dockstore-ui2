@@ -360,7 +360,7 @@ export class ContainerComponent extends Entry {
 
   addEntryToCollection() {
     this.dialog.open(AddEntryComponent, {
-      data: { entryId: this.tool.id }, width: '400px'
+      data: { entryId: this.tool.id }, width: '500px'
     });
   }
 }

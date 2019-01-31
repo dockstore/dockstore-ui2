@@ -29,12 +29,19 @@ export class AddEntryComponent implements OnInit {
     this.collections$ = this.addEntryQuery.collections$;
   }
 
+  /**
+   * Called when organisation is selected from dropdown
+   * @param event event.value is the id of the organisation to add
+   */
   onOrganisationChange(event) {
     this.selectedCollectionId = null;
     this.addEntryService.updateCollections(event.value);
     this.collections$ = this.addEntryQuery.collections$;
   }
 
+  /**
+   * Attempts to add the entry to the selected collection
+   */
   addToCollection() {
     if (this.selectedCollectionId && this.selectedOrganisationId) {
       this.addEntryService.addEntryToCollection(this.selectedOrganisationId, this.selectedCollectionId, this.data.entryId);
