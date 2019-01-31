@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{data.approve ? 'Accept' : 'Decline'}} Invite to {{data.name}}</h1>
+
+<div mat-dialog-content>
+  <p>Are you sure you want to <strong>{{data.approve ? 'accept' : 'decline'}}</strong> the organization invite from <strong>{{data.name}}</strong>?</p>
+</div>
+<div mat-dialog-actions>
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <span *ngIf="data.approve; else rejectBlock">
+    <button mat-flat-button id="accept-pending-org-dialog" [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }">Accept</button>
+  </span>
+  <ng-template #rejectBlock>
+    <button mat-flat-button id="reject-pending-org-dialog" [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }">Decline</button>
+  </ng-template>
+</div>
