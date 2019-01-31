@@ -59,6 +59,8 @@ import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
 import { RouterModule } from '@angular/router';
+import { AddEntryModule } from '../../organizations/collection/add-entry.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -95,7 +97,9 @@ import { RouterModule } from '@angular/router';
     ModalModule,
     StargazersModule,
     EntryModule,
-    RouterModule
+    RouterModule,
+    AddEntryModule,
+    FlexLayoutModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
