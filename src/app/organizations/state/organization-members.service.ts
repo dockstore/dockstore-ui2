@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ID } from '@datorama/akita';
+import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -24,6 +24,7 @@ export class OrganizationMembersService {
    * @param {OrganisationUser[]} organizationUsers  The latest array of organization users
    * @memberof OrganizationMembersService
    */
+  @transaction()
   updateAll(organizationUsers: OrganisationUser[]) {
     // Can't use set because Akita isn't able to figure out the entity id
     this.organizationMembersStore.remove();
