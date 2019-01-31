@@ -116,7 +116,7 @@ export class RegisterOrganizationService {
    */
   getTitle(data: any): string {
     const mode: TagEditorMode = data.mode;
-    return mode === TagEditorMode.Add ? 'Create Organization' : 'Edit Organization';
+    return mode === TagEditorMode.Add ? 'Create Organization' : 'Save Changes';
   }
 
   /**
@@ -137,8 +137,7 @@ export class RegisterOrganizationService {
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        status: 'APPROVED',
+        status: 'PENDING',
         users: []
       };
       this.alertService.start('Adding organization');
@@ -177,8 +176,7 @@ export class RegisterOrganizationService {
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        status: 'APPROVED',
+        status: 'PENDING',
         users: []
       };
       this.alertService.start('Updating organization');
