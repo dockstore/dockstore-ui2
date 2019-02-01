@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('OrganizationService', () => {
   let organizationService: OrganizationService;
@@ -12,7 +13,7 @@ describe('OrganizationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationService, OrganizationStore],
-      imports: [ HttpClientTestingModule, RouterTestingModule ]
+      imports: [ HttpClientTestingModule, RouterTestingModule, MatSnackBarModule ]
     });
 
     organizationService = TestBed.get(OrganizationService);
