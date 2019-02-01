@@ -1982,7 +1982,7 @@ INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, userna
 INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (4, 'imamafakequaytoken', NULL, 'quay.io', 1, 'user_A', NULL, NULL);
 INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (5, 'imamafakedockstoretoken2', NULL, 'dockstore', 4, 'user_curator', NULL, NULL);
 INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (6, 'imamafakegithubtoken2', NULL, 'github.com', 4, 'user_curator', NULL, NULL);
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (4, 'imamafakequaytoken2', NULL, 'quay.io', 4, 'user_curator', NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate) VALUES (7, 'imamafakequaytoken2', NULL, 'quay.io', 4, 'user_curator', NULL, NULL);
 
 
 --

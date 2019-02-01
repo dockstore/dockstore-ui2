@@ -30,7 +30,7 @@ export interface DialogData {
   collectionId: number;
   entryName: string;
   entryId: number;
-  organisationId: number;
+  organizationId: number;
 }
 
 @Component({
