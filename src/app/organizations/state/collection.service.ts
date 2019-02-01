@@ -17,14 +17,26 @@ export class CollectionService {
 
   getCollectionId(): number {
     const thing: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const collectionId = thing[thing.length - 1];
+    const orgIndex = thing.findIndex((urlSegment: UrlSegment) => {
+      return urlSegment.path === 'collections';
+    });
+    const collectionId = thing[orgIndex + 1];
+    if (!collectionId) {
+      return undefined;
+    }
     return parseInt(collectionId.path, 10);
   }
 
   getOrganizationId(): number {
     const thing: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const collectionId = thing[1];
-    return parseInt(collectionId.path, 10);
+    const orgIndex = thing.findIndex((urlSegment: UrlSegment) => {
+      return urlSegment.path === 'organizations';
+    });
+    const organisationId = thing[orgIndex + 1];
+    if (!organisationId) {
+      return undefined;
+    }
+    return parseInt(organisationId.path, 10);
   }
 
   clearState(): void {

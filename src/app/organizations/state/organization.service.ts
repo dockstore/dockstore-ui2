@@ -35,8 +35,14 @@ export class OrganizationService {
 
   getOrganizationNameOrIDFromURL(): string {
     const thing: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const organizationName = thing[thing.length - 1];
-    return organizationName.path;
+    const orgIndex = thing.findIndex((urlSegment: UrlSegment) => {
+      return urlSegment.path === 'organizations';
+    });
+    const organizationNameOrId = thing[orgIndex + 1];
+    if (!organizationNameOrId) {
+      return undefined;
+    }
+    return organizationNameOrId.path;
   }
 
   clearState(): void {
