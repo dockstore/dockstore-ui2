@@ -4,7 +4,7 @@ import { UpdateOrganizationDescriptionService } from './update-organization-desc
 import { UpdateOrganizationDescriptionStore } from './update-organization-description.store';
 import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 describe('UpdateOrganizationDescriptionService', () => {
   let updateOrganizationDescriptionService: UpdateOrganizationDescriptionService;
@@ -14,7 +14,7 @@ describe('UpdateOrganizationDescriptionService', () => {
     TestBed.configureTestingModule({
       providers: [UpdateOrganizationDescriptionService, UpdateOrganizationDescriptionStore,
         FormBuilder],
-      imports: [ HttpClientTestingModule, RouterTestingModule, MatDialogModule ]
+      imports: [ HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule ]
     });
 
     updateOrganizationDescriptionService = TestBed.get(UpdateOrganizationDescriptionService);
