@@ -110,7 +110,6 @@ describe('Dockstore my workflows', () => {
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
-      cy.contains('Readme').should('be.visible').click();
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');

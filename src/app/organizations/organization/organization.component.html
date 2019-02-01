@@ -23,6 +23,8 @@
 <ng-template #placeholder>
   <div class="pt-2"></div>
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
+
+  <!-- Organization header -->
   <div class="container" *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayoutGap="10px">
@@ -62,28 +64,32 @@
       </mat-card-actions>
     </mat-card>
 
+    <!-- Tabs and description -->
     <div fxLayout="row" fxLayoutGap="15px" class="my-3">
-      <div fxFlex fxGrow="4">
+      <div fxFlex fxGrow="1">
         <mat-tab-group>
           <mat-tab label="Collections">
             <collections [organizationID]="org.id"></collections>
           </mat-tab>
-          <mat-tab label="Readme">
-            <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
-              <div fxLayout="row" fxLayoutGap="15px">
-                <div fxFlex></div>
-                <button mat-button (click)="updateDescription()" id="editOrgDescription"><mat-icon>edit</mat-icon></button>
-              </div>
-              <ngx-md fxFlex [data]="org.description"></ngx-md>
-            </mat-card>
-          </mat-tab>
           <mat-tab label="Members">
             <organization-members></organization-members>
           </mat-tab>
+          <mat-tab label="Events">
+            <events [organizationID]="org.id"></events>
+          </mat-tab>
         </mat-tab-group>
       </div>
-      <div fxFlex fxGrow="2">
-        <events [organizationID]="org.id"></events>
+      <div fxFlex fxGrow="1">
+        <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
+          <div fxLayout="row" fxLayoutGap="15px">
+            <div fxFlex></div>
+            <button mat-button (click)="updateDescription()" id="editOrgDescription"><mat-icon>edit</mat-icon></button>
+          </div>
+          <ngx-md *ngIf="org.description; else noDescription" fxFlex [data]="org.description"></ngx-md>
+          <ng-template #noDescription>
+            Select edit to add a markdown description.
+          </ng-template>
+        </mat-card>
       </div>
     </div>
   </div>
