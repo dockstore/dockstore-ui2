@@ -15,7 +15,7 @@
 -->
 <app-header>
   <mat-icon>people</mat-icon>
-  Available Organizations
+  Organizations
 </app-header>
 <div *ngIf="!(loading$ | async)" class="container">
   <button *ngIf="(isLoggedIn$ | async)" class="pull-right" color="primary" mat-raised-button (click)="createOrganization()" matTooltip="Create Organization">Create Organization</button>
@@ -57,6 +57,6 @@
     </div>
   </div>
   <ng-template #noOrganizationsFound>
-    No organizations found
+    <mat-card class="alert alert-info"><mat-icon>info</mat-icon>No organizations found</mat-card>
   </ng-template>
 </div>
