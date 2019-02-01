@@ -7,6 +7,8 @@ import { HeaderModule } from '../shared/modules/header.module';
 import { CollectionsModule } from './collections.module';
 import { OrganizationMembersModule } from './organization-members.module';
 import { OrganizationComponent } from './organization/organization.component';
+import { NgxMdModule } from 'ngx-md';
+import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 import { EventsModule } from './events.module';
 
 @NgModule({
@@ -21,7 +23,9 @@ import { EventsModule } from './events.module';
     MatIconModule,
     MatTabsModule,
     MatProgressBarModule,
+    NgxMdModule,
     OrganizationMembersModule,
+    UpdateOrganizationDescriptionModule,
     EventsModule
   ],
   declarations: [ OrganizationComponent ],

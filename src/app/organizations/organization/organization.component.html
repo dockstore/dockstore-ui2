@@ -69,7 +69,13 @@
             <collections [organizationID]="org.id"></collections>
           </mat-tab>
           <mat-tab label="Readme">
-            <p>Readme goes here</p>
+            <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
+              <div fxLayout="row" fxLayoutGap="15px">
+                <div fxFlex></div>
+                <button mat-button (click)="updateDescription()" id="editOrgDescription"><mat-icon>edit</mat-icon></button>
+              </div>
+              <ngx-md fxFlex [data]="org.description"></ngx-md>
+            </mat-card>
           </mat-tab>
           <mat-tab label="Members">
             <organization-members></organization-members>
