@@ -11,6 +11,7 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 
+import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
 
 @NgModule({
@@ -23,7 +24,8 @@ import { CreateCollectionComponent } from './create-collection/create-collection
     MatInputModule,
     MatProgressBarModule,
     MatTooltipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RefreshAlertModule
   ],
   declarations: [CreateCollectionComponent],
   entryComponents: [CreateCollectionComponent]

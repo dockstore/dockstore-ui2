@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class EventsQuery extends QueryEntity<EventsState, Event> {
   organizationEvents$: Observable<Array<Event>> = this.selectAll();
-  isLoading$: Observable<boolean> = this.selectLoading();
+  loading$: Observable<boolean> = this.selectLoading();
 
   constructor(protected store: EventsStore) {
     super(store);

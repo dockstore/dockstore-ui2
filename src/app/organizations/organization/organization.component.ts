@@ -15,15 +15,16 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organisation } from '../../shared/swagger';
+import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { UpdateOrganizationDescriptionComponent } from './update-organization-description/update-organization-description.component';
+import {
+  UpdateOrganizationDescriptionComponent,
+} from './update-organization-description/update-organization-description.component';
 
 @Component({
   selector: 'organization',

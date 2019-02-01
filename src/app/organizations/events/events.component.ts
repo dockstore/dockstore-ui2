@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class EventsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
   events$: Observable<Array<Event>>;
-  isLoading$: Observable<boolean>;
+  loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
 
   constructor(private eventsQuery: EventsQuery,
@@ -20,7 +20,7 @@ export class EventsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.isLoading$ = this.eventsQuery.isLoading$;
+    this.loading$ = this.eventsQuery.loading$;
     this.events$ = this.eventsQuery.organizationEvents$;
   }
 
