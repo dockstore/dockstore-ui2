@@ -3,6 +3,7 @@ import { AddEntryStore, AddEntryState } from './add-entry.store';
 import { OrganisationsService, UsersService, OrganisationUser, Collection } from '../../../shared/swagger';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AddEntryService {
@@ -82,8 +83,8 @@ export class AddEntryService {
       ))
       .subscribe((collection: Collection) => {
         this.alertService.detailedSuccess();
-      }, () => {
-        this.alertService.simpleError();
+      }, (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
         this.addEntryStore.setError(true);
       });
   }
