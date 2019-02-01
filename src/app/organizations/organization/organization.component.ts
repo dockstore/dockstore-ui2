@@ -23,6 +23,7 @@ import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { UpdateOrganizationDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
 @Component({
   selector: 'organization',
@@ -41,19 +42,27 @@ export class OrganizationComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organizationService.updateOrganizationFromNameORID();
     this.organization$ = this.organizationQuery.organization$;
- }
+  }
 
- /**
-  * Handles when the edit button is clicked
-  *
-  * @memberof OrganizationComponent
-  */
- editOrganization() {
-   const organizationSnapshot: Organisation = this.organizationQuery.getSnapshot().organization;
-  this.matDialog.open(RegisterOrganizationComponent,
-    {
-      data: {organization: organizationSnapshot, mode: TagEditorMode.Edit},
-      width: '600px'
+  /**
+   * Handles when the edit button is clicked
+   *
+   * @memberof OrganizationComponent
+   */
+  editOrganization() {
+    const organizationSnapshot: Organisation = this.organizationQuery.getSnapshot().organization;
+    this.matDialog.open(RegisterOrganizationComponent,
+      {
+        data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
+        width: '600px'
+      });
+  }
+
+  updateDescription() {
+    const organizationSnapshot: Organisation = this.organizationQuery.getSnapshot().organization;
+    const description = organizationSnapshot.description;
+    this.matDialog.open(UpdateOrganizationDescriptionComponent, {
+      data: { description: description }, width: '600px'
     });
- }
+  }
 }
