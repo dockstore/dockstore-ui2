@@ -15,7 +15,7 @@
  */
 import { setTokenUserViewPort } from '../../support/commands';
 
-describe('Variations of URL', () => {
+describe('elasticsearch', () => {
   setTokenUserViewPort();
   it('Should be able to search entries for using text', () => {
     cy.visit('/');
