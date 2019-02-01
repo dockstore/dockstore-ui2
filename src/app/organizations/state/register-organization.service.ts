@@ -137,8 +137,7 @@ export class RegisterOrganizationService {
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        status: 'PENDING',
+        status: Organisation.StatusEnum.PENDING,
         users: []
       };
       this.alertService.start('Adding organization');
@@ -177,8 +176,7 @@ export class RegisterOrganizationService {
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        // Setting approved to true to appease compiler.  Webservice should completely ignore this.
-        status: 'PENDING',
+        status: Organisation.StatusEnum.PENDING,
         users: []
       };
       this.alertService.start('Updating organization');

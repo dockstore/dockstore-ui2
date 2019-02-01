@@ -17,62 +17,74 @@
   <mat-icon>people</mat-icon>
   Collections
 </app-header>
-<div *ngIf="(loading$ | async); else placeholder">
+<div *ngIf="(loadingCollection$ | async) && (loadingOrganization$ | async); else collectionsList">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-<ng-template #placeholder>
+<ng-template #collectionsList>
   <div class="pt-2"></div>
-  <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column" fxLayoutGap="10px">
-    <mat-card fxFlex class="my-3">
-      <mat-card-header>
-        <mat-card-title>
-          <h1>{{collection.name}}</h1>
-        </mat-card-title>
-        <mat-card-subtitle>
-          {{collection.description}}
-        </mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+  <div *ngIf="(organization$ | async) as organization">
+    <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column">
+      <mat-card fxFlex class="my-3">
+        <mat-card-header>
+          <mat-card-title>
+            <h1><a [routerLink]="['/organizations/', organization.id]">{{ organization.name }}</a> /
+              {{collection.name}}</h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{collection.description}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <div fxFlex></div>
+          <button color="basic" *ngIf="(canEdit$ | async)" mat-icon-button (click)="editCollection(collection)" id="editCollection"
+          matTooltip="Edit the collection">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
 
-    <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">
-      This collection has no associated entries
-    </mat-card>
+      <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">
+        This collection has no associated entries
+      </mat-card>
 
-    <div fxLayoutGap="16px grid" fxLayout="row wrap">
-      <div *ngFor="let entry of collection?.entries" fxFlex="{{ 100/3 }}%">
-        <mat-card class="entryCard">
-          <mat-card-header *ngIf="entry?.full_workflow_path">
-            <mat-card-title>
-              <h4>
-                <a [routerLink]="['/workflows/', entry.full_workflow_path]">
-                  {{entry.full_workflow_path}}
-                </a>
-              </h4>
-            </mat-card-title>
-            <mat-card-subtitle>
-              Last updated {{ entry.dbUpdateDate | date }}
-            </mat-card-subtitle>
-          </mat-card-header>
+      <div fxLayoutGap="16px grid" fxLayout="row wrap">
+        <div *ngFor="let entry of collection?.entries" fxFlex="{{ 100/3 }}%">
+          <mat-card class="entryCard">
+            <mat-card-header>
+              <mat-card-title>
+                <h4>
+                  <a *ngIf="entry?.full_workflow_path" [routerLink]="['/workflows/', entry.full_workflow_path]">
+                    {{entry.full_workflow_path}}
+                  </a>
+                  <a *ngIf="entry?.tool_path" [routerLink]="['/tools/', entry.tool_path]">
+                    {{entry.tool_path}}
+                  </a>
+                </h4>
+              </mat-card-title>
+              <mat-card-subtitle>
+                Last updated {{ entry.dbUpdateDate | date }}
+              </mat-card-subtitle>
+            </mat-card-header>
 
-          <mat-card-header *ngIf="entry?.tool_path">
-            <mat-card-title>
-              <h4>
-                <a [routerLink]="['/tools/', entry.tool_path]">
-                  {{entry.tool_path}}
-                </a>
-              </h4>
-            </mat-card-title>
-            <mat-card-subtitle>
-              Last updated {{ entry.dbUpdateDate | date }}
-            </mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content class="p-3">
-            <mat-chip-list>
-              <mat-chip *ngFor="let label of entry?.labels">{{ label.value }}</mat-chip>
-            </mat-chip-list>
-          </mat-card-content>
-        </mat-card>
+            <mat-card-content class="p-3">
+              <mat-chip-list>
+                <mat-chip *ngFor="let label of entry?.labels">{{ label.value }}</mat-chip>
+              </mat-chip-list>
+            </mat-card-content>
+            <mat-card-actions *ngIf="(canEdit$ | async)">
+              <span *ngIf="entry?.full_workflow_path; else toolRemoveButton">
+                <button mat-flat-button matTooltip="Remove entry from collection." id="removeWorkflowButton" (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.full_workflow_path)">
+                  <mat-icon>clear</mat-icon> Remove
+                </button>
+              </span>
+              <ng-template #toolRemoveButton>
+                <button mat-flat-button matTooltip="Remove entry from collection." id="removeToolButton" (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.tool_path)">
+                  <mat-icon>clear</mat-icon> Remove
+                </button>
+              </ng-template>
+            </mat-card-actions>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>

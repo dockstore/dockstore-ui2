@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -47,6 +47,7 @@ import { EmailService } from './email.service';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertQuery } from '../shared/alert/state/alert.query';
+import { AddEntryComponent } from '../organizations/collection/add-entry/add-entry.component';
 
 @Component({
   selector: 'app-container',
@@ -90,7 +91,7 @@ export class ContainerComponent extends Entry {
     location: Location,
     activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery, private alertService: AlertService,
-    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery) {
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery, public dialog: MatDialog) {
     super(trackLoginService, providerService, router, dateService, urlResolverService, activatedRoute,
       location, sessionService, sessionQuery, gA4GHFilesService);
       this.isRefreshing$ = this.alertQuery.showInfo$;
@@ -355,5 +356,11 @@ export class ContainerComponent extends Entry {
     } else {
       return true;
     }
+  }
+
+  addEntryToCollection() {
+    this.dialog.open(AddEntryComponent, {
+      data: { entryId: this.tool.id }, width: '500px'
+    });
   }
 }

@@ -261,6 +261,14 @@
         </div>
       </div>
     </div>
+    <div class="panel panel-default mb-3" *ngIf="isLoggedIn">
+      <div class="panel-heading">
+        <h3>Collections</h3>
+      </div>
+      <div class="p-3 panel-body">
+        <button fxFlex mat-raised-button color="default" matTooltip="Add the tool to a collection" (click)="addEntryToCollection()" id="addToolToCollectionButton"><mat-icon>add</mat-icon>Add to collection</button>
+      </div>
+    </div>
     <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
     <div class="panel panel-default mb-3" *ngIf="tool">
       <div class="panel-heading">

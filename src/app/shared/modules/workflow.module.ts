@@ -58,6 +58,7 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
+import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { getTooltipConfig } from './../tooltip';
     DagModule,
     StargazersModule,
     ClipboardModule,
-    EntryModule
+    EntryModule,
+    AddEntryModule
   ],
   providers: [
     { provide: TooltipConfig, useFactory: getTooltipConfig },

@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Remove Entry</h1>
+
+<div mat-dialog-content>
+  <p>Are you sure you want to <strong>remove</strong> the entry <strong>{{data.entryName}}</strong> from the collection <strong>{{data.collectionName}}</strong>?</p>
+</div>
+<div mat-dialog-actions>
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button id="accept-remove-entry-from-org" [mat-dialog-close]="{ 'organizationId': data.organizationId, 'collectionId': data.collectionId, 'entryId': data.entryId, 'entryName': data.entryName }">Remove</button>
+</div>

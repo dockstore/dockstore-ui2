@@ -17,7 +17,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -48,6 +48,7 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { AddEntryComponent } from '../organizations/collection/add-entry/add-entry.component';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -89,7 +90,7 @@ export class WorkflowComponent extends Entry {
     urlResolverService: UrlResolverService, private alertService: AlertService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
       gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
-      private descriptorTypeCompatService: DescriptorTypeCompatService) {
+      private descriptorTypeCompatService: DescriptorTypeCompatService, public dialog: MatDialog) {
     super(trackLoginService, providerService, router,
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
@@ -393,6 +394,12 @@ export class WorkflowComponent extends Entry {
     if (index >= 0) {
       this.workflowEditData.labels.splice(index, 1);
     }
+  }
+
+  addEntryToCollection() {
+    this.dialog.open(AddEntryComponent, {
+      data: { entryId: this.workflow.id }, width: '500px'
+    });
   }
 
 }

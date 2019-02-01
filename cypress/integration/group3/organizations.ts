@@ -125,6 +125,56 @@ describe('Dockstore my workflows', () => {
     });
   });
 
+  describe('should be able to view a collection', () => {
+    it('be able to see collection information', () => {
+      cy.visit('/organizations/1/collections/1');
+      cy.contains('veryFakeCollectionName').click();
+      // Should retrieve the organisation
+      cy.contains('Potatoe');
+
+      // Should retrieve the collection
+      cy.contains('veryFakeCollectionName');
+      cy.contains('very fake collection description');
+
+      // Should have no entries
+      cy.contains('This collection has no associated entries');
+    });
+
+    it('be able to edit collection information', () => {
+      // Should be able to edit the collection description and see the changes reflected
+      cy.get('#editCollection').click();
+      cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
+      typeInInput('Name', 'veryFakeCollectionName');
+      typeInTextArea('Description', 'very fake collection description2');
+      cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
+      cy.contains('veryFakeCollectionName');
+      cy.contains('very fake collection description2');
+    });
+
+    it('be able to add an entry to the collection', () => {
+      cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
+      cy.get('#addToolToCollectionButton').should('be.visible').click();
+      cy.get('#addEntryToCollectionButton').should('be.disabled');
+      cy.get('#selectOrganization').click();
+      cy.get('mat-option').contains('Potatoe').click();
+
+      cy.get('#addEntryToCollectionButton').should('be.disabled');
+      cy.get('#selectCollection').click();
+      cy.get('mat-option').contains('veryFakeCollectionName').click();
+      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+    });
+
+    it('be able to remove an entry from a collection', () => {
+      cy.visit('/organizations/1/collections/1');
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
+      cy.get('#removeToolButton').click();
+      cy.get('#accept-remove-entry-from-org').click();
+      cy.contains('This collection has no associated entries');
+      cy.visit('/organizations/1');
+    });
+  });
+
+
   describe('Should be able to CRUD user', () => {
     beforeEach(() => {
       cy.contains('Members').click();
