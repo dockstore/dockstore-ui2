@@ -127,6 +127,7 @@ describe('Dockstore my workflows', () => {
 
   describe('should be able to view a collection', () => {
     it('be able to see collection information', () => {
+      cy.visit('/organizations/1/collections/1');
       cy.contains('veryFakeCollectionName').click();
       // Should retrieve the organisation
       cy.contains('Potatoe');
