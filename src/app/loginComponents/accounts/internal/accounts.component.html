@@ -25,15 +25,17 @@
       <mat-list>
         <mat-list-item>
           <h1 matLine>
-            <strong>Username:</strong>
+            <mat-icon>account_circle</mat-icon> <strong class="align-middle">Username:</strong>
           </h1>
           <p matLine id="account-username">{{user?.username}}</p>
         </mat-list-item>
-        <mat-list-item>
-          <h1 matLine>
-            <strong>Administrator:</strong>
+        <mat-list-item *ngIf="user?.isAdmin || user?.curator">
+          <h1 matLine *ngIf="user?.isAdmin" id="account-is-admin">
+            <mat-icon>lock</mat-icon> <strong class="align-middle">Administrator</strong>
           </h1>
-          <p matLine id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</p>
+          <h1 matLine *ngIf="user?.curator && !user.isAdmin" id="account-is-curator">
+            <mat-icon >edit</mat-icon><strong class="align-middle">Curator</strong>
+          </h1>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
