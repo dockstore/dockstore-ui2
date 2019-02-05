@@ -15,7 +15,6 @@
  */
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { PRIMARY_OUTLET, Router, UrlSegment } from '@angular/router';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
@@ -24,12 +23,13 @@ import { Collection, OrganisationsService } from '../../shared/swagger';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
+import { OrganizationService } from './organization.service';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
 
   constructor(private collectionsStore: CollectionsStore, private organisationsService: OrganisationsService,
-    private alertService: AlertService, private router: Router, private organizationsService: OrganisationsService,
+    private alertService: AlertService, private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery, private collectionsQuery: CollectionsQuery,
     private matDialog: MatDialog) {
   }
@@ -75,38 +75,18 @@ export class CollectionsService {
     this.collectionsStore.remove(id);
   }
 
-
-  getCollectionId(): number {
-    const thing: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const orgIndex = thing.findIndex((urlSegment: UrlSegment) => {
-      return urlSegment.path === 'collections';
-    });
-    const collectionId = thing[orgIndex + 1];
-    if (!collectionId) {
-      return undefined;
-    }
-    return parseInt(collectionId.path, 10);
-  }
-
-  getOrganizationId(): number {
-    const thing: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const orgIndex = thing.findIndex((urlSegment: UrlSegment) => {
-      return urlSegment.path === 'organizations';
-    });
-    const organisationId = thing[orgIndex + 1];
-    if (!organisationId) {
-      return undefined;
-    }
-    return parseInt(organisationId.path, 10);
-  }
-
   @transaction()
   updateCollectionFromName() {
     this.clearState();
-    const collectionId = this.getCollectionId();
-    const organizationId = this.getOrganizationId();
+    const collectionId = parseInt(this.organizationService.getNextSegmentPath('collections'), 10);
+    const organizationId = parseInt(this.organizationService.getNextSegmentPath('organizations'), 10);
+    if (isNaN(organizationId)) {
+      console.error('Organization name (instead of ID) currently not handled');
+      return;
+    }
+    this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.organizationsService.getCollectionById(organizationId, collectionId).pipe(finalize(() => this.collectionsStore.setLoading(false)))
+    this.organisationsService.getCollectionById(organizationId, collectionId).pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe((collection: Collection) => {
         this.collectionsStore.setError(false);
         this.collectionsStore.createOrReplace(collection.id, collection);
@@ -125,7 +105,7 @@ export class CollectionsService {
    */
   removeEntryFromCollection(organisationId: number, collectionId: number, entryId: number, entryName: string) {
     this.alertService.start('Removing entry ' + entryName);
-    this.organizationsService.deleteEntryFromCollection(organisationId, collectionId, entryId).pipe(
+    this.organisationsService.deleteEntryFromCollection(organisationId, collectionId, entryId).pipe(
       finalize(() => this.collectionsStore.setLoading(false)
       ))
       .subscribe((collection: Collection) => {
