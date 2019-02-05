@@ -22,7 +22,7 @@
     <div fxLayout="row wrap" fxLayoutAlign="start stretch">
       <div *ngFor="let organizationUser of (organizationMembers$ | async)">
         <!-- Fixed width 200px is bad for long usernames -->
-        <mat-card class="my-2" fxFlex="200px" fxFlexOffset="10px">
+        <mat-card class="my-2" fxFlex="200px" fxFlexOffset="10px" *ngIf="organizationUser?.accepted">
           <mat-card-header>
             <mat-card-title>{{organizationUser.role | titlecase}}</mat-card-title>
             <mat-card-subtitle>{{organizationUser.user?.username}}</mat-card-subtitle>

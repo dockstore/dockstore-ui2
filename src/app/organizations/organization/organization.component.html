@@ -81,7 +81,7 @@
       </div>
       <div fxFlex fxGrow="1">
         <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
-          <div fxLayout="row" fxLayoutGap="15px">
+          <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
             <div *ngIf="!org.description" fxFlex>
               <div *ngIf="(canEdit$ | async)" class="text-muted">Select edit to add a markdown description</div>
               <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
