@@ -38,7 +38,7 @@ describe('Dockstore my workflows', () => {
     });
 
     it('create a new unapproved organization', () => {
-      cy.contains('button', 'Create Organization').should('be.visible').click();
+      cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');

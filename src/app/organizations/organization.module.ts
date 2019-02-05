@@ -11,6 +11,7 @@ import { OrganizationComponent } from './organization/organization.component';
 import { NgxMdModule } from 'ngx-md';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 import { EventsModule } from './events.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { EventsModule } from './events.module';
     NgxMdModule,
     OrganizationMembersModule,
     UpdateOrganizationDescriptionModule,
-    EventsModule
+    EventsModule,
+    RouterModule
   ],
   declarations: [ OrganizationComponent ],
   exports: [ OrganizationComponent ]
