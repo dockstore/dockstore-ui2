@@ -17,8 +17,7 @@ export class AddEntryService {
    * Updates the set of memberships for the logged in user
    */
   updateMemberships(): void {
-    this.addEntryStore.setLoading(true);
-    this.addEntryStore.setError(false);
+    this.beforeCall();
     this.usersService.getUserMemberships().pipe(
       finalize(() => this.addEntryStore.setLoading(false)
       ))
@@ -44,13 +43,17 @@ export class AddEntryService {
     });
   }
 
+  beforeCall() {
+    this.addEntryStore.setLoading(true);
+    this.addEntryStore.setError(false);
+  }
+
   /**
    * Updates the set of collections for the given organisation
    * @param orgId Id of organisation to grab collections
    */
   updateCollections(orgId: number): void {
-    this.addEntryStore.setLoading(true);
-    this.addEntryStore.setError(false);
+    this.beforeCall();
     this.organisationsService.getCollectionsFromOrganisation(orgId).pipe(
       finalize(() => this.addEntryStore.setLoading(false)
       ))
