@@ -40,7 +40,7 @@
             <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">EPAM Pipeline Builder
           </label>
         </div>
-        <div style="display: flow-root">
+        <div>
           <a *ngIf="dagType === 'classic' && (dagResult$ | async)" href #exportLink id="exportLink" (click)="download()">
             <mat-icon>save</mat-icon>Save as PNG</a>
           <!-- This following div is shared by both viewers -->
@@ -52,7 +52,7 @@
             <button *ngIf="dagType !== 'wdlviewer'" id="dag_reload" (click)="reset()" class="dag-button btn btn-default" matTooltip="Reset">
               <mat-icon>control_camera</mat-icon>
             </button>
-            <button *ngIf="dagType === 'wdlviewer' && enableWdlViewer" (click)="resetWdl()" class="dag-button btn btn-default" matTooltip="Reset">
+            <button *ngIf="dagType === 'wdlviewer' && enableWdlViewer" (click)="resetPipelineBuilder()" class="dag-button btn btn-default" matTooltip="Reset">
               <mat-icon>control_camera</mat-icon>
             </button>
           </div>

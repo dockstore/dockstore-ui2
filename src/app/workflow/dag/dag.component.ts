@@ -71,7 +71,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
     this.refreshDocument(this.cy);
   }
 
-  resetWdl() {
+  resetPipelineBuilder() {
     this.wdlViewer.reset();
   }
 

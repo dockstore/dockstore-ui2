@@ -13,59 +13,85 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FileService } from '../../../shared/file.service';
-import { Files } from '../../../shared/files';
-import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
+import { Injectable } from '@angular/core';
+
+import * as JSZip from 'jszip';
+import * as pipeline from 'pipeline-builder';
+import { Observable, from, forkJoin } from 'rxjs';
+import { switchMap } from 'rxjs/internal/operators';
+import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { ToolDescriptor, ToolFile, WorkflowsService } from '../../../shared/swagger';
 
+
 /**
- * Abstract class to be implemented by components that have select boxes for a given entry and version
+ * Service for creating WDL workflow visualizations with EPAM Pipeline Builder library
  */
-export abstract class WdlViewerService extends Files implements OnDestroy {
-  _selectedVersion: any;
-
-  protected currentDescriptor: ToolDescriptor.TypeEnum;
-  protected descriptors: Array<any>;
-  public nullDescriptors: boolean;
-  public currentFile;
-  public files: Array<ToolFile>;
-  public published$: Observable<boolean>;
-  protected abstract entryType: ('tool' | 'workflow');
-  protected abstract workflow: ExtendedWorkflow;
-
-  abstract getDescriptors(version): Array<any>;
-  abstract getFiles(descriptor): Observable<any>;
-
-  constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService, protected workflowsService: WorkflowsService) {
-    super();
+@Injectable()
+export class WdlViewerService {
+  private zip: JSZip = new JSZip();
+  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, protected workflowsService: WorkflowsService) {
   }
 
-  onVersionChange(value) {
-    this._selectedVersion = value;
-    this.reactToVersion();
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
   }
 
-  reactToVersion(): void {
-    this.descriptors = this.getDescriptors(this._selectedVersion);
-    if (this.descriptors) {
-      this.nullDescriptors = false;
-      if (this.descriptors.length) {
-        this.onDescriptorChange(this.descriptors[0]);
-      }
+  /**
+   * Driver function for visualizations
+   * @param files
+   * @param workflow
+   * @param version
+   */
+  create(files: Array<ToolFile>, workflow: ExtendedWorkflow, version: any): Observable<any> {
+    if (files.length > 1) {
+      return this.createMultiple(workflow, version);
     } else {
-      this.nullDescriptors = true;
+      return this.createSingle(workflow, version);
     }
   }
 
-  onDescriptorChange(descriptor) {
-    this.currentDescriptor = descriptor;
+  /**
+   * Creates WDL workflow visualization for single-file workflows
+   *
+   * @param workflow
+   * @param version
+   */
+  createSingle(workflow: ExtendedWorkflow, version: any): Observable<any> {
+    return this.workflowsService.wdl(workflow.id, version.name).pipe(switchMap(prim => {
+      return from(pipeline.parse(prim.content));
+    }));
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+  /**
+   * Creates WDL workflow visualization for multi-file workflows (with import files)
+   *
+   * @param workflow
+   * @param version
+   */
+  createMultiple(workflow: ExtendedWorkflow, version: any): Observable<any> {
+    return forkJoin(this.workflowsService.wdl(workflow.id, version.name), this.workflowsService.secondaryWdl(workflow.id, version.name))
+      .pipe(
+        switchMap(res => {
+          console.log(res);
+          // Store each secondary file in a zip object
+          res[1].forEach(file => this.zip.file(file.path, file.content));
+
+          return from(this.zip.generateAsync({type: 'blob'})).pipe(switchMap(zip => {
+            return from(pipeline.parse(res[0].content, {zipFile: zip}));
+          }));
+        })
+      );
+  }
+
+  reset(visualizer: any) {
+    visualizer.zoom.fitToPage();
+  }
+
+  download(visualizer: any) {
+    const blob = new Blob([visualizer.paper.getSVG()], {type: 'text/plain;charset=utf-8'});
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
   }
 }

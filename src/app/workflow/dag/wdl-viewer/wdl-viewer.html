@@ -9,5 +9,9 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
 
-  <div class="mini-dag" [ngClass]="{'fullscreen-element large-dag': expanded}" #diagram></div>
+  <div>
+    <span><a *ngIf="(pipelineBuilderResult$ | async) && !loading" (click)="download()">
+            <mat-icon>save</mat-icon>Save as SVG</a></span>
+  </div>
+  <div class="mini-dag" [ngClass]="{'fullscreen-element large-dag': expanded}" style="overflow: hidden" #diagram></div>
 </div>
