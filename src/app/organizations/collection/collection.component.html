@@ -24,6 +24,10 @@
   <div class="pt-2"></div>
   <div *ngIf="(organization$ | async) as organization">
     <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column">
+      <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === 'PENDING'">
+        <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
+        You can view your pending organization requests on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+      </mat-card>
       <mat-card fxFlex class="my-3">
         <mat-card-header>
           <mat-card-title>
@@ -47,12 +51,12 @@
         This collection has no associated entries. To add an entry, navigate to the public page of the tool or workflow you want to add and select `add to collection`
       </mat-card>
 
-      <div fxLayoutGap="16px grid" fxLayout="row wrap">
-        <div *ngFor="let entry of collection?.entries" fxFlex="{{ 100/3 }}%">
+      <div fxLayoutGap="16px grid" fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div *ngFor="let entry of collection?.entries" fxFlex="50%" fxFlex.lt-sm="100%">
           <mat-card class="entryCard">
             <mat-card-header>
               <mat-card-title>
-                <h4>
+                <h4 style="overflow-x: wrap">
                   <a *ngIf="entry?.full_workflow_path" [routerLink]="['/workflows/', entry.full_workflow_path]">
                     {{entry.full_workflow_path}}
                   </a>
@@ -66,12 +70,8 @@
               </mat-card-subtitle>
             </mat-card-header>
 
-            <mat-card-content class="p-3">
-              <mat-chip-list>
-                <mat-chip *ngFor="let label of entry?.labels">{{ label.value }}</mat-chip>
-              </mat-chip-list>
-            </mat-card-content>
             <mat-card-actions *ngIf="(canEdit$ | async)">
+              <div fxFlex></div>
               <span *ngIf="entry?.full_workflow_path; else toolRemoveButton">
                 <button mat-flat-button matTooltip="Remove entry from collection." id="removeWorkflowButton" (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.full_workflow_path)">
                   <mat-icon>clear</mat-icon> Remove
