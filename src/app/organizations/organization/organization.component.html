@@ -54,10 +54,11 @@
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>
-        <button mat-button (click)="editOrganization()" id="editOrgInfo"><mat-icon>edit</mat-icon></button>
+        <button mat-button (click)="editOrganization()" id="editOrgInfo">
+          <mat-icon>edit</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card>
-
     <div fxLayout="row" fxLayoutGap="15px" class="my-3">
       <div fxFlex fxGrow="4">
         <mat-tab-group>
@@ -68,7 +69,9 @@
             <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
               <div fxLayout="row" fxLayoutGap="15px">
                 <div fxFlex></div>
-                <button mat-button (click)="updateDescription()" id="editOrgDescription"><mat-icon>edit</mat-icon></button>
+                <button mat-button (click)="updateDescription()" id="editOrgDescription">
+                  <mat-icon>edit</mat-icon>
+                </button>
               </div>
               <ngx-md fxFlex [data]="org.description"></ngx-md>
             </mat-card>
@@ -83,3 +86,4 @@
       </div>
     </div>
   </div>
+</app-loading>
