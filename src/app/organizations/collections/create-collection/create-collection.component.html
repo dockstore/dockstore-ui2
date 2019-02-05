@@ -24,6 +24,7 @@
     </ng-template>
     <form [formGroup]="createCollectionForm" fxLayout="column">
       <mat-form-field>
+        <mat-label>The name of the collection</mat-label>
         <input type="text" matInput formControlName="name" placeholder="Name" required>
         <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
         <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
