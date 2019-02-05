@@ -15,8 +15,10 @@
  */
 import { NgModule } from '@angular/core';
 import {
+  MatBadgeModule,
   MatButtonModule,
   MatCardModule,
+  MatCheckboxModule,
   MatChipsModule,
   MatDialogModule,
   MatDividerModule,
@@ -28,6 +30,7 @@ import {
   MatMenuModule,
   MatPaginatorModule,
   MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
@@ -38,14 +41,13 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatProgressSpinnerModule,
-  MatBadgeModule,
-  MatCheckboxModule
 } from '@angular/material';
 
 const MATERIAL_MODULES = [
+  MatBadgeModule,
   MatButtonModule,
   MatCardModule,
+  MatCheckboxModule,
   MatChipsModule,
   MatDialogModule,
   MatDividerModule,
@@ -54,8 +56,10 @@ const MATERIAL_MODULES = [
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatMenuModule,
   MatPaginatorModule,
   MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
@@ -66,10 +70,6 @@ const MATERIAL_MODULES = [
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatMenuModule,
-  MatProgressSpinnerModule,
-  MatBadgeModule,
-  MatCheckboxModule
 ];
 
 @NgModule({
