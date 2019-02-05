@@ -60,7 +60,7 @@
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>
-        <button mat-button (click)="editOrganization()" id="editOrgInfo"><mat-icon>edit</mat-icon></button>
+        <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization"><mat-icon>edit</mat-icon></button>
       </mat-card-actions>
     </mat-card>
 
@@ -82,13 +82,13 @@
       <div fxFlex fxGrow="1">
         <mat-card fxLayout="column" fxLayoutGap="15px" class="m-3">
           <div fxLayout="row" fxLayoutGap="15px">
-            <div fxFlex></div>
-            <button mat-button (click)="updateDescription()" id="editOrgDescription"><mat-icon>edit</mat-icon></button>
+            <div *ngIf="!org.description" fxFlex>
+              <div *ngIf="(canEdit$ | async)" class="text-muted">Select edit to add a markdown description</div>
+              <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
+            </div>
+            <button mat-button *ngIf="(canEdit$ | async)" (click)="updateDescription()" id="editOrgDescription" matTooltip="Edit the description"><mat-icon>edit</mat-icon></button>
           </div>
-          <ngx-md *ngIf="org.description; else noDescription" fxFlex [data]="org.description"></ngx-md>
-          <ng-template #noDescription>
-            Select edit to add a markdown description.
-          </ng-template>
+          <ngx-md *ngIf="org.description" fxFlex [data]="org.description"></ngx-md>
         </mat-card>
       </div>
     </div>
