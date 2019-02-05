@@ -40,9 +40,7 @@
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ workflow?.starredUsers.length === 0 ? '0' : workflow?.starredUsers.length }}
-        <span>
-          <mat-icon>star_border</mat-icon>
-        </span>
+        <mat-icon>star_border</mat-icon>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">

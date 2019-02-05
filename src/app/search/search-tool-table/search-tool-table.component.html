@@ -56,9 +56,7 @@
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let tool">{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
-        <span>
-          <mat-icon>star_border</mat-icon>
-        </span>
+        <mat-icon>star_border</mat-icon>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="dockerPull">
