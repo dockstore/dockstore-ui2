@@ -8,30 +8,30 @@
         Recent Events
       </mat-card-title>
     </mat-card-header>
-    <div fxLayout="column wrap" fxLayoutGap="20px">
-      <span *ngFor="let event of (events$ | async)" class="px-3">
-        <div *ngIf="event?.type === EventType.CREATEORG">
+    <div fxLayout="column wrap">
+      <span *ngFor="let event of (events$ | async)">
+        <div *ngIf="event?.type === EventType.CREATEORG" class="m-3">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;created&nbsp;organization
           </mat-chip-list>
         </div>
 
-        <div *ngIf="event?.type === EventType.APPROVEORGINVITE">
+        <div *ngIf="event?.type === EventType.APPROVEORGINVITE" class="m-3">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;joined&nbsp;organization
           </mat-chip-list>
         </div>
 
-        <div *ngIf="event?.type === EventType.MODIFYORG">
+        <div *ngIf="event?.type === EventType.MODIFYORG" class="m-3">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;updated&nbsp;organization
           </mat-chip-list>
         </div>
 
-        <div *ngIf="event?.type === EventType.CREATECOLLECTION">
+        <div *ngIf="event?.type === EventType.CREATECOLLECTION" class="m-3">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;created&nbsp;the&nbsp;collection&nbsp;
@@ -39,7 +39,7 @@
           </mat-chip-list>
         </div>
 
-        <div *ngIf="event?.type === EventType.MODIFYCOLLECTION || event?.type === EventType.ADDTOCOLLECTION || event?.type === EventType.REMOVEFROMCOLLECTION">
+        <div *ngIf="event?.type === EventType.MODIFYCOLLECTION || event?.type === EventType.ADDTOCOLLECTION || event?.type === EventType.REMOVEFROMCOLLECTION" class="m-3">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;updated&nbsp;the&nbsp;collection&nbsp;
