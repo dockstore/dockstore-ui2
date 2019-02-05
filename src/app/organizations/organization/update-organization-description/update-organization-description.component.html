@@ -16,6 +16,6 @@
 </div>
 <div mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button id="updateOrganizationDescriptionButton" matTooltip="Update Organization Description" mat-button [disabled]="!updateOrganizationDescriptionForm.valid"
-    (click)="updateOrganizationDescription()" cdkFocusInitial>Update Organization Description</button>
+  <button id="updateOrganizationDescriptionButton" matTooltip="Update Organization Description" mat-flat-button color="primary" [disabled]="!updateOrganizationDescriptionForm.valid"
+    (click)="updateOrganizationDescription()" cdkFocusInitial>Update</button>
 </div>

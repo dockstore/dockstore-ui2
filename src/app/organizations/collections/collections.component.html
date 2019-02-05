@@ -52,7 +52,7 @@
 </ng-template>
 <mat-action-row *ngIf="(canEdit$ | async)">
   <div fxFlex></div>
-  <button mat-flat-button color="primary" class="my-2" (click)="createCollection()" id="createCollection" matTooltip="Create a new collection">
+  <button mat-button class="my-2" (click)="createCollection()" id="createCollection" matTooltip="Create a new collection">
     <mat-icon>add</mat-icon>Create collection
   </button>
 </mat-action-row>
