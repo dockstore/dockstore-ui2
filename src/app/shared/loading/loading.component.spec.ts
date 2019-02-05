@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { LoadingComponent } from './loading.component';
+import { MatProgressBarModule } from '@angular/material';
 
 describe('LoadingComponent', () => {
   let component: LoadingComponent;
@@ -11,6 +12,7 @@ describe('LoadingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ MatProgressBarModule ],
       declarations: [ LoadingComponent ]
     })
     .compileComponents();
