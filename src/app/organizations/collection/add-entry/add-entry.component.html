@@ -40,7 +40,7 @@
   </div>
 </div>
 
-<div mat-dialog-actions align="end">
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="10px">
   <button mat-button id="closeDialogButton" (click)="closeDialog()">Close</button>
   <button mat-flat-button id="addEntryToCollectionButton" [mat-dialog-close]="selectedCollectionId" color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
     <mat-icon>add</mat-icon>Add to collection
