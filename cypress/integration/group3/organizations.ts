@@ -15,7 +15,7 @@
  */
 import { resetDB, setTokenUserViewPort, getTab, goToTab } from '../../support/commands';
 
-describe('Dockstore my workflows', () => {
+describe('Dockstore Organizations', () => {
   resetDB();
   setTokenUserViewPort();
 

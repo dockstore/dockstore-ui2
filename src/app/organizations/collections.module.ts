@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
-import { CollectionComponent } from './collection/collection.component';
+import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './collection/collection.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
 
@@ -20,7 +20,8 @@ import { CreateCollectionModule } from './collections/create-collection.module';
     RefreshAlertModule,
     RouterModule
   ],
-  declarations: [CollectionsComponent, CollectionComponent],
-  exports: [CollectionsComponent, CollectionComponent]
+  declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
+  exports: [CollectionsComponent, CollectionComponent],
+  entryComponents: [CollectionRemoveEntryDialogComponent]
 })
 export class CollectionsModule { }
