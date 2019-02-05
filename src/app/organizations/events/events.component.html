@@ -4,11 +4,7 @@
       Recent Events
     </mat-card-title>
   </mat-card-header>
-  <div *ngIf="(loading$ | async); else notLoading">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  <ng-template #notLoading>
-    <div class="pt-2"></div>
+  <app-loading [loading]="(loading$ | async)">
     <div fxLayout="column wrap" fxLayoutGap="20px">
       <span *ngFor="let event of (events$ | async)" class="px-3">
         <div *ngIf="event?.type === EventType.CREATEORG">
@@ -45,5 +41,5 @@
         </div>
       </span>
     </div>
-  </ng-template>
+</app-loading>
 </mat-card>

@@ -1,0 +1,17 @@
+<!-- This component shows only the loading bar when loading (no existing content) -->
+<div *ngIf="!retainContent; else retainContent">
+  <div *ngIf="loading; else showContent">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>
+<!-- This component shows only the loading bar when loading and any existing content -->
+<ng-template>
+  <div *ngIf="loading; else showContent">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div *ngIf="false; else showContent"> </div>
+</ng-template>
+<ng-template #showContent>
+  <div class="pt-2"></div>
+  <ng-content></ng-content>
+</ng-template>
