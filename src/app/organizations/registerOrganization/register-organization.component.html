@@ -19,6 +19,7 @@
   <app-alert></app-alert>
   <form [formGroup]="registerOrganizationForm">
     <mat-form-field>
+        <mat-label>The name of the organization</mat-label>
       <input type="text" matInput formControlName="name" placeholder="Name" required>
       <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
       <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
@@ -26,6 +27,7 @@
       <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>A short description of the organization</mat-label>
       <textarea cdkTextareaAutosize type="text" matInput formControlName="topic" placeholder="Topic"
         required></textarea>
       <mat-error *ngIf="topic.hasError('required')">Topic is required</mat-error>

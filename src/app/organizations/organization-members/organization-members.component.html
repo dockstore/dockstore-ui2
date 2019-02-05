@@ -28,7 +28,7 @@
             <mat-card-title>{{organizationUser.user?.username}}</mat-card-title>
             <mat-card-subtitle>{{organizationUser.role | titlecase}}</mat-card-subtitle>
           </mat-card-header>
-          <mat-card-actions *ngIf="(canEdit$ | async)">
+          <mat-card-actions *ngIf="(canEditMembership$ | async)">
             <div fxLayout="row" fxLayoutAlign="end">
               <button mat-button matTooltip="Edit user's role in organization" [id]="'edit-user-role-' + index" [disabled]="organizationUser.user.id === (userId$ | async)"
                 (click)="editUser(organizationUser)">Edit</button>
@@ -40,7 +40,7 @@
       </div>
     </div>
   </ng-template>
-  <mat-action-row *ngIf="(canEdit$ | async)">
+  <mat-action-row *ngIf="(canEditMembership$ | async)">
     <div fxFlex></div>
     <button matTooltip="Add user to organization" (click)="addUser()" id="addUserToOrgButton" mat-button>
       <mat-icon>add</mat-icon>Add user

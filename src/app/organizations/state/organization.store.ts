@@ -5,12 +5,14 @@ import { Organisation } from '../../shared/swagger';
 export interface OrganizationState {
    organization: Organisation;
    canEdit: boolean;
+   canEditMembership: boolean;
 }
 
 export function createInitialState(): OrganizationState {
   return {
     organization: null,
-    canEdit: false
+    canEdit: false,
+    canEditMembership: false
   };
 }
 
