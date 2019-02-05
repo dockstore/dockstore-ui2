@@ -41,7 +41,11 @@
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool">{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}</mat-cell>
+      <mat-cell class="description-cell" *matCellDef="let tool">{{ tool?.starredUsers.length === 0 ? '0' : tool?.starredUsers.length }}
+        <span>
+          <mat-icon>star_border</mat-icon>
+        </span>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
