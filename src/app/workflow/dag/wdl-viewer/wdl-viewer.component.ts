@@ -18,7 +18,7 @@ import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChil
 import * as pipeline from 'pipeline-builder';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, finalize } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
@@ -42,6 +42,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.onVersionChange(value);
   }
   @ViewChild('diagram') diagram: ElementRef;
+  @ViewChild('exportSVG') exportSVG: ElementRef;
 
   public pipelineBuilderResult$: Observable<any>;
   public errorMessage;
@@ -50,11 +51,15 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   protected files: Array<ToolFile>;
   protected entryType: ('tool' | 'workflow') = 'workflow';
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  private version;
+  private version: WorkflowVersion;
   private visualizer: any;
 
   constructor(private wdlViewerService: WdlViewerService, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
               protected workflowsService: WorkflowsService) {
+  }
+
+  ngOnInit() {
+    this.loading = true;
   }
 
   ngAfterViewInit() {
@@ -66,17 +71,16 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
         if (files.length > 0) {
           this.pipelineBuilderResult$ = this.wdlViewerService.create(files, this.workflow, this.version);
 
-          this.pipelineBuilderResult$
+          // Create the Epam pipeline builder visualization and attach the result to the DOM element
+          this.pipelineBuilderResult$.pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading = false))
             .subscribe((pipeline: any) => {
                 this.visualizer.attachTo(pipeline.model[0]);
                 this.wdlViewerError = false;
-                this.loading = false;
               },
               (error) => {
                 this.errorMessage = error || 'Unknown Error';
                 this.wdlViewerError = true;
                 this.diagram.nativeElement.remove();
-                this.loading = false;
               });
         }
       });
@@ -96,6 +100,6 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   download() {
-    this.wdlViewerService.download(this.visualizer);
+    this.wdlViewerService.download(this.visualizer, this.version.name, this.exportSVG);
   }
 }

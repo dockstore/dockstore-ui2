@@ -1,17 +1,15 @@
-<div [ngClass]="{'fullscreen-element large-dag': expanded}" class="wdl-viewer">
+<div [ngClass]="{'fullscreen-svg-element': expanded}" class="wdl-viewer">
   <mat-card *ngIf="wdlViewerError" class="alert alert-warning">
     <mat-icon>warning</mat-icon>&nbsp;
     <div>EPAM Pipeline Builder was unable to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
     <div>{{errorMessage}}</div>
   </mat-card>
-
+  <div>
+    <span><a *ngIf="(pipelineBuilderResult$ | async)" href #exportSVG id="exportSVG" (click)="download()">
+            <mat-icon>save</mat-icon>Save as SVG</a></span>
+  </div>
   <div *ngIf="loading" class="text-center viewer-loading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-
-  <div>
-    <span><a *ngIf="(pipelineBuilderResult$ | async) && !loading" (click)="download()">
-            <mat-icon>save</mat-icon>Save as SVG</a></span>
-  </div>
-  <div class="mini-dag" [ngClass]="{'fullscreen-element large-dag': expanded}" style="overflow: hidden" #diagram></div>
+  <div class="svg" [ngClass]="{'mini-svg-dag': !expanded, 'fullscreen-svg-element large-svg-dag': expanded}" #diagram></div>
 </div>

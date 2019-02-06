@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef, Renderer2 } from '@angular/core';
 
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
@@ -21,6 +21,7 @@ import { Observable, from, forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
 import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
+import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { ToolDescriptor, ToolFile, WorkflowsService } from '../../../shared/swagger';
 
 
@@ -30,7 +31,7 @@ import { ToolDescriptor, ToolFile, WorkflowsService } from '../../../shared/swag
 @Injectable()
 export class WdlViewerService {
   private zip: JSZip = new JSZip();
-  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, protected workflowsService: WorkflowsService) {
+  constructor(private workflowQuery: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery, protected workflowsService: WorkflowsService, private renderer: Renderer2) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
@@ -74,7 +75,6 @@ export class WdlViewerService {
     return forkJoin(this.workflowsService.wdl(workflow.id, version.name), this.workflowsService.secondaryWdl(workflow.id, version.name))
       .pipe(
         switchMap(res => {
-          console.log(res);
           // Store each secondary file in a zip object
           res[1].forEach(file => this.zip.file(file.path, file.content));
 
@@ -89,9 +89,10 @@ export class WdlViewerService {
     visualizer.zoom.fitToPage();
   }
 
-  download(visualizer: any) {
+  download(visualizer: any, versionName: String, exportSVG: ElementRef) {
     const blob = new Blob([visualizer.paper.getSVG()], {type: 'text/plain;charset=utf-8'});
-    const url = window.URL.createObjectURL(blob);
-    window.open(url);
+    const name = this.workflowQuery.getActive().repository + '_' + versionName + '.svg';
+    this.renderer.setAttribute(exportSVG.nativeElement, 'href', URL.createObjectURL(blob));
+    this.renderer.setAttribute(exportSVG.nativeElement, 'download', name);
   }
 }
