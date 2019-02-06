@@ -44,5 +44,11 @@ describe('Dockstore workflow list page', () => {
         .get('#workflow-path')
         .should('contain', 'github.com/A/l');
     });
+    it('Should show star border icon ', () => {
+      cy.visit('/search-workflows');
+      cy
+        .get(':nth-child(2) > .description-cell')
+        .contains('0 star_border');
+    });
   });
 });

@@ -50,5 +50,11 @@ describe('Dockstore tool list page', () => {
         .get('#tool-path')
         .should('contain', 'quay.io/A2/a');
     });
+    it('Should show star border icon ', () => {
+      cy.visit('/search-containers');
+      cy
+        .get(':nth-child(2) > .description-cell')
+        .contains('0 star_border');
+    });
   });
 });

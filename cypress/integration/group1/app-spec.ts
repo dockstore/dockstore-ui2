@@ -69,4 +69,19 @@ describe('Dockstore Home', () => {
       cy.get('#youtubeModal').should('not.be.visible');
     });
   });
+
+  describe('Star Count', () => {
+    it.only('Tool Star Count', () => {
+      cy.get(':nth-child(2) > .description-cell')
+        .contains('0 star_border');
+    });
+
+    it.only('Workflow Star Count', () => {
+      cy
+        .get('#workflowTab-link')
+        .click();
+      cy.get(':nth-child(2) > .description-cell')
+        .contains('0 star_border');
+    });
+  });
 });
