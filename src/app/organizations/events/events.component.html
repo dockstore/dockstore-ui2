@@ -1,13 +1,10 @@
-<ng-template #loading>Loading...</ng-template>
-
-<div *ngIf="!(isLoading$ | async); else loading">
-
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>
-        Recent Events
-      </mat-card-title>
-    </mat-card-header>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Recent Events
+    </mat-card-title>
+  </mat-card-header>
+  <app-loading [loading]="(loading$ | async)">
     <div fxLayout="column wrap" fxLayoutGap="20px">
       <span *ngFor="let event of (events$ | async)" class="px-3">
         <div *ngIf="event?.type === EventType.CREATEORG">
@@ -16,21 +13,18 @@
             &nbsp;created&nbsp;organization
           </mat-chip-list>
         </div>
-
         <div *ngIf="event?.type === EventType.APPROVEORGINVITE">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;joined&nbsp;organization
           </mat-chip-list>
         </div>
-
         <div *ngIf="event?.type === EventType.MODIFYORG">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
             &nbsp;updated&nbsp;organization
           </mat-chip-list>
         </div>
-
         <div *ngIf="event?.type === EventType.CREATECOLLECTION">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
@@ -38,7 +32,6 @@
             <mat-chip>{{ event.collection.name }}</mat-chip>
           </mat-chip-list>
         </div>
-
         <div *ngIf="event?.type === EventType.MODIFYCOLLECTION || event?.type === EventType.ADDTOCOLLECTION || event?.type === EventType.REMOVEFROMCOLLECTION">
           <mat-chip-list>
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
@@ -48,5 +41,5 @@
         </div>
       </span>
     </div>
-  </mat-card>
-</div>
+</app-loading>
+</mat-card>

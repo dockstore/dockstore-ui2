@@ -1,25 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatTabsModule } from '@angular/material';
+import { NgxMdModule } from 'ngx-md';
 
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
 import {
   UpdateOrganizationDescriptionComponent,
 } from './update-organization-description/update-organization-description.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgxMdModule } from 'ngx-md';
 
 @NgModule({
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTabsModule,
-    MatTooltipModule,
+    CustomMaterialModule,
     NgxMdModule,
     RefreshAlertModule,
     ReactiveFormsModule

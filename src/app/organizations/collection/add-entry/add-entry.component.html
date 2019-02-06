@@ -1,11 +1,6 @@
 <h1 mat-dialog-title>Add to collection</h1>
 <div mat-dialog-content>
-
-  <ng-template #loading>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </ng-template>
-
-  <div *ngIf="!(isLoading$ | async); else loading">
+  <app-loading [loading]="(isLoading$ | async)" [retainContent]="true">
     <div fxLayout="column" fxLayoutGap="15px">
       <div fxFlex *ngIf="(memberships$ | async) as memberships">
         <ng-template #noMemberships>
@@ -21,7 +16,6 @@
           </mat-select>
         </mat-form-field>
       </div>
-
       <div fxFlex *ngIf="(collections$ | async) as collections">
         <ng-template #noCollections>
           <mat-card class="alert alert-info" role="alert">
@@ -37,12 +31,12 @@
         </mat-form-field>
       </div>
     </div>
-  </div>
+  </app-loading>
 </div>
-
 <div mat-dialog-actions align="end">
   <button mat-button id="closeDialogButton" (click)="closeDialog()">Close</button>
-  <button mat-flat-button id="addEntryToCollectionButton" color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
+  <button mat-flat-button id="addEntryToCollectionButton" color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId"
+    (click)="addToCollection()">
     <mat-icon>add</mat-icon>Add to collection
   </button>
 </div>

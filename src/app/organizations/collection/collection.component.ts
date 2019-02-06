@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { CollectionService } from '../state/collection.service';
-import { CollectionQuery } from '../state/collection.query';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
+
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection } from '../../shared/swagger';
+import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
+import { CollectionsQuery } from '../state/collections.query';
+import { CollectionsService } from '../state/collections.service';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -15,13 +16,12 @@ import { CreateCollectionComponent } from '../collections/create-collection/crea
 })
 export class CollectionRemoveEntryDialogComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<CollectionRemoveEntryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private collectionsService: CollectionsService) {}
+  deleteCollection() {
+    this.collectionsService.removeEntryFromCollection(
+      this.data.organizationId, this.data.collectionId, this.data.entryId, this.data.entryName);
   }
+
 
 }
 
@@ -45,22 +45,22 @@ export class CollectionComponent implements OnInit {
   organization$: Observable<Collection>;
   loadingOrganization$: Observable<boolean>;
   canEdit$: Observable<boolean>;
-  constructor(private collectionQuery: CollectionQuery,
-              private collectionService: CollectionService,
+  constructor(private collectionsQuery: CollectionsQuery,
               private organizationQuery: OrganizationQuery,
               private organizationService: OrganizationService,
+              private collectionsService: CollectionsService,
               public dialog: MatDialog
   ) { }
 
   ngOnInit() {
-    this.loadingCollection$ = this.collectionQuery.loading$;
-    this.collectionService.updateCollectionFromName();
-    this.collection$ = this.collectionQuery.collection$;
-
+    this.loadingCollection$ = this.collectionsQuery.loading$;
+    this.collection$ = this.collectionsQuery.selectActive();
     this.loadingOrganization$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
-    this.organizationService.updateOrganizationFromNameORID();
     this.organization$ = this.organizationQuery.organization$;
+
+    this.collectionsService.updateCollectionFromName();
+    this.organizationService.updateOrganizationFromNameORID();
   }
 
   /**
@@ -72,18 +72,12 @@ export class CollectionComponent implements OnInit {
    * @param entryName
    */
   openRemoveEntryDialog(organizationId: number, collectionId: number, entryId: number, collectionName: string, entryName: string) {
-    const dialogRef = this.dialog.open(CollectionRemoveEntryDialogComponent, {
+    this.dialog.open(CollectionRemoveEntryDialogComponent, {
       width: '500px',
       data: {
         collectionName: collectionName, entryName: entryName,
         collectionId: collectionId, entryId: entryId,
         organizationId: organizationId
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.collectionService.removeEntryFromCollection(result.organizationId, result.collectionId, result.entryId, result.entryName);
       }
     });
   }
@@ -92,10 +86,5 @@ export class CollectionComponent implements OnInit {
     const collectionMap = { 'key': collection.id, 'value': collection};
     const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {collection: collectionMap, mode: TagEditorMode.Edit},
       width: '600px'});
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.collectionService.updateCollectionFromName();
-      this.collection$ = this.collectionQuery.collection$;
-    });
   }
 }

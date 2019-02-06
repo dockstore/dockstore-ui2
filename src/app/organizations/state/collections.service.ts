@@ -14,18 +14,28 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { ID } from '@datorama/akita';
-import { HttpClient } from '@angular/common/http';
-import { CollectionsStore } from './collections.store';
-import { OrganisationsService, Collection } from '../../shared/swagger';
+import { MatDialog } from '@angular/material';
+import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
+
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { Collection, OrganisationsService } from '../../shared/swagger';
+import { CollectionsQuery } from './collections.query';
+import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
+import { OrganizationService } from './organization.service';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
 
   constructor(private collectionsStore: CollectionsStore, private organisationsService: OrganisationsService,
-              private http: HttpClient, private organizationStore: OrganizationQuery) {
+    private alertService: AlertService, private organizationService: OrganizationService,
+    private organizationStore: OrganizationQuery, private collectionsQuery: CollectionsQuery,
+    private matDialog: MatDialog) {
+  }
+
+  clearState() {
+    this.collectionsStore.remove();
   }
 
   // Get function
@@ -34,11 +44,15 @@ export class CollectionsService {
       organizationID = this.organizationStore.getSnapshot().organization.id;
     }
     this.collectionsStore.setLoading(true);
+    const activeId: ID = this.collectionsQuery.getActiveId();
     this.collectionsStore.remove();
     this.organisationsService.getCollectionsFromOrganisation(organizationID).pipe(
       finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe((collections: Array<Collection>) => {
         this.addAll(collections);
+        if (activeId) {
+          this.updateCollectionFromName();
+        }
       }, error => {
         console.error(error);
         this.collectionsStore.setError(true);
@@ -59,5 +73,48 @@ export class CollectionsService {
 
   remove(id: ID) {
     this.collectionsStore.remove(id);
+  }
+
+  @transaction()
+  updateCollectionFromName() {
+    this.clearState();
+    const collectionId = parseInt(this.organizationService.getNextSegmentPath('collections'), 10);
+    const organizationId = parseInt(this.organizationService.getNextSegmentPath('organizations'), 10);
+    if (isNaN(organizationId)) {
+      console.error('Organization name (instead of ID) currently not handled');
+      return;
+    }
+    this.collectionsStore.setError(false);
+    this.collectionsStore.setLoading(true);
+    this.organisationsService.getCollectionById(organizationId, collectionId).pipe(finalize(() => this.collectionsStore.setLoading(false)))
+      .subscribe((collection: Collection) => {
+        this.collectionsStore.setError(false);
+        this.collectionsStore.createOrReplace(collection.id, collection);
+        this.collectionsStore.setActive(collection.id);
+      }, () => {
+        this.collectionsStore.setError(true);
+      });
+  }
+
+  /**
+   * Removes the given entry from the collection for the given organisation
+   * @param organisationId
+   * @param collectionId
+   * @param entryId
+   * @param entryName
+   */
+  removeEntryFromCollection(organisationId: number, collectionId: number, entryId: number, entryName: string) {
+    this.alertService.start('Removing entry ' + entryName);
+    this.organisationsService.deleteEntryFromCollection(organisationId, collectionId, entryId).pipe(
+      finalize(() => this.collectionsStore.setLoading(false)
+      ))
+      .subscribe((collection: Collection) => {
+        this.alertService.simpleSuccess();
+        this.updateCollectionFromName();
+        this.matDialog.closeAll();
+      }, () => {
+        this.collectionsStore.setError(true);
+        this.alertService.simpleError();
+      });
   }
 }

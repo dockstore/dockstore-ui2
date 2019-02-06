@@ -1,10 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EventsComponent } from './events/events.component';
-import { CustomMaterialModule } from './../shared/modules/material.module';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { CustomMaterialModule } from './../shared/modules/material.module';
+import { EventsComponent } from './events/events.component';
+
 @NgModule({
-  imports: [ CommonModule, CustomMaterialModule, FlexLayoutModule ],
+  imports: [ CommonModule, CustomMaterialModule, FlexLayoutModule,
+  RefreshAlertModule ],
   declarations: [ EventsComponent ],
   exports: [ EventsComponent ]
 })
