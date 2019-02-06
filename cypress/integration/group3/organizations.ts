@@ -39,16 +39,16 @@ describe('Dockstore my workflows', () => {
     it('create a new unapproved organization', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('The name of the organization', 'Potato');
+      typeInInput('Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInTextArea('A short description of the organization', 'Boil \'em, mash \'em, stick \'em in a stew');
+      typeInTextArea('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
-      typeInInput('Link to Organization Website', 'www.google.ca');
+      typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Location', 'Basement');
       cy.get('.mat-error').should('be.visible');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Link to Organization Website', 'https://www.google.ca');
+      typeInInput('Organization website', 'https://www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
@@ -67,9 +67,9 @@ describe('Dockstore my workflows', () => {
     });
     it('be able to edit organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
-      typeInInput('The name of the organization', 'Potatoe');
-      typeInTextArea('A short description of the organization', 'Boil them, mash them, stick them in a stew');
-      typeInInput('Link to Organization Website', 'https://www.google.com');
+      typeInInput('Name', 'Potatoe');
+      typeInTextArea('Topic', 'Boil them, mash them, stick them in a stew');
+      typeInInput('Organization website', 'https://www.google.com');
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
