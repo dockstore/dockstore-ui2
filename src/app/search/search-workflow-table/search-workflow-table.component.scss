@@ -1,0 +1,10 @@
+@mixin change-mat-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+  line-height: $size;
+}
+
+.mat-icon {
+  @include change-mat-icon-size(16px);
+}

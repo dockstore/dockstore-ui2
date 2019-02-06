@@ -39,8 +39,8 @@
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ workflow?.starredUsers.length === 0 ? '0' : workflow?.starredUsers.length }}
-        <mat-icon>star_border</mat-icon>
+      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
+        <mat-icon *ngIf="workflow?.starredUsers?.length > 0 ">star_border</mat-icon>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">

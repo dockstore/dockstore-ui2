@@ -70,18 +70,29 @@ describe('Dockstore Home', () => {
     });
   });
 
-  describe('Star Count', () => {
-    it('Tool Star Count', () => {
-      cy.get(':nth-child(2) > .description-cell')
-        .contains('0 star_border');
-    });
-
+  describe('Workflow and Tool Star Count', () => {
     it('Workflow Star Count', () => {
-      cy
-        .get('#workflowTab-link')
+      cy.get(':nth-child(2) > .description-cell')
+        .should('be.visible');
+      cy.visit('/workflows/github.com/A/l');
+      cy.get('#starringButton')
+        .click();
+      cy.visit('');
+      cy.get('#workflowTab-link')
         .click();
       cy.get(':nth-child(2) > .description-cell')
-        .contains('0 star_border');
+        .contains('1 star_border');
+    });
+
+    it.only('Tool Star Count', () => {
+      cy.get(':nth-child(2) > .description-cell')
+        .should('be.visible');
+      cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
+      cy.get('#starringButton')
+        .click();
+      cy.visit('');
+      cy.get(':nth-child(2) > .description-cell')
+        .contains('1 star_border');
     });
   });
 });
