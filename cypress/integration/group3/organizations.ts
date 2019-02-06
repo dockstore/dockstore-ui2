@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, getTab, goToTab } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, approvePotatoMembership } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -190,6 +190,12 @@ describe('Dockstore my workflows', () => {
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.be.visible');
+      cy.contains('mat-card-title', 'potato').should('not.be.visible');
+
+      // Need to approve membership and reload for it to be visible
+      approvePotatoMembership();
+      cy.visit('/organizations/1');
+      cy.contains('Members').click();
       cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Member');
     });
 
