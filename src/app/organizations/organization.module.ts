@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxMdModule } from 'ngx-md';
 
-import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CollectionsModule } from './collections.module';
@@ -12,7 +11,7 @@ import { OrganizationComponent } from './organization/organization.component';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 import { EventsModule } from './events.module';
 import { RouterModule } from '@angular/router';
-import { LoadingComponent } from '../shared/loading/loading.component';
+import { RefreshAlertModule } from '../shared/alert/alert.module';
 
 @NgModule({
   imports: [
@@ -26,8 +25,7 @@ import { LoadingComponent } from '../shared/loading/loading.component';
     UpdateOrganizationDescriptionModule,
     EventsModule,
     RouterModule,
-    RefreshAlertModule,
-    LoadingComponent
+    RefreshAlertModule
   ],
   declarations: [ OrganizationComponent ],
   exports: [ OrganizationComponent ]
