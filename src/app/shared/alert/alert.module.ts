@@ -5,10 +5,12 @@ import { MatIconModule, MatProgressBarModule } from '@angular/material';
 import { CustomMaterialModule } from './../modules/material.module';
 
 import { AlertComponent } from './alert.component';
+import { LoadingComponent } from '../loading/loading.component';
 
 @NgModule({
   declarations: [
-    AlertComponent
+    AlertComponent,
+    LoadingComponent
   ],
   imports: [
     MatProgressBarModule,
@@ -17,6 +19,6 @@ import { AlertComponent } from './alert.component';
     FormsModule,
     CustomMaterialModule
   ],
-  exports: [AlertComponent]
+  exports: [AlertComponent, LoadingComponent]
 })
 export class RefreshAlertModule { }

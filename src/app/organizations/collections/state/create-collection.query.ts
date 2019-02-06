@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { CreateCollectionStore, CreateCollectionState } from './create-collection.store';
 import { Observable } from 'rxjs';
+
+import { CreateCollectionState, CreateCollectionStore } from './create-collection.store';
 
 @Injectable({ providedIn: 'root' })
 export class CreateCollectionQuery extends Query<CreateCollectionState> {

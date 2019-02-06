@@ -26,7 +26,7 @@ export class UpdateOrganizationDescriptionService {
   }
 
   updateOrganizationDescription(formGroup: FormGroup): void {
-    const newDescription = formGroup.get('description').value;
+    const newDescription = formGroup.get('description').value || '';
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.updateOrganizationDescriptionStore.setError(false);
     this.updateOrganizationDescriptionStore.setLoading(true);

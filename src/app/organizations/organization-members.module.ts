@@ -1,16 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatExpansionModule,
-  MatProgressBarModule,
-  MatTooltipModule,
-  MatIconModule,
-} from '@angular/material';
 
 import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { CustomMaterialModule } from '../shared/modules/material.module';
 import { OrganizationMembersComponent } from './organization-members/organization-members.component';
 import { UpsertOrganizationMemberModule } from './upsert-organization-member.module';
 
@@ -18,14 +11,9 @@ import { UpsertOrganizationMemberModule } from './upsert-organization-member.mod
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MatButtonModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatProgressBarModule,
-    MatTooltipModule,
+    CustomMaterialModule,
     RefreshAlertModule,
-    UpsertOrganizationMemberModule,
-    MatIconModule
+    UpsertOrganizationMemberModule
   ],
   declarations: [OrganizationMembersComponent],
   exports: [OrganizationMembersComponent]

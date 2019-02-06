@@ -17,11 +17,7 @@
   <mat-icon>people</mat-icon>
   Organizations
 </app-header>
-<div *ngIf="(loading$ | async); else placeholder">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</div>
-<ng-template #placeholder>
-  <div class="pt-2"></div>
+<app-loading [loading]="(loading$ | async)">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
 
   <!-- Organization header -->
@@ -97,4 +93,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</app-loading>

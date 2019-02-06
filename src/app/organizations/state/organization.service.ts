@@ -13,36 +13,32 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PRIMARY_OUTLET, Router, UrlSegment } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
-import { Organisation, OrganisationsService, OrganisationUser } from '../../shared/swagger';
-import { UserQuery } from '../../shared/user/user.query';
+import { Organisation, OrganisationsService } from '../../shared/swagger';
 import { OrganizationMembersService } from './organization-members.service';
-import { OrganizationMembersStore } from './organization-members.store';
 import { OrganizationStore } from './organization.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
 
-  constructor(private organizationStore: OrganizationStore, private router: Router,
-    private http: HttpClient, private organisationsService: OrganisationsService, private userQuery: UserQuery,
-    private organizationMembersService: OrganizationMembersService, private organizationMembersStore: OrganizationMembersStore) {
+  constructor(private organizationStore: OrganizationStore, private router: Router, private organisationsService: OrganisationsService,
+    private organizationMembersService: OrganizationMembersService) {
   }
 
-  getOrganizationNameOrIDFromURL(): string {
-    const thing: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const orgIndex = thing.findIndex((urlSegment: UrlSegment) => {
-      return urlSegment.path === 'organizations';
+  getNextSegmentPath(previousSegmentPath: string): string {
+    const urlSegments: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
+    const segmentIndex = urlSegments.findIndex((urlSegment: UrlSegment) => {
+      return urlSegment.path === previousSegmentPath;
     });
-    const organizationNameOrId = thing[orgIndex + 1];
-    if (!organizationNameOrId) {
+    const segment = urlSegments[segmentIndex + 1];
+    if (!segment) {
       return undefined;
     }
-    return organizationNameOrId.path;
+    return segment.path;
   }
 
   clearState(): void {
@@ -59,7 +55,7 @@ export class OrganizationService {
   @transaction()
   updateOrganizationFromNameORID() {
     this.clearState();
-    const organizationNameOrID = this.getOrganizationNameOrIDFromURL();
+    const organizationNameOrID = this.getNextSegmentPath('organizations');
     const organizationID = parseInt(organizationNameOrID, 10);
     if (isNaN(organizationID)) {
       this.updateOrganizationFromName(organizationNameOrID);

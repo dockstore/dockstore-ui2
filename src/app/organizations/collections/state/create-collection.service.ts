@@ -1,9 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 import { finalize } from 'rxjs/operators';
 
+import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
 import { Collection, OrganisationsService } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';
@@ -22,7 +24,7 @@ export class CreateCollectionService {
 
   constructor(private createCollectionStore: CreateCollectionStore, private organisationsService: OrganisationsService,
     private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private matSnackBar: MatSnackBar,
-    private collectionsService: CollectionsService, private builder: FormBuilder, private formsManager: AkitaNgFormsManager<FormsState>) {
+    private collectionsService: CollectionsService, private builder: FormBuilder, private alertService: AlertService) {
   }
 
   clearState() {
@@ -43,19 +45,24 @@ export class CreateCollectionService {
       description: collectionFormState.description
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
-    this.createCollectionStore.setLoading(true);
+    this.beforeCall();
+    this.alertService.start('Creating collection');
     this.organisationsService.createCollection(organizationID, collection).pipe(
       finalize(() => this.createCollectionStore.setLoading(false)))
       .subscribe((newCollection: Collection) => {
         this.createCollectionStore.setError(false);
         this.matDialog.closeAll();
-        this.matSnackBar.open('Creating collection successful');
+        this.alertService.detailedSuccess();
         this.collectionsService.updateCollections();
-      }, error => {
+      }, (error: HttpErrorResponse) => {
         this.createCollectionStore.setError(true);
-        this.matSnackBar.open('Creating collection failed');
+        this.alertService.detailedError(error);
       });
+  }
 
+  private beforeCall() {
+    this.createCollectionStore.setLoading(true);
+    this.createCollectionStore.setError(false);
   }
 
   /**
@@ -129,17 +136,18 @@ export class CreateCollectionService {
       description: collectionFormState.description
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
-    this.createCollectionStore.setLoading(true);
+    this.beforeCall();
+    this.alertService.start('Updating collection');
     this.organisationsService.updateCollection(organizationID, collectionID, collection).pipe(
       finalize(() => this.createCollectionStore.setLoading(false)))
       .subscribe((newCollection: Collection) => {
         this.createCollectionStore.setError(false);
         this.matDialog.closeAll();
-        this.matSnackBar.open('Updating collection successful');
+        this.alertService.detailedSuccess();
         this.collectionsService.updateCollections();
       }, error => {
         this.createCollectionStore.setError(true);
-        this.matSnackBar.open('Updating collection failed');
+        this.alertService.detailedError(error);
       });
   }
 

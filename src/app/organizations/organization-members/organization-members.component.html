@@ -14,10 +14,7 @@
    limitations under the License.
 -->
 <div>
-  <div *ngIf="(loading$ | async); else notLoading">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  <ng-template #notLoading>
+    <app-loading [loading]="(loading$ | async)">
     <div class="pt-2"></div>
     <div fxLayout="column" fxLayoutGap="20px">
       <div *ngFor="let organizationUser of (organizationMembers$ | async); let index = index;">
@@ -39,7 +36,7 @@
         </mat-card>
       </div>
     </div>
-  </ng-template>
+  </app-loading>
   <mat-action-row *ngIf="(canEditMembership$ | async)">
     <div fxFlex></div>
     <button matTooltip="Add user to organization" (click)="addUser()" id="addUserToOrgButton" mat-button>

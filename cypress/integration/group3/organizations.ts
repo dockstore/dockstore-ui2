@@ -15,7 +15,7 @@
  */
 import { resetDB, setTokenUserViewPort, approvePotatoMembership } from '../../support/commands';
 
-describe('Dockstore my workflows', () => {
+describe('Dockstore Organizations', () => {
   resetDB();
   setTokenUserViewPort();
 

@@ -17,11 +17,8 @@
   <mat-icon>people</mat-icon>
   Collections
 </app-header>
-<div *ngIf="(loadingCollection$ | async) && (loadingOrganization$ | async); else collectionsList">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</div>
-<ng-template #collectionsList>
-  <div class="pt-2"></div>
+<!-- Beware of double loading bar (from page and from loading component) -->
+<app-loading [loading]="(loadingCollection$ | async) && (loadingOrganization$ | async)">
   <div *ngIf="(organization$ | async) as organization">
     <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column">
       <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === 'PENDING'">
@@ -88,4 +85,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</app-loading>
