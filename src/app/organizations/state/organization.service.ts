@@ -46,7 +46,8 @@ export class OrganizationService {
       return {
         ...state,
         organization: null,
-        canEdit: false
+        canEdit: false,
+        canEditMembership: false
       };
     });
   }

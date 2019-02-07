@@ -13,34 +13,30 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<div>
-  <app-loading [loading]="(loading$ | async)">
-    <div fxLayout="row wrap" fxLayoutAlign="start stretch">
-      <div *ngFor="let organizationUser of (organizationMembers$ | async)">
-        <!-- Fixed width 200px is bad for long usernames -->
-        <mat-card class="my-2" fxFlex="200px" fxFlexOffset="10px">
-          <mat-card-header>
-            <mat-card-title>{{organizationUser.role | titlecase}}</mat-card-title>
-            <mat-card-subtitle>{{organizationUser.user?.username}}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image *ngIf="organizationUser.user?.avatarUrl" [src]="organizationUser.user?.avatarUrl">
-          <img mat-card-image *ngIf="!organizationUser.user?.avatarUrl" src="https://via.placeholder.com/300x300?text=Avatar+Not+Found">
-          <mat-card-actions *ngIf="(canEdit$ | async)">
-            <div fxLayout="row" fxLayoutAlign="end">
-              <button mat-button matTooltip="Edit user's role in organization" [disabled]="organizationUser.user.id === (userId$ | async)"
-                (click)="editUser(organizationUser)">EDIT</button>
-              <button mat-button matTooltip="Remove user from organization" [disabled]="organizationUser.user.id === (userId$ | async)"
-                (click)="removeUser(organizationUser)">REMOVE</button>
-            </div>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+<app-loading [loading]="(loading$ | async)">
+  <div class="pt-2" fxLayout="column" fxLayoutGap="20px">
+    <div *ngFor="let organizationUser of (organizationMembers$ | async); let index = index;">
+      <mat-card class="m-2" fxFlex *ngIf="organizationUser?.accepted">
+        <mat-card-header>
+          <img *ngIf="organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" [src]="organizationUser.user?.avatarUrl"/>
+          <img *ngIf="!organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"/>
+          <mat-card-title>{{organizationUser.user?.username}}</mat-card-title>
+          <mat-card-subtitle>{{organizationUser.role | titlecase}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions *ngIf="(canEditMembership$ | async)">
+          <div fxLayout="row" fxLayoutAlign="end">
+            <button mat-button matTooltip="Edit user's role in organization" [id]="'edit-user-role-' + index" [disabled]="organizationUser.user.id === (userId$ | async)"
+              (click)="editUser(organizationUser)">Edit</button>
+            <button mat-button matTooltip="Remove user from organization" [id]="'remove-user-' + index" [disabled]="organizationUser.user.id === (userId$ | async)"
+              (click)="removeUser(organizationUser)">Remove</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
     </div>
-  </app-loading>
-  <mat-action-row *ngIf="(canEdit$ | async)">
-    <div fxFlex></div>
-    <button matTooltip="Add user to organization" (click)="addUser()" id="addUserToOrgButton" mat-button>
-      <mat-icon>add</mat-icon>Add user
-    </button>
-  </mat-action-row>
-</div>
+  </div>
+</app-loading>
+<mat-action-row *ngIf="(canEditMembership$ | async)" fxLayout="row" fxLayoutAlign="end center">
+  <button matTooltip="Add user to organization" (click)="addUser()" id="addUserToOrgButton" mat-button>
+    <mat-icon>add</mat-icon>Add user
+  </button>
+</mat-action-row>

@@ -19,6 +19,6 @@
 </div>
 <div mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button id="upsertUserDialogButton" [matTooltip]="title" mat-button [disabled]="!form.valid" (click)="upsertUser()"
+  <button id="upsertUserDialogButton" [matTooltip]="title" mat-flat-button color="primary" [disabled]="!form.valid" (click)="upsertUser()"
     cdkFocusInitial>{{title}}</button>
 </div>

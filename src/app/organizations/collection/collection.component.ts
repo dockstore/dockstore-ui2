@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Collection } from '../../shared/swagger';
+import { Collection, Organisation } from '../../shared/swagger';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
@@ -45,6 +45,7 @@ export class CollectionComponent implements OnInit {
   organization$: Observable<Collection>;
   loadingOrganization$: Observable<boolean>;
   canEdit$: Observable<boolean>;
+  pendingEnum = Organisation.StatusEnum.PENDING;
   constructor(private collectionsQuery: CollectionsQuery,
               private organizationQuery: OrganizationQuery,
               private organizationService: OrganizationService,

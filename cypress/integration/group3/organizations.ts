@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, getTab, goToTab } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, approvePotatoMembership } from '../../support/commands';
 
 describe('Dockstore Organizations', () => {
   resetDB();
@@ -34,22 +34,21 @@ describe('Dockstore Organizations', () => {
       cy.visit('/');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
       cy.contains('No organizations found');
-      cy.get('mat-card').should('not.exist');
     });
 
     it('create a new unapproved organization', () => {
-      cy.contains('button', 'Create Organization').should('be.visible').click();
+      cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInTextArea('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
-      typeInInput('Link to Organization Website', 'www.google.ca');
+      typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Location', 'Basement');
       cy.get('.mat-error').should('be.visible');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Link to Organization Website', 'https://www.google.ca');
+      typeInInput('Organization website', 'https://www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
@@ -70,7 +69,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
       typeInInput('Name', 'Potatoe');
       typeInTextArea('Topic', 'Boil them, mash them, stick them in a stew');
-      typeInInput('Link to Organization Website', 'https://www.google.com');
+      typeInInput('Organization website', 'https://www.google.com');
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
@@ -89,7 +88,7 @@ describe('Dockstore Organizations', () => {
     it('be able to add a collection', () => {
       cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
-      typeInInput('Name', 'fakeCollectionName');
+      typeInInput('The name of the collection', 'fakeCollectionName');
       typeInTextArea('Description', 'fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('fakeCollectionName');
@@ -99,7 +98,7 @@ describe('Dockstore Organizations', () => {
     it('be able to update a collection', () => {
       cy.get('#editCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
-      typeInInput('Name', 'veryFakeCollectionName');
+      typeInInput('The name of the collection', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateCollectionButton').should('not.be.visible');
@@ -110,7 +109,6 @@ describe('Dockstore Organizations', () => {
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
-      cy.contains('Readme').should('be.visible').click();
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
@@ -119,7 +117,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
-      cy.contains('Readme').should('be.visible').click();
       cy.contains('fake organization description');
       cy.contains('* fake organization description').should('not.exist');
     });
@@ -181,8 +178,8 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to Read organization user', () => {
-      cy.get('mat-card-title').contains('Maintainer');
-      cy.contains('mat-card-subtitle', 'user_A').parent().parent().parent().contains(/^EDIT$/).should('be.disabled');
+      cy.get('mat-card-title').contains('user_A');
+      cy.contains('mat-card-subtitle', 'Maintainer').parent().parent().parent().contains(/^Edit$/).should('be.disabled');
     });
 
     it('be able to Create organization user', () => {
@@ -193,22 +190,28 @@ describe('Dockstore Organizations', () => {
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.be.visible');
-      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('Member');
+      cy.contains('mat-card-title', 'potato').should('not.be.visible');
+
+      // Need to approve membership and reload for it to be visible
+      approvePotatoMembership();
+      cy.visit('/organizations/1');
+      cy.contains('Members').click();
+      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Member');
     });
 
     it('be able to Update organization user', () => {
-      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains(/^EDIT$/).should('not.be.disabled').click();
+      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains(/^Edit$/).should('not.be.disabled').click();
       cy.get('mat-select').click();
       cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.be.visible');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.be.visible');
-      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains('Maintainer');
+      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Maintainer');
     });
 
     it('be able to Delete organization user', () => {
-      cy.contains('mat-card-subtitle', 'potato').parent().parent().parent().contains(/^REMOVE$/).should('not.be.disabled').click();
-      cy.contains('mat-card-subtitle', 'potato').should('not.be.visible');
+      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains(/^Remove$/).should('not.be.disabled').click();
+      cy.contains('mat-card-title', 'potato').should('not.be.visible');
     });
   });
 });

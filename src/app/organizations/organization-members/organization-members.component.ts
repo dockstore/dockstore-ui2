@@ -36,6 +36,7 @@ export class OrganizationMembersComponent implements OnInit {
   organizationMembers$: Observable<OrganisationUser[]>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
+  canEditMembership$: Observable<boolean>;
   userId$: Observable<number>;
   constructor(private organizationMembersQuery: OrganizationMembersQuery, private organizationQuery: OrganizationQuery,
     private organizationMembersService: OrganizationMembersService, private matDialog: MatDialog, private userQuery: UserQuery,
@@ -45,6 +46,7 @@ export class OrganizationMembersComponent implements OnInit {
   ngOnInit() {
     this.userId$ = this.userQuery.userId$;
     this.canEdit$ = this.organizationQuery.canEdit$;
+    this.canEditMembership$ = this.organizationQuery.canEditMembership$;
     this.organizationMembers$ = this.organizationMembersQuery.sortedOrganizationMembers$;
     this.loading$ = this.organizationMembersQuery.selectLoading();
   }

@@ -70,3 +70,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
     .contains('div .no-wrap', repo)
     .should('be.visible').click();
 }
+
+export function approvePotatoMembership() {
+  cy.exec('psql -c \'update organisation_user set accepted=true where userid=2 and organisationid=1\' webservice_test -U dockstore');
+}

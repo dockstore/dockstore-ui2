@@ -34,7 +34,8 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
   filterOrganizations(organizations: Array<Organisation>, searchName: string): Array<Organisation> | null {
     searchName = searchName.toLowerCase();
     if (organizations) {
-      return searchName ? organizations.filter(organization => organization.name.toLowerCase().includes(searchName)) : organizations;
+      return searchName ? organizations.filter(organization => organization.name.toLowerCase().includes(searchName)
+      || organization.topic.toLowerCase().includes(searchName)) : organizations;
     }
     return null;
   }

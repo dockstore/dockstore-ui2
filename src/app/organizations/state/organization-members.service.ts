@@ -82,8 +82,10 @@ export class OrganizationMembersService {
         // Example: a user has permissions to edit, logs out without changing the page and running this function somehow, the controls
         // appears as if he still has permissions to edit.
         const currentUserId = this.userQuery.getSnapshot().user.id;
-        const canEdit = organizationUsers.some(user => user.id.userId === currentUserId);
-        this.setCanEditState(canEdit);
+        const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
+        const canEditMembers = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted
+          && user.role === 'MAINTAINER');
+        this.setCanEditState(canEdit, canEditMembers);
         this.updateAll(organizationUsers);
         this.organizationMembersStore.setError(false);
       }, (error: HttpErrorResponse) => {
@@ -104,11 +106,12 @@ export class OrganizationMembersService {
     this.organizationMembersStore.setError(false);
   }
 
-  setCanEditState(canEdit: boolean) {
+  setCanEditState(canEdit: boolean, canEditMembers: boolean) {
     this.organizationStore.setState(state => {
       return {
         ...state,
-        canEdit: canEdit
+        canEdit: canEdit,
+        canEditMembership: canEditMembers
       };
     });
   }
