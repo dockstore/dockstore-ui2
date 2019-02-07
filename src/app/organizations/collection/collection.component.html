@@ -21,7 +21,7 @@
 <app-loading [loading]="(loadingCollection$ | async) && (loadingOrganization$ | async)">
   <div *ngIf="(organization$ | async) as organization">
     <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column">
-      <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === 'PENDING'">
+      <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
         <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
         You can view your pending organization requests on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
       </mat-card>
@@ -53,7 +53,7 @@
           <mat-card class="entryCard">
             <mat-card-header>
               <mat-card-title>
-                <h4 style="overflow-x: wrap">
+                <h4>
                   <a *ngIf="entry?.full_workflow_path" [routerLink]="['/workflows/', entry.full_workflow_path]">
                     {{entry.full_workflow_path}}
                   </a>
@@ -67,8 +67,7 @@
               </mat-card-subtitle>
             </mat-card-header>
 
-            <mat-card-actions *ngIf="(canEdit$ | async)">
-              <div fxFlex></div>
+            <mat-card-actions *ngIf="(canEdit$ | async)" fxLayout="row" fxLayoutAlign="end center">
               <span *ngIf="entry?.full_workflow_path; else toolRemoveButton">
                 <button mat-flat-button matTooltip="Remove entry from collection." id="removeWorkflowButton" (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.full_workflow_path)">
                   <mat-icon>clear</mat-icon> Remove
