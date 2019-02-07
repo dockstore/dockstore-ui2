@@ -84,7 +84,7 @@ describe('Dockstore Home', () => {
         .contains('1 star_border');
     });
 
-    it.only('Tool Star Count', () => {
+    it('Tool Star Count', () => {
       cy.get(':nth-child(2) > .description-cell')
         .should('be.visible');
       cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');

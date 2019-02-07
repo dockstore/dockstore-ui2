@@ -30,7 +30,8 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 
 @Component({
   selector: 'app-list-containers',
-  templateUrl: './list.component.html'
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss']
 })
 export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
