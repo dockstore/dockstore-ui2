@@ -31,18 +31,16 @@ describe('Dockstore tool/workflow search table', () => {
   });
 
   it('Workflow Star Count', () => {
-    it('Workflow Star Count', () => {
-      cy.visit('/search');
-      cy.get(':nth-child(2) > .description-cell')
-        .should('be.visible');
-      cy.visit('/workflows/github.com/A/l');
-      cy.get('#starringButton')
-        .click();
-      cy.visit('/search');
-      cy.get('#workflowTab-link')
-        .click();
-      cy.get(':nth-child(2) > .description-cell')
-        .contains('1 star_border');
-    });
+    cy.visit('/search');
+    cy.get(':nth-child(2) > .description-cell')
+      .should('be.visible');
+    cy.visit('/workflows/github.com/A/l');
+    cy.get('#starringButton')
+      .click();
+    cy.visit('/search');
+    cy.get('#workflowTab-link')
+      .click();
+    cy.get(':nth-child(2) > .description-cell')
+      .contains('1 star_border');
   });
 });
