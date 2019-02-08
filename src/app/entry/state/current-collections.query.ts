@@ -8,10 +8,12 @@ import { CurrentCollectionsState, CurrentCollectionsStore } from './current-coll
   providedIn: 'root'
 })
 export class CurrentCollectionsQuery extends QueryEntity<CurrentCollectionsState, CollectionOrganization> {
-  currentCollections$ = this.selectAll().pipe(map((collectionOrganizations: Array<CollectionOrganization>) => {
+  currentCollectionOrganizations$ = this.selectAll().pipe(map((collectionOrganizations: Array<CollectionOrganization>) => {
     collectionOrganizations.sort((a, b) => this.sortCollectionOrganizations(a, b));
     return collectionOrganizations;
   }));
+  currentCollections$ = this.currentCollectionOrganizations$.pipe(
+    map(collectionOrganizations => collectionOrganizations.map(collectionOrganization => collectionOrganization.collection)));
   constructor(protected store: CurrentCollectionsStore) {
     super(store);
   }
@@ -19,12 +21,10 @@ export class CurrentCollectionsQuery extends QueryEntity<CurrentCollectionsState
   sortCollectionOrganizations(a: CollectionOrganization, b: CollectionOrganization): number {
     if (a.organization.name < b.organization.name) {
       return -1;
-    } else {
-      if (a.collection.name < b.collection.name) {
-        return -1;
-      } else {
-        return 1;
-      }
     }
+    if (a.organization.name > b.organization.name) {
+      return 1;
+    }
+    return a.collection.name < b.collection.name ? -1 : 1;
   }
 }

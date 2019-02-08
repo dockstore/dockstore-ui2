@@ -24,7 +24,7 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-      this.currentCollections$ = this.currentCollectionsQuery.currentCollections$;
+      this.currentCollections$ = this.currentCollectionsQuery.currentCollectionOrganizations$;
       this.isLoading$ = this.currentCollectionsQuery.selectLoading();
       this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
       // this.currentCollectionsService.get();
