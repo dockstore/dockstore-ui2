@@ -40,7 +40,7 @@ const APP_ROUTES: Routes = [
   { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Search Tools'} },
   { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows'} },
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Search Workflows'} },
-  { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule', data: { title: 'Dockstore | Organizations'} },
+  { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule'},
   { path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard], data: { title: 'Dockstore | My Tools'} },
   { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard], data: { title: 'Dockstore | My Workflows'}},
   { path: 'search*', component: SearchComponent, data: { title: 'Dockstore | Search'} },

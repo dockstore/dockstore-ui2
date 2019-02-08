@@ -17,11 +17,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 import { MyWorkflowsComponent } from './myworkflows.component';
+import {MyToolsComponent} from '../mytools/mytools.component';
 
 const MYTOOLS_ROUTES: Routes = [
   {
-    path: '', component: MyWorkflowsComponent, children: [
-      { path: '**', component: MyWorkflowComponent}
+    path: '', component: MyWorkflowsComponent, data: {title: 'Dockstore | My Workflows'}, children: [
+      { path: '**', component: MyWorkflowComponent, data: {title: 'Dockstore | My Workflows'},}
     ]
   }
 ];
