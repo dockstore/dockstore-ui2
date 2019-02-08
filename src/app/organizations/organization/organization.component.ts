@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Organisation } from '../../shared/swagger';
+import { Organization } from '../../shared/swagger';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
@@ -32,7 +32,7 @@ import {
   styleUrls: ['./organization.component.scss']
 })
 export class OrganizationComponent implements OnInit {
-  organization$: Observable<Organisation>;
+  organization$: Observable<Organization>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog
@@ -51,7 +51,7 @@ export class OrganizationComponent implements OnInit {
    * @memberof OrganizationComponent
    */
   editOrganization() {
-    const organizationSnapshot: Organisation = this.organizationQuery.getSnapshot().organization;
+    const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
     this.matDialog.open(RegisterOrganizationComponent,
       {
         data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
@@ -60,7 +60,7 @@ export class OrganizationComponent implements OnInit {
   }
 
   updateDescription() {
-    const organizationSnapshot: Organisation = this.organizationQuery.getSnapshot().organization;
+    const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
     const description = organizationSnapshot.description;
     this.matDialog.open(UpdateOrganizationDescriptionComponent, {
       data: { description: description }, width: '600px'

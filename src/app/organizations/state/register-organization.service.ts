@@ -7,7 +7,7 @@ import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Organisation, OrganisationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationService } from './organization.service';
 
 // This is recorded into the Akita state
@@ -49,7 +49,7 @@ export class RegisterOrganizationService {
   // The old regex in case needed
   // readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
-  constructor(private organisationsService: OrganisationsService, private alertService: AlertService, private matDialog: MatDialog,
+  constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
     private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
   }
 
@@ -84,7 +84,7 @@ export class RegisterOrganizationService {
     let location = null;
     let contactEmail = null;
     if (data.mode !== TagEditorMode.Add) {
-      const organization: Organisation = data.organization;
+      const organization: Organization = data.organization;
       name = organization.name;
       topic = organization.topic;
       link = organization.link;
@@ -130,18 +130,18 @@ export class RegisterOrganizationService {
       console.error('Something has gone terribly wrong with the form manager');
       return;
     } else {
-      let newOrganization: Organisation;
+      let newOrganization: Organization;
       newOrganization = {
         name: organizationFormState.name,
         topic: organizationFormState.topic,
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        status: Organisation.StatusEnum.PENDING,
+        status: Organization.StatusEnum.PENDING,
         users: []
       };
       this.alertService.start('Adding organization');
-      this.organisationsService.createOrganisation(newOrganization).subscribe((organization: Organisation) => {
+      this.organizationsService.createOrganization(newOrganization).subscribe((organization: Organization) => {
         this.matDialog.closeAll();
         if (organization) {
           this.router.navigate(['/organizations', organization.name]);
@@ -170,17 +170,17 @@ export class RegisterOrganizationService {
       console.error('Something has gone terribly wrong with the form manager');
       return;
     } else {
-      const editedOrganization: Organisation = {
+      const editedOrganization: Organization = {
         name: organizationFormState.name,
         topic: organizationFormState.topic,
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
-        status: Organisation.StatusEnum.PENDING,
+        status: Organization.StatusEnum.PENDING,
         users: []
       };
       this.alertService.start('Updating organization');
-      this.organisationsService.updateOrganisation(organizationId, editedOrganization).subscribe((organization: Organisation) => {
+      this.organizationsService.updateOrganization(organizationId, editedOrganization).subscribe((organization: Organization) => {
         this.matDialog.closeAll();
         if (organization) {
           this.alertService.detailedSuccess();

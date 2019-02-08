@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { Organisation, OrganisationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationsStateService {
 
   constructor(private organizationsStore: OrganizationsStore, private alertService: AlertService,
-    private organisationsService: OrganisationsService) {
+    private organizationsService: OrganizationsService) {
   }
 
   /**
@@ -19,10 +19,10 @@ export class OrganizationsStateService {
    */
   updateOrganizations(): void {
     this.alertService.start('Getting approved organizations');
-    this.organisationsService.getApprovedOrganisations().pipe(
+    this.organizationsService.getApprovedOrganizations().pipe(
       finalize(() => this.organizationsStore.setLoading(false)
       ))
-      .subscribe((organizations: Array<Organisation>) => {
+      .subscribe((organizations: Array<Organization>) => {
         this.updateOrganizationState(organizations);
         this.alertService.simpleSuccess();
       }, () => {
@@ -41,7 +41,7 @@ export class OrganizationsStateService {
     });
   }
 
-  updateOrganizationState(organizations: Array<Organisation>): void {
+  updateOrganizationState(organizations: Array<Organization>): void {
     this.organizationsStore.setState((state: OrganizationsState) => {
       return {
         ...state,
