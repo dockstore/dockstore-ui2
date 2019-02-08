@@ -18,29 +18,35 @@ import { resetDB, setTokenUserViewPort } from '../../support/commands';
 describe('Dockstore tool/workflow search table', () => {
   resetDB();
   setTokenUserViewPort();
-  it('Tool Star Count', () => {
+
+  function starColumnSearch(url: string, type: string) {
     cy.visit('/search');
-    cy.get(':nth-child(2) > .description-cell')
-      .should('be.visible');
-    cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
+    if(type === 'workflow'){
+      cy.get('#workflowTab-link')
+        .click();
+    }
+    cy.get('.mat-icon.star')
+      .should('not.exist');
+    cy.visit(url);
     cy.get('#starringButton')
       .click();
     cy.visit('/search');
-    cy.get(':nth-child(2) > .description-cell')
-      .contains('1 star_border');
+    if(type === 'workflow'){
+      cy.get('#workflowTab-link')
+        .click();
+    }
+    cy.get('.mat-icon.star')
+      .should('exist');
+    cy.visit(url);
+    cy.get('#starringButton')
+      .click();
+  }
+
+  it('Tool Star Count', () => {
+    starColumnSearch('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8', 'tool');
   });
 
   it('Workflow Star Count', () => {
-    cy.visit('/search');
-    cy.get(':nth-child(2) > .description-cell')
-      .should('be.visible');
-    cy.visit('/workflows/github.com/A/l');
-    cy.get('#starringButton')
-      .click();
-    cy.visit('/search');
-    cy.get('#workflowTab-link')
-      .click();
-    cy.get(':nth-child(2) > .description-cell')
-      .contains('1 star_border');
+    starColumnSearch('/workflows/github.com/A/l', 'workflow');
   });
 });
