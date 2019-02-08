@@ -17,13 +17,13 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Collection, OrganisationsService } from '../../shared/swagger';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
 import { OrganizationService } from './organization.service';
+
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
@@ -77,10 +77,10 @@ export class CollectionsService {
 
   @transaction()
   updateCollectionFromName() {
-    this.clearState();
+    this.collectionsStore.setActive(null);
     const collectionId = parseInt(this.organizationService.getNextSegmentPath('collections'), 10);
     const organizationId = parseInt(this.organizationService.getNextSegmentPath('organizations'), 10);
-    if (isNaN(organizationId)) {
+    if (isNaN(organizationId) || isNaN(collectionId)) {
       console.error('Organization name (instead of ID) currently not handled');
       return;
     }
