@@ -73,6 +73,7 @@ describe('Dockstore Organizations', () => {
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
     });
 
     it('have new fields reflected', () => {
