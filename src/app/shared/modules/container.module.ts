@@ -15,7 +15,9 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -24,7 +26,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
-
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
@@ -37,6 +38,8 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { ToolFileEditorComponent } from '../../container/tool-file-editor/tool-file-editor.component';
 import { VersionsContainerComponent } from '../../container/versions/versions.component';
 import { ViewContainerComponent } from '../../container/view/view.component';
+import { CurrentCollectionsModule } from '../../entry/current-collections.module';
+import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
@@ -58,9 +61,6 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
-import { RouterModule } from '@angular/router';
-import { AddEntryModule } from '../../organizations/collection/add-entry.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -82,6 +82,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
+    CurrentCollectionsModule,
     NgxMdModule.forRoot(),
     HeaderModule,
     SelectModule,

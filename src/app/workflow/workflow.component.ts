@@ -395,11 +395,4 @@ export class WorkflowComponent extends Entry {
       this.workflowEditData.labels.splice(index, 1);
     }
   }
-
-  addEntryToCollection() {
-    this.dialog.open(AddEntryComponent, {
-      data: { entryId: this.workflow.id }, width: '500px'
-    });
-  }
-
 }
