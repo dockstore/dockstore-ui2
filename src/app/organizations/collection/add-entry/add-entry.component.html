@@ -19,7 +19,7 @@
       <div fxFlex *ngIf="(collections$ | async) as collections">
         <ng-template #noCollections>
           <mat-card class="alert alert-info" role="alert">
-            <mat-icon>info</mat-icon> The selected organization has no collections
+            <mat-icon>info</mat-icon> The selected organization has no collections that can be added
           </mat-card>
         </ng-template>
         <mat-form-field id="selectCollection" *ngIf="selectedOrganisationId && collections && collections.length > 0; else noCollections">
@@ -35,7 +35,7 @@
 </div>
 
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-  <button mat-button id="closeDialogButton" (click)="closeDialog()">Close</button>
+  <button mat-button id="closeDialogButton" mat-dialog-close>Close</button>
   <button mat-flat-button id="addEntryToCollectionButton" [mat-dialog-close]="selectedCollectionId" color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
     <mat-icon>add</mat-icon>Add to collection
   </button>
