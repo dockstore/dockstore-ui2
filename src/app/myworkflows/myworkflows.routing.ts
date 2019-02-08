@@ -22,7 +22,7 @@ import {MyToolsComponent} from '../mytools/mytools.component';
 const MYTOOLS_ROUTES: Routes = [
   {
     path: '', component: MyWorkflowsComponent, data: {title: 'Dockstore | My Workflows'}, children: [
-      { path: '**', component: MyWorkflowComponent, data: {title: 'Dockstore | My Workflows'},}
+      { path: '**', component: MyWorkflowComponent, data: {title: 'Dockstore | My Workflows'} }
     ]
   }
 ];
