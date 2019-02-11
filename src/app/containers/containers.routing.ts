@@ -23,7 +23,7 @@ import { ContainerComponent } from '../container/container.component';
 const CONTAINERS_ROUTES: Routes = [
   {
     path: '', component: ContainersComponent, data: { title: 'Dockstore | Tool'}, children: [
-      { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tool'} },
+      { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tools'} }, // dockstore/tools
       { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool'} }
     ]
   }
