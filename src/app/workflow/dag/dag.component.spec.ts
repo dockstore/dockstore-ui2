@@ -17,7 +17,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
@@ -25,6 +24,7 @@ import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 import { DagQuery } from './state/dag.query';
 import { DagStore } from './state/dag.store';
+
 
 describe('DagComponent', () => {
   let component: DagComponent;
@@ -54,11 +54,6 @@ describe('DagComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should be able to toggleExpand', () => {
-    component.toggleExpand();
-    expect(component.expanded).toEqual(true);
   });
 
   it('dagQuery should return determine whether the dagResults are missing tools', () => {

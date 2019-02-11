@@ -14,4 +14,21 @@
  *    limitations under the License.
  */
 
- @import url(https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css);
+
+::backdrop {
+    background-color: white;
+}
+
+.btn-group button {
+    border-radius: 0
+}
+
+.big {
+    height: 90vh;
+    border: 2px solid #ccc;
+}
+
+.small {
+    height: 500px
+}

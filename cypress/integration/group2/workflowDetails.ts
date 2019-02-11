@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, goToTab, getTab } from '../../support/commands';
+import { getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
   resetDB();
@@ -114,14 +114,18 @@ describe('Dockstore Workflow Details', () => {
     });
 
     it('Change to fullscreen and back', () => {
+      cy.get('#cy').should('have.class', 'small');
+      cy.get('#cy').should('not.have.class', 'big');
       cy
         .get('#dag_fullscreen')
-        .click()
-        .get('#dag-col')
-        .should('have.class', 'fullscreen-element')
-        .get('#dag_fullscreen')
-        .click()
-        .should('not.have.class', 'fullscreen-element');
+        .click();
+        // Cypress or electron can't initiate fullscreen because:
+        // "Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture."
+        // .get('#cy')
+        // .should('have.class', 'big')
+        // .get('#dag_fullscreen')
+        // .click()
+        // .should('have.class', 'small');
     });
   });
 });
