@@ -76,7 +76,6 @@ export class CollectionsService {
 
   @transaction()
   updateCollectionFromName(organizationIdString: string, collectionIdString: string) {
-    this.clearState();
     const organizationId: number = parseInt(organizationIdString, 10);
     const collectionId: number = parseInt(collectionIdString, 10);
     if (isNaN(organizationId)) {
