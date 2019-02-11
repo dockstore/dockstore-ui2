@@ -19,12 +19,11 @@ import { of } from 'rxjs';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../../../shared/swagger';
+import { sampleWorkflow1, sampleWorkflow2, sampleWorkflowVersion } from '../../../test/mocked-objects';
 import { WdlViewerService } from './wdl-viewer.service';
 
 describe('Service: WDLViewer', () => {
   let wdlViewerService: WdlViewerService;
-  let workflow: ExtendedWorkflow;
-  let version: WorkflowVersion;
 
   const singleResponse = {
     'pipeline': {
@@ -76,6 +75,9 @@ describe('Service: WDLViewer', () => {
   if (Dockstore.FEATURES.enableWdlViewer) {
     it('should create single file workflow visualization', () => {
       let response;
+      const workflow: ExtendedWorkflow = sampleWorkflow1;
+      const version: WorkflowVersion = sampleWorkflowVersion;
+
       spyOn(wdlViewerService, 'createSingle').and.returnValue(of(singleResponse));
 
       wdlViewerService.createSingle(workflow, version)
@@ -92,6 +94,9 @@ describe('Service: WDLViewer', () => {
   if (Dockstore.FEATURES.enableWdlViewer) {
     it('should create multiple file workflow visualization', () => {
       let response;
+      const workflow: ExtendedWorkflow = sampleWorkflow2;
+      const version: WorkflowVersion = sampleWorkflowVersion;
+
       spyOn(wdlViewerService, 'createMultiple').and.returnValue(of(multipleResponse));
 
       wdlViewerService.createMultiple(workflow, version)

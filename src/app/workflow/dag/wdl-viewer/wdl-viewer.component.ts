@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, OnInit } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 
 import { Observable, Subject } from 'rxjs';
@@ -33,7 +33,7 @@ import { WdlViewerService } from './wdl-viewer.service';
   providers: [WdlViewerService],
   encapsulation: ViewEncapsulation.None,
 })
-export class WdlViewerComponent implements AfterViewInit, OnDestroy {
+export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() workflow: ExtendedWorkflow;
   @Input() expanded: boolean;
@@ -74,8 +74,8 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
 
           // Create the Epam pipeline builder visualization and attach the result to the DOM element
           this.pipelineBuilderResult$.pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading = false))
-            .subscribe((pipeline: any) => {
-                this.visualizer.attachTo(pipeline.model[0]);
+            .subscribe((res: any) => {
+                this.visualizer.attachTo(res.model[0]);
                 this.wdlViewerError = false;
               },
               (error) => {
