@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileService } from '../../../shared/file.service';
@@ -13,7 +14,8 @@ describe('WdlViewerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WdlViewerComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [FileService]
+      providers: [FileService],
+      imports: [HttpClientTestingModule]
     })
     .compileComponents();
   }));
