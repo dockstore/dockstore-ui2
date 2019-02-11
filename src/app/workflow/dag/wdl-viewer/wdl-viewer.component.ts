@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 
 import { Observable, Subject } from 'rxjs';
@@ -22,6 +22,7 @@ import { takeUntil, finalize } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
+import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { WdlViewerService } from './wdl-viewer.service';
 
@@ -55,7 +56,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   private visualizer: any;
 
   constructor(private wdlViewerService: WdlViewerService, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-              protected workflowsService: WorkflowsService) {
+              protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery) {
   }
 
   ngOnInit() {
@@ -92,14 +93,19 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   onVersionChange(value) {
+    if (this.visualizer) {
+      this.visualizer.clear();
+    }
     this.version = value;
   }
 
   reset() {
-    this.wdlViewerService.reset(this.visualizer);
+    this.visualizer.zoom.fitToPage();
   }
 
   download() {
-    this.wdlViewerService.download(this.visualizer, this.version.name, this.exportSVG);
-  }
+    const blob = new Blob([this.visualizer.paper.getSVG()], {type: 'text/plain;charset=utf-8'});
+    const name = this.workflowQuery.getActive().repository + '_' + this.version.name + '.svg';
+    this.renderer.setAttribute(this.exportSVG.nativeElement, 'href', URL.createObjectURL(blob));
+    this.renderer.setAttribute(this.exportSVG.nativeElement, 'download', name);  }
 }
