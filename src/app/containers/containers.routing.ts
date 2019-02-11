@@ -22,9 +22,9 @@ import { ContainerComponent } from '../container/container.component';
 
 const CONTAINERS_ROUTES: Routes = [
   {
-    path: '', component: ContainersComponent, children: [
-      { path: '', component: SearchContainersComponent },
-      { path: '**', component: ContainerComponent }
+    path: '', component: ContainersComponent, data: { title: 'Dockstore | Tool'}, children: [
+      { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tool'} },
+      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool'} }
     ]
   }
 ];
