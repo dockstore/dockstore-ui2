@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FileService } from '../../../shared/file.service';
 
 
 import { WdlViewerComponent } from './wdl-viewer.component';
@@ -11,7 +12,8 @@ describe('WdlViewerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WdlViewerComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [FileService]
     })
     .compileComponents();
   }));
