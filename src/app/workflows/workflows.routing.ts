@@ -23,7 +23,7 @@ import { WorkflowComponent } from '../workflow/workflow.component';
 const WORKFLOWS_ROUTES: Routes = [
   {
     path: '', component: WorkflowsComponent, data: { title: 'Dockstore | Workflow'}, children: [
-      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflow'} },
+      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows'} },
       { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow'} }
     ]
   }
