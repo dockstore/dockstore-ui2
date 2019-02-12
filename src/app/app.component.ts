@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title
   ) {}
+
   ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -22,7 +23,6 @@ export class AppComponent implements OnInit {
         while (route.firstChild) {
           route = route.firstChild;
         }
-
         return route;
       }),
       mergeMap((route) => route.data),
