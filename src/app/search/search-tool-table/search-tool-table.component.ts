@@ -17,7 +17,7 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<DockstoreTool>;
-  public displayedColumns = ['name', 'starredUsers', 'author', 'descriptorType', 'projectLinks', 'dockerPull'];
+  public displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers', 'dockerPull'];
   constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService,
     private listContainersService: ListContainersService, private searchQuery: SearchQuery) {
       super(dateService);
