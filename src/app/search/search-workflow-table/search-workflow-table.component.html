@@ -14,10 +14,6 @@
         <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}</mat-cell>
-    </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let workflow: Workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
@@ -32,6 +28,12 @@
         <a [href]="entry?.providerUrl">
           {{ entry?.provider }}
         </a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="starredUsers">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
+        <mat-icon class="star" *ngIf="workflow?.starredUsers?.length > 0 ">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

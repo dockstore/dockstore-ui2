@@ -64,7 +64,7 @@ export class RegisterOrganizationService {
     if (data.mode === TagEditorMode.Add) {
       this.createOrganization(form.value);
     } else {
-      this.updateOrganization(form.value, data.organization.id);
+      this.updateOrganization(form.value, data.organization.id, data.organization.description);
     }
   }
 
@@ -165,7 +165,8 @@ export class RegisterOrganizationService {
    * @returns {void}
    * @memberof RegisterOrganizationService
    */
-  updateOrganization(organizationFormState: FormsState['registerOrganization'], organizationId: number): void {
+  updateOrganization(organizationFormState: FormsState['registerOrganization'], organizationId: number,
+  organizationDescription: string): void {
     if (!organizationFormState) {
       console.error('Something has gone terribly wrong with the form manager');
       return;
@@ -177,6 +178,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
+        description: organizationDescription,
         users: []
       };
       this.alertService.start('Updating organization');
@@ -184,6 +186,8 @@ export class RegisterOrganizationService {
         this.matDialog.closeAll();
         if (organization) {
           this.alertService.detailedSuccess();
+          // Watch out if this function is executed on Dockstore UI where it's not /organizations/{organizationId}
+          this.router.navigate(['/organizations', editedOrganization.name]);
           this.organizationService.updateOrganizationFromID(organizationId);
         } else {
           console.error('No idea how it would successfully return no organization');

@@ -15,7 +15,7 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-workflow-table.component.scss']
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
-  public displayedColumns = ['repository', 'starredUsers', 'author', 'descriptorType', 'projectLinks'];
+  public displayedColumns = ['repository', 'author', 'descriptorType', 'starredUsers', 'projectLinks'];
   public dataSource: MatTableDataSource<Workflow>;
   constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService,
     private searchQuery: SearchQuery) {
