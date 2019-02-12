@@ -114,8 +114,8 @@ describe('Dockstore Workflow Details', () => {
     });
 
     it('Change to fullscreen and back', () => {
-      cy.get('#cy').should('have.class', 'small');
-      cy.get('#cy').should('not.have.class', 'big');
+      cy.get('#dagDisplay').should('have.class', 'small');
+      cy.get('#dagDisplay').should('not.have.class', 'big');
       cy
         .get('#dag_fullscreen')
         .click();

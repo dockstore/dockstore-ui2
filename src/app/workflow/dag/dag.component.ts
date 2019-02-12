@@ -32,7 +32,7 @@ import { DagStore } from './state/dag.store';
  * TODO: Not have a fixed 500px normal sized DAG in case people are using different height screens
  * TODO: Material tooltips to appear in fullscreen mode.
  * The matTooltip DOM is in a seperate div than the fullscreen element's div, that's why it doesn't show
- * TODO: Fix the initial loading of the page, it sometimes doesn't show if the browser is too slow.
+ * TODO: Fix the initial loading of the page, hard to reproduce but sometimes the width of the cytoscape viewport is extremely small
  * @export
  * @class DagComponent
  * @extends {EntryTab}
