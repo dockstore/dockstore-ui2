@@ -52,6 +52,10 @@ describe('Dropdown test', () => {
         .get('#starringButton')
         .should('not.be.visible');
     });
+
+    it('cy.should - assert that <title> is correct', () => {
+      cy.title().should('include', 'Dockstore');
+    });
   });
 
   describe('Go to accounts page', () => {
