@@ -16,8 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { filter, takeUntil } from 'rxjs/operators';
 import { toExtendSite } from '../shared/helpers';
 
 @Component({
@@ -29,10 +28,8 @@ export class HeaderComponent implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private router: Router) {
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isExtended = toExtendSite(this.router.url);
-      }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe((event) => {
+      this.isExtended = toExtendSite(this.router.url);
     });
   }
 

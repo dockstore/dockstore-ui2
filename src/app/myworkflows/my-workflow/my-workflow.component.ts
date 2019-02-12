@@ -19,16 +19,16 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router/';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
-import { catchError, takeUntil, finalize } from 'rxjs/operators';
-
+import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { includesValidation } from '../../shared/constants';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
 import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
-import { SessionQuery } from '../../shared/session/session.query';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -41,8 +41,6 @@ import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { includesValidation } from '../../shared/constants';
 
 /**
  * How the workflow selection works:
@@ -92,13 +90,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
      * due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      */
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        if (this.groupEntriesObject && this.groupSharedEntriesObject) {
-          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
-            this.groupEntriesObject.concat(this.groupSharedEntriesObject));
-          this.selectEntry(foundWorkflow);
-        }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(event => {
+      if (this.groupEntriesObject && this.groupSharedEntriesObject) {
+        const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+          this.groupEntriesObject.concat(this.groupSharedEntriesObject));
+        this.selectEntry(foundWorkflow);
       }
     });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
@@ -122,12 +118,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           this.alertService.detailedError(error);
           return observableOf([]);
         }))).pipe(finalize(() => this.alertService.detailedSuccess()),
-        takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
-          this.workflowService.setWorkflows(workflows);
-          this.workflowService.setSharedWorkflows(sharedWorkflows);
-        }, error => {
-          console.error('This should be impossible because both errors are caught already');
-        });
+          takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
+            this.workflowService.setWorkflows(workflows);
+            this.workflowService.setSharedWorkflows(sharedWorkflows);
+          }, error => {
+            console.error('This should be impossible because both errors are caught already');
+          });
       }
     });
 
