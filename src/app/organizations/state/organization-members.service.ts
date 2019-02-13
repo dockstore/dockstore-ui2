@@ -5,7 +5,7 @@ import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { OrganisationsService, OrganisationUser } from '../../shared/swagger';
+import { OrganizationsService, OrganizationUser } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { OrganizationMembersStore } from './organization-members.store';
 import { OrganizationStore } from './organization.store';
@@ -14,18 +14,18 @@ import { OrganizationStore } from './organization.store';
 export class OrganizationMembersService {
 
   constructor(private organizationMembersStore: OrganizationMembersStore,
-    private organisationsService: OrganisationsService, private userQuery: UserQuery, private organizationStore: OrganizationStore,
+    private organizationsService: OrganizationsService, private userQuery: UserQuery, private organizationStore: OrganizationStore,
     private alertService: AlertService, private matSnackBar: MatSnackBar) {
   }
 
   /**
    * Update the Akita store with the latest array of organization users
    *
-   * @param {OrganisationUser[]} organizationUsers  The latest array of organization users
+   * @param {OrganizationUser[]} organizationUsers  The latest array of organization users
    * @memberof OrganizationMembersService
    */
   @transaction()
-  updateAll(organizationUsers: OrganisationUser[]) {
+  updateAll(organizationUsers: OrganizationUser[]) {
     // Can't use set because Akita isn't able to figure out the entity id
     this.organizationMembersStore.remove();
     organizationUsers.forEach(organizationUser => {
@@ -33,11 +33,11 @@ export class OrganizationMembersService {
     });
   }
 
-  add(organizationMember: OrganisationUser) {
+  add(organizationMember: OrganizationUser) {
     this.organizationMembersStore.add(organizationMember);
   }
 
-  update(id, organizationMember: Partial<OrganisationUser>) {
+  update(id, organizationMember: Partial<OrganizationUser>) {
     this.organizationMembersStore.update(id, organizationMember);
   }
 
@@ -48,14 +48,14 @@ export class OrganizationMembersService {
   /**
    * Remove a user from an organization in Dockstore
    * Uses the alertService but setting the state loading/error too just in case it's used in the future
-   * @param {OrganisationUser} organizationUser  The organization user to remove from the organization
+   * @param {OrganizationUser} organizationUser  The organization user to remove from the organization
    * @memberof OrganizationMembersService
    */
-  removeUser(organizationUser: OrganisationUser) {
+  removeUser(organizationUser: OrganizationUser) {
     this.alertService.start('Removing user');
-    const organizationID: number = organizationUser.organisation.id;
+    const organizationID: number = organizationUser.organization.id;
     this.beforeCall();
-    this.organisationsService.deleteUserRole(organizationUser.user.id, organizationID)
+    this.organizationsService.deleteUserRole(organizationUser.user.id, organizationID)
       .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe(() => {
         this.alertService.simpleSuccess();
         this.updateCanEdit(organizationID);
@@ -69,14 +69,14 @@ export class OrganizationMembersService {
   /**
    * Figures out whether the user can edit the organization info
    *
-   * @param {Organisation} organization  The current organization being viewed
+   * @param {Organization} organization  The current organization being viewed
    * @returns {boolean}                  Whether the user belongs to this organization and can edit
    * @memberof OrganizationService
    */
   updateCanEdit(organizationID: number) {
     this.beforeCall();
-    this.organisationsService.getOrganisationMembers(organizationID)
-      .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe((organizationUsers: OrganisationUser[]) => {
+    this.organizationsService.getOrganizationMembers(organizationID)
+      .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe((organizationUsers: OrganizationUser[]) => {
         // This gets the current user's ID at this specific point in time.
         // If you can somehow manage to change users without this function triggering again, then it may lead to issues.
         // Example: a user has permissions to edit, logs out without changing the page and running this function somehow, the controls

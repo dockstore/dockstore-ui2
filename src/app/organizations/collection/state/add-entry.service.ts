@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AddEntryStore, AddEntryState } from './add-entry.store';
-import { OrganisationsService, UsersService, OrganisationUser, Collection } from '../../../shared/swagger';
+import { OrganizationsService, UsersService, OrganizationUser, Collection } from '../../../shared/swagger';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AddEntryService {
 
   constructor(private addEntryStore: AddEntryStore,
-    private organisationsService: OrganisationsService,
+    private organizationsService: OrganizationsService,
     private usersService: UsersService, private alertService: AlertService) {
   }
 
@@ -21,7 +21,7 @@ export class AddEntryService {
     this.usersService.getUserMemberships().pipe(
       finalize(() => this.addEntryStore.setLoading(false)
       ))
-      .subscribe((memberships: Array<OrganisationUser>) => {
+      .subscribe((memberships: Array<OrganizationUser>) => {
         this.updateMembershipsState(memberships);
         this.addEntryStore.setError(false);
       }, () => {
@@ -34,7 +34,7 @@ export class AddEntryService {
    * Updates the memberships state
    * @param memberships
    */
-  updateMembershipsState(memberships: Array<OrganisationUser>): void {
+  updateMembershipsState(memberships: Array<OrganizationUser>): void {
     this.addEntryStore.setState((state: AddEntryState) => {
       return {
         ...state,
@@ -49,12 +49,12 @@ export class AddEntryService {
   }
 
   /**
-   * Updates the set of collections for the given organisation
-   * @param orgId Id of organisation to grab collections
+   * Updates the set of collections for the given organization
+   * @param orgId Id of organization to grab collections
    */
   updateCollections(orgId: number): void {
     this.beforeCall();
-    this.organisationsService.getCollectionsFromOrganisation(orgId).pipe(
+    this.organizationsService.getCollectionsFromOrganization(orgId).pipe(
       finalize(() => this.addEntryStore.setLoading(false)
       ))
       .subscribe((collections: Array<Collection>) => {
@@ -81,13 +81,13 @@ export class AddEntryService {
 
   /**
    * Adds an entry to the given collection
-   * @param organisationId
+   * @param organizationId
    * @param collectionId
    * @param entryId
    */
-  addEntryToCollection(organisationId: number, collectionId: number, entryId: number): void {
+  addEntryToCollection(organizationId: number, collectionId: number, entryId: number): void {
     this.alertService.start('Adding to collection');
-    this.organisationsService.addEntryToCollection(organisationId, collectionId, entryId).pipe(
+    this.organizationsService.addEntryToCollection(organizationId, collectionId, entryId).pipe(
       finalize(() => this.addEntryStore.setLoading(false)
       ))
       .subscribe((collection: Collection) => {

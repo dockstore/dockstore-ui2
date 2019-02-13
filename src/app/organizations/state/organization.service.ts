@@ -18,14 +18,14 @@ import { PRIMARY_OUTLET, Router, UrlSegment } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
-import { Organisation, OrganisationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationStore } from './organization.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
 
-  constructor(private organizationStore: OrganizationStore, private router: Router, private organisationsService: OrganisationsService,
+  constructor(private organizationStore: OrganizationStore, private router: Router, private organizationsService: OrganizationsService,
     private organizationMembersService: OrganizationMembersService) {
   }
 
@@ -66,8 +66,8 @@ export class OrganizationService {
 
   updateOrganizationFromID(organizationID: number): void {
     this.organizationStore.setLoading(true);
-    this.organisationsService.getOrganisationById(organizationID).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organisation) => {
+    this.organizationsService.getOrganizationById(organizationID).pipe(finalize(() => this.organizationStore.setLoading(false)))
+      .subscribe((organization: Organization) => {
         this.organizationStore.setError(false);
         this.updateOrganization(organization);
         this.organizationMembersService.updateCanEdit(organizationID);
@@ -76,7 +76,7 @@ export class OrganizationService {
       });
   }
 
-  updateOrganization(organization: Organisation) {
+  updateOrganization(organization: Organization) {
     this.organizationStore.setState(state => {
       return {
         ...state,
@@ -87,8 +87,8 @@ export class OrganizationService {
 
   updateOrganizationFromName(name: string): void {
     this.organizationStore.setLoading(true);
-    this.organisationsService.getOrganisationByName(name).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organisation) => {
+    this.organizationsService.getOrganizationByName(name).pipe(finalize(() => this.organizationStore.setLoading(false)))
+      .subscribe((organization: Organization) => {
         this.organizationStore.setError(false);
         this.updateOrganization(organization);
         this.organizationMembersService.updateCanEdit(organization.id);

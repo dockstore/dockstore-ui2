@@ -22,7 +22,7 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
-import { Organisation } from '../../shared/swagger';
+import { Organization } from '../../shared/swagger';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationsQuery } from '../state/organizations.query';
@@ -35,7 +35,7 @@ import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
   styleUrls: ['./organizations.component.scss']
 })
 export class OrganizationsComponent extends Base implements OnInit {
-  public filteredOrganizations$: Observable<Array<Organisation>>;
+  public filteredOrganizations$: Observable<Array<Organization>>;
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;

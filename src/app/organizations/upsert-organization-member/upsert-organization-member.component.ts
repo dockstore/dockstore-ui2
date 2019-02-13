@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganisationUser } from '../../shared/swagger';
+import { OrganizationUser } from '../../shared/swagger';
 import { UpsertOrganizationMemberQuery } from '../state/upsert-organization-member.query';
 import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-organization-member.service';
 
@@ -23,7 +23,7 @@ export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
   ) {
     this.roleKeys = Object.keys(this.RoleEnum);
   }
-  RoleEnum = OrganisationUser.RoleEnum;
+  RoleEnum = OrganizationUser.RoleEnum;
   form: FormGroup;
   public title: string;
   public TagEditorMode = TagEditorMode;
