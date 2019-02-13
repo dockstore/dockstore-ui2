@@ -127,7 +127,7 @@ describe('Dockstore Organizations', () => {
     it('be able to see collection information', () => {
       cy.visit('/organizations/1/collections/1');
       cy.contains('veryFakeCollectionName').click();
-      // Should retrieve the organisation
+      // Should retrieve the organization
       cy.contains('Potatoe');
 
       // Should retrieve the collection
