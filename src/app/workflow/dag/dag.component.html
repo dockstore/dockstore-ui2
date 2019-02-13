@@ -32,12 +32,12 @@
             <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer">Common Workflow Language Viewer
           </label>
         </div>
-        <div *ngIf="enableWdlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (workflow$ | async)?.source_control_provider === 'GITHUB'" style="line-height: 20px;">
+        <div *ngIf="(isWDL$ | async) && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL" style="line-height: 20px;">
           <label class="radio-inline">
             <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
           </label>
           <label class="radio-inline">
-            <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">EPAM Pipeline Builder
+            <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">EPAM WDL Visualizer
           </label>
         </div>
         <div>
@@ -49,10 +49,7 @@
               <mat-icon id="resize-full-button" *ngIf="!expanded">fullscreen</mat-icon>
               <mat-icon id="resize-small-button" *ngIf="expanded">fullscreen_exit</mat-icon>
             </button>
-            <button *ngIf="dagType !== 'wdlviewer'" id="dag_reload" (click)="reset()" class="dag-button btn btn-default" matTooltip="Reset">
-              <mat-icon>control_camera</mat-icon>
-            </button>
-            <button *ngIf="dagType === 'wdlviewer' && enableWdlViewer" (click)="resetPipelineBuilder()" class="dag-button btn btn-default" matTooltip="Reset">
+            <button id="dag_reload" (click)="reset()" class="dag-button btn btn-default" matTooltip="Reset">
               <mat-icon>control_camera</mat-icon>
             </button>
           </div>
@@ -81,7 +78,7 @@
         [hidden]="dagType !== 'cwlviewer'" [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion"
         [refresh]="refreshCounter" [expanded]="expanded">
       </app-cwl-viewer>
-      <app-wdl-viewer *ngIf="enableWdlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (workflow$ | async)?.source_control_provider === 'GITHUB' && dagType === 'wdlviewer'"
+      <app-wdl-viewer *ngIf="(isWDL$ | async) && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (workflow$ | async)?.source_control_provider === 'GITHUB' && dagType === 'wdlviewer'"
         [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [expanded]="expanded" [descriptorType]="(descriptorType$ | async)">
       </app-wdl-viewer>
 

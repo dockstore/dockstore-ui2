@@ -18,13 +18,13 @@ import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChil
 import * as pipeline from 'pipeline-builder';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { takeUntil, finalize, filter } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
-import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
-import { WdlViewerService } from './wdl-viewer.service';
+import { ToolDescriptor, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
+import { WdlViewerService, WdlViewerPipeline } from './wdl-viewer.service';
 
 @Component({
   selector: 'app-wdl-viewer',
@@ -49,7 +49,6 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
   public errorMessage;
   public loading = false;
   public wdlViewerError = false;
-  protected files: Array<ToolFile>;
   protected entryType: ('tool' | 'workflow') = 'workflow';
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private version: WorkflowVersion;
@@ -67,14 +66,14 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
     this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement, false);
 
     // Retrieve all files for this workflow from Ga4ghFiles entity Store
-    this.wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(takeUntil(this.ngUnsubscribe))
+    this.wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(filter(file => file != null), takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
-        if (files.length > 0) {
+        if (files && files.length > 0) {
           this.pipelineBuilderResult$ = this.wdlViewerService.create(files, this.workflow, this.version);
 
           // Create the Epam pipeline builder visualization and attach the result to the DOM element
           this.pipelineBuilderResult$.pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading = false))
-            .subscribe((res: any) => {
+            .subscribe((res: WdlViewerPipeline) => {
                 this.visualizer.attachTo(res.model[0]);
                 this.wdlViewerError = false;
               },
@@ -92,7 +91,7 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  onVersionChange(value) {
+  onVersionChange(value: WorkflowVersion) {
     if (this.visualizer) {
       this.visualizer.clear();
     }

@@ -23,6 +23,15 @@ import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 
+/**
+ * Defines types for the response of Pipeline Builder library
+ */
+export interface WdlViewerPipeline {
+  status: boolean;
+  message: string;
+  model: Array<any>;
+  actions: Array<any>;
+}
 
 /**
  * Service for creating WDL workflow visualizations with EPAM Pipeline Builder library
@@ -45,7 +54,7 @@ export class WdlViewerService {
    * @param workflow
    * @param version
    */
-  create(files: Array<ToolFile>, workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<any> {
+  create(files: Array<ToolFile>, workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipeline> {
     if (files.length > 1) {
       return this.createMultiple(workflow, version);
     } else {
@@ -59,8 +68,9 @@ export class WdlViewerService {
    * @param workflow
    * @param version
    */
-  createSingle(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<any> {
+  createSingle(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipeline> {
     return this.workflowsService.wdl(workflow.id, version.name).pipe(switchMap(prim => {
+      // Errors thrown by the parse function are caught by the Observable being subscribed to
       return from(pipeline.parse(prim.content));
     }));
   }
@@ -71,7 +81,7 @@ export class WdlViewerService {
    * @param workflow
    * @param version
    */
-  createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<any> {
+  createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipeline> {
     return forkJoin(this.workflowsService.wdl(workflow.id, version.name), this.workflowsService.secondaryWdl(workflow.id, version.name))
       .pipe(
         switchMap(res => {
@@ -79,6 +89,7 @@ export class WdlViewerService {
           res[1].forEach(file => this.zip.file(file.path, file.content));
 
           return from(this.zip.generateAsync({type: 'blob'})).pipe(switchMap(zip => {
+            // Errors thrown by the parse function are caught by the Observable being subscribed to
             return from(pipeline.parse(res[0].content, {zipFile: zip}));
           }));
         })

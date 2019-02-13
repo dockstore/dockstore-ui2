@@ -62,6 +62,5 @@ export class Dockstore {
 
   static readonly FEATURES = {
     enableCwlViewer: true,
-    enableWdlViewer: true
   };
 }

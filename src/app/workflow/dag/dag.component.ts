@@ -38,7 +38,6 @@ import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 export class DagComponent extends EntryTab implements OnInit, OnChanges {
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
-  @Input() descriptorType: ToolDescriptor.TypeEnum;
 
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
@@ -54,7 +53,6 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   public missingTool$: Observable<boolean>;
   public dagType: 'classic' | 'cwlviewer' | 'wdlviewer' = 'classic';
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
-  public enableWdlViewer = Dockstore.FEATURES.enableWdlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
 
@@ -67,12 +65,15 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   reset() {
-    this.refreshCounter++;
-    this.refreshDocument(this.cy);
-  }
-
-  resetPipelineBuilder() {
-    this.wdlViewer.reset();
+    switch (this.dagType) {
+      case 'wdlviewer':
+        this.wdlViewer.reset();
+        break;
+      default:
+        this.refreshCounter++;
+        this.refreshDocument(this.cy);
+        break;
+    }
   }
 
   constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery) {
