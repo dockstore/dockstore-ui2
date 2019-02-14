@@ -17,7 +17,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Collection, OrganizationsService } from '../../shared/swagger';
 import { CollectionsQuery } from './collections.query';
@@ -51,7 +50,7 @@ export class CollectionsService {
       .subscribe((collections: Array<Collection>) => {
         this.addAll(collections);
         if (activeId) {
-          this.updateCollectionFromName();
+          this.updateCollectionFromName(organizationID.toString(), activeId.toString());
         }
       }, error => {
         console.error(error);
@@ -76,10 +75,9 @@ export class CollectionsService {
   }
 
   @transaction()
-  updateCollectionFromName() {
-    this.clearState();
-    const collectionId = parseInt(this.organizationService.getNextSegmentPath('collections'), 10);
-    const organizationId = parseInt(this.organizationService.getNextSegmentPath('organizations'), 10);
+  updateCollectionFromName(organizationIdString: string, collectionIdString: string) {
+    const organizationId: number = parseInt(organizationIdString, 10);
+    const collectionId: number = parseInt(collectionIdString, 10);
     if (isNaN(organizationId)) {
       console.error('Organization name (instead of ID) currently not handled');
       return;
@@ -110,7 +108,7 @@ export class CollectionsService {
       ))
       .subscribe((collection: Collection) => {
         this.alertService.simpleSuccess();
-        this.updateCollectionFromName();
+        this.updateCollectionFromName(organizationId.toString(), collectionId.toString());
         this.matDialog.closeAll();
       }, () => {
         this.collectionsStore.setError(true);

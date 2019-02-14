@@ -1,14 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
-
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
+import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
-import { OrganizationQuery } from '../state/organization.query';
-import { OrganizationService } from '../state/organization.service';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
+import { OrganizationQuery } from '../state/organization.query';
+import { OrganizationService } from '../state/organization.service';
+
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -50,18 +51,19 @@ export class CollectionComponent implements OnInit {
               private organizationQuery: OrganizationQuery,
               private organizationService: OrganizationService,
               private collectionsService: CollectionsService,
-              public dialog: MatDialog
+              public dialog: MatDialog, private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    const organizationId = this.activatedRoute.snapshot.paramMap.get('id');
+    const collectionId = this.activatedRoute.snapshot.paramMap.get('cid');
     this.loadingCollection$ = this.collectionsQuery.loading$;
     this.collection$ = this.collectionsQuery.selectActive();
     this.loadingOrganization$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organization$ = this.organizationQuery.organization$;
-
-    this.collectionsService.updateCollectionFromName();
-    this.organizationService.updateOrganizationFromNameORID();
+    this.organizationService.updateOrganizationFromNameORID(organizationId);
+    this.collectionsService.updateCollectionFromName(organizationId, collectionId);
   }
 
   /**

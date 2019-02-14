@@ -15,13 +15,13 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material';
-import { Router, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
+
 
 @Component({
   template: `<router-outlet></router-outlet>`
@@ -50,28 +50,4 @@ describe('OrganizationService', () => {
   it('should be created', () => {
     expect(organizationService).toBeDefined();
   });
-
-  it('can get number organizationId', fakeAsync(() => {
-    const router: Router = TestBed.get(Router);
-    router.navigateByUrl('/organizations/1/collections/2').then(() => {
-      expect(router.url).toBe('/organizations/1/collections/2');
-      expect(organizationService.getNextSegmentPath('organizations')).toEqual('1');
-    });
-  }));
-
-  it('can get string organizationId', fakeAsync(() => {
-    const router: Router = TestBed.get(Router);
-    router.navigateByUrl('/organizations/potato/collections/2').then(() => {
-      expect(router.url).toBe('/organizations/potato/collections/2');
-      expect(organizationService.getNextSegmentPath('organizations')).toEqual('potato');
-    });
-  }));
-
-  it('can get collectionId', fakeAsync(() => {
-    const router: Router = TestBed.get(Router);
-    router.navigateByUrl('/organizations/1/collections/2').then(() => {
-      expect(router.url).toBe('/organizations/1/collections/2');
-      expect(organizationService.getNextSegmentPath('collections')).toEqual('2');
-    });
-  }));
 });

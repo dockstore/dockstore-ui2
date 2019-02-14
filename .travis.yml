@@ -7,6 +7,11 @@ services:
   - postgresql
 jdk:
   - oraclejdk8
+cache:
+  npm: true # this caches ~/.npm folder on Travis
+  directories:
+    # we also need to cache folder with Cypress binary
+    - ~/.cache
 env:
   global:
     - WEBSERVICE_VERSION="1.6.0-alpha.6"
