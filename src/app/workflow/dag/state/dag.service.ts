@@ -315,6 +315,15 @@ export class DagService {
     node.on('mouseout mousedown', destroy);
   }
 
+  loadExtensions() {
+    cytoscape.use(dagreExtension);
+    // Check if extension is registered already. If it is, don't try to re-register.
+    // Typedef doesn't have 2 argument overload, using <any> to override.
+    if (typeof (<any>cytoscape)('core', 'popper') !== 'function') {
+      cytoscape.use(popperExtension);
+    }
+  }
+
   refreshDocument(cy: cytoscape.Core, element): cytoscape.Core {
     const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
     if (dagResult) {
@@ -328,12 +337,6 @@ export class DagService {
         style: this.style,
         elements: dagResult
       };
-      cytoscape.use(dagreExtension);
-      // Check if extension is registered already. If it is, don't try to re-register.
-      // Typedef doesn't have 2 argument overload, using <any> to override.
-      if (typeof (<any>cytoscape)('core', 'popper') !== 'function') {
-        cytoscape.use(popperExtension);
-      }
       cy = cytoscape(cytoscapeOptions);
 
       // Sets up popups on all nodes (except begin and end)

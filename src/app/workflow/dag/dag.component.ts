@@ -32,7 +32,7 @@ import { DagStore } from './state/dag.store';
  * TODO: Not have a fixed 500px normal sized DAG in case people are using different height screens
  * TODO: Material tooltips to appear in fullscreen mode.
  * The matTooltip DOM is in a seperate div than the fullscreen element's div, that's why it doesn't show
- * TODO: Fix the initial loading of the page, hard to reproduce but sometimes the width of the cytoscape viewport is extremely small
+ * TODO: Performance improvements
  * @export
  * @class DagComponent
  * @extends {EntryTab}
@@ -51,7 +51,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
 
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
-  @ViewChild('dagHolder') elementRef: ElementRef;
+  @ViewChild('dagHolder') dagHolderElement: ElementRef;
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
@@ -64,7 +64,6 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
-
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -91,20 +90,25 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   /**
    * For some reason the cy element is not guaranteed to be visible and ready when ngAfterViewinit is called.
    * Was using window.requestAnimationFrame() before, but now using https://github.com/angular/angular/issues/8804 for performance
+   * Still could use more performance optimizations
    *
    * @memberof DagComponent
    */
   refreshDocument(cy: cytoscape.Core) {
-    this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => {
-      this.cy = this.dagService.refreshDocument(cy, this.cyElement.nativeElement);
-    }));
+    if (this.cyElement && this.cyElement.nativeElement.offsetHeight >= 500) {
+      this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => {
+        this.cy = this.dagService.refreshDocument(cy, this.cyElement.nativeElement);
+      }));
+    } else {
+      requestAnimationFrame(() => this.refreshDocument(cy));
+    }
   }
 
   toggleExpand() {
     if (this.expanded) {
       this.dagService.closeFullscreen();
     } else {
-      const nativeElement: (HTMLElement | any) = this.elementRef.nativeElement;
+      const nativeElement: (HTMLElement | any) = this.dagHolderElement.nativeElement;
       this.dagService.openFullscreen(nativeElement);
     }
   }
@@ -115,6 +119,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.dagResult$ = this.dagQuery.dagResults$;
     this.workflow$ = this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
+    this.dagService.loadExtensions();
   }
 
   ngAfterViewInit(): void {
