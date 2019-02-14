@@ -68,7 +68,7 @@
         are missing from Github repo.
       </mat-card>
     </div>
-    <div #dagDisplay [className]="expanded ? 'big': 'small'">
+    <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big': 'small'">
       <app-cwl-viewer *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"
         [hidden]="dagType !== 'cwlviewer'" [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [refresh]="refreshCounter"
         [expanded]="expanded">
