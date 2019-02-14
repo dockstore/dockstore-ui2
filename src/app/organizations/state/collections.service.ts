@@ -108,7 +108,7 @@ export class CollectionsService {
       ))
       .subscribe((collection: Collection) => {
         this.alertService.simpleSuccess();
-        this.updateCollectionFromName(organisationId.toString(), collectionId.toString());
+        this.updateCollectionFromName(organizationId.toString(), collectionId.toString());
         this.matDialog.closeAll();
       }, () => {
         this.collectionsStore.setError(true);
