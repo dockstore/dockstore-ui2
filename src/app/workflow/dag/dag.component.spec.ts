@@ -19,12 +19,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
+import { DagStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 import { DagQuery } from './state/dag.query';
 import { DagStore } from './state/dag.store';
-
 
 describe('DagComponent', () => {
   let component: DagComponent;
@@ -49,6 +48,8 @@ describe('DagComponent', () => {
     fixture = TestBed.createComponent(DagComponent);
     component = fixture.componentInstance;
     dagQuery = TestBed.get(DagQuery);
+    // Mocking services that are injected inside the component
+    (component as any).dagService = new DagStubService();
     fixture.detectChanges();
   });
 
