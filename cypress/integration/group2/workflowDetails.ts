@@ -121,11 +121,7 @@ describe('Dockstore Workflow Details', () => {
         .click();
         // Cypress or electron can't initiate fullscreen because:
         // "Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture."
-        // .get('#cy')
-        // .should('have.class', 'big')
-        // .get('#dag_fullscreen')
-        // .click()
-        // .should('have.class', 'small');
+        // TODO: Figure out how to test it
     });
   });
 });
