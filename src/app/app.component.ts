@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { filter, map, mergeMap} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
+import {filter, map, mergeMap, takeUntil} from 'rxjs/operators';
+import {Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +13,11 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
   ) {}
 
   private subscription: Subscription;
+  private unsubscribe = new Subject<void>();
 
   ngOnInit() {
     this.subscription = this.router.events.pipe(
@@ -29,13 +30,12 @@ export class AppComponent implements OnInit, OnDestroy {
         return route;
       }),
       mergeMap((route) => route.data),
-    ).subscribe((event) => this.titleService.setTitle(event['title']));
+    ).pipe(takeUntil(this.unsubscribe)).subscribe((event) => this.titleService.setTitle(event['title']));
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
 
