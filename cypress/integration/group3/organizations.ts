@@ -215,4 +215,16 @@ describe('Dockstore Organizations', () => {
       cy.contains('mat-card-title', 'potato').should('not.be.visible');
     });
   });
+
+  describe('Verify title tags ', () => {
+    it('Specific organization', () => {
+      cy.visit('/organizations/1');
+      cy.title().should('eq', 'Dockstore | Organization');
+    });
+
+    it('Collection', () => {
+      cy.visit('/organizations/1/collections/1');
+      cy.title().should('eq', 'Dockstore | Collection');
+    });
+  });
 });

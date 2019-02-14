@@ -20,8 +20,8 @@ import { MyToolsComponent } from './mytools.component';
 
 const MYTOOLS_ROUTES: Routes = [
   {
-    path: '', component: MyToolsComponent, children: [
-      { path: '**', component: MyToolComponent}
+    path: '', component: MyToolsComponent, data: {title: 'Dockstore | My Tools'}, children: [
+      { path: '**', component: MyToolComponent, data: {title: 'Dockstore | My Tools'}}
     ]
   }
 ];
