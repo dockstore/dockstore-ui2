@@ -3,15 +3,15 @@ import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Organisation } from '../../shared/swagger';
+import { Organization } from '../../shared/swagger';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationsQuery extends Query<OrganizationsState> {
-  organizations$: Observable<Array<Organisation>> = this.select(state => state.organizations);
+  organizations$: Observable<Array<Organization>> = this.select(state => state.organizations);
   searchName$: Observable<string> = this.select(state => state.searchName);
-  filteredOrganizations$: Observable<Array<Organisation>> = combineLatest(this.organizations$, this.searchName$).pipe(
-    map(([organizations, searchName]: [Array<Organisation>, string]) => {
+  filteredOrganizations$: Observable<Array<Organization>> = combineLatest(this.organizations$, this.searchName$).pipe(
+    map(([organizations, searchName]: [Array<Organization>, string]) => {
       return this.filterOrganizations(organizations, searchName);
     }));
 
@@ -26,12 +26,12 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
    * Case insensitive
    * Partial match
    *
-   * @param {Array<Organisation>} organizations  List of all approved organizations
+   * @param {Array<Organization>} organizations  List of all approved organizations
    * @param {string} searchName                  Search string
-   * @returns {(Array<Organisation> | null)}     Array of organizations that have been filtered by string
+   * @returns {(Array<Organization> | null)}     Array of organizations that have been filtered by string
    * @memberof OrganizationsQuery
    */
-  filterOrganizations(organizations: Array<Organisation>, searchName: string): Array<Organisation> | null {
+  filterOrganizations(organizations: Array<Organization>, searchName: string): Array<Organization> | null {
     searchName = searchName.toLowerCase();
     if (organizations) {
       return searchName ? organizations.filter(organization => organization.name.toLowerCase().includes(searchName)

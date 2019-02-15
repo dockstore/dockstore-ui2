@@ -5,29 +5,29 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError } from 'rxjs';
 
-import { OrganisationsService } from '../../shared/swagger';
+import { OrganizationsService } from '../../shared/swagger';
 import { RegisterOrganizationService } from './register-organization.service';
 import { FormBuilder } from '@angular/forms';
 
-let organisationsServiceSpy: jasmine.SpyObj<OrganisationsService>;
+let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
 
 describe('RegisterOrganizationService', () => {
   let registerOrganizationService: RegisterOrganizationService;
   const exampleFormState = { name: '', topic: '', link: '', location: '', contactEmail: '' };
   beforeEach(() => {
-    const organisationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganisation', 'updateOrganisation']);
+    const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganization', 'updateOrganization']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
       providers: [RegisterOrganizationService, FormBuilder,
-        { provide: OrganisationsService, useValue: organisationsServiceStub },
+        { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub }
       ],
       imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule]
     });
 
     registerOrganizationService = TestBed.get(RegisterOrganizationService);
-    organisationsServiceSpy = TestBed.get(OrganisationsService);
+    organizationsServiceSpy = TestBed.get(OrganizationsService);
     matDialogSpy = TestBed.get(MatDialog);
   });
 
@@ -36,47 +36,47 @@ describe('RegisterOrganizationService', () => {
   });
 
   it('should try to add an organization', () => {
-    organisationsServiceSpy.createOrganisation.and.returnValue(observableOf(null));
+    organizationsServiceSpy.createOrganization.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
     registerOrganizationService.createOrganization(exampleFormState);
 
-    // Expected createOrganisation call to be called (and it will succeed)
-    expect(organisationsServiceSpy.createOrganisation.calls.count()).toBe(1, 'spy method was called once');
+    // Expected createOrganization call to be called (and it will succeed)
+    expect(organizationsServiceSpy.createOrganization.calls.count()).toBe(1, 'spy method was called once');
     // Upon success, the dialog would close
     expect(matDialogSpy.closeAll.calls.count()).toBe(1, 'spy method was not called once');
   });
 
   it('should handle error when updating an organization', () => {
-    organisationsServiceSpy.updateOrganisation.and.returnValue(throwError('test 404 error'));
+    organizationsServiceSpy.updateOrganization.and.returnValue(throwError('test 404 error'));
 
-    registerOrganizationService.updateOrganization(exampleFormState, 1);
+    registerOrganizationService.updateOrganization(exampleFormState, 1, 'potato');
 
-    // Expected createOrganisation call to be called (even though it will fail)
-    expect(organisationsServiceSpy.updateOrganisation.calls.count()).toBe(1, 'spy method was called once');
+    // Expected createOrganization call to be called (even though it will fail)
+    expect(organizationsServiceSpy.updateOrganization.calls.count()).toBe(1, 'spy method was called once');
     // Upon error, the dialog would not close
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });
 
   it('should try to update an organization', () => {
-    organisationsServiceSpy.updateOrganisation.and.returnValue(observableOf(null));
+    organizationsServiceSpy.updateOrganization.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
-    registerOrganizationService.updateOrganization(exampleFormState, 1);
+    registerOrganizationService.updateOrganization(exampleFormState, 1, 'potato');
 
-    // Expected createOrganisation call to be called (and it will succeed)
-    expect(organisationsServiceSpy.updateOrganisation.calls.count()).toBe(1, 'spy method was called once');
+    // Expected createOrganization call to be called (and it will succeed)
+    expect(organizationsServiceSpy.updateOrganization.calls.count()).toBe(1, 'spy method was called once');
     // Upon success, the dialog would close
     expect(matDialogSpy.closeAll.calls.count()).toBe(1, 'spy method was not called once');
   });
 
   it('should handle error when adding an organization', () => {
-    organisationsServiceSpy.createOrganisation.and.returnValue(throwError('test 404 error'));
+    organizationsServiceSpy.createOrganization.and.returnValue(throwError('test 404 error'));
 
     registerOrganizationService.createOrganization(exampleFormState);
 
-    // Expected createOrganisation call to be called (even though it will fail)
-    expect(organisationsServiceSpy.createOrganisation.calls.count()).toBe(1, 'spy method was called once');
+    // Expected createOrganization call to be called (even though it will fail)
+    expect(organizationsServiceSpy.createOrganization.calls.count()).toBe(1, 'spy method was called once');
     // Upon error, the dialog would not close
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });

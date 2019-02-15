@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganisationUser } from '../../shared/swagger';
+import { OrganizationUser } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrganizationMembersService } from '../state/organization-members.service';
@@ -33,7 +33,7 @@ import { UpsertOrganizationMemberComponent } from '../upsert-organization-member
   styleUrls: ['./organization-members.component.scss']
 })
 export class OrganizationMembersComponent implements OnInit {
-  organizationMembers$: Observable<OrganisationUser[]>;
+  organizationMembers$: Observable<OrganizationUser[]>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   canEditMembership$: Observable<boolean>;
@@ -51,11 +51,11 @@ export class OrganizationMembersComponent implements OnInit {
     this.loading$ = this.organizationMembersQuery.selectLoading();
   }
 
-  add(organizationMember: OrganisationUser) {
+  add(organizationMember: OrganizationUser) {
     this.organizationMembersService.add(organizationMember);
   }
 
-  update(id: ID, organizationMember: Partial<OrganisationUser>) {
+  update(id: ID, organizationMember: Partial<OrganizationUser>) {
     this.organizationMembersService.update(id, organizationMember);
   }
 
@@ -66,10 +66,10 @@ export class OrganizationMembersComponent implements OnInit {
   /**
    * Opens the dialog for editing a user of an organization
    *
-   * @param {OrganisationUser} organizationUser  The organization user to edit
+   * @param {OrganizationUser} organizationUser  The organization user to edit
    * @memberof OrganizationMembersComponent
    */
-  editUser(organizationUser: OrganisationUser) {
+  editUser(organizationUser: OrganizationUser) {
     this.alertService.clearEverything();
     this.matDialog.open(UpsertOrganizationMemberComponent,
       { data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role }, width: '600px' });
@@ -78,10 +78,10 @@ export class OrganizationMembersComponent implements OnInit {
   /**
    * Handles removing a user from an organization
    *
-   * @param {OrganisationUser} organizationUser
+   * @param {OrganizationUser} organizationUser
    * @memberof OrganizationMembersComponent
    */
-  removeUser(organizationUser: OrganisationUser) {
+  removeUser(organizationUser: OrganizationUser) {
     this.organizationMembersService.removeUser(organizationUser);
   }
 

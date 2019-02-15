@@ -95,7 +95,7 @@
           </span>
           <ng-template #noCommitID><span>{{ version.reference || 'n/a' }}</span></ng-template>
         </td>
-        <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ getDateTimeString(version.last_modified) }}</td>
+        <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ version.last_modified | date:'medium'}}</td>
         <td>
           <mat-icon *ngIf="version.valid">check</mat-icon>
           <mat-icon *ngIf="!version.valid">close</mat-icon>

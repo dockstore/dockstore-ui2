@@ -16,8 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
 import { toExtendSite } from '../shared/helpers';
 import { UserQuery } from '../shared/user/user.query';
@@ -26,7 +25,6 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
-
 
 @Component({
   selector: 'app-navbar',
@@ -45,10 +43,8 @@ export class NavbarComponent extends Logout implements OnInit {
     router: Router,
     private userQuery: UserQuery) {
     super(trackLoginService, logoutService, router);
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isExtended = toExtendSite(this.router.url);
-      }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.isExtended = toExtendSite(this.router.url);
     });
   }
 

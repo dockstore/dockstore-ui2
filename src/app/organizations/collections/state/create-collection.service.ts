@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
-import { Collection, OrganisationsService } from '../../../shared/swagger';
+import { Collection, OrganizationsService } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionStore } from './create-collection.store';
@@ -22,7 +22,7 @@ export interface FormsState {
 @Injectable({ providedIn: 'root' })
 export class CreateCollectionService {
 
-  constructor(private createCollectionStore: CreateCollectionStore, private organisationsService: OrganisationsService,
+  constructor(private createCollectionStore: CreateCollectionStore, private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private matSnackBar: MatSnackBar,
     private collectionsService: CollectionsService, private builder: FormBuilder, private alertService: AlertService) {
   }
@@ -47,7 +47,7 @@ export class CreateCollectionService {
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
     this.alertService.start('Creating collection');
-    this.organisationsService.createCollection(organizationID, collection).pipe(
+    this.organizationsService.createCollection(organizationID, collection).pipe(
       finalize(() => this.createCollectionStore.setLoading(false)))
       .subscribe((newCollection: Collection) => {
         this.createCollectionStore.setError(false);
@@ -138,7 +138,7 @@ export class CreateCollectionService {
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
     this.alertService.start('Updating collection');
-    this.organisationsService.updateCollection(organizationID, collectionID, collection).pipe(
+    this.organizationsService.updateCollection(organizationID, collectionID, collection).pipe(
       finalize(() => this.createCollectionStore.setLoading(false)))
       .subscribe((newCollection: Collection) => {
         this.createCollectionStore.setError(false);

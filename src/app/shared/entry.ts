@@ -17,11 +17,10 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
-import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router/';
+import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { filter, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
@@ -33,6 +32,7 @@ import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
+
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
@@ -74,10 +74,9 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.subscriptions();
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd),
+    takeUntil(this.ngUnsubscribe)).subscribe((event: RouterEvent) => {
         this.parseURL(event.url);
-      }
     });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());

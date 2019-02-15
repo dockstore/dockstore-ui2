@@ -1,9 +1,24 @@
-import { ElementRef, Injectable, Renderer2 } from '@angular/core';
-import { CytoscapeOptions } from 'cytoscape';
+/*
+ *    Copyright 2019 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+import { DOCUMENT } from '@angular/common';
+import { ElementRef, Inject, Injectable, Renderer2 } from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import { CytoscapeOptions } from 'cytoscape';
 import dagreExtension from 'cytoscape-dagre';
 import popperExtension from 'cytoscape-popper';
-
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { DynamicPopover } from '../dynamicPopover.model';
@@ -99,7 +114,7 @@ export class DagService {
   ];
 
   constructor(private workflowsService: WorkflowsService, private dagStore: DagStore, private dagQuery: DagQuery,
-    private renderer: Renderer2, private workflowQuery: WorkflowQuery) {
+    private renderer: Renderer2, private workflowQuery: WorkflowQuery, @Inject(DOCUMENT) private document: HTMLDocument) {
   }
 
   getTooltipText(name: string, tool: string, type: string, docker: string, run: string): string {
@@ -129,6 +144,57 @@ export class DagService {
     } else {
       return `<div><b>Run: </b>` + run + `</div>`;
     }
+  }
+
+  /**
+   * Make element fullscreen.
+   * TODO: Possibly move this function out into a shared service because it may be useful elsewhere
+   *
+   * @param {((HTMLElement | any))} nativeElement  The element to make fullscreen.
+   * any because mozRequestFullScreen, webkitRequestFullscreen, and msRequestFullscreen not found
+   * @memberof DagComponent
+   */
+  openFullscreen(nativeElement: (HTMLElement | any)) {
+    if (nativeElement.requestFullscreen) {
+      nativeElement.requestFullscreen();
+    } else if (nativeElement.mozRequestFullScreen) {
+      /* Firefox */
+      nativeElement.mozRequestFullScreen();
+    } else if (nativeElement.webkitRequestFullscreen) {
+      /* Chrome, Safari and Opera */
+      nativeElement.webkitRequestFullscreen();
+    } else if (nativeElement.msRequestFullscreen) {
+      /* IE/Edge */
+      nativeElement.msRequestFullscreen();
+    }
+  }
+
+  /**
+   * Exit fullscreen
+   * TODO: Possibly move this function out into a shared service because it may be useful elsewhere
+   *
+   * @memberof DagComponent
+   */
+  closeFullscreen() {
+    if (this.document.exitFullscreen) {
+      this.document.exitFullscreen();
+    }
+  }
+
+
+  /**
+   * Determines whether the page is in fullscreen mode or not
+   *
+   * @returns {boolean}
+   * @memberof DagService
+   */
+  isFullScreen(): boolean {
+    // any because those properties apparently don't exist in type def
+    const document: (HTMLDocument | any) = this.document;
+    return (document.fullscreenElement && document.fullscreenElement !== null) ||
+      (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+      (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+      (document.msFullscreenElement && document.msFullscreenElement !== null);
   }
 
   getDockerText(link: string, docker: string) {
@@ -197,14 +263,19 @@ export class DagService {
    * @returns {HTMLDivElement}  The tooltip HTML element that still uses qtip styles
    * @memberof DagService
    */
-  private createPopupHTML(name: string, runText: string): HTMLDivElement {
+  private createPopupHTML(name: string, runText: string, cyElement: HTMLDivElement): HTMLDivElement {
     const div = document.createElement('div');
     div.innerHTML = `
     <div class="qtip-titlebar">${name}</div>
     <div class="qtip-content">${runText}</div>
     `;
     div.setAttribute('class', 'opaq qtip-bootstrap bootstrap-tooltip-z-index');
-    document.body.appendChild(div);
+    if (this.isFullScreen()) {
+      // If fullscreen append it to the cy element because the cdk-overlay-container div is not in the fullscreen element
+      cyElement.appendChild(div);
+    } else {
+      document.body.appendChild(div);
+    }
     return div;
   }
 
@@ -215,7 +286,7 @@ export class DagService {
    * @param {cytoscape.NodeSingular} node  The node to create event handlers for
    * @memberof DagService
    */
-  private setDAGNodeTooltip(node: cytoscape.NodeSingular): void {
+  private setDAGNodeTooltip(node: cytoscape.NodeSingular, element: HTMLDivElement): void {
     let popper: any;
     const name = node.data('name');
     const tool = node.data('tool');
@@ -227,7 +298,7 @@ export class DagService {
       // popper() doesn't exist on type cytoscape.NodeSingular because type definitions don't know about extensions
       popper = (<any>node).popper({
         content: () => {
-          return this.createPopupHTML(name, runText);
+          return this.createPopupHTML(name, runText, element);
         },
         popper: {removeOnDestroy: true}
       });
@@ -244,6 +315,15 @@ export class DagService {
     node.on('mouseout mousedown', destroy);
   }
 
+  loadExtensions() {
+    cytoscape.use(dagreExtension);
+    // Check if extension is registered already. If it is, don't try to re-register.
+    // Typedef doesn't have 2 argument overload, using <any> to override.
+    if (typeof (<any>cytoscape)('core', 'popper') !== 'function') {
+      cytoscape.use(popperExtension);
+    }
+  }
+
   refreshDocument(cy: cytoscape.Core, element): cytoscape.Core {
     const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
     if (dagResult) {
@@ -257,17 +337,11 @@ export class DagService {
         style: this.style,
         elements: dagResult
       };
-      cytoscape.use(dagreExtension);
-      // Check if extension is registered already. If it is, don't try to re-register.
-      // Typedef doesn't have 2 argument overload, using <any> to override.
-      if (typeof (<any>cytoscape)('core', 'popper') !== 'function') {
-        cytoscape.use(popperExtension);
-      }
       cy = cytoscape(cytoscapeOptions);
 
       // Sets up popups on all nodes (except begin and end)
       const nodes: cytoscape.NodeCollection = cy.nodes().filter(node => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
-      nodes.forEach((node: cytoscape.NodeSingular) => this.setDAGNodeTooltip(node));
+      nodes.forEach((node: cytoscape.NodeSingular) => this.setDAGNodeTooltip(node, element));
 
       cy.on('mouseout', 'node', function () {
         const node = this;

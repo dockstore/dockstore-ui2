@@ -14,11 +14,13 @@
  *    limitations under the License.
  */
 
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Base } from '../shared/base';
 import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
-import { Location } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-sponsors',
@@ -26,17 +28,16 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./sponsors.component.css'],
   providers: [SponsorsService]
 })
-export class SponsorsComponent implements OnInit {
+export class SponsorsComponent extends Base implements OnInit {
 
   public sponsors: Sponsor[];
   public partners: Sponsor[];
   public showSecondRow = false;
 
   constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
-    router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+    super();
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
         this.hideSecondRow();
-      }
     });
   }
 

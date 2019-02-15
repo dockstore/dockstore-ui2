@@ -52,6 +52,10 @@ describe('Dropdown test', () => {
         .get('#starringButton')
         .should('not.be.visible');
     });
+
+    it('cy.should - assert that <title> is correct', () => {
+      cy.title().should('include', 'Dockstore');
+    });
   });
 
   describe('Go to accounts page', () => {
@@ -80,14 +84,14 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/organisations/all?type=pending',
+          url: '/organizations/all?type=pending',
           response: pendingOrganizations
         });
 
       // Logged in user has two memberships, one is not accepted
       const memberships = [
-        {id: 1, role: 'MAINTAINER', accepted: false, organisation: { id: 1000, status: 'PENDING', name: 'orgOne'}},
-        {id: 2, role: 'MAINTAINER', accepted: true, organisation: { id: 1001, status: 'PENDING', name: 'orgTwo'}}
+        {id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne'}},
+        {id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo'}}
       ];
       cy
         .server()
@@ -104,13 +108,13 @@ describe('Dropdown test', () => {
     });
 
     it('Should have two pending orgs', () => {
-      // Endpoint should return only one pending organisation after approval
+      // Endpoint should return only one pending organization after approval
       const pendingOrganizations = [{ id: 1001, name: 'OrgTwo', status: 'PENDING' }];
       cy
         .server()
         .route({
           method: 'GET',
-          url: '/organisations/all?type=pending',
+          url: '/organizations/all?type=pending',
           response: pendingOrganizations
         });
 
@@ -119,7 +123,7 @@ describe('Dropdown test', () => {
       .server()
       .route({
         method: 'POST',
-        url: '/organisations/1000/approve',
+        url: '/organizations/1000/approve',
         response: []
       });
 
@@ -143,14 +147,14 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'POST',
-          url: '/organisations/1000/invitation?accept=true',
+          url: '/organizations/1000/invitation?accept=true',
           response: []
       });
 
       // Membership should have two accepted entries
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: true, organisation: { id: 1000, status: 'PENDING',  name: 'orgOne' }},
-        { id: 2, role: 'MAINTAINER', accepted: true, organisation: { id: 1001, status: 'PENDING', name: 'orgTwo' }}
+        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 1000, status: 'PENDING',  name: 'orgOne' }},
+        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' }}
       ];
       cy
         .server()

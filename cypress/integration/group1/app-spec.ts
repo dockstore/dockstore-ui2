@@ -69,4 +69,36 @@ describe('Dockstore Home', () => {
       cy.get('#youtubeModal').should('not.be.visible');
     });
   });
+
+  function starColumn(url: string, type: string) {
+    if(type === 'workflow'){
+      cy.get('#workflowTab-link')
+        .click();
+    }
+    cy.get('.mat-icon.star')
+      .should('not.exist');
+    cy.visit(url);
+    cy.get('#starringButton')
+      .click();
+    cy.visit('');
+    if(type === 'workflow'){
+      cy.get('#workflowTab-link')
+        .click();
+    }
+    cy.get('.mat-icon.star')
+      .should('exist');
+    cy.visit(url);
+    cy.get('#starringButton')
+      .click();
+  }
+
+  describe('Workflow and Tool Star Count', () => {
+    it('Workflow Star Count', () => {
+      starColumn('/workflows/github.com/A/l', 'workflow');
+    });
+
+    it('Tool Star Count', () => {
+      starColumn('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8', 'tool');
+    });
+  });
 });

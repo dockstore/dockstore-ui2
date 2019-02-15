@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { finalize } from 'rxjs/operators';
 
-import { OrganisationsService, Organisation } from '../../../shared/swagger';
+import { OrganizationsService, Organization } from '../../../shared/swagger';
 import { OrganizationQuery } from '../../state/organization.query';
 import { OrganizationService } from '../../state/organization.service';
 import { UpdateOrganizationDescriptionStore } from './update-organization-description.store';
@@ -13,7 +13,7 @@ import { UpdateOrganizationDescriptionStore } from './update-organization-descri
 export class UpdateOrganizationDescriptionService {
 
   constructor(private updateOrganizationDescriptionStore: UpdateOrganizationDescriptionStore,
-    private http: HttpClient, private formBuilder: FormBuilder, private organisationsService: OrganisationsService,
+    private http: HttpClient, private formBuilder: FormBuilder, private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog) {
   }
 
@@ -30,9 +30,9 @@ export class UpdateOrganizationDescriptionService {
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.updateOrganizationDescriptionStore.setError(false);
     this.updateOrganizationDescriptionStore.setLoading(true);
-    this.organisationsService.updateOrganizationDescription(organizationID, newDescription)
+    this.organizationsService.updateOrganizationDescription(organizationID, newDescription)
       .pipe(finalize(() => this.updateOrganizationDescriptionStore.setLoading(false)))
-      .subscribe((updatedOrganization: Organisation) => {
+      .subscribe((updatedOrganization: Organization) => {
         this.organizationService.updateOrganizationFromID(organizationID);
         this.matDialog.closeAll();
       }, error => {

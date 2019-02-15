@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
-import { Collection, OrganisationUser } from '../../../shared/swagger';
+import { Collection, OrganizationUser } from '../../../shared/swagger';
 import { AddEntryQuery } from '../state/add-entry.query';
 import { AddEntryService } from '../state/add-entry.service';
 
@@ -11,10 +11,10 @@ import { AddEntryService } from '../state/add-entry.service';
   styleUrls: ['./add-entry.component.scss']
 })
 export class AddEntryComponent implements OnInit {
-  public memberships$: Observable<Array<OrganisationUser>>;
+  public memberships$: Observable<Array<OrganizationUser>>;
   public collections$: Observable<Array<Collection>>;
   isLoading$: Observable<boolean>;
-  selectedOrganisationId: number;
+  selectedOrganizationId: number;
   selectedCollectionId: number;
   constructor(private addEntryQuery: AddEntryQuery,
               private addEntryService: AddEntryService,
@@ -30,10 +30,10 @@ export class AddEntryComponent implements OnInit {
   }
 
   /**
-   * Called when organisation is selected from dropdown
-   * @param event event.value is the id of the organisation to add
+   * Called when organization is selected from dropdown
+   * @param event event.value is the id of the organization to add
    */
-  onOrganisationChange(event) {
+  onOrganizationChange(event) {
     this.selectedCollectionId = null;
     this.addEntryService.updateCollections(event.value);
   }
@@ -42,8 +42,8 @@ export class AddEntryComponent implements OnInit {
    * Attempts to add the entry to the selected collection
    */
   addToCollection() {
-    if (this.selectedCollectionId && this.selectedOrganisationId) {
-      this.addEntryService.addEntryToCollection(this.selectedOrganisationId, this.selectedCollectionId, this.data.entryId);
+    if (this.selectedCollectionId && this.selectedOrganizationId) {
+      this.addEntryService.addEntryToCollection(this.selectedOrganizationId, this.selectedCollectionId, this.data.entryId);
     }
   }
 }

@@ -73,6 +73,7 @@ describe('Dockstore Organizations', () => {
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
     });
 
     it('have new fields reflected', () => {
@@ -126,7 +127,7 @@ describe('Dockstore Organizations', () => {
     it('be able to see collection information', () => {
       cy.visit('/organizations/1/collections/1');
       cy.contains('veryFakeCollectionName').click();
-      // Should retrieve the organisation
+      // Should retrieve the organization
       cy.contains('Potatoe');
 
       // Should retrieve the collection
@@ -212,6 +213,18 @@ describe('Dockstore Organizations', () => {
     it('be able to Delete organization user', () => {
       cy.contains('mat-card-title', 'potato').parent().parent().parent().contains(/^Remove$/).should('not.be.disabled').click();
       cy.contains('mat-card-title', 'potato').should('not.be.visible');
+    });
+  });
+
+  describe('Verify title tags ', () => {
+    it('Specific organization', () => {
+      cy.visit('/organizations/1');
+      cy.title().should('eq', 'Dockstore | Organization');
+    });
+
+    it('Collection', () => {
+      cy.visit('/organizations/1/collections/1');
+      cy.title().should('eq', 'Dockstore | Collection');
     });
   });
 });

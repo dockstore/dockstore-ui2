@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { Organisation } from '../../shared/swagger';
+import { Organization } from '../../shared/swagger';
 
 export interface OrganizationState {
-   organization: Organisation;
+   organization: Organization;
    canEdit: boolean;
    canEditMembership: boolean;
 }
