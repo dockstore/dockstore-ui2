@@ -57,7 +57,7 @@
     <mat-form-field>
       <input type="text" matInput formControlName="avatarUrl" placeholder="Image URL">
       <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must be a valid URL and start with http:// or https://</mat-error>
-      <mat-hint>Link to your organization logo image.</mat-hint>
+      <mat-hint>Link to your organization logo image. Resized to 150 by 150 image.</mat-hint>
     </mat-form-field>
   </form>
 </div>
