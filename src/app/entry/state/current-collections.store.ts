@@ -5,7 +5,7 @@ import { CollectionOrganization } from '../../shared/swagger';
 export interface CurrentCollectionsState extends EntityState<CollectionOrganization> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'current-collections', idKey: 'collection.id' })
+@StoreConfig({ name: 'current-collections', idKey: 'collectionId' })
 export class CurrentCollectionsStore extends EntityStore<CurrentCollectionsState, CollectionOrganization> {
 
   constructor() {

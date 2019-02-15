@@ -16,9 +16,7 @@ export class CurrentCollectionsService {
     if (id) {
       this.entriesService.entryCollections(id).subscribe((CollectionOrganizations: Array<CollectionOrganization>) => {
         this.currentCollectionsStore.remove();
-        CollectionOrganizations.forEach(collectionOrganization => {
-          this.currentCollectionsStore.createOrReplace(collectionOrganization.collection.id, collectionOrganization);
-        });
+        this.currentCollectionsStore.set(CollectionOrganizations);
       });
     } else {
       this.currentCollectionsStore.remove();

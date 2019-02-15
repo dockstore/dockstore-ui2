@@ -10,7 +10,7 @@ import { AddEntryState, AddEntryStore } from './add-entry.store';
 export class AddEntryQuery extends Query<AddEntryState> {
   memberships$: Observable<Array<OrganizationUser>> = this.select(state => state.memberships);
   collections$: Observable<Array<Collection>> = this.select(state => state.collections);
-  filteredCollections$: Observable<Array<Collection>> = combineLatest(this.collections$, this.currentCollectionsQuery.currentCollections$)
+  filteredCollections$: Observable<Array<Collection>> = combineLatest(this.collections$, this.currentCollectionsQuery.currentCollectionIds$)
     .pipe(map(([collections, collectionOrganisation]) => this.filteredCollections(collections, collectionOrganisation)));
   isLoading$: Observable<boolean> = this.selectLoading();
   constructor(protected store: AddEntryStore, private currentCollectionsQuery: CurrentCollectionsQuery) {
@@ -25,10 +25,10 @@ export class AddEntryQuery extends Query<AddEntryState> {
    * @returns {Array<Collection>}  A filtered array of collections that the entry can be added to
    * @memberof AddEntryQuery
    */
-  filteredCollections(collections: Array<Collection>, existingCollections: Array<Collection>): Array<Collection> {
+  filteredCollections(collections: Array<Collection>, existingCollectionIds: Array<number>): Array<Collection> {
     if (collections) {
       return collections.
-        filter(collection => !existingCollections.some(existingCollection => existingCollection.id === collection.id));
+        filter(collection => !existingCollectionIds.some(existingCollectionId => existingCollectionId === collection.id));
     } else {
       return null;
     }
