@@ -211,7 +211,7 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to Delete organization user', () => {
-      cy.get('#remove-user-1').should('not.be.disabled').click();
+      cy.get('#remove-user-0').should('not.be.disabled').click();
       cy.contains('mat-card-title', 'potato').should('not.be.visible');
     });
   });
