@@ -1,7 +1,7 @@
 <div [ngClass]="{'fullscreen-svg-element': expanded}" class="wdl-viewer">
   <mat-card *ngIf="wdlViewerError" class="alert alert-warning">
     <mat-icon>warning</mat-icon>&nbsp;
-    <div>EPAM Pipeline Builder was unable to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
+    <div>EPAM WDL Visualizer was unable to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
     <div>{{errorMessage}}</div>
   </mat-card>
   <div>

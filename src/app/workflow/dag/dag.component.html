@@ -32,7 +32,7 @@
             <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer">Common Workflow Language Viewer
           </label>
         </div>
-        <div *ngIf="(isWDL$ | async) && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL" style="line-height: 20px;">
+        <div *ngIf="(isWDL$ | async)" style="line-height: 20px;">
           <label class="radio-inline">
             <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
           </label>
@@ -57,7 +57,7 @@
       </div>
 
       <div *ngIf="dagType === 'classic' && !(isNFL$ | async)">
-        <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) || !selectedVersion?.valid">
+        <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
           <mat-icon>warning</mat-icon>&nbsp;
           <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
             A Descriptor associated with this workflow could not be found.
@@ -78,7 +78,7 @@
         [hidden]="dagType !== 'cwlviewer'" [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion"
         [refresh]="refreshCounter" [expanded]="expanded">
       </app-cwl-viewer>
-      <app-wdl-viewer *ngIf="(isWDL$ | async) && (descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (workflow$ | async)?.source_control_provider === 'GITHUB' && dagType === 'wdlviewer'"
+      <app-wdl-viewer *ngIf="(isWDL$ | async) && (workflow$ | async)?.source_control_provider === 'GITHUB' && dagType === 'wdlviewer'"
         [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [expanded]="expanded" [descriptorType]="(descriptorType$ | async)">
       </app-wdl-viewer>
 
