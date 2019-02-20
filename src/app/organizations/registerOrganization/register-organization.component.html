@@ -54,10 +54,19 @@
       <mat-error *ngIf="contactEmail.hasError('email')">Please enter a valid contact email address</mat-error>
       <mat-hint>Once approved, this email address will be publicly visible</mat-hint>
     </mat-form-field>
+    <!--<mat-form-field>-->
+      <!--<input type="radio" matInput value="Use email to get associated gravatar" formControlName="avatarURLOption" placeholder="Avatar URL Option">Use email to get associated gravatar-->
+    <!--</mat-form-field>-->
+    <!--<mat-form-field>-->
+      <!--<input type="radio" matInput value="Enter URL of github avatar" formControlName="avatarURLOption" placeholder="Avatar URL Option">-->
+    <!--</mat-form-field>-->
+    <!--<mat-form-field>-->
+      <!--<input type="radio" matInput value="Decide later" formControlName="avatarURLOption" placeholder="Avatar URL Option">-->
+    <!--</mat-form-field>-->
     <mat-form-field>
       <input type="text" matInput formControlName="avatarUrl" placeholder="Image URL">
-      <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must be a valid URL and start with http:// or https://</mat-error>
-      <mat-hint>Link to your organization logo image. Resized to 150 by 150 image.</mat-hint>
+      <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must be to avatar in github. (e.g. https://avatars3.githubusercontent.com) </mat-error>
+      <mat-hint>Link to your organization github avatar</mat-hint>
     </mat-form-field>
   </form>
 </div>
