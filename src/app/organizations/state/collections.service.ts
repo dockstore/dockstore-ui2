@@ -17,9 +17,8 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { Collection, OrganisationsService } from '../../shared/swagger';
+import { Collection, OrganizationsService } from '../../shared/swagger';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
@@ -28,7 +27,7 @@ import { OrganizationService } from './organization.service';
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
 
-  constructor(private collectionsStore: CollectionsStore, private organisationsService: OrganisationsService,
+  constructor(private collectionsStore: CollectionsStore, private organizationsService: OrganizationsService,
     private alertService: AlertService, private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery, private collectionsQuery: CollectionsQuery,
     private matDialog: MatDialog) {
@@ -46,12 +45,12 @@ export class CollectionsService {
     this.collectionsStore.setLoading(true);
     const activeId: ID = this.collectionsQuery.getActiveId();
     this.collectionsStore.remove();
-    this.organisationsService.getCollectionsFromOrganisation(organizationID).pipe(
+    this.organizationsService.getCollectionsFromOrganization(organizationID).pipe(
       finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe((collections: Array<Collection>) => {
         this.addAll(collections);
         if (activeId) {
-          this.updateCollectionFromName();
+          this.updateCollectionFromName(organizationID.toString(), activeId.toString());
         }
       }, error => {
         console.error(error);
@@ -76,17 +75,16 @@ export class CollectionsService {
   }
 
   @transaction()
-  updateCollectionFromName() {
-    this.clearState();
-    const collectionId = parseInt(this.organizationService.getNextSegmentPath('collections'), 10);
-    const organizationId = parseInt(this.organizationService.getNextSegmentPath('organizations'), 10);
+  updateCollectionFromName(organizationIdString: string, collectionIdString: string) {
+    const organizationId: number = parseInt(organizationIdString, 10);
+    const collectionId: number = parseInt(collectionIdString, 10);
     if (isNaN(organizationId)) {
       console.error('Organization name (instead of ID) currently not handled');
       return;
     }
     this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.organisationsService.getCollectionById(organizationId, collectionId).pipe(finalize(() => this.collectionsStore.setLoading(false)))
+    this.organizationsService.getCollectionById(organizationId, collectionId).pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe((collection: Collection) => {
         this.collectionsStore.setError(false);
         this.collectionsStore.createOrReplace(collection.id, collection);
@@ -97,20 +95,20 @@ export class CollectionsService {
   }
 
   /**
-   * Removes the given entry from the collection for the given organisation
-   * @param organisationId
+   * Removes the given entry from the collection for the given organization
+   * @param organizationId
    * @param collectionId
    * @param entryId
    * @param entryName
    */
-  removeEntryFromCollection(organisationId: number, collectionId: number, entryId: number, entryName: string) {
+  removeEntryFromCollection(organizationId: number, collectionId: number, entryId: number, entryName: string) {
     this.alertService.start('Removing entry ' + entryName);
-    this.organisationsService.deleteEntryFromCollection(organisationId, collectionId, entryId).pipe(
+    this.organizationsService.deleteEntryFromCollection(organizationId, collectionId, entryId).pipe(
       finalize(() => this.collectionsStore.setLoading(false)
       ))
       .subscribe((collection: Collection) => {
         this.alertService.simpleSuccess();
-        this.updateCollectionFromName();
+        this.updateCollectionFromName(organizationId.toString(), collectionId.toString());
         this.matDialog.closeAll();
       }, () => {
         this.collectionsStore.setError(true);

@@ -9,9 +9,9 @@
           </mat-card>
         </ng-template>
         <mat-form-field *ngIf="memberships && memberships.length > 0; else noMemberships">
-          <mat-select id="selectOrganization" placeholder="Organization" [(value)]="selectedOrganisationId" (selectionChange)="onOrganisationChange($event)">
-            <mat-option *ngFor="let membership of memberships" [value]="membership.organisation.id">
-              {{membership.organisation.name}}
+          <mat-select id="selectOrganization" placeholder="Organization" [(value)]="selectedOrganizationId" (selectionChange)="onOrganizationChange($event)">
+            <mat-option *ngFor="let membership of memberships" [value]="membership.organization.id">
+              {{membership.organization.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -22,8 +22,8 @@
             <mat-icon>info</mat-icon> The selected organization has no collections
           </mat-card>
         </ng-template>
-        <mat-form-field id="selectCollection" *ngIf="selectedOrganisationId && collections && collections.length > 0; else noCollections">
-          <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganisationId">
+        <mat-form-field id="selectCollection" *ngIf="selectedOrganizationId && collections && collections.length > 0; else noCollections">
+          <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganizationId">
             <mat-option *ngFor="let collection of collections" [value]="collection.id">
               {{collection.name}}
             </mat-option>
@@ -36,7 +36,7 @@
 
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
   <button mat-button id="closeDialogButton" (click)="closeDialog()">Close</button>
-  <button mat-flat-button id="addEntryToCollectionButton" [mat-dialog-close]="selectedCollectionId" color="primary" [disabled]="!selectedOrganisationId || !selectedCollectionId" (click)="addToCollection()">
+  <button mat-flat-button id="addEntryToCollectionButton" [mat-dialog-close]="selectedCollectionId" color="primary" [disabled]="!selectedOrganizationId || !selectedCollectionId" (click)="addToCollection()">
     <mat-icon>add</mat-icon>Add to collection
   </button>
 </div>

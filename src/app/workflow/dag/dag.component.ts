@@ -13,11 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, NgZone, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { filterNil } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -29,19 +28,32 @@ import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
+/**
+ * This is the DAG tab
+ * TODO: Not have a fixed 500px normal sized DAG in case people are using different height screens
+ * TODO: Material tooltips to appear in fullscreen mode.
+ * The matTooltip DOM is in a seperate div than the fullscreen element's div, that's why it doesn't show
+ * TODO: Performance improvements
+ * @export
+ * @class DagComponent
+ * @extends {EntryTab}
+ * @implements {OnInit}
+ * @implements {OnChanges}
+ */
 @Component({
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagStore, DagQuery, DagService]
 })
-export class DagComponent extends EntryTab implements OnInit, OnChanges {
+export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterViewInit {
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
 
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
   @ViewChild(WdlViewerComponent) wdlViewer: WdlViewerComponent;
+  @ViewChild('dagHolder') dagHolderElement: ElementRef;
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
@@ -55,13 +67,18 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
-
-  @HostListener('window:keyup.escape', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (this.expanded) {
-      this.expanded = false;
-      this.refreshDocument(this.cy);
-    }
+  /**
+   * Listen to when the document enters or exits fullscreen.
+   * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
+   *
+   * @param {KeyboardEvent} event
+   * @memberof DagComponent
+   */
+  @HostListener('document:fullscreenchange', ['$event'])
+  FSHandler(event: KeyboardEvent) {
+    // expanded is used for HTML styling and depends solely on whether the screen is actually fullscreen or not
+    this.expanded = this.dagService.isFullScreen();
+    this.refreshDocument(this.cy);
   }
 
   reset() {
@@ -76,32 +93,34 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
     }
   }
 
-  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery) {
+  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery, private ngZone: NgZone) {
     super();
   }
 
   /**
    * For some reason the cy element is not guaranteed to be visible and ready when ngAfterViewinit is called.
-   * Using window.requestAnimationFrame() to wait for the element to be visible before subscribing to dagResult$
-   * In practice, the wait lasts around 181ms and recursively calls step once
+   * Was using window.requestAnimationFrame() before, but now using https://github.com/angular/angular/issues/8804 for performance
+   * Still could use more performance optimizations
    *
    * @memberof DagComponent
    */
   refreshDocument(cy: cytoscape.Core) {
-    const self = this;
-    function step() {
-      if (self.cyElement) {
-        self.cy = self.dagService.refreshDocument(cy, self.cyElement.nativeElement);
-      } else {
-        window.requestAnimationFrame(step);
-      }
+    if (this.cyElement && this.cyElement.nativeElement.offsetHeight >= 500) {
+      this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => {
+        this.cy = this.dagService.refreshDocument(cy, this.cyElement.nativeElement);
+      }));
+    } else {
+      requestAnimationFrame(() => this.refreshDocument(cy));
     }
-    window.requestAnimationFrame(step);
   }
 
   toggleExpand() {
-    this.expanded = !this.expanded;
-    this.refreshDocument(this.cy);
+    if (this.expanded) {
+      this.dagService.closeFullscreen();
+    } else {
+      const nativeElement: (HTMLElement | any) = this.dagHolderElement.nativeElement;
+      this.dagService.openFullscreen(nativeElement);
+    }
   }
 
   ngOnInit() {
@@ -111,6 +130,10 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges {
     this.dagResult$ = this.dagQuery.dagResults$;
     this.workflow$ = this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
+    this.dagService.loadExtensions();
+  }
+
+  ngAfterViewInit(): void {
     this.dagResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe)).subscribe(dagResults => {
       this.refreshDocument(this.cy);
     }, error => console.error('Something went terribly wrong with dagResult$'));

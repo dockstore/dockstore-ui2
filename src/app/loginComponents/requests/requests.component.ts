@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
 import { Observable } from 'rxjs';
-import { Organisation, OrganisationUser } from '../../shared/swagger';
+import { Organization, OrganizationUser } from '../../shared/swagger';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
 
@@ -51,9 +51,9 @@ export interface DialogData {
   styleUrls: ['./requests.component.scss']
 })
 export class RequestsComponent implements OnInit {
-  public allPendingOrganizations$: Observable<Array<Organisation>>;
-  public myOrganizationInvites$: Observable<Array<OrganisationUser>>;
-  public myPendingOrganizationRequests$: Observable<Array<OrganisationUser>>;
+  public allPendingOrganizations$: Observable<Array<Organization>>;
+  public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
+  public myPendingOrganizationRequests$: Observable<Array<OrganizationUser>>;
   isLoading$: Observable<boolean>;
   currentOrgId: number;
   isAdmin$: Observable<boolean>;

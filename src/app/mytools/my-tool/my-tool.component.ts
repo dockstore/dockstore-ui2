@@ -20,14 +20,14 @@ import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { includesValidation } from '../../shared/constants';
+import { filter, takeUntil } from 'rxjs/operators';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { includesValidation } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
@@ -43,7 +43,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
+
 
 @Component({
   selector: 'app-my-tool',
@@ -70,14 +70,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
-      if (event instanceof NavigationEnd) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
         if (this.groupEntriesObject) {
           const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
             this.groupEntriesObject);
           this.selectEntry(foundTool);
         }
-      }
     });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {

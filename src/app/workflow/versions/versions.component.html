@@ -99,7 +99,7 @@
       <ng-template #noCommitID><span>{{version?.name}}</span></ng-template>
     </td>
       <td *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
-      <td>{{ getDateTimeString(version.last_modified) }}</td>
+      <td>{{ version.last_modified | date:'medium' }}</td>
       <td>
           <mat-icon *ngIf="version.valid">check</mat-icon>
           <mat-icon *ngIf="!version.valid">close</mat-icon>

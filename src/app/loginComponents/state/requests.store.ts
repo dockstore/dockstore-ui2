@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Request } from './request.model';
-import { Organisation, OrganisationUser } from '../../shared/swagger';
+import { Organization, OrganizationUser } from '../../shared/swagger';
 
 export interface RequestsState extends EntityState<Request> {
-  allPendingOrganizations: Array<Organisation>;
-  myMemberships: Array<OrganisationUser>;
-  myOrganizationInvites: Array<OrganisationUser>;
-  myPendingOrganizationRequests: Array<OrganisationUser>;
+  allPendingOrganizations: Array<Organization>;
+  myMemberships: Array<OrganizationUser>;
+  myOrganizationInvites: Array<OrganizationUser>;
+  myPendingOrganizationRequests: Array<OrganizationUser>;
 }
 
 export function createInitialState(): RequestsState {

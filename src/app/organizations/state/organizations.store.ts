@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { Organisation } from '../../shared/swagger';
+import { Organization } from '../../shared/swagger';
 
 export interface OrganizationsState {
-   organizations: Array<Organisation>;
+   organizations: Array<Organization>;
    searchName: string;
 }
 

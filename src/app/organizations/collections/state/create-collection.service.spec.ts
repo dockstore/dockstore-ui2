@@ -20,13 +20,13 @@ import { MatDialog, MatDialogModule, MatSnackBarModule } from '@angular/material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of as observableOf, throwError } from 'rxjs';
 
-import { OrganisationsService } from '../../../shared/swagger';
+import { OrganizationsService } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
 
-let organisationsServiceSpy: jasmine.SpyObj<OrganisationsService>;
+let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
 let collectionsServiceSpy: jasmine.SpyObj<CollectionsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
@@ -37,7 +37,7 @@ describe('CreateCollectionService', () => {
   const exampleFormState = { name: '', description: '' };
 
   beforeEach(() => {
-    const organisationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createCollection', 'updateCollection']);
+    const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createCollection', 'updateCollection']);
     const organizationQueryStub = jasmine.createSpyObj('OrganizationQuery', ['getSnapshot']);
     const collectionsServiceStub = jasmine.createSpyObj('CollectionsService', ['updateCollections']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
@@ -45,14 +45,14 @@ describe('CreateCollectionService', () => {
       providers: [CreateCollectionService, CreateCollectionStore, FormBuilder,
         { provide: MatDialog, useValue: matDialogStub },
         { provide: CollectionsService, useValue: collectionsServiceStub },
-        { provide: OrganisationsService, useValue: organisationsServiceStub },
+        { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: OrganizationQuery, useValue: organizationQueryStub }
       ],
       imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule]
     });
 
     createCollectionService = TestBed.get(CreateCollectionService);
-    organisationsServiceSpy = TestBed.get(OrganisationsService);
+    organizationsServiceSpy = TestBed.get(OrganizationsService);
     organizationQuerySpy = TestBed.get(OrganizationQuery);
     matDialogSpy = TestBed.get(MatDialog);
     collectionsServiceSpy = TestBed.get(CollectionsService);
@@ -65,50 +65,50 @@ describe('CreateCollectionService', () => {
 
   it('should try to add a collection', () => {
     organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
-    organisationsServiceSpy.createCollection.and.returnValue(observableOf(null));
+    organizationsServiceSpy.createCollection.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
     createCollectionService.createCollection(exampleFormState);
 
     // Expected createCollection call to be called (and it will succeed)
-    expect(organisationsServiceSpy.createCollection.calls.count()).toBe(1, 'spy method was called once');
+    expect(organizationsServiceSpy.createCollection.calls.count()).toBe(1, 'spy method was called once');
     // Upon success, the dialog would close
     expect(matDialogSpy.closeAll.calls.count()).toBe(1, 'spy method was not called once');
   });
 
   it('should handle error when adding a collection', () => {
     organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
-    organisationsServiceSpy.createCollection.and.returnValue(throwError('test 404 error'));
+    organizationsServiceSpy.createCollection.and.returnValue(throwError('test 404 error'));
 
     createCollectionService.createCollection(exampleFormState);
 
     // Expected createCollection call to be called (even though it will fail)
-    expect(organisationsServiceSpy.createCollection.calls.count()).toBe(1, 'spy method was called once');
+    expect(organizationsServiceSpy.createCollection.calls.count()).toBe(1, 'spy method was called once');
     // Upon error, the dialog would not close
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });
 
   it('should try to update a collection', () => {
     organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
-    organisationsServiceSpy.updateCollection.and.returnValue(observableOf(null));
+    organizationsServiceSpy.updateCollection.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
     createCollectionService.updateCollection(exampleFormState, 1);
 
     // Expected createCollection call to be called (and it will succeed)
-    expect(organisationsServiceSpy.updateCollection.calls.count()).toBe(1, 'spy method was called once');
+    expect(organizationsServiceSpy.updateCollection.calls.count()).toBe(1, 'spy method was called once');
     // Upon success, the dialog would close
     expect(matDialogSpy.closeAll.calls.count()).toBe(1, 'spy method was not called once');
   });
 
   it('should handle error when updating a collection', () => {
     organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
-    organisationsServiceSpy.updateCollection.and.returnValue(throwError('test 404 error'));
+    organizationsServiceSpy.updateCollection.and.returnValue(throwError('test 404 error'));
 
     createCollectionService.updateCollection(exampleFormState, 1);
 
     // Expected createCollection call to be called (even though it will fail)
-    expect(organisationsServiceSpy.updateCollection.calls.count()).toBe(1, 'spy method was called once');
+    expect(organizationsServiceSpy.updateCollection.calls.count()).toBe(1, 'spy method was called once');
     // Upon error, the dialog would not close
     expect(matDialogSpy.closeAll.calls.count()).toBe(0, 'spy method was called');
   });

@@ -72,5 +72,5 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
 }
 
 export function approvePotatoMembership() {
-  cy.exec('psql -c \'update organisation_user set accepted=true where userid=2 and organisationid=1\' webservice_test -U dockstore');
+  cy.exec('psql -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore');
 }

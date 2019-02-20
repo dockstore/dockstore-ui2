@@ -14,31 +14,17 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { PRIMARY_OUTLET, Router, UrlSegment } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-
-import { Organisation, OrganisationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationStore } from './organization.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
 
-  constructor(private organizationStore: OrganizationStore, private router: Router, private organisationsService: OrganisationsService,
+  constructor(private organizationStore: OrganizationStore, private organizationsService: OrganizationsService,
     private organizationMembersService: OrganizationMembersService) {
-  }
-
-  getNextSegmentPath(previousSegmentPath: string): string {
-    const urlSegments: Array<UrlSegment> = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    const segmentIndex = urlSegments.findIndex((urlSegment: UrlSegment) => {
-      return urlSegment.path === previousSegmentPath;
-    });
-    const segment = urlSegments[segmentIndex + 1];
-    if (!segment) {
-      return undefined;
-    }
-    return segment.path;
   }
 
   clearState(): void {
@@ -53,12 +39,11 @@ export class OrganizationService {
   }
 
   @transaction()
-  updateOrganizationFromNameORID() {
+  updateOrganizationFromNameORID(organizationIdString: string) {
     this.clearState();
-    const organizationNameOrID = this.getNextSegmentPath('organizations');
-    const organizationID = parseInt(organizationNameOrID, 10);
+    const organizationID: number = parseInt(organizationIdString, 10);
     if (isNaN(organizationID)) {
-      this.updateOrganizationFromName(organizationNameOrID);
+      this.updateOrganizationFromName(organizationIdString);
     } else {
       this.updateOrganizationFromID(organizationID);
     }
@@ -66,8 +51,8 @@ export class OrganizationService {
 
   updateOrganizationFromID(organizationID: number): void {
     this.organizationStore.setLoading(true);
-    this.organisationsService.getOrganisationById(organizationID).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organisation) => {
+    this.organizationsService.getOrganizationById(organizationID).pipe(finalize(() => this.organizationStore.setLoading(false)))
+      .subscribe((organization: Organization) => {
         this.organizationStore.setError(false);
         this.updateOrganization(organization);
         this.organizationMembersService.updateCanEdit(organizationID);
@@ -76,7 +61,7 @@ export class OrganizationService {
       });
   }
 
-  updateOrganization(organization: Organisation) {
+  updateOrganization(organization: Organization) {
     this.organizationStore.setState(state => {
       return {
         ...state,
@@ -87,8 +72,8 @@ export class OrganizationService {
 
   updateOrganizationFromName(name: string): void {
     this.organizationStore.setLoading(true);
-    this.organisationsService.getOrganisationByName(name).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organisation) => {
+    this.organizationsService.getOrganizationByName(name).pipe(finalize(() => this.organizationStore.setLoading(false)))
+      .subscribe((organization: Organization) => {
         this.organizationStore.setError(false);
         this.updateOrganization(organization);
         this.organizationMembersService.updateCanEdit(organization.id);

@@ -4,7 +4,7 @@ import { UpsertOrganizationMemberStore } from './upsert-organization-member.stor
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganisationUser, OrganisationsService } from '../../shared/swagger';
+import { OrganizationUser, OrganizationsService } from '../../shared/swagger';
 import { OrganizationQuery } from './organization.query';
 import { MatDialog } from '@angular/material';
 import { finalize } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class UpsertOrganizationMemberService {
 
   constructor(private upsertOrganizationMemberStore: UpsertOrganizationMemberStore,
               private organizationMembersService: OrganizationMembersService,
-              private formBuilder: FormBuilder, private organisationsService: OrganisationsService,
+              private formBuilder: FormBuilder, private organizationsService: OrganizationsService,
               private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private alertService: AlertService) {
   }
 
@@ -39,7 +39,7 @@ export class UpsertOrganizationMemberService {
   createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
     formsManager.remove('upsertUser');
     let username = null;
-    let role = OrganisationUser.RoleEnum.MEMBER;
+    let role = OrganizationUser.RoleEnum.MEMBER;
     let disabled = false;
     if (data.mode !== TagEditorMode.Add) {
       username = data.username;
@@ -87,9 +87,9 @@ export class UpsertOrganizationMemberService {
       const organizationId = this.organizationQuery.getSnapshot().organization.id;
       // Have to grab the username from data because a disabled form value isn't recorded
       const username = formState.username ? formState.username : data.username;
-      this.organisationsService.addUserToOrgByUsername(username, organizationId, formState.role)
+      this.organizationsService.addUserToOrgByUsername(username, organizationId, formState.role)
       .pipe(finalize(() => this.upsertOrganizationMemberStore.setLoading(false)))
-      .subscribe((organization: OrganisationUser) => {
+      .subscribe((organization: OrganizationUser) => {
         this.matDialog.closeAll();
         this.organizationMembersService.updateCanEdit(organizationId);
         this.upsertOrganizationMemberStore.setError(false);

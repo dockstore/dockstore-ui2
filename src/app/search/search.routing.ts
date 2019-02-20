@@ -20,7 +20,7 @@ import { SearchComponent } from './search.component';
 
 const CONTAINERS_ROUTES: Routes = [
   {
-    path: 'search', component: SearchComponent, children: [
+    path: 'search', component: SearchComponent, data: {title: 'Dockstore | Search'}, children: [
     { path: 'search?**', component: SearchComponent }
   ]
   }
