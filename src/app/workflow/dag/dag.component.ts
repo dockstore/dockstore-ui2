@@ -67,7 +67,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
-  public pipelineBuilderResults: boolean = false;
+  public pipelineBuilderResults: Boolean = false;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.

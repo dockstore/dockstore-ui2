@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, OnInit, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, OnInit, Output,
+          EventEmitter } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 
 import { Subject } from 'rxjs';
