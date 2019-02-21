@@ -4,10 +4,6 @@
     <div>EPAM WDL Visualizer was unable to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
     <div>{{errorMessage}}</div>
   </mat-card>
-  <div>
-    <span><a *ngIf="(pipelineBuilderResult$ | async)" href #exportSVG id="exportSVG" (click)="download()">
-            <mat-icon>save</mat-icon>Save as SVG</a></span>
-  </div>
   <div *ngIf="loading" class="text-center viewer-loading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>

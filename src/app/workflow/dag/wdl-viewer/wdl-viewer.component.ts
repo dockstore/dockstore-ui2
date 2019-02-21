@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, OnInit, Output, EventEmitter } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, finalize, filter, take } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
@@ -37,16 +37,13 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() workflow: ExtendedWorkflow;
   @Input() expanded: boolean;
-  @Input() descriptorType: ToolDescriptor.TypeEnum;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.loading = true;
-    this.pipelineBuilderResult$ = null;
     this.onVersionChange(value);
   }
+  @Output() success: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('diagram') diagram: ElementRef;
-  @ViewChild('exportSVG') exportSVG: ElementRef;
 
-  public pipelineBuilderResult$: Observable<any>;
   public errorMessage;
   public loading = false;
   public wdlViewerError = false;
@@ -76,21 +73,22 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         if (files && files.length > 0) {
-          this.pipelineBuilderResult$ = this.wdlViewerService.create(files, this.workflow, this.version);
 
           // Create the Epam WDL visualization and attach the result to the DOM element. Stop subscribing after first completion
-          this.pipelineBuilderResult$.pipe(take(1), finalize(() => {
+          this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1), finalize(() => {
             this.loading = false;
             this.versionChanged = false;
           }))
             .subscribe((res: WdlViewerPipeline) => {
                 this.visualizer.attachTo(res.model[0]);
                 this.wdlViewerError = false;
+                this.success.emit(true);
               },
               (error) => {
                 this.errorMessage = error || 'Unknown Error';
                 this.wdlViewerError = true;
                 this.diagram.nativeElement.remove();
+                this.success.emit(false);
               });
         }
       });
@@ -102,6 +100,10 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   onVersionChange(value: WorkflowVersion) {
+    // Reset all booleans types for the new version
+    this.success.emit(false);
+    this.wdlViewerError = false;
+
     if (this.visualizer) {
       this.visualizer.clear();
     }
@@ -113,9 +115,9 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
     this.visualizer.zoom.fitToPage();
   }
 
-  download() {
+  download(exportLink: ElementRef) {
     const blob = new Blob([this.visualizer.paper.getSVG()], {type: 'text/plain;charset=utf-8'});
     const name = this.workflowQuery.getActive().repository + '_' + this.version.name + '.svg';
-    this.renderer.setAttribute(this.exportSVG.nativeElement, 'href', URL.createObjectURL(blob));
-    this.renderer.setAttribute(this.exportSVG.nativeElement, 'download', name);  }
+    this.renderer.setAttribute(exportLink.nativeElement, 'href', URL.createObjectURL(blob));
+    this.renderer.setAttribute(exportLink.nativeElement, 'download', name);  }
 }

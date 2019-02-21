@@ -67,6 +67,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
+  public pipelineBuilderResults: boolean = false;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -144,6 +145,17 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   download() {
-    this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
+    switch (this.dagType) {
+      case 'wdlviewer':
+        this.wdlViewer.download(this.exportLink);
+        break;
+      default:
+        this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
+        break;
+    }
+  }
+
+  showLink(success: boolean) {
+    this.pipelineBuilderResults = success;
   }
 }
