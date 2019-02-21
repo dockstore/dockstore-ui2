@@ -39,7 +39,7 @@ export interface WdlViewerPipeline {
 @Injectable()
 export class WdlViewerService {
   private zip: JSZip = new JSZip();
-  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, protected workflowsService: WorkflowsService) {
+  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {

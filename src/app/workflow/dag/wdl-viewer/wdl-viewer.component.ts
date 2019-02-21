@@ -41,7 +41,7 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
     this.loading = true;
     this.onVersionChange(value);
   }
-  @Output() success: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() success: EventEmitter<boolean> = new EventEmitter<boolean>(true);
   @ViewChild('diagram') diagram: ElementRef;
 
   public errorMessage;
