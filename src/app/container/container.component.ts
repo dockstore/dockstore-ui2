@@ -15,14 +15,17 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { includesValidation } from '../shared/constants';
-
 import { ListContainersService } from '../containers/list/list.service';
+import { AddEntryComponent } from '../organizations/collection/add-entry/add-entry.component';
+import { AlertQuery } from '../shared/alert/state/alert.query';
+import { AlertService } from '../shared/alert/state/alert.service';
+import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -44,10 +47,6 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
-import { AlertService } from '../shared/alert/state/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AlertQuery } from '../shared/alert/state/alert.query';
-import { AddEntryComponent } from '../organizations/collection/add-entry/add-entry.component';
 
 @Component({
   selector: 'app-container',
@@ -94,7 +93,7 @@ export class ContainerComponent extends Entry {
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery, public dialog: MatDialog) {
     super(trackLoginService, providerService, router, dateService, urlResolverService, activatedRoute,
       location, sessionService, sessionQuery, gA4GHFilesService);
-      this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
 
     this._toolType = 'containers';
@@ -299,6 +298,9 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+    }
+    if (this.selectVersion) {
+      this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
     }
     this.onTagChange(tag);
   }
