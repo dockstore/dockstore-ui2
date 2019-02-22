@@ -60,7 +60,7 @@ npm ci
 
 Check to make sure Angular CLI has been properly set up
 ```
-$ ng -v
+$ ng v
     _                      _                 ____ _     ___
    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
