@@ -10,6 +10,8 @@ blocks:
       env_vars:
         - name: APP_ENV
           value: prod
+        - name: WEBSERVICE_VERSION
+          value: 1.6.0-alpha.6
       jobs:
       - name: Lint
         commands:
@@ -18,4 +20,3 @@ blocks:
           - bash scripts/install-travis-script.sh
           - ng lint
           - ng test --watch=false --code-coverage --browsers ChromeHeadless
-          - echo "done"
