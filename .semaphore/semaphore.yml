@@ -13,7 +13,7 @@ blocks:
         - name: WEBSERVICE_VERSION
           value: 1.6.0-alpha.6
       jobs:
-      - name: Lint
+      - name: Test and Coverage
         commands:
           - nvm use 10.10.0
           - checkout
@@ -24,3 +24,12 @@ blocks:
           - npm run prebuild
           - ng lint
           - ng test --watch=false --code-coverage --browsers ChromeHeadless
+      - name: Lint
+        commands:
+          - nvm use 10.10.0
+          - checkout
+          - npm install -g @angular/cli@6.0.2 --unsafe
+          - npm ci
+          - ng version
+          - npm run prebuild
+          - ng lint
