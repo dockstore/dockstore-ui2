@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, getTab, goToTab } from '../../support/commands';
+import { getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -47,6 +47,20 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
+    });
+    it('add and remove test parameter file', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').find('button').contains('Edit').invoke('width').should('be.gt', 0);
+      cy.get('td').find('button').contains('Edit').should('be.visible').click();
+      cy.get('[data-cy=test-parameter-file-input]').type('/test.wdl.json');
+      cy.get('[data-cy=save-version').click();
+      cy.get('[data-cy=save-version').should('not.exist');
+      cy.get('td').find('button').contains('Edit').invoke('width').should('be.gt', 0);
+      cy.get('td').find('button').contains('Edit').should('be.visible').click();
+      cy.get('[data-cy=remove-test-parameter-file-button]').click();
+      cy.get('[data-cy=save-version').click();
+      cy.get('[data-cy=save-version').should('not.be.visible');
     });
   });
 
@@ -138,13 +152,13 @@ describe('Dockstore my workflows', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
       getTab('Info').parent()
-      .should('have.class', 'mat-tab-label-active');
+        .should('have.class', 'mat-tab-label-active');
       tabs.forEach(tab => {
         goToTab(tab).parent().should('have.class', 'mat-tab-label-active');
         if (tab === 'Versions') {
           cy
-          .get('table>tbody>tr')
-          .should('have.length', 2); // 2 Versions and no warning line
+            .get('table>tbody>tr')
+            .should('have.length', 2); // 2 Versions and no warning line
         }
       });
 

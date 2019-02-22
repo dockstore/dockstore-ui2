@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
+import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -95,6 +95,7 @@ describe('Dockstore my tools', () => {
       cy.get('#removeCWLTestParameterFileButton').click();
       cy.get('#removeWDLTestParameterFileButton').click();
       cy.get('#saveVersionModal').click();
+      cy.get('#saveVersionModal').should('not.be.visible');
     });
   });
 
