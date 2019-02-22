@@ -180,7 +180,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Read organization user', () => {
       cy.get('mat-card-title').contains('user_A');
-      cy.contains('mat-card-subtitle', 'Maintainer').parent().parent().parent().contains(/^Edit$/).should('be.disabled');
+      cy.get('#edit-user-role-0').should('be.disabled');
     });
 
     it('be able to Create organization user', () => {
@@ -201,7 +201,7 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to Update organization user', () => {
-      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains(/^Edit$/).should('not.be.disabled').click();
+      cy.get('#edit-user-role-1').should('not.be.disabled').click();
       cy.get('mat-select').click();
       cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.be.visible');
@@ -211,7 +211,7 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to Delete organization user', () => {
-      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains(/^Remove$/).should('not.be.disabled').click();
+      cy.get('#remove-user-0').should('not.be.disabled').click();
       cy.contains('mat-card-title', 'potato').should('not.be.visible');
     });
   });

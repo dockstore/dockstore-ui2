@@ -23,7 +23,12 @@
     <div class="container" *ngIf="(collection$ | async) as collection" fxLayout="column">
       <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
         <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
-        You can view your pending organization requests on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+        <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
+          You can approve/reject this pending organization request on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+        </span>
+        <ng-template #notAdminOrCurator>
+          You can view your pending organization requests on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+        </ng-template>
       </mat-card>
       <mat-card fxFlex class="my-3">
         <mat-card-header>
