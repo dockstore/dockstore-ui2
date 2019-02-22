@@ -14,7 +14,7 @@ blocks:
       - name: Lint
         commands:
           - checkout
-          - /scripts/install-travis.sh
+          - /scripts/install-travis-script.sh
           - ng lint
           - ng test --watch=false --code-coverage --browsers ChromeHeadless
           - echo "done"
