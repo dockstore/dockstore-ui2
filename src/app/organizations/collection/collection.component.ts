@@ -9,6 +9,7 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
+import { UserQuery } from '../../shared/user/user.query';
 
 
 @Component({
@@ -47,11 +48,15 @@ export class CollectionComponent implements OnInit {
   loadingOrganization$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   pendingEnum = Organization.StatusEnum.PENDING;
+
+  isAdmin$: Observable<boolean>;
+  isCurator$: Observable<boolean>;
   constructor(private collectionsQuery: CollectionsQuery,
               private organizationQuery: OrganizationQuery,
               private organizationService: OrganizationService,
               private collectionsService: CollectionsService,
-              public dialog: MatDialog, private activatedRoute: ActivatedRoute
+              public dialog: MatDialog, private activatedRoute: ActivatedRoute,
+              private userQuery: UserQuery
   ) { }
 
   ngOnInit() {
@@ -64,6 +69,8 @@ export class CollectionComponent implements OnInit {
     this.organization$ = this.organizationQuery.organization$;
     this.organizationService.updateOrganizationFromNameORID(organizationId);
     this.collectionsService.updateCollectionFromName(organizationId, collectionId);
+    this.isAdmin$ = this.userQuery.isAdmin$;
+    this.isCurator$ = this.userQuery.isCurator$;
   }
 
   /**

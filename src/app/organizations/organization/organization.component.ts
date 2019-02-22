@@ -23,6 +23,7 @@ import { RegisterOrganizationComponent } from '../registerOrganization/register-
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import { UpdateOrganizationDescriptionComponent } from './update-organization-description/update-organization-description.component';
+import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'organization',
@@ -33,8 +34,10 @@ export class OrganizationComponent implements OnInit {
   organization$: Observable<Organization>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
+  isAdmin$: Observable<boolean>;
+  isCurator$: Observable<boolean>;
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute, private userQuery: UserQuery
   ) { }
 
   ngOnInit() {
@@ -43,6 +46,8 @@ export class OrganizationComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organizationService.updateOrganizationFromNameORID(organizationId);
     this.organization$ = this.organizationQuery.organization$;
+    this.isAdmin$ = this.userQuery.isAdmin$;
+    this.isCurator$ = this.userQuery.isCurator$;
   }
 
   /**

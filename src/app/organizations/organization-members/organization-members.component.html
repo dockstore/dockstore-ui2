@@ -26,7 +26,7 @@
               <mat-card-subtitle>{{organizationUser.role | titlecase}}</mat-card-subtitle>
             </mat-card-header>
           </div>
-          <div fxFlex fxGrow="1" fxLayoutAlign="flex-end center"*ngIf="(canEditMembership$ | async)">
+          <div fxFlex fxGrow="1" fxLayoutAlign="end center"*ngIf="(canEditMembership$ | async)">
             <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">
               <button color="basic" mat-icon-button matTooltip="Edit user's role in organization" [id]="'edit-user-role-' + index" [disabled]="organizationUser.user.id === (userId$ | async)"
                 (click)="editUser(organizationUser)"><mat-icon>edit</mat-icon></button>
