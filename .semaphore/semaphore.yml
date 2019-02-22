@@ -1,0 +1,20 @@
+version: v1.0
+name: Dockstore-UI2 Basic Test
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: "Build"
+    task:
+      env_vars:
+        - name: APP_ENV
+          value: prod
+      jobs:
+      - name: Lint
+        commands:
+          - checkout
+          - /scripts/install-travis.sh
+          - ng lint
+          - ng test --watch=false --code-coverage --browsers ChromeHeadless
+          - echo "done"
