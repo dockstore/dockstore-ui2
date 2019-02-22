@@ -33,9 +33,9 @@
     </mat-card>
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
-        <div *ngIf="org?.avatarUrl">
-          <!--<img *ngIf="org?.avatarUrl" [src]="org?.avatarUrl" class="img-circle">-->
-          <img [src]="org.avatarUrl" alt="Logo" class="img-circle" height="150" width="150">
+        <div >
+          <img *ngIf="org?.avatarUrl == null" src="https://via.placeholder.com/150" class="img-circle" height="150" width="150">
+          <img *ngIf="org?.avatarUrl" [src]="org.avatarUrl" alt="Logo" class="img-circle" height="150" width="150">
         </div>
         <div>
           <mat-card-header>

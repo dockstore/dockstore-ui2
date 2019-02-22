@@ -9,6 +9,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationService } from './organization.service';
+import {UserService} from '../../shared/user/user.service';
 
 // This is recorded into the Akita state
 export interface FormsState {
@@ -53,13 +54,13 @@ export class RegisterOrganizationService {
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
   readonly organizationDisplayNameRegex = /^[a-zA-Z\d ,_\-&()']*$/;
 
-  // Only accept url links of logos hosted on github or gravatar.
   readonly logoUrlRegex = new RegExp(
     '^' +
-    '((https://avatars)\\d(\\.githubusercontent.com\\/u\\/)(.*))|((https://www.gravatar.com/avatar/)(.*))'
-  );
+    // '((https://avatars)\\d(\\.githubusercontent.com\\/u\\/)(.*))|((https://www.gravatar.com/avatar/)(.*))' +
+    '(.*)(.jpg|.jpeg|.png)'
+  , 'i');
 
-  constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
+  constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog, private userService: UserService,
     private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
   }
 
@@ -103,7 +104,7 @@ export class RegisterOrganizationService {
       link = organization.link;
       location = organization.location;
       contactEmail = organization.email;
-      avatarUrl = organization.avatarUrl;
+      avatarUrl = this.extractLogoUrl(organization.avatarUrl);
     }
     const registerOrganizationForm = this.builder.group({
       name: [name, [
@@ -122,7 +123,7 @@ export class RegisterOrganizationService {
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
       contactEmail: [contactEmail, [Validators.email]],
-      avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)],
+      avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)]
     });
     formsManager.upsert('registerOrganization', registerOrganizationForm);
     return registerOrganizationForm;
@@ -160,7 +161,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
-        avatarUrl: organizationFormState.avatarUrl,
+        avatarUrl: this.gravatarUrl(organizationFormState.avatarUrl),
         users: []
       };
       this.alertService.start('Adding organization');
@@ -202,7 +203,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
-        avatarUrl: organizationFormState.avatarUrl,
+        avatarUrl: this.gravatarUrl(organizationFormState.avatarUrl),
         description: organizationDescription,
         users: []
       };
@@ -221,6 +222,28 @@ export class RegisterOrganizationService {
       }, (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
       });
+    }
+  }
+
+  gravatarUrl(imgLink: string): string {
+    if (imgLink) {
+      return 'https://www.gravatar.com/avatar/' + '000' + '?d=' + imgLink + '&s=500';
+    } else {
+      return null;
+    }
+  }
+
+  extractLogoUrl(gravatarUrl: string): string {
+    if (gravatarUrl) {
+      const params = new URL(gravatarUrl);
+      const logoUrl = params.searchParams.get('d');
+      if (logoUrl) {
+        return logoUrl;
+      } else {
+        return gravatarUrl;
+      }
+    } else {
+      return null;
     }
   }
 }
