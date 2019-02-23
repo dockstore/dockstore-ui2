@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, OnInit, Output,
+import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, Output,
           EventEmitter } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 
@@ -22,9 +22,8 @@ import { Subject } from 'rxjs';
 import { takeUntil, finalize, filter, take } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
-import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
-import { ToolDescriptor, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
+import { ToolDescriptor, WorkflowsService, WorkflowVersion, Workflow } from '../../../shared/swagger';
 import { WdlViewerService, WdlViewerPipeline } from './wdl-viewer.service';
 
 @Component({
@@ -34,21 +33,23 @@ import { WdlViewerService, WdlViewerPipeline } from './wdl-viewer.service';
   providers: [WdlViewerService],
   encapsulation: ViewEncapsulation.None,
 })
-export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
+export class WdlViewerComponent implements AfterViewInit, OnDestroy {
 
-  @Input() workflow: ExtendedWorkflow;
+  @Input() workflow: Workflow;
   @Input() expanded: boolean;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.loading = true;
     this.onVersionChange(value);
   }
+
+  // TODO: The success status of the pipeline builder results should be implemented using a plain service or state instead of an
+  // EventEmitter to communicate between parent & child components
   @Output() success: EventEmitter<boolean> = new EventEmitter<boolean>(true);
   @ViewChild('diagram') diagram: ElementRef;
 
   public errorMessage;
-  public loading = false;
+  public loading = true;
   public wdlViewerError = false;
-  protected entryType: ('tool' | 'workflow') = 'workflow';
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private version: WorkflowVersion;
   private versionChanged = false;
@@ -58,9 +59,6 @@ export class WdlViewerComponent implements AfterViewInit, OnInit, OnDestroy {
               protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery) {
   }
 
-  ngOnInit() {
-    this.loading = true;
-  }
 
   ngAfterViewInit() {
     this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement, false);

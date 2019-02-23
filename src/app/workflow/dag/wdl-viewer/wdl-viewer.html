@@ -1,4 +1,4 @@
-<div [ngClass]="{'fullscreen-svg-element': expanded}" class="wdl-viewer">
+<div class="wdl-viewer w-100 h-100">
   <mat-card *ngIf="wdlViewerError" class="alert alert-warning">
     <mat-icon>warning</mat-icon>&nbsp;
     <div>EPAM WDL Visualizer was unable to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
@@ -7,5 +7,5 @@
   <div *ngIf="loading" class="text-center viewer-loading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <div class="svg" [ngClass]="{'mini-svg-dag': !expanded, 'fullscreen-svg-element': expanded}" #diagram></div>
+  <div class="svg w-100 h-100" #diagram></div>
 </div>
