@@ -21,6 +21,7 @@ import { MatIconModule, MatProgressBarModule, MatTooltipModule } from '@angular/
 import { CustomMaterialModule } from './../../shared/modules/material.module';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
+import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,7 @@ import { DagComponent } from './dag.component';
     MatTooltipModule,
     CustomMaterialModule
   ],
-  declarations: [DagComponent, CwlViewerComponent],
+  declarations: [DagComponent, CwlViewerComponent, WdlViewerComponent],
   exports: [DagComponent]
 })
 export class DagModule { }

@@ -18,6 +18,8 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Workflow> {
     map((workflow: Workflow) => workflow ? this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType) : null));
   public isNFL$: Observable<boolean> = this.descriptorType$.pipe(
     map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.NFL));
+  public isWDL$: Observable<boolean> = this.descriptorType$.pipe(
+    map( (descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.WDL));
   constructor(protected store: WorkflowStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(store);
   }
