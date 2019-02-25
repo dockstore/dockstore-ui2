@@ -28,6 +28,7 @@ describe('Checker workflow test from my-tools', () => {
       .parentsUntil('accordion-group')
       .contains('div .no-wrap', /\bb3\b/)
       .should('be.visible').click();
+    cy.get('#tool-path').contains('quay.io/A2/b3:latest');
   }
 
   describe('Should be able to register and publish a checker workflow from a tool', () => {
