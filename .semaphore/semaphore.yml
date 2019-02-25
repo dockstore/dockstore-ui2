@@ -17,7 +17,7 @@ blocks:
           - nvm use 10.10.0
           - checkout
           - npm install -g @angular/cli@6.0.2 --unsafe
-          - npm ci
+          - npm ci - prefer-offline
           - ng version
           - npm run prebuild
       jobs:
@@ -45,7 +45,7 @@ blocks:
           - wget --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar
           - chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar
           - npm install -g @angular/cli@6.0.2 --unsafe
-          - npm ci
+          - npm ci -prefer-offline
           - ng version
           - npm run prebuild
           - psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
