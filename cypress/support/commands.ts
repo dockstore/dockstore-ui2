@@ -32,9 +32,9 @@ export function getTab(tabName: string): any {
 
 export function resetDB() {
   before(() => {
-    cy.exec('psql -h localhost -c \'drop schema if exists public cascade\' webservice_test -U dockstore');
-    cy.exec('psql -h localhost -c \'create schema public\' webservice_test -U dockstore', { failOnNonZeroExit: false });
-    cy.exec('psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'drop schema if exists public cascade\' webservice_test -U dockstore');
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'create schema public\' webservice_test -U dockstore', { failOnNonZeroExit: false });
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
     cy.exec('java -jar dockstore-webservice-*.jar db migrate -i 1.5.0,1.6.0 travisci/web.yml');
   });
 }
@@ -72,5 +72,5 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
 }
 
 export function approvePotatoMembership() {
-  cy.exec('psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore');
+  cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore');
 }
