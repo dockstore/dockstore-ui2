@@ -12,6 +12,8 @@ blocks:
           value: prod
         - name: WEBSERVICE_VERSION
           value: 1.6.0-alpha.6
+      secrets:
+        - name: codecov
       prologue:
         commands:
           - sem-version node 10.13.0
@@ -22,8 +24,6 @@ blocks:
           - npm run prebuild
       jobs:
       - name: Test and Coverage
-        secrets:
-          - name: codecov
         commands:
           - npm install codecov
           - ng test --watch=false --code-coverage --browsers ChromeHeadless
