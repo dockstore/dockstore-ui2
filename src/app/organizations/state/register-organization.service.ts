@@ -55,7 +55,7 @@ export class RegisterOrganizationService {
 
   readonly logoUrlRegex = new RegExp(
     '^' +
-    '(.*)(.jpg|.jpeg|.png)'
+    '(.*)(.jpg|.jpeg|.png|.gif)'
   , 'i');
 
   constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
