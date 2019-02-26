@@ -27,6 +27,14 @@
         <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
       </mat-form-field>
       <mat-form-field>
+        <mat-label>The display name of the collection</mat-label>
+        <input type="text" matInput formControlName="displayName" placeholder="Display Name" required>
+        <mat-error *ngIf="displayName.hasError('required')">Display Name is required</mat-error>
+        <mat-error *ngIf="displayName.hasError('minlength')">Display Name should be at least 3 characters long</mat-error>
+        <mat-error *ngIf="displayName.hasError('maxlength')">Display Name should be at most 50 characters long</mat-error>
+        <mat-error *ngIf="displayName.hasError('pattern')">Display Name can contain alphanumeric characters, spaces, and some punctuation.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
         <textarea cdkTextareaAutosize type="text" matInput formControlName="description" placeholder="Description" required></textarea>
       </mat-form-field>
     </form>

@@ -15,6 +15,7 @@ import { CreateCollectionStore } from './create-collection.store';
 export interface FormsState {
   createOrUpdateCollection: {
     name: string;
+    displayName: string;
     description: string;
   };
 }
@@ -42,6 +43,7 @@ export class CreateCollectionService {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
+      displayName: collectionFormState.displayName,
       description: collectionFormState.description
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
@@ -90,16 +92,29 @@ export class CreateCollectionService {
   createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
     const mode: TagEditorMode = data.mode;
     let name = null;
+    let displayName = null;
     let description = null;
     formsManager.remove('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;
+      displayName = collection.displayName;
       description = collection.description;
     }
     const createOrUpdateCollectionForm = this.builder.group({
-      name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
-      description: [description]
+      name: [
+        name, [
+          Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)
+        ]
+      ],
+      displayName: [
+        displayName, [
+          Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)
+        ]
+      ],
+      description: [
+        description
+      ]
     });
     formsManager.upsert('createOrUpdateCollection', createOrUpdateCollectionForm);
     return createOrUpdateCollectionForm;
@@ -133,6 +148,7 @@ export class CreateCollectionService {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
+      displayName: collectionFormState.displayName,
       description: collectionFormState.description
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;

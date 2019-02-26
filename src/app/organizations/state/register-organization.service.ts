@@ -14,6 +14,7 @@ import { OrganizationService } from './organization.service';
 export interface FormsState {
   registerOrganization: {
     name: string;
+    displayName: string;
     topic: string;
     link: string;
     location: string;
@@ -49,6 +50,7 @@ export class RegisterOrganizationService {
   // The old regex in case needed
   // readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
+  readonly organizationDisplayNameRegex = /^[a-zA-Z\d ,_\-&()']*$/;
   constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
     private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
   }
@@ -79,6 +81,7 @@ export class RegisterOrganizationService {
   createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
     formsManager.remove('registerOrganization');
     let name = null;
+    let displayName = null;
     let topic = null;
     let link = null;
     let location = null;
@@ -86,6 +89,7 @@ export class RegisterOrganizationService {
     if (data.mode !== TagEditorMode.Add) {
       const organization: Organization = data.organization;
       name = organization.name;
+      displayName = organization.displayName;
       topic = organization.topic;
       link = organization.link;
       location = organization.location;
@@ -97,6 +101,12 @@ export class RegisterOrganizationService {
         Validators.maxLength(39),
         Validators.minLength(3),
         Validators.pattern(this.organizationNameRegex)
+      ]],
+      displayName: [displayName, [
+        Validators.required,
+        Validators.maxLength(50),
+        Validators.minLength(3),
+        Validators.pattern(this.organizationDisplayNameRegex)
       ]],
       topic: [topic, Validators.required],
       link: [link, Validators.pattern(this.urlRegex)],
@@ -133,6 +143,7 @@ export class RegisterOrganizationService {
       let newOrganization: Organization;
       newOrganization = {
         name: organizationFormState.name,
+        displayName: organizationFormState.displayName,
         topic: organizationFormState.topic,
         link: organizationFormState.link,
         location: organizationFormState.location,
@@ -173,6 +184,7 @@ export class RegisterOrganizationService {
     } else {
       const editedOrganization: Organization = {
         name: organizationFormState.name,
+        displayName: organizationFormState.displayName,
         topic: organizationFormState.topic,
         link: organizationFormState.link,
         location: organizationFormState.location,
