@@ -87,6 +87,13 @@ describe('Dockstore Organizations', () => {
       typeInInput('Organization website', 'https://www.google.com');
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
+      // Verify you can add and remove and image url successfully. Add image back for further testing below.
+      typeInInput('Image URL', 'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#editOrgInfo').should('be.visible').click();
+      clearInput('Image URL');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#editOrgInfo').should('be.visible').click();
       typeInInput('Image URL', 'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');

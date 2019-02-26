@@ -85,10 +85,11 @@ export class OrganizationComponent implements OnInit {
    * via the API.
    */
   genGravatarUrl(url: string): Observable<string> {
-    if (url.match('(https://www.gravatar.com/avatar/000)(.*)')) {
-      return of(url);
+    if (url) {
+      const gravatarUrl = 'https://www.gravatar.com/avatar/' + '000' + '?d=' + url;
+      return of(gravatarUrl);
     } else {
-      return of(this.registerOrganizationService.gravatarUrl(url));
+      return null;
     }
   }
 }

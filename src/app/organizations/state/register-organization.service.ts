@@ -102,7 +102,7 @@ export class RegisterOrganizationService {
       link = organization.link;
       location = organization.location;
       contactEmail = organization.email;
-      avatarUrl = this.extractLogoUrl(organization.avatarUrl);
+      avatarUrl = organization.avatarUrl;
     }
     const registerOrganizationForm = this.builder.group({
       name: [name, [
@@ -159,7 +159,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
-        avatarUrl: this.gravatarUrl(organizationFormState.avatarUrl),
+        avatarUrl: this.returnImgLink(organizationFormState.avatarUrl),
         users: []
       };
       this.alertService.start('Adding organization');
@@ -201,7 +201,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
-        avatarUrl: this.gravatarUrl(organizationFormState.avatarUrl),
+        avatarUrl: this.returnImgLink(organizationFormState.avatarUrl),
         description: organizationDescription,
         users: []
       };
@@ -223,27 +223,14 @@ export class RegisterOrganizationService {
     }
   }
 
-  gravatarUrl(imgLink: string): string {
-    if (imgLink) {
-      return 'https://www.gravatar.com/avatar/' + '000' + '?d=' + imgLink;
-    } else {
-      return null;
-    }
-  }
-
   /**
-  * User can change the image url via the API (only has extension constraints), so not every url string stored in the database will be a
-  * gravatar one.
-  * */
-  extractLogoUrl(imageUrl: string): string {
-    if (imageUrl) {
-      const params = new URL(imageUrl);
-      const logoUrl = params.searchParams.get('d');
-      if (logoUrl) {
-        return logoUrl;
-      } else {
-        return imageUrl;
-      }
+   * If no image link is provided, null needs to be explicitly returned. Otherwise, if a field is provided, but then updated to be
+   * removed, an empty string will returned to the database. This will cause the url regex in webservice to fail.
+   * @param imgLink
+   */
+  returnImgLink(imgLink: string): string {
+    if (imgLink) {
+      return imgLink;
     } else {
       return null;
     }
