@@ -14,7 +14,7 @@ blocks:
           value: 1.6.0-alpha.6
       prologue:
         commands:
-          - nvm use 10.10.0
+          - sem-version node 10.13.0
           - checkout
           - npm install -g @angular/cli@6.0.2 --unsafe
           - npm ci - prefer-offline
@@ -40,7 +40,7 @@ blocks:
         - name: cypress
       prologue:
         commands:
-          - nvm use 10.10.0
+          - sem-version node 10.13.0
           - checkout
           - sudo apt install libgtk2.0-0 -y
           - sem-service start postgres
