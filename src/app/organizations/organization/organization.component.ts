@@ -15,7 +15,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';
 import { ActivatedRoute } from '../../test';
@@ -77,5 +78,18 @@ export class OrganizationComponent implements OnInit {
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'organization' }, width: '600px'
     });
+  }
+
+  /**
+   * The database stores a gravatar link if the image was added using UI, but this is not the case if added
+   * via the API.
+   */
+  genGravatarUrl(url: string): Observable<string> {
+    if (url.match('(https://www.gravatar.com/avatar/000)(.*)')) {
+      return of(url);
+    } else {
+      return of(url);
+      // return of(this.registerOrganizationService.gravatarUrl(url));
+    }
   }
 }

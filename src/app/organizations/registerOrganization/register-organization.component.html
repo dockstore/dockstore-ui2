@@ -56,8 +56,8 @@
     </mat-form-field>
     <mat-form-field>
       <input type="text" matInput formControlName="avatarUrl" placeholder="Image URL">
-      <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must end in a recognizable extension (jpg, jpeg, gif, png, etc)</mat-error>
-      <mat-hint>Link to your organization's logo image. Must have a recognizable extension (jpg, jpeg, gif, png, etc)</mat-hint>
+      <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must end in a recognizable extension (jpg, jpeg, png)</mat-error>
+      <mat-hint>Link to your organization's logo image. Must have a recognizable extension (jpg, jpeg, png)</mat-hint>
     </mat-form-field>
   </form>
 </div>

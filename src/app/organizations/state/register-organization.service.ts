@@ -9,7 +9,6 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationService } from './organization.service';
-import {UserService} from '../../shared/user/user.service';
 
 // This is recorded into the Akita state
 export interface FormsState {
@@ -56,11 +55,10 @@ export class RegisterOrganizationService {
 
   readonly logoUrlRegex = new RegExp(
     '^' +
-    // '((https://avatars)\\d(\\.githubusercontent.com\\/u\\/)(.*))|((https://www.gravatar.com/avatar/)(.*))' +
     '(.*)(.jpg|.jpeg|.png)'
   , 'i');
 
-  constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog, private userService: UserService,
+  constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
     private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
   }
 
@@ -227,20 +225,24 @@ export class RegisterOrganizationService {
 
   gravatarUrl(imgLink: string): string {
     if (imgLink) {
-      return 'https://www.gravatar.com/avatar/' + '000' + '?d=' + imgLink + '&s=500';
+      return 'https://www.gravatar.com/avatar/' + '000' + '?d=' + imgLink;
     } else {
       return null;
     }
   }
 
-  extractLogoUrl(gravatarUrl: string): string {
-    if (gravatarUrl) {
-      const params = new URL(gravatarUrl);
+  /**
+  * User can change the image url via the API (only has extension constraints), so not every url string stored in the database will be a
+  * gravatar one.
+  * */
+  extractLogoUrl(imageUrl: string): string {
+    if (imageUrl) {
+      const params = new URL(imageUrl);
       const logoUrl = params.searchParams.get('d');
       if (logoUrl) {
         return logoUrl;
       } else {
-        return gravatarUrl;
+        return imageUrl;
       }
     } else {
       return null;

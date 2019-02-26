@@ -98,7 +98,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('https://www.google.com');
       cy.contains('UCSC Basement');
       cy.contains('asdf@asdf.com');
-      cy.get('.img-circle').should('have.attr', 'src').should('include', 'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png&s=500');
+      cy.get('.img-circle').should('have.attr', 'src').should('include', 'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
     });
   });
 
