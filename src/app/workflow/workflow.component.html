@@ -52,7 +52,7 @@
 
     <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
       <mat-form-field>
-          <mat-select [(value)]="selectedVersion">
+          <mat-select (selectionChange)="onSelectedVersionChange(selectedVersion)" [(value)]="selectedVersion">
             <mat-option *ngFor="let workflowVersion of workflow.workflowVersions" [value]="workflowVersion">{{workflowVersion.name}}</mat-option>
           </mat-select>
         </mat-form-field>
