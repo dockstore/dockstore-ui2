@@ -37,16 +37,27 @@
               {{collection.name}}</h1>
           </mat-card-title>
           <mat-card-subtitle>
-            {{collection.description}}
+            {{collection.topic}}
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions>
           <div fxFlex></div>
-          <button color="basic" *ngIf="(canEdit$ | async)" mat-icon-button (click)="editCollection(collection)" id="editCollection"
+          <button color="basic" *ngIf="(canEdit$ | async)" mat-button (click)="editCollection(collection)" id="editCollection"
           matTooltip="Edit the collection">
             <mat-icon>edit</mat-icon>
           </button>
         </mat-card-actions>
+      </mat-card>
+
+      <mat-card fxFlex class="my-3">
+        <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
+          <div *ngIf="!collection.description" fxFlex>
+            <div *ngIf="(canEdit$ | async)" class="text-muted">Select edit to add a markdown description</div>
+            <div *ngIf="!(canEdit$ | async)" class="text-muted">This collection does not have a description</div>
+          </div>
+          <button mat-button *ngIf="(canEdit$ | async)" id="editCollectionDescription" matTooltip="Edit the description"><mat-icon>edit</mat-icon></button>
+        </div>
+        <ngx-md *ngIf="collection.description" fxFlex [data]="collection.description"></ngx-md>
       </mat-card>
 
       <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">

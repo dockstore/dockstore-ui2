@@ -44,8 +44,8 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
     return this.createCollectionForm.get('name');
   }
 
-  get description(): AbstractControl {
-    return this.createCollectionForm.get('description');
+  get topic(): AbstractControl {
+    return this.createCollectionForm.get('topic');
   }
 
   ngOnDestroy(): void {

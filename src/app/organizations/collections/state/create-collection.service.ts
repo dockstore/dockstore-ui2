@@ -15,7 +15,7 @@ import { CreateCollectionStore } from './create-collection.store';
 export interface FormsState {
   createOrUpdateCollection: {
     name: string;
-    description: string;
+    topic: string;
   };
 }
 
@@ -42,7 +42,7 @@ export class CreateCollectionService {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
-      description: collectionFormState.description
+      topic: collectionFormState.topic
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
@@ -90,16 +90,16 @@ export class CreateCollectionService {
   createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
     const mode: TagEditorMode = data.mode;
     let name = null;
-    let description = null;
+    let topic = null;
     formsManager.remove('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;
-      description = collection.description;
+      topic = collection.topic;
     }
     const createOrUpdateCollectionForm = this.builder.group({
       name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
-      description: [description]
+      topic: [topic]
     });
     formsManager.upsert('createOrUpdateCollection', createOrUpdateCollectionForm);
     return createOrUpdateCollectionForm;
@@ -133,7 +133,7 @@ export class CreateCollectionService {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
-      description: collectionFormState.description
+      topic: collectionFormState.topic
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
