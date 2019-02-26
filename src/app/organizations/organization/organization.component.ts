@@ -40,7 +40,7 @@ export class OrganizationComponent implements OnInit {
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
-    private activatedRoute: ActivatedRoute, private userQuery: UserQuery
+    private activatedRoute: ActivatedRoute, private userQuery: UserQuery, private registerOrganizationService: RegisterOrganizationService
   ) { }
 
   ngOnInit() {
@@ -88,8 +88,7 @@ export class OrganizationComponent implements OnInit {
     if (url.match('(https://www.gravatar.com/avatar/000)(.*)')) {
       return of(url);
     } else {
-      return of(url);
-      // return of(this.registerOrganizationService.gravatarUrl(url));
+      return of(this.registerOrganizationService.gravatarUrl(url));
     }
   }
 }
