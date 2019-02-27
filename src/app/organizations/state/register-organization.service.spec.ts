@@ -118,5 +118,7 @@ describe('RegisterOrganizationService', () => {
     expect(regexp.test('https://www.https://via.placeholder.com/150')).toBeFalsy();
     expect(regexp.test('.png')).toBeFalsy();
     expect(regexp.test('https://www.https://via.placeholder.com/150.png potato')).toBeFalsy();
+    expect(regexp.test('adf .jpg')).toBeFalsy();
+    expect(regexp.test('https://via.placeholder.com/150.jpg asdf')).toBeFalsy();
   });
 });
