@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable, of } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';
@@ -27,6 +27,7 @@ import {
   UpdateOrganizationOrCollectionDescriptionComponent
 } from './update-organization-description/update-organization-description.component';
 import { UserQuery } from '../../shared/user/user.query';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'organization',
@@ -43,6 +44,8 @@ export class OrganizationComponent implements OnInit {
     private activatedRoute: ActivatedRoute, private userQuery: UserQuery, private registerOrganizationService: RegisterOrganizationService
   ) { }
 
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+
   ngOnInit() {
     const organizationId = this.activatedRoute.snapshot.paramMap.get('id');
     const alias = this.activatedRoute.snapshot.paramMap.get('alias');
@@ -56,6 +59,15 @@ export class OrganizationComponent implements OnInit {
     this.organization$ = this.organizationQuery.organization$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(o => {
+      if (o) {
+        if (o.avatarUrl) {
+          this.gravatarUrl = this.organizationService.genGravatarUrl(o.avatarUrl);
+        }
+      } else {
+        this.gravatarUrl = null;
+      }
+    });
   }
 
   /**
@@ -78,18 +90,5 @@ export class OrganizationComponent implements OnInit {
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'organization' }, width: '600px'
     });
-  }
-
-  /**
-   * The database stores a gravatar link if the image was added using UI, but this is not the case if added
-   * via the API.
-   */
-  genGravatarUrl(url: string): Observable<string> {
-    if (url) {
-      const gravatarUrl = 'https://www.gravatar.com/avatar/' + '000' + '?d=' + url;
-      return of(gravatarUrl);
-    } else {
-      return null;
-    }
   }
 }

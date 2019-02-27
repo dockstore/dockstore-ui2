@@ -55,7 +55,7 @@ export class RegisterOrganizationService {
 
   readonly logoUrlRegex = new RegExp(
     '^' +
-    '(.*)(.jpg|.jpeg|.png|.gif)'
+    '(.+)(.jpg|.jpeg|.png|.gif)$'
   , 'i');
 
   constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
@@ -159,7 +159,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
-        avatarUrl: this.returnImgLink(organizationFormState.avatarUrl),
+        avatarUrl: organizationFormState.avatarUrl || null,
         users: []
       };
       this.alertService.start('Adding organization');
@@ -201,7 +201,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
-        avatarUrl: this.returnImgLink(organizationFormState.avatarUrl),
+        avatarUrl: organizationFormState.avatarUrl || null,
         description: organizationDescription,
         users: []
       };
@@ -223,16 +223,4 @@ export class RegisterOrganizationService {
     }
   }
 
-  /**
-   * If no image link is provided, null needs to be explicitly returned. Otherwise, if a field is provided, but then updated to be
-   * removed, an empty string will returned to the database. This will cause the url regex in webservice to fail.
-   * @param imgLink
-   */
-  returnImgLink(imgLink: string): string {
-    if (imgLink) {
-      return imgLink;
-    } else {
-      return null;
-    }
-  }
 }

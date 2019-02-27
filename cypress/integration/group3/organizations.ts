@@ -77,7 +77,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
       cy.contains('No collections found');
-      cy.get('.img-circle').should('have.attr', 'src').should('include', 'https://via.placeholder.com/150');
+      cy.get('.img-circle').should('have.attr', 'src').should('include', '../../../assets/images/dockstore/PlaceholderLC.png');
     });
     it('be able to edit organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
