@@ -34,8 +34,7 @@
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
         <div >
-          <img *ngIf="org?.avatarUrl == null" src="../../../assets/images/dockstore/PlaceholderLC.png" class="img-circle" height="150" width="150">
-          <img *ngIf="org?.avatarUrl" [src]="gravatarUrl" alt="Logo" class="img-circle" height="150" width="150">
+          <img [src]="org.avatarUrl != null ? gravatarUrl : '../../../assets/images/dockstore/PlaceholderLC.png'" class="img-circle" height="150" width="150">
         </div>
         <div>
           <mat-card-header>

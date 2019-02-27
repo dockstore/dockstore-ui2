@@ -60,10 +60,8 @@ export class OrganizationComponent implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(o => {
-      if (o) {
-        if (o.avatarUrl) {
+      if (o && o.avatarUrl) {
           this.gravatarUrl = this.organizationService.genGravatarUrl(o.avatarUrl);
-        }
       } else {
         this.gravatarUrl = null;
       }
