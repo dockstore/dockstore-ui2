@@ -95,6 +95,25 @@ export class CollectionsService {
   }
 
   /**
+   * Make this better, copied from above
+   * @param alias
+   */
+  @transaction()
+  updateCollectionFromAlias(alias: string, organizationService: OrganizationService) {
+    this.collectionsStore.setError(false);
+    this.collectionsStore.setLoading(true);
+    this.organizationsService.getCollectionByAlias(alias).pipe(finalize(() => this.collectionsStore.setLoading(false)))
+      .subscribe((collection: Collection) => {
+        this.collectionsStore.setError(false);
+        this.collectionsStore.createOrReplace(collection.id, collection);
+        this.collectionsStore.setActive(collection.id);
+        organizationService.updateOrganizationFromID(collection.organizationID);
+      }, () => {
+        this.collectionsStore.setError(true);
+      });
+  }
+
+  /**
    * Removes the given entry from the collection for the given organization
    * @param organizationId
    * @param collectionId
