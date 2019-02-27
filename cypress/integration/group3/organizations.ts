@@ -104,7 +104,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#editCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('The name of the collection', 'veryFakeCollectionName');
-      typeInInput('The display name of the collection', 'fakeCollectionName');
+      typeInInput('The display name of the collection', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateCollectionButton').should('not.be.visible');
