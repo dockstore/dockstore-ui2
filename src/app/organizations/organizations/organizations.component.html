@@ -30,7 +30,7 @@
         <mat-card fxFlexOffset="10px" fxFlex *ngFor="let org of organizations" class="my-2">
           <mat-card-header>
             <mat-card-title>
-              <a [routerLink]="org.name">{{org.name}}</a>
+              <a [routerLink]="org.name" [matTooltip]="org?.name">{{org.displayName}}</a>
             </mat-card-title>
             <mat-card-subtitle>
                 {{ org.topic }}
