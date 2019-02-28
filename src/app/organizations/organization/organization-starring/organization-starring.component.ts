@@ -8,6 +8,7 @@ import {StarringService} from '../../../starring/starring.service';
 import {StarentryService} from '../../../shared/starentry.service';
 import {AlertService} from '../../../shared/alert/state/alert.service';
 import {first, takeUntil} from 'rxjs/operators';
+import {Observable, of as ObservableOf} from 'rxjs';
 
 @Component({
   selector: 'app-organization-starring',
@@ -57,6 +58,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
 
   setUpOrganization(organization: any) {
     this.organization = organization;
+    this.getStarredUsers();
   }
 
   // Determine if user has starred organization.
@@ -94,58 +96,66 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
         this.alertService.start(message);
       }
 
-      console.log('starred');
-      // this.setStar().subscribe(
-      //   data => {
-      //     // update total_stars
-      //     this.alertService.simpleSuccess();
-      //     // this.getStarredUsers();
-      //
-      //   },
-      //   (error) => {
-      //     this.alertService.detailedError(error);
-      //     this.disable = false;
-      //   });
+      this.setStar().subscribe(
+        data => {
+          // update total_stars
+          this.alertService.simpleSuccess();
+          // this.getStarredUsers();
+
+        },
+        (error) => {
+          this.alertService.detailedError(error);
+          this.disable = false;
+        });
     }
   }
 
-
+// returns observable so function setStar() can be subscribed to.
   unstarOrg(organizationID: number): any {
     console.log('Unstarred');
-    return 'Unstarred org';
+    this.rate = false;
+    // this.total_stars = this.total_stars - 1;
+    this.disable = false;                           //
+    this.starredUsers.pop();                        //
+    return ObservableOf('Unstarred org');
   }
 
   starOrg(organizationID: number): any {
     const body: StarRequest = {
       star: true
     };
+    this.rate = true;
+    // this.total_stars = this.total_stars + 1;
+    this.disable = false;                           //
+    this.starredUsers.push(this.user);              //
     console.log('Starred');
-    return 'Starred org';
+    return ObservableOf('Starred org');
   }
 
 
   setStar(): any {
     if (this.rate) {
-      return this.starOrg(this.organization);
+      return this.unstarOrg(this.organization);
       // return this.starringService.setUnstar(this.entry.id, this.entryType);
     } else {
-      return this.unstarOrg(this.organization);
+      return this.starOrg(this.organization);
       // return this.starringService.setStar(this.entry.id, this.entryType);
     }
   }
-  // getStarredUsers(): any {
-  //   if (this.organization) {
-  //     this.starringService.getStarring(this.entry.id, this.entryType).pipe(first()).subscribe(
-  //       (starring: User[]) => {
-  //         this.total_stars = starring.length;
-  //         this.starredUsers = starring;
-  //         this.rate = this.calculateRate(starring);
-  //         this.disable = false;
-  //       }, error => this.disable = false);
-  //   } else {
-  //     this.disable = false;
-  //   }
-  // }
+  getStarredUsers(): any {
+    if (this.organization) {
+      this.getStarring(this.organization.id).pipe(first()).subscribe(
+        (starring: User[]) => {
+          this.total_stars = starring.length;
+          this.starredUsers = starring;
+          this.rate = this.calculateRate(starring);
+          this.disable = false;
+        }, error => this.disable = false);
+    } else {
+      this.disable = false;
+    }
+  }
+
   // getStargazers() {
   //   const selectedEntry = {
   //     theEntry: this.entry,
@@ -154,4 +164,9 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
   //   this.starentryService.setEntry(selectedEntry);
   //   this.change.emit();
   // }
+
+  getStarring(organizationID: number): Observable<Array<User>> {
+    // return this.workflowsService.getStarredUsers(entryID);
+    return ObservableOf(this.starredUsers);
+  }
 }
