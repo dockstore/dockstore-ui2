@@ -1,25 +1,5 @@
-<<<<<<< HEAD
-/*
- *    Copyright 2019 OICR
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
-=======
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs';
->>>>>>> Start point for starring organizations.
 import {StarRequest, User} from '../../../shared/swagger';
 import {TrackLoginService} from '../../../shared/track-login.service';
 import {UserQuery} from '../../../shared/user/user.query';
@@ -132,37 +112,17 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
   }
 
 
-<<<<<<< HEAD
-// returns observable so function setStar() can be subscribed to.
-  unstarOrg(organizationID: number): any {
-    console.log('Unstarred');
-    this.rate = false;
-    // this.total_stars = this.total_stars - 1;
-    this.disable = false;                           //
-    this.starredUsers.pop();                        //
-    return ObservableOf('Unstarred org');
-=======
   unstarOrg(organizationID: number): any {
     console.log('Unstarred');
     return 'Unstarred org';
->>>>>>> Start point for starring organizations.
   }
 
   starOrg(organizationID: number): any {
     const body: StarRequest = {
       star: true
     };
-<<<<<<< HEAD
-    this.rate = true;
-    // this.total_stars = this.total_stars + 1;
-    this.disable = false;                           //
-    this.starredUsers.push(this.user);              //
-    console.log('Starred');
-    return ObservableOf('Starred org');
-=======
     console.log('Starred');
     return 'Starred org';
->>>>>>> Start point for starring organizations.
   }
 
 
