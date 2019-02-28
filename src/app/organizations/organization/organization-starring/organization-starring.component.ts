@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  *    Copyright 2019 OICR
  *
@@ -15,6 +16,10 @@
  */
 
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
+=======
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
+import {Subject} from 'rxjs';
+>>>>>>> Start point for starring organizations.
 import {StarRequest, User} from '../../../shared/swagger';
 import {TrackLoginService} from '../../../shared/track-login.service';
 import {UserQuery} from '../../../shared/user/user.query';
@@ -127,6 +132,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
   }
 
 
+<<<<<<< HEAD
 // returns observable so function setStar() can be subscribed to.
   unstarOrg(organizationID: number): any {
     console.log('Unstarred');
@@ -135,18 +141,28 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     this.disable = false;                           //
     this.starredUsers.pop();                        //
     return ObservableOf('Unstarred org');
+=======
+  unstarOrg(organizationID: number): any {
+    console.log('Unstarred');
+    return 'Unstarred org';
+>>>>>>> Start point for starring organizations.
   }
 
   starOrg(organizationID: number): any {
     const body: StarRequest = {
       star: true
     };
+<<<<<<< HEAD
     this.rate = true;
     // this.total_stars = this.total_stars + 1;
     this.disable = false;                           //
     this.starredUsers.push(this.user);              //
     console.log('Starred');
     return ObservableOf('Starred org');
+=======
+    console.log('Starred');
+    return 'Starred org';
+>>>>>>> Start point for starring organizations.
   }
 
 
