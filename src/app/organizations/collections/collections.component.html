@@ -26,8 +26,8 @@
           <div fxFlex fxGrow="3">
             <mat-card-header>
               <mat-card-title>
-                <a [routerLink]="['/organizations/', organizationID, 'collections', collection?.value?.id]">
-                  {{collection.value.name}}
+                <a [routerLink]="['/organizations/', organizationID, 'collections', collection?.value?.id]" [matTooltip]="collection?.value?.name">
+                  {{collection.value.displayName}}
                 </a>
               </mat-card-title>
               <mat-card-subtitle>{{collection.value.description}}</mat-card-subtitle>
