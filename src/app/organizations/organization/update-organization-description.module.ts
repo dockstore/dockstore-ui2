@@ -9,6 +9,7 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import {
   UpdateOrganizationOrCollectionDescriptionComponent,
 } from './update-organization-description/update-organization-description.component';
+import { OrganizationStarringComponent } from './organization-starring/organization-starring.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {
     RefreshAlertModule,
     ReactiveFormsModule
   ],
+  exports: [OrganizationStarringComponent],
   declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
   entryComponents: [UpdateOrganizationOrCollectionDescriptionComponent]
 })

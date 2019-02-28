@@ -67,6 +67,7 @@
             <span class="ellipsis-lines">{{ org.location }}</span>
           </span>
         </div>
+        <app-organization-starring [organization]="org" class="pull-right starring-button" *ngIf="org"></app-organization-starring>
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>
