@@ -21,7 +21,7 @@ describe('Dockstore Organizations', () => {
 
   function typeInInput(fieldName: string, text: string) {
     cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper')
-      .find('input').clear().type(text);
+      .find('input').first().clear().type(text);
   }
 
   function typeInTextArea(fieldName: string, text: string) {
@@ -40,6 +40,8 @@ describe('Dockstore Organizations', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'Potato');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
+      typeInInput('Display Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInTextArea('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
@@ -68,6 +70,7 @@ describe('Dockstore Organizations', () => {
     it('be able to edit organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
       typeInInput('Name', 'Potatoe');
+      typeInInput('Display Name', 'Potatoe');
       typeInTextArea('Topic', 'Boil them, mash them, stick them in a stew');
       typeInInput('Organization website', 'https://www.google.com');
       typeInInput('Location', 'UCSC Basement');
@@ -89,7 +92,8 @@ describe('Dockstore Organizations', () => {
     it('be able to add a collection', () => {
       cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
-      typeInInput('The name of the collection', 'fakeCollectionName');
+      typeInInput('Name', 'fakeCollectionName');
+      typeInInput('Display Name', 'fakeCollectionName');
       typeInTextArea('Description', 'fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('fakeCollectionName');
@@ -99,7 +103,8 @@ describe('Dockstore Organizations', () => {
     it('be able to update a collection', () => {
       cy.get('#editCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
-      typeInInput('The name of the collection', 'veryFakeCollectionName');
+      typeInInput('Name', 'veryFakeCollectionName');
+      typeInInput('Display Name', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateCollectionButton').should('not.be.visible');
@@ -143,6 +148,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#editCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
+      typeInInput('Display Name', 'veryFakeCollectionName');
       typeInTextArea('Description', 'very fake collection description2');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('veryFakeCollectionName');

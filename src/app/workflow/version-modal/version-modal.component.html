@@ -47,7 +47,7 @@
               <input [ngClass]="{ 'input-right-button' : !isPublic, 'input-no-button' : isPublic }" type="text" class="form-control" name="testParameterFilePaths[{{i}}]"
                 [(ngModel)]="testParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.json" disabled readonly/>
               <span class="input-group-btn">
-                <button title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
+                <button data-cy="remove-test-parameter-file-button" title="Remove test parameter file" type="button" class="btn btn-default form-sm-button" *ngIf="!isPublic" (click)="removeTestParameterFile(i)">
                   <mat-icon>clear</mat-icon>
                 </button>
               </span>
@@ -55,7 +55,7 @@
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{'col-sm-offset-3' : testParameterFilePaths.length > 0}" *ngIf="!isPublic">
             <div class="input-group">
-              <input [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
+              <input data-cy="test-parameter-file-input" [ngClass]="{ 'input-right-button' : !isPublic }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
                 [(ngModel)]="testParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" placeholder="e.g. /test.cwl.json"
                 [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED" [matTooltip]="tooltip.testParameterFile"/>
               <span class="input-group-btn">
@@ -121,7 +121,7 @@
 </div>
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
   <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
-  <button type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid">
+  <button data-cy="save-version" type="button" (click)="saveChanges()" mat-flat-button color="primary" *ngIf="!isPublic && canWrite" [disabled]="!versionEditorForm.form.valid">
     Save Changes
   </button>
 </div>

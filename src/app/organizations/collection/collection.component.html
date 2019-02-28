@@ -33,8 +33,8 @@
       <mat-card fxFlex class="my-3">
         <mat-card-header>
           <mat-card-title>
-            <h1><a [routerLink]="['/organizations/', organization.id]">{{ organization.name }}</a> /
-              {{collection.name}}</h1>
+            <h1><a [routerLink]="['/organizations/', organization.id]"><span [matTooltip]="organization?.name">{{ organization.displayName }}</span></a> /
+              <span [matTooltip]="collection?.name">{{ collection.displayName }}</span></h1>
           </mat-card-title>
           <mat-card-subtitle>
             {{collection.topic}}

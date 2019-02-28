@@ -48,7 +48,7 @@
 
     <div *ngIf="!publicPage && tool?.tags.length > 0">
       <mat-form-field>
-        <mat-select name="toolVersions" [(value)]="selectedVersion" (selectionChange)="onTagChange($event)">
+        <mat-select name="toolVersions" [(value)]="selectedVersion" (selectionChange)="onSelectedVersionChange(selectedVersion)">
           <mat-option *ngFor="let tag of tool.tags" [value]="tag">{{tag.name}}</mat-option>
         </mat-select>
       </mat-form-field>

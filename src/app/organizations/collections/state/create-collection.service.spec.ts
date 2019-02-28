@@ -34,7 +34,7 @@ let matDialogSpy: jasmine.SpyObj<MatDialog>;
 describe('CreateCollectionService', () => {
   let createCollectionService: CreateCollectionService;
   let createCollectionStore: CreateCollectionStore;
-  const exampleFormState = { name: '', description: '' };
+  const exampleFormState = { name: '', description: '', displayName: '' };
 
   beforeEach(() => {
     const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createCollection', 'updateCollection']);

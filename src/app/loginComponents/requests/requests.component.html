@@ -16,7 +16,7 @@
       <mat-card *ngFor="let org of (allPendingOrganizations$ | async); let i = index" [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + org.id )">{{org.name}}</a>
+            <a [routerLink]="('/organizations/' + org.id )" [matTooltip]="org?.name">{{org.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             <p>Requested by user(s)
@@ -47,10 +47,10 @@
 
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button [id]="'reject-pending-org-' + i" class="mr-1" (click)="openDialog(org.name, org.id, false)">
+          <button mat-flat-button [id]="'reject-pending-org-' + i" class="mr-1" (click)="openDialog(org.displayName, org.id, false)">
             <mat-icon>clear</mat-icon>Reject
           </button>
-          <button mat-flat-button color="primary" [id]="'approve-pending-org-' + i" (click)="openDialog(org.name, org.id, true)">
+          <button mat-flat-button color="primary" [id]="'approve-pending-org-' + i" (click)="openDialog(org.displayName, org.id, true)">
             <mat-icon>done</mat-icon>Approve
           </button>
         </mat-card-actions>
@@ -70,7 +70,7 @@
       <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization.id )">{{membership.organization.name}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization.id )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -109,7 +109,7 @@
       <mat-card *ngFor="let membership of (myOrganizationInvites$ | async); let i = index" [id]="'my-org-invites-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization.id )">{{membership.organization.name}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization.id )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -135,10 +135,10 @@
         </mat-card-content>
         <mat-card-actions>
           <div fxFlex></div>
-          <button mat-flat-button class="mr-1" [id]="'reject-invite-org-' + i" (click)="openInviteDialog(membership.organization.name, membership.organization.id, false)">
+          <button mat-flat-button class="mr-1" [id]="'reject-invite-org-' + i" (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, false)">
             <mat-icon>clear</mat-icon>Decline
           </button>
-          <button mat-flat-button color="primary" [id]="'accept-invite-org-' + i" (click)="openInviteDialog(membership.organization.name, membership.organization.id, true)">
+          <button mat-flat-button color="primary" [id]="'accept-invite-org-' + i" (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, true)">
             <mat-icon>done</mat-icon>Accept
           </button>
         </mat-card-actions>
