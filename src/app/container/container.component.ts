@@ -92,7 +92,7 @@ export class ContainerComponent extends Entry {
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery, public dialog: MatDialog) {
     super(trackLoginService, providerService, router, dateService, urlResolverService, activatedRoute,
       location, sessionService, sessionQuery, gA4GHFilesService);
-      this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
 
     this._toolType = 'containers';
@@ -297,6 +297,9 @@ export class ContainerComponent extends Entry {
     this.selectedVersion = tag;
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+    }
+    if (this.selectVersion) {
+      this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
     }
     this.onTagChange(tag);
   }

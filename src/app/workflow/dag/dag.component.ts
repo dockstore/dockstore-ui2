@@ -26,6 +26,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
+import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 /**
  * This is the DAG tab
@@ -51,6 +52,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
 
   @ViewChild('exportLink') exportLink: ElementRef;
   @ViewChild('cy') cyElement: ElementRef;
+  @ViewChild(WdlViewerComponent) wdlViewer: WdlViewerComponent;
   @ViewChild('dagHolder') dagHolderElement: ElementRef;
 
   public dagResult$: Observable<any>;
@@ -58,12 +60,14 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public expanded: Boolean = false;
   public workflow$: Observable<Workflow>;
   public isNFL$: Observable<boolean>;
+  public isWDL$: Observable<boolean>;
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public missingTool$: Observable<boolean>;
-  public dagType: 'classic' | 'cwlviewer' = 'classic';
+  public dagType: 'classic' | 'cwlviewer' | 'wdlviewer' = 'classic';
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
+  public pipelineBuilderResults: Boolean = false;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -79,8 +83,15 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   reset() {
-    this.refreshCounter++;
-    this.refreshDocument(this.cy);
+    switch (this.dagType) {
+      case 'wdlviewer':
+        this.wdlViewer.reset();
+        break;
+      default:
+        this.refreshCounter++;
+        this.refreshDocument(this.cy);
+        break;
+    }
   }
 
   constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery, private ngZone: NgZone) {
@@ -116,6 +127,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   ngOnInit() {
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
+    this.isWDL$ = this.workflowQuery.isWDL$;
     this.dagResult$ = this.dagQuery.dagResults$;
     this.workflow$ = this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
@@ -133,6 +145,17 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   download() {
-    this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
+    switch (this.dagType) {
+      case 'wdlviewer':
+        this.wdlViewer.download(this.exportLink);
+        break;
+      default:
+        this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
+        break;
+    }
+  }
+
+  showLink(success: boolean) {
+    this.pipelineBuilderResults = success;
   }
 }

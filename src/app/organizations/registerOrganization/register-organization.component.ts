@@ -56,6 +56,10 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
     return this.registerOrganizationForm.get('name');
   }
 
+  get displayName(): AbstractControl {
+    return this.registerOrganizationForm.get('displayName');
+  }
+
   get topic(): AbstractControl {
     return this.registerOrganizationForm.get('topic');
   }

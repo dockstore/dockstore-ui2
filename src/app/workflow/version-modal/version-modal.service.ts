@@ -14,16 +14,16 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { MatDialog } from '@angular/material';
+
 
 @Injectable()
 export class VersionModalService {
@@ -63,15 +63,15 @@ export class VersionModalService {
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         response => {
-            this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
-              success => {
-                this.alertService.detailedSuccess();
-                this.refreshService.refreshWorkflow();
-                this.matDialog.closeAll();
-              }, error => {
-                this.alertService.detailedError(error);
-                this.refreshService.refreshWorkflow();
-              });
+          this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
+            success => {
+              this.alertService.detailedSuccess();
+              this.refreshService.refreshWorkflow();
+              this.matDialog.closeAll();
+            }, error => {
+              this.alertService.detailedError(error);
+              this.refreshService.refreshWorkflow();
+            });
         }, error => {
           this.alertService.detailedError(error);
         }
@@ -105,14 +105,14 @@ export class VersionModalService {
     const toDelete: boolean = missingCWL && missingCWL.length > 0;
     const workflowId = this.workflowQuery.getActive().id;
     if (toDelete && toAdd) {
-      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, null, workflowVersion.name).pipe(concatMap(() =>
+      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name).pipe(concatMap(() =>
         this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name)));
     }
     if (toDelete && !toAdd) {
       return this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name);
     }
     if (toAdd && !toDelete) {
-      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, null, workflowVersion.name);
+      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name);
     }
     if (!toAdd && !toDelete) {
       return observableOf({});
