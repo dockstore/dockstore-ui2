@@ -20,12 +20,12 @@ export class CurrentCollectionsQuery extends QueryEntity<CurrentCollectionsState
   }
 
   sortCollectionOrganizations(a: CollectionOrganization, b: CollectionOrganization): number {
-    if (a.organizationName < b.organizationName) {
+    if (a.organizationName.toLowerCase() < b.organizationName.toLowerCase()) {
       return -1;
     }
-    if (a.organizationName > b.organizationName) {
+    if (a.organizationName.toLowerCase() > b.organizationName.toLowerCase()) {
       return 1;
     }
-    return a.collectionName < b.collectionName ? -1 : 1;
+    return a.collectionName.toLowerCase() < b.collectionName.toLowerCase() ? -1 : 1;
   }
 }
