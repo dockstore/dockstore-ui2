@@ -33,8 +33,8 @@
     </mat-card>
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
-        <div >
-          <img [src]="org.avatarUrl != null ? gravatarUrl : '../../../assets/images/dockstore/PlaceholderLC.png'" class="img-circle" height="150" width="150">
+        <div>
+          <img [src]="(gravatarUrl$ | async ) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="img-circle" height="150" width="150">
         </div>
         <div>
           <mat-card-header>
