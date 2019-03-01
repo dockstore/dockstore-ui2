@@ -24,7 +24,6 @@ import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
 import { OrganizationService } from './organization.service';
 
-
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
 

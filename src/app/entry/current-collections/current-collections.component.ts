@@ -20,40 +20,34 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
   isLoggedIn$: Observable<boolean>;
 
   constructor(private currentCollectionsQuery: CurrentCollectionsQuery, private matDialog: MatDialog,
-              private currentCollectionsService: CurrentCollectionsService, private trackLoginService: TrackLoginService
+    private currentCollectionsService: CurrentCollectionsService, private trackLoginService: TrackLoginService
   ) { }
 
   ngOnInit() {
-      this.currentCollections$ = this.currentCollectionsQuery.currentCollectionOrganizations$;
-      this.isLoading$ = this.currentCollectionsQuery.selectLoading();
-      this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
-      // this.currentCollectionsService.get();
-    }
+    this.currentCollections$ = this.currentCollectionsQuery.currentCollectionOrganizations$;
+    this.isLoading$ = this.currentCollectionsQuery.selectLoading();
+    this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
+  }
 
-    add(currentCollection: CollectionOrganization) {
-      this.currentCollectionsService.add(currentCollection);
-    }
+  add(currentCollection: CollectionOrganization) {
+    this.currentCollectionsService.add(currentCollection);
+  }
 
-    update(id: ID, currentCollection: Partial<CollectionOrganization>) {
-      this.currentCollectionsService.update(id, currentCollection);
-    }
+  update(id: ID, currentCollection: Partial<CollectionOrganization>) {
+    this.currentCollectionsService.update(id, currentCollection);
+  }
 
-    remove(id: ID) {
-      this.currentCollectionsService.remove(id);
-    }
+  remove(id: ID) {
+    this.currentCollectionsService.remove(id);
+  }
 
-    addEntryToCollection() {
-      this.matDialog.open(AddEntryComponent, {
-        data: { entryId: this.id }, width: '500px'
-      });
-    }
+  addEntryToCollection() {
+    this.matDialog.open(AddEntryComponent, {
+      data: { entryId: this.id }, width: '500px'
+    });
+  }
 
-    ngOnChanges(changes: SimpleChanges): void {
-      this.currentCollectionsService.get(this.id);
-    }
-
-    sort(thing: Array<CollectionOrganization>) {
-
-    }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.currentCollectionsService.get(this.id);
+  }
 }
