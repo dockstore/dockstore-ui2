@@ -1,28 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UpdateOrganizationDescriptionService } from './update-organization-description.service';
-import { UpdateOrganizationDescriptionStore } from './update-organization-description.store';
+import { UpdateOrganizationOrCollectionDescriptionService } from './update-organization-description.service';
+import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organization-description.store';
 import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
-describe('UpdateOrganizationDescriptionService', () => {
-  let updateOrganizationDescriptionService: UpdateOrganizationDescriptionService;
-  let updateOrganizationDescriptionStore: UpdateOrganizationDescriptionStore;
+describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
+  let updateOrganizationOrCollectionDescriptionService: UpdateOrganizationOrCollectionDescriptionService;
+  let updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpdateOrganizationDescriptionService, UpdateOrganizationDescriptionStore,
+      providers: [UpdateOrganizationOrCollectionDescriptionService, UpdateOrganizationOrCollectionDescriptionStore,
         FormBuilder],
       imports: [ HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule ]
     });
 
-    updateOrganizationDescriptionService = TestBed.get(UpdateOrganizationDescriptionService);
-    updateOrganizationDescriptionStore = TestBed.get(UpdateOrganizationDescriptionStore);
+    updateOrganizationOrCollectionDescriptionService = TestBed.get(UpdateOrganizationOrCollectionDescriptionService);
+    updateOrganizationOrCollectionDescriptionStore = TestBed.get(UpdateOrganizationOrCollectionDescriptionStore);
   });
 
   it('should be created', () => {
-    expect(updateOrganizationDescriptionService).toBeDefined();
+    expect(updateOrganizationOrCollectionDescriptionService).toBeDefined();
   });
 
 });

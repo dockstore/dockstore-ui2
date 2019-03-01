@@ -22,7 +22,7 @@ import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import { UpdateOrganizationDescriptionComponent } from './update-organization-description/update-organization-description.component';
+import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
@@ -67,8 +67,8 @@ export class OrganizationComponent implements OnInit {
   updateDescription() {
     const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
     const description = organizationSnapshot.description;
-    this.matDialog.open(UpdateOrganizationDescriptionComponent, {
-      data: { description: description }, width: '600px'
+    this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
+      data: { description: description, type: 'organization' }, width: '600px'
     });
   }
 }

@@ -1,10 +1,10 @@
-import { UpdateOrganizationDescriptionStore } from './update-organization-description.store';
+import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organization-description.store';
 
-describe('UpdateOrganizationDescriptionStore', () => {
-  let store: UpdateOrganizationDescriptionStore;
+describe('UpdateOrganizationOrCollectionDescriptionStore', () => {
+  let store: UpdateOrganizationOrCollectionDescriptionStore;
 
   beforeEach(() => {
-    store = new UpdateOrganizationDescriptionStore();
+    store = new UpdateOrganizationOrCollectionDescriptionStore();
   });
 
   it('should create an instance', () => {

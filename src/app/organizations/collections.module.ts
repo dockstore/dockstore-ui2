@@ -10,6 +10,7 @@ import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './col
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
 import { NgxMdModule } from 'ngx-md';
+import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { NgxMdModule } from 'ngx-md';
     HeaderModule,
     RefreshAlertModule,
     RouterModule,
-    NgxMdModule
+    NgxMdModule,
+    UpdateOrganizationDescriptionModule
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],

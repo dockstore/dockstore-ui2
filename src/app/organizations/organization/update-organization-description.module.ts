@@ -7,7 +7,7 @@ import { NgxMdModule } from 'ngx-md';
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import {
-  UpdateOrganizationDescriptionComponent,
+  UpdateOrganizationOrCollectionDescriptionComponent,
 } from './update-organization-description/update-organization-description.component';
 
 @NgModule({
@@ -19,7 +19,7 @@ import {
     RefreshAlertModule,
     ReactiveFormsModule
   ],
-  declarations: [UpdateOrganizationDescriptionComponent],
-  entryComponents: [UpdateOrganizationDescriptionComponent]
+  declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
+  entryComponents: [UpdateOrganizationOrCollectionDescriptionComponent]
 })
 export class UpdateOrganizationDescriptionModule { }
