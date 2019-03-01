@@ -23,14 +23,13 @@ blocks:
           - ng version
           - npm run prebuild
       jobs:
-      - name: Test and Coverage
+      - name: Lint, Unit Test and Coverage
         commands:
+          - ng lint
+          - npm run build.prod
           - npm install codecov
           - ng test --watch=false --code-coverage --browsers ChromeHeadless
           - ./node_modules/codecov/bin/codecov
-      - name: Lint
-        commands:
-          - ng lint
   - name: "Integration Tests"
     task:
       env_vars:
