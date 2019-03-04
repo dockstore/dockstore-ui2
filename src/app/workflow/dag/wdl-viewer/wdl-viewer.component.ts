@@ -30,7 +30,6 @@ import { WdlViewerService, WdlViewerPipeline } from './wdl-viewer.service';
   selector: 'app-wdl-viewer',
   templateUrl: './wdl-viewer.html',
   styleUrls: ['./wdl-viewer.component.scss'],
-  providers: [WdlViewerService],
   encapsulation: ViewEncapsulation.None,
 })
 export class WdlViewerComponent implements AfterViewInit, OnDestroy {
@@ -42,9 +41,9 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.onVersionChange(value);
   }
 
-  // TODO: The success status of the pipeline builder results should be implemented using a plain service or state instead of an
-  // EventEmitter to communicate between parent & child components
-  @Output() success: EventEmitter<boolean> = new EventEmitter<boolean>(true);
+  // The child component cannot change the status in a service shared by the parent when it detects WDL workflow version changes
+  // i.e. ExpressionChangedAfterItHasBeenCheckedError
+  @Output() newVersion: EventEmitter<boolean> = new EventEmitter<boolean>(true);
   @ViewChild('diagram') diagram: ElementRef;
 
   public errorMessage;
@@ -81,13 +80,13 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
             .subscribe((res: WdlViewerPipeline) => {
                 this.visualizer.attachTo(res.model[0]);
                 this.wdlViewerError = false;
-                this.success.emit(true);
+                this.wdlViewerService.setStatus(true);
               },
               (error) => {
                 this.errorMessage = error || 'Unknown Error';
                 this.wdlViewerError = true;
                 this.diagram.nativeElement.remove();
-                this.success.emit(false);
+                this.wdlViewerService.setStatus(false);
               });
         }
       });
@@ -100,7 +99,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
 
   onVersionChange(value: WorkflowVersion) {
     // Reset all booleans types for the new version
-    this.success.emit(false);
+    this.newVersion.emit(true);
     this.wdlViewerError = false;
 
     if (this.visualizer) {

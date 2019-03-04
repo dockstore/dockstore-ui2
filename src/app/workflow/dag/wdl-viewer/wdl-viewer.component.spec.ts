@@ -20,6 +20,7 @@ import { FileService } from '../../../shared/file.service';
 
 
 import { WdlViewerComponent } from './wdl-viewer.component';
+import { WdlViewerService } from './wdl-viewer.service';
 
 describe('WdlViewerComponent', () => {
   let component: WdlViewerComponent;
@@ -29,7 +30,7 @@ describe('WdlViewerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WdlViewerComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [FileService],
+      providers: [FileService, WdlViewerService],
       imports: [HttpClientTestingModule]
     })
     .compileComponents();
