@@ -15,15 +15,14 @@
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { HashMap } from '@datorama/akita';
 import { Observable } from 'rxjs';
-
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection } from '../../shared/swagger';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
-import { HashMap } from '@datorama/akita';
 
 @Component({
   selector: 'collections',
@@ -46,6 +45,7 @@ export class CollectionsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.collectionsService.clearState();
     this.collectionsService.updateCollections(this.organizationID);
   }
 

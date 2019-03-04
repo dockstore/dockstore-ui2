@@ -22,7 +22,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
-import { AddEntryComponent } from '../organizations/collection/add-entry/add-entry.component';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { includesValidation } from '../shared/constants';
@@ -360,9 +359,4 @@ export class ContainerComponent extends Entry {
     }
   }
 
-  addEntryToCollection() {
-    this.dialog.open(AddEntryComponent, {
-      data: { entryId: this.tool.id }, width: '500px'
-    });
-  }
 }

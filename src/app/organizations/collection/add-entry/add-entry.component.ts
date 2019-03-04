@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { AddEntryService } from '../state/add-entry.service';
-import { AddEntryQuery } from '../state/add-entry.query';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
-import { OrganizationUser, Collection } from '../../../shared/swagger';
+import { Collection, OrganizationUser } from '../../../shared/swagger';
+import { AddEntryQuery } from '../state/add-entry.query';
+import { AddEntryService } from '../state/add-entry.service';
 
 @Component({
   selector: 'add-entry',
@@ -26,7 +26,7 @@ export class AddEntryComponent implements OnInit {
     this.isLoading$ = this.addEntryQuery.isLoading$;
     this.addEntryService.updateMemberships();
     this.memberships$ = this.addEntryQuery.memberships$;
-    this.collections$ = this.addEntryQuery.collections$;
+    this.collections$ = this.addEntryQuery.filteredCollections$;
   }
 
   /**
@@ -36,7 +36,6 @@ export class AddEntryComponent implements OnInit {
   onOrganizationChange(event) {
     this.selectedCollectionId = null;
     this.addEntryService.updateCollections(event.value);
-    this.collections$ = this.addEntryQuery.collections$;
   }
 
   /**
@@ -47,9 +46,4 @@ export class AddEntryComponent implements OnInit {
       this.addEntryService.addEntryToCollection(this.selectedOrganizationId, this.selectedCollectionId, this.data.entryId);
     }
   }
-
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
-
 }

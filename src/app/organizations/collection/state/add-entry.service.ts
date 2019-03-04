@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
-import { AddEntryStore, AddEntryState } from './add-entry.store';
-import { OrganizationsService, UsersService, OrganizationUser, Collection } from '../../../shared/swagger';
-import { finalize } from 'rxjs/operators';
-import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { finalize } from 'rxjs/operators';
+import { CurrentCollectionsService } from '../../../entry/state/current-collections.service';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { Collection, OrganizationsService, OrganizationUser, UsersService } from '../../../shared/swagger';
+import { AddEntryState, AddEntryStore } from './add-entry.store';
 
 @Injectable({ providedIn: 'root' })
 export class AddEntryService {
 
   constructor(private addEntryStore: AddEntryStore,
     private organizationsService: OrganizationsService,
-    private usersService: UsersService, private alertService: AlertService) {
+    private usersService: UsersService, private alertService: AlertService, private currentCollectionsService: CurrentCollectionsService) {
   }
 
   /**
@@ -92,6 +93,7 @@ export class AddEntryService {
       ))
       .subscribe((collection: Collection) => {
         this.alertService.detailedSuccess();
+        this.currentCollectionsService.get(entryId);
       }, (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
         this.addEntryStore.setError(true);

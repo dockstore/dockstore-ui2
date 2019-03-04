@@ -25,8 +25,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
-
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { CurrentCollectionsModule } from '../../entry/current-collections.module';
+import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
@@ -58,7 +59,6 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
-import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 
 @NgModule({
   declarations: [
@@ -80,6 +80,7 @@ import { AddEntryModule } from '../../organizations/collection/add-entry.module'
     CommonModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
+    CurrentCollectionsModule,
     FlexLayoutModule,
     NgxMdModule.forRoot(),
     HeaderModule,
