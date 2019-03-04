@@ -102,6 +102,7 @@ export class CreateCollectionService {
       const collection: Collection = data.collection.value;
       name = collection.name;
       topic = collection.topic;
+      displayName = collection.displayName;
     }
 
     const createOrUpdateCollectionForm = this.builder.group({

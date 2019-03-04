@@ -94,10 +94,10 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'fakeCollectionName');
       typeInInput('Display Name', 'fakeCollectionName');
-      typeInTextArea('Description', 'fake collection description');
+      typeInTextArea('Topic', 'fake collection topic');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('fakeCollectionName');
-      cy.contains('fake collection description');
+      cy.contains('fake collection topic');
     });
 
     it('be able to update a collection', () => {
@@ -105,16 +105,31 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInInput('Display Name', 'veryFakeCollectionName');
-      typeInTextArea('Description', 'very fake collection description');
+      typeInTextArea('Topic', 'very fake collection topic');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateCollectionButton').should('not.be.visible');
       cy.contains('veryFakeCollectionName');
-      cy.contains('very fake collection description');
+      cy.contains('very fake collection topic');
+    });
+
+    it('be able to update a collection description', () => {
+      cy.visit('/organizations/1/collections/1');
+      cy.get('#editCollectionDescription').click();
+      cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
+      typeInTextArea('Description', '* fake collection description');
+      cy.contains('Preview Mode').click();
+      cy.contains('fake collection description');
+      cy.contains('* fake collection description').should('not.exist');
+      cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
+      cy.contains('fake collection description');
+      cy.contains('* fake collection description').should('not.exist');
     });
   });
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
+      cy.visit('/organizations/1');
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
@@ -137,22 +152,22 @@ describe('Dockstore Organizations', () => {
 
       // Should retrieve the collection
       cy.contains('veryFakeCollectionName');
-      cy.contains('very fake collection description');
+      cy.contains('very fake collection topic');
 
       // Should have no entries
       cy.contains('This collection has no associated entries');
     });
 
     it('be able to edit collection information', () => {
-      // Should be able to edit the collection description and see the changes reflected
+      // Should be able to edit the collection topic and see the changes reflected
       cy.get('#editCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInInput('Display Name', 'veryFakeCollectionName');
-      typeInTextArea('Description', 'very fake collection description2');
+      typeInTextArea('Topic', 'very fake collection topic2');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('veryFakeCollectionName');
-      cy.contains('very fake collection description2');
+      cy.contains('very fake collection topic2');
     });
 
     it('be able to add an entry to the collection', () => {
