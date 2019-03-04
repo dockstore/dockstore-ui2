@@ -10,7 +10,9 @@ import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import { UserQuery } from '../../shared/user/user.query';
-import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
+import {
+  UpdateOrganizationOrCollectionDescriptionComponent
+} from '../organization/update-organization-description/update-organization-description.component';
 
 
 @Component({

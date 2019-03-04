@@ -23,24 +23,27 @@ import { FormGroup, AbstractControl } from '@angular/forms';
   styleUrls: ['./update-organization-description.component.scss']
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
-  updateOrganizationDescriptionForm: FormGroup;
+  updateOrganizationOrCollectionDescriptionForm: FormGroup;
 
-  constructor(private updateOrganizationOrDescriptionDescriptionService: UpdateOrganizationOrCollectionDescriptionService, @Inject(MAT_DIALOG_DATA) public data: any
+  constructor(private updateOrganizationOrDescriptionDescriptionService: UpdateOrganizationOrCollectionDescriptionService
+    , @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
-    this.updateOrganizationDescriptionForm = this.updateOrganizationOrDescriptionDescriptionService.createForm(this.data);
+    this.updateOrganizationOrCollectionDescriptionForm = this.updateOrganizationOrDescriptionDescriptionService.createForm(this.data);
   }
 
   updateOrganizationDescription() {
     if (this.data.type === 'collection') {
-      this.updateOrganizationOrDescriptionDescriptionService.updateCollectionDescription(this.updateOrganizationDescriptionForm, this.data.collectionId);
+      this.updateOrganizationOrDescriptionDescriptionService.updateCollectionDescription(
+        this.updateOrganizationOrCollectionDescriptionForm, this.data.collectionId);
     } else if (this.data.type === 'organization') {
-      this.updateOrganizationOrDescriptionDescriptionService.updateOrganizationDescription(this.updateOrganizationDescriptionForm);
+      this.updateOrganizationOrDescriptionDescriptionService.updateOrganizationDescription(
+        this.updateOrganizationOrCollectionDescriptionForm);
     }
   }
 
   get descriptionValue(): AbstractControl {
-    return this.updateOrganizationDescriptionForm.get('description').value;
+    return this.updateOrganizationOrCollectionDescriptionForm.get('description').value;
   }
 }

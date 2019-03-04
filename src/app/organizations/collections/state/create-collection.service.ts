@@ -17,7 +17,6 @@ export interface FormsState {
     name: string;
     topic: string;
     displayName: string;
-    description: string;
   };
 }
 
@@ -45,8 +44,7 @@ export class CreateCollectionService {
     collection = {
       name: collectionFormState.name,
       topic: collectionFormState.topic,
-      displayName: collectionFormState.displayName,
-      description: collectionFormState.description
+      displayName: collectionFormState.displayName
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
@@ -96,7 +94,6 @@ export class CreateCollectionService {
     let name = null;
     let topic = null;
     let displayName = null;
-    let description = null;
     formsManager.remove('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
@@ -115,9 +112,6 @@ export class CreateCollectionService {
         displayName, [
           Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)
         ]
-      ],
-      description: [
-        description
       ],
       topic: [topic],
     });
@@ -154,8 +148,7 @@ export class CreateCollectionService {
     collection = {
       name: collectionFormState.name,
       topic: collectionFormState.topic,
-      displayName: collectionFormState.displayName,
-      description: collectionFormState.description
+      displayName: collectionFormState.displayName
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
