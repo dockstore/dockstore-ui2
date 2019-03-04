@@ -33,28 +33,36 @@
     <div *ngIf="content">
       <span class="row m-0">
         <span class="col-sm-4">
-          <app-select *ngIf="!publicPage" [placeholder]="'Descriptor Type'" [items]="descriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(true, _selectedVersion)"></app-select>
-          <app-select *ngIf="publicPage" [placeholder]="'Descriptor Type'" [items]="validDescriptors" [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(true, _selectedVersion)"></app-select>
+          <app-select *ngIf="!publicPage" [placeholder]="'Descriptor Type'" [items]="descriptors"
+            [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(true, _selectedVersion)">
+          </app-select>
+          <app-select *ngIf="publicPage" [placeholder]="'Descriptor Type'" [items]="validDescriptors"
+            [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(true, _selectedVersion)">
+          </app-select>
         </span>
       </span>
-      </div>
+    </div>
 
-      <mat-card class="alert alert-warning" role="alert" *ngIf="!content">
-        <mat-icon>warning</mat-icon>
-        &nbsp;A Descriptor File associated with this Docker container could not be found.
-      </mat-card>
+    <mat-card class="alert alert-warning" role="alert" *ngIf="!content">
+      <mat-icon>warning</mat-icon>
+      &nbsp;A Descriptor File associated with this Docker container could not be found.
+    </mat-card>
 
-      <div [hidden]="!content">
-        <mat-toolbar color="primary">
-          <mat-toolbar-row>
-            <app-select [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-            <span class="spacer"></span>
+    <div [hidden]="!content">
+      <mat-toolbar color="primary">
+        <mat-toolbar-row>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+            <app-select class="longer" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)">
+            </app-select>
             <div class="btn-group pull-right" role="group">
-              <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
+              <a mat-icon-button color="secondary" class="mr-1"
+                *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath"
+                type="button" title="{{filePath}}">
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+                <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF"
+                  [download]="customDownloadPath" type="button" title="{{filePath}}">
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>
@@ -62,9 +70,10 @@
                 <mat-icon>file_copy</mat-icon>
               </button>
             </div>
-          </mat-toolbar-row>
-        </mat-toolbar>
-        <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
-      </div>
+          </div>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
+    </div>
   </ng-template>
 </div>

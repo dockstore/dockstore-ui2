@@ -1206,6 +1206,14 @@ app-sidebar-accordion .mat-accordion > .mat-expansion-panel > .mat-expansion-pan
   }
 }
 
+// Make the dropdown at least the size of the default material dropdown.  
+// Making the general width to grow to 50% of the parent width so that there's more room to display long file names
+// TODO: Ideally this should stretch to the length of the longest dropdown option.
+app-select.longer {
+  min-width: 180px;
+  width: 50%;
+}
+
 mat-icon.star {
   font-size: 16px;
   height: 16px;
