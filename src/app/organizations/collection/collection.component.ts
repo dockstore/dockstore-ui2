@@ -62,13 +62,18 @@ export class CollectionComponent implements OnInit {
   ngOnInit() {
     const organizationId = this.activatedRoute.snapshot.paramMap.get('id');
     const collectionId = this.activatedRoute.snapshot.paramMap.get('cid');
+    const alias = this.activatedRoute.snapshot.paramMap.get('alias');
     this.loadingCollection$ = this.collectionsQuery.loading$;
     this.collection$ = this.collectionsQuery.selectActive();
     this.loadingOrganization$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organization$ = this.organizationQuery.organization$;
-    this.organizationService.updateOrganizationFromNameORID(organizationId);
-    this.collectionsService.updateCollectionFromName(organizationId, collectionId);
+    if (alias) {
+      this.collectionsService.updateCollectionFromAlias(alias, this.organizationService);
+    } else {
+      this.organizationService.updateOrganizationFromNameORID(organizationId);
+      this.collectionsService.updateCollectionFromName(organizationId, collectionId);
+    }
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
   }

@@ -42,9 +42,14 @@ export class OrganizationComponent implements OnInit {
 
   ngOnInit() {
     const organizationId = this.activatedRoute.snapshot.paramMap.get('id');
+    const alias = this.activatedRoute.snapshot.paramMap.get('alias');
     this.loading$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
-    this.organizationService.updateOrganizationFromNameORID(organizationId);
+    if (organizationId) {
+      this.organizationService.updateOrganizationFromNameORID(organizationId);
+    } else if (alias) {
+      this.organizationService.updateOrganizationFromAlias(alias);
+    }
     this.organization$ = this.organizationQuery.organization$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
