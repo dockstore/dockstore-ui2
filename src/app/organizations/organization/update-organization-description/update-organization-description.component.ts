@@ -14,32 +14,36 @@
  *    limitations under the License.
  */
 import { Component, OnInit, Inject } from '@angular/core';
-import { UpdateOrganizationDescriptionService } from '../state/update-organization-description.service';
-import { UpdateOrganizationDescriptionQuery } from '../state/update-organization-description.query';
+import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 import { FormGroup, AbstractControl } from '@angular/forms';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
   styleUrls: ['./update-organization-description.component.scss']
 })
-export class UpdateOrganizationDescriptionComponent implements OnInit {
-  updateOrganizationDescriptionForm: FormGroup;
+export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
+  updateOrganizationOrCollectionDescriptionForm: FormGroup;
 
-  constructor(private updateOrganizationDescriptionQuery: UpdateOrganizationDescriptionQuery,
-              private updateOrganizationDescriptionService: UpdateOrganizationDescriptionService, @Inject(MAT_DIALOG_DATA) public data: any
+  constructor(private updateOrganizationOrDescriptionDescriptionService: UpdateOrganizationOrCollectionDescriptionService
+    , @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
-    this.updateOrganizationDescriptionForm = this.updateOrganizationDescriptionService.createForm(this.data);
+    this.updateOrganizationOrCollectionDescriptionForm = this.updateOrganizationOrDescriptionDescriptionService.createForm(this.data);
   }
 
   updateOrganizationDescription() {
-    this.updateOrganizationDescriptionService.updateOrganizationDescription(this.updateOrganizationDescriptionForm);
+    if (this.data.type === 'collection') {
+      this.updateOrganizationOrDescriptionDescriptionService.updateCollectionDescription(
+        this.updateOrganizationOrCollectionDescriptionForm, this.data.collectionId);
+    } else if (this.data.type === 'organization') {
+      this.updateOrganizationOrDescriptionDescriptionService.updateOrganizationDescription(
+        this.updateOrganizationOrCollectionDescriptionForm);
+    }
   }
 
   get descriptionValue(): AbstractControl {
-    return this.updateOrganizationDescriptionForm.get('description').value;
+    return this.updateOrganizationOrCollectionDescriptionForm.get('description').value;
   }
 }

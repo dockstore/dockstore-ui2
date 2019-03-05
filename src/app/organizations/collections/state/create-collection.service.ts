@@ -15,8 +15,8 @@ import { CreateCollectionStore } from './create-collection.store';
 export interface FormsState {
   createOrUpdateCollection: {
     name: string;
+    topic: string;
     displayName: string;
-    description: string;
   };
 }
 
@@ -43,8 +43,8 @@ export class CreateCollectionService {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
-      displayName: collectionFormState.displayName,
-      description: collectionFormState.description
+      topic: collectionFormState.topic,
+      displayName: collectionFormState.displayName
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
@@ -92,15 +92,16 @@ export class CreateCollectionService {
   createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
     const mode: TagEditorMode = data.mode;
     let name = null;
+    let topic = null;
     let displayName = null;
-    let description = null;
     formsManager.remove('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;
+      topic = collection.topic;
       displayName = collection.displayName;
-      description = collection.description;
     }
+
     const createOrUpdateCollectionForm = this.builder.group({
       name: [
         name, [
@@ -112,9 +113,7 @@ export class CreateCollectionService {
           Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)
         ]
       ],
-      description: [
-        description
-      ]
+      topic: [topic],
     });
     formsManager.upsert('createOrUpdateCollection', createOrUpdateCollectionForm);
     return createOrUpdateCollectionForm;
@@ -148,8 +147,8 @@ export class CreateCollectionService {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
-      displayName: collectionFormState.displayName,
-      description: collectionFormState.description
+      topic: collectionFormState.topic,
+      displayName: collectionFormState.displayName
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();

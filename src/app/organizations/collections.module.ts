@@ -9,6 +9,8 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './collection/collection.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
+import { NgxMdModule } from 'ngx-md';
+import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 
 @NgModule({
   imports: [
@@ -18,7 +20,9 @@ import { CreateCollectionModule } from './collections/create-collection.module';
     FlexLayoutModule,
     HeaderModule,
     RefreshAlertModule,
-    RouterModule
+    RouterModule,
+    NgxMdModule,
+    UpdateOrganizationDescriptionModule
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],

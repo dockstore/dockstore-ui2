@@ -10,6 +10,9 @@ import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import { UserQuery } from '../../shared/user/user.query';
+import {
+  UpdateOrganizationOrCollectionDescriptionComponent
+} from '../organization/update-organization-description/update-organization-description.component';
 
 
 @Component({
@@ -101,5 +104,11 @@ export class CollectionComponent implements OnInit {
     const collectionMap = { 'key': collection.id, 'value': collection};
     const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {collection: collectionMap, mode: TagEditorMode.Edit},
       width: '600px'});
+  }
+
+  updateDescription(description: String, collectionId: number) {
+    this.dialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
+      data: { description: description, type: 'collection', collectionId: collectionId }, width: '600px'
+    });
   }
 }

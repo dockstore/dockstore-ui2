@@ -7,14 +7,16 @@ import { finalize } from 'rxjs/operators';
 import { OrganizationsService, Organization } from '../../../shared/swagger';
 import { OrganizationQuery } from '../../state/organization.query';
 import { OrganizationService } from '../../state/organization.service';
-import { UpdateOrganizationDescriptionStore } from './update-organization-description.store';
+import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organization-description.store';
+import { CollectionsService } from '../../state/collections.service';
 
 @Injectable({ providedIn: 'root' })
-export class UpdateOrganizationDescriptionService {
+export class UpdateOrganizationOrCollectionDescriptionService {
 
-  constructor(private updateOrganizationDescriptionStore: UpdateOrganizationDescriptionStore,
+  constructor(private updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore,
     private http: HttpClient, private formBuilder: FormBuilder, private organizationsService: OrganizationsService,
-    private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog) {
+    private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
+    private collectionsService: CollectionsService) {
   }
 
   createForm(data: any): FormGroup {
@@ -25,18 +27,33 @@ export class UpdateOrganizationDescriptionService {
     return form;
   }
 
+  updateCollectionDescription(formGroup: FormGroup, collectionId: number): void {
+    const newDescription = formGroup.get('description').value || '';
+    const organizationID = this.organizationQuery.getSnapshot().organization.id;
+    this.updateOrganizationOrCollectionDescriptionStore.setError(false);
+    this.updateOrganizationOrCollectionDescriptionStore.setLoading(true);
+    this.organizationsService.updateCollectionDescription(organizationID, collectionId, newDescription)
+      .pipe(finalize(() => this.updateOrganizationOrCollectionDescriptionStore.setLoading(false)))
+      .subscribe(() => {
+        this.collectionsService.updateCollections(organizationID);
+        this.matDialog.closeAll();
+      }, error => {
+        this.updateOrganizationOrCollectionDescriptionStore.setError(true);
+      });
+  }
+
   updateOrganizationDescription(formGroup: FormGroup): void {
     const newDescription = formGroup.get('description').value || '';
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
-    this.updateOrganizationDescriptionStore.setError(false);
-    this.updateOrganizationDescriptionStore.setLoading(true);
+    this.updateOrganizationOrCollectionDescriptionStore.setError(false);
+    this.updateOrganizationOrCollectionDescriptionStore.setLoading(true);
     this.organizationsService.updateOrganizationDescription(organizationID, newDescription)
-      .pipe(finalize(() => this.updateOrganizationDescriptionStore.setLoading(false)))
+      .pipe(finalize(() => this.updateOrganizationOrCollectionDescriptionStore.setLoading(false)))
       .subscribe((updatedOrganization: Organization) => {
         this.organizationService.updateOrganizationFromID(organizationID);
         this.matDialog.closeAll();
       }, error => {
-        this.updateOrganizationDescriptionStore.setError(true);
+        this.updateOrganizationOrCollectionDescriptionStore.setError(true);
       });
   }
 
