@@ -12,6 +12,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
 import { EventsModule } from './events.module';
 import { RouterModule } from '@angular/router';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-members/organization-members.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
     RouterModule,
     RefreshAlertModule
   ],
-  declarations: [ OrganizationComponent ],
-  exports: [ OrganizationComponent ]
+  declarations: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
+  exports: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
+  entryComponents: [ OrganizationMemberRemoveConfirmDialogComponent ]
 })
 export class OrganizationModule { }

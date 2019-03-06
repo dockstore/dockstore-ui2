@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
@@ -26,6 +26,26 @@ import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrganizationMembersService } from '../state/organization-members.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { UpsertOrganizationMemberComponent } from '../upsert-organization-member/upsert-organization-member.component';
+
+@Component({
+  selector: 'organization-member-remove-dialog',
+  templateUrl: 'delete-username-confirm-dialog.html',
+})
+export class OrganizationMemberRemoveConfirmDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<OrganizationMemberRemoveConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+export interface DialogData {
+  role: OrganizationUser;
+}
 
 @Component({
   selector: 'organization-members',
@@ -76,16 +96,6 @@ export class OrganizationMembersComponent implements OnInit {
   }
 
   /**
-   * Handles removing a user from an organization
-   *
-   * @param {OrganizationUser} organizationUser
-   * @memberof OrganizationMembersComponent
-   */
-  removeUser(organizationUser: OrganizationUser) {
-    this.organizationMembersService.removeUser(organizationUser);
-  }
-
-  /**
    * Opens the dialog for adding a user to an organization
    *
    * @memberof OrganizationMembersComponent
@@ -94,5 +104,22 @@ export class OrganizationMembersComponent implements OnInit {
     this.alertService.clearEverything();
     this.matDialog.open(UpsertOrganizationMemberComponent,
       { data: { mode: TagEditorMode.Add, username: null, role: null }, width: '600px' });
+  }
+
+  /**
+   * Handles removing a user from an organization
+   *
+   * @param {OrganizationUser} organizationUser
+   * @memberof OrganizationMembersComponent
+   */
+  removeUserDialog(organizationUser: OrganizationUser) {
+    const dialogRef = this.matDialog.open(OrganizationMemberRemoveConfirmDialogComponent,
+      { data: { role: organizationUser }, width: '600px' });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.organizationMembersService.removeUser(result.role);
+      }
+    });
   }
 }
