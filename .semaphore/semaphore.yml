@@ -11,7 +11,7 @@ blocks:
         - name: APP_ENV
           value: prod
         - name: WEBSERVICE_VERSION
-          value: 1.6.0-alpha.7
+          value: 1.6.0-beta.1
       secrets:
         - name: codecov
       prologue:
@@ -58,14 +58,14 @@ blocks:
           - npm run build
           - ng serve --progress=false &
           - bash scripts/wait-for.sh
-      jobs: 
+      jobs:
       - name: IT1
-        commands: 
+        commands:
           - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group1/**/*
       - name: IT2
-        commands: 
+        commands:
           - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group2/**/*
       - name: IT3
-        commands: 
+        commands:
           - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group3/**/*
 
