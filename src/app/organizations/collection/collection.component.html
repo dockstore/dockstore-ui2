@@ -49,8 +49,8 @@
         </mat-card-actions>
       </mat-card>
 
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="15px" class="my-3">
-        <div fxFlex fxGrow="1">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3">
+        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
           <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">
             <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or workflow you want to add and select `Add to collection`
           </mat-card>
@@ -91,7 +91,7 @@
           </div>
         </div>
 
-        <div fxFlex fxGrow="1">
+        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
           <mat-card fxLayout="column" fxLayoutGap="15px">
             <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
               <div *ngIf="!collection.description" fxFlex>
