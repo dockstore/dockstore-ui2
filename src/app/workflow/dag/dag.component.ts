@@ -94,9 +94,8 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
         break;
     }
   }
-
   constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery, private ngZone: NgZone,
-              private wdlViewerService: WdlViewerService) {
+    private wdlViewerService: WdlViewerService) {
     super();
   }
 
@@ -144,6 +143,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges() {
+    this.wdlViewerService.setStatus(false);
     this.dagService.getDAGResults(this.selectedVersion, this.id);
   }
 
@@ -156,10 +156,5 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
         this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
         break;
     }
-  }
-
-  onVersionChange(event) {
-    // Detect WDL workflow version changes emitted by the child to set status back to false
-    this.wdlViewerService.setStatus(false);
   }
 }

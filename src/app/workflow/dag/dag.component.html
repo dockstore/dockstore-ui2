@@ -82,7 +82,7 @@
         [expanded]="expanded">
       </app-cwl-viewer>
       <app-wdl-viewer *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"
-        [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [expanded]="expanded" (newVersion)="onVersionChange($event)">
+        [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [expanded]="expanded">
       </app-wdl-viewer>
       <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100" [hidden]="dagType !== 'classic'"></div>
     </div>
