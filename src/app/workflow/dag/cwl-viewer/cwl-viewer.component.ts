@@ -18,7 +18,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
+import { ExtendedWorkflowService} from '../../../shared/state/extended-workflow.service';
 import { Subject } from 'rxjs';
+import { ExtendedWorkflowStore } from '../../../shared/state/extended-workflow.store';
+import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
 
 @Component({
   selector: 'app-cwl-viewer',
@@ -46,15 +49,18 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
   public cwlViewerDescriptor: CwlViewerDescriptor;
   public errorMessage;
   public loading = false;
+  public workflow2: ExtendedWorkflow;
 
   private version;
   private onDestroy$ = new Subject<void>();
 
-  constructor(private cwlViewerService: CwlViewerService) {
+  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowService: ExtendedWorkflowService, private extendedWorkflowStore: ExtendedWorkflowStore,
+              private extendedWorkflowQuery: ExtendedWorkflowQuery) {
   }
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
+
   }
 
   ngOnDestroy(): void {
@@ -67,10 +73,20 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
 
   onChange() {
     if (this.version) {
+      // this.workflow2 = this.workflow;
+      // this.extendedWorkflowService.update(this.workflow2);
+      // if (this.workflow) {
+      //   console.log(this.workflow2.providerUrl);
+      // }
+
+      this.extendedWorkflowQuery.extendedWorkflow$.subscribe(
+        this.workflow2
+      );
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
-      this.cwlViewerService.getVisualizationUrls(this.workflow.providerUrl, this.version.reference,
+      this.extendedWorkflowService.update(this.workflow2);
+      this.cwlViewerService.getVisualizationUrls(this.workflow2.providerUrl, this.version.reference,
         this.version.workflow_path, this.onDestroy$)
         .subscribe(
           cwlViewerDescriptor => {
