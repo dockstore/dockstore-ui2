@@ -21,7 +21,6 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
-import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
@@ -100,6 +99,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     // Using this to set the initial validation pattern.  TODO: find a better way
     this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<ToolDescriptor.TypeEnum>) => {
       if (languages && languages.length > 0) {
+        // Set the initial descriptor type selected
+        this.workflow.descriptorType = languages[0];
+        // Set the initial descriptor type pattern for the workflow path validation (mimics the user selecting the first radio button)
         this.changeDescriptorType(languages[0]);
       }
     });
