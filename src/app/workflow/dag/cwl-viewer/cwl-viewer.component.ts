@@ -22,6 +22,7 @@ import { ExtendedWorkflowService} from '../../../shared/state/extended-workflow.
 import { Subject } from 'rxjs';
 import { ExtendedWorkflowStore } from '../../../shared/state/extended-workflow.store';
 import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-cwl-viewer',
@@ -61,10 +62,14 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
 
+
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
+    this.onDestroy$.complete();
+    // this.ngUnsubscribe.next();
+    // this.ngUnsubscribe.complete();
   }
 
   resetZoom() {
@@ -79,9 +84,13 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
       //   console.log(this.workflow2.providerUrl);
       // }
 
-      this.extendedWorkflowQuery.extendedWorkflow$.subscribe(
-        this.workflow2
+
+      this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(
+        workflow => {
+          this.workflow2 = workflow;
+        }
       );
+
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
