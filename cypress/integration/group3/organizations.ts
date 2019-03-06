@@ -24,6 +24,11 @@ describe('Dockstore Organizations', () => {
       .find('input').first().clear().type(text);
   }
 
+  function clearInput(fieldName: string) {
+    cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper')
+      .find('input').clear();
+  }
+
   function typeInTextArea(fieldName: string, text: string) {
     cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper')
       .find('textarea').clear().type(text);
@@ -52,7 +57,13 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Organization website', 'https://www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
+
+      typeInInput('Image URL', 'https://via.placeholder.com/150');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
+
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
+      cy.get('.mat-error').should('be.visible');
+      clearInput('Image URL');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
     });
@@ -66,6 +77,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
       cy.contains('No collections found');
+      cy.get('.img-circle').should('have.attr', 'src').should('include', '../../../assets/images/dockstore/PlaceholderLC.png');
     });
     it('be able to edit organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
@@ -75,6 +87,14 @@ describe('Dockstore Organizations', () => {
       typeInInput('Organization website', 'https://www.google.com');
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
+      // Verify you can add and remove and image url successfully. Add image back for further testing below.
+      typeInInput('Image URL', 'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#editOrgInfo').should('be.visible').click();
+      clearInput('Image URL');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#editOrgInfo').should('be.visible').click();
+      typeInInput('Image URL', 'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
     });
@@ -85,6 +105,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('https://www.google.com');
       cy.contains('UCSC Basement');
       cy.contains('asdf@asdf.com');
+      cy.get('.img-circle').should('have.attr', 'src').should('include', 'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
     });
   });
 

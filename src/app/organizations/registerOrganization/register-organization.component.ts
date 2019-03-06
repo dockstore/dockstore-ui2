@@ -76,6 +76,10 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
     return this.registerOrganizationForm.get('contactEmail');
   }
 
+  get avatarUrl(): AbstractControl {
+    return this.registerOrganizationForm.get('avatarUrl');
+  }
+
   ngOnDestroy(): void {
     this.formsManager.unsubscribe();
   }
