@@ -10,19 +10,19 @@
         <div *ngIf="event?.type === EventType.CREATEORG" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date:'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;created&nbsp;organization
+            &nbsp;created&nbsp;the&nbsp;organization
           </mat-chip-list>
         </div>
         <div *ngIf="event?.type === EventType.APPROVEORGINVITE" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date:'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;joined&nbsp;organization
+            &nbsp;joined&nbsp;the&nbsp;organization
           </mat-chip-list>
         </div>
         <div *ngIf="event?.type === EventType.MODIFYORG" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date:'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;updated&nbsp;organization
+            &nbsp;updated&nbsp;the&nbsp;organization
           </mat-chip-list>
         </div>
         <div *ngIf="event?.type === EventType.CREATECOLLECTION" class="my-3">
