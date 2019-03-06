@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 import { Subject } from 'rxjs';
 import { filter, finalize, take, takeUntil } from 'rxjs/operators';
@@ -39,10 +39,6 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.onVersionChange(value);
   }
-
-  // The child component cannot change the status in a service shared by the parent when it detects WDL workflow version changes
-  // i.e. ExpressionChangedAfterItHasBeenCheckedError
-  @Output() newVersion: EventEmitter<boolean> = new EventEmitter<boolean>(true);
   @ViewChild('diagram') diagram: ElementRef;
 
   public errorMessage;
@@ -81,12 +77,12 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
               this.wdlViewerError = false;
               this.wdlViewerService.setStatus(true);
             },
-              (error) => {
-                this.errorMessage = error || 'Unknown Error';
-                this.wdlViewerError = true;
-                this.diagram.nativeElement.remove();
-                this.wdlViewerService.setStatus(false);
-              });
+            (error) => {
+              this.errorMessage = error || 'Unknown Error';
+              this.wdlViewerError = true;
+              this.diagram.nativeElement.remove();
+              this.wdlViewerService.setStatus(false);
+            });
         }
       });
   }
