@@ -27,7 +27,6 @@ import {
   UpdateOrganizationOrCollectionDescriptionComponent
 } from './update-organization-description/update-organization-description.component';
 import { UserQuery } from '../../shared/user/user.query';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'organization',
@@ -42,10 +41,8 @@ export class OrganizationComponent implements OnInit {
   isCurator$: Observable<boolean>;
   gravatarUrl$: Observable<string>;
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
-    private activatedRoute: ActivatedRoute, private userQuery: UserQuery, private registerOrganizationService: RegisterOrganizationService
+    private activatedRoute: ActivatedRoute, private userQuery: UserQuery
   ) { }
-
-  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   ngOnInit() {
     const organizationId = this.activatedRoute.snapshot.paramMap.get('id');
