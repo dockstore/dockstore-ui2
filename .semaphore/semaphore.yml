@@ -34,7 +34,7 @@ blocks:
     task:
       env_vars:
         - name: WEBSERVICE_VERSION
-          value: 1.6.0-alpha.7
+          value: 1.6.0-beta.1
       secrets:
         - name: cypress
       prologue:
