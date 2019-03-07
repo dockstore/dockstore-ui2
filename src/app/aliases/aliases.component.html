@@ -4,7 +4,7 @@
 <div class="container">
   <mat-card class="alert alert-warning" role="alert" *ngIf="!types.includes(type)">
     <mat-icon>warning</mat-icon>
-    &nbsp;{{ type }} is not a valid type
+    &nbsp;<strong>{{ type }}</strong> is not a valid type
   </mat-card>
   <app-loading [loading]="(loading$ | async)">
     <div *ngIf="(organization$ | async) as org">
@@ -15,7 +15,7 @@
     </div>
     <mat-card class="alert alert-warning" role="alert"  *ngIf="types.includes(type) && !(organization$ | async) && !(collection$ | async)">
       <mat-icon>warning</mat-icon>
-      &nbsp;No {{ type }} with the alias {{ alias }}
+      &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>
   </app-loading>
 </div>
