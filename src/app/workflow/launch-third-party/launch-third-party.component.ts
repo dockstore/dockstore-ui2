@@ -6,7 +6,6 @@ import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat
 import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
-import { LaunchThirdPartyService } from './launch-third-party.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -42,7 +41,6 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
 
 
   constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
-              private launchThirdPartyService: LaunchThirdPartyService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer,
               private gA4GHFilesQuery: GA4GHFilesQuery,
