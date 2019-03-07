@@ -36,11 +36,6 @@ export class OrganizationMemberRemoveConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<OrganizationMemberRemoveConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }
 
 export interface DialogData {
