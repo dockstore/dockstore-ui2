@@ -3,21 +3,25 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
-import { ToolDescriptor, ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
+import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { LaunchThirdPartyService } from './launch-third-party.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DescriptorsQuery } from './state/descriptors-query';
+import { DescriptorsService } from './state/descriptors.service';
+import { DescriptorsStore } from './state/descriptors-store.';
+import { Dockstore } from '../../shared/dockstore.model';
+import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import FileTypeEnum = ToolFile.FileTypeEnum;
-
-const importHttpRegEx: RegExp = new RegExp(/^\s*import\s+"https?/, 'm');
 
 @Component({
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
-  styleUrls: ['./launch-third-party.component.scss']
+  styleUrls: ['./launch-third-party.component.scss'],
+  providers: [ DescriptorsService, DescriptorsQuery, DescriptorsStore]
 })
 export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
 
@@ -27,13 +31,12 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
   @Input()
   selectedVersion: WorkflowVersion;
 
-  dnastackURL: string;
-  fireCloudURL: string;
-  dnanexusURL: string;
-  wdlHasHttpImports: boolean;
-  wdlHasFileImports: boolean;
-  wdlHasContent: boolean;
-  isWdl: boolean;
+  hasFileImports$ = this.descriptorsQuery.hasFileImports$;
+  hasContent$ = this.descriptorsQuery.hasContent$;
+  hasHttpImports$ = this.descriptorsQuery.hasHttpImports$
+  config = Dockstore;
+  trsUrl: string;
+  encodedPath: string;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -42,7 +45,9 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
               private launchThirdPartyService: LaunchThirdPartyService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer,
-              private gA4GHFilesQuery: GA4GHFilesQuery) {
+              private gA4GHFilesQuery: GA4GHFilesQuery,
+              private descriptorsQuery: DescriptorsQuery,
+              private descriptorsService: DescriptorsService) {
     iconRegistry.addSvgIcon('firecloud',
       sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/FireCloud-white-icon.svg'));
     iconRegistry.addSvgIcon('dnanexus',
@@ -54,57 +59,42 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit(): void {
     this.gA4GHFilesQuery.getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
       [FileTypeEnum.PRIMARYDESCRIPTOR, FileTypeEnum.SECONDARYDESCRIPTOR]).pipe(
-        takeUntil(this.ngUnsubscribe))
+      takeUntil(this.ngUnsubscribe))
       .subscribe(fileDescriptors => {
         if (fileDescriptors && fileDescriptors.length) {
           this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe(sourceFile => {
-            this.wdlHasContent = !!(sourceFile.content && sourceFile.content.length);
-            if (this.wdlHasContent) {
-              if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-                this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe(
-                  (sourceFiles: Array<SourceFile>) => {
-
-                  })
-              } else {
-                this.wdlHasFileImports = false;
-              }
+            this.descriptorsService.updatePrimaryDescriptor(sourceFile);
+            if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
+              this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe(
+                (sourceFiles: Array<SourceFile>) => {
+                  this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
+                })
             }
           });
-        } else {
-          this.wdlHasContent = false;
         }
       });
   }
 
+
   ngOnChanges(changes: SimpleChanges): void {
-    this.fireCloudURL = this.dnastackURL = this.dnanexusURL = null;
-    this.wdlHasContent = this.wdlHasFileImports = this.wdlHasHttpImports = false;
-    this.isWdl = this.workflow && this.workflow && this.workflow.full_workflow_path &&
-      this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType) === ToolDescriptor.TypeEnum.WDL;
-    if (this.isWdl && this.selectedVersion) {
-      this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFile: SourceFile) => {
-        if (sourceFile && sourceFile.content && sourceFile.content.length) {
-          this.wdlHasContent = true;
-          // DNAnexus handles file and http(s) imports, no need to check
-          this.dnanexusURL = this.launchThirdPartyService.dnanexusUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
-          // DNAstack doesn't get passed a specific version
-          this.dnastackURL = this.launchThirdPartyService.dnastackUrl(this.workflow.full_workflow_path, this.workflow.descriptorType);
-          this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe((sourceFiles: Array<SourceFile>) => {
-            if (!sourceFiles || sourceFiles.length === 0) {
-              this.wdlHasHttpImports = importHttpRegEx.test(sourceFile.content);
-              this.fireCloudURL = this.launchThirdPartyService.firecloudUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
-            } else {
-              this.wdlHasFileImports = true;
-            }
-          });
-        }
-      });
+    this.descriptorsQuery.clear();
+    this.trsUrl = this.encodedPath = null;
+    if (this.workflow && this.selectedVersion) {
+
+      this.trsUrl = `${Dockstore.API_URI}${ga4ghPath}/tools/`
+        + encodeURIComponent(`${ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path}`)
+        + '/versions/'
+        + encodeURIComponent(`${this.selectedVersion.name}`);
+
+      this.encodedPath = encodeURIComponent(this.workflow.full_workflow_path);
+
     }
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.descriptorsQuery.destroy();
   }
 
 }
