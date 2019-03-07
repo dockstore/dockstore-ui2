@@ -41,6 +41,7 @@ import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * How the workflow selection works:
@@ -111,13 +112,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.alertService.start('Fetching workflows');
-        forkJoin(this.usersService.userWorkflows(user.id).pipe(catchError(error => {
-          this.alertService.detailedError(error);
+        forkJoin(this.usersService.userWorkflows(user.id).pipe(catchError((error: HttpErrorResponse) => {
+          this.alertService.detailedSnackBarError(error);
           return observableOf([]);
-        })), this.workflowsService.sharedWorkflows().pipe(catchError(error => {
-          this.alertService.detailedError(error);
+        })), this.workflowsService.sharedWorkflows().pipe(catchError((error: HttpErrorResponse) => {
+          this.alertService.detailedSnackBarError(error);
           return observableOf([]);
-        }))).pipe(finalize(() => this.alertService.detailedSuccess()),
+        }))).pipe(finalize(() => this.alertService.simpleSuccess()),
           takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
             this.workflowService.setWorkflows(workflows);
             this.workflowService.setSharedWorkflows(sharedWorkflows);

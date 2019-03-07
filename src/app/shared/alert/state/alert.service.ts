@@ -82,6 +82,20 @@ export class AlertService {
   }
 
   /**
+   * Handles HTTP error response and show a detailed message only in the matSnackBar.
+   * Use when there's is no alert component which normally displays the detailed message.
+   *
+   * @param {HttpErrorResponse} error  The HttpErrorResponse return by the failed Http call
+   * @memberof AlertService
+   */
+  public detailedSnackBarError(error: HttpErrorResponse) {
+    this.clearEverything();
+    const detailedError = '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+      (error.error && error.error.message ? error.error.message : error.error);
+    this.matSnackBar.open(detailedError);
+  }
+
+  /**
    * Handles error HTTP response and show matSnackBar
    *
    * @memberof AlertService
