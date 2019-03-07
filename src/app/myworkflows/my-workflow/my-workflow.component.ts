@@ -108,6 +108,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
 
     // Retrieve all of the workflows for the user and update the workflow service
+    // TODO: Fix this. What should happen is:
+    // If none of the two calls error, there should be a simple snackBar displayed
+    // If one of the two calls error, there should be a detailed card displayed
+    // If two of the calls error, there should be a weird combined detailed card displayed
+    // Any errors should still return an empty array for that set of workflows
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       if (user) {
         this.user = user;
