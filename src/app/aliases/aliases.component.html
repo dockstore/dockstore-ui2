@@ -8,15 +8,14 @@
   </mat-card>
   <app-loading [loading]="(loading$ | async)">
     <div *ngIf="(organization$ | async) as org">
-      Redirecting...
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <div *ngIf="(collection$ | async) as coll">
-      Redirecting...
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <mat-card class="alert alert-warning" role="alert"  *ngIf="types.includes(type) && !(organization$ | async) && !(collection$ | async)">
       <mat-icon>warning</mat-icon>
       &nbsp;No {{ type }} with the alias {{ alias }}
     </mat-card>
   </app-loading>
-  <router-outlet></router-outlet>
 </div>

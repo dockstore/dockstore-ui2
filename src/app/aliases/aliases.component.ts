@@ -48,7 +48,7 @@ export class AliasesComponent extends Base implements OnInit {
       this.collection$ = this.aliasesQuery.collection$;
       this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
         if (collection) {
-          this.router.navigate(['/organizations', collection.organizationID, 'collections', collection.id]);
+          this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
         }
       });
     }

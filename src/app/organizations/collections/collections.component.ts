@@ -31,6 +31,7 @@ import { CreateCollectionComponent } from './create-collection/create-collection
 })
 export class CollectionsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
+  @Input() organizationName: string;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   collections$: Observable<HashMap<Collection>>;

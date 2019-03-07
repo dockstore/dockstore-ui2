@@ -75,39 +75,15 @@ export class CollectionsService {
   }
 
   @transaction()
-  updateCollectionFromName(organizationIdString: string, collectionIdString: string) {
-    const organizationId: number = parseInt(organizationIdString, 10);
-    const collectionId: number = parseInt(collectionIdString, 10);
-    if (isNaN(organizationId)) {
-      console.error('Organization name (instead of ID) currently not handled');
-      return;
-    }
+  updateCollectionFromName(organizationName: string, collectionName: string) {
+    this.clearState();
     this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.organizationsService.getCollectionById(organizationId, collectionId).pipe(finalize(() => this.collectionsStore.setLoading(false)))
+    this.organizationsService.getCollectionByName(organizationName, collectionName).pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe((collection: Collection) => {
         this.collectionsStore.setError(false);
         this.collectionsStore.createOrReplace(collection.id, collection);
         this.collectionsStore.setActive(collection.id);
-      }, () => {
-        this.collectionsStore.setError(true);
-      });
-  }
-
-  /**
-   * Make this better, copied from above
-   * @param alias
-   */
-  @transaction()
-  updateCollectionFromAlias(alias: string, organizationService: OrganizationService) {
-    this.collectionsStore.setError(false);
-    this.collectionsStore.setLoading(true);
-    this.organizationsService.getCollectionByAlias(alias).pipe(finalize(() => this.collectionsStore.setLoading(false)))
-      .subscribe((collection: Collection) => {
-        this.collectionsStore.setError(false);
-        this.collectionsStore.createOrReplace(collection.id, collection);
-        this.collectionsStore.setActive(collection.id);
-        organizationService.updateOrganizationFromID(collection.organizationID);
       }, () => {
         this.collectionsStore.setError(true);
       });
