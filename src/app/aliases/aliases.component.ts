@@ -20,6 +20,7 @@ export class AliasesComponent extends Base implements OnInit {
 
   protected type;
   protected alias;
+  // Types contains resource types that support aliases
   protected types = [ 'organizations', 'collections' ];
   constructor(private aliasesQuery: AliasesQuery,
               private aliasesService: AliasesService,
@@ -35,22 +36,24 @@ export class AliasesComponent extends Base implements OnInit {
 
     this.loading$ = this.aliasesQuery.loading$;
 
-    if (this.type === 'organizations') {
-      this.aliasesService.updateOrganizationFromAlias(this.alias);
-      this.organization$ = this.aliasesQuery.organization$;
-      this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
-        if (organization) {
-          this.router.navigate(['/organizations', organization.name]);
-        }
-      });
-    } else if (this.type === 'collections') {
-      this.aliasesService.updateCollectionFromAlias(this.alias);
-      this.collection$ = this.aliasesQuery.collection$;
-      this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
-        if (collection) {
-          this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
-        }
-      });
+    if (this.types.includes(this.type)) {
+      if (this.type === 'organizations') {
+        this.aliasesService.updateOrganizationFromAlias(this.alias);
+        this.organization$ = this.aliasesQuery.organization$;
+        this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
+          if (organization) {
+            this.router.navigate(['/organizations', organization.name]);
+          }
+        });
+      } else if (this.type === 'collections') {
+        this.aliasesService.updateCollectionFromAlias(this.alias);
+        this.collection$ = this.aliasesQuery.collection$;
+        this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
+          if (collection) {
+            this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
+          }
+        });
+      }
     }
   }
 }

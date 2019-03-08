@@ -294,5 +294,38 @@ describe('Dockstore Organizations', () => {
       cy.visit('/aliases/collections/fakeAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe/collections/veryFakeCollectionName');
     });
+
+    it('invalid alias type', () => {
+      cy.server();
+      cy.visit('/aliases/foobar/fakeAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/aliases/foobar/fakeAlias');
+      cy.contains('foobar is not a valid type');
+    });
+
+    it('organization alias incorrect', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/incorrectAlias/aliases',
+        method: 'GET',
+        status: 404,
+        response: {}
+      });
+      cy.visit('/aliases/organizations/incorrectAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/aliases/organizations/incorrectAlias');
+      cy.contains('No organizations with the alias incorrectAlias found');
+    });
+
+    it('collection alias incorrect', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/collections/incorrectAlias/aliases',
+        method: 'GET',
+        status: 404,
+        response: {}
+      });
+      cy.visit('/aliases/collections/incorrectAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/aliases/collections/incorrectAlias');
+      cy.contains('No collections with the alias incorrectAlias found');
+    });
   });
 });
