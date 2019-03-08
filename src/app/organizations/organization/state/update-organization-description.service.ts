@@ -44,14 +44,13 @@ export class UpdateOrganizationOrCollectionDescriptionService {
 
   updateOrganizationDescription(formGroup: FormGroup): void {
     const newDescription = formGroup.get('description').value || '';
-    const organizationName = this.organizationQuery.getSnapshot().organization.name;
-    const organizationId = this.organizationQuery.getSnapshot().organization.id;
+    const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.updateOrganizationOrCollectionDescriptionStore.setError(false);
     this.updateOrganizationOrCollectionDescriptionStore.setLoading(true);
-    this.organizationsService.updateOrganizationDescription(organizationId, newDescription)
+    this.organizationsService.updateOrganizationDescription(organizationID, newDescription)
       .pipe(finalize(() => this.updateOrganizationOrCollectionDescriptionStore.setLoading(false)))
       .subscribe((updatedOrganization: Organization) => {
-        this.organizationService.updateOrganizationFromName(organizationName);
+        this.organizationService.updateOrganizationFromID(organizationID);
         this.matDialog.closeAll();
       }, error => {
         this.updateOrganizationOrCollectionDescriptionStore.setError(true);
