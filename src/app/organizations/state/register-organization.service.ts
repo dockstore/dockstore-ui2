@@ -19,6 +19,7 @@ export interface FormsState {
     link: string;
     location: string;
     contactEmail: string;
+    avatarUrl: string;
   };
 }
 
@@ -51,6 +52,12 @@ export class RegisterOrganizationService {
   // readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
   readonly organizationDisplayNameRegex = /^[a-zA-Z\d ,_\-&()']*$/;
+
+  readonly logoUrlRegex = new RegExp(
+    '^' +
+    '([^\\s]+)(.jpg|.jpeg|.png|.gif)$'
+  , 'i');
+
   constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
     private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
   }
@@ -86,6 +93,7 @@ export class RegisterOrganizationService {
     let link = null;
     let location = null;
     let contactEmail = null;
+    let avatarUrl = null;
     if (data.mode !== TagEditorMode.Add) {
       const organization: Organization = data.organization;
       name = organization.name;
@@ -94,6 +102,7 @@ export class RegisterOrganizationService {
       link = organization.link;
       location = organization.location;
       contactEmail = organization.email;
+      avatarUrl = organization.avatarUrl;
     }
     const registerOrganizationForm = this.builder.group({
       name: [name, [
@@ -112,6 +121,7 @@ export class RegisterOrganizationService {
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
       contactEmail: [contactEmail, [Validators.email]],
+      avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)]
     });
     formsManager.upsert('registerOrganization', registerOrganizationForm);
     return registerOrganizationForm;
@@ -149,6 +159,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
+        avatarUrl: organizationFormState.avatarUrl || null,
         users: []
       };
       this.alertService.start('Adding organization');
@@ -190,6 +201,7 @@ export class RegisterOrganizationService {
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
+        avatarUrl: organizationFormState.avatarUrl || null,
         description: organizationDescription,
         users: []
       };
@@ -210,4 +222,5 @@ export class RegisterOrganizationService {
       });
     }
   }
+
 }

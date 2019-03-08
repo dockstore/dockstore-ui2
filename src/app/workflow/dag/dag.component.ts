@@ -27,6 +27,7 @@ import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
+import { WdlViewerService } from './wdl-viewer/wdl-viewer.service';
 
 /**
  * This is the DAG tab
@@ -44,7 +45,7 @@ import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
-  providers: [DagStore, DagQuery, DagService]
+  providers: [DagStore, DagQuery, DagService, WdlViewerService]
 })
 export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterViewInit {
   @Input() id: number;
@@ -67,7 +68,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
-  public pipelineBuilderResults: Boolean = false;
+  public wdlViewerResult$: Observable<boolean>;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -93,8 +94,8 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
         break;
     }
   }
-
-  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery, private ngZone: NgZone) {
+  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery, private ngZone: NgZone,
+    private wdlViewerService: WdlViewerService) {
     super();
   }
 
@@ -132,6 +133,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.workflow$ = this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagService.loadExtensions();
+    this.wdlViewerResult$ = this.wdlViewerService.status$;
   }
 
   ngAfterViewInit(): void {
@@ -141,6 +143,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges() {
+    this.wdlViewerService.setStatus(false);
     this.dagService.getDAGResults(this.selectedVersion, this.id);
   }
 
@@ -153,9 +156,5 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
         this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
         break;
     }
-  }
-
-  showLink(success: boolean) {
-    this.pipelineBuilderResults = success;
   }
 }

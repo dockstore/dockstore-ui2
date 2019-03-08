@@ -15,7 +15,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';
 import { ActivatedRoute } from '../../test';
@@ -38,6 +39,7 @@ export class OrganizationComponent implements OnInit {
   canEdit$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
+  gravatarUrl$: Observable<string>;
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute, private userQuery: UserQuery
   ) { }
@@ -53,6 +55,7 @@ export class OrganizationComponent implements OnInit {
       this.organizationService.updateOrganizationFromAlias(alias);
     }
     this.organization$ = this.organizationQuery.organization$;
+    this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
   }

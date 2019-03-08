@@ -34,7 +34,7 @@
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
         <div>
-          <img src="https://via.placeholder.com/150" alt="Logo" class="img-circle">
+          <img [src]="(gravatarUrl$ | async ) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="img-circle" height="150" width="150">
         </div>
         <div>
           <mat-card-header>
@@ -70,8 +70,8 @@
     </mat-card>
 
     <!-- Tabs and description -->
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="15px" class="my-3">
-      <div fxFlex fxGrow="1" fxFlex.lt-sm="100%">
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3">
+      <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <mat-tab-group>
           <mat-tab label="Collections">
             <collections [organizationID]="org.id"></collections>
@@ -84,7 +84,7 @@
           </mat-tab>
         </mat-tab-group>
       </div>
-      <div fxFlex fxGrow="1">
+      <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <mat-card fxLayout="column" fxLayoutGap="15px" class="my-3">
           <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
             <div *ngIf="!org.description" fxFlex>

@@ -14,23 +14,21 @@
  *    limitations under the License.
  */
 
-import { AfterViewInit, Component, Input, OnDestroy, ViewEncapsulation, ViewChild, ElementRef, Renderer2, Output,
-          EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
-
 import { Subject } from 'rxjs';
-import { takeUntil, finalize, filter, take } from 'rxjs/operators';
+import { filter, finalize, take, takeUntil } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
-import { ToolDescriptor, WorkflowsService, WorkflowVersion, Workflow } from '../../../shared/swagger';
-import { WdlViewerService, WdlViewerPipeline } from './wdl-viewer.service';
+import { ToolDescriptor, Workflow, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
+import { WdlViewerPipeline, WdlViewerService } from './wdl-viewer.service';
+
 
 @Component({
   selector: 'app-wdl-viewer',
   templateUrl: './wdl-viewer.html',
   styleUrls: ['./wdl-viewer.component.scss'],
-  providers: [WdlViewerService],
   encapsulation: ViewEncapsulation.None,
 })
 export class WdlViewerComponent implements AfterViewInit, OnDestroy {
@@ -41,10 +39,6 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.onVersionChange(value);
   }
-
-  // TODO: The success status of the pipeline builder results should be implemented using a plain service or state instead of an
-  // EventEmitter to communicate between parent & child components
-  @Output() success: EventEmitter<boolean> = new EventEmitter<boolean>(true);
   @ViewChild('diagram') diagram: ElementRef;
 
   public errorMessage;
@@ -56,7 +50,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   private visualizer: any;
 
   constructor(private wdlViewerService: WdlViewerService, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-              protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery) {
+    protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery) {
   }
 
 
@@ -79,16 +73,16 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
             this.versionChanged = false;
           }))
             .subscribe((res: WdlViewerPipeline) => {
-                this.visualizer.attachTo(res.model[0]);
-                this.wdlViewerError = false;
-                this.success.emit(true);
-              },
-              (error) => {
-                this.errorMessage = error || 'Unknown Error';
-                this.wdlViewerError = true;
-                this.diagram.nativeElement.remove();
-                this.success.emit(false);
-              });
+              this.visualizer.attachTo(res.model[0]);
+              this.wdlViewerError = false;
+              this.wdlViewerService.setStatus(true);
+            },
+            (error) => {
+              this.errorMessage = error || 'Unknown Error';
+              this.wdlViewerError = true;
+              this.diagram.nativeElement.remove();
+              this.wdlViewerService.setStatus(false);
+            });
         }
       });
   }
@@ -100,7 +94,6 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
 
   onVersionChange(value: WorkflowVersion) {
     // Reset all booleans types for the new version
-    this.success.emit(false);
     this.wdlViewerError = false;
 
     if (this.visualizer) {
@@ -115,8 +108,9 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   download(exportLink: ElementRef) {
-    const blob = new Blob([this.visualizer.paper.getSVG()], {type: 'text/plain;charset=utf-8'});
+    const blob = new Blob([this.visualizer.paper.getSVG()], { type: 'text/plain;charset=utf-8' });
     const name = this.workflowQuery.getActive().repository + '_' + this.version.name + '.svg';
     this.renderer.setAttribute(exportLink.nativeElement, 'href', URL.createObjectURL(blob));
-    this.renderer.setAttribute(exportLink.nativeElement, 'download', name);  }
+    this.renderer.setAttribute(exportLink.nativeElement, 'download', name);
+  }
 }

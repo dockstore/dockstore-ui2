@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
-import { Observable, from, forkJoin } from 'rxjs';
+import { Observable, from, forkJoin, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
 import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
@@ -39,12 +39,23 @@ export interface WdlViewerPipeline {
 @Injectable()
 export class WdlViewerService {
   private zip: JSZip = new JSZip();
+  private statusSource = new BehaviorSubject<boolean>(false);
+  public status$ = this.statusSource.asObservable();
   constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
       ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
+  }
+
+  /**
+   * Indicates if parsing the WDL workflow visualization was successful or not
+   *
+   * @param val
+   */
+  setStatus(val: boolean): void {
+    this.statusSource.next(val);
   }
 
   /**

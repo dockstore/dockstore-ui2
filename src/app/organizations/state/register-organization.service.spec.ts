@@ -14,7 +14,7 @@ let matDialogSpy: jasmine.SpyObj<MatDialog>;
 
 describe('RegisterOrganizationService', () => {
   let registerOrganizationService: RegisterOrganizationService;
-  const exampleFormState = { name: '', topic: '', link: '', location: '', contactEmail: '', displayName: '' };
+  const exampleFormState = { name: '', topic: '', link: '', location: '', contactEmail: '', avatarUrl: '', displayName: '' };
   beforeEach(() => {
     const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganization', 'updateOrganization']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
@@ -103,5 +103,22 @@ describe('RegisterOrganizationService', () => {
     expect(regexp.test('1asdfasd')).toBeFalsy();
     expect(regexp.test('我喜欢狗')).toBeFalsy();
     expect(regexp.test('testname')).toBeTruthy();
+  });
+
+  it('should have correct avatar URL regex', () => {
+    const regexp = new RegExp(registerOrganizationService.logoUrlRegex);
+    expect(regexp.test('https://www.https://via.placeholder.com/150.jpg')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.jPG')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.jpeg')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.jPEG')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.pNg')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.png')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.gif')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.gIf')).toBeTruthy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150')).toBeFalsy();
+    expect(regexp.test('.png')).toBeFalsy();
+    expect(regexp.test('https://www.https://via.placeholder.com/150.png potato')).toBeFalsy();
+    expect(regexp.test('adf .jpg')).toBeFalsy();
+    expect(regexp.test('https://via.placeholder.com/150.jpg asdf')).toBeFalsy();
   });
 });
