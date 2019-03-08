@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
@@ -33,9 +33,7 @@ import { UpsertOrganizationMemberComponent } from '../upsert-organization-member
 })
 export class OrganizationMemberRemoveConfirmDialogComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<OrganizationMemberRemoveConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 }
 
 export interface DialogData {
