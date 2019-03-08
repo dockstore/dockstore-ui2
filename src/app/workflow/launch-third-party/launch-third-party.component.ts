@@ -73,16 +73,12 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
       });
   }
 
-
   ngOnChanges(changes: SimpleChanges): void {
     this.descriptorsQuery.clear();
     this.trsUrl = this.encodedPath = null;
     if (this.workflow && this.selectedVersion) {
 
-      this.trsUrl = `${Dockstore.API_URI}${ga4ghPath}/tools/`
-        + encodeURIComponent(`${ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path}`)
-        + '/versions/'
-        + encodeURIComponent(`${this.selectedVersion.name}`);
+      this.trsUrl = this.descriptorsService.trsUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
 
       this.encodedPath = encodeURIComponent(this.workflow.full_workflow_path);
 

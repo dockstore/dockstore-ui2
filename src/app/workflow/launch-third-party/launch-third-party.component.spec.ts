@@ -36,6 +36,7 @@ describe('LaunchThirdPartyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchThirdPartyComponent);
     component = fixture.componentInstance;
+    component.workflow = sampleWorkflow3;
     fixture.detectChanges();
     workflowsService = TestBed.get(WorkflowsService);
   });
@@ -54,6 +55,8 @@ describe('LaunchThirdPartyComponent', () => {
       'selectedVersion': new SimpleChange(null, sampleWorkflowVersion, true)
     });
     fixture.detectChanges();
+    const nativeElement = fixture.nativeElement;
+    console.log(nativeElement);
     // expect(component.dnastackURL).toBeFalsy();
     // expect(component.fireCloudURL).toBeFalsy();
   });
