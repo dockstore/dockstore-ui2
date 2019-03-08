@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
@@ -31,13 +31,12 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./cwl-viewer.scss']
 })
 
-export class CwlViewerComponent implements OnInit, OnDestroy {
+export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() workflow: ExtendedWorkflow;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this.version = value;
-      this.onChange();
     }
   }
   @Input() set refresh(value: any) {
@@ -50,52 +49,31 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
   public cwlViewerDescriptor: CwlViewerDescriptor;
   public errorMessage;
   public loading = false;
-  public workflow2: ExtendedWorkflow;
+  public extendedWorkflow: ExtendedWorkflow;
 
   private version;
   private onDestroy$ = new Subject<void>();
 
-  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowService: ExtendedWorkflowService, private extendedWorkflowStore: ExtendedWorkflowStore,
-              private extendedWorkflowQuery: ExtendedWorkflowQuery) {
+  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowService: ExtendedWorkflowService,
+              private extendedWorkflowStore: ExtendedWorkflowStore, private extendedWorkflowQuery: ExtendedWorkflowQuery) {
   }
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
-
-
   }
 
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-    // this.ngUnsubscribe.next();
-    // this.ngUnsubscribe.complete();
-  }
-
-  resetZoom() {
-    this.cwlViewerPercentageZoom = 100;
-  }
-
-  onChange() {
+  ngOnChanges(): void {
     if (this.version) {
-      // this.workflow2 = this.workflow;
-      // this.extendedWorkflowService.update(this.workflow2);
-      // if (this.workflow) {
-      //   console.log(this.workflow2.providerUrl);
-      // }
-
-
       this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(
         workflow => {
-          this.workflow2 = workflow;
+          this.extendedWorkflow = workflow;
         }
       );
 
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
-      this.extendedWorkflowService.update(this.workflow2);
-      this.cwlViewerService.getVisualizationUrls(this.workflow2.providerUrl, this.version.reference,
+      this.cwlViewerService.getVisualizationUrls(this.extendedWorkflow.providerUrl, this.version.reference,
         this.version.workflow_path, this.onDestroy$)
         .subscribe(
           cwlViewerDescriptor => {
@@ -111,6 +89,15 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
             this.loading = false;
           });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  resetZoom() {
+    this.cwlViewerPercentageZoom = 100;
   }
 
   onWheel(event: WheelEvent) {
