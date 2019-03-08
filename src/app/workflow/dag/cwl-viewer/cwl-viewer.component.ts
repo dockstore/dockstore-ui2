@@ -18,9 +18,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { ExtendedWorkflowService } from '../../../shared/state/extended-workflow.service';
 import { Subject } from 'rxjs';
-import { ExtendedWorkflowStore } from '../../../shared/state/extended-workflow.store';
 import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
 import { takeUntil } from 'rxjs/operators';
 
@@ -48,8 +46,7 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   private onDestroy$ = new Subject<void>();
 
-  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowService: ExtendedWorkflowService,
-              private extendedWorkflowStore: ExtendedWorkflowStore, private extendedWorkflowQuery: ExtendedWorkflowQuery) {
+  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowQuery: ExtendedWorkflowQuery) {
   }
 
   ngOnInit(): void {
