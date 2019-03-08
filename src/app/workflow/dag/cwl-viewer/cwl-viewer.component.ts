@@ -46,7 +46,6 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
   public loading = false;
   public extendedWorkflow: ExtendedWorkflow;
 
-  private version;
   private onDestroy$ = new Subject<void>();
 
   constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowService: ExtendedWorkflowService,
@@ -86,12 +85,12 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateCwlViewerImg() {
-    if (this.version && this.extendedWorkflow) {
+    if (this.selectedVersion && this.extendedWorkflow) {
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
-      this.cwlViewerService.getVisualizationUrls(this.extendedWorkflow.providerUrl, this.version.reference,
-        this.version.workflow_path, this.onDestroy$)
+      this.cwlViewerService.getVisualizationUrls(this.extendedWorkflow.providerUrl, this.selectedVersion.reference,
+        this.selectedVersion.workflow_path, this.onDestroy$)
         .subscribe(
           cwlViewerDescriptor => {
             this.cwlViewerDescriptor = cwlViewerDescriptor;
