@@ -25,29 +25,26 @@ install:
 
 jobs:
   include:
-    - stage: test
+    - stage: unit test
+      name: "Lint, Unit Test, and Prod Test"
       script:
         - ng lint
         - ng test --watch=false --code-coverage --browsers ChromeHeadless
         - ng version
         - npm run build.prod
+    - stage: integration test
+      name: "Cypress Group 1"
       env:
-        - NAME='Lint, Unit Test, and Prod Test'
-    - stage: test
-      env:
-        - NAME='Integration test 1'
         - TEST='cypress/integration/group1/**/*'
       script: ./scripts/run-travis-script.sh
-
-    - stage: test
+    - stage: integration test
+      name: "Cypress Group 2"
       env:
-        - NAME='Integration test 2'
         - TEST='cypress/integration/group2/**/*'
       script: ./scripts/run-travis-script.sh
-
-    - stage: test
+    - stage: integration test
+      name: "Cypress Group 3"
       env:
-        - NAME='Integration test 3'
         - TEST='cypress/integration/group3/**/*'
       script: ./scripts/run-travis-script.sh
 
