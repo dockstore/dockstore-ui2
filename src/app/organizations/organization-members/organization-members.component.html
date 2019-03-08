@@ -31,7 +31,7 @@
               <button color="basic" mat-icon-button matTooltip="Edit user's role in organization" [id]="'edit-user-role-' + index" [disabled]="organizationUser.user.id === (userId$ | async)"
                 (click)="editUser(organizationUser)"><mat-icon>edit</mat-icon></button>
               <button color="basic" mat-icon-button matTooltip="Remove user from organization" [id]="'remove-user-' + index" [disabled]="organizationUser.user.id === (userId$ | async)"
-                (click)="removeUser(organizationUser)"><mat-icon>delete</mat-icon></button>
+                (click)="removeUserDialog(organizationUser)"><mat-icon>delete</mat-icon></button>
             </mat-card-content>
           </div>
         </div>
