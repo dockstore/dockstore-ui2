@@ -159,8 +159,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
           this.containerService.setTool(tool);
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
-        }, error => {
-          console.log(this.tool);
+        }, (error: HttpErrorResponse) => {
           this.containerService.setTool(this.tool);
           this.alertService.detailedError(error);
         });
@@ -168,7 +167,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         this.containerService.setTool(this.tool);
         this.alertService.detailedError(error);
       });
-    }, error => this.alertService.detailedError(error));
+    }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
   }
 
   // Validation starts here, should move most of these to a service somehow
