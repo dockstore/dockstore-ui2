@@ -78,7 +78,7 @@
     </div>
     <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big': 'small'">
       <app-cwl-viewer *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"
-        [hidden]="dagType !== 'cwlviewer'" [workflow]="(workflow$ | async)" [selectedVersion]="selectedVersion" [refresh]="refreshCounter"
+        [hidden]="dagType !== 'cwlviewer'" [selectedVersion]="selectedVersion" [refresh]="refreshCounter"
         [expanded]="expanded">
       </app-cwl-viewer>
       <app-wdl-viewer *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"
