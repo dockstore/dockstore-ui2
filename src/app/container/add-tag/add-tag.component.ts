@@ -13,16 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { forkJoin, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService, DockstoreTool, SourceFile } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
@@ -51,7 +52,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
     private containersService: ContainersService, private toolQuery: ToolQuery, private alertService: AlertService,
     private matDialog: MatDialog) {
-      super();
+    super();
   }
 
   initializeTag() {
@@ -134,8 +135,8 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
 
   addTag() {
     this.alertService.start('Adding tag');
-    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
-      this.tool.tags = response;
+    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe((tags: Tag[]) => {
+      this.tool.tags = tags;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
       // Store the unsaved test files if valid and exist
@@ -145,18 +146,28 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
       if (this.unsavedTestWDLFile.length > 0) {
         this.addTestParameterFile(this.DescriptorType.WDL);
       }
-
-      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null).
-        subscribe();
-      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null).
-        subscribe();
-      this.containerService.setTool(this.tool);
       this.initializeTag();
-      this.loadDefaults();
-      this.matDialog.closeAll();
-      this.alertService.detailedSuccess();
+      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      const addCWL: Observable<SourceFile[]> =
+        this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null);
+      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      const addWDL: Observable<SourceFile[]> =
+        this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null);
+      forkJoin(addCWL, addWDL).subscribe(() => {
+        this.loadDefaults();
+        this.containersService.refresh(id).subscribe((tool: DockstoreTool) => {
+          this.containerService.setTool(tool);
+          this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
+        }, error => {
+          console.log(this.tool);
+          this.containerService.setTool(this.tool);
+          this.alertService.detailedError(error);
+        });
+      }, (error: HttpErrorResponse) => {
+        this.containerService.setTool(this.tool);
+        this.alertService.detailedError(error);
+      });
     }, error => this.alertService.detailedError(error));
   }
 
