@@ -18,6 +18,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
+import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
@@ -91,6 +92,21 @@ export const sampleWdlWorkflow1: Workflow = {
   'sourceControl': 'github.com',
   'source_control_provider': 'GITHUB',
   'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence'
+};
+
+export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
+  id: 5,
+  'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+  'gitUrl': 'git@github.com:dockstore-testing/md5sum-checker.git',
+  'mode': Workflow.ModeEnum.FULL,
+  'organization': 'dockstore-testing',
+  'repository': 'md5sum-checker',
+  'workflow_path': '/md5sum/md5sum-workflow.cwl',
+  'workflowVersions': [],
+  'defaultTestParameterFilePath': '/md5sum/md5sum-input-cwl.json',
+  'sourceControl': 'github.com',
+  'source_control_provider': 'GITHUB',
+  'full_workflow_path': 'github.com/dockstore-testing/md5sum-checker'
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {

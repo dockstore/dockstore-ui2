@@ -14,11 +14,13 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { Subject } from 'rxjs';
+import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cwl-viewer',
@@ -27,15 +29,9 @@ import { Subject } from 'rxjs';
   styleUrls: ['./cwl-viewer.scss']
 })
 
-export class CwlViewerComponent implements OnInit, OnDestroy {
+export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() workflow: ExtendedWorkflow;
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    if (value != null) {
-      this.version = value;
-      this.onChange();
-    }
-  }
+  @Input() selectedVersion: WorkflowVersion;
   @Input() set refresh(value: any) {
     this.resetZoom();
   }
@@ -46,32 +42,52 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
   public cwlViewerDescriptor: CwlViewerDescriptor;
   public errorMessage;
   public loading = false;
+  public extendedWorkflow: ExtendedWorkflow;
 
-  private version;
   private onDestroy$ = new Subject<void>();
 
-  constructor(private cwlViewerService: CwlViewerService) {
+  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowQuery: ExtendedWorkflowQuery) {
   }
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(
+      workflow => {
+        this.extendedWorkflow = workflow;
+        this.updateCwlViewerImg();
+      }
+    );
+  }
+
+  ngOnChanges(): void {
+    this.updateCwlViewerImg();
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   resetZoom() {
     this.cwlViewerPercentageZoom = 100;
   }
 
-  onChange() {
-    if (this.version) {
+  onWheel(event: WheelEvent) {
+    const offset = event.deltaY > 0 ? -10 : 10;
+    const newWidth = this.cwlViewerPercentageZoom + offset;
+    if (newWidth >= 1) {
+      this.cwlViewerPercentageZoom = newWidth;
+    }
+    event.preventDefault();
+  }
+
+  private updateCwlViewerImg() {
+    if (this.selectedVersion && this.extendedWorkflow) {
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
-      this.cwlViewerService.getVisualizationUrls(this.workflow.providerUrl, this.version.reference,
-        this.version.workflow_path, this.onDestroy$)
+      this.cwlViewerService.getVisualizationUrls(this.extendedWorkflow.providerUrl, this.selectedVersion.reference,
+        this.selectedVersion.workflow_path, this.onDestroy$)
         .subscribe(
           cwlViewerDescriptor => {
             this.cwlViewerDescriptor = cwlViewerDescriptor;
@@ -86,15 +102,6 @@ export class CwlViewerComponent implements OnInit, OnDestroy {
             this.loading = false;
           });
     }
-  }
-
-  onWheel(event: WheelEvent) {
-    const offset = event.deltaY > 0 ? -10 : 10;
-    const newWidth = this.cwlViewerPercentageZoom + offset;
-    if (newWidth >= 1) {
-      this.cwlViewerPercentageZoom = newWidth;
-    }
-    event.preventDefault();
   }
 
 }
