@@ -60,16 +60,38 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(
+      workflow => {
+        this.extendedWorkflow = workflow;
+        this.updateCwlViewerImg();
+      }
+    );
   }
 
   ngOnChanges(): void {
-    if (this.version) {
-      this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(
-        workflow => {
-          this.extendedWorkflow = workflow;
-        }
-      );
+    this.updateCwlViewerImg();
+  }
 
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  resetZoom() {
+    this.cwlViewerPercentageZoom = 100;
+  }
+
+  onWheel(event: WheelEvent) {
+    const offset = event.deltaY > 0 ? -10 : 10;
+    const newWidth = this.cwlViewerPercentageZoom + offset;
+    if (newWidth >= 1) {
+      this.cwlViewerPercentageZoom = newWidth;
+    }
+    event.preventDefault();
+  }
+
+  private updateCwlViewerImg() {
+    if (this.version && this.extendedWorkflow) {
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
@@ -89,24 +111,6 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
             this.loading = false;
           });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-  }
-
-  resetZoom() {
-    this.cwlViewerPercentageZoom = 100;
-  }
-
-  onWheel(event: WheelEvent) {
-    const offset = event.deltaY > 0 ? -10 : 10;
-    const newWidth = this.cwlViewerPercentageZoom + offset;
-    if (newWidth >= 1) {
-      this.cwlViewerPercentageZoom = newWidth;
-    }
-    event.preventDefault();
   }
 
 }
