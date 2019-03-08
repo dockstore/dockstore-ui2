@@ -63,8 +63,8 @@ export class CollectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const organizationName = this.activatedRoute.snapshot.paramMap.get('id');
-    const collectionName = this.activatedRoute.snapshot.paramMap.get('cid');
+    const organizationName = this.activatedRoute.snapshot.paramMap.get('organizationName');
+    const collectionName = this.activatedRoute.snapshot.paramMap.get('collectionName');
     this.loadingCollection$ = this.collectionsQuery.loading$;
     this.collection$ = this.collectionsQuery.selectActive();
     this.loadingOrganization$ = this.organizationQuery.loading$;

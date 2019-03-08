@@ -22,8 +22,8 @@ import { CollectionComponent } from './collection/collection.component';
 
 const ORGANIZATIONS_ROUTES: Routes = [
   { path: '', component: OrganizationsComponent, data: {title: 'Dockstore | Organizations'} },
-  { path: ':id', component: OrganizationComponent, data: {title: 'Dockstore | Organization'} },
-  { path: ':id/collections/:cid', component: CollectionComponent, data: {title: 'Dockstore | Collection'} },
+  { path: ':organizationName', component: OrganizationComponent, data: {title: 'Dockstore | Organization'} },
+  { path: ':organizationName/collections/:collectionName', component: CollectionComponent, data: {title: 'Dockstore | Collection'} },
   { path: '**', redirectTo: '' }
 ];
 
