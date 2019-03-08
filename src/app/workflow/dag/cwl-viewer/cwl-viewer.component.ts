@@ -33,11 +33,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    if (value != null) {
-      this.version = value;
-    }
-  }
+  @Input() selectedVersion: WorkflowVersion;
   @Input() set refresh(value: any) {
     this.resetZoom();
   }

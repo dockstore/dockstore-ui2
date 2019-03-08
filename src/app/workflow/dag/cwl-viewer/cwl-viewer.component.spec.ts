@@ -44,7 +44,7 @@ describe('cwl-viewerComponent', () => {
   });
 
   it('should get providerUrl of extended workflow', () => {
-    component.workflow = sampleCwlExtendedWorkflow;
+    component.extendedWorkflow = sampleCwlExtendedWorkflow;
     workflowService.setWorkflow(sampleCwlExtendedWorkflow);
     component.selectedVersion = sampleWorkflowVersion;
     component.ngOnChanges();
