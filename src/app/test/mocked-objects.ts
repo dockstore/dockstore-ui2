@@ -97,16 +97,16 @@ export const sampleWdlWorkflow1: Workflow = {
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   id: 5,
   'descriptorType': WebserviceDescriptorTypeEnum.CWL,
-  gitUrl: 'git@github.com:dockstore-testing/md5sum-checker.git',
-  mode: Workflow.ModeEnum.FULL,
-  organization: 'dockstore-testing',
-  repository: 'md5sum-checker',
-  workflow_path: '/md5sum/md5sum-workflow.cwl',
-  workflowVersions: [],
-  defaultTestParameterFilePath: '/md5sum/md5sum-input-cwl.json',
-  sourceControl: 'github.com',
-  source_control_provider: 'GITHUB',
-  full_workflow_path: 'github.com/dockstore-testing/md5sum-checker'
+  'gitUrl': 'git@github.com:dockstore-testing/md5sum-checker.git',
+  'mode': Workflow.ModeEnum.FULL,
+  'organization': 'dockstore-testing',
+  'repository': 'md5sum-checker',
+  'workflow_path': '/md5sum/md5sum-workflow.cwl',
+  'workflowVersions': [],
+  'defaultTestParameterFilePath': '/md5sum/md5sum-input-cwl.json',
+  'sourceControl': 'github.com',
+  'source_control_provider': 'GITHUB',
+  'full_workflow_path': 'github.com/dockstore-testing/md5sum-checker'
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
