@@ -68,4 +68,3 @@ blocks:
       - name: IT3
         commands:
           - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group3/**/*
-
