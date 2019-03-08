@@ -49,6 +49,9 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   unsavedTestWDLFile = '';
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
+  // Originally set to false because we made the defaults not duplicate of each other
+  public hasDuplicateCWL = false;
+  public hasDuplicateWDL = false;
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
     private containersService: ContainersService, private toolQuery: ToolQuery, private alertService: AlertService,
     private matDialog: MatDialog) {
@@ -203,18 +206,15 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
     }
   }
 
-  // Validation ends here
-  // Checks if the currently edited test parameter file already exists
-  // TODO: This code is repeated in version-modal.component.ts for tools, move it somewhere common
-  // TODO: This is also executed a bajillion times
-  hasDuplicateTestJson(type: ToolDescriptor.TypeEnum): boolean {
-    if (type === this.DescriptorType.CWL) {
-      return this.hasDuplicateTestJsonCommon(this.unsavedTestCWLFile, this.unsavedTestWDLFile);
-    } else if (type === this.DescriptorType.WDL) {
-      return this.hasDuplicateTestJsonCommon(this.unsavedTestWDLFile, this.unsavedTestCWLFile);
-    } else {
-      return false;
-    }
+  /**
+   * Checks if there's a duplicate CWL or WDL test parameter file
+   * TODO: Not have this run on keyup, there should be a debouncer for when the user types rapidly
+   *
+   * @memberof AddTagComponent
+   */
+  updateDuplicateTestJsonCheck() {
+    this.hasDuplicateCWL = this.hasDuplicateTestJsonCommon(this.unsavedTestCWLFile, this.unsavedTestWDLFile);
+    this.hasDuplicateWDL = this.hasDuplicateTestJsonCommon(this.unsavedTestWDLFile, this.unsavedTestCWLFile);
   }
 
   /**
