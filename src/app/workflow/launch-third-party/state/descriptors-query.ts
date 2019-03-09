@@ -10,10 +10,13 @@ export class DescriptorsQuery extends Query<DescriptorsState> {
 
   primaryDescriptor$ = this.select(state => state.primaryDescriptor);
   secondaryDescriptor$ = this.select(state => state.secondaryDescriptors);
-  hasContent$ = this.primaryDescriptor$.pipe(map(primaryDescriptor => primaryDescriptor && primaryDescriptor.content && primaryDescriptor.content.length));
-  hasFileImports$ = this.secondaryDescriptor$.pipe(map(secondaryDescriptors => !!(secondaryDescriptors && secondaryDescriptors.length)));
+  hasContent$ = this.primaryDescriptor$.pipe(
+    map(primaryDescriptor => primaryDescriptor && primaryDescriptor.content && primaryDescriptor.content.length));
+  hasFileImports$ = this.secondaryDescriptor$.pipe(
+    map(secondaryDescriptors => !!(secondaryDescriptors && secondaryDescriptors.length)));
   // TODO: Need to check secondary descriptors too
-  hasHttpImports$ = this.primaryDescriptor$.pipe(map(primaryDescriptor => primaryDescriptor && importHttpRegEx.test(primaryDescriptor.content)));
+  hasHttpImports$ = this.primaryDescriptor$.pipe(
+    map(primaryDescriptor => primaryDescriptor && importHttpRegEx.test(primaryDescriptor.content)));
 
 
   constructor(protected store: DescriptorsStore) {
@@ -26,8 +29,8 @@ export class DescriptorsQuery extends Query<DescriptorsState> {
         ...state,
         primaryDescriptor: null,
         secondaryDescriptors: Array()
-      }
-    })
+      };
+    });
 
   }
   destroy() {

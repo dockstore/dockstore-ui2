@@ -13,7 +13,7 @@ export class DescriptorsService {
       return {
         ...state,
         primaryDescriptor: primaryDescriptor
-      }
+      };
     });
   }
 
@@ -22,7 +22,7 @@ export class DescriptorsService {
       return {
         ...state,
         secondaryDescriptors: secondaryDescriptors
-      }
+      };
     });
   }
 

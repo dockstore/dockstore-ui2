@@ -20,8 +20,8 @@ describe('DescriptorsService', () => {
 
 
   it('should generate correct TRS url', inject([DescriptorsService], (service: DescriptorsService) => {
-    // The host is configurable, so just test from #import on
-    const importPart = '#import/dockstore/github.com/gatk-workflows/gatk4-germline-snps-indels:1.0.1';
-    expect(service.trsUrl(path, version)).toEqual("http://localhost:8080/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgatk-workflows%2Fgatk4-germline-snps-indels/versions/1.0.1")
+    expect(service.trsUrl(path, version))
+    // tslint:disable:max-line-length
+      .toEqual('http://localhost:8080/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgatk-workflows%2Fgatk4-germline-snps-indels/versions/1.0.1');
   }));
 });
