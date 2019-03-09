@@ -109,6 +109,21 @@ export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   'full_workflow_path': 'github.com/dockstore-testing/md5sum-checker'
 };
 
+export const sampleWdlWorkflow2: Workflow = {
+  id: 5,
+  'descriptorType': WebserviceDescriptorTypeEnum.WDL,
+  'gitUrl': 'sampleGitUrl',
+  'mode': Workflow.ModeEnum.FULL,
+  'organization': 'sampleOrganization',
+  'repository': 'sampleRepository',
+  'workflow_path': 'sampleWorkflowPath',
+  'workflowVersions': [],
+  'defaultTestParameterFilePath': 'updatedTestParameterPath',
+  'sourceControl': 'github.com',
+  'source_control_provider': 'GITHUB',
+  'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl'
+};
+
 export const sampleWorkflowVersion: WorkflowVersion = {
   'id': 1,
   'reference': '',

@@ -1,19 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Store, StoreConfig } from '@datorama/akita';
-import { SourceFile, ToolFile } from '../../../shared/swagger';
-import FileTypeEnum = ToolFile.FileTypeEnum;
+import {Injectable} from '@angular/core';
+import {Store, StoreConfig} from '@datorama/akita';
+import {SourceFile} from '../../../shared/swagger';
 
 export interface DescriptorsState {
    primaryDescriptor: SourceFile;
    secondaryDescriptors: Array<SourceFile>;
-   descriptorType: FileTypeEnum;
 }
 
 export function createInitialState(): DescriptorsState {
   return {
     primaryDescriptor: null,
-    secondaryDescriptors: Array(),
-    descriptorType: null
+    secondaryDescriptors: Array()
   };
 }
 
@@ -26,4 +23,3 @@ export class DescriptorsStore extends Store<DescriptorsState> {
   }
 
 }
-

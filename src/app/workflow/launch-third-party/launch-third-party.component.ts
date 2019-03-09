@@ -55,8 +55,6 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
   @Input()
   selectedVersion: WorkflowVersion;
 
-  // Properties to use in the HTML
-
   /**
    * Indicates whether the selected version has any content
    */
@@ -92,7 +90,7 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
   trsUrlAsQueryValue: string;
 
   /**
-   * The workflow path encoded for use as a query parameter value
+   * The workflow path encoded for use as a query parameter value.
    */
   workflowPathAsQueryValue: string;
 
