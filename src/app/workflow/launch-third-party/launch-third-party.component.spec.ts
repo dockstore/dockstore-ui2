@@ -1,16 +1,16 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LaunchThirdPartyComponent} from './launch-third-party.component';
-import {WorkflowsService} from '../../shared/swagger/api/workflows.service';
-import {sampleWdlWorkflow2, sampleWorkflowVersion} from '../../test/mocked-objects';
-import {CUSTOM_ELEMENTS_SCHEMA, SimpleChange} from '@angular/core';
-import {WorkflowsStubService} from '../../test/service-stubs';
-import {CustomMaterialModule} from '../../shared/modules/material.module';
-import {HttpClientModule} from '@angular/common/http';
-import {GA4GHFilesService} from '../../shared/ga4gh-files/ga4gh-files.service';
-import {GA4GHService} from '../../shared/swagger';
-import {GA4GHFilesStore} from '../../shared/ga4gh-files/ga4gh-files.store';
-import {Dockstore} from '../../shared/dockstore.model';
+import { LaunchThirdPartyComponent } from './launch-third-party.component';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
+import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
+import { WorkflowsStubService } from '../../test/service-stubs';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { HttpClientModule } from '@angular/common/http';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { GA4GHService } from '../../shared/swagger';
+import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
+import { Dockstore } from '../../shared/dockstore.model';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;

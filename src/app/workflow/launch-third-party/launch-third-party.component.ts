@@ -1,20 +1,20 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
-import {DescriptorTypeCompatService} from '../../shared/descriptor-type-compat.service';
-import {ToolFile, Workflow, WorkflowVersion} from '../../shared/swagger';
-import {WorkflowsService} from '../../shared/swagger/api/workflows.service';
-import {SourceFile} from '../../shared/swagger/model/sourceFile';
-import {GA4GHFilesQuery} from '../../shared/ga4gh-files/ga4gh-files.query';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {DescriptorsQuery} from './state/descriptors-query';
-import {DescriptorsService} from './state/descriptors.service';
-import {DescriptorsStore} from './state/descriptors-store.';
-import {Dockstore} from '../../shared/dockstore.model';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DescriptorsQuery } from './state/descriptors-query';
+import { DescriptorsService } from './state/descriptors.service';
+import { DescriptorsStore } from './state/descriptors-store.';
+import { Dockstore } from '../../shared/dockstore.model';
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 import FileTypeEnum = ToolFile.FileTypeEnum;
-import {HttpUrlEncodingCodec} from '@angular/common/http';
 
 /**
  *  A component that has buttons linking to external platforms that can launch workflows hosted on Dockstore.
@@ -22,7 +22,7 @@ import {HttpUrlEncodingCodec} from '@angular/common/http';
  *  ## Instructions for adding a new button
  *
  *  1. Update dockstore.model.ts with a new property that has the url of the external platform.
- *  2. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`
+ *  2. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`.
  *  3. If the icon is an SVG, you will need to add it to the icon registry in the
  *  constructor of this class, below. Follow the existing pattern.
  *  4. Add your HTML to launch-third-party.component.ts, following the pattern of the existing code. There are

@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Store, StoreConfig} from '@datorama/akita';
-import {SourceFile} from '../../../shared/swagger';
+import { Injectable } from '@angular/core';
+import { Store, StoreConfig } from '@datorama/akita';
+import { SourceFile } from '../../../shared/swagger';
 
 export interface DescriptorsState {
    primaryDescriptor: SourceFile;
