@@ -11,7 +11,7 @@
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
-        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+        <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
