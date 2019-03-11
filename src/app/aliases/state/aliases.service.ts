@@ -17,7 +17,7 @@ export class AliasesService {
         ...state,
         organization: null,
         collection: null
-      }
+      };
     });
   }
 

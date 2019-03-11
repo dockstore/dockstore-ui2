@@ -18,10 +18,10 @@ export class AliasesComponent extends Base implements OnInit {
   organization$: Observable<Organization>;
   collection$: Observable<Collection>;
 
-  protected type;
-  protected alias;
+  public type;
+  public alias;
   // Types contains resource types that support aliases
-  types = [ 'organizations', 'collections' ];
+  public types = [ 'organizations', 'collections' ];
   constructor(private aliasesQuery: AliasesQuery,
               private aliasesService: AliasesService,
               private route: ActivatedRoute,
