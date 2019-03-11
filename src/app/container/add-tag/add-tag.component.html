@@ -70,10 +70,10 @@
       <div *ngIf="editMode">
         <div class="input-group py-1">
           <input [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
-            [(ngModel)]="unsavedTestCWLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository."
+            [(ngModel)]="unsavedTestCWLFile" (keyup)="updateDuplicateTestJsonCheck()" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository."
             placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
           <span class="input-group-btn">
-            <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button-material" [disabled]="hasDuplicateTestJson(DescriptorType.CWL)"
+            <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button-material" [disabled]="hasDuplicateCWL"
               (click)="addTestParameterFile(DescriptorType.CWL)" *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)">
               <mat-icon>add</mat-icon>
             </button>
@@ -83,14 +83,8 @@
             </button>
           </span>
         </div>
-        <mat-card *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger" role="alert">
-          {{formErrors.cwlTestParameterFilePath}}
-        </mat-card>
-        <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
-          <mat-card class="alert alert-danger" role="alert">
-            <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
-          </mat-card>
-        </div>
+        <mat-error *ngIf="formErrors.cwlTestParameterFilePath">{{formErrors.cwlTestParameterFilePath}}</mat-error>
+        <mat-error *ngIf="hasDuplicateCWL">Duplicate test json files are not allowed.</mat-error>
       </div>
       <div *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
         <input class="form-control" placeholder="None provided" [disabled]="true" />
@@ -114,10 +108,10 @@
       <div *ngIf="editMode">
         <div class="input-group py-1">
           <input [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="wdlTestParameterFilePath"
-            [(ngModel)]="unsavedTestWDLFile" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository."
+            [(ngModel)]="unsavedTestWDLFile" (keyup)="updateDuplicateTestJsonCheck()" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository."
             placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
           <span class="input-group-btn">
-            <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button-material" [disabled]="hasDuplicateTestJson(DescriptorType.WDL)"
+            <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button-material" [disabled]="hasDuplicateWDL"
               (click)="addTestParameterFile(DescriptorType.WDL)" *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)">
               <mat-icon>add</mat-icon>
             </button>
@@ -127,16 +121,8 @@
             </button>
           </span>
         </div>
-        <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
-          <mat-card class="alert alert-danger" role="alert">
-            <mat-icon>error</mat-icon> {{formErrors.wdlTestParameterFilePath}}
-          </mat-card>
-        </div>
-        <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
-          <mat-card class="alert alert-danger" role="alert">
-            <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
-          </mat-card>
-        </div>
+        <mat-error *ngIf="formErrors.wdlTestParameterFilePath">{{formErrors.wdlTestParameterFilePath}}</mat-error>
+        <mat-error *ngIf="hasDuplicateWDL">Duplicate test json files are not allowed.</mat-error>
       </div>
       <div *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
         <input class="form-control" placeholder="None provided" [disabled]="true" />
@@ -156,7 +142,7 @@
 </div>
 <div mat-dialog-actions>
   <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
-  <button id="addVersionTagButton" type="button" mat-flat-button color="primary" (click)="addTag()" [disabled]="!addTagForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)">
+  <button id="addVersionTagButton" type="button" mat-flat-button color="primary" (click)="addTag()" [disabled]="!addTagForm.form.valid || hasDuplicateCWL || hasDuplicateWDL">
     Add Tag
   </button>
 </div>

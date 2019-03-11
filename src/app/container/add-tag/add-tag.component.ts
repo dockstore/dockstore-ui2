@@ -13,16 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { forkJoin, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService, DockstoreTool, SourceFile } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
@@ -48,10 +49,13 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   unsavedTestWDLFile = '';
   unsavedCWLTestParameterFilePaths = [];
   unsavedWDLTestParameterFilePaths = [];
+  // Originally set to false because we made the defaults not duplicate of each other
+  public hasDuplicateCWL = false;
+  public hasDuplicateWDL = false;
   constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
     private containersService: ContainersService, private toolQuery: ToolQuery, private alertService: AlertService,
     private matDialog: MatDialog) {
-      super();
+    super();
   }
 
   initializeTag() {
@@ -134,8 +138,8 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
 
   addTag() {
     this.alertService.start('Adding tag');
-    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(response => {
-      this.tool.tags = response;
+    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe((tags: Tag[]) => {
+      this.tool.tags = tags;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
       // Store the unsaved test files if valid and exist
@@ -145,19 +149,28 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
       if (this.unsavedTestWDLFile.length > 0) {
         this.addTestParameterFile(this.DescriptorType.WDL);
       }
-
-      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null).
-        subscribe();
-      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null).
-        subscribe();
-      this.containerService.setTool(this.tool);
       this.initializeTag();
-      this.loadDefaults();
-      this.matDialog.closeAll();
-      this.alertService.detailedSuccess();
-    }, error => this.alertService.detailedError(error));
+      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      const addCWL: Observable<SourceFile[]> =
+        this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null);
+      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+      const addWDL: Observable<SourceFile[]> =
+        this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null);
+      forkJoin(addCWL, addWDL).subscribe(() => {
+        this.loadDefaults();
+        this.containersService.refresh(id).subscribe((tool: DockstoreTool) => {
+          this.containerService.setTool(tool);
+          this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
+        }, (error: HttpErrorResponse) => {
+          this.containerService.setTool(this.tool);
+          this.alertService.detailedError(error);
+        });
+      }, (error: HttpErrorResponse) => {
+        this.containerService.setTool(this.tool);
+        this.alertService.detailedError(error);
+      });
+    }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -193,18 +206,15 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
     }
   }
 
-  // Validation ends here
-  // Checks if the currently edited test parameter file already exists
-  // TODO: This code is repeated in version-modal.component.ts for tools, move it somewhere common
-  // TODO: This is also executed a bajillion times
-  hasDuplicateTestJson(type: ToolDescriptor.TypeEnum): boolean {
-    if (type === this.DescriptorType.CWL) {
-      return this.hasDuplicateTestJsonCommon(this.unsavedTestCWLFile, this.unsavedTestWDLFile);
-    } else if (type === this.DescriptorType.WDL) {
-      return this.hasDuplicateTestJsonCommon(this.unsavedTestWDLFile, this.unsavedTestCWLFile);
-    } else {
-      return false;
-    }
+  /**
+   * Checks if there's a duplicate CWL or WDL test parameter file
+   * TODO: Not have this run on keyup, there should be a debouncer for when the user types rapidly
+   *
+   * @memberof AddTagComponent
+   */
+  updateDuplicateTestJsonCheck() {
+    this.hasDuplicateCWL = this.hasDuplicateTestJsonCommon(this.unsavedTestCWLFile, this.unsavedTestWDLFile);
+    this.hasDuplicateWDL = this.hasDuplicateTestJsonCommon(this.unsavedTestWDLFile, this.unsavedTestCWLFile);
   }
 
   /**

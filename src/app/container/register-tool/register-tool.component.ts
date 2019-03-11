@@ -71,19 +71,12 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   friendlyRegistryKeys(): Array<string> {
-    // TODO: Remove this section when GitLab is enabled
-    const friendlyRegistryKeys = this.registerToolService.friendlyRegistryKeys();
-    return friendlyRegistryKeys.filter(key => key !== 'GitLab');
-    // TODO: Uncomment this section when GitLab is enabled
-    // return this.registerToolService.friendlyRegistryKeys();
+    return this.registerToolService.friendlyRegistryKeys();
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    // TODO: Remove this section when GitLab is enabled
     const friendlyRepositoryKeys = this.registerToolService.friendlyRepositoryKeys();
-    return friendlyRepositoryKeys.filter(key => key !== 'GitLab' && key !== 'Dockstore');
-    // TODO: Uncomment this section when GitLab is enabled
-    // return this.registerToolService.friendlyRepositoryKeys();
+    return friendlyRepositoryKeys.filter(key => key !== 'Dockstore');
   }
 
   isInvalidPrivateTool() {
