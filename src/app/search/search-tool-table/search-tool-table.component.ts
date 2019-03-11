@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
-
 import { ListContainersService } from '../../containers/list/list.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -17,10 +16,10 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<DockstoreTool>;
-  public displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers', 'dockerPull'];
+  public displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
   constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService,
     private listContainersService: ListContainersService, private searchQuery: SearchQuery) {
-      super(dateService);
+    super(dateService);
   }
 
   privateNgOnInit(): void {
