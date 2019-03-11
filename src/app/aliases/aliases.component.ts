@@ -21,7 +21,7 @@ export class AliasesComponent extends Base implements OnInit {
   protected type;
   protected alias;
   // Types contains resource types that support aliases
-  protected types = [ 'organizations', 'collections' ];
+  types = [ 'organizations', 'collections' ];
   constructor(private aliasesQuery: AliasesQuery,
               private aliasesService: AliasesService,
               private route: ActivatedRoute,
