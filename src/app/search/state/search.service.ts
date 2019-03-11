@@ -41,9 +41,6 @@ export class SearchService {
    */
   public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'has_checker'];
 
-  // Columns displayed in both tool and workflow search results table
-  public readonly displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
-
   constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService,
     private router: Router, private location: Location) {
   }

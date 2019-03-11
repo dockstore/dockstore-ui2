@@ -21,7 +21,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
-import { SearchService } from '../state/search.service';
 
 @Component({
   selector: 'app-search-workflow-table',
@@ -29,10 +28,8 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-workflow-table.component.scss']
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
-  public displayedColumns = this.searchService.displayedColumns;
   public dataSource: MatTableDataSource<Workflow>;
-  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService,
-    private searchQuery: SearchQuery) {
+  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchQuery: SearchQuery) {
     super(dateService);
   }
 
