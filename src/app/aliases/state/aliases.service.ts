@@ -21,10 +21,6 @@ export class AliasesService {
     });
   }
 
-  /**
-   * Make this better, copied from above
-   * @param alias
-   */
   @transaction()
   updateOrganizationFromAlias(alias: string): void {
     this.clearState();
@@ -47,10 +43,6 @@ export class AliasesService {
     });
   }
 
-  /**
-   * Make this better, copied from above
-   * @param alias
-   */
   @transaction()
   updateCollectionFromAlias(alias: string): void {
     this.clearState();

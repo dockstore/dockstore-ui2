@@ -6,7 +6,10 @@
     <mat-icon>warning</mat-icon>
     &nbsp;<strong>{{ type }}</strong> is not a valid type
   </mat-card>
-  <app-loading [loading]="(loading$ | async)">
+  <div *ngIf="(loading$ | async); else doneLoading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <ng-template #doneLoading>
     <div *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the organization <strong>{{ org.displayName }}</strong>
@@ -19,5 +22,5 @@
       <mat-icon>warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>
-  </app-loading>
+  </ng-template>
 </div>

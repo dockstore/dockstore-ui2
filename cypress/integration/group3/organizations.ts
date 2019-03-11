@@ -270,8 +270,8 @@ describe('Dockstore Organizations', () => {
     });
   });
 
-  describe('Find organisation and collection by alias', () => {
-    it('organisation alias', () => {
+  describe('Find organization and collection by alias', () => {
+    it('organization alias', () => {
       cy.server();
       cy.route({
         url: '/organizations/fakeAlias/aliases',
