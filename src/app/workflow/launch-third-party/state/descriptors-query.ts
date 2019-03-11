@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { DescriptorsState, DescriptorsStore } from './descriptors-store.';
+import { createInitialState, DescriptorsState, DescriptorsStore } from './descriptors-store.';
 import { map, mergeMap } from 'rxjs/operators';
-import { of as observableOf } from 'rxjs';
+import { Observable, of as observableOf } from 'rxjs';
+import { SourceFile } from '../../../shared/swagger';
 
 const importHttpRegEx: RegExp = new RegExp(/^\s*import\s+"https?/, 'm');
 
 @Injectable()
 export class DescriptorsQuery extends Query<DescriptorsState> {
 
-  primaryDescriptor$ = this.select(state => state.primaryDescriptor);
-  secondaryDescriptor$ = this.select(state => state.secondaryDescriptors);
-  hasContent$ = this.primaryDescriptor$.pipe(
-    map(primaryDescriptor => primaryDescriptor && primaryDescriptor.content && primaryDescriptor.content.length));
-  hasFileImports$ = this.secondaryDescriptor$.pipe(
+  primaryDescriptor$: Observable<SourceFile> = this.select(state => state.primaryDescriptor);
+  secondaryDescriptor$: Observable<Array<SourceFile>> = this.select(state => state.secondaryDescriptors);
+  hasContent$: Observable<boolean> = this.primaryDescriptor$.pipe(
+    map(primaryDescriptor => !!(primaryDescriptor && primaryDescriptor.content && primaryDescriptor.content.length)));
+  hasFileImports$: Observable<boolean> = this.secondaryDescriptor$.pipe(
     map(secondaryDescriptors => !!(secondaryDescriptors && secondaryDescriptors.length)));
-  hasHttpImports$ = this.primaryDescriptor$.pipe(
+  hasHttpImports$: Observable<boolean | any> = this.primaryDescriptor$.pipe(
     map(primaryDescriptor => !!(primaryDescriptor && importHttpRegEx.test(primaryDescriptor.content))),
     mergeMap(hasHttpImport => {
       if (hasHttpImport) {
@@ -38,15 +39,9 @@ export class DescriptorsQuery extends Query<DescriptorsState> {
   }
 
   clear() {
-    this.store.update(state => {
-      return {
-        ...state,
-        primaryDescriptor: null,
-        secondaryDescriptors: Array()
-      };
-    });
-
+    this.store.update(createInitialState());
   }
+
   destroy() {
     this.store.destroy();
   }

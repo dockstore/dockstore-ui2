@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -7,13 +7,13 @@ import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { share, takeUntil } from 'rxjs/operators';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsService } from './state/descriptors.service';
 import { DescriptorsStore } from './state/descriptors-store.';
 import { Dockstore } from '../../shared/dockstore.model';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
+import { Base } from '../../shared/base';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /**
@@ -22,10 +22,11 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
  *  ## Instructions for adding a new button
  *
  *  1. Update dockstore.model.ts with a new property that has the url of the external platform.
- *  2. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`.
- *  3. If the icon is an SVG, you will need to add it to the icon registry in the
+ *  2. Create a separate PR for dockstore/compose_setup repo, prompting and setting the same URL from step 1.
+ *  3. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`.
+ *  4. If the icon is an SVG, you will need to add it to the icon registry in the
  *  constructor of this class, below. Follow the existing pattern.
- *  4. Add your HTML to launch-third-party.component.ts, following the pattern of the existing code. There are
+ *  5. Add your HTML to launch-third-party.component.ts, following the pattern of the existing code. There are
  *  several properties you can access from your HTML that should provide all the info needed for the new button.
  *  If some new property is required, add it, and update it (probably) in `ngOnChanges`.
  *
@@ -41,7 +42,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
   styleUrls: ['./launch-third-party.component.scss'],
   providers: [ DescriptorsService, DescriptorsQuery, DescriptorsStore]
 })
-export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
+export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
 
   /**
    * The workflow
@@ -58,7 +59,7 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
   /**
    * Indicates whether the selected version has any content
    */
-  hasContent$ = this.descriptorsQuery.hasContent$;
+  hasContent$ = this.descriptorsQuery.hasContent$.pipe(share());
 
   /**
    * Indicates whether the selected version's workflow has any file-based imports.
@@ -78,7 +79,7 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
 
   /**
    * The TRS url for the current workflow and selected version.
-   * Note: We are using this value as a query param for DNANexus,
+   * Note: We are using this value as a query param for DNAnexus,
    * even though we should be using the encoded value. But their server
    * works with the value as is, so expose this as well.
    */
@@ -94,15 +95,13 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
    */
   workflowPathAsQueryValue: string;
 
-  private ngUnsubscribe: Subject<{}> = new Subject();
-
-
   constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer,
               private gA4GHFilesQuery: GA4GHFilesQuery,
               private descriptorsQuery: DescriptorsQuery,
               private descriptorsService: DescriptorsService) {
+    super();
     iconRegistry.addSvgIcon('firecloud',
       sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/FireCloud-white-icon.svg'));
     iconRegistry.addSvgIcon('dnanexus',
@@ -139,12 +138,6 @@ export class LaunchThirdPartyComponent implements OnChanges, OnInit, OnDestroy {
         .encodeValue(this.trsUrl);
       this.workflowPathAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.workflow.full_workflow_path);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-    this.descriptorsQuery.destroy();
   }
 
 }
