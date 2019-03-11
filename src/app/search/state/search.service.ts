@@ -13,18 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router/';
+import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
 import { SubBucket } from '../../shared/models/SubBucket';
-import { SearchStore } from './search.store';
-import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
-import { Location } from '@angular/common';
+import { SearchQuery } from './search.query';
+import { SearchStore } from './search.store';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
@@ -42,6 +41,8 @@ export class SearchService {
    */
   public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'has_checker'];
 
+  // Columns displayed in both tool and workflow search results table
+  public readonly displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
 
   constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService,
     private router: Router, private location: Location) {
