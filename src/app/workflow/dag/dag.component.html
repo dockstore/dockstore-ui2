@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div class="p-3" fxLayout="column" fxLayoutGap="10px">
-  <div fxFlex class="p-0" *ngIf="(isNFL$ | async) && dagType === 'classic'">
+  <div fxFlex *ngIf="(isNFL$ | async) && dagType === 'classic'">
     <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
     <mat-card class="alert-warning" role="alert">
       <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
@@ -31,14 +31,14 @@
       </span>
     </mat-card>
     <mat-card class="alert alert-warning" role="alert"
-      *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (missingTool$ | async) && selectedVersion?.valid">
+      *ngIf="(missingTool$ | async) && selectedVersion?.valid">
       <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required
       tools
       are missing from Github repo.
     </mat-card>
   </div>
   <div fxFlex #dagHolder id="dag-holder">
-    <div [ngClass]="{'p-3': expanded}" *ngIf="selectedVersion?.valid">
+    <div [ngClass]="{'p-3': expanded}" *ngIf="selectedVersion?.valid && !(missingTool$ | async)">
       <div fxLayout="row" fxLayoutAlign="space-between start">
         <div fxFlex>
           <div
