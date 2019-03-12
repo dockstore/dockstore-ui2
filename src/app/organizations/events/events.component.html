@@ -1,9 +1,4 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>
-      Recent Events
-    </mat-card-title>
-  </mat-card-header>
   <app-loading [loading]="(loading$ | async)">
     <div fxLayout="column wrap">
       <span *ngFor="let event of (events$ | async)">
