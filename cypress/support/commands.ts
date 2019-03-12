@@ -16,24 +16,23 @@
 
 export function goToTab(tabName: string): any {
   return cy
-  .get('.mat-tab-labels')
-  .should('be.visible')
-  .contains('div', tabName)
-  .should('be.visible').click();
+    .get('.mat-tab-labels')
+    .should('be.visible')
+    .contains('div', tabName)
+    .should('be.visible').click();
 }
 
 export function getTab(tabName: string): any {
   return cy
-      .get('.mat-tab-labels')
-      .should('be.visible')
-      .contains('div', tabName)
-      .should('be.visible');
+    .get('.mat-tab-labels')
+    .should('be.visible')
+    .contains('div', tabName)
+    .should('be.visible');
 }
 
 export function resetDB() {
   before(() => {
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'drop schema if exists public cascade\' webservice_test -U dockstore');
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'create schema public\' webservice_test -U dockstore', { failOnNonZeroExit: false });
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -f scripts/resetDb.sql -U dockstore -d webservice_test');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
     cy.exec('java -jar dockstore-webservice-*.jar db migrate -i 1.5.0,1.6.0 travisci/web.yml');
   });
@@ -50,7 +49,7 @@ export function setTokenUserViewPortCurator() {
   beforeEach(() => {
     // Login by adding user obj and token to local storage
     localStorage.setItem('dockstore.ui.userObj',
-    '{\"id\": 4, \"username\": \"user_curator\", \"isAdmin\": \"false\", \"name\": \"user_curator\", \"curator\": \"true\"}');
+      '{\"id\": 4, \"username\": \"user_curator\", \"isAdmin\": \"false\", \"name\": \"user_curator\", \"curator\": \"true\"}');
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken2');
   });
 }
