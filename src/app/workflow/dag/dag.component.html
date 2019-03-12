@@ -13,13 +13,14 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div class="p-3">
-  <div *ngIf="(isNFL$ | async) && dagType === 'classic'">
-    <mat-card class="alert alert-warning" role="alert">
+<div class="p-3" fxLayout="column" fxLayoutGap="10px">
+  <div fxFlex class="p-0" *ngIf="(isNFL$ | async) && dagType === 'classic'">
+    <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
+    <mat-card class="alert-warning" role="alert">
       <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
     </mat-card>
   </div>
-  <div *ngIf="dagType === 'classic' && !(isNFL$ | async)">
+  <div fxFlex *ngIf="dagType === 'classic' && !(isNFL$ | async)">
     <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
       <mat-icon>warning</mat-icon>&nbsp;
       <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
@@ -36,7 +37,7 @@
       are missing from Github repo.
     </mat-card>
   </div>
-  <div #dagHolder id="dag-holder">
+  <div fxFlex #dagHolder id="dag-holder">
     <div [ngClass]="{'p-3': expanded}" *ngIf="selectedVersion?.valid">
       <div fxLayout="row" fxLayoutAlign="space-between start">
         <div fxFlex>
