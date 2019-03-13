@@ -45,6 +45,7 @@ const APP_ROUTES: Routes = [
     data: { title: 'Dockstore | My Tools'}},
   { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Workflows'}},
+  { path: 'aliases', loadChildren: 'app/aliases/aliases.module#AliasesModule', data: { title: 'Dockstore | Aliases' } },
   { path: 'search*', component: SearchComponent, data: { title: 'Dockstore | Search'} },
   { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login'} },
   { path: 'quick-start', component: QuickStartComponent, data: { title: 'Dockstore | Quick Start'} },

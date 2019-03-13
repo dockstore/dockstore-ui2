@@ -132,25 +132,11 @@ describe('Dockstore Organizations', () => {
       cy.contains('veryFakeCollectionName');
       cy.contains('very fake collection topic');
     });
-
-    it('be able to update a collection description', () => {
-      cy.visit('/organizations/1/collections/1');
-      cy.get('#editCollectionDescription').click();
-      cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
-      typeInTextArea('Description', '* fake collection description');
-      cy.contains('Preview Mode').click();
-      cy.contains('fake collection description');
-      cy.contains('* fake collection description').should('not.exist');
-      cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
-      cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
-      cy.contains('fake collection description');
-      cy.contains('* fake collection description').should('not.exist');
-    });
   });
 
   describe('Should be able to update description', () => {
     it('be able to update an organization description with markdown', () => {
-      cy.visit('/organizations/1');
+      cy.visit('/organizations/Potatoe');
       cy.get('#editOrgDescription').click();
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
@@ -166,7 +152,7 @@ describe('Dockstore Organizations', () => {
 
   describe('should be able to view a collection', () => {
     it('be able to see collection information', () => {
-      cy.visit('/organizations/1/collections/1');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').click();
       // Should retrieve the organization
       cy.contains('Potatoe');
@@ -177,6 +163,20 @@ describe('Dockstore Organizations', () => {
 
       // Should have no entries
       cy.contains('This collection has no associated entries');
+    });
+
+    it('be able to update a collection description', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.get('#editCollectionDescription').click();
+      cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
+      typeInTextArea('Description', '* fake collection description');
+      cy.contains('Preview Mode').click();
+      cy.contains('fake collection description');
+      cy.contains('* fake collection description').should('not.exist');
+      cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
+      cy.contains('fake collection description');
+      cy.contains('* fake collection description').should('not.exist');
     });
 
     it('be able to edit collection information', () => {
@@ -205,12 +205,12 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to remove an entry from a collection', () => {
-      cy.visit('/organizations/1/collections/1');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
       cy.get('#removeToolButton').click();
       cy.get('#accept-remove-entry-from-org').click();
       cy.contains('This collection has no associated entries');
-      cy.visit('/organizations/1');
+      cy.visit('/organizations/Potatoe');
     });
   });
 
@@ -237,7 +237,7 @@ describe('Dockstore Organizations', () => {
 
       // Need to approve membership and reload for it to be visible
       approvePotatoMembership();
-      cy.visit('/organizations/1');
+      cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
       cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Member');
     });
@@ -261,13 +261,72 @@ describe('Dockstore Organizations', () => {
 
   describe('Verify title tags ', () => {
     it('Specific organization', () => {
-      cy.visit('/organizations/1');
+      cy.visit('/organizations/Potatoe');
       cy.title().should('eq', 'Dockstore | Organization');
     });
 
     it('Collection', () => {
-      cy.visit('/organizations/1/collections/1');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.title().should('eq', 'Dockstore | Collection');
+    });
+  });
+
+  describe('Find organization and collection by alias', () => {
+    it('organization alias', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/fakeAlias/aliases',
+        method: 'GET',
+        status: 200,
+        response: { 'name': 'Potatoe' }
+      });
+      cy.visit('/aliases/organizations/fakeAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
+    });
+
+    it('collection alias', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/collections/fakeAlias/aliases',
+        method: 'GET',
+        status: 200,
+        response: { 'organizationName': 'Potatoe', 'name': 'veryFakeCollectionName' }
+      });
+      cy.visit('/aliases/collections/fakeAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe/collections/veryFakeCollectionName');
+    });
+
+    it('invalid alias type', () => {
+      cy.server();
+      cy.visit('/aliases/foobar/fakeAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/aliases/foobar/fakeAlias');
+      cy.contains('foobar is not a valid type');
+    });
+
+    it('organization alias incorrect', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/incorrectAlias/aliases',
+        method: 'GET',
+        status: 404,
+        response: {}
+      });
+      cy.visit('/aliases/organizations/incorrectAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/aliases/organizations/incorrectAlias');
+      cy.contains('No organizations with the alias incorrectAlias found');
+    });
+
+    it('collection alias incorrect', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/collections/incorrectAlias/aliases',
+        method: 'GET',
+        status: 404,
+        response: {}
+      });
+      cy.visit('/aliases/collections/incorrectAlias');
+      cy.url().should('eq', Cypress.config().baseUrl + '/aliases/collections/incorrectAlias');
+      cy.contains('No collections with the alias incorrectAlias found');
     });
   });
 });

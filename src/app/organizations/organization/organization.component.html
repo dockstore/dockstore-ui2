@@ -74,7 +74,7 @@
       <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <mat-tab-group>
           <mat-tab label="Collections">
-            <collections [organizationID]="org.id"></collections>
+            <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
           </mat-tab>
           <mat-tab label="Members">
             <organization-members></organization-members>

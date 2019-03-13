@@ -38,17 +38,6 @@ export class OrganizationService {
     });
   }
 
-  @transaction()
-  updateOrganizationFromNameORID(organizationIdString: string) {
-    this.clearState();
-    const organizationID: number = parseInt(organizationIdString, 10);
-    if (isNaN(organizationID)) {
-      this.updateOrganizationFromName(organizationIdString);
-    } else {
-      this.updateOrganizationFromID(organizationID);
-    }
-  }
-
   updateOrganizationFromID(organizationID: number): void {
     this.organizationStore.setLoading(true);
     this.organizationsService.getOrganizationById(organizationID).pipe(finalize(() => this.organizationStore.setLoading(false)))
@@ -70,27 +59,11 @@ export class OrganizationService {
     });
   }
 
-  updateOrganizationFromName(name: string): void {
-    this.organizationStore.setLoading(true);
-    this.organizationsService.getOrganizationByName(name).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organization) => {
-        this.organizationStore.setError(false);
-        this.updateOrganization(organization);
-        this.organizationMembersService.updateCanEdit(organization.id);
-      }, () => {
-        this.organizationStore.setError(true);
-      });
-  }
-
-  /**
-   * Make this better, copied from above
-   * @param alias
-   */
   @transaction()
-  updateOrganizationFromAlias(alias: string): void {
+  updateOrganizationFromName(organizationName: string): void {
     this.clearState();
     this.organizationStore.setLoading(true);
-    this.organizationsService.getOrganizationByAlias(alias).pipe(finalize(() => this.organizationStore.setLoading(false)))
+    this.organizationsService.getOrganizationByName(organizationName).pipe(finalize(() => this.organizationStore.setLoading(false)))
       .subscribe((organization: Organization) => {
         this.organizationStore.setError(false);
         this.updateOrganization(organization);

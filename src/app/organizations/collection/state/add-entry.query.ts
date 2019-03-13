@@ -11,7 +11,7 @@ export class AddEntryQuery extends Query<AddEntryState> {
   memberships$: Observable<Array<OrganizationUser>> = this.select(state => state.memberships);
   collections$: Observable<Array<Collection>> = this.select(state => state.collections);
   filteredCollections$: Observable<Array<Collection>> = combineLatest(this.collections$, this.currentCollectionsQuery.currentCollectionIds$)
-    .pipe(map(([collections, collectionOrganisation]) => this.filteredCollections(collections, collectionOrganisation)));
+    .pipe(map(([collections, collectionOrganization]) => this.filteredCollections(collections, collectionOrganization)));
   isLoading$: Observable<boolean> = this.selectLoading();
   constructor(protected store: AddEntryStore, private currentCollectionsQuery: CurrentCollectionsQuery) {
     super(store);

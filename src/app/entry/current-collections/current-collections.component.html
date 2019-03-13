@@ -19,7 +19,7 @@
   </div>
   <mat-list>
       <mat-list-item *ngFor="let collectionOrganizations of (currentCollections$ | async)">
-          <a [routerLink]="['/organizations', collectionOrganizations.organizationId, 'collections', collectionOrganizations.collectionId]" routerLinkActive="router-link-active" >{{collectionOrganizations.organizationName}}/{{collectionOrganizations.collectionName}}</a>
+          <a [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active" >{{collectionOrganizations.organizationName}}/{{collectionOrganizations.collectionName}}</a>
       </mat-list-item>
     </mat-list>
   <div class="p-3 panel-body">
