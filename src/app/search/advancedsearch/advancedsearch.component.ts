@@ -15,6 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
@@ -30,7 +31,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
   ANDNoSplitFilter: string;
   ANDSplitFilter: string;
   ORFilter: string;
-  isModalShown: boolean;
+  isModalShown$: Observable<boolean>;
   searchMode = 'files';
   constructor(private advancedSearchService: AdvancedSearchService) {
     super();
@@ -44,8 +45,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
       this.NOTFilter = advancedSearch.NOTFilter;
       this.searchMode = advancedSearch.searchMode;
     });
-    this.advancedSearchService.showModal$.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((showModal: boolean) => this.isModalShown = showModal);
+    this.isModalShown$ = this.advancedSearchService.showModal$;
   }
 
   public onHidden(): void {

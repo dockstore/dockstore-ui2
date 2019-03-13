@@ -13,8 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
-<div *ngIf="isModalShown" [config]="{ show: true}" class="modal fade" bsModal #advancedSearchModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" (onHidden)="onHidden()">
+<div *ngIf="(isModalShown$ | async)" [config]="{ show: true}" class="modal fade" bsModal #advancedSearchModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" (onHidden)="onHidden()">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
