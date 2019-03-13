@@ -36,7 +36,7 @@ export class ToolTabComponent extends EntryTab {
     if (value != null) {
       this.workflow = this.workflowQuery.getActive();
       // Also check that the workflow version belongs to the workflow
-      if (this.workflow && this.workflow.workflowVersions.some(version => version.id === value.id)) {
+      if (this.workflow && this.workflow.workflowVersions && this.workflow.workflowVersions.some(version => version.id === value.id)) {
         this.updateTableToolContent(this.workflow.id, value.id);
       } else {
         console.error('Should not be able to select version without a workflow');
