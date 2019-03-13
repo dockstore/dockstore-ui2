@@ -15,7 +15,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-
+import { takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchService } from './advanced-search.service';
 
@@ -24,24 +25,27 @@ import { AdvancedSearchService } from './advanced-search.service';
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.css']
 })
-export class AdvancedSearchComponent implements OnInit {
+export class AdvancedSearchComponent extends Base implements OnInit {
   NOTFilter: string;
   ANDNoSplitFilter: string;
   ANDSplitFilter: string;
   ORFilter: string;
   isModalShown: boolean;
   searchMode = 'files';
-  constructor(private advancedSearchService: AdvancedSearchService) { }
+  constructor(private advancedSearchService: AdvancedSearchService) {
+    super();
+  }
 
   ngOnInit() {
-    this.advancedSearchService.advancedSearch$.subscribe((advancedSearch: AdvancedSearchObject) => {
+    this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.ANDNoSplitFilter = advancedSearch.ANDNoSplitFilter;
       this.ANDSplitFilter = advancedSearch.ANDSplitFilter;
       this.ORFilter = advancedSearch.ORFilter;
       this.NOTFilter = advancedSearch.NOTFilter;
       this.searchMode = advancedSearch.searchMode;
     });
-    this.advancedSearchService.showModal$.subscribe((showModal: boolean) => this.isModalShown = showModal);
+    this.advancedSearchService.showModal$.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((showModal: boolean) => this.isModalShown = showModal);
   }
 
   public onHidden(): void {

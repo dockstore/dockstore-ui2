@@ -70,7 +70,7 @@
         <mat-form-field class="w-100">
           <mat-label>Workflow Path</mat-label>
           <!-- TODO: Unbold these radio buttons (font-weight: normal) -->
-          <input matInput placeholder="potato" id="sourceCodeRepositoryWorkflowPathInput" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3"
+          <input matInput id="sourceCodeRepositoryWorkflowPathInput" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3"
             maxlength="128" [pattern]="descriptorValidationPattern" required [matTooltip]="Tooltip.workflowPath" placeholder="{{ examplePatterns[workflow.descriptorType] }}"
           />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->

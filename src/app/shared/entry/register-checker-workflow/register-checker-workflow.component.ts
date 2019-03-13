@@ -18,7 +18,6 @@ import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
@@ -32,6 +31,7 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
+
 @Component({
   templateUrl: './register-checker-workflow.component.html',
   styleUrls: ['./register-checker-workflow.component.scss']
@@ -41,8 +41,8 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
     private descriptorLanguageService: DescriptorLanguageService,
     private checkerWorkflowQuery: CheckerWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService) {
-      super();
-    }
+    super();
+  }
   public registerError: HttpErrorResponse;
   public workflowPath: string;
   public testParameterFilePath: string;
@@ -153,7 +153,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     if (this.currentForm === this.registerCheckerWorkflowForm) { return; }
     this.registerCheckerWorkflowForm = this.currentForm;
     if (this.registerCheckerWorkflowForm) {
-      this.registerCheckerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.registerCheckerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }

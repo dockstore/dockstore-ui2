@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
+import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
@@ -30,7 +30,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+
 
 export interface Dialogdata {
   canRead: boolean;
@@ -126,7 +126,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.currentForm === this.versionEditorForm) { return; }
     this.versionEditorForm = this.currentForm;
     if (this.versionEditorForm) {
-      this.versionEditorForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.versionEditorForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }
