@@ -17,13 +17,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 import { Subject } from 'rxjs';
-import { filter, finalize, take, takeUntil } from 'rxjs/operators';
+import { finalize, take, takeUntil } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { ToolDescriptor, Workflow, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { WdlViewerPipeline, WdlViewerService } from './wdl-viewer.service';
-
 
 @Component({
   selector: 'app-wdl-viewer',
@@ -58,7 +57,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement, false);
 
     // Retrieve all files for this workflow from Ga4ghFiles entity Store
-    this.wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(filter(file => file != null), takeUntil(this.ngUnsubscribe))
+    this.wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
         // Do not re-create the WDL visualization if the workflow version is not different
         if (!this.versionChanged) {
@@ -77,12 +76,16 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
               this.wdlViewerError = false;
               this.wdlViewerService.setStatus(true);
             },
-            (error) => {
-              this.errorMessage = error || 'Unknown Error';
-              this.wdlViewerError = true;
-              this.diagram.nativeElement.remove();
-              this.wdlViewerService.setStatus(false);
-            });
+              (error) => {
+                this.errorMessage = error || 'Unknown Error';
+                this.wdlViewerError = true;
+                this.diagram.nativeElement.remove();
+                this.wdlViewerService.setStatus(false);
+              });
+        } else {
+          this.wdlViewerService.setStatus(false);
+          this.wdlViewerError = true;
+          this.loading = false;
         }
       });
   }
