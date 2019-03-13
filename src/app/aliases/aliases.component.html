@@ -2,7 +2,7 @@
   Aliases
 </app-header>
 <div class="container">
-  <mat-card class="alert alert-warning" role="alert" *ngIf="!types.includes(type)">
+  <mat-card class="alert alert-warning" role="alert" *ngIf="!validType">
     <mat-icon>warning</mat-icon>
     &nbsp;<strong>{{ type }}</strong> is not a valid type
   </mat-card>
