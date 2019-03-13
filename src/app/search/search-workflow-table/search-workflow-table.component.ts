@@ -1,13 +1,26 @@
+/*
+ *    Copyright 2019 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
-
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
-import { SearchService } from '../state/search.service';
 
 @Component({
   selector: 'app-search-workflow-table',
@@ -15,10 +28,8 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-workflow-table.component.scss']
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
-  public displayedColumns = ['repository', 'author', 'descriptorType', 'starredUsers', 'projectLinks'];
   public dataSource: MatTableDataSource<Workflow>;
-  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchService: SearchService,
-    private searchQuery: SearchQuery) {
+  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchQuery: SearchQuery) {
     super(dateService);
   }
 
