@@ -4,10 +4,10 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Vali
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
+
 import { LogoutService } from '../../../../shared/logout.service';
 import { UsersService } from '../../../../shared/swagger';
 import { UserQuery } from '../../../../shared/user/user.query';
-
 
 @Component({
   selector: 'app-delete-account-dialog',
@@ -100,7 +100,6 @@ export class DeleteAccountDialogComponent implements OnDestroy {
    */
   private validateUsername(username: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      console.log('asdf');
       if (control.value !== username) {
         return { 'username': true };
       }

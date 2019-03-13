@@ -31,7 +31,6 @@ import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
 
-
 export interface Dialogdata {
   canRead: boolean;
   canWrite: boolean;

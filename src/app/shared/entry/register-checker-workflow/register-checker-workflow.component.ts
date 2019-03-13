@@ -31,7 +31,6 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
-
 @Component({
   templateUrl: './register-checker-workflow.component.html',
   styleUrls: ['./register-checker-workflow.component.scss']
