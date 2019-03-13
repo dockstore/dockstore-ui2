@@ -13,17 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { Router } from '@angular/router/';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router/';
 import { Dockstore } from '../../shared/dockstore.model';
 import { SubBucket } from '../../shared/models/SubBucket';
+import { SearchStore } from './search.store';
+import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
-import { SearchQuery } from './search.query';
-import { SearchStore } from './search.store';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
@@ -42,7 +41,7 @@ export class SearchService {
   public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'has_checker'];
 
   constructor(private searchStore: SearchStore, private searchQuery: SearchQuery, private providerService: ProviderService,
-    private router: Router, private location: Location) {
+    private router: Router) {
   }
 
   // Given a URL, will attempt to shorten it
@@ -226,7 +225,7 @@ export class SearchService {
   }
 
   handleLink(linkArray: Array<string>) {
-    this.location.go('search?' + linkArray[1]);
+    this.router.navigateByUrl('search?' + linkArray[1]);
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 

@@ -4,7 +4,7 @@ import { SearchStore, SearchState } from './search.store';
 import { Workflow, DockstoreTool } from '../../shared/swagger';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Dockstore } from '../../shared/dockstore.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class SearchQuery extends Query<SearchState> {
@@ -33,7 +33,7 @@ export class SearchQuery extends Query<SearchState> {
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map(terms => terms.length > 0));
   public suggestTerm$: Observable<string> = this.select(state => state.suggestTerm);
 
-  constructor(protected store: SearchStore) {
+  constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
   }
 
@@ -47,10 +47,14 @@ export class SearchQuery extends Query<SearchState> {
     if (!tools || !workflows) {
       return true;
     }
+    const param = this.route.snapshot.queryParams['_type'];
+
     if (tools.length === 0 && workflows.length > 0) {
       return false;
     } else if (workflows.length === 0 && tools.length > 0) {
       return true;
+    } else if (workflows.length === 0 && param === 'workflow') {
+      return false;
     } else {
       return true;
     }
