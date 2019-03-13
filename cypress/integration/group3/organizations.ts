@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, approvePotatoMembership } from '../../support/commands';
+import { approvePotatoMembership, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Organizations', () => {
   resetDB();
@@ -48,7 +48,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInTextArea('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
+      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
@@ -83,7 +83,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
       typeInInput('Name', 'Potatoe');
       typeInInput('Display Name', 'Potatoe');
-      typeInTextArea('Topic', 'Boil them, mash them, stick them in a stew');
+      typeInInput('Topic', 'Boil them, mash them, stick them in a stew');
       typeInInput('Organization website', 'https://www.google.com');
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
@@ -115,7 +115,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'fakeCollectionName');
       typeInInput('Display Name', 'fakeCollectionName');
-      typeInTextArea('Topic', 'fake collection topic');
+      typeInInput('Topic', 'fake collection topic');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('fakeCollectionName');
       cy.contains('fake collection topic');
@@ -126,7 +126,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInInput('Display Name', 'veryFakeCollectionName');
-      typeInTextArea('Topic', 'very fake collection topic');
+      typeInInput('Topic', 'very fake collection topic');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateCollectionButton').should('not.be.visible');
       cy.contains('veryFakeCollectionName');
@@ -185,7 +185,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInInput('Display Name', 'veryFakeCollectionName');
-      typeInTextArea('Topic', 'very fake collection topic2');
+      typeInInput('Topic', 'very fake collection topic2');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('veryFakeCollectionName');
       cy.contains('very fake collection topic2');
