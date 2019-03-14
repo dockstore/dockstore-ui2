@@ -4,7 +4,7 @@
   "license": "Apache License 2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "prebuild:tsnode": "ts-node git.version.ts",
     "prebuild:downloadcodegen": "wget --no-verbose http://central.maven.org/maven2/org/openapitools/openapi-generator-cli/3.3.4/openapi-generator-cli-3.3.4.jar -O openapi-generator-cli-3.3.4.jar",
     "prebuild:generatecode": "rm -Rf src/app/shared/swagger && java -jar openapi-generator-cli-3.3.4.jar generate -i https://raw.githubusercontent.com/ga4gh/dockstore/${WEBSERVICE_VERSION}/dockstore-webservice/src/main/resources/swagger.yaml -l typescript-angular -o src/app/shared/swagger -c swagger-config.json",
@@ -58,6 +58,7 @@
     "cytoscape-dagre": "^1.6.0",
     "cytoscape-popper": "^1.0.2",
     "elasticsearch-browser": "^15.0.0",
+    "express": "^4.16.4",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "ng2-ui-auth": "^9.2.0",
