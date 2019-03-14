@@ -10,7 +10,7 @@ src/app/shared/swagger/
 swagger-codegen-cli.jar
 openapi-generator-cli-3.3.1.jar
 
-documentation
+docs
 
 # dependencies
 /node_modules
