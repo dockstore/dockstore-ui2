@@ -121,6 +121,13 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;
   abstract setupPublicEntry(url: String): void;
+  /**
+   * Upon entry init (either from the my-workflows page or public workflow page),
+   * the previous active entry should be removed so that the component starts displaying with a the correct/current entry
+   *
+   * @abstract
+   * @memberof Entry
+   */
   abstract clearState(): void;
 
   toggleLabelsEditMode(): void {
@@ -161,7 +168,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   // Embed Discourse comments into page
   ngAfterViewInit() {
     if (this.publicPage) {
-      (function() {
+      (function () {
         const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
         d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
