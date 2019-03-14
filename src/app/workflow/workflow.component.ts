@@ -21,7 +21,6 @@ import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
@@ -48,7 +47,6 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { AddEntryComponent } from '../organizations/collection/add-entry/add-entry.component';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -60,7 +58,6 @@ export class WorkflowComponent extends Entry {
   public workflow: ExtendedWorkflow;
   public missingWarning: boolean;
   public title: string;
-  private workflowCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
@@ -89,8 +86,8 @@ export class WorkflowComponent extends Entry {
     router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
     urlResolverService: UrlResolverService, private alertService: AlertService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
-      gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
-      private descriptorTypeCompatService: DescriptorTypeCompatService, public dialog: MatDialog) {
+    gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
+    private descriptorTypeCompatService: DescriptorTypeCompatService, public dialog: MatDialog) {
     super(trackLoginService, providerService, router,
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
@@ -100,6 +97,10 @@ export class WorkflowComponent extends Entry {
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+  }
+
+  clearState() {
+    this.workflowService.clearActive();
   }
 
   private processPermissions(userPermissions: Permission[]): void {
@@ -180,8 +181,8 @@ export class WorkflowComponent extends Entry {
             if (this.isOwner && this.isHosted()) {
               this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe((userPermissions: Permission[]) => {
-                    this.processPermissions(userPermissions);
-                  }
+                  this.processPermissions(userPermissions);
+                }
                 );
             }
           });
@@ -204,11 +205,6 @@ export class WorkflowComponent extends Entry {
           }
         }
         this.setUpWorkflow(workflow);
-      }
-    );
-    this.workflowService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      workflowCopyBtn => {
-        this.workflowCopyBtn = workflowCopyBtn;
       }
     );
   }
@@ -365,30 +361,30 @@ export class WorkflowComponent extends Entry {
   }
 
   setEntryTab(tabName: string): void {
-     this.currentTab = tabName;
-     if (this.workflow != null) {
-       this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-     }
-   }
+    this.currentTab = tabName;
+    if (this.workflow != null) {
+      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
+    }
+  }
 
-   getPageIndex(): number {
-     const pageIndex = this.getIndexInURL('/workflows');
-     return pageIndex;
-   }
+  getPageIndex(): number {
+    const pageIndex = this.getIndexInURL('/workflows');
+    return pageIndex;
+  }
 
   addToLabels(event: MatChipInputEvent): void {
-     const input = event.input;
-     const value = event.value;
-     if ((value || '').trim()) {
-       this.workflowEditData.labels.push(value.trim());
-     }
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.workflowEditData.labels.push(value.trim());
+    }
 
-     if (input) {
-       input.value = '';
-     }
-   }
+    if (input) {
+      input.value = '';
+    }
+  }
 
-   removeLabel(label: any): void {
+  removeLabel(label: any): void {
     const index = this.workflowEditData.labels.indexOf(label);
 
     if (index >= 0) {

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-
 import { Workflow } from '../swagger';
-import { WorkflowStore } from './workflow.store';
 import { ExtendedWorkflowService } from './extended-workflow.service';
+import { WorkflowStore } from './workflow.store';
+
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
@@ -32,6 +32,10 @@ export class WorkflowService {
   get() {
     // Placeholder
     // this.http.get('https://akita.com').subscribe((entities) => this.workflowStore.set(entities));
+  }
+
+  clearActive() {
+    this.workflowStore.setActive(null);
   }
 
   add(workflow: Workflow) {

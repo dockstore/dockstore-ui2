@@ -73,11 +73,12 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.clearState();
     this.subscriptions();
     this.router.events.pipe(filter(event => event instanceof NavigationEnd),
-    takeUntil(this.ngUnsubscribe)).subscribe((event: RouterEvent) => {
+      takeUntil(this.ngUnsubscribe)).subscribe((event: RouterEvent) => {
         this.parseURL(event.url);
-    });
+      });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
@@ -120,6 +121,14 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;
   abstract setupPublicEntry(url: String): void;
+  /**
+   * Upon entry init (either from the my-workflows page or public workflow page),
+   * the previous active entry should be removed so that the component starts displaying with a the correct/current entry
+   *
+   * @abstract
+   * @memberof Entry
+   */
+  abstract clearState(): void;
 
   toggleLabelsEditMode(): void {
     this.labelsEditMode = !this.labelsEditMode;
@@ -159,7 +168,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   // Embed Discourse comments into page
   ngAfterViewInit() {
     if (this.publicPage) {
-      (function() {
+      (function () {
         const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
         d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
@@ -260,7 +269,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {Tag|WorkflowVersion} b - version b
    * @returns {number} - indicates order
    */
-  entryVersionSorting(a: Tag|WorkflowVersion, b: Tag|WorkflowVersion): number {
+  entryVersionSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion): number {
     if (a.verified && !b.verified) {
       return -1;
     } else if (!a.verified && b.verified) {
@@ -288,14 +297,14 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
    */
-  getSortedVersions(versions: Array<Tag|WorkflowVersion>, defaultVersion: Tag|WorkflowVersion): Array<Tag|WorkflowVersion> {
-    let sortedVersions: Array<Tag|WorkflowVersion> = [];
+  getSortedVersions(versions: Array<Tag | WorkflowVersion>, defaultVersion: Tag | WorkflowVersion): Array<Tag | WorkflowVersion> {
+    let sortedVersions: Array<Tag | WorkflowVersion> = [];
 
     // Sort versions by verified date and then last_modified
     sortedVersions = versions.slice().sort((a, b) => this.entryVersionSorting(a, b));
 
     // Get the top 6 versions
-    const recentVersions: Array<Tag|WorkflowVersion> = sortedVersions.slice(0, 6);
+    const recentVersions: Array<Tag | WorkflowVersion> = sortedVersions.slice(0, 6);
     const index = recentVersions.indexOf(defaultVersion);
 
     // Deal with default version if it exists

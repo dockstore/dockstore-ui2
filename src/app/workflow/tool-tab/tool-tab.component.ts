@@ -15,7 +15,6 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
@@ -35,12 +34,13 @@ export class ToolTabComponent extends EntryTab {
   ToolDescriptor = ToolDescriptor;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
-        this.workflow = this.workflowQuery.getActive();
-        if (this.workflow) {
-          this.updateTableToolContent(this.workflow.id, value.id);
-        } else {
-          console.error('Should not be able to select version without a workflow');
-        }
+      this.workflow = this.workflowQuery.getActive();
+      // Also check that the workflow version belongs to the workflow
+      if (this.workflow && this.workflow.workflowVersions && this.workflow.workflowVersions.some(version => version.id === value.id)) {
+        this.updateTableToolContent(this.workflow.id, value.id);
+      } else {
+        console.error('Should not be able to select version without a workflow');
+      }
     } else {
       this.toolsContent = null;
     }

@@ -13,6 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
+<div *ngIf="tool">
 <div class="row m-1" *ngIf="error || missingWarning">
   <div class="col-md-12" *ngIf="!isToolPublic">
     <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
@@ -286,4 +287,5 @@
       </div>
     </div> -->
   </div>
+</div>
 </div>

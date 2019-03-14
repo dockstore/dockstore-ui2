@@ -38,6 +38,7 @@ import { SessionService } from '../shared/session/session.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
+import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 import { RefreshService } from './../shared/refresh.service';
@@ -89,7 +90,8 @@ export class ContainerComponent extends Entry {
     location: Location,
     activatedRoute: ActivatedRoute, protected sessionService: SessionService, protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService, private toolQuery: ToolQuery, private alertService: AlertService,
-    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery, public dialog: MatDialog) {
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private alertQuery: AlertQuery, public dialog: MatDialog,
+    private toolService: ToolService) {
     super(trackLoginService, providerService, router, dateService, urlResolverService, activatedRoute,
       location, sessionService, sessionQuery, gA4GHFilesService);
     this.isRefreshing$ = this.alertQuery.showInfo$;
@@ -97,6 +99,10 @@ export class ContainerComponent extends Entry {
 
     this._toolType = 'containers';
     this.redirectAndCallDiscourse('/my-tools');
+  }
+
+  clearState() {
+    this.toolService.clearActive();
   }
 
   public getDefaultVersionName(): string {
