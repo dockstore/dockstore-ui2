@@ -42,6 +42,7 @@ import { SearchToolTableComponent } from './search-tool-table/search-tool-table.
 import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
+import { RefreshAlertModule } from '../shared/alert/alert.module';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { searchRouting } from './search.routing';
     ClipboardModule,
     searchRouting,
     HttpClientModule,
-    PrivateIconModule
+    PrivateIconModule,
+    RefreshAlertModule
   ],
   providers: [AdvancedSearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
   exports: [SearchComponent]
