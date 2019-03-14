@@ -17,12 +17,12 @@ import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
+
 
 @Component({
   selector: 'app-register-tool',
@@ -136,7 +136,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.currentForm === this.registerToolForm) { return; }
     this.registerToolForm = this.currentForm;
     if (this.registerToolForm) {
-      this.registerToolForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.registerToolForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }

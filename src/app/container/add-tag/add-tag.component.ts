@@ -182,7 +182,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
     if (this.currentForm === this.addTagForm) { return; }
     this.addTagForm = this.currentForm;
     if (this.addTagForm) {
-      this.addTagForm.valueChanges.pipe(debounceTime(formInputDebounceTime))
+      this.addTagForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
         .subscribe(data => this.onValueChanged(data));
     }
   }
