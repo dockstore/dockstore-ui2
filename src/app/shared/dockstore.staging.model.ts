@@ -33,38 +33,38 @@ export class Dockstore {
   static readonly LOCAL_URI = Dockstore.UI_HOSTNAME + ':' + Dockstore.UI_PORT;
   static readonly API_URI = Dockstore.HOSTNAME + ':' + Dockstore.API_PORT + '/api';
 
-  static readonly DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
-  static readonly FIRECLOUD_IMPORT_URL = 'https://portal.firecloud.org/#import/dockstore';
+  static readonly DNASTACK_IMPORT_URL= 'https://app.dnastack.com/#/app/workflow/import/dockstore';
+  static readonly FIRECLOUD_IMPORT_URL= 'https://firecloud.dsde-alpha.broadinstitute.org/#import/dockstore';
   static readonly DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
-  static readonly TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
+  static readonly TERRA_IMPORT_URL = 'https://bvdp-saturn-dev.appspot.com/#import-tool/dockstore';
 
-  static readonly GITHUB_CLIENT_ID = 'fill_this_in';
+
+  static readonly GITHUB_CLIENT_ID = '1dcb7d82cd799e2eb985';
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
-
   static readonly GITHUB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITHUB;
   static readonly GITHUB_SCOPE = 'read:org,user:email';
 
   static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
   static readonly QUAYIO_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.QUAY;
   static readonly QUAYIO_SCOPE = 'repo:read,user:read';
-  static readonly QUAYIO_CLIENT_ID = 'fill_this_in';
+  static readonly QUAYIO_CLIENT_ID = 'X5WKP6PQF96HL9RPTOBM';
 
   static readonly BITBUCKET_AUTH_URL = 'https://bitbucket.org/site/oauth2/authorize';
-  static readonly BITBUCKET_CLIENT_ID = 'fill_this_in';
+  static readonly BITBUCKET_CLIENT_ID = 'gJwu4ffQWKmdgJVWgG';
 
   static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
-  static readonly GITLAB_CLIENT_ID = 'fill_this_in';
+  static readonly GITLAB_CLIENT_ID = 'db3c2a2befe78240433e3a37a64fe9c078182f872d03cf4ac0a4ffe0298fe7e7';
   static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
   // getting ready for gitlab scopes, this seems to request a token with the correct scope but it doesn't work to retrieve membership
   // static readonly GITLAB_SCOPE = 'read_user openid';
   static readonly GITLAB_SCOPE = 'api';
 
-  static readonly GOOGLE_CLIENT_ID = 'fill_this_in';
+  static readonly GOOGLE_CLIENT_ID = '585144706651-q2ek040jr66bo8i2qrk4mfqk3fdr0g6u.apps.googleusercontent.com';
   static readonly GOOGLE_SCOPE = 'profile email';
 
   static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
   static readonly FEATURES = {
     enableCwlViewer: true
-  };
+  }
 }
