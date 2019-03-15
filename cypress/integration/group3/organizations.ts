@@ -202,6 +202,8 @@ describe('Dockstore Organizations', () => {
       cy.get('#selectCollection').click();
       cy.get('mat-option').contains('veryFakeCollectionName').click();
       cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+      cy.get('#addEntryToCollectionButton').should('not.be.visible');
+      cy.get('mat-progress-bar').should('not.be.visible');
     });
 
     it('be able to remove an entry from a collection', () => {
@@ -221,6 +223,7 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to Read organization user', () => {
+      cy.get('mat-progress-bar').should('not.be.visible');
       cy.get('mat-card-title').contains('user_A');
       cy.get('#edit-user-role-0').should('be.disabled');
     });

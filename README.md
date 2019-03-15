@@ -135,6 +135,16 @@ Before running the tests make sure you:
 - run the Dockstore webservice
 - have a webservice jar in the root directory
 
+## Documentation Generation
+
+This should eventually be done automatically on the master branch and have GitHub pages point to the docs folder.
+To manually run it:
+```
+npm install -g @compodoc/compodoc
+npm run compodoc
+```
+Then go to `docs/index.html`
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
