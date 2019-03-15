@@ -16,7 +16,7 @@
       <mat-card *ngFor="let org of (allPendingOrganizations$ | async); let i = index" [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + org.id )" [matTooltip]="org?.name">{{org.displayName}}</a>
+            <a [routerLink]="('/organizations/' + org.name )" [matTooltip]="org?.name">{{org.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             <p>Requested by user(s)
@@ -29,20 +29,6 @@
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ org.topic }}
-          <div fxLayout="row" fxLayoutGap="10px">
-            <span fxLayout="row" *ngIf="org?.email">
-              <mat-icon>email</mat-icon>
-              <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
-            </span>
-            <span fxLayout="row" *ngIf="org?.link">
-              <mat-icon>link</mat-icon>
-              <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
-            </span>
-            <span fxLayout="row" *ngIf="org?.location">
-              <mat-icon>location_on</mat-icon>
-              <span class="ellipsis-lines">{{ org.location }}</span>
-            </span>
-          </div>
         </mat-card-content>
 
         <mat-card-actions>
@@ -70,7 +56,7 @@
       <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization.id )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -78,20 +64,6 @@
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
-          <div fxLayout="row" fxLayoutGap="10px">
-            <span fxLayout="row" *ngIf="membership?.organization?.email">
-              <mat-icon>email</mat-icon>
-              <span><a [href]="'mailto:' + membership.organization.email" target="_top">{{ membership.organization.email }}</a></span>
-            </span>
-            <span fxLayout="row" *ngIf="membership?.organization?.link">
-              <mat-icon>link</mat-icon>
-              <span><a [href]="membership.organization.link" target="_blank">{{ membership.organization.link }}</a></span>
-            </span>
-            <span fxLayout="row" *ngIf="membership?.organization?.location">
-              <mat-icon>location_on</mat-icon>
-              <span class="ellipsis-lines">{{ membership.organization.location }}</span>
-            </span>
-          </div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -109,7 +81,7 @@
       <mat-card *ngFor="let membership of (myOrganizationInvites$ | async); let i = index" [id]="'my-org-invites-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization.id )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -117,20 +89,6 @@
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
-          <div fxLayout="row" fxLayoutGap="10px">
-            <span fxLayout="row" *ngIf="membership?.organization?.email">
-              <mat-icon>email</mat-icon>
-              <span><a [href]="'mailto:' + membership.organization.email" target="_top">{{ membership.organization.email }}</a></span>
-            </span>
-            <span fxLayout="row" *ngIf="membership?.organization?.link">
-              <mat-icon>link</mat-icon>
-              <span><a [href]="membership.organization.link" target="_blank">{{ membership.organization.link }}</a></span>
-            </span>
-            <span fxLayout="row" *ngIf="membership?.organization?.location">
-              <mat-icon>location_on</mat-icon>
-              <span class="ellipsis-lines">{{ membership.organization.location }}</span>
-            </span>
-          </div>
           You have been invited to join the organization with the role <strong>{{ membership.role | lowercase }}</strong>.
         </mat-card-content>
         <mat-card-actions>
