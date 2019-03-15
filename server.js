@@ -1,4 +1,5 @@
 //Install express server
+//Stand-in for nginx, because it's much easier to set up
 const express = require('express');
 const path = require('path');
 
