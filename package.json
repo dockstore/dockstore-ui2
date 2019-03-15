@@ -16,6 +16,7 @@
     "prebuild.prod": "npm run prebuild:tsnode && npm run prebuild:downloadcodegen && npm run prebuild:generatecode",
     "build.prod": "ng build --progress false --prod",
     "build": "ng build --progress false",
+    "heroku-postbuild": "ng build --prod --configuration=staging",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
