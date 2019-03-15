@@ -33,8 +33,8 @@ export class Dockstore {
   static readonly LOCAL_URI = Dockstore.UI_HOSTNAME + ':' + Dockstore.UI_PORT;
   static readonly API_URI = Dockstore.HOSTNAME + ':' + Dockstore.API_PORT + '/api';
 
-  static readonly DNASTACK_IMPORT_URL= 'https://app.dnastack.com/#/app/workflow/import/dockstore';
-  static readonly FIRECLOUD_IMPORT_URL= 'https://firecloud.dsde-alpha.broadinstitute.org/#import/dockstore';
+  static readonly DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
+  static readonly FIRECLOUD_IMPORT_URL = 'https://firecloud.dsde-alpha.broadinstitute.org/#import/dockstore';
   static readonly DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
   static readonly TERRA_IMPORT_URL = 'https://bvdp-saturn-dev.appspot.com/#import-tool/dockstore';
 
@@ -66,5 +66,5 @@ export class Dockstore {
 
   static readonly FEATURES = {
     enableCwlViewer: true
-  }
+  };
 }
