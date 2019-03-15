@@ -22,9 +22,9 @@ import { Provider } from './enum/provider.enum';
 export class Dockstore {
   // Please fill in HOSTNAME with your address
   static readonly HOSTNAME = 'https://staging.dockstore.org';
-  static readonly UI_HOSTNAME = Dockstore.HOSTNAME;
+  static readonly UI_HOSTNAME = 'https://dockstore-ui2.herokuapp.com';
   static readonly API_PORT = '443';
-  static readonly UI_PORT = '443';
+  static readonly UI_PORT = '4200';
 
 
   // Discourse URL MUST end with a slash (/)
