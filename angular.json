@@ -63,6 +63,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/app/shared/dockstore.model.ts",
+                  "with": "src/app/shared/dockstore.production.model.ts"
                 }
               ]
             },
@@ -71,6 +75,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
+                },
+                {
+                  "replace": "src/app/shared/dockstore.model.ts",
+                  "with": "src/app/shared/dockstore.staging.model.ts"
                 }
               ]
             }
