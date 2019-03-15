@@ -23,9 +23,7 @@
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
-            <strong matTooltip="Git repository for the associated descriptors">
-              {{ workflow?.provider}}
-            </strong>:
+            <strong matTooltip="Git repository for the associated descriptors">{{ workflow?.provider}}</strong>:
             <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
               {{ workflow?.providerUrl | urlDeconstruct : (isPublic ? selectedVersion?.name : '')}}
             </a>
@@ -66,7 +64,7 @@
             </form>
             <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="!(isNFL$ | async)">
               <div class="form-group">
-                <strong matTooltip="Path in Git repository to main descriptor file">Test File Path: </strong>
+                <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
                 <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
                 <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath"
                   type="text" class="input-default form-control" name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath"
@@ -102,14 +100,14 @@
         </li>
         <li>
           <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
-            <Strong matTooltip="Type of descriptor language used">Descriptor Type: </Strong>
+            <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
             <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
               <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">{{'descriptor_type'
                 | mapFriendlyValue: descriptorLanguage }}</option>
             </select>
           </div>
           <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
-            <Strong matTooltip="Type of descriptor language used">Descriptor Type: </Strong>{{ 'descriptor_type' |
+            <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>: {{ 'descriptor_type' |
             mapFriendlyValue : workflow?.descriptorType }}</div>
         </li>
       </ul>
@@ -144,8 +142,8 @@
       <div>
         <div *ngIf="workflow?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor">
-            Description:
-          </label>
+            Description
+          </label>:
           <div *ngIf="workflow?.description" class="well well-sm">
             <ngx-md [data]="workflow?.description"></ngx-md>
           </div>

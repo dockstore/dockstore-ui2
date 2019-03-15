@@ -55,7 +55,7 @@
       </mat-form-field>
     </div>
     <p class="update">
-      Last build: {{ (extendedTool$ | async)?.agoMessage || 'n/a' }}
+      <span [matTooltip]="(extendedTool$ | async)?.lastBuild | date:'medium'">Last build: {{ (extendedTool$ | async)?.agoMessage || 'n/a' }}</span>
     </p>
   </div>
   <div class="col-md-5">

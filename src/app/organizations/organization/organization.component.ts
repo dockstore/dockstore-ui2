@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import {Observable, Subject} from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';

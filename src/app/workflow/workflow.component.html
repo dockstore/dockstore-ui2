@@ -59,7 +59,7 @@
     </div>
 
     <p class="update">
-      Last Modified: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}
+      <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date:'medium'">Last Modified: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span>
     </p>
     <div *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>

@@ -51,6 +51,7 @@ export class CollectionComponent implements OnInit {
   loadingOrganization$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   pendingEnum = Organization.StatusEnum.PENDING;
+  gravatarUrl$: Observable<string>;
 
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
@@ -70,6 +71,7 @@ export class CollectionComponent implements OnInit {
     this.loadingOrganization$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organization$ = this.organizationQuery.organization$;
+    this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.organizationService.updateOrganizationFromName(organizationName);
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
