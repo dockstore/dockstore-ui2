@@ -35,7 +35,7 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars', 'dockerPull'];
+  public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars'];
   type: 'tool' | 'workflow' = 'tool';
   constructor(private listContainersService: ListContainersService,
     private dockstoreService: DockstoreService,
@@ -53,18 +53,6 @@ export class ListContainersComponent extends ToolLister implements OnInit {
     this.pageIndex$ = this.paginatorQuery.toolPageIndex$;
     this.dataSource = new PublishedToolsDataSource(this.containersService, this.providerService, this.imageProviderService);
     this.length$ = this.dataSource.entriesLengthSubject$;
-  }
-
-  /**
-   * This gets the docker pull command
-   *
-   * @param {string} path The path of the tool (quay.io/namespace/toolname)
-   * @param {string} [tagName=''] The specific version of the docker image to get
-   * @returns {string} The docker pull command
-   * @memberof ListContainersComponent
-   */
-  getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
-    return this.listContainersService.getDockerPullCmd(path, tagName);
   }
 
   getVerified(tool: DockstoreTool): boolean {
