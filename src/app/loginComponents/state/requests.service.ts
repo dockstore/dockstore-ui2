@@ -41,6 +41,7 @@ export class RequestsService {
       .subscribe((organization: Organization) => {
         this.alertService.simpleSuccess();
         this.updateCuratorOrganizations();
+        this.updateMyMemberships();
       }, () => {
         this.updateOrganizationState(null);
         this.requestsStore.setError(true);
@@ -60,6 +61,7 @@ export class RequestsService {
       .subscribe((organization: Organization) => {
         this.alertService.simpleSuccess();
         this.updateCuratorOrganizations();
+        this.updateMyMemberships();
       }, () => {
         this.updateOrganizationState(null);
         this.requestsStore.setError(true);
