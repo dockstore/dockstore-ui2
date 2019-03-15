@@ -31,15 +31,24 @@
         </ng-template>
       </mat-card>
       <mat-card fxFlex class="my-3">
-        <mat-card-header>
-          <mat-card-title>
-            <h1><a [routerLink]="['/organizations/', organization.name]"><span [matTooltip]="organization?.name">{{ organization.displayName }}</span></a> /
-              <span [matTooltip]="collection?.name">{{ collection.displayName }}</span></h1>
-          </mat-card-title>
-          <mat-card-subtitle>
-            {{collection.topic}}
-          </mat-card-subtitle>
-        </mat-card-header>
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+          <div>
+            <img [src]="(gravatarUrl$ | async ) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="img-circle" height="150" width="150">
+          </div>
+          <div>
+            <mat-card-header>
+              <mat-card-title>
+                <h1><a [routerLink]="['/organizations/', organization.name]"><span [matTooltip]="organization?.name">{{ organization.displayName }}</span></a> /
+                  <span [matTooltip]="collection?.name">{{ collection.displayName }}</span></h1>
+              </mat-card-title>
+              <mat-card-subtitle>
+                {{collection.topic}}
+              </mat-card-subtitle>
+            </mat-card-header>
+          </div>
+        </div>
+
         <mat-card-actions>
           <div fxFlex></div>
           <button color="basic" *ngIf="(canEdit$ | async)" mat-button (click)="editCollection(collection)" id="editCollection"
