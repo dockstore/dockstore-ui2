@@ -34,6 +34,7 @@ import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
+import { AlertService } from '../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-search',
@@ -114,7 +115,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   constructor(private queryBuilderService: QueryBuilderService,
     public searchService: SearchService, private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService) {
+    private advancedSearchService: AdvancedSearchService, private alertService: AlertService) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
@@ -134,6 +135,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Set alert store back to its initial state. Otherwise an error created on another page might appear when search page is loaded.
+    this.alertService.clearEverything();
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();

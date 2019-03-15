@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.app.json",
+  "exclude": [
+    "app/shared/swagger/**/*",
+    "app/test/**",
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}
