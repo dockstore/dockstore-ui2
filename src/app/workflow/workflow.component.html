@@ -207,7 +207,7 @@
                   <mat-icon matTooltip="Verified">done</mat-icon>
                 </a>
               </span>
-              <a [ngStyle]="{'font-weight': selectedVersion?.name === sortedVersion.name ? 'bold': 'normal'}" (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}} </a>
+              <a [ngStyle]="{'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold': 'normal'}" (click)="onSelectedVersionChange(sortedVersion)">{{sortedVersion.name}} </a>
               <small>{{sortedVersion.last_modified | date}}</small>
             </p>
             <hr class="m-0">
