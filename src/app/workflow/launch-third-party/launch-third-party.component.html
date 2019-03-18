@@ -18,7 +18,7 @@
                [disabled]="!(hasContent$ | async)"
                color="primary"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a>
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'wdl'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'wdl' && config.FEATURES.enableLaunchWithFireCloud">
             <a mat-raised-button
                [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ((hasFileImports$ | async) ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : '')"
                target="_blank"
