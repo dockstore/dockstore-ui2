@@ -144,4 +144,20 @@ export class RequestsService {
         this.alertService.simpleError();
       });
   }
+
+  requestRereview(id: number): void {
+    this.alertService.start('Rerquesting review for organization ' + id);
+    this.organizationsService.requestOrganizationReview(id).pipe(
+      finalize(() => this.requestsStore.setLoading(false)
+      ))
+      .subscribe((organization: Organization) => {
+        this.alertService.simpleSuccess();
+        this.updateCuratorOrganizations();
+        this.updateMyMemberships();
+      }, () => {
+        this.updateMyMembershipState(null, null, null, null);
+        this.requestsStore.setError(true);
+        this.alertService.simpleError();
+      });
+  }
 }

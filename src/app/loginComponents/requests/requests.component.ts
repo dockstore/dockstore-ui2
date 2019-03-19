@@ -111,4 +111,8 @@ export class RequestsComponent implements OnInit {
       }
     });
   }
+
+  rerequestReview(membership: OrganizationUser) {
+    this.requestsService.requestRereview(membership.organization.id);
+  }
 }
