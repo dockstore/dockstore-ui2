@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -30,7 +31,7 @@ export class CollectionsService {
   constructor(private collectionsStore: CollectionsStore, private organizationsService: OrganizationsService,
     private alertService: AlertService, private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery, private collectionsQuery: CollectionsQuery,
-    private matDialog: MatDialog) {
+    private matDialog: MatDialog, private router: Router) {
   }
 
   clearState() {
@@ -90,6 +91,14 @@ export class CollectionsService {
       });
   }
 
+  /**
+   * Currently only used from the collection page
+   * Grabs detailed collection information and navigates to the collection's page
+   *
+   * @param {number} organizationId  The ID of the organization that the collection belongs to
+   * @param {number} collectionId  The ID of the collection
+   * @memberof CollectionsService
+   */
   @transaction()
   updateCollectionFromId(organizationId: number, collectionId: number) {
     this.collectionsStore.setError(false);
@@ -101,6 +110,8 @@ export class CollectionsService {
         this.collectionsStore.createOrReplace(collection.id, collection);
         this.collectionsStore.setActive(collection.id);
         this.organizationService.updateOrganizationFromID(collection.organizationID);
+        // Navigate to the new collectionName in case the name changes.
+        this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
       }, () => {
         this.collectionsStore.setError(true);
       });
