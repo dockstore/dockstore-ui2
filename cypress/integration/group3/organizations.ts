@@ -21,7 +21,7 @@ describe('Dockstore Organizations', () => {
 
   function typeInInput(fieldName: string, text: string) {
     cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper')
-      .find('input').first().clear().type(text);
+      .find('input').first().should('be.visible').clear().type(text);
   }
 
   function clearInput(fieldName: string) {
