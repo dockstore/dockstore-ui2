@@ -64,20 +64,6 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="dockerPull">
-      <mat-header-cell *matHeaderCellDef>Docker Pull</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <div class="input-group">
-          <input readonly type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.tool_path, tool.defaultVersion) }}" aria-describedby="clipboard"
-            #inputTarget>
-          <span class="input-group-btn" id="clipboard">
-            <button class="btn btn-default form-sm-button-material" type="button" [ngxClipboard]="inputTarget">
-              <mat-icon>file_copy</mat-icon>
-            </button>
-          </span>
-        </div>
-      </mat-cell>
-    </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     <ng-container matColumnDef="disclaimer">

@@ -33,7 +33,7 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['repository', 'author', 'descriptorType', 'stars', 'projectLinks'];
+  public displayedColumns = ['repository', 'author', 'descriptorType', 'projectLinks', 'stars'];
   type: 'tool' | 'workflow' = 'workflow';
   constructor(
     private dockstoreService: DockstoreService,
