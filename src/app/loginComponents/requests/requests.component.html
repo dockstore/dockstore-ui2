@@ -46,9 +46,9 @@
 
   <!-- My Pending Organization Requests -->
   <div class="p-3">
-    <h3>My Pending Requests</h3>
+    <h3>My Requests</h3>
     <p>The following organizations that you have created are pending approval.</p>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length == 0">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length == 0 && (myRejectedOrganizationRequests$ | async)?.length == 0">
       <mat-icon>info</mat-icon> You have no organizations pending approval.
     </mat-card>
 
@@ -56,6 +56,21 @@
       <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
+            <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
+          </mat-card-title>
+          <mat-card-subtitle>
+            Requested on {{ membership.dbCreateDate | date}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="px-4">
+          {{ membership.organization.topic }}
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card *ngFor="let membership of (myRejectedOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon color="warn" matTooltip="This organization has been rejected">warning</mat-icon>
             <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>

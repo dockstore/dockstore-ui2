@@ -31,6 +31,11 @@
         You can view your pending organization requests on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
       </ng-template>
     </mat-card>
+
+    <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'REJECTED'">
+      <mat-icon>info</mat-icon> This organization has been rejected by a curator.
+    </mat-card>
+
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
         <div>
