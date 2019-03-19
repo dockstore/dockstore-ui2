@@ -26,8 +26,8 @@
       </mat-form-field>
     </form>
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
-      <div fxLayoutAlign="start stretch" fxLayout="row wrap">
-        <mat-card fxFlexOffset="10px" fxFlex *ngFor="let org of organizations" class="my-2">
+      <div fxLayoutAlign="start stretch" fxLayout="column">
+        <mat-card fxFlexOffset="10px" *ngFor="let org of organizations" class="my-2">
           <mat-card-header>
             <mat-card-title>
               <a [routerLink]="org.name" [matTooltip]="org?.name">{{org.displayName}}</a>
