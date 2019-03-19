@@ -86,7 +86,7 @@
           {{ membership.organization.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button mat-flat-button color="primary" [id]="'rerequest-review-' + i" (click)="rerequestReview(membership)" matTooltip="Request a re-review of a rejected organization">
+          <button mat-flat-button color="primary" [id]="'request-re-review-' + i" (click)="rerequestReview(membership)" matTooltip="Request a re-review of a rejected organization">
             <mat-icon>cached</mat-icon>Request Re-review
           </button>
         </mat-card-actions>
