@@ -93,8 +93,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
           });
         } else {
           // Probably encountered a 204
-          this.alertService.detailedSuccess();
-          console.log('Version did not change');
+          this.alertService.detailedSuccess('Version did not change');
         }
       }, error => {
         if (error) {
