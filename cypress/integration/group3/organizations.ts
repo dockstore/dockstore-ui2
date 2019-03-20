@@ -151,6 +151,19 @@ describe('Dockstore Organizations', () => {
   });
 
   describe('should be able to view a collection', () => {
+    beforeEach(() => {
+      const memberships = [
+        {id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 1, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe'}},
+      ];
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/users/user/memberships',
+          response: memberships
+      });
+    });
+
     it('be able to see collection information', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').click();
