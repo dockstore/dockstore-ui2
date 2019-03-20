@@ -41,7 +41,7 @@ export interface DialogData {
 @Component({
   selector: 'collection',
   templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.scss']
+  styleUrls: ['./collection.component.scss', '../organization/organization.component.scss']
 })
 export class CollectionComponent implements OnInit {
   collection$: Observable<Collection>;
