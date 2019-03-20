@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -10,6 +9,7 @@ import { RefreshService } from './../../shared/refresh.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -31,7 +31,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
-      this.originalSourceFiles =  JSON.parse(JSON.stringify(value.sourceFiles));
+      this.originalSourceFiles = JSON.parse(JSON.stringify(value.sourceFiles));
       this.loadVersionSourcefiles();
     }
   }
@@ -77,23 +77,30 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Creates a new version based on changes made
    */
   saveVersion() {
-    const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
     this.alertService.start('Updating hosted workflow');
     this.hostedService.editHostedWorkflow(
-        this.id,
-        newSourceFiles).subscribe((workflow: Workflow) => {
-          this.toggleEdit();
+      this.id,
+      newSourceFiles).subscribe((workflow: Workflow) => {
+        this.toggleEdit();
+        if (workflow) {
           this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2: Workflow) => {
             this.alertService.detailedSuccess();
             this.workflowService.setWorkflow(workflow2);
-          });
-        }, error =>  {
-          if (error) {
+          }, error => {
             this.alertService.detailedError(error);
-          }
+          });
+        } else {
+          // Probably encountered a 204
+          this.alertService.detailedSuccess();
+          console.log('Version did not change');
         }
+      }, error => {
+        if (error) {
+          this.alertService.detailedError(error);
+        }
+      }
       );
   }
 
