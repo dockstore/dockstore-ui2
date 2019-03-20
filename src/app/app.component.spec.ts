@@ -5,6 +5,7 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
+import {MatSnackBarModule} from '@angular/material';
 
 @Component({selector: 'app-banner', template: ''})
 class BannerStubComponent {}
@@ -26,7 +27,7 @@ describe('AppComponent', () => {
         NavbarStubComponent, SponsorsStubComponent, FooterStubComponent,
         BannerStubComponent, RouterLinkStubDirective, RouterOutletStubComponent
       ],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule, MatSnackBarModule]
     }).compileComponents();
   }));
 

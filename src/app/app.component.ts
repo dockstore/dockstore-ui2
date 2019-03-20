@@ -3,6 +3,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import {filter, map, mergeMap, takeUntil} from 'rxjs/operators';
 import {Subject, Subscription} from 'rxjs';
+import { AlertService } from './shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private alertService: AlertService
   ) {}
 
   private subscription: Subscription;
@@ -30,7 +32,10 @@ export class AppComponent implements OnInit, OnDestroy {
         return route;
       }),
       mergeMap((route) => route.data),
-    ).pipe(takeUntil(this.unsubscribe)).subscribe((event) => this.titleService.setTitle(event['title']));
+    ).pipe(takeUntil(this.unsubscribe)).subscribe((event) => {
+        this.titleService.setTitle(event['title']);
+        this.alertService.clearEverything();
+    });
   }
 
   ngOnDestroy(): void {
