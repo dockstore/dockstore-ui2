@@ -21,6 +21,7 @@ addons:
   chrome: stable
 
 install:
+  - npm i -g @angular/cli@6.0.2 --unsafe
   - ./scripts/install-travis-script.sh
 
 jobs:
