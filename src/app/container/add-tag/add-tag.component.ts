@@ -157,11 +157,11 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
       const addWDL: Observable<SourceFile[]> =
         this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null);
       forkJoin(addCWL, addWDL).subscribe(() => {
-        this.loadDefaults();
         this.containersService.refresh(id).subscribe((tool: DockstoreTool) => {
           this.containerService.setTool(tool);
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
+          this.loadDefaults();
         }, (error: HttpErrorResponse) => {
           this.containerService.setTool(this.tool);
           this.alertService.detailedError(error);

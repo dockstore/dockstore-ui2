@@ -300,6 +300,13 @@ table.homepage-container {
   /*text-align: right;*/
 }
 
+// Globally allow any material tooltip to break the word if it's too long
+// Long sentences should still break on spaces if needed
+// Long continous words (without spaces and hyphens) will break at different points depending on browser
+.mat-tooltip {
+  overflow-wrap: break-word;
+}
+
 .public-lists {
   font-size: 14px;
   font-weight: bold;
