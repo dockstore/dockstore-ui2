@@ -108,7 +108,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
           });
         } else {
           // Probably encountered a 204
-          this.alertService.detailedSuccess('Version did not change (no changes detected in file contents)');
+          this.handleNoContentResponse();
         }
       }, error => {
         if (error) {
