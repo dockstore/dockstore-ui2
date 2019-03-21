@@ -19,7 +19,6 @@ import { MatSnackBar } from '@angular/material';
 import { AlertQuery } from './alert.query';
 import { AlertStore } from './alert.store';
 
-
 /**
  * How to use this service:
  * Before doing an HTTP call, use the start() method with some message indicating what is happening
@@ -42,17 +41,17 @@ export class AlertService {
   /**
    * Handles successful HTTP response and shows success to the user by matSnackBar
    *
-   * @param {string} [message]  Optimal message to override previous message
+   * @param {string} [message]  Optional message to override previous message
    * @memberof AlertService
    */
   public detailedSuccess(message?: string) {
-    this.setInfo('');
     if (message) {
       this.matSnackBar.open(message, 'Dismiss');
     } else {
       const previousMessage = this.alertQuery.getSnapshot().message;
       this.matSnackBar.open(previousMessage + ' succeeded', 'Dismiss');
     }
+    this.setInfo('');
   }
 
   /**

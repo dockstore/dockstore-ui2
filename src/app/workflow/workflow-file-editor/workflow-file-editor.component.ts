@@ -1,3 +1,18 @@
+/*
+ *    Copyright 2019 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -5,11 +20,9 @@ import { FileEditing } from '../../shared/file-editing';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { ToolDescriptor, Workflow } from '../../shared/swagger';
-import { RefreshService } from './../../shared/refresh.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -35,9 +48,9 @@ export class WorkflowFileEditorComponent extends FileEditing {
       this.loadVersionSourcefiles();
     }
   }
-  constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService, private alertService: AlertService, private workflowQuery: WorkflowQuery) {
-    super();
+  constructor(private hostedService: HostedService, private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService, protected alertService: AlertService, private workflowQuery: WorkflowQuery) {
+    super(alertService);
     this.selectedDescriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
@@ -82,25 +95,26 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.alertService.start('Updating hosted workflow');
     this.hostedService.editHostedWorkflow(
       this.id,
-      newSourceFiles).subscribe((workflow: Workflow) => {
-        this.toggleEdit();
-        if (workflow) {
-          this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2: Workflow) => {
+      newSourceFiles).subscribe((editedWorkflow: Workflow) => {
+        if (editedWorkflow) {
+          // Only stop editing when version change was successful (not 204)
+          this.toggleEdit();
+          // TODO: Comment why workflow is explicitly gotten again when tool does not
+          this.workflowsService.getWorkflow(editedWorkflow.id).subscribe((newlyGottenWorkflow: Workflow) => {
+            this.workflowService.setWorkflow(newlyGottenWorkflow);
             this.alertService.detailedSuccess();
-            this.workflowService.setWorkflow(workflow2);
           }, error => {
             this.alertService.detailedError(error);
           });
         } else {
           // Probably encountered a 204
-          this.alertService.detailedSuccess('Version did not change');
+          this.alertService.detailedSuccess('Version did not change (no changes detected in file contents)');
         }
       }, error => {
         if (error) {
           this.alertService.detailedError(error);
         }
-      }
-      );
+      });
   }
 
   /**
