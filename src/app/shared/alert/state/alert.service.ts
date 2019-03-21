@@ -16,7 +16,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-
 import { AlertQuery } from './alert.query';
 import { AlertStore } from './alert.store';
 
@@ -42,12 +41,17 @@ export class AlertService {
   /**
    * Handles successful HTTP response and shows success to the user by matSnackBar
    *
+   * @param {string} [message]  Optional message to override previous message
    * @memberof AlertService
    */
-  public detailedSuccess() {
-    const previousMessage = this.alertQuery.getSnapshot().message;
+  public detailedSuccess(message?: string) {
+    if (message) {
+      this.matSnackBar.open(message, 'Dismiss');
+    } else {
+      const previousMessage = this.alertQuery.getSnapshot().message;
+      this.matSnackBar.open(previousMessage + ' succeeded', 'Dismiss');
+    }
     this.setInfo('');
-    this.matSnackBar.open(previousMessage + ' succeeded', 'Dismiss');
   }
 
   /**

@@ -1,10 +1,23 @@
+/*
+ *    Copyright 2019 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 import { Component, Input } from '@angular/core';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { ToolDescriptor } from '../../shared/swagger';
+import { DockstoreTool, ToolDescriptor } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
-import { RefreshService } from './../../shared/refresh.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { Tag } from './../../shared/swagger/model/tag';
@@ -25,20 +38,20 @@ export class ToolFileEditorComponent extends FileEditing {
   ToolDescriptor = ToolDescriptor;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: Tag) {
-      this.currentVersion = value;
-      this.isNewestVersion = this.checkIfNewestVersion();
-      this.editing = false;
-      this.clearSourceFiles();
-      if (value != null) {
-        // Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
-        this.originalSourceFiles =  JSON.parse(JSON.stringify(value.sourceFiles));
-        this.loadVersionSourcefiles();
-      }
+    this.currentVersion = value;
+    this.isNewestVersion = this.checkIfNewestVersion();
+    this.editing = false;
+    this.clearSourceFiles();
+    if (value != null) {
+      // Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
+      this.originalSourceFiles = JSON.parse(JSON.stringify(value.sourceFiles));
+      this.loadVersionSourcefiles();
+    }
   }
 
-  constructor(private hostedService: HostedService, private containerService: ContainerService, private refreshService: RefreshService,
-    private alertService: AlertService) {
-    super();
+  constructor(private hostedService: HostedService, private containerService: ContainerService,
+    protected alertService: AlertService) {
+    super(alertService);
   }
 
   checkIfNewestVersion(): boolean {
@@ -81,22 +94,26 @@ export class ToolFileEditorComponent extends FileEditing {
    * Creates a new version based on changes made
    */
   saveVersion(): void {
-    const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
     this.alertService.start('Updating hosted tool');
     this.hostedService.editHostedTool(
-        this.id,
-        newSourceFiles).subscribe(result => {
+      this.id,
+      newSourceFiles).subscribe((editedDockstoreTool: DockstoreTool) => {
+        if (editedDockstoreTool) {
+          // Only stop editing when version change was successful (not 204)
           this.toggleEdit();
-          this.containerService.setTool(result);
+          this.containerService.setTool(editedDockstoreTool);
           this.alertService.detailedSuccess();
-        }, error =>  {
-          if (error) {
-            this.alertService.detailedError(error);
-          }
+        } else {
+          // Probably encountered a 204
+          this.handleNoContentResponse();
         }
-      );
+      }, error => {
+        if (error) {
+          this.alertService.detailedError(error);
+        }
+      });
   }
 
   /**
