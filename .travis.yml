@@ -20,6 +20,9 @@ addons:
   postgresql: "9.6"
   chrome: stable
 
+before_install:
+  - npm run preinstall
+
 install:
   - ./scripts/install-travis-script.sh
 
