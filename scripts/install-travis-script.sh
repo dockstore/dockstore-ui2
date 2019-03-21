@@ -4,7 +4,7 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
-npm ci
+npm install
 
 wget --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${WEBSERVICE_VERSION}/dockstore-webservice-${WEBSERVICE_VERSION}.jar
 chmod u+x dockstore-webservice-${WEBSERVICE_VERSION}.jar
