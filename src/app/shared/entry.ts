@@ -286,7 +286,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
-    this.selected.setValue(matTabChangeEvent.index);
     this.setEntryTab(matTabChangeEvent.tab.textLabel.toLowerCase());
   }
 
