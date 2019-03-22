@@ -18,7 +18,7 @@ addons:
   chrome: stable
 
 install:
-  - npm install
+  - CI=true npm ci
 
 jobs:
   include:
