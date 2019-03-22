@@ -200,6 +200,9 @@ describe('Dropdown test', () => {
         .click();
       cy.contains('Dockstore Account Controls').click();
     });
+    it('Should have the danger alert', () => {
+      cy.get('.alert-danger').should('be.visible');
+    });
     it('Should have the delete button enabled', () => {
       cy.contains('Delete Dockstore Account').should('not.be.disabled').click();
       cy.contains('Yes, delete my account').should('be.disabled');
