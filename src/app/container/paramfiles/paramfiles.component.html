@@ -35,10 +35,7 @@
     <div *ngIf="content">
       <span class="row m-0">
         <span class="col-sm-4">
-          <app-select *ngIf="!publicPage" [placeholder]="'Descriptor Type'" [items]="descriptors"
-            [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)">
-          </app-select>
-          <app-select *ngIf="publicPage" [placeholder]="'Descriptor Type'" [items]="validDescriptors"
+          <app-select [placeholder]="'Descriptor Type'" [items]="descriptors"
             [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)">
           </app-select>
         </span>
