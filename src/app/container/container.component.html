@@ -142,8 +142,8 @@
 <div class="row m-1" *ngIf="!starGazersClicked">
   <div class="col-sm-12 p-0" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <div class="ds-tabs" [ngClass]="{'mr-3': isToolPublic}">
-      <mat-tab-group dynamicHeight [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs
-        (selectedTabChange)="selectedTabChange($event)">
+      <mat-tab-group dynamicHeight (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="selectedTabChange($event)" [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs
+        >
         <mat-tab id="infoTab" label="Info">
           <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry"
             [extendedDockstoreTool]="(extendedTool$ | async)" [validVersions]="validVersions"></app-info-tab>
