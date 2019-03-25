@@ -24,8 +24,8 @@ describe('Go to disabled Dockstore Account Controls', () => {
     cy.get('#dropdown-accounts').click();
     cy.contains('Dockstore Account Controls').click();
   });
-  it('Should have the danger alert', () => {
-    cy.contains('caution');
+  it('Should not have the danger alert', () => {
+    cy.get('.alert-danger').should('not.exist');
   });
   it('Should have the delete button disabled', () => {
     cy.contains('Delete Dockstore Account').should('be.disabled');
