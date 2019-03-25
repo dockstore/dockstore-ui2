@@ -33,7 +33,7 @@ describe('Dropdown test', () => {
       .route({
         method: 'GET',
         url: '/users/user',
-        response: { username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false }
+        response: { id: 4, username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false }
       });
 
     cy.visit('');

@@ -55,7 +55,7 @@
       <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization?.name )" [matTooltip]="membership.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -76,7 +76,7 @@
         <mat-card-header>
           <mat-card-title>
             <mat-icon color="primary" matTooltip="This organization has been rejected">warning</mat-icon>
-            <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization?.name )" [matTooltip]="membership.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}
@@ -106,7 +106,7 @@
       <mat-card *ngFor="let membership of (myOrganizationInvites$ | async); let i = index" [id]="'my-org-invites-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization.name )" [matTooltip]="membership?.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="('/organizations/' + membership.organization?.name )" [matTooltip]="membership.organization?.name">{{membership.organization.displayName}}</a>
           </mat-card-title>
           <mat-card-subtitle>
             Requested on {{ membership.dbCreateDate | date}}

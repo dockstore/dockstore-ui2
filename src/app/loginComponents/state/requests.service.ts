@@ -146,7 +146,7 @@ export class RequestsService {
   }
 
   requestRereview(id: number): void {
-    this.alertService.start('Rerquesting review for organization ' + id);
+    this.alertService.start('Rerequesting review for organization ' + id);
     this.organizationsService.requestOrganizationReview(id).pipe(
       finalize(() => this.requestsStore.setLoading(false)
       ))
