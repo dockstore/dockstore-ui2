@@ -11,7 +11,7 @@ blocks:
         - name: APP_ENV
           value: prod
         - name: WEBSERVICE_VERSION
-          value: 1.6.0-beta.1
+          value: 1.6.0-beta.4
       secrets:
         - name: codecov
       prologue:
@@ -34,7 +34,7 @@ blocks:
     task:
       env_vars:
         - name: WEBSERVICE_VERSION
-          value: 1.6.0-beta.1
+          value: 1.6.0-beta.4
       secrets:
         - name: cypress
       prologue:

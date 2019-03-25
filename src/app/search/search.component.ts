@@ -135,8 +135,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Set alert store back to its initial state. Otherwise an error created on another page might appear when search page is loaded.
-    this.alertService.clearEverything();
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
