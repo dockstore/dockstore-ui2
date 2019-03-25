@@ -13,6 +13,7 @@ export class RequestsQuery extends QueryEntity<RequestsState, Request> {
   myMemberships$: Observable<Array<OrganizationUser>> = this.select(state => state.myMemberships);
   myOrganizationInvites$: Observable<Array<OrganizationUser>> = this.select(state => state.myOrganizationInvites);
   myPendingOrganizationRequests$: Observable<Array<OrganizationUser>> = this.select(state => state.myPendingOrganizationRequests);
+  myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>> = this.select(state => state.myRejectedOrganizationRequests);
   isLoading$: Observable<boolean> = this.selectLoading();
 
   constructor(protected store: RequestsStore) {

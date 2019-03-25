@@ -28,6 +28,14 @@ describe('Dropdown test', () => {
         response: { 'canChangeUsername': true }
       });
 
+    cy
+      .server()
+      .route({
+        method: 'GET',
+        url: '/users/user',
+        response: { id: 4, username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false }
+      });
+
     cy.visit('');
 
     // Select dropdown
@@ -91,7 +99,8 @@ describe('Dropdown test', () => {
       // Logged in user has two memberships, one is not accepted
       const memberships = [
         {id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne'}},
-        {id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo'}}
+        {id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo'}},
+        {id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'REJECTED', name: 'orgThree'}}
       ];
       cy
         .server()
@@ -105,6 +114,63 @@ describe('Dropdown test', () => {
         .get('#dropdown-accounts')
         .click();
       cy.contains('Requests').click();
+    });
+
+    it('Should have one rejected org', () => {
+      // Mock request re-review
+      cy
+        .server()
+        .route({
+          method: 'POST',
+          url: '/organizations/1002/request',
+          response: { id: 1002, name: 'OrgThree', status: 'PENDING' }
+      });
+
+      // Mock new pending orgs
+      const pendingOrganizations = [
+        { id: 1000, name: 'OrgOne', status: 'PENDING' },
+        { id: 1001, name: 'OrgTwo', status: 'PENDING' },
+        { id: 1002, name: 'OrgThree', status: 'PENDING' }
+      ];
+
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/organizations/all?type=pending',
+          response: pendingOrganizations
+        });
+
+      // Mock new my pending orgs
+      const memberships = [
+        {id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne'}},
+        {id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo'}},
+        {id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'PENDING', name: 'orgThree'}}
+      ];
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: '/users/user/memberships',
+          response: memberships
+      });
+
+      // Ensure that there is one org
+      cy.get('#my-rejected-org-card-0').should('be.visible');
+      cy.get('#my-rejected-org-card-1').should('not.be.visible');
+
+      // Request re-review
+      cy.get('#request-re-review-0').should('be.visible').click();
+      cy.get('#my-rejected-org-card-0').should('not.be.visible');
+
+      // Should now have org in pending (3 Total)
+      cy.get('#pending-org-card-0').should('be.visible');
+      cy.get('#pending-org-card-1').should('be.visible');
+      cy.get('#pending-org-card-2').should('be.visible');
+
+      // Should now have org in my pending (2 Total)
+      cy.get('#my-pending-org-card-0').should('be.visible');
+      cy.get('#my-pending-org-card-1').should('be.visible');
     });
 
     it('Should have two pending orgs', () => {
