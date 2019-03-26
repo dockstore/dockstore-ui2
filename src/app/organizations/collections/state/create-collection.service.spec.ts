@@ -19,12 +19,12 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of as observableOf, throwError } from 'rxjs';
-
 import { OrganizationsService } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
+
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
@@ -93,7 +93,7 @@ describe('CreateCollectionService', () => {
     organizationsServiceSpy.updateCollection.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
-    createCollectionService.updateCollection(exampleFormState, 1);
+    createCollectionService.updateCollection(exampleFormState, 1, 'description');
 
     // Expected createCollection call to be called (and it will succeed)
     expect(organizationsServiceSpy.updateCollection.calls.count()).toBe(1, 'spy method was called once');
@@ -105,7 +105,7 @@ describe('CreateCollectionService', () => {
     organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
     organizationsServiceSpy.updateCollection.and.returnValue(throwError('test 404 error'));
 
-    createCollectionService.updateCollection(exampleFormState, 1);
+    createCollectionService.updateCollection(exampleFormState, 1, 'description');
 
     // Expected createCollection call to be called (even though it will fail)
     expect(organizationsServiceSpy.updateCollection.calls.count()).toBe(1, 'spy method was called once');
