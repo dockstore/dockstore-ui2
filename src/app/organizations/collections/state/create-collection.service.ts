@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
 import { Collection, OrganizationsService } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionStore } from './create-collection.store';
+
 
 export interface FormsState {
   createOrUpdateCollection: {
@@ -78,7 +78,7 @@ export class CreateCollectionService {
     if (data.mode === TagEditorMode.Add) {
       this.createCollection(createCollectionForm.value);
     } else {
-      this.updateCollection(createCollectionForm.value, data.collection.value.id);
+      this.updateCollection(createCollectionForm.value, data.collection.value.id, data.collection.value.description);
     }
   }
 
@@ -94,12 +94,14 @@ export class CreateCollectionService {
     let name = null;
     let topic = null;
     let displayName = null;
+    let description = null;
     formsManager.remove('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;
       topic = collection.topic;
       displayName = collection.displayName;
+      description = collection.description;
     }
 
     const createOrUpdateCollectionForm = this.builder.group({
@@ -141,14 +143,16 @@ export class CreateCollectionService {
    *
    * @param {FormsState['createOrUpdateCollection']} collectionFormState
    * @param {number} collectionID  ID of the collection to update
+   * @param {string} collectionDescripton The unedited description because formState isn't updating description and doesn't know it
    * @memberof CreateCollectionService
    */
-  updateCollection(collectionFormState: FormsState['createOrUpdateCollection'], collectionID: number) {
+  updateCollection(collectionFormState: FormsState['createOrUpdateCollection'], collectionID: number, collectionDescripton: string) {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
       topic: collectionFormState.topic,
-      displayName: collectionFormState.displayName
+      displayName: collectionFormState.displayName,
+      description: collectionDescripton
     };
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
