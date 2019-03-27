@@ -143,7 +143,7 @@ export class CreateCollectionService {
    *
    * @param {FormsState['createOrUpdateCollection']} collectionFormState
    * @param {number} collectionID  ID of the collection to update
-   * @param {string} collectionDescripton
+   * @param {string} collectionDescripton The unedited description because formState isn't updating description and doesn't know it
    * @memberof CreateCollectionService
    */
   updateCollection(collectionFormState: FormsState['createOrUpdateCollection'], collectionID: number, collectionDescripton: string) {
