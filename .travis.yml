@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - '8.11.1'
+  - '10.13.0'
 services:
   - postgresql
 jdk:
@@ -21,7 +21,6 @@ addons:
   chrome: stable
 
 install:
-  - npm i -g @angular/cli@6.0.2 --unsafe
   - ./scripts/install-travis-script.sh
 
 jobs:
@@ -32,7 +31,7 @@ jobs:
         - ng lint
         - ng test --watch=false --code-coverage --browsers ChromeHeadless
         - ng version
-        - travis_wait 30 npm run build.prod
+        - npm run build.prod
     - stage: integration test
       name: "Cypress Group 1"
       env:
