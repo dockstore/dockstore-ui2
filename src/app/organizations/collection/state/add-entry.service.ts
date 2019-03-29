@@ -24,8 +24,7 @@ export class AddEntryService {
       ))
       .subscribe((memberships: Array<OrganizationUser>) => {
         // Only show approved organizations
-        memberships = memberships.filter(membership => membership.organization.status === 'APPROVED'
-          && membership.accepted);
+        memberships = memberships.filter(membership => membership.accepted);
         this.updateMembershipsState(memberships);
         this.addEntryStore.setError(false);
       }, () => {
