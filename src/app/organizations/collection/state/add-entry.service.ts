@@ -23,7 +23,6 @@ export class AddEntryService {
       finalize(() => this.addEntryStore.setLoading(false)
       ))
       .subscribe((memberships: Array<OrganizationUser>) => {
-        // Only show approved organizations
         memberships = memberships.filter(membership => membership.accepted);
         this.updateMembershipsState(memberships);
         this.addEntryStore.setError(false);
