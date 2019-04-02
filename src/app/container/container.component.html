@@ -152,9 +152,11 @@
           <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion"
             [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
           <ng-template #noTags>
-            <mat-card class="alert alert-warning" role="alert">
-              <mat-icon>warning</mat-icon> No tags exist for this
-            </mat-card>
+            <div class="p-3">
+              <mat-card class="alert alert-warning" role="alert">
+                <mat-icon>warning</mat-icon> No tags exist for this
+              </mat-card>
+            </div>
           </ng-template>
         </mat-tab>
         <mat-tab id="versionTab" label="Versions">
