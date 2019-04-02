@@ -129,7 +129,7 @@ export class CodeEditorListComponent {
     } else if (this.fileType === 'testParam') {
       return '.json';
     } else if (this.fileType === 'dockerfile') {
-      return '/Dockerfile';
+      return 'Dockerfile';
     }
   }
 
