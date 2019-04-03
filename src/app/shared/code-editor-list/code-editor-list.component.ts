@@ -42,9 +42,9 @@ export class CodeEditorListComponent {
         filesToAdd.push(this.createFileObject('/Dockstore' + newFilePath));
       }
     } else if (!this.hasPrimaryTestParam() && this.fileType === 'testParam') {
-      filesToAdd.push(this.createFileObject('test.' + this.descriptorType.toLowerCase() + newFilePath));
+      filesToAdd.push(this.createFileObject('/test.' + this.descriptorType.toLowerCase() + newFilePath));
     } else {
-      filesToAdd.push(this.createFileObject(newFilePath));
+      filesToAdd.push(this.createFileObject('/' + newFilePath));
     }
 
     if (this.sourcefiles === undefined) {
@@ -129,7 +129,7 @@ export class CodeEditorListComponent {
     } else if (this.fileType === 'testParam') {
       return '.json';
     } else if (this.fileType === 'dockerfile') {
-      return '/Dockerfile';
+      return 'Dockerfile';
     }
   }
 
