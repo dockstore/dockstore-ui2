@@ -34,6 +34,7 @@ import { UserQuery } from '../../shared/user/user.query';
   styleUrls: ['./organization.component.scss']
 })
 export class OrganizationComponent implements OnInit {
+  organization: Organization;
   organization$: Observable<Organization>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;

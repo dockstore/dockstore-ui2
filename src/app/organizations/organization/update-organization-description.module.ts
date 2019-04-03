@@ -10,6 +10,7 @@ import {
   UpdateOrganizationOrCollectionDescriptionComponent,
 } from './update-organization-description/update-organization-description.component';
 import { OrganizationStarringComponent } from './organization-starring/organization-starring.component';
+import {OrganizationStarringService} from './organization-starring/organization-starring.service';
 
 @NgModule({
   imports: [
@@ -20,8 +21,9 @@ import { OrganizationStarringComponent } from './organization-starring/organizat
     RefreshAlertModule,
     ReactiveFormsModule
   ],
+  providers: [ OrganizationStarringService],
   exports: [OrganizationStarringComponent],
-  declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
+  declarations: [UpdateOrganizationOrCollectionDescriptionComponent, OrganizationStarringComponent],
   entryComponents: [UpdateOrganizationOrCollectionDescriptionComponent]
 })
 export class UpdateOrganizationDescriptionModule { }

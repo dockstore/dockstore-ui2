@@ -1,5 +1,20 @@
+/*
+ *    Copyright 2019 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subject} from 'rxjs';
 import {StarRequest, User} from '../../../shared/swagger';
 import {TrackLoginService} from '../../../shared/track-login.service';
 import {UserQuery} from '../../../shared/user/user.query';
@@ -8,7 +23,8 @@ import {StarringService} from '../../../starring/starring.service';
 import {StarentryService} from '../../../shared/starentry.service';
 import {AlertService} from '../../../shared/alert/state/alert.service';
 import {first, takeUntil} from 'rxjs/operators';
-import {Observable, of as ObservableOf} from 'rxjs';
+import {Observable, of as ObservableOf, Subject} from 'rxjs';
+import {OrganizationStarringService} from './organization-starring.service';
 
 @Component({
   selector: 'app-organization-starring',
@@ -34,6 +50,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
               private containerService: ContainerService,
               private starringService: StarringService,
               private starentryService: StarentryService,
+              private organizationStarringService: OrganizationStarringService,
               private alertService: AlertService) { }
 
   ngOnInit() {
@@ -41,7 +58,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     // get tool from the observer
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
-      // this.rate = this.calculateRate(this.starredUsers);
+      this.rate = this.calculateRate(this.starredUsers);
     });
   }
 
@@ -100,7 +117,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
         data => {
           // update total_stars
           this.alertService.simpleSuccess();
-          // this.getStarredUsers();
+          this.getStarredUsers();
 
         },
         (error) => {
@@ -109,6 +126,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
         });
     }
   }
+
 
 // returns observable so function setStar() can be subscribed to.
   unstarOrg(organizationID: number): any {
@@ -135,16 +153,21 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
 
   setStar(): any {
     if (this.rate) {
-      return this.unstarOrg(this.organization);
-      // return this.starringService.setUnstar(this.entry.id, this.entryType);
+      return this.organizationStarringService.setUnstar(this.organization.id);
     } else {
-      return this.starOrg(this.organization);
-      // return this.starringService.setStar(this.entry.id, this.entryType);
+      return this.organizationStarringService.setStar(this.organization.id);
     }
+    // if (this.rate) {
+    //   return this.unstarOrg(this.organization);
+    //   // return this.starringService.setUnstar(this.entry.id, this.entryType);
+    // } else {
+    //   return this.starOrg(this.organization);
+    //   // return this.starringService.setStar(this.entry.id, this.entryType);
+    // }
   }
   getStarredUsers(): any {
     if (this.organization) {
-      this.getStarring(this.organization.id).pipe(first()).subscribe(
+      this.organizationStarringService.getStarring(this.organization.id).pipe(first()).subscribe(
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.starredUsers = starring;
