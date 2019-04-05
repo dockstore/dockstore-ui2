@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+  <app-alert></app-alert>
+  <form [formGroup]="form">
+    <div fxLayout="column">
+      <mat-form-field>
+        <input type="text" matInput formControlName="username" placeholder="Username" required>
+        <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+        <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
+        <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="role" placeholder="Role">
+          <mat-option *ngFor="let item of roleKeys" [value]="item">{{item | titlecase}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button id="upsertUserDialogButton" [matTooltip]="title" mat-flat-button color="primary" [disabled]="!form.valid" (click)="upsertUser()"
+    cdkFocusInitial>{{title}}</button>
+</div>

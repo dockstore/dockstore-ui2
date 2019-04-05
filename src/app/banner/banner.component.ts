@@ -1,30 +1,33 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Metadata } from './../shared/swagger/model/metadata';
-import { versions } from '../footer/versions';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
+import { environment } from '../../environments/environment';
+import { versions } from '../footer/versions';
 import { MetadataService } from '../metadata/metadata.service';
-import { Subscription } from 'rxjs';
+import { Base } from '../shared/base';
+import { Metadata } from './../shared/swagger/model/metadata';
 
 @Component({
   selector: 'app-banner',
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss']
 })
-export class BannerComponent implements OnInit, OnDestroy {
+export class BannerComponent extends Base implements OnInit {
   showBanner: boolean;
   mismatchedVersion = false;
   versionFromAPI: string;
   versionBuiltWith: string;
-  mdService: Subscription;
 
-  constructor(private metadataService: MetadataService) { }
+  constructor(private metadataService: MetadataService) {
+    super();
+   }
 
   ngOnInit() {
     this.showBanner = environment.staging;
     this.versionBuiltWith = versions.version;
 
-    this.mdService = this.metadataService.getMetadata()
+    this.metadataService.getMetadata().pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
@@ -41,9 +44,4 @@ export class BannerComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  ngOnDestroy() {
-    this.mdService.unsubscribe();
-  }
-
 }

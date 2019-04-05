@@ -14,67 +14,65 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { StateService } from '../../state.service';
-import { CheckerWorkflowService } from './../../checker-workflow.service';
-import { Workflow } from './../../swagger/model/workflow';
-import { RegisterCheckerWorkflowService } from './../register-checker-workflow/register-checker-workflow.service';
+import { AlertQuery } from '../../alert/state/alert.query';
+import { Base } from '../../base';
+import { SessionQuery } from '../../session/session.query';
+import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
+import { CheckerWorkflowService } from '../../state/checker-workflow.service';
+import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
+import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/register-checker-workflow.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss']
 })
-export class InfoTabCheckerWorkflowPathComponent implements OnInit, OnDestroy {
+export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;
-  checkerWorkflow$: Observable<Workflow>;
   isStub$: Observable<boolean>;
-  checkerWorkflowPath: string;
-  refreshMessage$: Observable<string>;
+  parentId$: Observable<number>;
+  checkerWorkflowURL$: Observable<string>;
+  isRefreshing$: Observable<boolean>;
+  checkerId$: Observable<number>;
+  canAdd$: Observable<boolean>;
+  canView$: Observable<boolean>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
-  private ngUnsubscribe: Subject<{}> = new Subject();
-  parentId = null;
-  constructor(private checkerWorkflowService: CheckerWorkflowService,
-    private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
-    private stateService: StateService
-  ) { }
-
-  ngOnInit(): void {
-    this.refreshMessage$ = this.stateService.refreshMessage$;
-    this.checkerWorkflow$ = this.checkerWorkflowService.checkerWorkflow$;
-    this.checkerWorkflowService.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(thing => {
-      this.parentId = this.checkerWorkflowService.parentId;
-    });
-    this.isPublic$ = this.checkerWorkflowService.publicPage$;
-    this.isStub$ = this.checkerWorkflowService.isStub$;
-    this.checkerWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
-      if (workflow) {
-        this.checkerWorkflowPath = this.viewCheckerWorkflow();
-      }
-    });
+  constructor(private checkerWorkflowService: CheckerWorkflowService, private checkerWorkflowQuery: CheckerWorkflowQuery,
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
+    private sessionQuery: SessionQuery, private matDialog: MatDialog) {
+    super();
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+  ngOnInit(): void {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.parentId$ = this.checkerWorkflowQuery.parentId$;
+    this.isPublic$ = this.sessionQuery.isPublic$;
+    this.isStub$ = this.checkerWorkflowQuery.isStub$;
+    this.checkerWorkflowURL$ = this.checkerWorkflowService.getCheckerWorkflowURLObservable(
+      this.checkerWorkflowQuery.checkerWorkflow$, this.isPublic$);
+    this.checkerId$ = this.checkerWorkflowQuery.checkerId$;
+    this.canAdd$ = this.checkerWorkflowService.canAdd(this.checkerId$, this.parentId$, this.isStub$);
   }
 
   add(): void {
     this.registerCheckerWorkflowService.add();
-  }
-
-  viewCheckerWorkflow(): string {
-    return this.checkerWorkflowService.getCheckerWorkflowURL();
+    const dialogRef = this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px'});
   }
 
   delete(): void {
     this.registerCheckerWorkflowService.delete();
   }
 
+  /**
+   * This is bad, change it to get the URL and make the button a link instead
+   *
+   * @memberof InfoTabCheckerWorkflowPathComponent
+   */
   viewParentEntry(): void {
     this.checkerWorkflowService.goToParentEntry();
   }

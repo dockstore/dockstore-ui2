@@ -13,18 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { StarentryService } from './../shared/starentry.service';
-import { ContainerStubService, StarEntryStubService } from './../test/service-stubs';
-import { ContainerService } from './../shared/container.service';
-import { WorkflowService } from './../shared/workflow.service';
-import { UserService } from './../loginComponents/user.service';
-import { TrackLoginService } from '../shared/track-login.service';
-import { StarringStubService, TrackLoginStubService, UserStubService, WorkflowStubService } from '../test/service-stubs';
-import { StarringService } from './starring.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule, MatSnackBarModule } from '@angular/material';
 
+import { ContainerService } from '../shared/container.service';
+import { StarentryService } from '../shared/starentry.service';
+import { WorkflowService } from '../shared/state/workflow.service';
+import { TrackLoginService } from '../shared/track-login.service';
+import {
+  ContainerStubService,
+  StarEntryStubService,
+  StarringStubService,
+  TrackLoginStubService,
+  WorkflowStubService,
+} from '../test/service-stubs';
 import { StarringComponent } from './starring.component';
+import { StarringService } from './starring.service';
 
 describe('StarringComponent', () => {
   let component: StarringComponent;
@@ -32,15 +36,17 @@ describe('StarringComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StarringComponent ],
-      providers: [{provide: StarringService, useClass: StarringStubService}, {
-        provide: TrackLoginService, useClass: TrackLoginStubService}, {
-         provide: UserService, useClass: UserStubService
-      }, {
-        provide: WorkflowService, useClass: WorkflowStubService
-      }, {provide: ContainerService, useClass: ContainerStubService}, {provide: StarentryService, useClass: StarEntryStubService}]
+      declarations: [StarringComponent],
+      imports: [MatIconModule, MatSnackBarModule],
+      providers: [
+        { provide: StarringService, useClass: StarringStubService },
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: StarentryService, useClass: StarEntryStubService }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

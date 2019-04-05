@@ -1,0 +1,5 @@
+ // Overriding the border added in the style.scss
+ input[type=text]:focus,
+ textarea:focus {
+   border: none
+ }

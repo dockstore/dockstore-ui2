@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Edit {{ data.type }} description</h1>
+<div mat-dialog-content>
+  <app-alert></app-alert>
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Edit Mode">
+      <form class="p-1" [formGroup]="updateOrganizationOrCollectionDescriptionForm" fxLayout="column">
+        <mat-form-field>
+          <textarea cdkAutosizeMinRows="3" type="text" matInput formControlName="description" placeholder="Description"></textarea>
+        </mat-form-field>
+      </form>
+    </mat-tab>
+    <mat-tab label="Preview Mode">
+      <ngx-md class="p-1" [data]="descriptionValue"></ngx-md>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button id="updateOrganizationDescriptionButton" [matTooltip]="'Update ' + data.type + ' description'" mat-flat-button color="primary" [disabled]="!updateOrganizationOrCollectionDescriptionForm.valid"
+    (click)="updateOrganizationDescription()" cdkFocusInitial>Update</button>
+</div>

@@ -14,10 +14,12 @@
  *     limitations under the License.
  */
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
-
+import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
+import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
+import { Permission, ToolDescriptor } from './../shared/swagger';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
@@ -26,8 +28,8 @@ import { Token } from './../shared/swagger/model/token';
 import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
-import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
-import { Permission } from './../shared/swagger';
+import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+
 import RoleEnum = Permission.RoleEnum;
 
 export class ContainerStubService {
@@ -104,6 +106,7 @@ export class GA4GHStubService {
 }
 
 export class SearchStubService {
+
     workflowhit$ = observableOf([]);
     toolhit$ = observableOf([]);
     searchInfo$ = observableOf({});
@@ -118,6 +121,9 @@ export class SearchStubService {
         } else {
             return false;
         }
+    }
+    setAutoCompleteTerms() {
+
     }
 
     noResults(searchTerm: string, hits: any) {
@@ -153,9 +159,8 @@ export class SearchStubService {
         return 'thisisafakepermalink';
     }
 
-    createURIParams(cururl) {
-        const url = cururl.substr('/search'.length + 1);
-        const params = new URLSearchParams(url);
+    createURIParams() {
+        const params = new URLSearchParams('/search');
         return params;
     }
     initializeFriendlyNames() {
@@ -197,6 +202,8 @@ export class SearchStubService {
             ])]
         ]);
     }
+    handleLink(linkArray: Array<string>) {
+    }
 }
 
 export class ListContainersStubService {
@@ -217,15 +224,6 @@ export class AuthStubService {
     authenticate() {
         return observableOf({});
     }
-}
-
-export class ErrorStubService {
-    errorObj$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
-
-    setErrorAlert() {
-      return observableOf({});
-    }
-
 }
 
 export class ConfigurationStub {
@@ -370,11 +368,11 @@ export class MetadataStubService {
 
     descriptorLanguageList = observableOf([
         {
-            'value': 'CWL',
+            'value': ToolDescriptor.TypeEnum.CWL,
             'friendlyName': 'Common Workflow Language'
         },
         {
-            'value': 'WDL',
+            'value': ToolDescriptor.TypeEnum.WDL,
             'friendlyName': 'Workflow Description Language'
         }
     ]);
@@ -439,6 +437,9 @@ export class UserStubService {
     extendedUser$ = observableOf({});
     updateUser() {
     }
+    getExtendedUserData() {
+
+    }
 }
 
 export class TokenStubService {
@@ -486,10 +487,19 @@ export class CheckerWorkflowStubService {
     isEntryAWorkflow() {
         return true;
     }
+    clearAll() {
+      return;
+    }
+    getCheckerWorkflowURLObservable() {
+      return observableOf(null);
+    }
+    canAdd() {
+      return observableOf(false);
+    }
 }
 
 export class DescriptorLanguageStubService {
-    descriptorLanguages$ = observableOf(['cwl', 'wdl', 'nextflow']);
+    descriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
 }
 
 export class RegisterCheckerWorkflowStubService {
@@ -522,6 +532,7 @@ export class ImageProviderStubService {
 }
 
 export class DagStubService {
+    loadExtensions() {}
 
 }
 
@@ -531,10 +542,10 @@ export class DescriptorsStubService {
             const typesAvailable = new Array();
             for (const file of version.sourceFiles) {
                 const type = file.type;
-                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes('cwl')) {
-                    typesAvailable.push('cwl');
-                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes('wdl')) {
-                    typesAvailable.push('wdl');
+                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.CWL)) {
+                    typesAvailable.push(WebserviceDescriptorTypeEnum.CWL);
+                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.WDL)) {
+                    typesAvailable.push(WebserviceDescriptorTypeEnum.WDL);
                 }
             }
             return typesAvailable;
@@ -594,6 +605,9 @@ export class DateStubService {
 }
 
 export class WorkflowsStubService {
+    getTableToolContent(workflowId: number, workflowVersionId: number, observe?: 'body', reportProgress?: boolean): Observable<string> {
+      return observableOf('tableToolContentString');
+    }
     sharedWorkflows() {
       return observableOf([]);
     }
@@ -619,7 +633,7 @@ export class WorkflowsStubService {
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
-            'descriptorType': 'cwl',
+            'descriptorType': WebserviceDescriptorTypeEnum.CWL,
             'gitUrl': 'refreshedGitUrl',
             'mode': Workflow.ModeEnum.FULL,
             'organization': 'refreshedOrganization',
@@ -746,11 +760,8 @@ export class ContainersStubService {
 }
 
 export class VersionModalStubService {
-
-}
-
-
-export class StateStubService {
-    publicPage$ = observableOf(false);
-    refreshMessage$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  version = observableOf(sampleTag);
+  mode = observableOf(TagEditorMode.View);
+  unsavedTestCWLFile = observableOf([]);
+  unsavedTestWDLFile = observableOf([]);
 }

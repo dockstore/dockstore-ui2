@@ -13,12 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { toExtendSite } from '../shared/helpers';
-import { takeUntil } from 'rxjs/operators';
-import { Subscription ,  Subject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -29,10 +28,8 @@ export class HeaderComponent implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private router: Router) {
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isExtended = toExtendSite(this.router.url);
-      }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe((event) => {
+      this.isExtended = toExtendSite(this.router.url);
     });
   }
 

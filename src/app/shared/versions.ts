@@ -13,20 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { Input } from '@angular/core';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { takeUntil } from 'rxjs/operators';
 
 import { DockstoreService } from '../shared/dockstore.service';
-import { DateService } from './date.service';
-import { StateService } from './state.service';
-import { Tooltip } from './tooltip';
 import { EntryTab } from '../shared/entry/entry-tab';
-import { Tag } from './../shared/swagger/model/tag';
+import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { DateService } from './date.service';
+import { SessionQuery } from './session/session.query';
+import { Tooltip } from './tooltip';
 
 export abstract class Versions extends EntryTab {
 
   @Input() versions: Array<(Tag | WorkflowVersion)>;
+  @Input() verifiedSource: Array<any>;
   sortColumn: string;
   sortReverse: boolean;
   publicPage: boolean;
@@ -37,7 +39,7 @@ export abstract class Versions extends EntryTab {
   abstract setNoOrderCols(): Array<number>;
 
   constructor(protected dockstoreService: DockstoreService,
-    private dateService: DateService, protected stateService: StateService) {
+    private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_modified, latest first
     super();
     this.sortColumn = 'last_modified';
@@ -46,7 +48,7 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.stateService.publicPage$.subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
   }
 
   getDefaultTooltip(publicPage: boolean): string {
@@ -65,7 +67,7 @@ export abstract class Versions extends EntryTab {
       this.sortReverse = false;
     }
   }
-  getIconClass(columnName): string {
+  getIconClass(columnName): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
   convertSorting(): string {
@@ -79,4 +81,7 @@ export abstract class Versions extends EntryTab {
     }
   }
 
+  getVerifiedSource(name: string): string {
+    return this.dockstoreService.getVerifiedSource(name, this.verifiedSource);
+  }
 }

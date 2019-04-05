@@ -15,22 +15,7 @@
 -->
 <h4 mat-dialog-title>Register Workflow</h4>
 <div mat-dialog-content>
-  <div class="alert alert-danger alert-dismissable" role="alert" *ngIf="workflowRegisterError">
-    <button type="button" class="close" data-dismiss="alert" (click)="clearWorkflowRegisterError()">
-      &times;
-    </button>
-    <p>
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      {{workflowRegisterError.message}}
-    </p>
-    <p class="error-output">{{workflowRegisterError.errorDetails}}</p>
-  </div>
-  <div *ngIf="refreshMessage; else placeholder">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  <ng-template #placeholder>
-    <div class="pt-2"></div>
-  </ng-template>
+  <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
@@ -78,14 +63,14 @@
         <mat-radio-group class="w-100 radio-group" position="before" id="descriptorTypeRadioButtons" [(ngModel)]="workflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()">
+          <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
             {{'descriptor_type' | mapFriendlyValue : descriptorType}}
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="w-100">
           <mat-label>Workflow Path</mat-label>
           <!-- TODO: Unbold these radio buttons (font-weight: normal) -->
-          <input matInput placeholder="potato" id="sourceCodeRepositoryWorkflowPathInput" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3"
+          <input matInput id="sourceCodeRepositoryWorkflowPathInput" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3"
             maxlength="128" [pattern]="descriptorValidationPattern" required [matTooltip]="Tooltip.workflowPath" placeholder="{{ examplePatterns[workflow.descriptorType] }}"
           />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
@@ -107,7 +92,7 @@
           <button mat-button type="button" id="closeRegisterWorkflowModalButton" color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
-          <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerWorkflowForm.form.valid || refreshMessage">
+          <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerWorkflowForm.form.valid || (isRefreshing$ | async)">
             Register Workflow
           </button>
         </div>
@@ -117,16 +102,26 @@
         <mat-radio-group id="descriptorTypeRadioButtons" position="before" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType.toLowerCase()" [disabled]="descriptorType === 'NFL'">
+          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
             {{'descriptor_type' | mapFriendlyValue : descriptorType}}
           </mat-radio-button>
         </mat-radio-group>
+
         <mat-form-field class="w-100">
-          <mat-label>Workflow Name</mat-label>
-          <input matInput id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" [(ngModel)]="hostedWorkflow.name" [pattern]="validationPatterns.workflowName"
-            maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.workflowName"/>
-          <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
+          <mat-label>Repository</mat-label>
+          <input matInput id="hostedWorkflowRepository" name="hostedWorkflowRepository" #hostedWorkflowRepository="ngModel" [(ngModel)]="hostedWorkflow.repository" [pattern]="validationPatterns.workflowName"
+            maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.repository"/>
+          <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{validationMessage.repository.pattern}}</mat-error>
         </mat-form-field>
+
+        <!-- Optional workflow name, uncomment if implemented -->
+        <!-- <mat-form-field class="w-100">
+          <mat-label>Workflow Name</mat-label>
+          <input matInput id="hostedWorkflowName" name="hostedWorkflowName" #hostedWorkflowName="ngModel" [(ngModel)]="hostedWorkflow.entryName" maxlength="256" [pattern]="validationPatterns.workflowName" [matTooltip]="Tooltip.workflowName"
+            placeholder="e.g. liftover-fast (optional)" />
+          <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
+        </mat-form-field> -->
+
         <div mat-dialog-actions class="pull-right">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close

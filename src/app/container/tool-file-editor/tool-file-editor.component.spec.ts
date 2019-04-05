@@ -5,7 +5,7 @@ import { TabsModule } from 'ngx-bootstrap';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
 import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule,
-  MatFormFieldModule, MatSelectModule, MatTooltipModule } from '@angular/material';
+  MatFormFieldModule, MatSelectModule, MatTooltipModule, MatSnackBarModule, MatCardModule } from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
@@ -15,8 +15,8 @@ import { PublicFileDownloadPipe } from './../../shared/entry/public-file-downloa
 import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
-import { WorkflowService } from './../../shared/workflow.service';
 import { FileService } from './../../shared/file.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('ToolFileEditorComponent', () => {
   let component: ToolFileEditorComponent;
@@ -38,10 +38,12 @@ describe('ToolFileEditorComponent', () => {
         MatTabsModule,
         MatToolbarModule,
         MatIconModule,
+        MatSnackBarModule,
         MatInputModule,
         MatFormFieldModule,
         MatSelectModule,
         MatTooltipModule,
+        MatCardModule,
         BrowserAnimationsModule,
         ClipboardModule
       ],

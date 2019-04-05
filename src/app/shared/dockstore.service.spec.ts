@@ -13,15 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { inject, TestBed } from '@angular/core/testing';
+import { faSort, faSortAlphaDown, faSortAlphaUp } from '@fortawesome/free-solid-svg-icons';
 
-import { Label } from './swagger/model/label';
-import { WorkflowsService } from './swagger/api/workflows.service';
-import { ContainersStubService, WorkflowsStubService } from '../test/service-stubs';
-import { ContainersService } from './swagger';
-import { WorkflowVersion } from './swagger/model/workflowVersion';
 import { DockstoreService } from './dockstore.service';
-
-import { TestBed, inject } from '@angular/core/testing';
+import { Label } from './swagger/model/label';
+import { WorkflowVersion } from './swagger/model/workflowVersion';
 
 describe('DockstoreService', () => {
     beforeEach(() => {
@@ -126,8 +123,8 @@ describe('DockstoreService', () => {
     }));
 
     it('should get icon class', inject([DockstoreService], (service: DockstoreService) => {
-        expect(service.getIconClass('a', 'a', true)).toEqual('glyphicon-sort-by-alphabet-alt');
-        expect(service.getIconClass('a', 'b', true)).toEqual('glyphicon-sort');
-        expect(service.getIconClass('a', 'a', false)).toEqual('glyphicon-sort-by-alphabet');
+        expect(service.getIconClass('a', 'a', true)).toEqual(faSortAlphaUp);
+        expect(service.getIconClass('a', 'b', true)).toEqual(faSort);
+        expect(service.getIconClass('a', 'a', false)).toEqual(faSortAlphaDown);
     }));
 });

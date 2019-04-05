@@ -13,10 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { BehaviorSubject ,  Subscription } from 'rxjs';
-import {Injectable, OnInit} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router/';
+import { BehaviorSubject } from 'rxjs';
+
 import { PageInfo } from './../shared/models/PageInfo';
 
 @Injectable()

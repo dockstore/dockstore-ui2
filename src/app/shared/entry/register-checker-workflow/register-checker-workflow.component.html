@@ -1,26 +1,6 @@
-<div *ngIf="(isModalShown$ | async) ">
-  <div [config]="{ show: true }" (onHidden)="hideModal()" bsModal #registerCheckerWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Register Checker Workflow</h4>
-        </div>
-        <div class="alert alert-danger alert-dismissable" role="alert" *ngIf="registerError">
-          <button type="button" class="close" data-dismiss="alert" (click)="clearError()">
-            &times;
-          </button>
-          <p>
-            <span class="glyphicon glyphicon-warning-sign"></span>
-            {{registerError.message}}
-          </p>
-          <p class="error-output">{{registerError.statusText}}</p>
-        </div>
-        <div class="alert alert-info" role="alert" *ngIf="(refreshMessage$ | async)">
-          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
-          </span>
-          Please wait, retrieving tool...
-        </div>
+<h4 mat-dialog-title>Register Checker Workflow</h4>
+<div mat-dialog-content>
+        <app-alert></app-alert>
         <form #registerCheckerWorkflowForm="ngForm" name="registerCheckerWorkflowForm" class="form-horizontal" (submit)="registerCheckerWorkflow()" novalidate>
           <div class="modal-body">
             <div class="form-group form-group-sm">
@@ -30,7 +10,7 @@
               <div class="col-sm-9">
                 <input type="text" id="checkerWorkflowPath" class="form-control" name="workflow_path" [(ngModel)]="workflowPath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
                   required matTooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
-                <div *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </div>
+                <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
               </div>
             </div>
             <div class="form-group form-group-sm">
@@ -40,7 +20,7 @@
               <div class="col-sm-9">
                 <input type="text" id="checkerWorkflowTestParameterFilePath" class="form-control" name="testParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.testParameterFilePath"
                   required matTooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /test.json" />
-                <div *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </div>
+                <mat-card *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </mat-card>
               </div>
             </div>
             <div class="form-group form-group-sm" *ngIf="!isWorkflow">
@@ -48,21 +28,18 @@
               </label>
               <div class="col-sm-9">
                 <select class="form-control input-sm" [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">
-                  <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{descriptorLanguage | lowercase}}">{{descriptorLanguage | lowercase}}</option>
+                  <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{descriptorLanguage}}">{{descriptorLanguage}}</option>
                 </select>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" mat-button color="secondary" data-dismiss="modal" (click)="hideModal()">
+            <button type="button" mat-button color="secondary" data-dismiss="modal" mat-dialog-close>
               Close
             </button>
-            <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerCheckerWorkflowForm.form.valid || (refreshMessage$ | async) !== null">
+            <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerCheckerWorkflowForm.form.valid || (isRefreshing$ | async)">
               {{ (mode$ | async )==='add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}
             </button>
           </div>
         </form>
-      </div>
-    </div>
-  </div>
 </div>

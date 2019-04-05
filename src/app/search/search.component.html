@@ -15,7 +15,7 @@
   -->
 
 <app-header>
-  <span class="glyphicon glyphicon-search"></span>
+  <mat-icon>search</mat-icon>
   Search
 </app-header>
 <div class="container search-container">
@@ -26,36 +26,18 @@
         <button mat-raised-button color="accent" (click)="accordion.closeAll()">Collapse All<mat-icon>unfold_less</mat-icon></button>
       </div>
       <mat-accordion multi>
-        <mat-expansion-panel expanded>
-          <mat-expansion-panel-header>
-            Search
-          </mat-expansion-panel-header>
-          <mat-form-field>
-          <input matInput [matAutocomplete]="auto" matTooltip="Find tools and workflows" [matTooltipPosition]="'after'"
-                  list="suggestions" class="w-100 mb-3" [(ngModel)]="values"
-                  (ngModelChange)="keyUp$.next($event)" placeholder="Enter search term" />
-          </mat-form-field>
-          <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of autocompleteTerms" [value]="option">{{option}}</mat-option>
-          </mat-autocomplete>
-
-          <button mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
-            Open Advanced Search
-          </button>
-          <app-advancedsearch></app-advancedsearch>
-        </mat-expansion-panel>
+        <app-basic-search></app-basic-search>
         <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
           <mat-expansion-panel-header>
             {{friendlyNames.get(key)}}
           </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button mat-stroked-button (click)="clickSortMode(key, false)"  [ngClass]="{'active': !sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                  [ngClass]="sortModeMap.get(key).AlphabetOrderBy ? 'fa fa-sort-alpha-asc' : 'fa fa-sort-alpha-desc'"></i> Alphabetical
+              <fa-icon [icon]="sortModeMap.get(key).AlphabetOrderBy ? faSortAlphaUp : faSortAlphaDown"></fa-icon>
+              Alphabetical
             </button>
             <button mat-stroked-button (click)="clickSortMode(key, true)" [ngClass]="{'active': sortModeMap.get(key).SortBy}" class="col-md-6 sortBtn mb-1">
-              <i class="float-xs-right glyphicon" aria-hidden="true"
-                  [ngClass]="sortModeMap.get(key).CountOrderBy ? 'fa fa-sort-numeric-asc' : 'fa fa-sort-numeric-desc'"></i> Count
+                  <fa-icon [icon]="sortModeMap.get(key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon> Count
             </button>
           </div>
           <div *ngFor='let subBucket of getBucketKeys(key); let i = index'>
@@ -115,21 +97,21 @@
     </div>
     <div class="col-md-9 containers-rsb">
       <div class="hits">
-        <div *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
           Sorry, no matches found for <strong>{{searchService.joinComma(values)}}</strong>.
-          <span *ngIf="suggestTerm">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{suggestTerm}}</strong>?</span>
-        </div>
+          <span *ngIf="(suggestTerm$ | async)">Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{(suggestTerm$ | async)}}</strong>?</span>
+        </mat-card>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <div class="alert alert-info">
+          <mat-card class="alert alert-info">
             <ng-template #popTemplate>
               <div class="row">
                 <div class="input-group" style="padding:5px;">
-                  <input type="text" class="form-control" [(ngModel)]="shortUrl" value="{{shortUrl}}" readonly>
+                  <input type="text" class="form-control" [value]="(shortUrl$ | async)" readonly>
                   <span class="input-group-btn">
-                    <button class="btn btn-default" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="shortUrl"
+                    <button class="btn btn-default" [ngClass]="{'btn-copy': isCopied}" type="button" ngxClipboard [cbContent]="(shortUrl$ | async)"
                       (cbOnSuccess)="isCopied = true">
-                      <span class="glyphicon glyphicon-copy"></span>
+                      <mat-icon>file_copy</mat-icon>
                     </button>
                   </span>
                 </div>
@@ -157,8 +139,7 @@
             </span>
             <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">AND </span>
             <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)">Search: </strong>
-
-            <span *ngFor="let key of getFilterKeys(); let i = index">
+            <span *ngFor="let key of (filterKeys$ | async); let i = index">
               the <strong>{{friendlyNames.get(key)}}</strong> is
               <span *ngFor='let subBucket of filters.get(key); let j = index'>
                 <strong>{{( key | mapFriendlyValue : subBucket)}}</strong>
@@ -170,12 +151,12 @@
               AND
               </span>
             </span>
-          </div>
+          </mat-card>
         </div>
-        <div class="alert alert-info" *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)">
+        <mat-card class="alert alert-info" *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)">
           <p><strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only {{ query_size - 1 }} results are shown.
             We recommend that you narrow your search to find more relevant results.</p>
-        </div>
+          </mat-card>
         <app-search-results></app-search-results>
       </div>
     </div>

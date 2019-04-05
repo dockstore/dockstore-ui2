@@ -13,17 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { UserService } from './../loginComponents/user.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { LoginService } from './login.service';
-import { LoginStubService, TrackLoginStubService, UserStubService } from './../test/service-stubs';
-import { TrackLoginService } from './../shared/track-login.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { LoginComponent } from './login.component';
 import { RegisterService } from '../register/register.service';
+import { TrackLoginService } from '../shared/track-login.service';
+import { UserService } from '../shared/user/user.service';
+import { LoginStubService, TrackLoginStubService, UserStubService } from '../test/service-stubs';
+import { LoginComponent } from './login.component';
+import { LoginService } from './login.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -31,16 +30,17 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
+      declarations: [LoginComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [RouterTestingModule],
-      providers: [ {provide: TrackLoginService, useClass: TrackLoginStubService},
-        { provide: LoginService, useClass: LoginStubService},
+      providers: [
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
         { provide: UserService, useClass: UserStubService },
+        { provide: LoginService, useClass: LoginStubService },
         { provide: RegisterService, useClass: LoginStubService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

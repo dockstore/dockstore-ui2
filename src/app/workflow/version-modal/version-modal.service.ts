@@ -14,124 +14,108 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { RefreshService } from '../../shared/refresh.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
-import { RefreshService } from './../../shared/refresh.service';
-import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
 
 @Injectable()
 export class VersionModalService {
-    isModalShown$: Subject<boolean> = new BehaviorSubject<boolean>(false);
-    version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
-    testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
-    private workflowId;
-    constructor(
-        private stateService: StateService, private workflowService: WorkflowService, private workflowsService: WorkflowsService,
-        private refreshService: RefreshService) {
-        workflowService.workflow$.subscribe(workflow => {
-            if (workflow) {
-                this.workflowId = workflow.id;
-            }
-        });
-    }
-    setIsModalShown(isModalShown: boolean) {
-        this.isModalShown$.next(isModalShown);
-    }
+  version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
+  testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
+  constructor(
+    private alertService: AlertService, private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService,
+    private refreshService: RefreshService, private matDialog: MatDialog) {
+  }
 
-    setVersion(version: WorkflowVersion) {
-        this.version.next(version);
-    }
+  setVersion(version: WorkflowVersion) {
+    this.version.next(version);
+  }
 
-    setTestParameterFiles(testParameterFiles: SourceFile[]) {
-        this.testParameterFiles.next(testParameterFiles);
-    }
+  setTestParameterFiles(testParameterFiles: SourceFile[]) {
+    this.testParameterFiles.next(testParameterFiles);
+  }
 
-    /**
-     * Saves the version.  This contains 4 parts:
-     * 1. PUT workflowVersions
-     * 2. Refresh workflow
-     * 3. Modify test parameter files
-     * 4. Refresh workflow again
-     * TODO: Skip 2 and 3 if there's no test parameter files to modify
-     *
-     * @param {WorkflowVersion} workflowVersion
-     * @param {any} originalTestParameterFilePaths
-     * @param {any} newTestParameterFiles
-     * @memberof VersionModalService
-     */
-    saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
-        const message1 = 'Saving workflow version';
-        const message2 = 'Refreshing workflow';
-        const message3 = 'Modifying test parameter files';
-        this.setIsModalShown(false);
-        this.stateService.setRefreshMessage(message1 + '...');
-        if (workflowMode !== 'HOSTED') {
-          this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
-              response => {
-                  this.refreshService.handleSuccess(message1);
-                  this.stateService.setRefreshMessage(message2 + '...');
-                  this.workflowsService.refresh(this.workflowId).subscribe(workflow => {
-                      this.refreshService.handleSuccess(message2);
-                      this.stateService.setRefreshMessage(message3 + '...');
-                      this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
-                          success => {
-                              this.refreshService.handleSuccess(message3);
-                              this.refreshService.refreshWorkflow();
-                          }, error => {
-                              this.refreshService.handleError(message3, error);
-                              this.refreshService.refreshWorkflow();
-                          });
-                  },
-                      error => {
-                          this.refreshService.handleError(message2, error);
-                      });
-              }, error => {
-                  this.refreshService.handleError(message1, error);
-              }
-          );
-        } else {
-          this.workflowsService.updateWorkflowVersion(this.workflowId, [workflowVersion]).subscribe(
-              response => {
-                  this.refreshService.handleSuccess(message1);
-              }, error => {
-                  this.refreshService.handleError(message1, error);
-              }
-          );
+  /**
+   * Saves the version.  This contains 4 parts:
+   * 1. PUT workflowVersions
+   * 2. Refresh workflow
+   * 3. Modify test parameter files
+   * 4. Refresh workflow again
+   * TODO: Skip 2 and 3 if there's no test parameter files to modify
+   *
+   * @param {WorkflowVersion} workflowVersion
+   * @param {any} originalTestParameterFilePaths
+   * @param {any} newTestParameterFiles
+   * @memberof VersionModalService
+   */
+  saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
+    const message1 = 'Saving workflow version';
+    const message2 = 'Modifying test parameter files';
+    const workflowId = this.workflowQuery.getActive().id;
+    this.alertService.start(message1);
+    if (workflowMode !== 'HOSTED') {
+      this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
+        response => {
+          this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
+            success => {
+              this.alertService.detailedSuccess();
+              this.refreshService.refreshWorkflow();
+              this.matDialog.closeAll();
+            }, error => {
+              this.alertService.detailedError(error);
+              this.refreshService.refreshWorkflow();
+            });
+        }, error => {
+          this.alertService.detailedError(error);
         }
+      );
+    } else {
+      this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
+        response => {
+          this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
+        }, error => {
+          this.alertService.detailedError(error);
+        }
+      );
     }
+  }
 
 
-    /**
-     * This modifies the test parameter file paths of a workflow version
-     *
-     * @param {WorkflowVersion} workflowVersion
-     * @param {any} originalTestParameterFilePaths
-     * @param {any} newTestParameterFiles
-     * @returns {Observable<any>}
-     * @memberof VersionModalService
-     */
-    modifyTestParameterFiles(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles): Observable<any> {
-        const newCWL = newTestParameterFiles.filter(x => !originalTestParameterFilePaths.includes(x));
-        const missingCWL = originalTestParameterFilePaths.filter(x => !newTestParameterFiles.includes(x));
-        const toAdd: boolean = newCWL && newCWL.length > 0;
-        const toDelete: boolean = missingCWL && missingCWL.length > 0;
-        if (toDelete && toAdd) {
-            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name).pipe(concatMap(() =>
-                this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name)));
-        }
-        if (toDelete && !toAdd) {
-            return this.workflowsService.deleteTestParameterFiles(this.workflowId, missingCWL, workflowVersion.name);
-        }
-        if (toAdd && !toDelete) {
-            return this.workflowsService.addTestParameterFiles(this.workflowId, newCWL, null, workflowVersion.name);
-        }
-        if (!toAdd && !toDelete) {
-            return observableOf({});
-        }
+  /**
+   * This modifies the test parameter file paths of a workflow version
+   *
+   * @param {WorkflowVersion} workflowVersion
+   * @param {any} originalTestParameterFilePaths
+   * @param {any} newTestParameterFiles
+   * @returns {Observable<any>}
+   * @memberof VersionModalService
+   */
+  modifyTestParameterFiles(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles): Observable<any> {
+    const newCWL = newTestParameterFiles.filter(x => !originalTestParameterFilePaths.includes(x));
+    const missingCWL = originalTestParameterFilePaths.filter(x => !newTestParameterFiles.includes(x));
+    const toAdd: boolean = newCWL && newCWL.length > 0;
+    const toDelete: boolean = missingCWL && missingCWL.length > 0;
+    const workflowId = this.workflowQuery.getActive().id;
+    if (toDelete && toAdd) {
+      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name).pipe(concatMap(() =>
+        this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name)));
     }
+    if (toDelete && !toAdd) {
+      return this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name);
+    }
+    if (toAdd && !toDelete) {
+      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name);
+    }
+    if (!toAdd && !toDelete) {
+      return observableOf({});
+    }
+  }
 }

@@ -18,11 +18,13 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
+import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
+import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 
 export const updatedWorkflow: Workflow = {
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -36,7 +38,7 @@ export const updatedWorkflow: Workflow = {
 
 export const sampleWorkflow1: Workflow = {
     id: 1,
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -50,7 +52,7 @@ export const sampleWorkflow1: Workflow = {
 
 export const sampleWorkflow2: Workflow = {
     id: 2,
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -64,7 +66,7 @@ export const sampleWorkflow2: Workflow = {
 
 export const sampleWorkflow3: Workflow = {
     id: 3,
-    'descriptorType': 'cwl',
+    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
     'gitUrl': 'sampleGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'sampleOrganization',
@@ -79,7 +81,7 @@ export const sampleWorkflow3: Workflow = {
 
 export const sampleWdlWorkflow1: Workflow = {
   id: 4,
-  'descriptorType': 'wdl',
+  'descriptorType': WebserviceDescriptorTypeEnum.WDL,
   'gitUrl': 'sampleGitUrl',
   'mode': Workflow.ModeEnum.FULL,
   'organization': 'sampleOrganization',
@@ -90,6 +92,36 @@ export const sampleWdlWorkflow1: Workflow = {
   'sourceControl': 'github.com',
   'source_control_provider': 'GITHUB',
   'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence'
+};
+
+export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
+  id: 5,
+  'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+  'gitUrl': 'git@github.com:dockstore-testing/md5sum-checker.git',
+  'mode': Workflow.ModeEnum.FULL,
+  'organization': 'dockstore-testing',
+  'repository': 'md5sum-checker',
+  'workflow_path': '/md5sum/md5sum-workflow.cwl',
+  'workflowVersions': [],
+  'defaultTestParameterFilePath': '/md5sum/md5sum-input-cwl.json',
+  'sourceControl': 'github.com',
+  'source_control_provider': 'GITHUB',
+  'full_workflow_path': 'github.com/dockstore-testing/md5sum-checker'
+};
+
+export const sampleWdlWorkflow2: Workflow = {
+  id: 5,
+  'descriptorType': WebserviceDescriptorTypeEnum.WDL,
+  'gitUrl': 'sampleGitUrl',
+  'mode': Workflow.ModeEnum.FULL,
+  'organization': 'sampleOrganization',
+  'repository': 'sampleRepository',
+  'workflow_path': 'sampleWorkflowPath',
+  'workflowVersions': [],
+  'defaultTestParameterFilePath': 'updatedTestParameterPath',
+  'sourceControl': 'github.com',
+  'source_control_provider': 'GITHUB',
+  'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl'
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
@@ -112,7 +144,8 @@ export const sampleTool1: DockstoreTool = {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: 'sampleToolname',
     defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
+    tool_path: ''
 };
 
 export const sampleTool2: DockstoreTool = {
@@ -274,7 +307,8 @@ export const testSourceFiles: Array<SourceFile> = [
     'verifiedBySource': {
       'Dockstore CLI': {
         'metadata': 'Docktesters group',
-        'verified': true
+        'verified': true,
+        'platformVersion': '1.0.0'
       }
     }
   },
@@ -297,7 +331,8 @@ export const testSourceFiles: Array<SourceFile> = [
     'verifiedBySource': {
       'Dockstore CLI': {
         'metadata': 'Docktesters group',
-        'verified': true
+        'verified': true,
+        'platformVersion': null,
       }
     }
   }

@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<mat-form-field>
+<mat-form-field class="w-100">
   <mat-select [placeholder]="placeholder" [(value)]="obj" (selectionChange)="changedSelect(obj)">
     <mat-option [matTooltip]="field ? obj[field] : obj" *ngFor="let obj of items" [value]="obj">
       <div *ngIf="field">

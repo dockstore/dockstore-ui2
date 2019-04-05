@@ -15,16 +15,16 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CommunicatorService } from '../../shared/communicator.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
 import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
+import { PaginatorQuery } from '../../shared/state/paginator.query';
+import { PaginatorService } from '../../shared/state/paginator.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
-import { ContainerService } from './../../shared/container.service';
 import { ListContainersService } from './list.service';
 import { PublishedToolsDataSource } from './published-tools.datasource';
 
@@ -35,36 +35,24 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['name', 'stars', 'author', 'format', 'projectLinks', 'dockerPull'];
-
+  public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars'];
+  type: 'tool' | 'workflow' = 'tool';
   constructor(private listContainersService: ListContainersService,
-    private communicatorService: CommunicatorService,
     private dockstoreService: DockstoreService,
     private imageProviderService: ImageProviderService,
-    private containerService: ContainerService,
     private pagenumberService: PagenumberService,
     private containersService: ContainersService,
     protected providerService: ProviderService,
-    listService: ListService,
-    dateService: DateService
+    listService: ListService, paginatorService: PaginatorService,
+    dateService: DateService, private paginatorQuery: PaginatorQuery
   ) {
-    super(listService, providerService, dateService);
+    super(listService, paginatorService, providerService, dateService);
   }
   ngOnInit() {
+    this.pageSize$ = this.paginatorQuery.toolPageSize$;
+    this.pageIndex$ = this.paginatorQuery.toolPageIndex$;
     this.dataSource = new PublishedToolsDataSource(this.containersService, this.providerService, this.imageProviderService);
     this.length$ = this.dataSource.entriesLengthSubject$;
-  }
-
-  /**
-   * This gets the docker pull command
-   *
-   * @param {string} path The path of the tool (quay.io/namespace/toolname)
-   * @param {string} [tagName=''] The specific version of the docker image to get
-   * @returns {string} The docker pull command
-   * @memberof ListContainersComponent
-   */
-  getFilteredDockerPullCmd(path: string, tagName: string = ''): string {
-    return this.listContainersService.getDockerPullCmd(path, tagName);
   }
 
   getVerified(tool: DockstoreTool): boolean {

@@ -14,25 +14,29 @@
   ~    limitations under the License.
   -->
 
-<tabset [justified]="true">
-  <tab heading="Dockerfile">
-    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
+<mat-tab-group mat-stretch-tabs>
+  <mat-tab label="Dockerfile">
+    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
     </app-dockerfile>
-  </tab>
+  </mat-tab>
 
-  <tab heading="Descriptor Files">
-    <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion">
+  <mat-tab label="Descriptor Files">
+    <ng-template matTabContent>
+    <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
     </app-descriptors-container>
-  </tab>
+  </ng-template>
+  </mat-tab>
 
-  <tab heading="Test Parameter Files">
-    <app-paramfiles-container [entrypath]="entrypath" [id]="id"  [selectedVersion]="selectedVersion">
+  <mat-tab label="Test Parameter Files">
+      <ng-template matTabContent>
+    <app-paramfiles-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
     </app-paramfiles-container>
-  </tab>
-</tabset>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
 
 <div *ngIf="!versions">
-  <div class="alert alert-info">
-    <strong>No Valid Tags</strong> No files will be shown for invalid versions.
-  </div>
+  <mat-card class="alert alert-info" role="alert">
+    <mat-icon>warning</mat-icon> No files will be shown for invalid versions.
+  </mat-card>
 </div>

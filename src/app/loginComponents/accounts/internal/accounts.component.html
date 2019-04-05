@@ -13,10 +13,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<mat-progress-bar *ngIf="(syncing || syncing); else placeholder" mode="indeterminate"></mat-progress-bar>
-<ng-template #placeholder>
-  <div class="pt-2"></div>
-</ng-template>
 <div fxLayout="row wrap" fxLayoutAlign.md="space-evenly" fxLayoutAlign.sm="space-around" fxLayoutAlign.xs="space-around">
   <mat-card fxFlex="300px" class="my-2 mx-2">
     <img mat-card-image *ngIf="user?.avatarUrl" [src]="user?.avatarUrl">
@@ -29,15 +25,17 @@
       <mat-list>
         <mat-list-item>
           <h1 matLine>
-            <strong>Username:</strong>
+            <mat-icon>account_circle</mat-icon> <strong class="align-middle">Username:</strong>
           </h1>
           <p matLine id="account-username">{{user?.username}}</p>
         </mat-list-item>
-        <mat-list-item>
-          <h1 matLine>
-            <strong>Administrator:</strong>
+        <mat-list-item *ngIf="user?.isAdmin || user?.curator">
+          <h1 matLine *ngIf="user?.isAdmin" id="account-is-admin">
+            <mat-icon>lock</mat-icon> <strong class="align-middle">Administrator</strong>
           </h1>
-          <p matLine id="account-is-admin">{{ user?.isAdmin ? 'Yes' : 'No' }}</p>
+          <h1 matLine *ngIf="user?.curator && !user.isAdmin" id="account-is-curator">
+            <mat-icon >edit</mat-icon><strong class="align-middle">Curator</strong>
+          </h1>
         </mat-list-item>
       </mat-list>
     </mat-card-content>

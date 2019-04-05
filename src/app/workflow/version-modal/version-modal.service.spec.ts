@@ -13,31 +13,32 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { inject, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { RefreshService } from './../../shared/refresh.service';
-import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from './../../shared/workflow.service';
-import {
-  RefreshStubService,
-  WorkflowsStubService,
-  WorkflowStubService,
-} from './../../test/service-stubs';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { RefreshService } from '../../shared/refresh.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
 
 describe('Service: version-modal.service.ts', () => {
+  let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
     beforeEach(() => {
         TestBed.configureTestingModule({
+          imports: [BrowserAnimationsModule, MatSnackBarModule, MatDialogModule],
             providers: [VersionModalService,
+              { provide: WorkflowQuery, useValue: jasmine.createSpyObj('WorkflowQuery', ['getActive'])},
                 { provide: WorkflowService, useClass: WorkflowStubService },
                 { provide: WorkflowsService, useClass: WorkflowsStubService },
-                StateService,
                 { provide: RefreshService, useClass: RefreshStubService}
             ]
         });
+        workflowQuery = TestBed.get(WorkflowQuery);
     });
     const expectedError: any = {
         'message': 'oh no!',
@@ -56,13 +57,6 @@ describe('Service: version-modal.service.ts', () => {
     it('should ...', inject([VersionModalService], (service: VersionModalService) => {
         expect(service).toBeTruthy();
     }));
-    it('should be initially not visible', inject([VersionModalService], (service: VersionModalService) => {
-        service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeFalsy());
-    }));
-    it('should be shown after set to true', inject([VersionModalService], (service: VersionModalService) => {
-        service.setIsModalShown(true);
-        service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeTruthy());
-    }));
     it('should be able to set version', inject([VersionModalService], (service: VersionModalService) => {
         service.setVersion(expectedVersion);
         service.version.subscribe(version => expect(version).toEqual(expectedVersion));
@@ -71,11 +65,12 @@ describe('Service: version-modal.service.ts', () => {
         service.setTestParameterFiles([]);
         service.testParameterFiles.subscribe(files => expect(files).toEqual([]));
     }));
-    it('should be able to save version and clear refreshing state', inject([VersionModalService, StateService],
-        (service: VersionModalService, stateService: StateService) => {
+    it('should be able to save version and clear refreshing state', inject([VersionModalService, AlertQuery],
+        (service: VersionModalService, alertQuery: AlertQuery) => {
+          workflowQuery.getActive.and.returnValue({id: 1});
         service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
-        // Refresh service takes modifying the refreshMessage from the third message
-        stateService.refreshMessage$.subscribe(refreshMessage => expect(refreshMessage).toEqual('Modifying test parameter files...'));
+        // Refresh service takes modifying the refreshMessage from the third message;
+        alertQuery.message$.subscribe(refreshMessage => expect(refreshMessage).toEqual(''));
     }));
 
 });

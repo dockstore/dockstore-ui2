@@ -13,30 +13,23 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div class="row">
-  <div class="col-md-12">
+<div class="p-3">
+  <div class="row">
+    <div class="col-md-12">
     <table class="table versions-grid table-bordered table-condensed table-striped">
       <thead>
         <tr>
           <th>
             Workflow Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'cwl'">
+          <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
             Tool Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'wdl'">
+          <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
             Task Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
-          <th *ngIf="workflow.descriptorType === 'nfl'">
+          <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
             Process Excerpt
-            <span class="glyphicon pull-right">
-            </span>
           </th>
         </tr>
       </thead>
@@ -52,10 +45,10 @@
           </td>
         </tr>
         <tr *ngFor="let tool of toolsContent">
-          <td *ngIf="workflow.descriptorType === 'cwl'">
+          <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
             <strong>tool ID</strong>: {{tool?.id}}
           </td>
-          <td *ngIf="workflow.descriptorType === 'cwl'">
+          <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
             <strong>run</strong>: {{tool?.file}}
             <br>
             <strong>docker</strong>: {{tool?.docker}}
@@ -65,31 +58,32 @@
             <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
           </td>
 
-          <td *ngIf="workflow.descriptorType === 'wdl'">
-            <strong>task ID</strong>: {{tool?.id}}
-            <br>
-          </td>
-          <td *ngIf="workflow.descriptorType === 'wdl'">
-            <strong>docker</strong>: {{tool?.docker}}
-            <br>
-            <strong>link</strong>:
-            <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
-            <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
-          </td>
+            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
+              <strong>task ID</strong>: {{tool?.id}}
+              <br>
+            </td>
+            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
+              <strong>docker</strong>: {{tool?.docker}}
+              <br>
+              <strong>link</strong>:
+              <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
+              <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
+            </td>
 
-          <td *ngIf="workflow.descriptorType === 'nfl'">
-            <strong>process name</strong>: {{tool?.id}}
-            <br>
-          </td>
-          <td *ngIf="workflow.descriptorType === 'nfl'">
-            <strong>docker</strong>: {{tool?.docker}}
-            <br>
-            <strong>link</strong>:
-            <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
-            <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
+              <strong>process name</strong>: {{tool?.id}}
+              <br>
+            </td>
+            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
+              <strong>docker</strong>: {{tool?.docker}}
+              <br>
+              <strong>link</strong>:
+              <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
+              <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

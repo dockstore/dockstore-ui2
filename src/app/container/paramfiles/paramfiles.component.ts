@@ -14,17 +14,19 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { ContainerService } from '../../shared/container.service';
-import { GA4GHFilesStateService } from '../../shared/entry/GA4GHFiles.state.service';
 import { FileService } from '../../shared/file.service';
-import { WebserviceDescriptorType } from '../../shared/models/DescriptorType';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService, GA4GHService, ToolFile } from '../../shared/swagger';
+import { ContainersService, GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
+import { ToolQuery } from '../../shared/tool/tool.query';
 import { ParamfilesService } from './paramfiles.service';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { FilesQuery } from '../../workflow/files/state/files.query';
 
 @Component({
   selector: 'app-paramfiles-container',
@@ -36,56 +38,39 @@ export class ParamfilesComponent extends EntryFileSelector {
 
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() publicPage: boolean;
   @Input() set selectedVersion(value: Tag) {
     this.clearContent();
     this.onVersionChange(value);
+    this.checkIfValid(false, value);
   }
   public filePath: string;
   protected entryType: ('tool' | 'workflow') = 'tool';
   public downloadFilePath: string;
   constructor(private containerService: ContainerService, private containersService: ContainersService,
-    protected gA4GHService: GA4GHService, private paramfilesService: ParamfilesService,
-    protected gA4GHFilesStateService: GA4GHFilesStateService, public fileService: FileService) {
-    super(fileService, gA4GHFilesStateService, gA4GHService);
-    this.published$ = this.containerService.toolIsPublished$;
+    protected gA4GHService: GA4GHService, private paramfilesService: ParamfilesService, protected gA4GHFilesService: GA4GHFilesService,
+    public fileService: FileService, private gA4GHFilesQuery: GA4GHFilesQuery, private toolQuery: ToolQuery,
+    protected filesService: FilesService, protected filesQuery: FilesQuery) {
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
+    this.published$ = this.toolQuery.toolIsPublished$;
   }
+
   getDescriptors(version): Array<any> {
     return this.paramfilesService.getDescriptors(this._selectedVersion);
   }
 
+  getValidDescriptors(version): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
+  }
+
   /**
    * Get all the language-specific test parameter files
-   *
-   * @param {WebserviceDescriptorType} descriptor The descriptor language selected
-   * @returns {Observable<Array<ToolFile>>} The array of language-specific test parameter files
+
+   * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor language selected
+   * @returns {Observable<Array<ToolFile>>}  The array of language-specific test parameter files
    * @memberof ParamfilesComponent
    */
-  getFiles(descriptor: WebserviceDescriptorType): Observable<Array<ToolFile>> {
-    let testToolFiles$: BehaviorSubject<Array<ToolFile>>;
-    switch (descriptor) {
-      case 'wdl': {
-        testToolFiles$ = this.gA4GHFilesStateService.wdlToolFiles$;
-        break;
-      }
-      case 'cwl': {
-        testToolFiles$ = this.gA4GHFilesStateService.cwlToolFiles$;
-        break;
-      }
-      case 'nfl': {
-        testToolFiles$ = this.gA4GHFilesStateService.nflToolFiles$;
-        break;
-      }
-      default: {
-        console.error('Unknown descriptor type: ' + descriptor);
-        return observableOf([]);
-      }
-    }
-    return testToolFiles$.pipe(map((toolFiles: Array<ToolFile>) => {
-      if (toolFiles) {
-        return toolFiles.filter(toolFile => toolFile.file_type === ToolFile.FileTypeEnum.TESTFILE);
-      } else {
-        return [];
-      }
-    }));
+  getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
   }
 }

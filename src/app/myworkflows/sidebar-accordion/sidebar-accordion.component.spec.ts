@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { WorkflowService } from '../../shared/workflow.service';
 import { RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
 import {
   RefreshWorkflowOrganizationComponent,
@@ -21,6 +20,7 @@ import {
 } from '@angular/material';
 import { ExpandPanelPipe } from '../../shared/entry/expand-panel.pipe';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
+import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;

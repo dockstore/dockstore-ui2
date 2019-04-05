@@ -13,12 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 import { TabDirective } from 'ngx-bootstrap/tabs';
+import { Observable } from 'rxjs';
+
+import { User } from '../shared/swagger/model/user';
 import { TwitterService } from '../shared/twitter.service';
-import {UserService} from '../loginComponents/user.service';
-import {User} from '../shared/swagger/model/user';
+import { UserQuery } from '../shared/user/user.query';
+
+/**
+ * Simple youtube iframe component, too simple to have its own file
+ *
+ * @export
+ * @class YoutubeComponent
+ */
+@Component({
+  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
+})
+export class YoutubeComponent {
+  constructor(
+    public dialogRef: MatDialogRef<YoutubeComponent>) {}
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -27,26 +45,31 @@ import {User} from '../shared/swagger/model/user';
 export class HomeComponent implements OnInit, AfterViewInit {
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
-  public user: User;
+  public user$: Observable<User>;
   public selectedTab = 'toolTab';
-  constructor(private twitterService: TwitterService, private userService: UserService) {
+
+  @ViewChild('youtube') youtube: ElementRef;
+
+  constructor(private dialog: MatDialog, private twitterService: TwitterService,
+    private userQuery: UserQuery, private router: Router) {
   }
 
   ngOnInit() {
-    (<any>$('.youtube')).colorbox({iframe: true, innerWidth: 640, innerHeight: 390});
-    this.userService.user$.subscribe(user => this.user = user);
+    this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
     this.twitterService.runScript();
   }
 
   goToSearch(searchValue: string) {
-    window.location.href = '/search?search=' + searchValue;
+    this.router.navigate(['/search'], {queryParams: {search: searchValue}});
   }
 
   onSelect(data: TabDirective): void {
     this.selectedTab = data.id;
   }
 
-
+  openYoutube() {
+    this.dialog.open(YoutubeComponent);
+  }
 }

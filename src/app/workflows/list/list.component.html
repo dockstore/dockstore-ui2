@@ -31,15 +31,17 @@
       <mat-cell *matCellDef="let workflow: Workflow">
         <span id="verifiedIcon" *ngIf="getVerified(workflow)">
           <a href= {{verifiedLink}}>
-            <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+            <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
-        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}</mat-cell>
+      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
+        <mat-icon class="star" *ngIf="workflow?.starredUsers?.length > 0 ">star_rate</mat-icon>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
@@ -62,13 +64,8 @@
     <ng-container matColumnDef="disclaimer">
       <mat-footer-cell *matFooterCellDef colspan="6">
           <div class="row col-xs-12">
-            <div class="col-xs-12 col-sm-6">
-              <a mat-raised-button class="col-sm-12" color="primary" href="/workflows">
-                Browse All Workflows <mat-icon>chevron_right</mat-icon>
-              </a>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <a mat-raised-button class="col-sm-12" color="primary" href="/search?_type=workflow&searchMode=files">
+            <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+              <a mat-raised-button class="col-sm-12" color="primary" [routerLink]="['/search']" [queryParams]="{_type: 'workflow', searchMode: 'files'}">
                 Search Workflows <mat-icon>chevron_right</mat-icon>
               </a>
             </div>
@@ -78,6 +75,6 @@
     <mat-footer-row [hidden]="!previewMode" *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row>
   </mat-table>
   <div [hidden]="previewMode">
-    <mat-paginator [showFirstLastButtons]="true" [length]="length$ | async" [pageSize]="10" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+    <mat-paginator [showFirstLastButtons]="true" [length]="length$ | async" [pageSize]="(pageSize$ | async)" [pageIndex]="(pageIndex$ | async)"  [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
   </div>
 </div>

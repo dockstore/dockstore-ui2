@@ -20,14 +20,11 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" alt="dockstore logo">
           <img src="../assets/images/dockstore/logo.png">
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/tools">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-tools-purple.png"> Tools
+        <a mat-button class="icon" [routerLink]="['/search']">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/workflows">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-workflows-purple.png"> Workflows
-        </a>
-        <a mat-button class="icon" routerLink="/search">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
+        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
+          <mat-icon class="hidden-sm">people</mat-icon> Organizations
         </a>
         <a mat-button class="icon" href="http://docs.dockstore.org/">
             <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Docs
@@ -41,13 +38,18 @@
         </a>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login/Register</a>
         <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
-          <mat-icon class="hidden-lg">account_circle</mat-icon>
-          <span class="hidden-md hidden-sm">{{user?.username}}</span>
+          <mat-icon class="hidden-lg" *ngIf="user?.isAdmin">lock</mat-icon>
+          <mat-icon class="hidden-lg" *ngIf="user?.curator && !user?.isAdmin ">edit</mat-icon>
+          <mat-icon class="hidden-lg" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>
+          <span class="hidden-md hidden-sm">{{user?.username}}
+          </span>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menuLarge="matMenu">
-          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
-            <mat-icon color="accent">account_circle</mat-icon>Account
+          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts" >
+            <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
+            <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
+            <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
           </a>
 
           <a mat-menu-item id="dropdown-starred" routerLink="/starred">
@@ -103,9 +105,8 @@
 
   <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
-      <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/tools">Tools</a>
-      <a mat-button class="icon icon-sm" (click)="resetPageNumber()" routerLink="/workflows">Workflows</a>
       <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
+      <a mat-button class="icon icon-sm" routerLink="/organizations">Organizations</a>
       <a mat-button class="icon icon-sm" href="http://docs.dockstore.org/">Docs</a>
     </div>
   </mat-toolbar-row>

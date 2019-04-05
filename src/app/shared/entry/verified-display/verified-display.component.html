@@ -14,9 +14,13 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header> Platform </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.platform}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="verifier">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Verified Source </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.verifier}} </mat-cell>
+      <ng-container matColumnDef="platformVersion">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Platform Version</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.platformVersion}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="metadata">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Metadata </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.metadata}} </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

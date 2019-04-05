@@ -13,18 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { RefreshService } from '../../shared/refresh.service';
-import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { ErrorService } from './../../shared/error.service';
-import { ExtendedWorkflowService } from './../../shared/extended-workflow.service';
-import { ExtendedWorkflow } from './../../shared/models/ExtendedWorkflow';
-import { StateService } from './../../shared/state.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
+import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
+import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable()
 export class InfoTabService {
@@ -52,11 +54,11 @@ export class InfoTabService {
      */
     private currentWorkflow: any;
 
-    constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private stateService: StateService,
-        private errorService: ErrorService, private refreshService: RefreshService,
-        private extendedWorkflowService: ExtendedWorkflowService,
+    constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService,
+      private alertService: AlertService, private refreshService: RefreshService,
+        private extendedWorkflowQuery: ExtendedWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService,
         private descriptorLanguageService: DescriptorLanguageService) {
-        this.extendedWorkflowService.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
+        this.extendedWorkflowQuery.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
             this.workflow = workflow;
             this.cancelEditing();
         });
@@ -75,13 +77,13 @@ export class InfoTabService {
         const message = 'Workflow Info';
         workflow.workflowVersions = [];
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
-            this.stateService.setRefreshMessage('Updating ' + message + '...');
+            this.alertService.start('Updating ' + message);
             this.workflowsService.refresh(this.originalWorkflow.id).subscribe(refreshResponse => {
                 this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
                 this.workflowService.setWorkflow(refreshResponse);
-                this.refreshService.handleSuccess(message);
+                this.alertService.detailedSuccess();
             }, error => {
-                this.refreshService.handleError(message, error);
+                this.alertService.detailedError(error);
                 this.restoreWorkflow();
             });
         });
@@ -95,14 +97,14 @@ export class InfoTabService {
      */
     update(workflow: Workflow) {
         const message = 'Descriptor Type';
-        this.stateService.setRefreshMessage('Updating ' + message + '...');
+        this.alertService.start('Updating ' + message);
         workflow = this.changeWorkflowPathToDefaults(workflow);
         workflow.workflowVersions = [];
         this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe((updatedWorkflow: Workflow) => {
             this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
-            this.refreshService.handleSuccess(message);
-        }, error => {
-            this.refreshService.handleError(message, error);
+            this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
+            this.alertService.detailedError(error);
         });
     }
 
@@ -115,14 +117,15 @@ export class InfoTabService {
      * @memberof InfoTabService
      */
     private changeWorkflowPathToDefaults(workflow: Workflow): Workflow {
-        switch (workflow.descriptorType) {
-            case 'cwl':
+      const descriptorType: ToolDescriptor.TypeEnum = this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType);
+        switch (descriptorType) {
+            case ToolDescriptor.TypeEnum.CWL:
                 workflow.workflow_path = '/Dockstore.cwl';
                 break;
-            case 'wdl':
+            case ToolDescriptor.TypeEnum.WDL:
                 workflow.workflow_path = '/Dockstore.wdl';
                 break;
-            case 'nfl':
+            case ToolDescriptor.TypeEnum.NFL:
                 workflow.workflow_path = '/nextflow.config';
                 break;
             default:

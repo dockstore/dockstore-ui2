@@ -1,17 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { StateService } from '../state.service';
-import { AlertComponent } from './alert.component';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule, MatProgressBarModule } from '@angular/material';
+import { CustomMaterialModule } from './../modules/material.module';
+
+import { AlertComponent } from './alert.component';
+import { LoadingComponent } from '../loading/loading.component';
 
 @NgModule({
-    declarations: [
-      AlertComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule
-    ],
-    exports: [AlertComponent]
-  })
-  export class RefreshAlertModule {}
+  declarations: [
+    AlertComponent,
+    LoadingComponent
+  ],
+  imports: [
+    MatProgressBarModule,
+    MatIconModule,
+    CommonModule,
+    FormsModule,
+    CustomMaterialModule
+  ],
+  exports: [AlertComponent, LoadingComponent]
+})
+export class RefreshAlertModule { }

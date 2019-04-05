@@ -16,7 +16,7 @@
 
 import { TestBed, inject } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material';
-import { AuthService } from 'ng2-ui-auth/commonjs/auth.service';
+import { AuthService } from 'ng2-ui-auth';
 
 import { AuthStubService } from '../test/service-stubs';
 import { RegisterService } from './register.service';

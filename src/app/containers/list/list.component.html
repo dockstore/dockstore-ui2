@@ -29,19 +29,21 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool: Tool">
-        <span *ngIf="getVerified(tool)">
-          <a style="text-decoration: none" matTooltip="Verified" class="glyphicon glyphicon-ok" href= {{verifiedLink}}></a>
-        </span>
+        <a *ngIf="getVerified(tool)" href= {{verifiedLink}}>
+          <mat-icon matTooltip="Verified">check</mat-icon>
+        </a>
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [routerLink]="('/containers/' + tool.tool_path )">{{ tool?.name +
+        <a [routerLink]="('/containers/' + tool.tool_path )">{{ tool?.namespace + '/' + tool?.name +
                 (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool">{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}</mat-cell>
+      <mat-cell class="description-cell" *matCellDef="let tool">{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0 ">star_rate</mat-icon>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
@@ -62,32 +64,13 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="dockerPull">
-      <mat-header-cell *matHeaderCellDef>Docker Pull</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <div class="input-group">
-          <input readonly type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.tool_path, tool.defaultVersion) }}" aria-describedby="clipboard"
-            #inputTarget>
-          <span class="input-group-btn" id="clipboard">
-            <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget">
-              <span class="glyphicon glyphicon-copy"></span>
-            </button>
-          </span>
-        </div>
-      </mat-cell>
-    </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     <ng-container matColumnDef="disclaimer">
       <mat-footer-cell *matFooterCellDef colspan="6">
         <div class="row col-xs-12">
-          <div class="col-xs-12 col-sm-6">
-            <a mat-raised-button class="col-sm-12" color="primary" href="/tools">
-              Browse All Tools <mat-icon>chevron_right</mat-icon>
-            </a>
-          </div>
-          <div class="col-xs-12 col-sm-6">
-            <a mat-raised-button class="col-sm-12" color="primary" href="/search?">
+          <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+            <a mat-raised-button class="col-sm-12" color="primary" [routerLink]="['/search']" [queryParams]="{_type: 'tool', searchMode: 'files'}">
               Search Tools <mat-icon>chevron_right</mat-icon>
             </a>
           </div>
@@ -97,6 +80,6 @@
     <mat-footer-row [hidden]="!previewMode" *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row>
   </mat-table>
   <div [hidden]="previewMode">
-    <mat-paginator [showFirstLastButtons]="true" [length]="length$ | async" [pageSize]="10" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+    <mat-paginator [showFirstLastButtons]="true" [length]="length$ | async" [pageIndex]="(pageIndex$ | async)" [pageSize]="(pageSize$ | async)" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
   </div>
 </div>

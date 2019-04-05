@@ -13,22 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { UsersService } from './../shared/swagger/api/users.service';
-import { User } from './../shared/swagger/model/user';
-import { AuthService } from 'ng2-ui-auth';
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subscription ,  Subject } from 'rxjs';
-
-import { LogoutService } from './../shared/logout.service';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
-import { TrackLoginService } from './../shared/track-login.service';
-import { UserService } from './../loginComponents/user.service';
-import { PagenumberService } from './../shared/pagenumber.service';
-import { PageInfo } from './../shared/models/PageInfo';
 import { toExtendSite } from '../shared/helpers';
-import { takeUntil } from 'rxjs/operators';
+import { UserQuery } from '../shared/user/user.query';
+import { LogoutService } from './../shared/logout.service';
+import { PageInfo } from './../shared/models/PageInfo';
+import { PagenumberService } from './../shared/pagenumber.service';
+import { User } from './../shared/swagger/model/user';
+import { TrackLoginService } from './../shared/track-login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -45,18 +41,16 @@ export class NavbarComponent extends Logout implements OnInit {
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
     router: Router,
-    private userService: UserService) {
+    private userQuery: UserQuery) {
     super(trackLoginService, logoutService, router);
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isExtended = toExtendSite(this.router.url);
-      }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.isExtended = toExtendSite(this.router.url);
     });
   }
 
   ngOnInit() {
-    this.userService.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
-    this.userService.extendedUser$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
+    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
   }
 
   resetPageNumber() {

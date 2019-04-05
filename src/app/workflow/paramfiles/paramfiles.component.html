@@ -13,40 +13,51 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div>
-  <alert *ngIf="!_selectedVersion?.valid" type="warning">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp;This version of the workflow is invalid.
-  </alert>
-  <alert type="warning" *ngIf="!content && descriptorType !== 'nfl'">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    &nbsp; A Test Parameter File associated with this workflow could not be found.
-  </alert>
-  <alert type="info" *ngIf="descriptorType === 'nfl'">
-    <span class="glyphicon glyphicon-warning-sign"></span>
+<div class="p-3">
+  <mat-card *ngIf="validationMessage" class="alert alert-warning" role="alert">
+    <mat-icon>warning</mat-icon>
+    &nbsp;
+    <span *ngFor="let item of validationMessage | keyvalue">
+      <strong>{{item.key}}</strong>: {{item.value}}
+    </span>
+  </mat-card>
+  <mat-card class="alert alert-info" role="alert" *ngIf="(isNFL$ | async)">
+    <mat-icon>warning</mat-icon>
     &nbsp;
     Nextflow does not have the concept of a test parameter file.
-  </alert>
-  <div [hidden]="!content">
+  </mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
+  <ng-template #loaded>
+    <mat-card class="alert alert-warning" role="alert" *ngIf="!content && !(isNFL$ | async)">
+      <mat-icon>warning</mat-icon>
+      &nbsp; A Test Parameter File associated with this workflow could not be found.
+    </mat-card>
+    <div [hidden]="!content">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <app-select  [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)"></app-select>
-          <span class="spacer"></span>
-          <div class="btn-group pull-right" role="group">
-            <a mat-icon-button color="secondary" class="mr-1" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath" type="button" title="{{filePath}}">
-              <mat-icon>save_alt</mat-icon>
-            </a>
-            <ng-template #unpublishedDownloadLink>
-              <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF" [download]="customDownloadPath" type="button" title="{{filePath}}">
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+            <app-select class="longer" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)">
+            </app-select>
+            <div class="btn-group pull-right" role="group">
+              <a mat-icon-button color="secondary" class="mr-1"
+                *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath"
+                type="button" title="{{filePath}}">
                 <mat-icon>save_alt</mat-icon>
               </a>
-            </ng-template>
-            <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
-              <mat-icon>file_copy</mat-icon>
-            </button>
+              <ng-template #unpublishedDownloadLink>
+                <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF"
+                  [download]="customDownloadPath" type="button" title="{{filePath}}">
+                  <mat-icon>save_alt</mat-icon>
+                </a>
+              </ng-template>
+              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </div>
           </div>
         </mat-toolbar-row>
       </mat-toolbar>
-    <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
-  </div>
+      <app-code-editor [(content)]="content" [filepath]="filePath" [editing]="false"></app-code-editor>
+    </div>
+  </ng-template>
 </div>

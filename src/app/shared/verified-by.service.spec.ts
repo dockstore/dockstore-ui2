@@ -14,6 +14,6 @@ describe('Service: VerifiedBy', () => {
   it('should get verified-by string', inject([VerifiedByService], (service: VerifiedByService) => {
     expect(service.getVerifiedByString(null)).toEqual([]);
     expect(service.getVerifiedByString([])).toEqual([]);
-    expect(service.getVerifiedByString(testSourceFiles)).toEqual(['Dockstore CLI via Docktesters group']);
+    expect(service.getVerifiedByString(testSourceFiles)).toEqual(['Dockstore CLI 1.0.0']);
   }));
 });

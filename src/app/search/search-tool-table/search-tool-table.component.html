@@ -17,23 +17,21 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table [hidden]="!dataSource" class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
+  <mat-table [hidden]="!dataSource" class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="starredUsers" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool: Tool">
         <span *ngIf="getVerified(tool)">
-          <a style="text-decoration: none" matTooltip="Verified" class="glyphicon glyphicon-ok" href= {{verifiedLink}}></a>
+          <a style="text-decoration: none" matTooltip="Verified"href= {{verifiedLink}}>
+          <span>
+              <mat-icon>check</mat-icon>
+          </span></a>
         </span>
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [routerLink]="('/containers/' + tool.tool_path )">{{ tool?.name +
-                    (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
+        <a [matTooltip]="tool?.tool_path" [routerLink]="('/containers/' + tool.tool_path )">{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
       </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool">{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
@@ -54,18 +52,10 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="dockerPull">
-      <mat-header-cell *matHeaderCellDef>Docker Pull</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <div class="input-group">
-          <input readonly type="text" class="form-control" value="{{ getFilteredDockerPullCmd(tool.tool_path, tool.defaultVersion) }}" aria-describedby="clipboard"
-            #inputTarget>
-          <span class="input-group-btn" id="clipboard">
-            <button class="btn btn-default" type="button" [ngxClipboard]="inputTarget">
-              <span class="glyphicon glyphicon-copy"></span>
-            </button>
-          </span>
-        </div>
+    <ng-container matColumnDef="starredUsers">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let tool">{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0 " >star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

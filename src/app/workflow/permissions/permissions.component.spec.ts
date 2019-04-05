@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { RefreshService } from '../../shared/refresh.service';
+import { TokenService } from '../../shared/state/token.service';
 import { CustomMaterialModule } from './../../shared/modules/material.module';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { TokenService } from './../../loginComponents/token.service';
-import { WorkflowsStubService, TokenStubService, RefreshStubService } from './../../test/service-stubs';
+import { RefreshStubService, TokenStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { PermissionsComponent } from './permissions.component';
-import { RefreshService } from '../../shared/refresh.service';
 
 describe('PermissionsComponent', () => {
   let component: PermissionsComponent;

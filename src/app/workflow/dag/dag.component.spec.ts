@@ -13,41 +13,43 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from './../../shared/swagger/model/workflow';
-import { WorkflowService } from './../../shared/workflow.service';
-import { WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
-import { DagComponent } from './dag.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { DagStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
+import { DagComponent } from './dag.component';
+import { DagQuery } from './state/dag.query';
+import { DagStore } from './state/dag.store';
 
-/* tslint:disable:no-unused-variable */
-declare var cytoscape: any;
 describe('DagComponent', () => {
   let component: DagComponent;
   let fixture: ComponentFixture<DagComponent>;
-  // let de: DebugElement;
-  // let el: HTMLElement;
+  let dagQuery: DagQuery;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DagComponent, CwlViewerComponent ],
-      imports: [ HttpClientTestingModule, FormsModule ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ {provide: WorkflowsService, useClass: WorkflowsStubService },
-        {provide: WorkflowService, useClass: WorkflowStubService}
+      declarations: [DagComponent, CwlViewerComponent],
+      imports: [HttpClientTestingModule, FormsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        DagStore,
+        DagQuery,
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DagComponent);
     component = fixture.componentInstance;
+    dagQuery = TestBed.get(DagQuery);
+    // Mocking services that are injected inside the component
+    (component as any).dagService = new DagStubService();
     fixture.detectChanges();
   });
 
@@ -55,43 +57,9 @@ describe('DagComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should be able to download', () => {
-    // component.refreshDocument();
-    // component.download();
-    component._selectedVersion = {
-      reference: 'reference',
-      name: 'master',
-    };
-    component.workflow = {
-      'defaultTestParameterFilePath': '',
-      'descriptorType': 'cwl',
-      'gitUrl': '',
-      'mode': Workflow.ModeEnum.FULL,
-      'organization': '',
-      'repository': 'l',
-      'workflow_path': '',
-      'sourceControl': 'github.com',
-      'source_control_provider': 'GITHUB'
-    };
-  //   fixture.detectChanges();
-  //   de = fixture.debugElement.query(By.css('#exportLink'));
-  //   el = de.nativeElement;
-  //   expect(el.getAttribute('href')).toBe('l_master.png');
-  });
-  it('should be able to toggleExpand', () => {
-    component.toggleExpand();
-    expect(component.expanded).toEqual(true);
-  });
-
-  it('should update missing tool', () => {
-    component.setDagResult(null);
-    component.updateMissingTool();
-    expect(component.missingTool).toBeTruthy();
-    component.setDagResult({'edges': [], 'nodes': []});
-    component.updateMissingTool();
-    expect(component.missingTool).toBeTruthy();
-    component.setDagResult({'edges': [1], 'nodes': [1]});
-    component.updateMissingTool();
-    expect(component.missingTool).toBeFalsy();
+  it('dagQuery should return determine whether the dagResults are missing tools', () => {
+    expect(dagQuery.isMissingTool(null)).toBeTruthy();
+    expect(dagQuery.isMissingTool({ 'edges': [], 'nodes': [] })).toBeTruthy();
+    expect(dagQuery.isMissingTool({ 'edges': [1], 'nodes': [1] })).toBeFalsy();
   });
 });

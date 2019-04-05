@@ -15,22 +15,7 @@
   -->
 <h4 mat-dialog-title>Register Tool</h4>
 <mat-dialog-content>
-<div class="alert alert-danger alert-dismissable" role="alert" *ngIf="toolRegisterError">
-  <button type="button" class="close" data-dismiss="alert" (click)="clearToolRegisterError()">
-    &times;
-  </button>
-  <p>
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    {{toolRegisterError.message}}
-  </p>
-  <p class="error-output">{{toolRegisterError.errorDetails}}</p>
-</div>
-<div *ngIf="refreshMessage; else placeholder">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</div>
-<ng-template #placeholder>
-  <div class="pt-2"></div>
-</ng-template>
+<app-alert></app-alert>
 <mat-horizontal-stepper #stepper>
   <ng-template matStepperIcon="edit">
     <mat-icon>done</mat-icon>
@@ -38,7 +23,7 @@
   <mat-step>
     <ng-template matStepLabel>Tool storage type</ng-template>
     <p>
-      You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL/NextFlow on an existing third party repository, such
+      You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL on an existing third party repository, such
       as GitHub, Bitbucket, etc.
     </p>
     <div class="modal-body">
@@ -196,7 +181,7 @@
           </label>
           <div class="col-sm-9">
             <label>
-              <input type="checkbox" name="tool.private_access" [(ngModel)]="tool.private_access" matTooltip="Image registry entry is private." id="privateTool"
+              <input type="checkbox" [disabled]="disablePrivateCheckbox" name="tool.private_access" [(ngModel)]="tool.private_access" matTooltip="Image registry entry is private." id="privateTool"
               />
             </label>
           </div>
@@ -226,7 +211,7 @@
         <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">
           Close
         </button>
-        <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerToolForm.form.valid || savingActive || (refreshMessage) || isInvalidCustomRegistry() || isInvalidPrivateTool()">
+        <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerToolForm.form.valid || savingActive || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()">
           Add Tool
         </button>
       </div>
@@ -289,9 +274,19 @@
               name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" disabled/>
           </div>
         </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 control-label">
+            Tool Name:
+          </label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="toolName" [(ngModel)]="hostedTool.entryName" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Name to distinguish between multiple tools within the same repository"
+              placeholder="e.g. liftover-fast (optional)" />
+            <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
+          </div>
+        </div>
       </div>
       <div mat-dialog-actions class="pull-right">
-        <button mat-button type="button" color="secondary" (click)="hideModal();clearToolRegisterError()">
+        <button mat-button type="button" color="secondary" (click)="hideModal()">
           Close
         </button>
         <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">

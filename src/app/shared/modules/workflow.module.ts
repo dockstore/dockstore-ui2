@@ -15,6 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -24,14 +25,13 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
-import { ShareButtonsModule } from 'ngx-sharebuttons';
-
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { CurrentCollectionsModule } from '../../entry/current-collections.module';
+import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
-import { WorkflowDescriptorService } from '../../workflow/descriptors/workflow-descriptor.service';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
@@ -43,7 +43,6 @@ import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { DateService } from '../date.service';
-import { ExtendedWorkflowService } from '../extended-workflow.service';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -81,6 +80,8 @@ import { getTooltipConfig } from './../tooltip';
     CommonModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
+    CurrentCollectionsModule,
+    FlexLayoutModule,
     NgxMdModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
@@ -90,23 +91,21 @@ import { getTooltipConfig } from './../tooltip';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
-    ShareButtonsModule.forRoot(),
     StarringModule,
     OrderByModule,
     FormsModule,
     DagModule,
     StargazersModule,
     ClipboardModule,
-    EntryModule
+    EntryModule,
+    AddEntryModule
   ],
   providers: [
-    ExtendedWorkflowService,
     { provide: TooltipConfig, useFactory: getTooltipConfig },
     DateService,
     FileService,
     WorkflowLaunchService,
     ParamfilesService,
-    WorkflowDescriptorService,
     InfoTabService,
     RefreshService,
     RegisterWorkflowModalService,
@@ -114,7 +113,9 @@ import { getTooltipConfig } from './../tooltip';
   ],
   exports: [
     WorkflowComponent,
-    CustomMaterialModule
-  ]
+    CustomMaterialModule,
+    EntryModule
+  ],
+  entryComponents: [VersionModalComponent]
 })
 export class WorkflowModule { }

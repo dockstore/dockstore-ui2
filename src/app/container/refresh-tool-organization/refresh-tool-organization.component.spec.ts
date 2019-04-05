@@ -1,4 +1,12 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule, MatIconModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
+
 import { RefreshService } from '../../shared/refresh.service';
+import { ContainerService } from './../../shared/container.service';
+import { UsersService } from './../../shared/swagger/api/users.service';
+import { ContainerStubService, RefreshStubService, UsersStubService } from './../../test/service-stubs';
+import { RefreshToolOrganizationComponent } from './refresh-tool-organization.component';
+
 /*
  *    Copyright 2017 OICR
  *
@@ -15,21 +23,6 @@ import { RefreshService } from '../../shared/refresh.service';
  *    limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { StateService } from '../../shared/state.service';
-import { StateStubService, UserStubService } from '../../test/service-stubs';
-import { UserService } from './../../loginComponents/user.service';
-import { ContainerService } from './../../shared/container.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
-import { ContainerStubService, UsersStubService, RefreshStubService } from './../../test/service-stubs';
-import { RefreshToolOrganizationComponent } from './refresh-tool-organization.component';
-import {
-  MatButtonModule,
-  MatIconModule,
-  MatTooltipModule
-} from '@angular/material';
-/* tslint:disable:no-unused-variable */
 describe('RefreshToolOrganizationComponent', () => {
   let component: RefreshToolOrganizationComponent;
   let fixture: ComponentFixture<RefreshToolOrganizationComponent>;
@@ -38,13 +31,12 @@ describe('RefreshToolOrganizationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RefreshToolOrganizationComponent],
       imports: [
+        MatSnackBarModule,
         MatIconModule,
         MatButtonModule,
         MatTooltipModule
       ],
       providers: [
-        { provide: UserService, useClass: UserStubService },
-        { provide: StateService, useClass: StateStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: RefreshService, useClass: RefreshStubService }]

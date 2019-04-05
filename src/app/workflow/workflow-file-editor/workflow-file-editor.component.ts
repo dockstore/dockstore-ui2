@@ -1,11 +1,28 @@
+/*
+ *    Copyright 2019 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { ToolDescriptor, Workflow } from '../../shared/swagger';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowService } from './../../shared/workflow.service';
-import { RefreshService } from './../../shared/refresh.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Workflow } from '../../shared/swagger';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Component({
   selector: 'app-workflow-file-editor',
@@ -18,7 +35,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
   originalSourceFiles = [];
   _selectedVersion: WorkflowVersion;
   isNewestVersion = false;
-  @Input() descriptorType: string;
+  public selectedDescriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  public isNFL$: Observable<boolean>;
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
@@ -26,13 +44,15 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
-      this.originalSourceFiles =  $.extend(true, [], value.sourceFiles);
+      this.originalSourceFiles = JSON.parse(JSON.stringify(value.sourceFiles));
       this.loadVersionSourcefiles();
     }
   }
-  constructor(private hostedService: HostedService, private workflowService: WorkflowService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService) {
-    super();
+  constructor(private hostedService: HostedService, private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService, protected alertService: AlertService, private workflowQuery: WorkflowQuery) {
+    super(alertService);
+    this.selectedDescriptorType$ = this.workflowQuery.descriptorType$;
+    this.isNFL$ = this.workflowQuery.isNFL$;
   }
 
   checkIfNewestVersion(): boolean {
@@ -47,8 +67,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
-    this.descriptorFiles = this.getDescriptorFiles(this._selectedVersion.sourceFiles);
-    this.testParameterFiles = this.getTestFiles(this._selectedVersion.sourceFiles);
+    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this._selectedVersion.sourceFiles)));
+    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this._selectedVersion.sourceFiles)));
   }
 
   /**
@@ -70,24 +90,31 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Creates a new version based on changes made
    */
   saveVersion() {
-    const message = 'Save Version';
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
-
+    this.alertService.start('Updating hosted workflow');
     this.hostedService.editHostedWorkflow(
-        this.id,
-        newSourceFiles).subscribe((workflow: Workflow) => {
+      this.id,
+      newSourceFiles).subscribe((editedWorkflow: Workflow) => {
+        if (editedWorkflow) {
+          // Only stop editing when version change was successful (not 204)
           this.toggleEdit();
-          this.refreshService.handleSuccess(message);
-          this.workflowsService.getWorkflow(workflow.id).subscribe((workflow2: Workflow) => {
-            this.workflowService.setWorkflow(workflow2);
+          // TODO: Comment why workflow is explicitly gotten again when tool does not
+          this.workflowsService.getWorkflow(editedWorkflow.id).subscribe((newlyGottenWorkflow: Workflow) => {
+            this.workflowService.setWorkflow(newlyGottenWorkflow);
+            this.alertService.detailedSuccess();
+          }, error => {
+            this.alertService.detailedError(error);
           });
-        }, error =>  {
-          if (error) {
-            this.refreshService.handleError(message, error);
-          }
+        } else {
+          // Probably encountered a 204
+          this.handleNoContentResponse();
         }
-      );
+      }, error => {
+        if (error) {
+          this.alertService.detailedError(error);
+        }
+      });
   }
 
   /**

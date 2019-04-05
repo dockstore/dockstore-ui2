@@ -16,18 +16,18 @@
 
 <tabset [justified]="true">
   <tab heading="Descriptor Files" id="descriptorFilesTab">
-    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'descriptor'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
+    <app-code-editor-list [sourcefiles]="descriptorFiles" [editing]="editing" [descriptorType]="(selectedDescriptorType$ | async)" [fileType]="'descriptor'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
   <tab heading="Test Parameter Files" id="testParameterFilesTab">
-    <app-code-editor-list *ngIf="descriptorType !== 'nfl'" [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="descriptorType" [fileType]="'testParam'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
-    <div class="alert alert-info" role="alert" *ngIf="descriptorType === 'nfl'">
-      <span class="glyphicon glyphicon-warning-sign"></span>
+    <app-code-editor-list *ngIf="!(isNFL$ | async)" [sourcefiles]="testParameterFiles" [editing]="editing" [descriptorType]="(selectedDescriptorType$ | async)" [fileType]="'testParam'" [selectedVersion]="_selectedVersion" [entryType]="'workflow'" [entrypath]="entrypath"></app-code-editor-list>
+    <mat-card class="alert alert-info" role="alert" *ngIf="(isNFL$ | async)">
+      <mat-icon>warning</mat-icon>
       &nbsp;
       Nextflow does not have the concept of a test parameter file.
-    </div>
+    </mat-card>
   </tab>
 </tabset>
-<div class="editor-button-container" *ngIf="!publicPage && canWrite && isNewestVersion">
+<div class="editor-button-container p-2" *ngIf="!publicPage && canWrite && isNewestVersion">
   <span *ngIf="!editing">
     <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
       Edit Files

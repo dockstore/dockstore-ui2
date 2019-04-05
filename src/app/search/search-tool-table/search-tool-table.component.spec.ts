@@ -8,8 +8,9 @@ import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
-import { SearchService } from '../search.service';
 import { SearchToolTableComponent } from './search-tool-table.component';
+import { SearchService } from '../state/search.service';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('SearchToolTableComponent', () => {
   let component: SearchToolTableComponent;
@@ -19,7 +20,7 @@ describe('SearchToolTableComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SearchToolTableComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [CustomMaterialModule, BrowserAnimationsModule],
+      imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
       providers: [{ provide: DockstoreService, useClass: DockstoreStubService }, DateService,
       { provide: ListContainersService, useClass: ListContainersStubService },
       { provide: SearchService, useClass: SearchStubService }]

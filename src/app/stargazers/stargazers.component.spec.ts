@@ -13,14 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { StarentryService } from './../shared/starentry.service';
-import { UserService } from '../loginComponents/user.service';
-import { StarEntryStubService, StarringStubService, UserStubService } from './../test/service-stubs';
-import { StarringService } from '../starring/starring.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { StarentryService } from '../shared/starentry.service';
+import { UserService } from '../shared/user/user.service';
+import { StarringService } from '../starring/starring.service';
+import { StarEntryStubService, StarringStubService, UserStubService } from '../test/service-stubs';
 import { StargazersComponent } from './stargazers.component';
+import { MatIconModule, MatCardModule } from '@angular/material';
 
 describe('StargazersComponent', () => {
   let component: StargazersComponent;
@@ -28,12 +28,15 @@ describe('StargazersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StargazersComponent ],
-      providers: [{provide: StarringService, useClass: StarringStubService},
-      {provide: UserService, useClass: UserStubService},
-    {provide: StarentryService, useClass: StarEntryStubService}]
+      declarations: [StargazersComponent],
+      imports: [MatIconModule, MatCardModule],
+      providers: [
+        { provide: UserService, useClass: UserStubService},
+        { provide: StarringService, useClass: StarringStubService },
+        { provide: StarentryService, useClass: StarEntryStubService }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

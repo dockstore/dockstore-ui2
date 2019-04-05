@@ -1,0 +1,16 @@
+<mat-expansion-panel expanded>
+  <mat-expansion-panel-header>
+    Search
+  </mat-expansion-panel-header>
+  <mat-form-field>
+  <input matInput [matAutocomplete]="auto" matTooltip="Find tools and workflows" [matTooltipPosition]="'after'" list="suggestions" class="w-100 mb-3"
+    [(ngModel)]="searchText" (ngModelChange)="onInputChange($event)" placeholder="Enter search term" />
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of (autocompleteTerms$ | async)" [value]="option">{{option}}</mat-option>
+  </mat-autocomplete>
+  <button mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
+    Open Advanced Search
+  </button>
+  <app-advancedsearch></app-advancedsearch>
+</mat-expansion-panel>

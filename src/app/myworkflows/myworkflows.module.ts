@@ -24,7 +24,6 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { HeaderModule } from '../shared/modules/header.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
-import { RefreshAlertModule } from './../shared/alert/alert.module';
 import { CustomMaterialModule } from './../shared/modules/material.module';
 import { getTooltipConfig } from './../shared/tooltip';
 import {
@@ -52,7 +51,6 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     myworkflowRouting,
     ModalModule.forRoot(),
     AccordionModule.forRoot(),
-    RefreshAlertModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
     CustomMaterialModule,

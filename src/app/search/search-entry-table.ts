@@ -16,7 +16,6 @@
 import { OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Subject } from 'rxjs';
-
 import { DateService } from '../shared/date.service';
 import { DockstoreTool, Workflow } from '../shared/swagger';
 
@@ -25,8 +24,9 @@ export abstract class SearchEntryTable implements OnInit {
   @ViewChild(MatSort) protected sort: MatSort;
   protected verifiedLink: string;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  abstract displayedColumns: Array<string>;
-  abstract dataSource: (MatTableDataSource<Workflow |DockstoreTool>);
+
+  public readonly displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
+  abstract dataSource: (MatTableDataSource<Workflow | DockstoreTool>);
   abstract privateNgOnInit(): void;
 
   constructor(protected dateService: DateService) {

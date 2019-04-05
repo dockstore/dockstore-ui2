@@ -28,28 +28,34 @@ import { SearchComponent } from './search/search.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { FundingComponent } from './funding/funding.component';
+import { SitemapComponent } from './sitemap/sitemap.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'docs', loadChildren: 'app/docs/docs.module#DocsModule' },
-  { path: 'search-containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
-  { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule' },
-  { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule' },
-  { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
-  { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule' },
-  { path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard] },
-  { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard] },
-  { path: 'search*', component: SearchComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'quick-start', component: QuickStartComponent },
-  { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
-  { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore'} },
+  { path: 'docs', loadChildren: 'app/docs/docs.module#DocsModule', data: { title: 'Dockstore | Documentation'} },
+  { path: 'search-containers', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools'} },
+  { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools'} },
+  { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools'} },
+  { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows'} },
+  { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows'} },
+  { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule'},
+  { path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard],
+    data: { title: 'Dockstore | My Tools'}},
+  { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard],
+    data: { title: 'Dockstore | My Workflows'}},
+  { path: 'aliases', loadChildren: 'app/aliases/aliases.module#AliasesModule', data: { title: 'Dockstore | Aliases' } },
+  { path: 'search*', component: SearchComponent, data: { title: 'Dockstore | Search'} },
+  { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login'} },
+  { path: 'quick-start', component: QuickStartComponent, data: { title: 'Dockstore | Quick Start'} },
+  { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Onboarding'} },
+  { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Accounts'} },
   { path: 'auth/:provider', component: AuthComponent },
-  { path: 'starred', component: StarredEntriesComponent },
-  { path: 'maintenance', component: MaintenanceComponent },
-  { path: 'funding', component: FundingComponent },
+  { path: 'starred', component: StarredEntriesComponent, data: { title: 'Dockstore | Starred Tools & Workflows'}},
+  { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance'}  },
+  { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding'} },
+  { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap'} },
   { path: '**', redirectTo: '' }
 ];
 

@@ -16,6 +16,8 @@
 
 @import "ds-style-fix.scss";
 @import "bootstrap4.scss";
+@import '~@ngx-share/button/styles/share-buttons';
+@import '~@ngx-share/button/styles/themes/default/default-theme';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
 
@@ -296,6 +298,13 @@ table.homepage-container {
   position: absolute;
   right: 450px;
   /*text-align: right;*/
+}
+
+// Globally allow any material tooltip to break the word if it's too long
+// Long sentences should still break on spaces if needed
+// Long continous words (without spaces and hyphens) will break at different points depending on browser
+.mat-tooltip {
+  overflow-wrap: break-word;
 }
 
 .public-lists {
@@ -705,6 +714,10 @@ div.side-block img {
   width: 100%;
 }
 
+.mat-icon {
+  vertical-align: middle
+}
+
 div.side-block code {
   background: #fff;
   color: #000;
@@ -969,10 +982,6 @@ div.tabs>div:target>div,
   margin: 0px;
 }
 
-.dag-button {
-  float: right;
-}
-
 .fullscreen {
   z-index: 100000;
   width: 100%;
@@ -984,25 +993,13 @@ div.tabs>div:target>div,
   margin: 0px;
 }
 
-.fullscreen-element {
-  width: 100%;
-  height: 100%;
-  border: 2px solid #ccc;
-  background: #FFF;
+.bootstrap-tooltip-z-index {
+  z-index: 1070;
+
 }
 
-.mini-dag {
-  width: 100%;
-  height: 500px;
-}
-
-.large-dag {
-  height: 90%;
-  border: 1px solid #ccc;
-}
-
-.fullscreen-dropdown {
-  padding: 10px;
+.opaq {
+  opacity: 0.825;
 }
 
 .no-display {
@@ -1197,4 +1194,17 @@ app-sidebar-accordion .mat-accordion > .mat-expansion-panel > .mat-expansion-pan
   .mat-tab-label[role^='tab'] {
     min-width: 80px;
   }
+}
+
+// Make the dropdown at least the size of the default material dropdown.  
+// Making the general width to grow to 50% of the parent width so that there's more room to display long file names
+// TODO: Ideally this should stretch to the length of the longest dropdown option.
+app-select.longer {
+  min-width: 180px;
+  width: 50%;
+}
+
+mat-icon.star {
+  font-size: 16px;
+  height: 16px;
 }

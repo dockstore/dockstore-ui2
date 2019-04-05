@@ -2,21 +2,17 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table [hidden]="!dataSource" class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
-    <ng-container matColumnDef="repository">
+  <mat-table [hidden]="!dataSource" class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="starredUsers" matSortDirection="desc" matSortDisableClear>
+    <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let workflow: Workflow">
         <span id="verifiedIcon" *ngIf="getVerified(workflow)">
           <a href= {{verifiedLink}}>
-            <span class="glyphicon glyphicon-ok" matTooltip="Verified"></span>
+            <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
-        <a [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+        <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
       </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
@@ -32,6 +28,12 @@
         <a [href]="entry?.providerUrl">
           {{ entry?.provider }}
         </a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="starredUsers">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let workflow: Workflow">{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
+        <mat-icon class="star" *ngIf="workflow?.starredUsers?.length > 0 ">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

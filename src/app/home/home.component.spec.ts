@@ -13,15 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { TwitterService } from './../shared/twitter.service';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule, MatDialogModule, MatIconModule } from '@angular/material';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+
+import { TwitterService } from '../shared/twitter.service';
 import { HomeComponent } from './home.component';
-import {UserService} from '../loginComponents/user.service';
-import {UserStubService} from '../test/service-stubs';
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -32,11 +32,12 @@ describe('HomeComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TabsModule.forRoot(),
+        RouterTestingModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatDialogModule
       ],
-      providers: [ TwitterService,
-        { provide: UserService, useClass: UserStubService }],
+      providers: [ TwitterService],
     })
     .compileComponents();
   }));
