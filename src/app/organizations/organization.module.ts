@@ -13,6 +13,8 @@ import { EventsModule } from './events.module';
 import { RouterModule } from '@angular/router';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-members/organization-members.component';
+import { OrganizationStarringModule} from './organization/organization-starring/organization-starring.module';
+import {OrganizationStargazersModule} from './organization/organization-stargazers/organization-stargazers.module';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-m
     UpdateOrganizationDescriptionModule,
     EventsModule,
     RouterModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    OrganizationStarringModule,
+    OrganizationStargazersModule
   ],
   declarations: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
   exports: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],

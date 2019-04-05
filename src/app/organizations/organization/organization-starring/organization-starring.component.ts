@@ -21,6 +21,7 @@ import {UserQuery} from '../../../shared/user/user.query';
 import {ContainerService} from '../../../shared/container.service';
 import {StarringService} from '../../../starring/starring.service';
 import {StarentryService} from '../../../shared/starentry.service';
+import {StarOrganizationService} from '../../../shared/star-organization.service';
 import {AlertService} from '../../../shared/alert/state/alert.service';
 import {first, takeUntil} from 'rxjs/operators';
 import {Observable, of as ObservableOf, Subject} from 'rxjs';
@@ -34,11 +35,9 @@ import {OrganizationStarringService} from './organization-starring.service';
 export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() organization: any;
-  // @Input() workflow: any;
-  // @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
   private user: any;
   private entry: any;
-  // private entryType: string;
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
@@ -50,6 +49,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
               private containerService: ContainerService,
               private starringService: StarringService,
               private starentryService: StarentryService,
+              private starOrganizationService: StarOrganizationService,
               private organizationStarringService: OrganizationStarringService,
               private alertService: AlertService) { }
 
@@ -179,14 +179,13 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     }
   }
 
-  // getStargazers() {
-  //   const selectedEntry = {
-  //     theEntry: this.entry,
-  //     theEntryType: this.entryType
-  //   };
-  //   this.starentryService.setEntry(selectedEntry);
-  //   this.change.emit();
-  // }
+  getStargazers() {
+    const selectedOrganization = {
+      theOrganization: this.organization,
+    };
+    this.starOrganizationService.setOrganization(selectedOrganization);
+    this.change.emit();
+  }
 
   getStarring(organizationID: number): Observable<Array<User>> {
     // return this.workflowsService.getStarredUsers(entryID);

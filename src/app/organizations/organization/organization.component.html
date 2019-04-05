@@ -67,7 +67,14 @@
             <span class="ellipsis-lines">{{ org.location }}</span>
           </span>
         </div>
-        <app-organization-starring [organization]="org" class="pull-right starring-button"></app-organization-starring>
+        <app-organization-starring [organization]="org" class="pull-right starring-button" (change)="starGazersChange()"></app-organization-starring>
+
+        <div class="row ml-4 mr-4" *ngIf="starGazersClicked">
+          <app-organization-stargazers></app-organization-stargazers>
+          <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked=false">
+            <mat-icon>chevron_left</mat-icon>Back to details
+          </button>
+        </div>
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>

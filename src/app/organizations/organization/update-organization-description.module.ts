@@ -9,8 +9,8 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import {
   UpdateOrganizationOrCollectionDescriptionComponent,
 } from './update-organization-description/update-organization-description.component';
-import { OrganizationStarringComponent } from './organization-starring/organization-starring.component';
 import {OrganizationStarringService} from './organization-starring/organization-starring.service';
+import { StarOrganizationService } from '../../shared/star-organization.service';
 
 @NgModule({
   imports: [
@@ -21,9 +21,8 @@ import {OrganizationStarringService} from './organization-starring/organization-
     RefreshAlertModule,
     ReactiveFormsModule
   ],
-  providers: [ OrganizationStarringService],
-  exports: [OrganizationStarringComponent],
-  declarations: [UpdateOrganizationOrCollectionDescriptionComponent, OrganizationStarringComponent],
+  providers: [ OrganizationStarringService, StarOrganizationService],
+  declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
   entryComponents: [UpdateOrganizationOrCollectionDescriptionComponent]
 })
 export class UpdateOrganizationDescriptionModule { }

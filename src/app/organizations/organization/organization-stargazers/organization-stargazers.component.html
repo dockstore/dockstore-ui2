@@ -1,0 +1,36 @@
+<!--
+  ~    Copyright 2019 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<h3 class="mt-1 mb-2">Stargazers</h3>
+<div class="panel panel-default p-3">
+  <mat-card class="alert alert-info" role="alert" *ngIf="starGazers?.length==0">
+    <mat-icon>warning</mat-icon>
+    There are no stargazers for this entry.
+  </mat-card>
+  <div class="panel-body" *ngIf="starGazers?.length>0">
+    <div fxLayout="row wrap">
+      <div *ngFor="let stargazer of starGazers">
+        <div fxFlex="90%">
+          <img src="{{stargazer.avatarUrl}}" width="200" height="200" class="img-responsive stargazer-img"
+               alt="http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg"/>
+          <div class="caption">
+            <h5 class="text-center">{{stargazer.username}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
