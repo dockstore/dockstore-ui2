@@ -15,7 +15,6 @@
  */
 
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subject} from 'rxjs';
 import {StarRequest, User} from '../../../shared/swagger';
 import {TrackLoginService} from '../../../shared/track-login.service';
 import {UserQuery} from '../../../shared/user/user.query';
