@@ -1,6 +1,6 @@
 {
   "name": "dockstore-ui2",
-  "version": "0.0.0",
+  "version": "2.3.0",
   "license": "Apache License 2.0",
   "scripts": {
     "ng": "ng",
