@@ -22,6 +22,7 @@ import { switchMap } from 'rxjs/internal/operators';
 import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
+import { DagStore } from '../state/dag.store';
 
 /**
  * Defines types for the response of Pipeline Builder library
@@ -41,7 +42,7 @@ export class WdlViewerService {
   private zip: JSZip = new JSZip();
   private statusSource = new BehaviorSubject<boolean>(false);
   public status$ = this.statusSource.asObservable();
-  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService) {
+  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService, private dagStore: DagStore) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
@@ -105,5 +106,14 @@ export class WdlViewerService {
           }));
         })
       );
+  }
+
+  setWdlViewerPipeline(result: WdlViewerPipeline): void {
+    this.dagStore.setState(state => {
+      return {
+        ...state,
+        wdlViewerResults: result,
+      };
+    });
   }
 }
