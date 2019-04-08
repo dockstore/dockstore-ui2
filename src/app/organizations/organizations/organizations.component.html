@@ -50,7 +50,11 @@
                 <mat-icon>location_on</mat-icon>
                 <span class="ellipsis-lines">{{ org.location }}</span>
               </span>
-              <app-organization-starring [organization]="org" class="pull-right starring-button"></app-organization-starring>
+              <span fxLayout="row" *ngIf="org?.starredUsers.length">
+                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
+                <mat-icon>star</mat-icon>
+              </span>
+              <!--<app-organization-starring [organization]="org" class="pull-right starring-button"></app-organization-starring>-->
             </div>
           </mat-card-content>
         </mat-card>

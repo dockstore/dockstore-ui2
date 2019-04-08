@@ -68,4 +68,31 @@
           </mat-list>
       </div>
   </div>
+
+  <div *ngIf="starredOrganizations">
+    <div class="container">
+      <div class="row">
+        <h3 class="starred-header">Starred Organizations</h3>
+        <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations.length==0">
+          <mat-icon>warning</mat-icon>
+          You have no starred organizations.
+        </mat-card>
+      </div>
+
+      <mat-list>
+        <mat-list-item *ngFor="let organization of starredOrganizations; let last = last;">
+          <h3 class="spacing" mat-line>
+            <a href="/organizations/{{organization.name}}" [matTooltip]="organization?.name">{{organization.displayName}}</a>
+          </h3>
+          <!--<span mat-line>-->
+                <!--<small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>-->
+                <!--<span class="spacing">{{workflow?.descriptorType | uppercase}}</span>-->
+                <!--<a class="spacing" *ngIf="workflow?.provider" href="{{workflow?.providerUrl}}">{{workflow?.provider}}</a>-->
+              <!--</span>-->
+          <app-organization-starring class="pull-right" style="width: 100px;" [organization]="organization" (change)="starGazersChange()"></app-organization-starring>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
 </div>

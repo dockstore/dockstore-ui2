@@ -37,7 +37,6 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
   @Input() organization: any;
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
   private user: any;
-  private entry: any;
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;

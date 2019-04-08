@@ -18,6 +18,7 @@ import { UsersService } from './../shared/swagger/api/users.service';
 export class StarredEntriesComponent extends Base implements OnInit {
   starredTools: any;
   starredWorkflows: any;
+  starredOrganizations: any;
   user: any;
   starGazersClicked = false;
   selectedEntry: any;
@@ -59,6 +60,11 @@ export class StarredEntriesComponent extends Base implements OnInit {
               this.providerService.setUpProvider(workflow);
             }
         });
+      });
+
+    this.usersService.getStarredOrganizations().subscribe(
+      starredOrganizations => {
+        this.starredOrganizations = starredOrganizations;
       });
   }
   isOwner(entryUsers: any): boolean {
