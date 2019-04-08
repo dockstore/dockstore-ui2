@@ -15,11 +15,12 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
+import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger';
+import { ToolDescriptor, WorkflowsService } from '../../shared/swagger';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
+
 
 describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
@@ -27,13 +28,13 @@ describe('ToolTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToolTabComponent ],
-      imports: [FormsModule],
+      declarations: [ToolTabComponent],
+      imports: [FormsModule, CustomMaterialModule],
       providers: [
-        {provide: WorkflowService, useClass: WorkflowStubService},
-      {provide: WorkflowsService, useClass: WorkflowsStubService}]
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -53,5 +54,19 @@ describe('ToolTabComponent', () => {
     expect(component.toolsContent).toBe(null);
     component.updateTableToolContent(1, 1);
     expect(component.toolsContent).toBe('tableToolContentString');
+  });
+
+  fit('should determines the correct workflow excerpt row heading', () => {
+    expect(component.descriptorTypeToWorkflowExcerptRowHeading(ToolDescriptor.TypeEnum.CWL)).toEqual('tool\xa0ID');
+    expect(component.descriptorTypeToWorkflowExcerptRowHeading(ToolDescriptor.TypeEnum.WDL)).toEqual('task\xa0ID');
+    expect(component.descriptorTypeToWorkflowExcerptRowHeading(ToolDescriptor.TypeEnum.NFL)).toEqual('process\xa0name');
+    expect(component.descriptorTypeToWorkflowExcerptRowHeading(<ToolDescriptor.TypeEnum>'Potato')).toEqual('tool\xa0ID');
+  });
+
+  fit('should determines the correct workflow excerpt row heading', () => {
+    expect(component.descriptorTypeToHeaderName(ToolDescriptor.TypeEnum.CWL)).toEqual('Tool Excerpt');
+    expect(component.descriptorTypeToHeaderName(ToolDescriptor.TypeEnum.WDL)).toEqual('Task Excerpt');
+    expect(component.descriptorTypeToHeaderName(ToolDescriptor.TypeEnum.NFL)).toEqual('Process Excerpt');
+    expect(component.descriptorTypeToHeaderName(<ToolDescriptor.TypeEnum>'Potato')).toEqual('Tool Excerpt');
   });
 });
