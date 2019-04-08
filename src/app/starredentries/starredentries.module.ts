@@ -7,12 +7,6 @@ import { StarentryService } from '../shared/starentry.service';
 import { StargazersModule } from '../stargazers/stargazers.module';
 import { StarringModule } from '../starring/starring.module';
 import { StarringService } from '../starring/starring.service';
-
-// relocate these files
-import { OrganizationStargazersModule} from '../organizations/organization/organization-stargazers/organization-stargazers.module';
-import { OrganizationStarringModule} from '../organizations/organization/organization-starring/organization-starring.module';
-import { StarOrganizationService} from '../shared/star-organization.service';
-import { OrganizationStarringService} from '../organizations/organization/organization-starring/organization-starring.service';
 import { getTooltipConfig } from './../shared/tooltip';
 
 @NgModule({
@@ -21,16 +15,12 @@ import { getTooltipConfig } from './../shared/tooltip';
     StargazersModule,
     TooltipModule.forRoot(),
     HeaderModule,
-    StarringModule,
-    OrganizationStarringModule,
-    OrganizationStargazersModule
+    StarringModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},
     StarentryService,
-    StarringService,
-    StarOrganizationService,
-    OrganizationStarringService
+    StarringService
   ]
 })
 export class StarredEntriesModule { }
