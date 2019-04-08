@@ -15,16 +15,15 @@
   -->
 <div class="p-3">
   <app-loading [loading]="loading">
-    <mat-card *ngIf="!toolsContent" class="alert alert-warning" role="alert">
+    <mat-card *ngIf="nullContent" class="alert alert-warning" role="alert">
       <mat-icon>warning</mat-icon>
       No Records Found
     </mat-card>
-    <mat-card *ngIf="toolsContent && toolsContent.length === 0" class="alert alert-warning" role="alert">
+    <mat-card *ngIf="noContent" class="alert alert-warning" role="alert">
       <mat-icon>warning</mat-icon>
       Some tools associated with this workflow are missing from Git repo.
     </mat-card>
-    <table *ngIf="toolsContent && toolsContent.length > 0" mat-table [dataSource]="toolsContent"
-      class="mat-elevation-z1">
+    <table *ngIf="hasContent" mat-table [dataSource]="toolsContent" class="mat-elevation-z1">
       <ng-container matColumnDef="workflowExcerpt">
         <th mat-header-cell *matHeaderCellDef> Workflow Excerpt </th>
         <td mat-cell *matCellDef="let tool"> <strong>{{workflowExcerptRowHeading$ | async}}</strong>:&nbsp;{{tool?.id}}

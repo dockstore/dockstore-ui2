@@ -36,6 +36,9 @@ export class ToolTabComponent extends EntryTab {
   toolExcerptHeaderName$: Observable<string>;
   workflowExcerptRowHeading$: Observable<string>;
   displayedColumns: string[] = ['workflowExcerpt', 'toolExcerpt'];
+  hasContent = false;
+  nullContent = false;
+  noContent = false;
   loading = true;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
@@ -49,7 +52,7 @@ export class ToolTabComponent extends EntryTab {
       }
     } else {
       this.loading = false;
-      this.toolsContent = null;
+      this.updateContent(null);
     }
   }
   constructor(private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService) {
@@ -72,14 +75,14 @@ export class ToolTabComponent extends EntryTab {
       this.loading = true;
       this.workflowsService.getTableToolContent(workflowId, versionId).pipe(finalize(() => this.loading = false)).subscribe(
         (toolContent) => {
-          this.toolsContent = toolContent;
+          this.updateContent(toolContent);
         }, error => {
           console.log('Could not retrieve table tool content');
-          this.toolsContent = null;
+          this.updateContent(null);
         });
     } else {
       this.loading = false;
-      this.toolsContent = null;
+      this.updateContent(null);
     }
   }
 
@@ -123,6 +126,34 @@ export class ToolTabComponent extends EntryTab {
       default:
         console.error('Unknown descriptor type found: ' + descriptorType);
         return 'tool\xa0ID';
+    }
+  }
+
+  /**
+   * Updates the 3 boolean variables that determines what to show (one of the 2 warnings or the table)
+   *
+   * @param {string} toolsContent
+   * @memberof ToolTabComponent
+   */
+  updateContent(toolsContent: string): void {
+    this.hasContent = false;
+    this.noContent = false;
+    this.nullContent = false;
+    this.toolsContent = toolsContent;
+    if (!toolsContent) {
+      this.hasContent = false;
+      this.noContent = false;
+      this.nullContent = true;
+    } else {
+      if (toolsContent.length === 0) {
+        this.hasContent = false;
+        this.noContent = true;
+        this.nullContent = false;
+      } else {
+        this.hasContent = true;
+        this.noContent = false;
+        this.nullContent = false;
+      }
     }
   }
 }
