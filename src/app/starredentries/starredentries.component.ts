@@ -21,6 +21,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   starredOrganizations: any;
   user: any;
   starGazersClicked = false;
+  organizationStarGazersClicked = false;
   selectedEntry: any;
   constructor(private starringService: StarringService,
               private userQuery: UserQuery,
@@ -82,5 +83,9 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
+  }
+
+  organizationStarGazersChange() {
+    this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
 }

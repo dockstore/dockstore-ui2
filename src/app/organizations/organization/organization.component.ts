@@ -35,7 +35,7 @@ import { UserQuery } from '../../shared/user/user.query';
 })
 export class OrganizationComponent implements OnInit {
   organization: Organization;
-  public starGazersClicked = false;
+  public organizationStarGazersClicked = false;
 
   organization$: Observable<Organization>;
   loading$: Observable<boolean>;
@@ -81,7 +81,7 @@ export class OrganizationComponent implements OnInit {
     });
   }
 
-  starGazersChange(): void {
-    this.starGazersClicked = !this.starGazersClicked;
+  organizationStarGazersChange(): void {
+    this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
 }

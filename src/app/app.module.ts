@@ -101,6 +101,7 @@ import { StarringModule } from './starring/starring.module';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { RequestsModule } from './loginComponents/requests.module';
 import {OrganizationStarringModule} from './organizations/organization/organization-starring/organization-starring.module';
+import {OrganizationStargazersModule} from './organizations/organization/organization-stargazers/organization-stargazers.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -161,6 +162,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     FlexLayoutModule,
     StarringModule,
     OrganizationStarringModule,
+    OrganizationStargazersModule,
     routing,
     ModalModule.forRoot(),
     StargazersModule,
