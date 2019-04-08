@@ -123,7 +123,7 @@
 <div class="row m-1" *ngIf="!starGazersClicked && !showRedirect">
   <div class="col-sm-12 p-0" [ngClass]="{'col-md-10 col-lg-9': isWorkflowPublic}">
     <div class="ds-tabs" [ngClass]="{'mr-3': isWorkflowPublic}">
-    <mat-tab-group [selectedIndex]="selected.value" dynamicHeight class="ds-tabs" id="workflow_tabs" #entryTabs (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="selectedTabChange($event)" mat-stretch-tabs>
+    <mat-tab-group [selectedIndex]="selected.value" class="ds-tabs" id="workflow_tabs" #entryTabs (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="selectedTabChange($event)" mat-stretch-tabs>
       <mat-tab id="infoTab" label="Info" id="infoTab">
         <app-info-tab [validVersions]="validVersions" [extendedWorkflow]="(extendedWorkflow$ | async)" [defaultVersion]="defaultVersion" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab>
       </mat-tab>

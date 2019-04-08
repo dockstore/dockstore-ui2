@@ -15,6 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
@@ -24,7 +25,7 @@ import { Workflow } from './../../shared/swagger/model/workflow';
 @Component({
   selector: 'app-tool-tab',
   templateUrl: './tool-tab.component.html',
-  styleUrls: ['./tool-tab.component.css']
+  styleUrls: ['./tool-tab.component.scss']
 })
 export class ToolTabComponent extends EntryTab {
   workflow: Workflow;
@@ -32,6 +33,9 @@ export class ToolTabComponent extends EntryTab {
   _selectedVersion: WorkflowVersion;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   ToolDescriptor = ToolDescriptor;
+  toolExcerptHeaderName$: Observable<string>;
+  workflowExcerptRowHeading$: Observable<string>;
+  displayedColumns: string[] = ['workflowExcerpt', 'toolExcerpt'];
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this.workflow = this.workflowQuery.getActive();
@@ -48,6 +52,9 @@ export class ToolTabComponent extends EntryTab {
   constructor(private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService) {
     super();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.toolExcerptHeaderName$ = this.descriptorType$.pipe(map(descriptorType => this.descriptorTypeToHeaderName(descriptorType)));
+    this.workflowExcerptRowHeading$ = this.descriptorType$.pipe(
+      map(descriptorType => this.descriptorTypeToWorkflowExcerptRowHeading(descriptorType)));
   }
 
   /**
@@ -68,6 +75,49 @@ export class ToolTabComponent extends EntryTab {
         });
     } else {
       this.toolsContent = null;
+    }
+  }
+
+  /**
+   * Determines the second column's header name. No break needed because headings are always short.
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType
+   * @returns
+   * @memberof ToolTabComponent
+   */
+  descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum) {
+    switch (descriptorType) {
+      case ToolDescriptor.TypeEnum.CWL:
+        return 'Tool Excerpt';
+      case ToolDescriptor.TypeEnum.WDL:
+        return 'Task Excerpt';
+      case ToolDescriptor.TypeEnum.NFL:
+        return 'Process Excerpt';
+      default:
+        console.error('Unknown descriptor type found: ' + descriptorType);
+        return 'Tool Excerpt';
+    }
+  }
+
+  /**
+   * In the Workflow Excerpt column, each row will have a heading before the tool.id.
+   * This determines that heading.
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType
+   * @returns {string}
+   * @memberof ToolTabComponent
+   */
+  descriptorTypeToWorkflowExcerptRowHeading(descriptorType: ToolDescriptor.TypeEnum): string {
+    switch (descriptorType) {
+      case ToolDescriptor.TypeEnum.CWL:
+        return 'tool\xa0ID';
+      case ToolDescriptor.TypeEnum.WDL:
+        return 'task\xa0ID';
+      case ToolDescriptor.TypeEnum.NFL:
+        return 'process\xa0name';
+      default:
+        console.error('Unknown descriptor type found: ' + descriptorType);
+        return 'tool\xa0ID';
     }
   }
 }
