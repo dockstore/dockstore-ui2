@@ -15,7 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
@@ -36,6 +36,7 @@ export class ToolTabComponent extends EntryTab {
   toolExcerptHeaderName$: Observable<string>;
   workflowExcerptRowHeading$: Observable<string>;
   displayedColumns: string[] = ['workflowExcerpt', 'toolExcerpt'];
+  loading = true;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this.workflow = this.workflowQuery.getActive();
@@ -43,9 +44,11 @@ export class ToolTabComponent extends EntryTab {
       if (this.workflow && this.workflow.workflowVersions && this.workflow.workflowVersions.some(version => version.id === value.id)) {
         this.updateTableToolContent(this.workflow.id, value.id);
       } else {
+        this.loading = false;
         console.error('Should not be able to select version without a workflow');
       }
     } else {
+      this.loading = false;
       this.toolsContent = null;
     }
   }
@@ -66,7 +69,8 @@ export class ToolTabComponent extends EntryTab {
    */
   updateTableToolContent(workflowId: number, versionId: number): void {
     if (workflowId && versionId) {
-      this.workflowsService.getTableToolContent(workflowId, versionId).subscribe(
+      this.loading = true;
+      this.workflowsService.getTableToolContent(workflowId, versionId).pipe(finalize(() => this.loading = false)).subscribe(
         (toolContent) => {
           this.toolsContent = toolContent;
         }, error => {
@@ -74,6 +78,7 @@ export class ToolTabComponent extends EntryTab {
           this.toolsContent = null;
         });
     } else {
+      this.loading = false;
       this.toolsContent = null;
     }
   }

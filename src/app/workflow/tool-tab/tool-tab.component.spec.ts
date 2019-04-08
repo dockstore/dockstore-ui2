@@ -15,12 +15,12 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { ToolDescriptor, WorkflowsService } from '../../shared/swagger';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
-
 
 describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
@@ -29,7 +29,7 @@ describe('ToolTabComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ToolTabComponent],
-      imports: [FormsModule, CustomMaterialModule],
+      imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
       providers: [
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService }]
