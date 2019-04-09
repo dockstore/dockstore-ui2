@@ -300,7 +300,7 @@ export class DagService {
         content: () => {
           return this.createPopupHTML(name, runText, element);
         },
-        popper: {removeOnDestroy: true}
+        popper: { removeOnDestroy: true }
       });
       popper.scheduleUpdate();
     };
@@ -332,7 +332,8 @@ export class DagService {
         boxSelectionEnabled: false,
         autounselectify: true,
         layout: {
-          name: 'dagre'
+          name: 'dagre',
+          nodeDimensionsIncludeLabels: true
         },
         style: this.style,
         elements: dagResult

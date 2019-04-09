@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Input } from '@angular/core';
+import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
 import { SourceFile } from './swagger/model/sourceFile';
 
@@ -25,6 +25,14 @@ export class FileEditing extends Files {
    */
   toggleEdit() {
     this.editing = !this.editing;
+  }
+
+  constructor(protected alertService: AlertService) {
+    super();
+  }
+
+  handleNoContentResponse() {
+    this.alertService.detailedSuccess('Version did not change (no changes detected in file contents)');
   }
 
   /**

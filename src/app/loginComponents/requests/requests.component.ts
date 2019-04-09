@@ -54,6 +54,7 @@ export class RequestsComponent implements OnInit {
   public allPendingOrganizations$: Observable<Array<Organization>>;
   public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
   public myPendingOrganizationRequests$: Observable<Array<OrganizationUser>>;
+  public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
   isLoading$: Observable<boolean>;
   currentOrgId: number;
   isAdmin$: Observable<boolean>;
@@ -74,6 +75,7 @@ export class RequestsComponent implements OnInit {
     this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
     this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
     this.myPendingOrganizationRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
+    this.myRejectedOrganizationRequests$ = this.requestsQuery.myRejectedOrganizationRequests$;
 
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
@@ -108,5 +110,9 @@ export class RequestsComponent implements OnInit {
         this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
       }
     });
+  }
+
+  rerequestReview(membership: OrganizationUser) {
+    this.requestsService.requestRereview(membership.organization.id);
   }
 }

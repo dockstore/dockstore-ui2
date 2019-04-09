@@ -31,7 +31,7 @@
         <div class="col-sm-4">
           <mat-form-field class="m-2">
             <mat-select name="toolVersions" [(value)]="currentDescriptor" (selectionChange)="reactToDescriptor($event)">
-              <mat-option *ngFor="let descriptor of validDescriptors" [value]="descriptor">{{descriptor}}</mat-option>
+              <mat-option *ngFor="let descriptor of filteredDescriptors" [value]="descriptor">{{descriptor}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

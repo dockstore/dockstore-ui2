@@ -39,7 +39,7 @@
     <app-code-editor-list [sourcefiles]="testParameterFiles" [editing]="editing" [fileType]="'testParam'" [descriptorType]="selectedDescriptorType" [selectedVersion]="currentVersion" [entryType]="'tool'" [entrypath]="entrypath"></app-code-editor-list>
   </tab>
 </tabset>
-<div class="editor-button-container" *ngIf="!publicPage && isNewestVersion">
+<div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion">
   <span *ngIf="!editing">
     <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
       Edit Files

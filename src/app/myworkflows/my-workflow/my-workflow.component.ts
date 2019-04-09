@@ -145,6 +145,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
           this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
+          // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh), the url needs to be
+          // used to set the workflow onInit. Otherwise, the select-tab.pipe results in really strange behaviour. Not entirely sure why.
+          this.workflowService.setWorkflow(this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+            this.groupEntriesObject.concat(this.groupSharedEntriesObject)));
           // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
           if (!this.workflow) {
             if (this.workflows.length > 0) {

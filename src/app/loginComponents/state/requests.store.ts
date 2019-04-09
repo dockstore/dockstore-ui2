@@ -8,6 +8,7 @@ export interface RequestsState extends EntityState<Request> {
   myMemberships: Array<OrganizationUser>;
   myOrganizationInvites: Array<OrganizationUser>;
   myPendingOrganizationRequests: Array<OrganizationUser>;
+  myRejectedOrganizationRequests: Array<OrganizationUser>;
 }
 
 export function createInitialState(): RequestsState {
@@ -15,7 +16,8 @@ export function createInitialState(): RequestsState {
     allPendingOrganizations: null,
     myMemberships: null,
     myOrganizationInvites: null,
-    myPendingOrganizationRequests: null
+    myPendingOrganizationRequests: null,
+    myRejectedOrganizationRequests: null
   };
 }
 

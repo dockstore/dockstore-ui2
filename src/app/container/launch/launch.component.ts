@@ -42,7 +42,7 @@ export class LaunchComponent {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToDescriptor();
-      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     }
   }
 
@@ -54,7 +54,7 @@ export class LaunchComponent {
   checkEntryCommand: string;
   consonance: string;
   descriptors: Array<ToolDescriptor.TypeEnum>;
-  validDescriptors: Array<string>;
+  filteredDescriptors: Array<string>;
   currentDescriptor: ToolDescriptor.TypeEnum;
   ToolDescriptor = ToolDescriptor;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
@@ -68,7 +68,7 @@ export class LaunchComponent {
     private descriptorTypeCompatService: DescriptorTypeCompatService) {
     this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
       this.descriptors = descriptors;
-      this.validDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
