@@ -21,6 +21,7 @@ import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
+import { ToolTabService } from './tool-tab.service';
 
 @Component({
   selector: 'app-tool-tab',
@@ -29,13 +30,14 @@ import { Workflow } from './../../shared/swagger/model/workflow';
 })
 export class ToolTabComponent extends EntryTab {
   workflow: Workflow;
-  toolsContent: string = null;
+  toolContent: string = null;
   _selectedVersion: WorkflowVersion;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   ToolDescriptor = ToolDescriptor;
   toolExcerptHeaderName$: Observable<string>;
   workflowExcerptRowHeading$: Observable<string>;
   displayedColumns: string[] = ['workflowExcerpt', 'toolExcerpt'];
+  // TODO: Put most of this stuff in Akita state
   hasContent = false;
   nullContent = false;
   noContent = false;
@@ -45,22 +47,23 @@ export class ToolTabComponent extends EntryTab {
       this.workflow = this.workflowQuery.getActive();
       // Also check that the workflow version belongs to the workflow
       if (this.workflow && this.workflow.workflowVersions && this.workflow.workflowVersions.some(version => version.id === value.id)) {
-        this.updateTableToolContent(this.workflow.id, value.id);
+        this.getTableToolContent(this.workflow.id, value.id);
       } else {
-        this.loading = false;
+        this.handleNullToolContent();
         console.error('Should not be able to select version without a workflow');
       }
     } else {
-      this.loading = false;
-      this.updateContent(null);
+      this.handleNullToolContent();
     }
   }
-  constructor(private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService) {
+
+  constructor(private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService, private toolTabService: ToolTabService) {
     super();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
-    this.toolExcerptHeaderName$ = this.descriptorType$.pipe(map(descriptorType => this.descriptorTypeToHeaderName(descriptorType)));
+    this.toolExcerptHeaderName$ = this.descriptorType$.pipe(
+      map(descriptorType => this.toolTabService.descriptorTypeToHeaderName(descriptorType)));
     this.workflowExcerptRowHeading$ = this.descriptorType$.pipe(
-      map(descriptorType => this.descriptorTypeToWorkflowExcerptRowHeading(descriptorType)));
+      map(descriptorType => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType)));
   }
 
   /**
@@ -70,82 +73,39 @@ export class ToolTabComponent extends EntryTab {
    * @param {number} versionId   The workflowVersion Id
    * @memberof ToolTabComponent
    */
-  updateTableToolContent(workflowId: number, versionId: number): void {
+  getTableToolContent(workflowId: number, versionId: number): void {
     if (workflowId && versionId) {
       this.loading = true;
       this.workflowsService.getTableToolContent(workflowId, versionId).pipe(finalize(() => this.loading = false)).subscribe(
         (toolContent) => {
-          this.updateContent(toolContent);
+          this.handleToolContent(toolContent);
         }, error => {
           console.log('Could not retrieve table tool content');
-          this.updateContent(null);
+          this.handleToolContent(null);
         });
     } else {
-      this.loading = false;
-      this.updateContent(null);
-    }
-  }
-
-  /**
-   * Determines the second column's header name. No break needed because headings are always short.
-   *
-   * @param {ToolDescriptor.TypeEnum} descriptorType
-   * @returns
-   * @memberof ToolTabComponent
-   */
-  descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum) {
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL:
-        return 'Tool Excerpt';
-      case ToolDescriptor.TypeEnum.WDL:
-        return 'Task Excerpt';
-      case ToolDescriptor.TypeEnum.NFL:
-        return 'Process Excerpt';
-      default:
-        console.error('Unknown descriptor type found: ' + descriptorType);
-        return 'Tool Excerpt';
-    }
-  }
-
-  /**
-   * In the Workflow Excerpt column, each row will have a heading before the tool.id.
-   * This determines that heading.
-   *
-   * @param {ToolDescriptor.TypeEnum} descriptorType
-   * @returns {string}
-   * @memberof ToolTabComponent
-   */
-  descriptorTypeToWorkflowExcerptRowHeading(descriptorType: ToolDescriptor.TypeEnum): string {
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL:
-        return 'tool\xa0ID';
-      case ToolDescriptor.TypeEnum.WDL:
-        return 'task\xa0ID';
-      case ToolDescriptor.TypeEnum.NFL:
-        return 'process\xa0name';
-      default:
-        console.error('Unknown descriptor type found: ' + descriptorType);
-        return 'tool\xa0ID';
+      this.handleNullToolContent();
     }
   }
 
   /**
    * Updates the 3 boolean variables that determines what to show (one of the 2 warnings or the table)
    *
-   * @param {string} toolsContent
+   * @private
+   * @param {string} toolContent  The current workflow version's toolContent
    * @memberof ToolTabComponent
    */
-  updateContent(toolsContent: string): void {
+  private handleToolContent(toolContent: string): void {
     this.hasContent = false;
     this.noContent = false;
     this.nullContent = false;
-    this.toolsContent = toolsContent;
-    if (!toolsContent) {
+    this.toolContent = toolContent;
+    if (!toolContent) {
       this.hasContent = false;
       this.noContent = false;
       this.nullContent = true;
     } else {
-      if (toolsContent.length === 0) {
+      if (toolContent.length === 0) {
         this.hasContent = false;
         this.noContent = true;
         this.nullContent = false;
@@ -155,5 +115,16 @@ export class ToolTabComponent extends EntryTab {
         this.nullContent = false;
       }
     }
+  }
+
+  /**
+   * Handle when no tool content was able to be retrieved
+   *
+   * @private
+   * @memberof ToolTabComponent
+   */
+  private handleNullToolContent(): void {
+    this.handleToolContent(null);
+    this.loading = false;
   }
 }

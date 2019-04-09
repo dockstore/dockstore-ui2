@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor, WorkflowsService } from '../../shared/swagger';
+import { WorkflowsService } from '../../shared/swagger';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
 
@@ -48,25 +48,11 @@ describe('ToolTabComponent', () => {
   });
 
   it('should update table tool content', () => {
-    component.updateTableToolContent(1, null);
-    expect(component.toolsContent).toBe(null);
-    component.updateTableToolContent(null, 1);
-    expect(component.toolsContent).toBe(null);
-    component.updateTableToolContent(1, 1);
-    expect(component.toolsContent).toBe('tableToolContentString');
-  });
-
-  fit('should determines the correct workflow excerpt row heading', () => {
-    expect(component.descriptorTypeToWorkflowExcerptRowHeading(ToolDescriptor.TypeEnum.CWL)).toEqual('tool\xa0ID');
-    expect(component.descriptorTypeToWorkflowExcerptRowHeading(ToolDescriptor.TypeEnum.WDL)).toEqual('task\xa0ID');
-    expect(component.descriptorTypeToWorkflowExcerptRowHeading(ToolDescriptor.TypeEnum.NFL)).toEqual('process\xa0name');
-    expect(component.descriptorTypeToWorkflowExcerptRowHeading(<ToolDescriptor.TypeEnum>'Potato')).toEqual('tool\xa0ID');
-  });
-
-  fit('should determines the correct workflow excerpt row heading', () => {
-    expect(component.descriptorTypeToHeaderName(ToolDescriptor.TypeEnum.CWL)).toEqual('Tool Excerpt');
-    expect(component.descriptorTypeToHeaderName(ToolDescriptor.TypeEnum.WDL)).toEqual('Task Excerpt');
-    expect(component.descriptorTypeToHeaderName(ToolDescriptor.TypeEnum.NFL)).toEqual('Process Excerpt');
-    expect(component.descriptorTypeToHeaderName(<ToolDescriptor.TypeEnum>'Potato')).toEqual('Tool Excerpt');
+    component.getTableToolContent(1, null);
+    expect(component.toolContent).toBe(null);
+    component.getTableToolContent(null, 1);
+    expect(component.toolContent).toBe(null);
+    component.getTableToolContent(1, 1);
+    expect(component.toolContent).toBe('tableToolContentString');
   });
 });
