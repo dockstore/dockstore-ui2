@@ -51,8 +51,8 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   private visualizer: any;
 
   constructor(private wdlViewerService: WdlViewerService, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-              protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery,
-              private wdlViewerQuery: WdlViewerQuery) {
+    protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery,
+    private wdlViewerQuery: WdlViewerQuery) {
   }
 
 
@@ -61,7 +61,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
 
     // Retrieve all files for this workflow from Ga4ghFiles entity Store
     this.wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((files) => {
+      .subscribe(files => {
         // Do not re-create the WDL visualization if the workflow version is not different
         if (!this.versionChanged) {
           return;

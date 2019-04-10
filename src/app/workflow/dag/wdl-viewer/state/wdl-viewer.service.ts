@@ -35,7 +35,7 @@ export class WdlViewerService {
   private statusSource = new BehaviorSubject<boolean>(false);
   public status$ = this.statusSource.asObservable();
   constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService,
-              private wdlViewerStore: WdlViewerStore) {
+    private wdlViewerStore: WdlViewerStore) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
