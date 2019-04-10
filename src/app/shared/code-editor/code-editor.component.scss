@@ -1,0 +1,4 @@
+// Set min height or editor not visible on iOS, ga4gh/dockstore#1687
+div.ace_editor {
+  min-height: 1px;
+}

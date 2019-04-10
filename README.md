@@ -28,9 +28,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Prerequisites
 
-Angular CLI requires Node, NPM, Java 8+, and wget.  See [.travis.yml](.travis.yml) for the correct versions of Node, NPM and Angular CLI.
+- Java 8+ 
+- Node and its included NPM (see [.nvmrc](.nvmrc) for the correct version of node to install)
+- wget 
 
-[Install NPM and Node](https://nodejs.org/en/download/package-manager/)
+Install NPM and Node using nvm:
 ```
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 ```
@@ -55,7 +57,7 @@ cd dockstore-ui2
 git checkout develop
 git pull
 
-npm ci
+CI=true npm ci
 ```
 
 Check to make sure Angular CLI has been properly set up

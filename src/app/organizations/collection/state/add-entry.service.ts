@@ -23,6 +23,7 @@ export class AddEntryService {
       finalize(() => this.addEntryStore.setLoading(false)
       ))
       .subscribe((memberships: Array<OrganizationUser>) => {
+        memberships = memberships.filter(membership => membership.accepted);
         this.updateMembershipsState(memberships);
         this.addEntryStore.setError(false);
       }, () => {

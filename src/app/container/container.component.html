@@ -142,8 +142,8 @@
 <div class="row m-1" *ngIf="!starGazersClicked">
   <div class="col-sm-12 p-0" [ngClass]="{'col-md-9 col-lg-9': isToolPublic}">
     <div class="ds-tabs" [ngClass]="{'mr-3': isToolPublic}">
-      <mat-tab-group dynamicHeight [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs
-        (selectedTabChange)="selectedTabChange($event)">
+      <mat-tab-group dynamicHeight (selectedIndexChange)="selected.setValue($event)" (selectedTabChange)="selectedTabChange($event)" [selectedIndex]="selected.value" id="tool_tabs" #entryTabs mat-stretch-tabs
+        >
         <mat-tab id="infoTab" label="Info">
           <app-info-tab [selectedVersion]="selectedVersion" [privateOnlyRegistry]="privateOnlyRegistry"
             [extendedDockstoreTool]="(extendedTool$ | async)" [validVersions]="validVersions"></app-info-tab>
@@ -152,9 +152,11 @@
           <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion"
             [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
           <ng-template #noTags>
-            <mat-card class="alert alert-warning" role="alert">
-              <mat-icon>warning</mat-icon> No tags exist for this
-            </mat-card>
+            <div class="p-3">
+              <mat-card class="alert alert-warning" role="alert">
+                <mat-icon>warning</mat-icon> No tags exist for this
+              </mat-card>
+            </div>
           </ng-template>
         </mat-tab>
         <mat-tab id="versionTab" label="Versions">
@@ -182,8 +184,8 @@
           </ng-template>
         </mat-tab>
       </mat-tab-group>
-      <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
     </div>
+    <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
   </div>
 
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic && tool">

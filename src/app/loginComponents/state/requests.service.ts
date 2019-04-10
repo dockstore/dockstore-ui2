@@ -94,10 +94,13 @@ export class RequestsService {
       const myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
       const myPendingOrganizationRequests = myMemberships.filter(membership => membership.organization.status === 'PENDING'
       && membership.accepted);
-      this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests);
+      const myRejectedOrganizationRequests = myMemberships.filter(membership => membership.organization.status === 'REJECTED'
+      && membership.accepted);
+
+      this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests, myRejectedOrganizationRequests);
       this.alertService.simpleSuccess();
     }, () => {
-      this.updateMyMembershipState(null, null, null);
+      this.updateMyMembershipState(null, null, null, null);
       this.requestsStore.setError(true);
       this.alertService.simpleError();
     });
@@ -110,13 +113,14 @@ export class RequestsService {
    * @param myPendingOrganizationRequests
    */
   updateMyMembershipState(myMemberships: Array<OrganizationUser>, myOrganizationInvites: Array<OrganizationUser>,
-    myPendingOrganizationRequests: Array<OrganizationUser>): void {
+    myPendingOrganizationRequests: Array<OrganizationUser>, myRejectedOrganizationRequests: Array<OrganizationUser>): void {
     this.requestsStore.setState((state: RequestsState) => {
       return {
         ...state,
         myMemberships: myMemberships,
         myOrganizationInvites: myOrganizationInvites,
-        myPendingOrganizationRequests: myPendingOrganizationRequests
+        myPendingOrganizationRequests: myPendingOrganizationRequests,
+        myRejectedOrganizationRequests: myRejectedOrganizationRequests
       };
     });
   }
@@ -135,7 +139,23 @@ export class RequestsService {
         this.alertService.simpleSuccess();
         this.updateMyMemberships();
       }, () => {
-        this.updateMyMembershipState(null, null, null);
+        this.updateMyMembershipState(null, null, null, null);
+        this.requestsStore.setError(true);
+        this.alertService.simpleError();
+      });
+  }
+
+  requestRereview(id: number): void {
+    this.alertService.start('Rerequesting review for organization ' + id);
+    this.organizationsService.requestOrganizationReview(id).pipe(
+      finalize(() => this.requestsStore.setLoading(false)
+      ))
+      .subscribe((organization: Organization) => {
+        this.alertService.simpleSuccess();
+        this.updateCuratorOrganizations();
+        this.updateMyMemberships();
+      }, () => {
+        this.updateMyMembershipState(null, null, null, null);
         this.requestsStore.setError(true);
         this.alertService.simpleError();
       });

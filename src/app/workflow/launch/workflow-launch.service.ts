@@ -36,6 +36,14 @@ export class WorkflowLaunchService extends LaunchService {
             \nvim Dockstore.json`;
   }
 
+  getDockstoreSupportedCwlLaunchString(path: string, versionName: string) {
+    return `cwltool \\#workflow/${path}:${versionName} Dockstore.json`;
+  }
+
+  getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string) {
+    return `cwltool --make-template \\#workflow/${path}:${versionName} > input.yaml`;
+  }
+
   getCliString(path: string, versionName: string, currentDescriptor: string) {
     return `dockstore ${this.type} launch --entry ${path}:${versionName} --json Dockstore.json`;
   }
