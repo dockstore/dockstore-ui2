@@ -16,7 +16,7 @@ addons:
   chrome: stable
 
 install:
-  - CI=true npm ci
+  - CI=true npm ci #CI=true to be consistent with compose_setup where it must be manually set
 
 jobs:
   include:
