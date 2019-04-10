@@ -20,7 +20,7 @@ import { FileService } from '../../../shared/file.service';
 
 
 import { WdlViewerComponent } from './wdl-viewer.component';
-import { WdlViewerService } from './wdl-viewer.service';
+import { WdlViewerService } from './state/wdl-viewer.service';
 
 describe('WdlViewerComponent', () => {
   let component: WdlViewerComponent;

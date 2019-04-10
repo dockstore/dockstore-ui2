@@ -14,35 +14,28 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { transaction } from '@datorama/akita';
 
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
 import { Observable, from, forkJoin, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
-import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
-import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
-import { DagStore } from '../state/dag.store';
-
-/**
- * Defines types for the response of Pipeline Builder library
- */
-export interface WdlViewerPipeline {
-  status: boolean;
-  message: string;
-  model: Array<any>;
-  actions: Array<any>;
-}
+import { GA4GHFilesQuery } from '../../../../shared/ga4gh-files/ga4gh-files.query';
+import { ExtendedWorkflow } from '../../../../shared/models/ExtendedWorkflow';
+import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../../shared/swagger';
+import { WdlViewerPipeline } from './wdl-viewer.model';
+import { WdlViewerStore } from './wdl-viewer.store';
 
 /**
  * Service for creating WDL workflow visualizations with EPAM Pipeline Builder library
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WdlViewerService {
   private zip: JSZip = new JSZip();
   private statusSource = new BehaviorSubject<boolean>(false);
   public status$ = this.statusSource.asObservable();
-  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService, private dagStore: DagStore) {
+  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService,
+              private wdlViewerStore: WdlViewerStore) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
@@ -108,12 +101,13 @@ export class WdlViewerService {
       );
   }
 
-  setWdlViewerPipeline(result: WdlViewerPipeline): void {
-    this.dagStore.setState(state => {
-      return {
-        ...state,
-        wdlViewerResults: result,
-      };
-    });
+  @transaction()
+  update(id: number, result: WdlViewerPipeline) {
+    this.wdlViewerStore.createOrReplace(result.id, result);
+    this.wdlViewerStore.setActive(id);
+  }
+
+  removeAll() {
+    this.wdlViewerStore.remove();
   }
 }

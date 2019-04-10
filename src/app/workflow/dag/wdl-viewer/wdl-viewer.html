@@ -4,7 +4,7 @@
     <div>EPAM WDL Visualizer was unable to visualize this workflow. <span *ngIf="errorMessage">It returned the following error:</span></div>
     <div>{{errorMessage}}</div>
   </mat-card>
-  <div *ngIf="!(wdlViewerResult$ | async)" class="text-center viewer-loading">
+  <div *ngIf="loading" class="text-center viewer-loading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <div class="svg w-100 h-100" #diagram></div>

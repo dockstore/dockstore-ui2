@@ -19,7 +19,7 @@ import { of as observableOf, throwError } from 'rxjs';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { WorkflowVersion, ToolDescriptor } from '../../../shared/swagger';
 import { sampleWorkflow1, sampleWorkflow2, sampleWorkflowVersion } from '../../../test/mocked-objects';
-import { WdlViewerService } from './wdl-viewer.service';
+import { WdlViewerService } from './state/wdl-viewer.service';
 
 describe('Service: WDLViewer', () => {
   let wdlViewerService: WdlViewerService;
