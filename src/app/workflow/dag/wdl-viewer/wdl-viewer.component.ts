@@ -17,12 +17,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 import { Subject } from 'rxjs';
-import { finalize, take, takeUntil, delay } from 'rxjs/operators';
+import { take, takeUntil, delay } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { ToolDescriptor, Workflow, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
-import { WdlViewerPipeline } from './state/wdl-viewer.model';
+import { WdlViewerPipelineResponse } from './state/wdl-viewer.model';
 import { WdlViewerQuery } from './state/wdl-viewer.query';
 import { WdlViewerService } from './state/wdl-viewer.service';
 
@@ -67,9 +67,9 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
           return;
         }
 
-        // Add delay so parent component can finish rendering it's view before the status is set
-        this.wdlViewerQuery.selectEntity(this.version.id).pipe(take(1), delay(0))
-          .subscribe((cached: WdlViewerPipeline) => {
+        // Add delay so parent component can finish rendering its view before the status is set
+        this.wdlViewerQuery.selectEntity(this.version.id).pipe(takeUntil(this.ngUnsubscribe), delay(0))
+          .subscribe((cached: WdlViewerPipelineResponse) => {
             this.wdlViewerError = false;
 
             if (cached) {
@@ -79,28 +79,19 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
               this.clearProgressBar();
               this.wdlViewerService.setStatus(true);
 
-            } else if (files && files.length > 0) {
+            } else if (files && files.length > 0 && this.version.id) {
 
               // Create the Epam WDL visualization and attach the result to the DOM element. Stop subscribing after first completion
-              this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1), finalize(() => {
-                this.clearProgressBar();
-              }))
-                .subscribe((res: WdlViewerPipeline) => {
-                    res.id = this.version.id;
-                    this.visualizer.attachTo(res.model[0]);
+              this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1))
+                .subscribe((res: WdlViewerPipelineResponse) => {
+                    res.workflowVersion = this.version.id;
                     this.wdlViewerService.update(this.workflow.id, res);
-                    this.wdlViewerService.setStatus(true);
                   },
-                  (error) => {
-                    this.errorMessage = error || 'Unknown Error';
-                    this.wdlViewerError = true;
-                    this.diagram.nativeElement.remove();
-                    this.wdlViewerService.setStatus(false);
+                  (error: Error) => {
+                    this.showError(error);
                   });
             } else {
-              this.clearProgressBar();
-              this.wdlViewerError = true;
-              this.wdlViewerService.setStatus(false);
+              this.showError();
             }
         });
       });
@@ -121,7 +112,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.version = value;
     this.versionChanged = true;
 
-    // Reset store on every version change
+    // Reset the store on every workflow change
     if (this.workflow.id !== this.wdlViewerQuery.getActiveId()) {
       this.wdlViewerService.removeAll();
     }
@@ -141,5 +132,13 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   private clearProgressBar() {
     this.loading = false;
     this.versionChanged = false;
+  }
+
+  private showError(error?: Error) {
+    this.errorMessage = error || 'Unknown Error';
+    this.clearProgressBar();
+    this.wdlViewerError = true;
+    this.diagram.nativeElement.remove();
+    this.wdlViewerService.setStatus(false);
   }
 }
