@@ -23,8 +23,8 @@ jobs:
     - stage: unit test
       name: "Lint, Unit Test, and Prod Test"
       script:
-        - npm run build.prod
         - npx ng lint
+        - npm run build.prod
         - npx ng test --watch=false --code-coverage --browsers ChromeHeadless
         - npm install --no-save codecov
     - stage: integration test
