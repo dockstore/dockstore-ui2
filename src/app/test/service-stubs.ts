@@ -480,6 +480,12 @@ export class StarringStubService {
     }
 }
 
+export class OrganizationStarringStubService {
+  getStarring(id: any): Observable<Array<User>> {
+    return observableOf([]);
+  }
+}
+
 export class CheckerWorkflowStubService {
     entry$ = observableOf({id: 1});
     checkerWorkflow$ = observableOf(null);
@@ -523,6 +529,10 @@ export class UrlResolverStubService {
 
 export class StarEntryStubService {
     starEntry$ = observableOf({});
+}
+
+export class StarOrganizationStubService {
+  starOrganization$ = observableOf({});
 }
 
 export class ImageProviderStubService {

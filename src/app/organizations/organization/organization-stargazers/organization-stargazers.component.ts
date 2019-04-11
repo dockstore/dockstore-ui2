@@ -25,7 +25,7 @@ import {OrganizationStarringService} from '../organization-starring/organization
   selector: 'app-organization-stargazers',
   templateUrl: './organization-stargazers.component.html'
 })
-export class OrganizationsStargazersComponent extends Base implements OnInit {
+export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: any;
 
   constructor(private organizationStarringService: OrganizationStarringService,
