@@ -145,4 +145,20 @@ describe('Tool, Workflow, and Organization starring', () => {
       starredPage('organization');
     });
   });
+  describe('Organization Starring', () => {
+    it.only('Organization can be starred/unstarred', () => {
+      cy.server();
+      cy.route({
+        url: '/organizations/nostars',
+        method: 'GET',
+        status: 200,
+        response: {'aliases': null, 'avatarUrl': null, 'dbCreateDate': 1554932802471, 'dbUpdateDate': 1554932867621, 'description': null,
+          'displayName': 'nostars', 'email': null, 'id': 5, 'link': null, 'location': null, 'name': 'nostars', 'starredUsers': [],
+          'status': 'APPROVED', 'topic': 'asdf', 'users': null}
+      });
+      entryStarring('/organizations/nostars');
+    });
+  });
+
+
 });
