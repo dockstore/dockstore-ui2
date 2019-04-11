@@ -68,7 +68,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
         }
 
         // Add delay so parent component can finish rendering its view before the status is set
-        this.wdlViewerQuery.selectEntity(this.version.id).pipe(takeUntil(this.ngUnsubscribe), delay(0))
+        this.wdlViewerQuery.selectEntity(this.version.id).pipe(delay(0), takeUntil(this.ngUnsubscribe))
           .subscribe((cached: WdlViewerPipelineResponse) => {
             this.wdlViewerError = false;
 
