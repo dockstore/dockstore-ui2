@@ -1,8 +1,6 @@
 sudo: required
 dist: trusty
 language: node_js
-node_js:
-  - '10.13.0'
 services:
   - postgresql
 jdk:
@@ -12,41 +10,41 @@ cache:
   directories:
     # we also need to cache folder with Cypress binary
     - ~/.cache
-env:
-  global:
-    - WEBSERVICE_VERSION="1.6.0-beta.4"
 addons:
   firefox: "latest"
   postgresql: "9.6"
   chrome: stable
 
 install:
-  - ./scripts/install-travis-script.sh
+  - npm ci
 
 jobs:
   include:
     - stage: unit test
       name: "Lint, Unit Test, and Prod Test"
       script:
-        - ng lint
-        - ng test --watch=false --code-coverage --browsers ChromeHeadless
-        - ng version
+        - npx ng lint
         - npm run build.prod
+        - npx ng test --watch=false --code-coverage --browsers ChromeHeadless
+        - npm install --no-save codecov
     - stage: integration test
       name: "Cypress Group 1"
       env:
         - TEST='cypress/integration/group1/**/*'
-      script: ./scripts/run-travis-script.sh
+      script:
+        - ./scripts/run-travis-script.sh
     - stage: integration test
       name: "Cypress Group 2"
       env:
         - TEST='cypress/integration/group2/**/*'
-      script: ./scripts/run-travis-script.sh
+      script:
+        - ./scripts/run-travis-script.sh
     - stage: integration test
       name: "Cypress Group 3"
       env:
         - TEST='cypress/integration/group3/**/*'
-      script: ./scripts/run-travis-script.sh
+      script:
+        - ./scripts/run-travis-script.sh
 
 script: echo "overriding test"
 
