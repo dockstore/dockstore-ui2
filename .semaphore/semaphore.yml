@@ -20,6 +20,7 @@ blocks:
           - checkout
           - npm install -g @angular/cli@6.0.2 --unsafe
           - npm ci - prefer-offline
+          - npm ls
           - ng version
           - npm run prebuild
       jobs:
