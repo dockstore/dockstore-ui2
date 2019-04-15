@@ -67,7 +67,7 @@
     "ngx-clipboard": "^11.1.0",
     "ngx-md": "^6.0.0",
     "pipeline-builder": "^0.3.10-dev.308",
-    "rxjs": "^6.4.0",
+    "rxjs": "^6.3.3",
     "ts-md5": "^1.2.0",
     "ts-node": "~5.0.1",
     "typescript": "^3.2.4",
