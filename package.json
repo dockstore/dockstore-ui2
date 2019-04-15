@@ -21,7 +21,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^7.2.13",
-    "@angular/cdk": "^7.0.2",
+    "@angular/cdk": "^7.3.7",
     "@angular/common": "^7.2.13",
     "@angular/compiler": "^7.2.13",
     "@angular/core": "^7.2.13",
@@ -29,7 +29,7 @@
     "@angular/forms": "^7.2.13",
     "@angular/http": "^7.2.13",
     "@angular/language-service": "^7.2.13",
-    "@angular/material": "^7.0.2",
+    "@angular/material": "^7.3.7",
     "@angular/platform-browser": "^7.2.13",
     "@angular/platform-browser-dynamic": "^7.2.13",
     "@angular/platform-server": "^7.2.13",
