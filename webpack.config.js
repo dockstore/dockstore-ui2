@@ -15,7 +15,7 @@
  */
 module.exports = {
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: [".ts", ".js"],
     },
     module: {
       rules: [
@@ -23,9 +23,9 @@ module.exports = {
           test: /\.ts$/,
           exclude: [/node_modules/],
           use: [{
-            loader: 'ts-loader',
+            loader: "ts-loader",
           }],
         },
       ],
     },
-  }
+  };
