@@ -435,6 +435,8 @@ export class UserStubService {
     userId$ = observableOf(5);
     user$ = observableOf({});
     extendedUser$ = observableOf({});
+    getUser() {
+    }
     updateUser() {
     }
     getExtendedUserData() {
