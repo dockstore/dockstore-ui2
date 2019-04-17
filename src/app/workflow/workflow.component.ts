@@ -171,8 +171,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
     this.schema = {
-      '@type': 'ListItem',
-      'position': this.workflow.id,
+      '@type': 'Product',
+      'name': this.workflow.workflowName,
+      'description': this.workflow.description,
+      'identifier': this.workflow.author,
       'url': this.shareURL
     };
   }
