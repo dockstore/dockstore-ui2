@@ -69,13 +69,13 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
 
         // Add delay so parent component can finish rendering its view before the status is set
         this.wdlViewerQuery.selectEntity(this.version.id).pipe(delay(0), takeUntil(this.ngUnsubscribe))
-          .subscribe((cached: WdlViewerPipelineResponse) => {
+          .subscribe((wdlViewerPipelineResponse: WdlViewerPipelineResponse) => {
             this.wdlViewerError = false;
 
-            if (cached) {
+            if (wdlViewerPipelineResponse) {
 
               // Attach cached pipeline to the DOM element
-              this.visualizer.attachTo(cached.model[0]);
+              this.visualizer.attachTo(wdlViewerPipelineResponse.model[0]);
               this.clearProgressBar();
               this.wdlViewerService.setStatus(true);
 
@@ -84,8 +84,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
               // Create the Epam WDL visualization and attach the result to the DOM element. Stop subscribing after first completion
               this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1))
                 .subscribe((res: WdlViewerPipelineResponse) => {
-                    res.workflowVersion = this.version.id;
-                    this.wdlViewerService.update(this.workflow.id, res);
+                    this.wdlViewerService.update(this.workflow.id, this.version.id, res);
                   },
                   (error: Error) => {
                     this.showError(error);

@@ -102,8 +102,8 @@ export class WdlViewerService {
   }
 
   @transaction()
-  update(workflowId: number, result: WdlViewerPipelineResponse) {
-    this.wdlViewerStore.createOrReplace(result.workflowVersion, result);
+  update(workflowId: number, versionId: number, result: WdlViewerPipelineResponse) {
+    this.wdlViewerStore.createOrReplace(versionId, result);
     this.wdlViewerStore.setActive(workflowId);
   }
 
