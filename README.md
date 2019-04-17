@@ -111,7 +111,7 @@ Run `ng g component component-name` to generate a new component. You can also us
 
 ## Build
 
-Optionally override the webservice version using `npm config set dockstore-ui2:webservice_version ${WEBSERVICE_VERSION}
+Optionally override the webservice version using `npm config set dockstore-ui2:webservice_version ${WEBSERVICE_VERSION}`
 Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `npm run build.prod` for a production build.
 
 ## Running unit tests
