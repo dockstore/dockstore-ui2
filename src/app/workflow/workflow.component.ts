@@ -45,6 +45,7 @@ import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
+import { Dockstore } from '../shared/dockstore.model';
 
 import RoleEnum = Permission.RoleEnum;
 @Component({
@@ -160,6 +161,13 @@ export class WorkflowComponent extends Entry {
 
   private setUpWorkflow(workflow: any) {
     if (workflow) {
+      if (workflow.topicId) {
+        // Initialize discourse urls
+        (<any>window).DiscourseEmbed = {
+          discourseUrl: Dockstore.DISCOURSE_URL,
+          topicId: workflow.topicId
+        };
+      }
       this.workflow = workflow;
       this.title = this.workflow.full_workflow_path;
       this.initTool();

@@ -47,6 +47,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
+import { Dockstore } from '../shared/dockstore.model';
 
 @Component({
   selector: 'app-container',
@@ -144,6 +145,13 @@ export class ContainerComponent extends Entry {
       tool => {
         this.tool = tool;
         if (tool) {
+          if (tool.topicId) {
+            // Initialize discourse urls
+            (<any>window).DiscourseEmbed = {
+              discourseUrl: Dockstore.DISCOURSE_URL,
+              topicId: tool.topicId
+            };
+          }
           this.published = this.tool.is_published;
           this.setPublishMessage();
           if (this.tool.tags.length === 0) {

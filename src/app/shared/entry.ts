@@ -21,7 +21,6 @@ import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@ang
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -371,12 +370,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
       if (indexOfLastColon > 0) {
         trimmedURL = window.location.href.substring(0, indexOfLastColon);
       }
-
-      // Initialize discourse urls
-      (<any>window).DiscourseEmbed = {
-        discourseUrl: Dockstore.DISCOURSE_URL,
-        discourseEmbedUrl: decodeURIComponent(trimmedURL)
-      };
     }
   }
 

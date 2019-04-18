@@ -191,6 +191,11 @@
     </mat-tab-group>
   </div>
   <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
+  <div *ngIf="publicPage && workflow?.topicId == null">
+    <mat-card class="alert alert-warning" role="alert">
+      <mat-icon>info</mat-icon> No Discourse topic exists for this workflow. One will be generated automatically.
+    </mat-card>
+  </div>
 </div>
 
   <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
