@@ -39,7 +39,7 @@ export class OrganizationStarringService {
   }
 
   getStarring(entryID: number): Observable<Array<User>> {
-    return this.organizationsService.getStarredUsers(entryID);
+    return this.organizationsService.getStarredUsersForApprovedOrganization(entryID);
   }
 
   getStarredOrganizations(): any {

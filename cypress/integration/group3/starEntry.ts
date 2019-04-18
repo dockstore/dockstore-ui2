@@ -19,6 +19,10 @@ describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
   setTokenUserViewPort();
 
+  function typeInInput(fieldName: string, text: string) {
+    cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper')
+      .find('input').first().should('be.visible').clear().type(text);
+  }
   function beUnstarred() {
     cy
       .get('#starringButtonIcon')
@@ -55,7 +59,7 @@ describe('Tool, Workflow, and Organization starring', () => {
       .click();
 
     cy
-      .get('.alert')
+      .get('[data-cy=noStargazers]')
       .should('exist');
 
     cy
@@ -77,7 +81,7 @@ describe('Tool, Workflow, and Organization starring', () => {
       .click();
 
     cy
-      .get('.alert')
+      .get('[data-cy=noStargazers]')
       .should('not.exist');
 
     cy
@@ -85,64 +89,60 @@ describe('Tool, Workflow, and Organization starring', () => {
       .should('exist')
       .should('not.be.disabled')
       .click();
+  }
 
+  function starredPage(entity: string) {
     cy
       .get('#dropdown-main')
       .click();
     cy
       .get('#dropdown-starred')
       .click();
+    if (entity === 'tool') {
+      cy
+        .get('.mat-tab-label-content').contains('Starred Tools')
+        .click();
+    } else if (entity === 'workflow') {
+      cy
+        .get('.mat-tab-label-content').contains('Starred Workflows')
+        .click();
+     } else {
+        cy
+          .get('Starred Organizations')
+          .click();
+    }
     cy
       .get('#starringButton')
       .should('exist');
     cy
       .get('#starCountButton')
-      .should('exist');
-
-    cy.get('mat-list-item').find('a').first().click();
-
-    beStarred();
-
-    cy
-      .get('#starringButton')
-      .click();
-
-    beUnstarred();
-
-    cy
-      .get('#starCountButton')
-      .click();
-
-    cy
-      .get('.alert')
       .should('exist');
   }
 
   describe('Workflow starring', () => {
     it('Workflow can be starred/unstarred', () => {
       entryStarring('/workflows/github.com/A/l');
-
+      starredPage('workflow');
     });
   });
   describe('Tool Starring', () => {
     it('Tool can be starred/unstarred', () => {
       entryStarring('/containers/quay.io/A2/a');
+      starredPage('tool');
     });
   });
   describe('Organization Starring', () => {
     it.only('Organization can be starred/unstarred', () => {
-      cy.server();
-      cy.route({
-        url: '/organizations/nostars',
-        method: 'GET',
-        status: 200,
-        response: {'aliases': null, 'avatarUrl': null, 'dbCreateDate': 1554932802471, 'dbUpdateDate': 1554932867621, 'description': null,
-          'displayName': 'nostars', 'email': null, 'id': 5, 'link': null, 'location': null, 'name': 'nostars', 'starredUsers': [],
-          'status': 'APPROVED', 'topic': 'asdf', 'users': null}
-      });
-      entryStarring('/organizations/nostars');
+      cy.visit('/organizations');
+      cy.contains('button', 'Create Organization Request').should('be.visible').click();
+      typeInInput('Name', 'Potato');
+      typeInInput('Display Name', 'Potato');
+      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
+
+      entryStarring('/organizations/Potato');
+      starredPage('organization');
     });
   });
-
-
 });

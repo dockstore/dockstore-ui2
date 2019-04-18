@@ -247,6 +247,10 @@ export class UsersStubService {
     getStarredWorkflows() {
         return observableOf([]);
     }
+
+    getStarredOrganizations(){
+      return observableOf([]);
+    }
     refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {
         return observableOf([]);
     }
