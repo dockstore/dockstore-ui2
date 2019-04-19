@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -102,6 +102,8 @@ import { SitemapComponent } from './sitemap/sitemap.component';
 import { RequestsModule } from './loginComponents/requests.module';
 import {OrganizationStarringModule} from './organizations/organization/organization-starring/organization-starring.module';
 import {OrganizationStargazersModule} from './organizations/organization/organization-stargazers/organization-stargazers.module';
+import { ConfigurationService } from './configuration.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -114,6 +116,11 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   horizontalPosition: 'center',
   verticalPosition: 'bottom'
 };
+
+export function startupServiceFactory(startupService: ConfigurationService): Function {
+  console.log('startupService', startupService);
+  return () => { return startupService.load() }; // => required, otherwise `this` won't work inside StartupService::load
+}
 
 @NgModule({
   declarations: [
@@ -188,6 +195,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ProviderService,
     ContainerService,
     ImageProviderService,
+    HttpClient,
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,
     RefreshService,
@@ -201,6 +209,13 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ExtendedToolsService,
     VerifiedByService,
     Title,
+    ConfigurationService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: startupServiceFactory,
+      deps: [ConfigurationService],
+      multi: true
+    },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
@@ -212,7 +227,7 @@ export class AppModule {
 
 export const apiConfig = new Configuration({
   apiKeys: {},
-  basePath: Dockstore.API_URI
+  basePath: window.location.protocol + '//' + window.location.host
 });
 
 export function getApiConfig() {
