@@ -7,7 +7,7 @@
   },
   "scripts": {
     "ng": "npx ng",
-    "start": "npx ng serve --progress=false --proxy-config=proxy.conf.js",
+    "start": "npx ng serve --progress=false --proxy-config=proxy.conf.json",
     "webservice": "./scripts/run-webservice-script.sh",
     "prebuild": "ts-node git.version.ts && ./scripts/generate-openapi-script.sh",
     "prebuild.prod": "npm run prebuild",
