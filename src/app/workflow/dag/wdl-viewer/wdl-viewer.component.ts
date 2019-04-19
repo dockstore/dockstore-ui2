@@ -17,12 +17,14 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 import { Subject } from 'rxjs';
-import { finalize, take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, delay } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { ToolDescriptor, Workflow, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
-import { WdlViewerPipeline, WdlViewerService } from './wdl-viewer.service';
+import { WdlViewerPipelineResponse } from './state/wdl-viewer.model';
+import { WdlViewerQuery } from './state/wdl-viewer.query';
+import { WdlViewerService } from './state/wdl-viewer.service';
 
 @Component({
   selector: 'app-wdl-viewer',
@@ -49,7 +51,8 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   private visualizer: any;
 
   constructor(private wdlViewerService: WdlViewerService, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery) {
+    protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery,
+    private wdlViewerQuery: WdlViewerQuery) {
   }
 
 
@@ -64,29 +67,32 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
           return;
         }
 
-        if (files && files.length > 0) {
+        // Add delay so parent component can finish rendering its view before the status is set
+        this.wdlViewerQuery.selectEntity(this.version.id).pipe(delay(0), takeUntil(this.ngUnsubscribe))
+          .subscribe((wdlViewerPipelineResponse: WdlViewerPipelineResponse) => {
+            this.wdlViewerError = false;
 
-          // Create the Epam WDL visualization and attach the result to the DOM element. Stop subscribing after first completion
-          this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1), finalize(() => {
-            this.loading = false;
-            this.versionChanged = false;
-          }))
-            .subscribe((res: WdlViewerPipeline) => {
-              this.visualizer.attachTo(res.model[0]);
-              this.wdlViewerError = false;
+            if (wdlViewerPipelineResponse) {
+
+              // Attach cached pipeline to the DOM element
+              this.visualizer.attachTo(wdlViewerPipelineResponse.model[0]);
+              this.clearProgressBar();
               this.wdlViewerService.setStatus(true);
-            },
-              (error) => {
-                this.errorMessage = error || 'Unknown Error';
-                this.wdlViewerError = true;
-                this.diagram.nativeElement.remove();
-                this.wdlViewerService.setStatus(false);
-              });
-        } else {
-          this.wdlViewerService.setStatus(false);
-          this.wdlViewerError = true;
-          this.loading = false;
-        }
+
+            } else if (files && files.length > 0 && this.version.id) {
+
+              // Create the Epam WDL visualization and attach the result to the DOM element. Stop subscribing after first completion
+              this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1))
+                .subscribe((res: WdlViewerPipelineResponse) => {
+                    this.wdlViewerService.update(this.workflow.id, this.version.id, res);
+                  },
+                  (error: Error) => {
+                    this.showError(error);
+                  });
+            } else {
+              this.showError();
+            }
+        });
       });
   }
 
@@ -104,6 +110,11 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     }
     this.version = value;
     this.versionChanged = true;
+
+    // Reset the store on every workflow change
+    if (this.workflow.id !== this.wdlViewerQuery.getActiveId()) {
+      this.wdlViewerService.removeAll();
+    }
   }
 
   reset() {
@@ -115,5 +126,18 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     const name = this.workflowQuery.getActive().repository + '_' + this.version.name + '.svg';
     this.renderer.setAttribute(exportLink.nativeElement, 'href', URL.createObjectURL(blob));
     this.renderer.setAttribute(exportLink.nativeElement, 'download', name);
+  }
+
+  private clearProgressBar() {
+    this.loading = false;
+    this.versionChanged = false;
+  }
+
+  private showError(error?: Error) {
+    this.errorMessage = error || 'Unknown Error';
+    this.clearProgressBar();
+    this.wdlViewerError = true;
+    this.diagram.nativeElement.remove();
+    this.wdlViewerService.setStatus(false);
   }
 }
