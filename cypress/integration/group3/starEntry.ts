@@ -13,11 +13,12 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
-  setTokenUserViewPort();
+  // setTokenUserViewPort();
+  setTokenUserViewPortCurator();
 
   function typeInInput(fieldName: string, text: string) {
     cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper')
@@ -100,15 +101,18 @@ describe('Tool, Workflow, and Organization starring', () => {
       .click();
     if (entity === 'tool') {
       cy
-        .get('.mat-tab-label-content').contains('Starred Tools')
+        .get('.mat-tab-label-content')
+        .contains('Starred Tools')
         .click();
     } else if (entity === 'workflow') {
       cy
-        .get('.mat-tab-label-content').contains('Starred Workflows')
+        .get('.mat-tab-label-content')
+        .contains('Starred Workflows')
         .click();
      } else {
         cy
-          .get('Starred Organizations')
+          .get('.mat-tab-label-content')
+          .contains('Starred Organizations')
           .click();
     }
     cy
@@ -117,6 +121,16 @@ describe('Tool, Workflow, and Organization starring', () => {
     cy
       .get('#starCountButton')
       .should('exist');
+  }
+
+  function starringUnapprovedOrg(orgUrl: string) {
+    cy.visit('/organizations/Potato');
+    cy
+      .get('#starringButton')
+      .should('not.exist');
+    cy
+      .get('#starCountButton')
+      .should('not.exist');
   }
 
   describe('Workflow starring', () => {
@@ -132,7 +146,7 @@ describe('Tool, Workflow, and Organization starring', () => {
     });
   });
   describe('Organization Starring', () => {
-    it.only('Organization can be starred/unstarred', () => {
+    it('Organization can be starred/unstarred', () => {
       cy.visit('/organizations');
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       typeInInput('Name', 'Potato');
@@ -140,6 +154,24 @@ describe('Tool, Workflow, and Organization starring', () => {
       typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
+
+      starringUnapprovedOrg('organization/Potato');
+
+      //Approve org
+      cy.visit('/accounts');
+      cy
+        .get('.mat-tab-label-content')
+        .should('exist')
+        .contains('Requests')
+        .click();
+      cy
+        .get('#approve-pending-org-0')
+        .should('exist')
+        .click();
+      cy
+        .get('#approve-pending-org-dialog')
+        .should('exist')
+        .click();
 
       entryStarring('/organizations/Potato');
       starredPage('organization');

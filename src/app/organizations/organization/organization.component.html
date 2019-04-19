@@ -65,14 +65,14 @@
           </span>
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
             <mat-icon>link</mat-icon>
-            <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
+            <span><a [href]="org.link" target="_blank">{{ org?.link }}</a></span>
           </span>
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
             <mat-icon>location_on</mat-icon>
             <span class="ellipsis-lines">{{ org.location }}</span>
           </span>
         </div>
-        <app-organization-starring [organization]="org" class="pull-right starring-button" (change)="organizationStarGazersChange()"></app-organization-starring>
+        <app-organization-starring *ngIf="org?.status === 'APPROVED'" [organization]="org" class="pull-right starring-button" (change)="organizationStarGazersChange()"></app-organization-starring>
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>
