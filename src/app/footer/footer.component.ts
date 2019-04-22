@@ -51,7 +51,8 @@ export class FooterComponent extends Base implements OnInit {
           }
         }, (error: HttpErrorResponse) => {
           console.log(error);
-          if (error.status === 0 && window.location.pathname !== '/maintenance') {
+          // Angular proxy returns 504
+          if ((error.status === 0 || error.status === 504) && window.location.pathname !== '/maintenance') {
             window.location.href = '/maintenance';
           }
         }

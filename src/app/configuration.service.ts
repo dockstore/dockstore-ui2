@@ -16,10 +16,15 @@ export class ConfigurationService {
 
     return this.metadataService.getConfig().toPromise().then((config: Config) => {
 
-      this.updateDockstoreModel(config);
+        this.updateDockstoreModel(config);
 
-      this.updateAuthProviders();
-    });
+        this.updateAuthProviders();
+      },
+      (e) => {
+        console.error("Error downloading config.json", e);
+        // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
+        Promise.resolve();
+      });
   }
 
   private updateDockstoreModel(config: Config) {
