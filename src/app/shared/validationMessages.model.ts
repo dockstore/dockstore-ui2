@@ -41,26 +41,26 @@ export const exampleDescriptorPatterns = {
 };
 
 export const validationDescriptorPatterns = {
-  'gitPath': '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
-  'cwlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)',
-  'wdlPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl$',
-  'nflPath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(config)',
-  'dockerfilePath': '^/([^\/?:*|<>]+/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
-  'testFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
-  'imagePath': '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
-  'toolName': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
-  'label': '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
-  'versionTag': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
-  'reference': '[\\w-]+((/|.)[\\w-]+)*',
-  'workflowDescriptorPath': '^\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml|config)',
-  'workflowName': '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
-  'cwlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
-  'wdlTestParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
-  'testParameterFilePath': '^/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)$',
+  'gitPath': '^\\s*([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)\\s*$',
+  'cwlPath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(cwl|yaml|yml)\\s*',
+  'wdlPath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+.wdl\\s*$',
+  'nflPath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+\.(config)\\s*',
+  'dockerfilePath': '^\\s*/([^\/?:*|<>]+/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)\\s*$',
+  'testFilePath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)\\s*$',
+  'imagePath': '^\\s*(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)\\s*$',
+  'toolName': '^\\s*[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\\s*$',
+  'label': '^\\s*(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)\\s*$',
+  'versionTag': '\\s*^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*\\s*$',
+  'reference': '\\s*[\\w-]+((/|.)[\\w-]+)*\\s*',
+  'workflowDescriptorPath': '^\\s*\/([^\\\/\?\:\*\|\<\>]+\/)*[^\\\/\?\:\*\|\<\>]+\.(cwl|wdl|yaml|yml|config)\\s*',
+  'workflowName': '\\s*[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\\s*',
+  'cwlTestParameterFilePath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)\\s*$',
+  'wdlTestParameterFilePath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)\\s*$',
+  'testParameterFilePath': '^\\s*/([^\/?:*|<>]+/)*[^\/?:*|<>]+.(json|yml|yaml)\\s*$',
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   'alphanumericInternalUHP': '^[a-zA-Z0-9]+([-_\.]*[a-zA-Z0-9]+)*$',
-  'amazonDockerRegistryPath': '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\.dkr\.ecr\.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\.amazonaws\.com',
-  'sevenBridgesDockerRegistryPath': '^([a-zA-Z0-9]+-)?images\.sbgenomics\.com'
+  'amazonDockerRegistryPath': '^\\s*[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\.dkr\.ecr\.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*\.amazonaws\.com\\s*',
+  'sevenBridgesDockerRegistryPath': '^\\s*([a-zA-Z0-9]+-)?images\.sbgenomics\.com\\s*'
 };
 
 export const validationMessages = {

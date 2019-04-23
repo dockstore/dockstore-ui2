@@ -97,12 +97,12 @@ export class RegisterWorkflowModalService {
         this.alertService.start('Registering new workflow');
         const lowerCaseDescriptorType = this.actualWorkflow.descriptorType.toLowerCase();
         this.workflowsService.manualRegister(
-            this.actualWorkflow.repository,
-            this.actualWorkflow.gitUrl,
-            this.actualWorkflow.workflow_path,
-            this.actualWorkflow.workflowName,
+            this.actualWorkflow.repository.trim(),
+            this.actualWorkflow.gitUrl.trim(),
+            this.actualWorkflow.workflow_path.trim(),
+            this.actualWorkflow.workflowName.trim(),
             lowerCaseDescriptorType,
-            this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
+            this.actualWorkflow.defaultTestParameterFilePath.trim()).subscribe(result => {
                 this.workflowsService.refresh(result.id).subscribe(refreshResult => {
                     this.workflows.push(refreshResult);
                     this.workflowService.setWorkflows(this.workflows);
@@ -124,11 +124,11 @@ export class RegisterWorkflowModalService {
       this.clearWorkflowRegisterError();
       this.alertService.start('Registering new workflow');
       this.hostedService.createHostedWorkflow(
-        hostedWorkflow.repository,
+        hostedWorkflow.repository.trim(),
         undefined,
         hostedWorkflow.descriptorType,
         undefined,
-        hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined).subscribe(result => {
+        hostedWorkflow.entryName.trim() ? hostedWorkflow.entryName.trim() : undefined).subscribe(result => {
             this.alertService.detailedSuccess();
             this.workflows.push(result);
             this.workflowService.setWorkflows(this.workflows);

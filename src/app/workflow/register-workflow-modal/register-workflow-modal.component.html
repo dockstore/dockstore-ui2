@@ -86,6 +86,11 @@
           <mat-label>Workflow Name</mat-label>
           <input matInput name="workflowName" [(ngModel)]="workflow.workflowName" maxlength="256" [pattern]="validationPatterns.workflowName" [matTooltip]="Tooltip.workflowName"
             placeholder="e.g. liftover-fast (optional)" />
+
+          <!--
+                    <input matInput name="workflowName" [value]="workflow.workflowName" (input)="workflow.workflowName = $event.target.toString().trim()" maxlength="256" [pattern]="validationPatterns.workflowName" [matTooltip]="Tooltip.workflowName"
+                           placeholder="e.g. liftover-fast (optional)" />   -->
+
           <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
         </mat-form-field>
         <div mat-dialog-actions class="pull-right">
@@ -99,7 +104,7 @@
       </form>
       <form fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()" novalidate>
-        <mat-radio-group id="descriptorTypeRadioButtons" position="before" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
+        <mat-radio-group id="hosteddescriptorTypeRadioButtons" position="before" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
           (change)="radioButtonChange($event)">
           <mat-label>Descriptor Type: </mat-label>
           <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
@@ -113,7 +118,6 @@
             maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.repository"/>
           <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{validationMessage.repository.pattern}}</mat-error>
         </mat-form-field>
-
         <!-- Optional workflow name, uncomment if implemented -->
         <!-- <mat-form-field class="w-100">
           <mat-label>Workflow Name</mat-label>
@@ -126,7 +130,7 @@
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
-          <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerHostedWorkflowForm.form.valid">
+          <button id="hostedsubmitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerHostedWorkflowForm.form.valid">
             Register Workflow
           </button>
         </div>

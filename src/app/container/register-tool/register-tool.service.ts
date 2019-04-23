@@ -167,7 +167,7 @@ export class RegisterToolService {
     getImagePath(imagePath, part) {
         /** Defines the regex that an image path (namespace/name) must match.
          Group 1 = namespace, Group 2 = name*/
-        const imagePathRegexp = /^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$/i;
+        const imagePathRegexp = /^\s*(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)\s*$/i;
         const matchObj = imagePath.match(imagePathRegexp);
         let imageName = '';
         if (matchObj && matchObj.length > 2) {
@@ -257,19 +257,19 @@ export class RegisterToolService {
     getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string): DockstoreTool {
         const normToolObj: any = {
             mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
-            name: this.getImagePath(toolObj.imagePath, 'name'),
-            toolname: toolObj.toolname,
-            namespace: this.getImagePath(toolObj.imagePath, 'namespace'),
+            name: this.getImagePath(toolObj.imagePath.trim(), 'name'),
+            toolname: toolObj.toolname.trim(),
+            namespace: this.getImagePath(toolObj.imagePath.trim(), 'namespace'),
             registry_string: this.getToolRegistry(toolObj.irProvider, customDockerRegistryPath),
-            gitUrl: this.getGitUrl(toolObj.gitPath, toolObj.scrProvider),
-            default_dockerfile_path: toolObj.default_dockerfile_path,
-            default_cwl_path: toolObj.default_cwl_path,
-            default_wdl_path: toolObj.default_wdl_path,
-            defaultCWLTestParameterFile: toolObj.default_cwl_test_parameter_file,
-            defaultWDLTestParameterFile: toolObj.default_wdl_test_parameter_file,
+            gitUrl: this.getGitUrl(toolObj.gitPath.trim(), toolObj.scrProvider),
+            default_dockerfile_path: toolObj.default_dockerfile_path.trim(),
+            default_cwl_path: toolObj.default_cwl_path.trim(),
+            default_wdl_path: toolObj.default_wdl_path.trim(),
+            defaultCWLTestParameterFile: toolObj.default_cwl_test_parameter_file.trim(),
+            defaultWDLTestParameterFile: toolObj.default_wdl_test_parameter_file.trim(),
             is_published: false,
             private_access: toolObj.private_access,
-            tool_maintainer_email: toolObj.tool_maintainer_email
+            tool_maintainer_email: toolObj.tool_maintainer_email.trim()
         };
         if (normToolObj.toolname === normToolObj.name || !normToolObj.toolname) {
             delete normToolObj.toolname;
