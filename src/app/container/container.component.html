@@ -187,8 +187,8 @@
     </div>
     <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
     <div *ngIf="publicPage && tool?.topicId == null">
-      <mat-card class="alert alert-warning" role="alert">
-        <mat-icon>info</mat-icon> No Discourse topic exists for this tool. One will be generated automatically.
+      <mat-card class="alert alert-warning mr-3" role="alert">
+        <mat-icon>info</mat-icon> No Discourse topic exists for this tool. Contact a Dockstore curator to create a topic.
       </mat-card>
     </div>
   </div>
