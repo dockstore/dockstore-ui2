@@ -1,5 +1,5 @@
 <!--
-  ~    Copyright 2017 OICR
+  ~    Copyright 2019 OICR
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -16,20 +16,61 @@
 
 <div class="header">
   <div class="container">
-    <div class="row header1">
-      <div class="col-md-6 splash">
-        <h1 class="title">Create, Share, Use</h1>
-        <h2 class="title caption">Search Docker Tools and Workflows for the Sciences:</h2>
-        <div class="btn-group col-md-10 col-sm-8 col-xs-12">
-          <input id="searchBar" #search type="text" placeholder="Enter Keyword..." class="search left fully-rounded search-home form-control"
-          (keyup.enter)="goToSearch(search.value)">
+    <div fxLayout="row wrap" fxLayoutGap="20px">
+      <div fxLayout="column" fxLayoutGap="20px">
+        <div fxFlex>
+          <h1 class="title">Create, Share, Use</h1>
+          <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
+        </div>
+
+        <div fxFlex fxLayout="row" fxLayoutGap="20px">
+          <div fxFlex>
+            <h4>Developers</h4>
+            <p>Register tools and workflows for the cloud</p>
+            <button mat-flat-button color="accent">
+              <a href="#developerIntro" class="button-link">Learn more</a>
+            </button>
+          </div>
+          <div fxFlex>
+            <h4>Scientists</h4>
+            <p>Launch tools and workflows locally and in the cloud</p>
+            <button mat-flat-button color="accent">
+              <a href="#scientistIntro" class="button-link">Learn more</a>
+            </button>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px" >
+          <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
+          <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png">
         </div>
       </div>
-      <div class="col-md-3 hidden-xs">
-        <img id="ship" src="../assets/images/dockstore/ship.png">
-      </div>
-      <div class="col-md-3 hidden-xs">
-        <img id="truck" src="../assets/images/dockstore/truck.png">
+
+      <div fxFlex fxFlexAlign="stretch" style="padding: 45px">
+        <mat-card style="height: 100%; padding: 40px;">
+          <mat-card-content>
+            <h3>Create an account to</h3>
+            <ul style="padding-bottom: 45px">
+              <li>Register tools/workflows</li>
+              <li>Create organizations</li>
+              <li>Star your favourite tools/workflows</li>
+              <li>and more</li>
+            </ul>
+            <div class="text-center">
+              <button mat-flat-button color="accent" routerLink="/login">
+                Create an account
+              </button>
+            </div>
+            <p class="text-center">
+              or
+            </p>
+            <div class="text-center">
+              <button mat-flat-button color="accent" routerLink="/login">
+                Login
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </div>
@@ -38,79 +79,192 @@
 <div class="header-lower">
   <div class="container">
     <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
-    <div class="row header-lower">
-      <div class="col-md-6 col-sm-12">
-        <h4 class="title caption">
-          Dockstore, developed by the <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer Genome
-          Collaboratory</a>, is an open platform used by the <a class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a>
-          for sharing Docker-based tools described with the <a class="white-link" href="http://www.commonwl.org/" target="_blank">Common
-          Workflow Language (CWL)</a>, the <a class="white-link" href="https://software.broadinstitute.org/wdl/" target="_blank">Workflow
-          Description Language (WDL)</a>, or <a class="white-link" href="https://www.nextflow.io/" target="_blank">Nextflow (NFL)</a>
-        </h4>
-      </div>
-      <div class="col-md-3 col-sm-12 row-center">
-        <a class='btn youtube' role="button" (click)="openYoutube()">
-          <div>
-            <mat-icon>play_circle_outline</mat-icon>
-            <span>&nbsp;Video Overview</span>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-3 col-sm-12 row-center">
-        <div class="row">
-            <div class="button-row">
-              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf="!(user$ | async)">
-                  <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
-                  <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
-              </div>
-              <div class="col-sm-6 col-xs-12 col-md-12" *ngIf="(user$ | async)">
-                <a mat-raised-button color="accent" routerLink="onboarding">Setup Account <mat-icon>chevron_right</mat-icon></a>
-              </div>
-              <div class="col-sm-6 col-xs-12 col-md-12">
-                <a mat-raised-button color="accent" href="https://docs.dockstore.org/news/">News and Events <mat-icon>chevron_right</mat-icon></a>
-              </div>
-              <div class="col-sm-6 col-xs-12 col-md-12" style="margin-bottom: 20px">
-                <a mat-raised-button color="accent" href="https://discuss.dockstore.org/">Discuss <mat-icon>chevron_right</mat-icon></a>
-              </div>
-            </div>
+    <div class="row-center">
+      <a class='btn youtube' role="button" (click)="openYoutube()">
+        <div>
+          <mat-icon>play_circle_outline</mat-icon>
+          <span>&nbsp;Video Overview</span>
         </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="developerIntro" class="container">
+  <h2>Developers</h2>
+  <div fxLayout="row wrap" fxLayoutGap="30px" style="padding: 40px 0px 40px 0px;">
+    <div fxFlex>
+      <div fxLayout="column">
+        <mat-icon fxFlexAlign="center">account_balance</mat-icon>
+        <h5 class="text-center">Reproducible environment</h5>
+        <p>Tool environment is described by Docker and stored on Quay.io or DockerHub.</p>
+      </div>
+    </div>
+    <div fxFlex>
+      <div fxLayout="column">
+        <mat-icon fxFlexAlign="center">description</mat-icon>
+        <h5 class="text-center">Describe tools and workflows</h5>
+        <p>Tools and workflows are described with CWL, WDL or Nextflow.</p>
+      </div>
+    </div>
+    <div fxFlex>
+      <div fxLayout="column">
+        <mat-icon fxFlexAlign="center">cloud</mat-icon>
+        <h5 class="text-center">Cloud launch</h5>
+        <p>Tools and workflows can be launched in a variety of cloud platforms.</p>
       </div>
     </div>
   </div>
 </div>
-<div class="container mainScreen" #mainScreen>
-  <div>
-    <div class="col-md-9 col-sm-12 home-list">
-        <tabset class="homeComponent" type="tabs">
-          <tab id="toolTab" [customClass]="browseToolsTab" (select)="onSelect($event)">
-            <ng-template tabHeading>
-              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
-              Browse Tools
-            </ng-template>
-            <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-            <span *ngIf="selectedTab === 'toolTab'">
-                <app-list-containers [previewMode]="true"></app-list-containers>
-            </span>
-          </tab>
-          <tab id="workflowTab" [customClass]="browseWorkflowsTab" (select)="onSelect($event)">
-            <ng-template tabHeading>
-              <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
-              Browse Workflows
-            </ng-template>
-            <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-            <span *ngIf="selectedTab === 'workflowTab'" class="m-2">
-              <app-list-workflows [previewMode]="true"></app-list-workflows>
-            </span>
-          </tab>
-        </tabset>
+
+<div id="homeFooter">
+  <div class="container">
+    <div class="row my-3">
+      <h2 class="documentation">Where to start?</h2>
+      <ul>
+        <li>
+          <a>
+            Getting started guide
+          </a>
+        </li>
+        <li>
+          <a>
+            Installing the CLI
+          </a>
+        </li>
+        <li>
+          <a>
+            Forums
+          </a>
+        </li>
+        <li>
+          <a>
+            Discover organizations
+          </a>
+        </li>
+        <li>
+          <a>
+            Discover tools and workflows
+          </a>
+        </li>
+      </ul>
     </div>
-    <div class="col-md-3 col-sm-12 twitter twitter-container">
-      <a class="twitter-timeline"
-         data-theme="light"
-         data-height="800"
-         href="https://twitter.com/DockstoreOrg">
-          Tweets by DockstoreOrg
-        </a>
+  </div>
+</div>
+
+<div id="scientistIntro" class="container">
+  <h2>Scientists</h2>
+  <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
+    <div fxFlex>
+      <p>Launch scientific tools in the cloud, without worrying about installation and setup.</p>
+      <p>Simply navigate to the tool of interest and launch with a compatible partner.</p>
+    </div>
+    <div fxFlex>
+      <mat-icon fxFlexAlign="center">cloud</mat-icon>
+    </div>
+  </div>
+</div>
+
+<div id="homeFooter">
+  <div class="container">
+    <div class="row my-3">
+      <h2 class="documentation">Where to start?</h2>
+      <ul>
+        <li>
+          <a>
+            Getting started guide
+          </a>
+        </li>
+        <li>
+          <a>
+            Installing the CLI
+          </a>
+        </li>
+        <li>
+          <a>
+            Forums
+          </a>
+        </li>
+        <li>
+          <a>
+            Discover organizations
+          </a>
+        </li>
+        <li>
+          <a>
+            Discover tools and workflows
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div fxLayout="column" fxLayoutGap="30px" class="m-3">
+    <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
+      <div fxFlex>
+        <mat-card style="padding: 20px;">
+          <mat-card-content>
+            <h4>Remote Tools and Workflows</h4>
+            <p>
+              Don't worry about migrating your documents! Dockstore references docker images hosted on Quay.io and DockerHub,
+              allowing for quick setup of existing docker images. Descriptor files can be retrieved from GitHub, BitBucket and GitLab.
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex>
+
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
+      <div fxFlex></div>
+      <div fxFlex>
+        <mat-card style="padding: 20px;">
+          <mat-card-content>
+            <h4>Hosted Tools and Workflows</h4>
+            <p>
+              Have your docker image registered but don't want to use source control? Store your workflow descriptor files directly on Dockstore.
+              An in browser editor with syntax highlighting and basic validation is available.
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
+      <div fxFlex>
+        <mat-card style="padding: 20px;">
+          <mat-card-content>
+            <h4>Organisations and Collections</h4>
+            <p>
+              Create organisation landing pages for your company, start-up, working group, or university where you can create collections of related tools and workflows to share.
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex>
+
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
+      <div fxFlex></div>
+      <div fxFlex>
+        <mat-card style="padding: 20px;">
+          <mat-card-content>
+            <h4>Launch in the Cloud	</h4>
+            <p>
+              Take advantage of the cloud to launch your workflows. A variety of cloud platforms are available*.
+            </p>
+            <p>
+              *Requires account on platform
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>
