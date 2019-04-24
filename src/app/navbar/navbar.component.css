@@ -45,6 +45,7 @@
 
 .toolbar-holder-sm {
   height: auto !important;
+  /* Use padding instead of margin, since margin increases innerWidth of window's content area whereas padding doesn't */
   padding: 5px;
 }
 
