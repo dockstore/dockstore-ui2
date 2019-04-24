@@ -14,18 +14,18 @@
  *    limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
-import {StarRequest, User} from '../../../shared/swagger';
-import {TrackLoginService} from '../../../shared/track-login.service';
-import {UserQuery} from '../../../shared/user/user.query';
-import {ContainerService} from '../../../shared/container.service';
-import {StarringService} from '../../../starring/starring.service';
-import {StarentryService} from '../../../shared/starentry.service';
-import {StarOrganizationService} from '../../../shared/star-organization.service';
-import {AlertService} from '../../../shared/alert/state/alert.service';
-import {first, takeUntil} from 'rxjs/operators';
-import {Observable, of as ObservableOf, Subject} from 'rxjs';
-import {OrganizationStarringService} from './organization-starring.service';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { StarRequest, User } from '../../../shared/swagger';
+import { TrackLoginService } from '../../../shared/track-login.service';
+import { UserQuery } from '../../../shared/user/user.query';
+import { ContainerService } from '../../../shared/container.service';
+import { StarringService } from '../../../starring/starring.service';
+import { StarentryService } from '../../../shared/starentry.service';
+import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { first, takeUntil } from 'rxjs/operators';
+import { Observable, of as ObservableOf, Subject } from 'rxjs';
+import { OrganizationStarringService } from './organization-starring.service';
 
 @Component({
   selector: 'app-organization-starring',
@@ -54,7 +54,6 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
 
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
-    // get tool from the observer
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
       // this.rate = this.calculateRate(this.starredUsers);
@@ -133,6 +132,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
       return this.organizationStarringService.setStar(this.organization.id);
     }
   }
+
   getStarredUsers(): any {
     if (this.organization) {
       this.organizationStarringService.getStarring(this.organization.id).pipe(first()).subscribe(
@@ -153,10 +153,5 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     };
     this.starOrganizationService.setOrganization(selectedOrganization);
     this.change.emit();
-  }
-
-  getStarring(organizationID: number): Observable<Array<User>> {
-    // return this.workflowsService.getStarredUsers(entryID);
-    return ObservableOf(this.starredUsers);
   }
 }

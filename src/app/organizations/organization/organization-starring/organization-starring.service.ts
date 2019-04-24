@@ -26,20 +26,20 @@ import {StarRequest} from '../../../shared/swagger';
 export class OrganizationStarringService {
   constructor(private usersService: UsersService,  private organizationsService: OrganizationsService) { }
 
-  setUnstar(entryID: number): any {
-    return this.organizationsService.unstarOrganization(entryID);
+  setUnstar(organizationID: number): any {
+    return this.organizationsService.unstarOrganization(organizationID);
   }
 
-  setStar(entryID: number): any {
+  setStar(organizationID: number): any {
     const body: StarRequest = {
       star: true
     };
 
-    return this.organizationsService.starOrganization(entryID, body);
+    return this.organizationsService.starOrganization(organizationID, body);
   }
 
-  getStarring(entryID: number): Observable<Array<User>> {
-    return this.organizationsService.getStarredUsersForApprovedOrganization(entryID);
+  getStarring(organizationID: number): Observable<Array<User>> {
+    return this.organizationsService.getStarredUsersForApprovedOrganization(organizationID);
   }
 
   getStarredOrganizations(): any {

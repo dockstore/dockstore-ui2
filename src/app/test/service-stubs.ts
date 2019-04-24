@@ -248,7 +248,7 @@ export class UsersStubService {
         return observableOf([]);
     }
 
-    getStarredOrganizations(){
+    getStarredOrganizations() {
       return observableOf([]);
     }
     refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {
@@ -618,6 +618,19 @@ export class DateStubService {
     getAgoMessage(timestamp: number) {
         return 'an ago message';
     }
+}
+
+export class OrganizationsStubService {
+  starOrganization(entryID: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
+    return observableOf({});
+  }
+
+  unstarOrganization(entryId: number, extraHttpRequestParams?: any): Observable<{}> {
+    return observableOf({});
+  }
+  getStarredUsersForApprovedOrganization(entryId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
+    return observableOf([]);
+  }
 }
 
 export class WorkflowsStubService {
