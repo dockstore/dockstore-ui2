@@ -100,6 +100,7 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 import { StarringModule } from './starring/starring.module';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { RequestsModule } from './loginComponents/requests.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -168,7 +169,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ApiModule.forRoot(getApiConfig),
     CustomMaterialModule,
     RefreshAlertModule,
-    RequestsModule
+    RequestsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AccountsService,
