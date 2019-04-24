@@ -45,7 +45,7 @@
 
 .toolbar-holder-sm {
   height: auto !important;
-  margin: 5px;
+  padding: 5px;
 }
 
 mat-menu {

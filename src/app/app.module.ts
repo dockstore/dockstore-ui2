@@ -95,7 +95,7 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -170,7 +170,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
     RefreshAlertModule,
-    RequestsModule
+    RequestsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AccountsService,

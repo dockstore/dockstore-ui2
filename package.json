@@ -34,6 +34,7 @@
     "@angular/platform-browser-dynamic": "^7.2.13",
     "@angular/platform-server": "^7.2.13",
     "@angular/router": "^7.2.13",
+    "@angular/service-worker": "^7.2.13",
     "@datorama/akita": "^1.24.3",
     "@datorama/akita-ng-forms-manager": "^1.0.0-rc.4",
     "@fortawesome/angular-fontawesome": "^0.3.0",
