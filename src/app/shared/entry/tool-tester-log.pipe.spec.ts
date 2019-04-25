@@ -1,5 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
 import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,8 +15,9 @@ describe('Pipe: ToolTesterLoge', () => {
   it('create an instance', inject([Router], (router: Router) => {
     const pipe = new ToolTesterLogPipe(router);
     expect(pipe).toBeTruthy();
-    expect(pipe.transform('thing', 'thing', 'thing', 'FULL', 'thing.log'))
-      .toContain('/toolTester/logs?tool_id=thing&tool_version_name=thing&test_filename=thing&runner=FULL&log_type=FULL&filename=thing.log');
+    expect(pipe.transform('quay.io/pancancer/pcawg-bwa-mem-workflow', '1.0.0', 'test1.json', 'FULL', '1556226034.log')).toBe(
+      // tslint:disable-next-line: max-line-length
+      'http://localhost:8080/toolTester/logs?tool_id=quay.io%2Fpancancer%2Fpcawg-bwa-mem-workflow&tool_version_name=1.0.0&test_filename=test1.json&runner=FULL&log_type=FULL&filename=1556226034.log');
   }));
 });
 
