@@ -32,6 +32,7 @@ export class SearchQuery extends Query<SearchState> {
   public autoCompleteTerms$: Observable<Array<string>> = this.select(state => state.autocompleteTerms);
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map(terms => terms.length > 0));
   public suggestTerm$: Observable<string> = this.select(state => state.suggestTerm);
+  public pageSize: Observable<number>=this.select(state => state.pageSize);
 
   constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
