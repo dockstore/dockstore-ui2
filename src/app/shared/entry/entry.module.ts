@@ -15,6 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
@@ -23,6 +24,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../alert/alert.module';
+import { AvailableLogsModule } from '../available-logs.module';
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
@@ -41,11 +43,13 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
 @NgModule({
   imports: [
+    AvailableLogsModule,
     CommonModule,
     TooltipModule.forRoot(),
     FormsModule,
     ModalModule,
     CustomMaterialModule,
+    FlexLayoutModule,
     NgxJsonLdModule,
     ClipboardModule,
     RouterModule,
@@ -60,7 +64,6 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     CodeEditorListComponent,
     CommitUrlPipe,
     VerifiedByComponent,
-    VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
@@ -75,6 +78,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     CodeEditorListComponent,
     CustomMaterialModule,
     CommitUrlPipe,
+    FlexLayoutModule,
     VerifiedByComponent,
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
@@ -86,6 +90,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     UrlDeconstructPipe,
     RouterModule
   ],
-  entryComponents: [RegisterCheckerWorkflowComponent]
+  entryComponents: [
+    RegisterCheckerWorkflowComponent
+  ]
 })
 export class EntryModule { }

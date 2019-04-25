@@ -17,9 +17,9 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { ga4ghWorkflowIdPrefix } from '../constants';
 import { SessionQuery } from '../session/session.query';
-import { Entry, Workflow } from '../swagger';
+import { DockstoreTool, Entry, Workflow } from '../swagger';
 import { CheckerWorkflowState, CheckerWorkflowStore } from './checker-workflow.store';
 
 @Injectable({ providedIn: 'root' })
@@ -30,11 +30,12 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
   isStub$: Observable<boolean> = this.entry$.pipe(
     map((entry: Entry) => this.isEntryAWorkflow(entry) ? (<Workflow>entry).mode === Workflow.ModeEnum.STUB : false));
   checkerWorkflowPath$: Observable<string> = this.checkerWorkflow$.pipe(
-    map(workflow =>  workflow ? workflow.full_workflow_path : null));
+    map(workflow => workflow ? workflow.full_workflow_path : null));
   parentId$: Observable<number> = this.entry$.pipe(map((entry: Workflow) => entry ? entry.parent_id : null));
   checkerId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => entry ? entry.checker_id : null));
   entryIsWorkflow$: Observable<boolean> = this.entry$.pipe(
     map((entry: Entry) => entry ? this.isEntryAWorkflow(entry) : null));
+  trsId$: Observable<string> = this.entry$.pipe(map((entry: Entry) => this.getTRSId(entry)));
   constructor(protected store: CheckerWorkflowStore, private query: SessionQuery) {
     super(store);
   }
@@ -49,6 +50,17 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
       return null;
     }
     return entry.hasOwnProperty('is_checker');
+  }
+
+  public getTRSId(entry: Entry): string {
+    if (!entry) {
+      return null;
+    }
+    if (entry.hasOwnProperty('is_checker')) {
+      return ga4ghWorkflowIdPrefix + (<Workflow>entry).full_workflow_path;
+    } else {
+      return (<DockstoreTool>entry).tool_path;
+    }
   }
 
 }

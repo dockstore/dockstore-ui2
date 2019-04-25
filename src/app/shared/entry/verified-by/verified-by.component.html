@@ -15,7 +15,7 @@
 -->
 <div class="panel panel-default" *ngIf="verifiedByStringArray && verifiedByStringArray.length > 0">
   <div class="panel-heading">
-    <h3>Verified</h3>
+    <h3>Verification and Available Logs</h3>
   </div>
   <div class="p-3 panel-body">
     <div class="container-source-repos">
@@ -24,6 +24,9 @@
       <p *ngFor="let verifiedByString of verifiedByStringArray">
         {{verifiedByString}}
       </p>
+    </div>
+    <div fxLayoutAlign="center center" fxLayout="column">
+      <button class="center" mat-raised-button (click)="openVerificationAndAvailableLogsDialog()">More Info</button>
     </div>
   </div>
 </div>

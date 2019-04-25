@@ -1,0 +1,11 @@
+.overflow-x-auto {
+    overflow-x: auto;
+  }
+  
+  mat-header-cell, mat-cell {
+      /* 
+      flex-shrink: 0;
+      flex-basis: 35%;
+      */
+      flex: 0 0 35%;
+  }
