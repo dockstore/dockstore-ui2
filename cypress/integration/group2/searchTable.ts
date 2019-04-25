@@ -69,6 +69,7 @@ describe('Dockstore tool/workflow search table', () => {
     starColumnSearch('/workflows/github.com/A/l', 'workflow');
   });
 });
+<<<<<<< HEAD
 
 //test checks if items per page for pagination persists after navigating away and back to search
 describe('search table items per page', () => {
@@ -96,3 +97,5 @@ describe('search table items per page', () => {
     })
 
   });
+=======
+>>>>>>> parent of b5882488... Selected number of items per page in search results table should stay consistent when navigating away and back to search page

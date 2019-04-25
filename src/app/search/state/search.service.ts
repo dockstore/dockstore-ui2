@@ -55,15 +55,6 @@ export class SearchService {
     });
   }
 
-  setPageSize(pageSize: number){
-    this.searchStore.setState(state => {
-      return {
-        ...state,
-        pageSize:pageSize
-      };
-      });
-  }
-
   setSearchText(text: string) {
     this.searchStore.setState(state => {
       return {

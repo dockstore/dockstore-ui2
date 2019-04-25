@@ -6,7 +6,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { DockstoreTool } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
-import {SearchService} from "../state/search.service";
 
 @Component({
   selector: 'app-search-tool-table',
@@ -15,8 +14,8 @@ import {SearchService} from "../state/search.service";
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<DockstoreTool>;
-  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
-    super(dateService, searchQuery, searchService);
+  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchQuery: SearchQuery) {
+    super(dateService);
   }
 
   privateNgOnInit(): void {

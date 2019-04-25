@@ -18,12 +18,8 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Subject } from 'rxjs';
 import { DateService } from '../shared/date.service';
 import { DockstoreTool, Workflow } from '../shared/swagger';
-import {SearchQuery} from "./state/search.query";
-import {Base} from "../shared/base";
-import {takeUntil} from "rxjs/operators";
-import {SearchService} from "./state/search.service";
 
-export abstract class SearchEntryTable extends Base implements OnInit {
+export abstract class SearchEntryTable implements OnInit {
   @ViewChild(MatPaginator) protected paginator: MatPaginator;
   @ViewChild(MatSort) protected sort: MatSort;
   protected verifiedLink: string;
@@ -33,8 +29,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   abstract dataSource: (MatTableDataSource<Workflow | DockstoreTool>);
   abstract privateNgOnInit(): void;
 
-  constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
-    super();
+  constructor(protected dateService: DateService) {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
@@ -42,13 +37,6 @@ export abstract class SearchEntryTable extends Base implements OnInit {
     this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.searchQuery.pageSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(pageSize => {
-      this.dataSource.paginator.pageSize = pageSize
-      this.privateNgOnInit();
-    });
-  }
-
-  updatePageSize($event: any){
-    this.searchService.setPageSize($event.pageSize)
+    this.privateNgOnInit();
   }
 }

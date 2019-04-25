@@ -21,8 +21,7 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
-import {SearchService} from "../state/search.service";
-//this component refers to search page not workflow listing search
+
 @Component({
   selector: 'app-search-workflow-table',
   templateUrl: './search-workflow-table.component.html',
@@ -30,8 +29,8 @@ import {SearchService} from "../state/search.service";
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<Workflow>;
-  constructor(private dockstoreService: DockstoreService, protected dateService: DateService,  protected searchQuery: SearchQuery, protected searchService: SearchService) {
-    super(dateService, searchQuery, searchService);
+  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchQuery: SearchQuery) {
+    super(dateService);
   }
 
   privateNgOnInit(): void {

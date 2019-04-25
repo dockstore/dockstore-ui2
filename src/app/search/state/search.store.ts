@@ -26,7 +26,6 @@ export interface SearchState {
    filterKeys: Array<string>;
    autocompleteTerms: Array<string>;
    suggestTerm: string;
-   pageSize: number;
 }
 
 export function createInitialState(): SearchState {
@@ -39,8 +38,7 @@ export function createInitialState(): SearchState {
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],
-    suggestTerm: '',
-    pageSize: 10
+    suggestTerm: ''
   };
 }
 
