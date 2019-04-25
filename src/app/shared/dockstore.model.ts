@@ -36,7 +36,7 @@ export class Dockstore {
   static readonly DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
   static readonly TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
 
-  static readonly GITHUB_CLIENT_ID = '6fc1f47ebec13dbf941e';
+  static readonly GITHUB_CLIENT_ID = 'fill_this_in';
   static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 
   static readonly GITHUB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITHUB;
