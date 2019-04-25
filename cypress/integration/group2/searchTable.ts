@@ -74,7 +74,7 @@ describe('Dockstore tool/workflow search table', () => {
 describe('search table items per page', () => {
   resetDB();
   setTokenUserViewPort()
-  it.only('tool items per page', () => {
+  it('tool items per page', () => {
     cy.server();
     // Tools/worflows not starred in this response.
     cy.route({
