@@ -17,7 +17,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import {User} from '../../../shared/swagger';
+import {Organization, User} from '../../../shared/swagger';
 import {OrganizationsService} from '../../../shared/swagger';
 import {UsersService} from '../../../shared/swagger';
 import {StarRequest} from '../../../shared/swagger';
@@ -26,11 +26,11 @@ import {StarRequest} from '../../../shared/swagger';
 export class OrganizationStarringService {
   constructor(private usersService: UsersService,  private organizationsService: OrganizationsService) { }
 
-  setUnstar(organizationID: number): any {
+  setUnstar(organizationID: number): Observable<any> {
     return this.organizationsService.unstarOrganization(organizationID);
   }
 
-  setStar(organizationID: number): any {
+  setStar(organizationID: number): Observable<any> {
     const body: StarRequest = {
       star: true
     };
@@ -42,7 +42,7 @@ export class OrganizationStarringService {
     return this.organizationsService.getStarredUsersForApprovedOrganization(organizationID);
   }
 
-  getStarredOrganizations(): any {
+  getStarredOrganizations(): Observable<Array<Organization>> {
     return this.usersService.getStarredOrganizations();
   }
 }

@@ -20,13 +20,14 @@ import {Base} from '../../../shared/base';
 import {StarOrganizationService} from '../../../shared/star-organization.service';
 import {UserService} from '../../../shared/user/user.service';
 import {OrganizationStarringService} from '../organization-starring/organization-starring.service';
+import {User} from '../../../shared/swagger';
 
 @Component({
   selector: 'app-organization-stargazers',
   templateUrl: './organization-stargazers.component.html'
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
-  starGazers: any;
+  starGazers: Array<User>;
 
   constructor(private organizationStarringService: OrganizationStarringService,
               private userService: UserService,
@@ -43,12 +44,11 @@ export class OrganizationStargazersComponent extends Base implements OnInit {
               this.starGazers = starring;
               this.starGazers.forEach(
                 user => {
-                  user.avatarUrl = this.userService.gravatarUrl(user.email, user.avatarUrl);
+                  user.avatarUrl = this.userService.gravatarUrl(null, user.avatarUrl);
                 });
             });
         }
       }
     );
   }
-
 }

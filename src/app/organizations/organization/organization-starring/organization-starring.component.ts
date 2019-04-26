@@ -15,7 +15,7 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { StarRequest, User } from '../../../shared/swagger';
+import { Organization, User} from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { ContainerService } from '../../../shared/container.service';
@@ -24,7 +24,7 @@ import { StarentryService } from '../../../shared/starentry.service';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { first, takeUntil } from 'rxjs/operators';
-import { Observable, of as ObservableOf, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { OrganizationStarringService } from './organization-starring.service';
 
 @Component({
@@ -34,9 +34,9 @@ import { OrganizationStarringService } from './organization-starring.service';
 })
 export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() organization: any;
+  @Input() organization: Organization;
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
-  private user: any;
+  private user: User;
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
@@ -71,7 +71,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     this.ngUnsubscribe.complete();
   }
 
-  setUpOrganization(organization: any) {
+  setUpOrganization(organization: Organization) {
     this.organization = organization;
     this.getStarredUsers();
   }
@@ -81,16 +81,18 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     if (!this.user || !starredUsers) {
       return false;
     } else {
-      let matchingUser: User;
-      if (!starredUsers) {
-        return false;
-      }
-      matchingUser = starredUsers.find(user => user.id === this.user.id);
-      if (matchingUser) {
-        return true;
-      } else {
-        return false;
-      }
+      // let matchingUser: User;
+      // if (!starredUsers) {
+      //   return false;
+      // }
+
+      return starredUsers.some(user => user.id === this.user.id);
+      // matchingUser = starredUsers.find(user => user.id === this.user.id);
+      // if (matchingUser) {
+      //   return true;
+      // } else {
+      //   return false;
+      // }
     }
   }
 
@@ -103,13 +105,15 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     this.disable = true;
     if (this.isLoggedIn) {
 
-      if (this.rate) {
-        const message = 'Unstarring ' + this.organization.name;
-        this.alertService.start(message);
-      } else {
-        const message = 'Starring ';
-        this.alertService.start(message);
-      }
+      // if (this.rate) {
+      //   const message = 'Unstarring ' + this.organization.name;
+      //   this.alertService.start(message);
+      // } else {
+      //   const message = 'Starring ' + this.organization.name;
+      //   this.alertService.start(message);
+      // }
+      const message = (this.rate ? 'Unstarring ' : 'Starring ') + this.organization.name;
+      this.alertService.start(message);
 
       this.setStar().subscribe(
         data => {
@@ -125,7 +129,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     }
   }
 
-  setStar(): any {
+  setStar(): Observable<any> {
     if (this.rate) {
       return this.organizationStarringService.setUnstar(this.organization.id);
     } else {
@@ -133,7 +137,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     }
   }
 
-  getStarredUsers(): any {
+  getStarredUsers(): void {
     if (this.organization) {
       this.organizationStarringService.getStarring(this.organization.id).pipe(first()).subscribe(
         (starring: User[]) => {

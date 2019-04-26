@@ -485,7 +485,7 @@ export class StarringStubService {
 }
 
 export class OrganizationStarringStubService {
-  getStarring(id: any): Observable<Array<User>> {
+  getStarring(id: number): Observable<Array<User>> {
     return observableOf([]);
   }
 }
@@ -621,14 +621,14 @@ export class DateStubService {
 }
 
 export class OrganizationsStubService {
-  starOrganization(entryID: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
+  starOrganization(entryID: number, body: StarRequest): Observable<{}> {
     return observableOf({});
   }
 
-  unstarOrganization(entryId: number, extraHttpRequestParams?: any): Observable<{}> {
+  unstarOrganization(entryId: number): Observable<{}> {
     return observableOf({});
   }
-  getStarredUsersForApprovedOrganization(entryId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
+  getStarredUsersForApprovedOrganization(entryId: number): Observable<Array<User>> {
     return observableOf([]);
   }
 }
