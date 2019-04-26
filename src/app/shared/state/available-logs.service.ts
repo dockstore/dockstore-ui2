@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
@@ -14,15 +15,18 @@ export class AvailableLogsService {
 
   get(toolId: string, toolVersionName: string) {
     this.availableLogsStore.setLoading(true);
+    this.availableLogsStore.remove();
     this.toolTesterService.search(toolId, toolVersionName).pipe(
       finalize(() => this.availableLogsStore.setLoading(false))).subscribe((entities) => {
-        this.availableLogsStore.remove();
         let id = 0;
         entities.forEach(entity => {
           this.availableLogsStore.createOrReplace(id, entity);
           id = id + 1;
         });
         this.availableLogsStore.setLoading(false);
+      }, (error: HttpErrorResponse) => {
+        // Silently fail (simply no logs will be displayed, Dockstore logging will know it has failed)
+        console.error(error);
       });
   }
 

@@ -19,7 +19,7 @@ export class AvailableLogsComponent implements OnInit {
   isLoading$: Observable<boolean>;
   toolId: string;
   toolId$: Observable<string>;
-  displayedColumns: string[] = ['testFilename', 'runner', 'filename'];
+  displayedColumns: string[] = ['testFilename', 'runner', 'filename', 'actions'];
   constructor(private availableLogsQuery: AvailableLogsQuery, private checkerWorkflowQuery: CheckerWorkflowQuery,
     private availableLogsService: AvailableLogsService, @Inject(MAT_DIALOG_DATA) public data: (Tag | WorkflowVersion)
   ) {
