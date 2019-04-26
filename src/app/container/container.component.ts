@@ -146,11 +146,13 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
     this.schema = {
-      '@type': 'Product',
+      '@type': 'SoftwareApplication',
       'name': this.tool.name,
-      'description': this.tool.description,
-      'identifier': this.tool.author,
-      'url': this.shareURL
+      'about': this.tool.description,
+      'audience' : 'Bioinformaticians',
+      'dateModified': this.tool.lastUpdated,
+      'author': this.tool.author,
+      'identifier': this.tool.id
     };
   }
 
