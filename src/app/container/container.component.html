@@ -185,7 +185,7 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-    <div *ngIf="publicPage && tool?.topicId !== null" class="mt-2" id='discourse-comments'></div>
+    <div *ngIf="publicPage && tool?.topicId !== null" class="mt-2 mr-3" id='discourse-comments'></div>
     <div *ngIf="publicPage && tool?.topicId == null">
       <mat-card class="alert alert-warning mr-3" role="alert">
         <mat-icon>info</mat-icon> No Discourse topic exists for this tool. Contact a Dockstore curator to create a topic.
