@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { AvailableLogsStore, AvailableLogsState } from './available-logs.store';
-import { ToolTesterLog } from '../swagger/model/toolTesterLog';
+import { ToolTesterLog } from '../openapi/model/toolTesterLog';
+import { AvailableLogsState, AvailableLogsStore } from './available-logs.store';
 @Injectable({
   providedIn: 'root'
 })

@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-import { ToolTesterService } from '../swagger/api/toolTester.service';
-import { ToolTesterLog } from '../swagger/model/toolTesterLog';
+import { ToolTesterService } from '../openapi/api/toolTester.service';
+import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 import { AvailableLogsStore } from './available-logs.store';
 
 @Injectable({ providedIn: 'root' })

@@ -16,14 +16,9 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MAT_TOOLTIP_DEFAULT_OPTIONS,
-  MatSnackBarConfig,
-  MatTooltipDefaultOptions,
-} from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarConfig, MatTooltipDefaultOptions, MAT_SNACK_BAR_DEFAULT_OPTIONS, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -34,7 +29,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxMdModule } from 'ngx-md';
-
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
@@ -47,9 +41,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
-import {
-  DeleteAccountDialogComponent,
-} from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
@@ -60,6 +52,7 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
+import { RequestsModule } from './loginComponents/requests.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -83,6 +76,7 @@ import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
+import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
@@ -94,12 +88,11 @@ import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
+import { SitemapComponent } from './sitemap/sitemap.component';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { SitemapComponent } from './sitemap/sitemap.component';
-import { RequestsModule } from './loginComponents/requests.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -140,7 +133,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent
-],
+  ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
     FontAwesomeModule,
@@ -166,6 +159,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
+    ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
     RefreshAlertModule,
     RequestsModule
@@ -197,8 +191,8 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ExtendedToolsService,
     VerifiedByService,
     Title,
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
   bootstrap: [AppComponent]

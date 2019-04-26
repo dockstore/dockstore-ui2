@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { ToolTesterLog } from '../swagger/model/toolTesterLog';
+import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 
 export interface AvailableLogsState extends EntityState<ToolTesterLog> { }
 
