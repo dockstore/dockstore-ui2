@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'remove-extension'
+  name: 'removeExtension'
 })
 export class RemoveExtensionPipe implements PipeTransform {
 
