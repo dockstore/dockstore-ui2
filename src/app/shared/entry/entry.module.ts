@@ -53,8 +53,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     NgxJsonLdModule,
     ClipboardModule,
     RouterModule,
-    RefreshAlertModule,
-    ShareButtonsModule
+    RefreshAlertModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,

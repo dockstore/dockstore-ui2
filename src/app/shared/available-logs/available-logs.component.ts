@@ -47,15 +47,5 @@ export class AvailableLogsComponent implements OnInit {
     this.availableLogsService.remove(id);
   }
 
-  /**
-   * Removes the '.log' from the filename so the only thing that remains is seconds from epoch
-   *
-   * @param {string} filename 1554477718978.log
-   * @returns {string}        1554477718978
-   * @memberof AvailableLogsComponent
-   */
-  filenameToDate(filename: string): string {
-    const thing = filename.split('.')[0];
-    return thing;
-  }
+
 }

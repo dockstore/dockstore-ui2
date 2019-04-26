@@ -18,13 +18,14 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RefreshAlertModule } from './alert/alert.module';
 import { AvailableLogsComponent } from './available-logs/available-logs.component';
-import { ToolTesterLogPipe } from './entry/tool-tester-log.pipe';
+import { RemoveExtensionPipe } from './available-logs/remove-extension.pipe';
+import { ToolTesterLogPipe } from './available-logs/tool-tester-log.pipe';
 import { VerifiedDisplayComponent } from './entry/verified-display/verified-display.component';
 import { CustomMaterialModule } from './modules/material.module';
 
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RefreshAlertModule],
-  declarations: [AvailableLogsComponent, VerifiedDisplayComponent, ToolTesterLogPipe],
+  declarations: [AvailableLogsComponent, VerifiedDisplayComponent, ToolTesterLogPipe, RemoveExtensionPipe],
   exports: [VerifiedDisplayComponent],
   entryComponents: [AvailableLogsComponent]
 })

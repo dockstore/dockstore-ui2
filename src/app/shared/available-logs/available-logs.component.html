@@ -24,7 +24,7 @@
     <app-verified-display *ngIf="version?.verified" [sourceFiles]=version?.sourceFiles></app-verified-display>
   </mat-card-content>
 </mat-card>
-<mat-card>
+<mat-card *ngIf="(availableLogs$ | async).length > 0">
   <mat-card-header>
     <mat-card-title>
       Available Logs
@@ -43,7 +43,7 @@
       <ng-container matColumnDef="filename">
         <th mat-header-cell *matHeaderCellDef> Date </th>
         <td mat-cell *matCellDef="let element: Workflow"> 
-          <a [href]="(toolId$ | async) | toolTesterLog: version.name:element.testFilename:element.runner:element.filename">{{filenameToDate(element.filename) | date:'medium'}}</a>
+          <a [href]="(toolId$ | async) | toolTesterLog: version.name:element.testFilename:element.runner:element.filename">{{removeExtension(element.filename) | date:'medium'}}</a>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
