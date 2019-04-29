@@ -83,7 +83,6 @@
     "@types/node": "^6.0.60",
     "akita-schematics": "^2.0.1",
     "codelyzer": "^4.5.0",
-    "cypress": "^3.2.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^4.0.1",
