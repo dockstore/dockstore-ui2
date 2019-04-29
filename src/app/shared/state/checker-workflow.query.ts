@@ -45,22 +45,29 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
    * Returns true if entry is a workflow, returns false if entry is not a workflow (i.e. a tool)
    * @param entry The entry to check
    */
-  public isEntryAWorkflow(entry: Entry): boolean {
+  public isEntryAWorkflow(entry: Entry | null): boolean {
     if (!entry) {
       return null;
     }
     return entry.hasOwnProperty('is_checker');
   }
 
-  public getTRSId(entry: Entry): string {
-    if (!entry) {
+  /**
+   * Determine what the TRS ID (ex. #workflow/github.com/dockstore/hello_world) based on the entry
+   *
+   * @param {Entry} entry  Either a DockstoreTool or Workflow
+   * @returns {string}  The TRS ID (ex. #workflow/github.com/dockstore/hello_world)
+   * @memberof CheckerWorkflowQuery
+   */
+  public getTRSId(entry: Entry): string | null {
+    const entryIsWorkflow = this.isEntryAWorkflow(entry);
+    if (entryIsWorkflow == null) {
       return null;
     }
-    if (entry.hasOwnProperty('is_checker')) {
+    if (entryIsWorkflow) {
       return ga4ghWorkflowIdPrefix + (<Workflow>entry).full_workflow_path;
     } else {
       return (<DockstoreTool>entry).tool_path;
     }
   }
-
 }

@@ -1,5 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
 import { RemoveExtensionPipe } from './remove-extension.pipe';
 
 describe('Pipe: RemoveExtensione', () => {

@@ -16,23 +16,28 @@ import { Tag, WorkflowVersion } from '../swagger';
   styleUrls: ['./available-logs.component.scss']
 })
 export class AvailableLogsComponent extends Base implements OnInit {
-  version: Tag | WorkflowVersion;
+  version: Tag | WorkflowVersion | null;
+  versionName: string | null;
   availableLogs$: Observable<ToolTesterLog[]>;
   isLoading$: Observable<boolean>;
-  toolId: string;
-  toolId$: Observable<string>;
+  toolId$: Observable<string | null>;
   displayedColumns: string[] = ['testFilename', 'runner', 'filename', 'actions'];
   constructor(private availableLogsQuery: AvailableLogsQuery, private checkerWorkflowQuery: CheckerWorkflowQuery,
-    private availableLogsService: AvailableLogsService, @Inject(MAT_DIALOG_DATA) public data: (Tag | WorkflowVersion)
+    private availableLogsService: AvailableLogsService, @Inject(MAT_DIALOG_DATA) public data: (Tag | WorkflowVersion | null)
   ) {
     super();
     this.version = data;
+    this.versionName = this.version ? this.version.name : null;
   }
 
   ngOnInit() {
     this.toolId$ = this.checkerWorkflowQuery.trsId$;
-    this.toolId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolId => {
-      this.availableLogsService.get(toolId, this.version.name);
+    this.toolId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolId: (string | null)) => {
+      if (this.versionName && toolId) {
+        this.availableLogsService.get(toolId, this.versionName);
+      } else {
+        this.availableLogsService.removeAll();
+      }
     });
     this.availableLogs$ = this.availableLogsQuery.selectAll();
     this.isLoading$ = this.availableLogsQuery.selectLoading();

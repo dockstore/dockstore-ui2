@@ -21,6 +21,11 @@ export class VerifiedByComponent implements OnChanges {
     }
   }
 
+  /**
+   * Opens the Material dialog that displays verification information and possible logs that are available
+   *
+   * @memberof VerifiedByComponent
+   */
   openVerificationAndAvailableLogsDialog() {
     this.matDialog.open(AvailableLogsComponent, { data: this.version, width: bootstrap4largeModalSize });
   }

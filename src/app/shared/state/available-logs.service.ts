@@ -13,21 +13,31 @@ export class AvailableLogsService {
     private toolTesterService: ToolTesterService) {
   }
 
+  /**
+   * Gets the ToolTester logs from the webservice
+   *
+   * @param {string} toolId  The TRS Tool ID
+   * @param {string} toolVersionName  The TRS ToolVersion name
+   * @memberof AvailableLogsService
+   */
   get(toolId: string, toolVersionName: string) {
-    this.availableLogsStore.setLoading(true);
-    this.availableLogsStore.remove();
-    this.toolTesterService.search(toolId, toolVersionName).pipe(
-      finalize(() => this.availableLogsStore.setLoading(false))).subscribe((entities) => {
-        let id = 0;
-        entities.forEach(entity => {
-          this.availableLogsStore.createOrReplace(id, entity);
-          id = id + 1;
+    if (toolId && toolVersionName) {
+      this.availableLogsStore.setLoading(true);
+      this.removeAll();
+      this.toolTesterService.search(toolId, toolVersionName).pipe(
+        finalize(() => this.availableLogsStore.setLoading(false))).subscribe((entities: ToolTesterLog[]) => {
+          // Need to set a unique ID for each entity
+          let id = 0;
+          entities.forEach((entity: ToolTesterLog) => {
+            this.availableLogsStore.createOrReplace(id, entity);
+            id = id + 1;
+          });
+          this.availableLogsStore.setLoading(false);
+        }, (error: HttpErrorResponse) => {
+          // Silently fail (simply no logs will be displayed, Dockstore logging will know it has failed)
+          console.error(error);
         });
-        this.availableLogsStore.setLoading(false);
-      }, (error: HttpErrorResponse) => {
-        // Silently fail (simply no logs will be displayed, Dockstore logging will know it has failed)
-        console.error(error);
-      });
+    }
   }
 
   add(availableLog: ToolTesterLog) {
@@ -40,5 +50,14 @@ export class AvailableLogsService {
 
   remove(id: ID) {
     this.availableLogsStore.remove(id);
+  }
+
+  /**
+   * Remove all entities from the store
+   *
+   * @memberof AvailableLogsService
+   */
+  removeAll() {
+    this.availableLogsStore.remove();
   }
 }

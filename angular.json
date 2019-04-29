@@ -139,7 +139,7 @@
             "exclude": [
               "**/node_modules/**",
               "**/src/app/shared/swagger/**",
-	      "**/src/app/shared/openapi/**"
+              "**/src/app/shared/openapi/**"
             ]
           }
         }
