@@ -209,7 +209,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     {
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,
-      deps: [ConfigurationService],
+      deps: [ ConfigurationService ],
       multi: true
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
