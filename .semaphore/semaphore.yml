@@ -1,0 +1,53 @@
+version: v1.0
+name: Dockstore-UI2 Basic Test
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: "Build"
+    task:
+      env_vars:
+        - name: APP_ENV
+          value: prod
+      secrets:
+        - name: codecov
+      prologue:
+        commands:
+          - sem-version node 10.13.0
+          - checkout
+          - npm ci - prefer-offline
+      jobs:
+      - name: Lint, Unit Test and Coverage
+        commands:
+          - npm ls
+          - npx ng lint
+          - npm run build.prod
+          - npm i --no-save codecov
+          - npx ng test --watch=false --code-coverage --browsers ChromeHeadless
+          - ./node_modules/codecov/bin/codecov
+  - name: "Integration Tests"
+    task:
+      secrets:
+        - name: cypress
+      prologue:
+        commands:
+          - sem-version node 10.13.0
+          - checkout
+          - sudo apt install libgtk2.0-0 -y
+          - sem-service start postgres
+          - npm ci -prefer-offline
+          - npm run webservice
+          - npm run build
+          - npm run start &
+          - bash scripts/wait-for.sh
+      jobs:
+      - name: IT1
+        commands:
+          - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group1/**/*
+      - name: IT2
+        commands:
+          - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group2/**/*
+      - name: IT3
+        commands:
+          - $(npm bin)/cypress run --record --config defaultCommandTimeout=10000 --spec cypress/integration/group3/**/*
