@@ -16,11 +16,12 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import {Base} from '../../../shared/base';
-import {StarOrganizationService} from '../../../shared/star-organization.service';
-import {UserService} from '../../../shared/user/user.service';
-import {OrganizationStarringService} from '../organization-starring/organization-starring.service';
-import {User} from '../../../shared/swagger';
+import { Base } from '../../../shared/base';
+import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { UserService } from '../../../shared/user/user.service';
+import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
+import { User } from '../../../shared/swagger';
+import { altAvatarImg } from '../../../shared/constants';
 
 @Component({
   selector: 'app-organization-stargazers',
@@ -28,6 +29,7 @@ import {User} from '../../../shared/swagger';
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;
+  altAvatarImg = altAvatarImg;
 
   constructor(private organizationStarringService: OrganizationStarringService,
               private userService: UserService,

@@ -25,7 +25,7 @@
       <div *ngFor="let stargazer of starGazers">
         <div fxFlex="90%">
           <img src="{{stargazer.avatarUrl}}" width="200" height="200" class="img-responsive stargazer-img"
-               alt="http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg"/>
+               alt="{{altAvatarImg}}}"/>
           <div class="caption">
             <h5 class="text-center">{{stargazer.username}}</h5>
           </div>
