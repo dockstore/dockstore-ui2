@@ -414,10 +414,6 @@ img.site-icons-tab {
   outline: none;
 }
 
-.search-home {
-  width: 100% !important;
-}
-
 input[type=text]:focus,
 textarea:focus {
   border: 1px solid rgba(81, 203, 238, 1);
@@ -1195,7 +1191,7 @@ app-sidebar-accordion .mat-accordion > .mat-expansion-panel > .mat-expansion-pan
   }
 }
 
-// Make the dropdown at least the size of the default material dropdown.  
+// Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.
 app-select.longer {

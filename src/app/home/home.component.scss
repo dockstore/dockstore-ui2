@@ -79,5 +79,22 @@ span {
 
 .button-link {
   text-decoration: none !important;
-  color: white !important;
+  color: black !important;
+}
+
+.landing-search {
+  width: 600px;
+  padding-left: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: none;
+  line-height: 2em;
+  background: white url(../../../images/search-button.png) left center no-repeat;
+  background-position: 5px;
+  outline: none;
+}
+
+.search-title {
+  color: white;
+  margin: 20px 0px 0px 0px;
 }

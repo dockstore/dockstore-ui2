@@ -16,83 +16,63 @@
 
 <div class="header">
   <div class="container">
-    <div fxLayout="row wrap" fxLayoutGap="20px">
-      <div fxLayout="column" fxLayoutGap="20px">
-        <div fxFlex>
-          <h1 class="title">Create, Share, Use</h1>
-          <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
+    <div fxLayout="column wrap" fxLayoutGap="50px" fxLayoutAlign="space-between" style="min-height: 800px;">
+      <div class="text-center">
+        <h1 class="title">Create, Share, Use</h1>
+        <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
+
+        <button mat-flat-button color="accent" routerLink="/login">
+          Create an account
+        </button>
+
+        <button mat-button routerLink="/search">
+          Browse tools and workflows
+        </button>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <input id="searchBar" #search type="text" placeholder="Enter Keyword..." class="fully-rounded landing-search"
+        (keyup.enter)="goToSearch(search.value)">
+      </div>
+
+      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <h3 class="search-title">Where to start?</h3>
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+
+          <button mat-raised-button>
+            <a href="#developerIntroduction" class="button-link">Developers</a>
+          </button>
+          <button mat-raised-button>
+            <a href="#scientistIntroduction" class="button-link">Scientists</a>
+          </button>
         </div>
 
-        <div fxFlex fxLayout="row" fxLayoutGap="20px">
-          <div fxFlex>
-            <h4>Developers</h4>
-            <p>Register tools and workflows for the cloud</p>
-            <button mat-flat-button color="accent">
-              <a href="#developerIntro" class="button-link">Learn more</a>
-            </button>
-          </div>
-          <div fxFlex>
-            <h4>Scientists</h4>
-            <p>Launch tools and workflows locally and in the cloud</p>
-            <button mat-flat-button color="accent">
-              <a href="#scientistIntro" class="button-link">Learn more</a>
-            </button>
-          </div>
-        </div>
-
-        <div fxLayout="row wrap" fxLayoutGap="20px" >
+        <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
           <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
           <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png">
         </div>
-      </div>
 
-      <div fxFlex fxFlexAlign="stretch" style="padding: 45px">
-        <mat-card style="height: 100%; padding: 40px;">
-          <mat-card-content>
-            <h3>Create an account to</h3>
-            <ul style="padding-bottom: 45px">
-              <li>Register tools/workflows</li>
-              <li>Create organizations</li>
-              <li>Star your favourite tools/workflows</li>
-              <li>and more</li>
-            </ul>
-            <div class="text-center">
-              <button mat-flat-button color="accent" routerLink="/login">
-                Create an account
-              </button>
-            </div>
-            <p class="text-center">
-              or
-            </p>
-            <div class="text-center">
-              <button mat-flat-button color="accent" routerLink="/login">
-                Login
-              </button>
-            </div>
-          </mat-card-content>
-        </mat-card>
       </div>
     </div>
   </div>
 </div>
 
-<div class="header-lower">
-  <div class="container">
-    <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
-    <div class="row-center">
+<div class="header-lower" style="min-height: 200px;">
+  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
+
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
       <a class='btn youtube' role="button" (click)="openYoutube()">
-        <div>
-          <mat-icon>play_circle_outline</mat-icon>
-          <span>&nbsp;Video Overview</span>
-        </div>
-      </a>
-    </div>
+          <div>
+            <mat-icon>play_circle_outline</mat-icon>
+            <span>&nbsp;Video Overview</span>
+          </div>
+        </a>
   </div>
 </div>
 
-<div id="developerIntro" class="container">
+<div id="developerIntroduction" class="container" style="margin-top:40px;">
   <h2>Developers</h2>
-  <div fxLayout="row wrap" fxLayoutGap="30px" style="padding: 40px 0px 40px 0px;">
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" style="padding: 40px 0px 40px 0px; min-height: 400px">
     <div fxFlex>
       <div fxLayout="column">
         <mat-icon fxFlexAlign="center">account_balance</mat-icon>
@@ -120,21 +100,11 @@
 <div id="homeFooter">
   <div class="container">
     <div class="row my-3">
-      <h2 class="documentation">Where to start?</h2>
+      <h2 class="documentation">Next steps</h2>
       <ul>
         <li>
           <a>
             Getting started guide
-          </a>
-        </li>
-        <li>
-          <a>
-            Installing the CLI
-          </a>
-        </li>
-        <li>
-          <a>
-            Forums
           </a>
         </li>
         <li>
@@ -152,12 +122,13 @@
   </div>
 </div>
 
-<div id="scientistIntro" class="container">
+<div id="scientistIntroduction" class="container">
   <h2>Scientists</h2>
   <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
     <div fxFlex>
       <p>Launch scientific tools in the cloud, without worrying about installation and setup.</p>
-      <p>Simply navigate to the tool of interest and launch with a compatible partner.</p>
+      <p>Simply navigate to the tool of interest and launch with a compatible partner*.</p>
+      <small>*Requires account on partner site</small>
     </div>
     <div fxFlex>
       <mat-icon fxFlexAlign="center">cloud</mat-icon>
@@ -168,21 +139,11 @@
 <div id="homeFooter">
   <div class="container">
     <div class="row my-3">
-      <h2 class="documentation">Where to start?</h2>
+      <h2 class="documentation">Next steps</h2>
       <ul>
         <li>
           <a>
             Getting started guide
-          </a>
-        </li>
-        <li>
-          <a>
-            Installing the CLI
-          </a>
-        </li>
-        <li>
-          <a>
-            Forums
           </a>
         </li>
         <li>
@@ -203,16 +164,12 @@
 <div class="container">
   <div fxLayout="column" fxLayoutGap="30px" class="m-3">
     <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
-      <div fxFlex>
-        <mat-card style="padding: 20px;">
-          <mat-card-content>
-            <h4>Remote Tools and Workflows</h4>
-            <p>
-              Don't worry about migrating your documents! Dockstore references docker images hosted on Quay.io and DockerHub,
-              allowing for quick setup of existing docker images. Descriptor files can be retrieved from GitHub, BitBucket and GitLab.
-            </p>
-          </mat-card-content>
-        </mat-card>
+      <div fxFlex class="px-4">
+        <h4>Remote Tools and Workflows</h4>
+        <p>
+          Don't worry about migrating your documents! Dockstore references docker images hosted on Quay.io and DockerHub,
+          allowing for quick setup of existing docker images. Descriptor files can be retrieved from GitHub, BitBucket and GitLab.
+        </p>
       </div>
       <div fxFlex>
 
@@ -221,29 +178,21 @@
 
     <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
       <div fxFlex></div>
-      <div fxFlex>
-        <mat-card style="padding: 20px;">
-          <mat-card-content>
-            <h4>Hosted Tools and Workflows</h4>
-            <p>
-              Have your docker image registered but don't want to use source control? Store your workflow descriptor files directly on Dockstore.
-              An in browser editor with syntax highlighting and basic validation is available.
-            </p>
-          </mat-card-content>
-        </mat-card>
+      <div fxFlex class="px-4">
+        <h4>Hosted Tools and Workflows</h4>
+        <p>
+          Have your docker image registered but don't want to use source control? Store your workflow descriptor files directly on Dockstore.
+          An in browser editor with syntax highlighting and basic validation is available.
+        </p>
       </div>
     </div>
 
     <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
-      <div fxFlex>
-        <mat-card style="padding: 20px;">
-          <mat-card-content>
-            <h4>Organisations and Collections</h4>
-            <p>
-              Create organisation landing pages for your company, start-up, working group, or university where you can create collections of related tools and workflows to share.
-            </p>
-          </mat-card-content>
-        </mat-card>
+      <div fxFlex class="px-4">
+        <h4>Organisations and Collections</h4>
+        <p>
+          Create organisation landing pages for your company, start-up, working group, or university where you can create collections of related tools and workflows to share.
+        </p>
       </div>
       <div fxFlex>
 
@@ -252,18 +201,14 @@
 
     <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
       <div fxFlex></div>
-      <div fxFlex>
-        <mat-card style="padding: 20px;">
-          <mat-card-content>
-            <h4>Launch in the Cloud	</h4>
-            <p>
-              Take advantage of the cloud to launch your workflows. A variety of cloud platforms are available*.
-            </p>
-            <p>
-              *Requires account on platform
-            </p>
-          </mat-card-content>
-        </mat-card>
+      <div fxFlex class="px-4">
+        <h4>Launch in the Cloud	</h4>
+        <p>
+          Take advantage of the cloud to launch your workflows. A variety of cloud platforms are available*.
+        </p>
+        <p>
+          *Requires account on platform
+        </p>
       </div>
     </div>
   </div>
