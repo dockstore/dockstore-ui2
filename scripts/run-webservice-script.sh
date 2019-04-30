@@ -4,8 +4,6 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
-java -version
-
 wget -O dockstore-webservice.jar --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${npm_package_config_webservice_version}/dockstore-webservice-${npm_package_config_webservice_version}.jar
 chmod u+x dockstore-webservice.jar
 psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
