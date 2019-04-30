@@ -26,11 +26,12 @@ import { AlertService } from '../../../shared/alert/state/alert.service';
 import { first, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { OrganizationStarringService } from './organization-starring.service';
+import { calculateRate } from '../../../shared/starring';
 
 @Component({
   selector: 'app-organization-starring',
-  templateUrl: './organization-starring.component.html',
-  styleUrls: ['./organization-starring.component.scss']
+  templateUrl: '../../../starring/starring.component.html',
+  styleUrls: ['../../../starring/starring.component.css']
 })
 export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChanges {
 
@@ -56,7 +57,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
-      // this.rate = this.calculateRate(this.starredUsers);
+      this.rate = calculateRate(this.starredUsers, this.user);
     });
   }
 
@@ -77,24 +78,13 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
   }
 
   // Determine if user has starred organization.
-  calculateRate(starredUsers: User[]): boolean {
-    if (!this.user || !starredUsers) {
-      return false;
-    } else {
-      // let matchingUser: User;
-      // if (!starredUsers) {
-      //   return false;
-      // }
-
-      return starredUsers.some(user => user.id === this.user.id);
-      // matchingUser = starredUsers.find(user => user.id === this.user.id);
-      // if (matchingUser) {
-      //   return true;
-      // } else {
-      //   return false;
-      // }
-    }
-  }
+  // calculateRate(starredUsers: User[], currentUser: User): boolean {
+  //   if (!currentUser || !starredUsers) {
+  //     return false;
+  //   } else {
+  //     return starredUsers.some(user => user.id === this.user.id);
+  //   }
+  // }
 
   /**
    * Handles the star button being clicked
@@ -105,13 +95,6 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     this.disable = true;
     if (this.isLoggedIn) {
 
-      // if (this.rate) {
-      //   const message = 'Unstarring ' + this.organization.name;
-      //   this.alertService.start(message);
-      // } else {
-      //   const message = 'Starring ' + this.organization.name;
-      //   this.alertService.start(message);
-      // }
       const message = (this.rate ? 'Unstarring ' : 'Starring ') + this.organization.name;
       this.alertService.start(message);
 
@@ -143,7 +126,7 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.starredUsers = starring;
-          this.rate = this.calculateRate(starring);
+          this.rate = calculateRate(starring, this.user);
           this.disable = false;
         }, error => this.disable = false);
     } else {

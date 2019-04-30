@@ -27,7 +27,6 @@ import { OrganizationStarringService } from '../organization-starring/organizati
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MatIconModule,
     CustomMaterialModule,
   ],
   declarations: [

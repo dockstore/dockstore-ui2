@@ -19,7 +19,7 @@
 </app-header>
 <app-loading [loading]="(loading$ | async)">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
-  <div class="row ml-4 mr-4" *ngIf="organizationStarGazersClicked">
+  <div class="row ml-4 mx-4" *ngIf="organizationStarGazersClicked">
     <app-organization-stargazers></app-organization-stargazers>
     <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked=false">
       <mat-icon>chevron_left</mat-icon>Back to details
@@ -72,7 +72,7 @@
             <span class="ellipsis-lines">{{ org.location }}</span>
           </span>
         </div>
-        <app-organization-starring *ngIf="org?.status === 'APPROVED'" [organization]="org" class="pull-right starring-button" (change)="organizationStarGazersChange()"></app-organization-starring>
+        <app-organization-starring *ngIf="org?.status === approved" [organization]="org" class="pull-right starring-button" (change)="organizationStarGazersChange()"></app-organization-starring>
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>
