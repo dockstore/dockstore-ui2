@@ -98,3 +98,20 @@ span {
   color: white;
   margin: 20px 0px 0px 0px;
 }
+
+.sign-up, .sign-up:active, .sign-up:focus {
+  float: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background: none;
+  text-transform: uppercase;
+  padding: 8px 22px;
+
+  border: 2px solid #5e7ec5;
+  color: #5e7ec5;
+}
+
+.sign-up:hover {
+  border: 2px solid #3b5da5;
+  color: #3b5da5;
+}

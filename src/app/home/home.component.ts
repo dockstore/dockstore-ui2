@@ -22,6 +22,8 @@ import { Observable } from 'rxjs';
 import { User } from '../shared/swagger/model/user';
 import { TwitterService } from '../shared/twitter.service';
 import { UserQuery } from '../shared/user/user.query';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -43,10 +45,12 @@ export class YoutubeComponent {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  public user: User;
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
+  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   @ViewChild('youtube') youtube: ElementRef;
 
@@ -56,6 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
   }
   ngAfterViewInit() {
     this.twitterService.runScript();
