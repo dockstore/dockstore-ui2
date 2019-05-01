@@ -99,28 +99,28 @@ describe('Tool and workflow starring error messages', () => {
 
   describe('Workflow starring error message', () => {
     it('Workflow server error message', () => {
-      starringServerError('/workflows/github.com/A/l', '/workflows/11/star');
+      starringServerError('/workflows/github.com/A/l', '/api/workflows/11/star');
     })
 
     it('Workflow cannot be starred if not already unstarred.', () => {
-      starringError('/workflows/github.com/A/l', 'workflow', '/workflows/11/star', 'github.com/A/l');
+      starringError('/workflows/github.com/A/l', 'workflow', '/api/workflows/11/star', 'github.com/A/l');
     });
 
     it('Workflow cannot be unstarred if not already starred.', () => {
-      unstarringError('/workflows/github.com/A/l', 'workflow', '/workflows/11/unstar', 'github.com/A/l');
+      unstarringError('/workflows/github.com/A/l', 'workflow', '/api/workflows/11/unstar', 'github.com/A/l');
     });
   });
 
   describe('Tool starring error message', () =>{
     it('Tool server error message', () => {
-      starringServerError('/containers/quay.io/A2/a:latest?tab=info', '/containers/5/star');
+      starringServerError('/containers/quay.io/A2/a:latest?tab=info', '/api/containers/5/star');
     })
     it('Tool cannot be starred if not already unstarred.', () => {
-      starringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '/containers/5/star', 'quay.io/A2/a');
+      starringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '/api/containers/5/star', 'quay.io/A2/a');
     })
 
     it('Tool cannot be unstarred if not already starred.', () => {
-      unstarringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '/containers/5/unstar', 'quay.io/A2/a');
+      unstarringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '/api/containers/5/unstar', 'quay.io/A2/a');
     });
   })
 });
