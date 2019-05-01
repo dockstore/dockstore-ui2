@@ -83,7 +83,7 @@ span {
 }
 
 .landing-search {
-  width: 600px;
+  width: 60%;
   padding-left: 30px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -92,6 +92,7 @@ span {
   background: white url(../../../images/search-button.png) left center no-repeat;
   background-position: 5px;
   outline: none;
+  color: black;
 }
 
 .search-title {

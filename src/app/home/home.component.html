@@ -34,11 +34,11 @@
         <button mat-button routerLink="/search">
           Browse tools and workflows
         </button>
-      </div>
 
-      <div fxLayout="column" fxLayoutAlign="center center">
-        <input id="searchBar" #search type="text" placeholder="Search..." class="fully-rounded landing-search"
-        (keyup.enter)="goToSearch(search.value)">
+        <div style="margin-top: 40px;">
+          <input id="searchBar" #search type="text" placeholder="Search..." class="fully-rounded landing-search"
+          (keyup.enter)="goToSearch(search.value)">
+        </div>
       </div>
 
       <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
@@ -92,7 +92,7 @@
       <div fxLayout="column">
         <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">description</mat-icon>
         <h3 class="text-center">Describe tools and workflows</h3>
-        <p>Tools and workflows are described with CWL, WDL or Nextflow and stored on GitHub, BitBucket, or GitLab.</p>
+        <p>Programs are described with CWL, WDL or Nextflow and stored on GitHub, BitBucket, or GitLab.</p>
       </div>
     </div>
     <div fxFlex>
