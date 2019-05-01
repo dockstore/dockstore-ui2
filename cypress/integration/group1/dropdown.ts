@@ -32,7 +32,7 @@ describe('Dropdown test', () => {
       .server()
       .route({
         method: 'GET',
-        url: '/users/user',
+        url: '/api/users/user',
         response: { id: 4, username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false }
       });
 
@@ -92,7 +92,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/organizations/all?type=pending',
+          url: '/api/organizations/all?type=pending',
           response: pendingOrganizations
         });
 
@@ -106,7 +106,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/users/user/memberships',
+          url: '/api/users/user/memberships',
           response: memberships
       });
       // Choose dropdown
@@ -122,7 +122,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'POST',
-          url: '/organizations/1002/request',
+          url: '/api/organizations/1002/request',
           response: { id: 1002, name: 'OrgThree', status: 'PENDING' }
       });
 
@@ -137,7 +137,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/organizations/all?type=pending',
+          url: '/api/organizations/all?type=pending',
           response: pendingOrganizations
         });
 
@@ -151,7 +151,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/users/user/memberships',
+          url: '/api/users/user/memberships',
           response: memberships
       });
 
@@ -180,7 +180,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/organizations/all?type=pending',
+          url: '/api/organizations/all?type=pending',
           response: pendingOrganizations
         });
 
@@ -189,7 +189,7 @@ describe('Dropdown test', () => {
       .server()
       .route({
         method: 'POST',
-        url: '/organizations/1000/approve',
+        url: '/api/organizations/1000/approve',
         response: []
       });
 
@@ -213,7 +213,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'POST',
-          url: '/organizations/1000/invitation?accept=true',
+          url: '/api/organizations/1000/invitation?accept=true',
           response: []
       });
 
@@ -226,7 +226,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/users/user/memberships',
+          url: '/api/users/user/memberships',
           response: memberships
       });
 
@@ -258,7 +258,7 @@ describe('Dropdown test', () => {
         .server()
         .route({
           method: 'DELETE',
-          url: '/users/user',
+          url: '/api/users/user',
           response: 'true'
         });
       cy
