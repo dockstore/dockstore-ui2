@@ -16,7 +16,7 @@
 
 <div class="header">
   <div class="container">
-    <div fxLayout="column wrap" fxLayoutGap="50px" fxLayoutAlign="space-around" style="min-height: 800px;">
+    <div fxLayout="column wrap" fxLayoutGap="50px" fxLayoutAlign="space-around" class="top-section">
       <div class="text-center">
         <h1 class="title">Create, Share, Use</h1>
         <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
@@ -35,7 +35,7 @@
           Browse tools and workflows
         </button>
 
-        <div style="margin-top: 40px;">
+        <div class="search-holder">
           <input id="searchBar" #search type="text" placeholder="Search..." class="fully-rounded landing-search"
           (keyup.enter)="goToSearch(search.value)">
         </div>
@@ -52,17 +52,17 @@
           </button>
         </div>
 
-        <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
-          <!-- <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
-          <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png"> -->
-        </div>
+        <!-- <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
+          <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
+          <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png">
+        </div> -->
 
       </div>
     </div>
   </div>
 </div>
 
-<div class="header-lower" style="min-height: 200px;">
+<div class="header-lower">
   <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
 
   <div fxFlex fxLayout="column" fxLayoutAlign="center center">
@@ -75,12 +75,12 @@
   </div>
 </div>
 
-<div id="developerIntroduction" class="container" style="margin-top:40px;">
+<div id="developerIntroduction" class="container">
   <h2 class="text-center">Developers</h2>
   <p class="lead text-center">
     Make your tools more accessible to the scientific community.
   </p>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" style="padding: 40px 0px 40px 0px; min-height: 400px">
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder">
     <div fxFlex>
       <div fxLayout="column">
         <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">account_balance</mat-icon>

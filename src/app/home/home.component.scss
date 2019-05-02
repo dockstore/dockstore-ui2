@@ -84,6 +84,7 @@ span {
 
 .landing-search {
   width: 60%;
+  max-width: 600px;
   padding-left: 30px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -115,4 +116,25 @@ span {
 .sign-up:hover {
   border: 2px solid #3b5da5;
   color: #3b5da5;
+}
+
+.top-section {
+  min-height: 800px;
+}
+
+.search-holder {
+  margin-top: 40px;
+}
+
+.header-lower {
+  min-height: 200px;
+}
+
+#developerIntroduction {
+  margin-top:40px;
+}
+
+.developer-holder {
+  padding: 40px 0px 40px 0px;
+  min-height: 400px
 }
