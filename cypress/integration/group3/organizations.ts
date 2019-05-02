@@ -226,6 +226,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#accept-remove-entry-from-org').click();
       cy.contains('This collection has no associated entries');
       cy.visit('/organizations/Potatoe');
+      cy.contains('Members').should('be.visible');
     });
   });
 
