@@ -18,8 +18,8 @@ export class AliasesComponent extends Base implements OnInit {
   organization$: Observable<Organization>;
   collection$: Observable<Collection>;
 
-  public type: string;
-  public alias: string;
+  public type: string | null;
+  public alias: string | null;
   public validType: boolean;
   // Types contains resource types that support aliases
   public types = [ 'organizations', 'collections' ];
@@ -32,12 +32,18 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.type = this.route.snapshot.paramMap.get('type');
+    /*
+    let myType: string | null;
+    myType = this.route.snapshot.paramMap.get('type') ;
+    // Avoid assigning null to this.type
+    this.type = (myType) ? myType : '';
+     */
+    this.type = this.route.snapshot.paramMap.get('type') ;
     this.alias = this.route.snapshot.paramMap.get('alias');
-    this.validType = this.types.includes(this.type);
+    this.validType = (this.type) ? this.types.includes(this.type) : false;
     this.loading$ = this.aliasesQuery.loading$;
 
-    if (this.type === 'organizations') {
+    if (this.type === 'organizations' && this.alias) {
       this.aliasesService.updateOrganizationFromAlias(this.alias);
       this.organization$ = this.aliasesQuery.organization$;
       this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
@@ -45,7 +51,7 @@ export class AliasesComponent extends Base implements OnInit {
           this.router.navigate(['/organizations', organization.name]);
         }
       });
-    } else if (this.type === 'collections') {
+    } else if (this.type === 'collections' && this.alias) {
       this.aliasesService.updateCollectionFromAlias(this.alias);
       this.collection$ = this.aliasesQuery.collection$;
       this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {

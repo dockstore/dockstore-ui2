@@ -3,8 +3,8 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { Organization, Collection } from '../../shared/swagger';
 
 export interface AliasesState {
-   organization: Organization;
-   collection: Collection;
+   organization: Organization | null;
+   collection: Collection | null;
 }
 
 export function createInitialState(): AliasesState {
