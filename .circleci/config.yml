@@ -24,7 +24,7 @@ jobs:
           command: bash -i -c 'npm ls'
       - run:
           name: Lint
-          command: bash -i -c 'npx ng lint'
+          command: bash -i -c 'npm run lint'
       - run: 
           name: Build
           command: bash -i -c 'npm run build.prod'
