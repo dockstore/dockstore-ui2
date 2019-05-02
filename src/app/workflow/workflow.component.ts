@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -53,7 +53,7 @@ import RoleEnum = Permission.RoleEnum;
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css'],
 })
-export class WorkflowComponent extends Entry {
+export class WorkflowComponent extends Entry implements AfterViewInit {
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: ExtendedWorkflow;
@@ -93,11 +93,32 @@ export class WorkflowComponent extends Entry {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.redirectAndCallDiscourse('/my-workflows');
+    this.redirect('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+  }
+
+  ngAfterViewInit() {
+    if (this.publicPage) {
+      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        workflow => {
+
+        if (workflow && workflow.topicId) {
+          // Initialize discourse urls
+          (<any>window).DiscourseEmbed = {
+            discourseUrl: Dockstore.DISCOURSE_URL,
+            topicId: workflow.topicId
+          };
+          (function () {
+            const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+            d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+          })();
+        }
+      });
+    }
   }
 
   clearState() {
@@ -161,13 +182,6 @@ export class WorkflowComponent extends Entry {
 
   private setUpWorkflow(workflow: any) {
     if (workflow) {
-      if (workflow.topicId) {
-        // Initialize discourse urls
-        (<any>window).DiscourseEmbed = {
-          discourseUrl: Dockstore.DISCOURSE_URL,
-          topicId: workflow.topicId
-        };
-      }
       this.workflow = workflow;
       this.title = this.workflow.full_workflow_path;
       this.initTool();

@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -53,7 +53,7 @@ import { Dockstore } from '../shared/dockstore.model';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Entry {
+export class ContainerComponent extends Entry implements AfterViewInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -99,7 +99,28 @@ export class ContainerComponent extends Entry {
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
 
     this._toolType = 'containers';
-    this.redirectAndCallDiscourse('/my-tools');
+    this.redirect('/my-tools');
+  }
+
+  ngAfterViewInit() {
+    if (this.publicPage) {
+      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        tool => {
+
+        if (tool && tool.topicId) {
+          // Initialize discourse urls
+          (<any>window).DiscourseEmbed = {
+            discourseUrl: Dockstore.DISCOURSE_URL,
+            topicId: tool.topicId
+          };
+          (function () {
+            const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+            d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+          })();
+        }
+      });
+    }
   }
 
   clearState() {
@@ -145,13 +166,6 @@ export class ContainerComponent extends Entry {
       tool => {
         this.tool = tool;
         if (tool) {
-          if (tool.topicId) {
-            // Initialize discourse urls
-            (<any>window).DiscourseEmbed = {
-              discourseUrl: Dockstore.DISCOURSE_URL,
-              topicId: tool.topicId
-            };
-          }
           this.published = this.tool.is_published;
           this.setPublishMessage();
           if (this.tool.tags.length === 0) {

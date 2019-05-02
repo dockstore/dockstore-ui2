@@ -164,16 +164,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // Embed Discourse comments into page
   ngAfterViewInit() {
-    if (this.publicPage) {
-      (function () {
-        const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-        d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-      })();
-    }
-
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
       const tabIndex = this.validTabs.indexOf(params['tab']);
       if (tabIndex > -1) {
@@ -352,10 +343,10 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Deals with redirecting to canonical URL and running discourse call
+   * Deals with redirecting to canonical URL
    * @return {void}
    */
-  redirectAndCallDiscourse(myPage: string): void {
+  redirect(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
       let trimmedURL = window.location.href;
 
