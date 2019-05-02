@@ -190,11 +190,14 @@
       </mat-tab>
     </mat-tab-group>
   </div>
-  <div *ngIf="publicPage && workflow?.topicId !== null" class="mt-2 mr-3" id='discourse-comments'></div>
-  <div *ngIf="publicPage && workflow?.topicId == null">
-    <mat-card class="alert alert-warning mr-3" role="alert">
-      <mat-icon>info</mat-icon> No Discourse topic exists for this workflow. Contact a Dockstore curator to create a topic.
-    </mat-card>
+
+  <div *ngIf="publicPage" class="mt-2 mr-3">
+    <div *ngIf="workflow?.topicId !== null else noTopicId" id='discourse-comments'></div>
+    <ng-template #noTopicId>
+      <mat-card class="alert alert-warning" role="alert">
+        <mat-icon>info</mat-icon> No Discourse topic exists for this workflow. Contact a Dockstore curator to create a topic.
+      </mat-card>
+    </ng-template>
   </div>
 </div>
 
