@@ -108,7 +108,7 @@ commands:
           command: sudo apt install libgtk2.0-0 -yq
       - run:
           name: Install angular http server (replace with nginx)
-          command: bash -i -c 'npm i angular-http-server cypress'
+          command: bash -i -c 'npm i angular-http-server@1.8.1 cypress@3.2.0 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
