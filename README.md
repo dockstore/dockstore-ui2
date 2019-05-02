@@ -120,10 +120,12 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
+Cypress is no longer specified in the package.json, check the `.circleci/config.yml` for the version and how to install it.
+
 Run `$(npm bin)/cypress open` or `$(npm bin)/cypress run` to execute the end-to-end tests via Cypress.io.
 Before running the tests make sure you:
 - have a postgresql database
-- serve the app via `ng serve`.
+- serve the app via `ng serve` or similar.
 - have the Dockstore webservice jar in the root directory and run it (see scripts/run-webservice-script.sh for guideline)
 
 ## Documentation Generation
