@@ -27,7 +27,7 @@ import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
-import { WdlViewerService } from './wdl-viewer/wdl-viewer.service';
+import { WdlViewerService } from './wdl-viewer/state/wdl-viewer.service';
 
 /**
  * This is the DAG tab

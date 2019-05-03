@@ -14,34 +14,28 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { transaction } from '@datorama/akita';
 
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
 import { Observable, from, forkJoin, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
-import { GA4GHFilesQuery } from '../../../shared/ga4gh-files/ga4gh-files.query';
-import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
-
-/**
- * Defines types for the response of Pipeline Builder library
- */
-export interface WdlViewerPipeline {
-  status: boolean;
-  message: string;
-  model: Array<any>;
-  actions: Array<any>;
-}
+import { GA4GHFilesQuery } from '../../../../shared/ga4gh-files/ga4gh-files.query';
+import { ExtendedWorkflow } from '../../../../shared/models/ExtendedWorkflow';
+import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../../shared/swagger';
+import { WdlViewerPipelineResponse } from './wdl-viewer.model';
+import { WdlViewerStore } from './wdl-viewer.store';
 
 /**
  * Service for creating WDL workflow visualizations with EPAM Pipeline Builder library
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WdlViewerService {
   private zip: JSZip = new JSZip();
   private statusSource = new BehaviorSubject<boolean>(false);
   public status$ = this.statusSource.asObservable();
-  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService) {
+  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService,
+    private wdlViewerStore: WdlViewerStore) {
   }
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
@@ -65,7 +59,7 @@ export class WdlViewerService {
    * @param workflow
    * @param version
    */
-  create(files: Array<ToolFile>, workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipeline> {
+  create(files: Array<ToolFile>, workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
     if (files.length > 1) {
       return this.createMultiple(workflow, version);
     } else {
@@ -79,7 +73,7 @@ export class WdlViewerService {
    * @param workflow
    * @param version
    */
-  createSingle(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipeline> {
+  createSingle(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
     return this.workflowsService.wdl(workflow.id, version.name).pipe(switchMap(prim => {
       // Errors thrown by the parse function are caught by the Observable being subscribed to
       return from(pipeline.parse(prim.content));
@@ -92,7 +86,7 @@ export class WdlViewerService {
    * @param workflow
    * @param version
    */
-  createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipeline> {
+  createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
     return forkJoin(this.workflowsService.wdl(workflow.id, version.name), this.workflowsService.secondaryWdl(workflow.id, version.name))
       .pipe(
         switchMap(res => {
@@ -105,5 +99,15 @@ export class WdlViewerService {
           }));
         })
       );
+  }
+
+  @transaction()
+  update(workflowId: number, versionId: number, result: WdlViewerPipelineResponse) {
+    this.wdlViewerStore.createOrReplace(versionId, result);
+    this.wdlViewerStore.setActive(workflowId);
+  }
+
+  removeAll() {
+    this.wdlViewerStore.remove();
   }
 }
