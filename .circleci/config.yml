@@ -112,7 +112,7 @@ commands:
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
-      -run:
+      - run:
         name: Install nginx
         command: sudo apt-get install -y nginx || true
       - run:
