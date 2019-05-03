@@ -17,13 +17,12 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { TabDirective } from 'ngx-bootstrap/tabs';
-import { Observable } from 'rxjs';
 
 import { User } from '../shared/swagger/model/user';
 import { TwitterService } from '../shared/twitter.service';
 import { UserQuery } from '../shared/user/user.query';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
