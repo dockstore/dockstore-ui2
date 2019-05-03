@@ -107,14 +107,20 @@ commands:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 -yq
       - run:
-          name: Install angular http server (replace with nginx)
-          command: bash -i -c 'npm i angular-http-server@1.8.1 cypress@3.2.0 --no-save'
+          name: Install cypress
+          command: bash -i -c 'npm i cypress@3.2.0 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
+      -run:
+        name: Install nginx
+        command: sudo apt-get install -y nginx || true
       - run:
-          name: Serve
-          command: bash -i -c 'npx angular-http-server --path ./dist -p 4200'
+          name: Prepapre nginx config
+          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Run nginx
+          command: bash -i -c 'nginx -c `pwd`/.circleci/nginx.conf'
           background: true
       - run:
           name: Run webservice
