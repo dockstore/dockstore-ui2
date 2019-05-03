@@ -31,7 +31,7 @@
           </button>
         </ng-template>
 
-        <button mat-button routerLink="/search">
+        <button mat-button routerLink="/search" class="underlined-link">
           Browse tools and workflows
         </button>
 
@@ -132,6 +132,15 @@
     <div fxFlex class="text-center">
       <img src="../assets/images/dockstore/scientist-flow.png">
     </div>
+  </div>
+
+  <div class="text-center">
+    <p class="lead">
+      Or, use the Dockstore CLI to run tools and workflows locally.
+    </p>
+    <button mat-stroked-button color="accent" routerLink="/quick-start">
+      Setup CLI
+    </button>
   </div>
 </div>
 
