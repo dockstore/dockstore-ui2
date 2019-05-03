@@ -57,10 +57,8 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element: Workflow">
-              <button mat-button>
-                <a [href]="(toolId$ | async) | toolTesterLog: version.name:element.testFilename:element.runner:element.filename"
+                <a mat-button [href]="(toolId$ | async) | toolTesterLog: version.name:element.testFilename:element.runner:element.filename"
                   target="_blank">View FULL log</a>
-              </button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
