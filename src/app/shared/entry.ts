@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
-import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
@@ -34,7 +34,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 
 @Injectable()
-export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
+export abstract class Entry implements OnInit, OnDestroy {
   @ViewChild('entryTabs') entryTabs: TabsetComponent;
   protected shareURL: string;
   public starGazersClicked = false;
@@ -164,7 +164,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  updateTabSelection() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
       const tabIndex = this.validTabs.indexOf(params['tab']);
       if (tabIndex > -1) {

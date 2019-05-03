@@ -119,6 +119,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         }
       });
     }
+
+    this.updateTabSelection();
   }
 
   clearState() {

@@ -121,6 +121,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         }
       });
     }
+
+    this.updateTabSelection();
   }
 
   clearState() {
