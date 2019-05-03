@@ -120,7 +120,7 @@ commands:
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
       - run:
           name: Run nginx
-          command: bash -i -c 'nginx -c `pwd`/.circleci/nginx.conf'
+          command: sudo nginx -c `pwd`/.circleci/nginx.conf
           background: true
       - run:
           name: Run webservice
