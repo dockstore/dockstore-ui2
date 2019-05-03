@@ -4,7 +4,7 @@ executors:
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
       - image: circleci/postgres:9.6-alpine
-        environment: 
+        environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Lint
           command: bash -i -c 'npm run lint'
-      - run: 
+      - run:
           name: Build
           command: bash -i -c 'npm run build.prod'
       - run:
@@ -71,13 +71,13 @@ workflows:
     jobs:
       - lint_unit_test_coverage
       - integration_test_1:
-          requires: 
+          requires:
             - lint_unit_test_coverage
       - integration_test_2:
-          requires: 
+          requires:
             - lint_unit_test_coverage
       - integration_test_3:
-          requires: 
+          requires:
             - lint_unit_test_coverage
 commands:
   install_container_dependencies:
@@ -86,7 +86,7 @@ commands:
           name: Install java
           command: |
             sudo apt update -y
-            sudo apt install openjdk-8-jre -yq
+            sudo apt install openjdk-11-jre -yq
       - run:
           name: Install npm
           command: |
