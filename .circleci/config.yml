@@ -113,8 +113,8 @@ commands:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
       - run:
-        name: Install nginx
-        command: sudo apt-get install -y nginx || true
+          name: Install nginx
+          command: sudo apt install -y nginx || true
       - run:
           name: Prepapre nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
