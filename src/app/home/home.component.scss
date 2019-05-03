@@ -140,9 +140,23 @@ span {
 }
 
 .stripe-holder {
-  min-height: 200px;
+  min-height: 175px;
   margin: 40px 0px;
   width: 100%;
   background-color: #eef0f6;
   border: 1px solid #cfd1d7;
+}
+
+@media (max-width: 767px) {
+  .hidden-on-mobile {
+     display: none !important;
+  }
+
+  .flex-column-on-mobile {
+    flex-direction: column !important;
+  }
+}
+
+.youtube {
+  z-index: 1000;
 }

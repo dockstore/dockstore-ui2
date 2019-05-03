@@ -80,7 +80,7 @@
   <p class="lead text-center">
     Make your tools more accessible to the scientific community.
   </p>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder">
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder flex-column-on-mobile">
     <div fxFlex>
       <div fxLayout="column">
         <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">account_balance</mat-icon>
@@ -110,8 +110,8 @@
     <h3 class="text-center">Share your tools now</h3>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center">
-      <a mat-stroked-button href="https://docs.dockstore.org" target="_blank" class="mr-2">
-        Getting started guide
+      <a mat-stroked-button href="https://docs.dockstore.org/docs/prereqs" target="_blank" class="mr-2">
+        Getting Started Guide
       </a>
       <button mat-stroked-button routerLink="/organizations" class="mr-2">
         Discover Organizations
@@ -126,11 +126,11 @@
 <div id="scientistIntroduction" class="container">
   <h2 class="text-center">Scientists</h2>
   <p class="lead text-center">
-    Discover and launch scientific tools and workflows without installing a thing.
+    Discover and launch scientific tools and workflows in the cloud.
   </p>
-  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" class="m-3" style="min-height: 400px">
-    <div fxFlex>
-      <img src="../assets/images/dockstore/scientists.png">
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" class="m-3 hidden-on-mobile" style="min-height: 400px">
+    <div fxFlex class="text-center">
+      <img src="../assets/images/dockstore/scientist-flow.png">
     </div>
   </div>
 </div>
@@ -140,8 +140,8 @@
     <h3 class="text-center">Start using tools now</h3>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center">
-      <a mat-stroked-button href="https://docs.dockstore.org" target="_blank" class="mr-2">
-        Getting started guide
+      <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" class="mr-2">
+        Getting Started Guide
       </a>
       <button mat-stroked-button routerLink="/organizations" class="mr-2">
         Discover Organizations
@@ -181,7 +181,7 @@
         <div fxFlex>
           <h3>Organisations and Collections</h3>
           <p>
-            Create organisation landing pages for your company, start-up, working group, or university where you can create collections of related tools and workflows to share.
+            Create organisation landing pages for your company, start-up, working group, lab, or university where you can create collections of related tools and workflows to share.
           </p>
         </div>
       </div>
@@ -199,8 +199,8 @@
       </div>
     </div>
 
-    <div fxFlex fxLayout="column" fxLayoutGap="30px" class="m-3" fxLayoutAlign="center center">
-      <img src="../assets/images/dockstore/graph.png">
+    <div fxFlex fxLayout="column" fxLayoutGap="30px" class="m-3 hidden-on-mobile" fxLayoutAlign="center center">
+      <img src="../assets/images/dockstore/graph-shadow.png">
     </div>
   </div>
 
