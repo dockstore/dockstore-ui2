@@ -79,7 +79,7 @@ describe('search table items per page', () => {
     cy.server();
     cy.fixture('searchTableResponse').then((json) => {
       cy.route({
-        url: '/api/ga4gh/v2/extended/tools/entry/_search',
+        url: '/api/api/ga4gh/v2/extended/tools/entry/_search',
         method: 'POST',
         response: json
       });
