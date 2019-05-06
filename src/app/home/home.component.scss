@@ -78,7 +78,7 @@ span {
 }
 
 .button-link {
-  text-decoration: none !important;
+  text-decoration: none !important; // Overwrites default link underline
   color: black !important;
 }
 
@@ -162,5 +162,5 @@ span {
 }
 
 .youtube {
-  z-index: 1000;
+  z-index: 1070;
 }
