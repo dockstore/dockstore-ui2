@@ -65,7 +65,7 @@ export class ConfigurationService {
 
   /**
    * In app.module.ts, the line `Ng2UiAuthModule.forRoot(AuthConfig)` in the imports section, initializes
-   * the auth providers before the code in this file to fetch the and set configuration information has
+   * the auth providers before the code in this file to fetch and set the configuration information has
    * executed. Update the providers here.
    */
   private updateAuthProviders() {
