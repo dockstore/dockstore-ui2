@@ -44,12 +44,8 @@
       <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
         <h3 class="search-title">New to Dockstore? Start here</h3>
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
-          <button mat-raised-button>
-            <a href="#developerIntroduction" class="button-link">Developers</a>
-          </button>
-          <button mat-raised-button>
-            <a href="#scientistIntroduction" class="button-link">Scientists</a>
-          </button>
+          <a mat-raised-button href="#developerIntroduction" class="button-link">Developers</a>
+          <a mat-raised-button href="#scientistIntroduction" class="button-link">Scientists</a>
         </div>
 
         <!-- <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
@@ -85,14 +81,14 @@
       <div fxLayout="column">
         <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">account_balance</mat-icon>
         <h3 class="text-center">Reproducible environment</h3>
-        <p>Tool environment is described by Docker and stored on Quay.io or DockerHub.</p>
+        <p>Tool environment is described by Docker and stored on <a href="https://quay.io/" target="_blank">Quay.io</a> or <a href="https://hub.docker.com/" target="_blank">DockerHub</a>.</p>
       </div>
     </div>
     <div fxFlex>
       <div fxLayout="column">
         <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">description</mat-icon>
         <h3 class="text-center">Describe tools and workflows</h3>
-        <p>Programs are described with CWL, WDL or Nextflow and stored on GitHub, BitBucket, or GitLab.</p>
+        <p>Programs are described with <a href="https://www.commonwl.org/" target="_blank">CWL</a>, <a href="http://openwdl.org/" target="_blank">WDL</a> or <a href="https://www.nextflow.io/" target="_blank">Nextflow</a> and stored on <a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://bitbucket.org/" target="_blank">BitBucket</a>, or <a href="https://www.gitlab.com" target="_blank">GitLab</a>.</p>
       </div>
     </div>
     <div fxFlex>
@@ -135,7 +131,7 @@
   </div>
 
   <div class="text-center">
-    <p class="lead">
+    <p>
       Or, use the Dockstore CLI to run tools and workflows locally.
     </p>
     <button mat-stroked-button color="accent" routerLink="/quick-start">
@@ -188,9 +184,9 @@
 
       <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
         <div fxFlex>
-          <h3>Organisations and Collections</h3>
+          <h3>Organizations and Collections</h3>
           <p>
-            Create organisation landing pages for your company, start-up, working group, lab, or university where you can create collections of related tools and workflows to share.
+            Create organization landing pages for your company, start-up, working group, lab, or university where you can create collections of related tools and workflows to share.
           </p>
         </div>
       </div>
