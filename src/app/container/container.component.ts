@@ -99,7 +99,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
 
     this._toolType = 'containers';
-    this.redirect('/my-tools');
+    this.redirectToCanonicalURL('/my-tools');
   }
 
   ngAfterViewInit() {

@@ -346,7 +346,7 @@ export abstract class Entry implements OnInit, OnDestroy {
    * Deals with redirecting to canonical URL
    * @return {void}
    */
-  redirect(myPage: string): void {
+  redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
       let trimmedURL = window.location.href;
 

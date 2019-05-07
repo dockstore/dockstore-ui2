@@ -93,7 +93,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.redirect('/my-workflows');
+    this.redirectToCanonicalURL('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
