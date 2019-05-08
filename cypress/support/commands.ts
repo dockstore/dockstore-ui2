@@ -37,6 +37,19 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml');
   });
 }
+
+export function disableServiceWorker() {
+  beforeEach(() => {
+    if (window.navigator && window.navigator.serviceWorker) {
+      window.navigator.serviceWorker.getRegistration('/').then((registration) => {
+        if (registration) {
+          registration.unregister().then(() => {});
+        }
+      });
+    }
+  });
+}
+
 export function setTokenUserViewPort() {
   beforeEach(() => {
     // Login by adding user obj and token to local storage

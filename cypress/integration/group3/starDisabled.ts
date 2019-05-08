@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB } from '../../support/commands';
+import {disableServiceWorker, resetDB} from '../../support/commands';
 
 describe('Workflow starring while not logged in', () => {
   resetDB();
+  disableServiceWorker();
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('/workflows/github.com/A/l');

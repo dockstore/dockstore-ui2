@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import {disableServiceWorker, resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Dockstore tool/workflow search table', () => {
   resetDB();
+  disableServiceWorker();
   setTokenUserViewPort();
 
   // When elastic search is added to cypress testing, get rid of cy.routes, and uncomment the commented lines

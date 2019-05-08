@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import {disableServiceWorker, resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Dockstore workflow list page', () => {
   resetDB();
+  disableServiceWorker();
   setTokenUserViewPort();
   describe('Select a workflow', () => {
     it('Should be able to go to the workflows search page', () => {
