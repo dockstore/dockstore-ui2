@@ -20,7 +20,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take, filter } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
@@ -47,7 +47,6 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
-import { Dockstore } from '../shared/dockstore.model';
 
 @Component({
   selector: 'app-container',
@@ -104,21 +103,11 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      this.toolQuery.tool$.pipe(filter(tool => tool !== null), take(1)).subscribe(
         tool => {
-
-        if (tool && tool.topicId) {
-          // Initialize discourse urls
-          (<any>window).DiscourseEmbed = {
-            discourseUrl: Dockstore.DISCOURSE_URL,
-            topicId: tool.topicId
-          };
-          (function () {
-            const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-            d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-          })();
-        }
+          if (tool && tool.topicId) {
+            this.discourseHelper(tool.topicId);
+          }
       });
     }
 

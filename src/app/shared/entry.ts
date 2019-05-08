@@ -31,7 +31,7 @@ import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-
+import { Dockstore } from '../shared/dockstore.model';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
@@ -348,20 +348,28 @@ export abstract class Entry implements OnInit, OnDestroy {
    */
   redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
-      let trimmedURL = window.location.href;
-
       // Decode the URL
       this.decodeURL(this._toolType);
 
       // Get index of /containers or /workflows
       const pageIndex = this.getPageIndex();
-
-      // Get the URL for discourse
-      const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
-      if (indexOfLastColon > 0) {
-        trimmedURL = window.location.href.substring(0, indexOfLastColon);
-      }
     }
+  }
+
+  /**
+   * Creates discourse embed based on topic ID
+   * @param topicId The ID of the topic on discourse
+   */
+  discourseHelper(topicId: number): void {
+    (<any>window).DiscourseEmbed = {
+      discourseUrl: Dockstore.DISCOURSE_URL,
+      topicId: topicId
+    };
+    (function () {
+      const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+      d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+    })();
   }
 
   /**

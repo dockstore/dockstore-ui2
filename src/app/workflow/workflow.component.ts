@@ -20,7 +20,7 @@ import { Component, Input, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take, filter } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
@@ -45,7 +45,6 @@ import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { Dockstore } from '../shared/dockstore.model';
 
 import RoleEnum = Permission.RoleEnum;
 @Component({
@@ -102,21 +101,11 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      this.workflowQuery.workflow$.pipe(filter(workflow => workflow !== null), take(1)).subscribe(
         workflow => {
-
-        if (workflow && workflow.topicId) {
-          // Initialize discourse urls
-          (<any>window).DiscourseEmbed = {
-            discourseUrl: Dockstore.DISCOURSE_URL,
-            topicId: workflow.topicId
-          };
-          (function () {
-            const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-            d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-          })();
-        }
+          if (workflow && workflow.topicId) {
+            this.discourseHelper(workflow.topicId);
+          }
       });
     }
 
