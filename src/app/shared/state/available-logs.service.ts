@@ -37,6 +37,9 @@ export class AvailableLogsService {
           // Silently fail (simply no logs will be displayed, Dockstore logging will know it has failed)
           console.error(error);
         });
+    } else {
+      this.availableLogsStore.setLoading(false);
+      console.error('Tool ID or ToolVersion name is null');
     }
   }
 
