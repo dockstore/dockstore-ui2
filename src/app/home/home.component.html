@@ -16,29 +16,10 @@
 
 <div class="header">
   <div class="container">
-    <div fxLayout="column wrap" fxLayoutGap="50px" fxLayoutAlign="space-around" class="top-section">
+    <div fxLayout="column wrap" fxLayoutGap="40px" fxLayoutAlign="space-around" class="top-section">
       <div class="text-center">
         <h1 class="title">Create, Share, Use</h1>
         <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
-
-        <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login">
-          Sign in with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
-        </button>
-
-        <!-- <div *ngIf="!(user$ | async); else loggedIn">
-          <button mat-flat-button color="accent" routerLink="/login" class="mr-2">
-            <span class="fa fa-github"></span> Sign in with GitHub
-          </button>
-          <button mat-flat-button color="accent" routerLink="/login">
-            <span class="fa fa-google"></span> Sign in with Google
-          </button>
-        </div> -->
-
-        <ng-template #loggedIn>
-          <button mat-flat-button color="accent" routerLink="/accounts">
-            Welcome {{ (user$ | async).username }}
-          </button>
-        </ng-template>
 
         <button mat-flat-button routerLink="/search" class="m-2">
           Browse tools and workflows
@@ -50,7 +31,16 @@
         </div>
       </div>
 
-      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+      <div *ngIf="!(user$ | async)" fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <button mat-flat-button color="accent" routerLink="/login">
+          <span class="fa fa-github"></span> Sign in with GitHub
+        </button>
+        <button mat-flat-button color="accent" routerLink="/login">
+          <span class="fa fa-google"></span> Sign in with Google
+        </button>
+      </div>
+
+      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">
         <h3 class="search-title">New to Dockstore?</h3>
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
             <a mat-raised-button href="#introduction" class="button-link">Start here</a>
@@ -85,9 +75,9 @@
   <p class="lead text-center">
     Create reproducible workflows using cutting-edge technology and standards.
   </p>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder flex-column-on-mobile">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center"  class="developer-holder">
     <div fxFlex>
-      <mat-card fxLayout="column" style="height: 150px;">
+      <mat-card fxLayout="column" style="min-height: 150px;">
         <h3 class="text-center">Reproducible environment</h3>
         <p>
           The execution environment is described by <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a> and stored and built on <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">DockerHub</a>.
@@ -95,8 +85,8 @@
       </mat-card>
     </div>
     <div fxFlex>
-      <mat-card fxLayout="column" style="height: 150px;">
-        <h3 class="text-center">Workflow Descriptions</h3>
+      <mat-card fxLayout="column" style="min-height: 150px;">
+        <h3 class="text-center">Workflow descriptions</h3>
         <p>Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>, <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>, <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.</p>
       </mat-card>
     </div>
@@ -108,22 +98,22 @@
   <p class="lead text-center">
     Make your workflows more accessible to the scientific community.
   </p>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder flex-column-on-mobile container">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder container">
     <div fxFlex>
-      <mat-card fxLayout="column" style="height: 150px;">
+      <mat-card fxLayout="column" style="min-height: 150px;">
         <h3 class="text-center">Shareable</h3>
         <p>Our implementation of emerging community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows can be found with ease.</p>
       </mat-card>
     </div>
     <div fxFlex>
-      <mat-card fxLayout="column" style="height: 150px;">
+      <mat-card fxLayout="column" style="min-height: 150px;">
         <h3 class="text-center">Descriptive</h3>
         <p>Create a descriptive landing page for your workflow to share with the community.</p>
       </mat-card>
     </div>
     <div fxFlex>
-      <mat-card fxLayout="column" style="height: 150px;">
-        <h3 class="text-center">Share with FireCloud</h3>
+      <mat-card fxLayout="column" style="min-height: 150px;">
+        <h3 class="text-center">FireCloud integration</h3>
         <p>Connect your Google account to share workflows using FireCloud authorizations.</p>
       </mat-card>
     </div>
@@ -141,9 +131,18 @@
     </div>
   </div>
 
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" class="m-3">
+    <mat-list style="display: none" class="visible-on-mobile">
+      <mat-list-item><mat-icon>keyboard_arrow_right</mat-icon>Find a scientific tool</mat-list-item>
+      <mat-list-item><mat-icon>keyboard_arrow_right</mat-icon>Select a cloud partner</mat-list-item>
+      <mat-list-item><mat-icon>keyboard_arrow_right</mat-icon>Specify job parameters</mat-list-item>
+      <mat-list-item><mat-icon>keyboard_arrow_right</mat-icon>Launch in the cloud</mat-list-item>
+    </mat-list>
+  </div>
+
   <div class="text-center">
     <p>
-      Or, use the Dockstore CLI to run workflows locally on Linux/Ubuntu and Mac OS X.
+      Or, use the Dockstore CLI to run workflows locally on Linux/Ubuntu and Mac OSX.
     </p>
     <button mat-stroked-button color="accent" routerLink="/quick-start" (click)="scrollToTop()">
       Setup CLI
@@ -155,7 +154,7 @@
   <div fxFlex fxLayout="column" fxLayoutGap="20px">
     <h3 class="text-center">Next steps</h3>
 
-    <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="20px">
       <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
         Getting Started Guide
       </a>

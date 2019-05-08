@@ -155,9 +155,8 @@ span {
   .hidden-on-mobile {
      display: none !important;
   }
-
-  .flex-column-on-mobile {
-    flex-direction: column !important;
+  .visible-on-mobile {
+    display: block !important;
   }
 }
 
