@@ -35,7 +35,7 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
   checkerId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => entry ? entry.checker_id : null));
   entryIsWorkflow$: Observable<boolean> = this.entry$.pipe(
     map((entry: Entry) => entry ? this.isEntryAWorkflow(entry) : null));
-  trsId$: Observable<string> = this.entry$.pipe(map((entry: Entry) => this.getTRSId(entry)));
+  trsId$: Observable<string | null> = this.entry$.pipe(map((entry: (Entry | null)) => this.getTRSId(entry)));
   constructor(protected store: CheckerWorkflowStore, private query: SessionQuery) {
     super(store);
   }
@@ -53,13 +53,13 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
   }
 
   /**
-   * Determine what the TRS ID (ex. #workflow/github.com/dockstore/hello_world) based on the entry
+   * Determine the TRS ID (ex. #workflow/github.com/dockstore/hello_world) based on the entry
    *
-   * @param {Entry} entry  Either a DockstoreTool or Workflow
-   * @returns {string}  The TRS ID (ex. #workflow/github.com/dockstore/hello_world)
+   * @param {(Entry | null)} entry  Either a DockstoreTool or Workflow
+   * @returns {(string | null)}  The TRS ID (ex. #workflow/github.com/dockstore/hello_world)
    * @memberof CheckerWorkflowQuery
    */
-  public getTRSId(entry: Entry): string | null {
+  public getTRSId(entry: Entry | null): string | null {
     const entryIsWorkflow = this.isEntryAWorkflow(entry);
     if (entryIsWorkflow == null) {
       return null;
