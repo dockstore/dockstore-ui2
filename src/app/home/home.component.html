@@ -20,9 +20,19 @@
       <div class="text-center">
         <h1 class="title">Create, Share, Use</h1>
         <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
+
         <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login">
-          Create an account
+          Sign in with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
         </button>
+
+        <!-- <div *ngIf="!(user$ | async); else loggedIn">
+          <button mat-flat-button color="accent" routerLink="/login" class="mr-2">
+            <span class="fa fa-github"></span> Sign in with GitHub
+          </button>
+          <button mat-flat-button color="accent" routerLink="/login">
+            <span class="fa fa-google"></span> Sign in with Google
+          </button>
+        </div> -->
 
         <ng-template #loggedIn>
           <button mat-flat-button color="accent" routerLink="/accounts">
@@ -30,7 +40,7 @@
           </button>
         </ng-template>
 
-        <button mat-button routerLink="/search" class="underlined-link">
+        <button mat-flat-button routerLink="/search" class="m-2">
           Browse tools and workflows
         </button>
 
@@ -43,8 +53,8 @@
       <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
         <h3 class="search-title">New to Dockstore? Start here</h3>
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
-          <a mat-raised-button href="#developerIntroduction" class="button-link">Developers</a>
-          <a mat-raised-button href="#scientistIntroduction" class="button-link">Scientists</a>
+          <a mat-raised-button href="#publishIntroduction" class="button-link">Publish</a>
+          <a mat-raised-button href="#launchIntroduction" class="button-link">Launch</a>
         </div>
 
         <!-- Left the boat and truck here in case we want them back -->
@@ -71,59 +81,50 @@
   </div>
 </div>
 
-<div id="developerIntroduction" class="container">
-  <h2 class="text-center">Developers</h2>
+<div id="publishIntroduction" class="container">
+  <h2 class="text-center">Publish</h2>
   <p class="lead text-center">
-    Make your tools more accessible to the scientific community.
+    Make your workflows more accessible to the scientific community.
   </p>
+  <div class="text-center">
+    <a mat-stroked-button href="https://docs.dockstore.org/docs/prereqs" target="_blank" rel="noopener noreferrer">
+      Getting Started Guide
+    </a>
+  </div>
   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder flex-column-on-mobile">
     <div fxFlex>
-      <div fxLayout="column">
-        <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">account_balance</mat-icon>
+      <mat-card fxLayout="column" style="height: 150px;">
         <h3 class="text-center">Reproducible environment</h3>
-        <p>Tool environment is described by Docker and stored on <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">DockerHub</a>.</p>
-      </div>
+        <p>
+          The execution environment is described by <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a> and stored and built on <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">DockerHub</a>.
+        </p>
+      </mat-card>
     </div>
     <div fxFlex>
-      <div fxLayout="column">
-        <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">description</mat-icon>
-        <h3 class="text-center">Describe tools and workflows</h3>
-        <p>Programs are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>, <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>, or <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>.</p>
-      </div>
+      <mat-card fxLayout="column" style="height: 150px;">
+        <h3 class="text-center">Workflow Descriptions</h3>
+        <p>Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>, <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>, <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.</p>
+      </mat-card>
     </div>
     <div fxFlex>
-      <div fxLayout="column">
-        <mat-icon fxFlexAlign="center" style="font-size: 50px; height: 50px">cloud</mat-icon>
-        <h3 class="text-center">Cloud launch</h3>
-        <p>Users can launch tools and workflows in a variety of cloud platforms.</p>
-      </div>
+      <mat-card fxLayout="column" style="height: 150px;">
+        <h3 class="text-center">Shareable</h3>
+        <p>Our implementation of emerging community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows can be found with ease.</p>
+      </mat-card>
     </div>
   </div>
 </div>
 
-<div class="container stripe-holder">
-  <div fxFlex fxLayout="column" fxLayoutGap="20px">
-    <h3 class="text-center">Share your tools now</h3>
-
-    <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-      <a mat-stroked-button href="https://docs.dockstore.org/docs/prereqs" target="_blank" rel="noopener noreferrer">
-        Getting Started Guide
-      </a>
-      <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
-        Discover Organizations
-      </button>
-      <button mat-stroked-button routerLink="/search" (click)="scrollToTop()">
-        Discover Tools and Workflows
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="scientistIntroduction" class="container">
-  <h2 class="text-center">Scientists</h2>
+<div id="launchIntroduction" class="container">
+  <h2 class="text-center">Launch</h2>
   <p class="lead text-center">
-    Discover and launch scientific tools and workflows in the cloud.
+    Discover and launch scientific workflows in the cloud.
   </p>
+  <div class="text-center">
+    <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
+      Getting Started Guide
+    </a>
+  </div>
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" class="m-3 hidden-on-mobile" style="min-height: 400px">
     <div fxFlex class="text-center">
       <img src="../assets/images/dockstore/scientist-flow.png">
@@ -132,7 +133,7 @@
 
   <div class="text-center">
     <p>
-      Or, use the Dockstore CLI to run tools and workflows locally.
+      Or, use the Dockstore CLI to run workflows locally on Linux/Ubuntu and Mac OS X.
     </p>
     <button mat-stroked-button color="accent" routerLink="/quick-start" (click)="scrollToTop()">
       Setup CLI
@@ -142,17 +143,14 @@
 
 <div class="container stripe-holder">
   <div fxFlex fxLayout="column" fxLayoutGap="20px">
-    <h3 class="text-center">Start using tools now</h3>
+    <h3 class="text-center">Start using workflows now</h3>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-      <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
-        Getting Started Guide
-      </a>
       <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
         Discover Organizations
       </button>
       <button mat-stroked-button routerLink="/search" (click)="scrollToTop()">
-        Discover Tools and Workflows
+        Discover Workflows
       </button>
     </div>
   </div>
@@ -164,20 +162,20 @@
     <div fxFlex fxLayout="column" fxLayoutGap="30px" class="m-3">
       <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
         <div fxFlex>
-          <h3>Remote Tools and Workflows</h3>
+          <h3>Remote Workflows</h3>
           <p>
-            Don't worry about migrating your documents. Dockstore references docker images hosted on Quay.io and DockerHub,
-            allowing for quick setup of existing docker images. Descriptor files can be retrieved from GitHub, Bitbucket and GitLab.
+            Don't worry about migrating your documents. Dockstore references Docker images hosted on Quay.io and DockerHub,
+            allowing for quick setup of existing Docker images. Descriptor files can be retrieved from GitHub, Bitbucket and GitLab.
           </p>
         </div>
       </div>
 
       <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
         <div fxFlex>
-          <h3>Hosted Tools and Workflows</h3>
+          <h3>Hosted Workflows</h3>
           <p>
-            Have your docker image registered but don't want to use source control? Store your files directly on Dockstore.
-            An in browser editor with syntax highlighting and basic validation is available.
+            Have your Docker image registered but don't want to use source control? Store your files directly on Dockstore.
+            An in-browser file editor with syntax highlighting and basic validation is available.
           </p>
         </div>
       </div>
