@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPortCurator } from '../../support/commands';
+import {disableServiceWorker, setTokenUserViewPortCurator} from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
+  disableServiceWorker();
   setTokenUserViewPortCurator();
 
   beforeEach(() => {

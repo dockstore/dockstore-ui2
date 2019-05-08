@@ -13,11 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
+import {
+  goToUnexpandedSidebarEntry,
+  resetDB,
+  setTokenUserViewPort,
+  goToTab,
+  disableServiceWorker
+} from '../../support/commands';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();
+  disableServiceWorker();
   setTokenUserViewPort();
 
   beforeEach(() => {

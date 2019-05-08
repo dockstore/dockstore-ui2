@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import {disableServiceWorker, getTab, goToTab, resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Variations of URL', () => {
   resetDB();
+  disableServiceWorker();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
