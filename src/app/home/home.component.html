@@ -51,10 +51,9 @@
       </div>
 
       <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-        <h3 class="search-title">New to Dockstore? Start here</h3>
+        <h3 class="search-title">New to Dockstore?</h3>
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
-          <a mat-raised-button href="#publishIntroduction" class="button-link">Publish</a>
-          <a mat-raised-button href="#launchIntroduction" class="button-link">Launch</a>
+            <a mat-raised-button href="#introduction" class="button-link">Start here</a>
         </div>
 
         <!-- Left the boat and truck here in case we want them back -->
@@ -81,16 +80,11 @@
   </div>
 </div>
 
-<div id="publishIntroduction" class="container">
-  <h2 class="text-center">Publish</h2>
+<div id="introduction" class="container">
+  <h2 class="text-center">Create</h2>
   <p class="lead text-center">
-    Make your workflows more accessible to the scientific community.
+    Create reproducible workflows using cutting-edge technology and standards.
   </p>
-  <div class="text-center">
-    <a mat-stroked-button href="https://docs.dockstore.org/docs/prereqs" target="_blank" rel="noopener noreferrer">
-      Getting Started Guide
-    </a>
-  </div>
   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder flex-column-on-mobile">
     <div fxFlex>
       <mat-card fxLayout="column" style="height: 150px;">
@@ -106,25 +100,41 @@
         <p>Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>, <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>, <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.</p>
       </mat-card>
     </div>
+  </div>
+</div>
+
+<div class="container stripe-holder">
+  <h2 class="text-center">Share</h2>
+  <p class="lead text-center">
+    Make your workflows more accessible to the scientific community.
+  </p>
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="center center" class="developer-holder flex-column-on-mobile container">
     <div fxFlex>
       <mat-card fxLayout="column" style="height: 150px;">
         <h3 class="text-center">Shareable</h3>
         <p>Our implementation of emerging community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows can be found with ease.</p>
       </mat-card>
     </div>
+    <div fxFlex>
+      <mat-card fxLayout="column" style="height: 150px;">
+        <h3 class="text-center">Descriptive</h3>
+        <p>Create a descriptive landing page for your workflow to share with the community.</p>
+      </mat-card>
+    </div>
+    <div fxFlex>
+      <mat-card fxLayout="column" style="height: 150px;">
+        <h3 class="text-center">Share with FireCloud</h3>
+        <p>Connect your Google account to share workflows using FireCloud authorizations.</p>
+      </mat-card>
+    </div>
   </div>
 </div>
 
-<div id="launchIntroduction" class="container">
-  <h2 class="text-center">Launch</h2>
+<div class="container">
+  <h2 class="text-center">Use</h2>
   <p class="lead text-center">
     Discover and launch scientific workflows in the cloud.
   </p>
-  <div class="text-center">
-    <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
-      Getting Started Guide
-    </a>
-  </div>
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" class="m-3 hidden-on-mobile" style="min-height: 400px">
     <div fxFlex class="text-center">
       <img src="../assets/images/dockstore/scientist-flow.png">
@@ -143,9 +153,12 @@
 
 <div class="container stripe-holder">
   <div fxFlex fxLayout="column" fxLayoutGap="20px">
-    <h3 class="text-center">Start using workflows now</h3>
+    <h3 class="text-center">Next steps</h3>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+      <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
+        Getting Started Guide
+      </a>
       <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
         Discover Organizations
       </button>
