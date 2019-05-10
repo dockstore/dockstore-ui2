@@ -20,7 +20,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { takeUntil, take, filter } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
@@ -103,7 +103,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.toolQuery.tool$.pipe(filter(tool => tool !== null), take(1)).subscribe(
+      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         tool => {
           if (tool && tool.topicId) {
             this.discourseHelper(tool.topicId);

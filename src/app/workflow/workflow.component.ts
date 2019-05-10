@@ -20,7 +20,7 @@ import { Component, Input, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { takeUntil, take, filter } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
@@ -101,7 +101,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.workflowQuery.workflow$.pipe(filter(workflow => workflow !== null), take(1)).subscribe(
+      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         workflow => {
           if (workflow && workflow.topicId) {
             this.discourseHelper(workflow.topicId);
