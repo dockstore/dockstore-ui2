@@ -134,11 +134,7 @@ span {
   min-height: 200px;
 }
 
-#developerIntroduction {
-  margin-top:40px;
-}
-
-.developer-holder {
+.content-holder {
   padding: 40px 0px 40px 0px;
   min-height: 300px;
 }
@@ -164,6 +160,7 @@ span {
   z-index: 1070;
 }
 
-.small-card {
+.small-card, .small-card > mat-card {
   min-height: 150px;
+  width: 100% !important;
 }
