@@ -14,14 +14,13 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
-import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -32,10 +31,10 @@ import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-
+import { Dockstore } from '../shared/dockstore.model';
 
 @Injectable()
-export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
+export abstract class Entry implements OnInit, OnDestroy {
   @ViewChild('entryTabs') entryTabs: TabsetComponent;
   protected shareURL: string;
   public starGazersClicked = false;
@@ -165,16 +164,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // Embed Discourse comments into page
-  ngAfterViewInit() {
-    if (this.publicPage) {
-      (function () {
-        const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-        d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-      })();
-    }
-
+  updateTabSelection() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
       const tabIndex = this.validTabs.indexOf(params['tab']);
       if (tabIndex > -1) {
@@ -353,31 +343,33 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Deals with redirecting to canonical URL and running discourse call
+   * Deals with redirecting to canonical URL
    * @return {void}
    */
-  redirectAndCallDiscourse(myPage: string): void {
+  redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
-      let trimmedURL = window.location.href;
-
       // Decode the URL
       this.decodeURL(this._toolType);
 
       // Get index of /containers or /workflows
       const pageIndex = this.getPageIndex();
-
-      // Get the URL for discourse
-      const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
-      if (indexOfLastColon > 0) {
-        trimmedURL = window.location.href.substring(0, indexOfLastColon);
-      }
-
-      // Initialize discourse urls
-      (<any>window).DiscourseEmbed = {
-        discourseUrl: Dockstore.DISCOURSE_URL,
-        discourseEmbedUrl: decodeURIComponent(trimmedURL)
-      };
     }
+  }
+
+  /**
+   * Creates discourse embed based on topic ID
+   * @param topicId The ID of the topic on discourse
+   */
+  discourseHelper(topicId: number): void {
+    (<any>window).DiscourseEmbed = {
+      discourseUrl: Dockstore.DISCOURSE_URL,
+      topicId: topicId
+    };
+    (function () {
+      const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+      d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+    })();
   }
 
   /**

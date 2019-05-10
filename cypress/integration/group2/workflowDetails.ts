@@ -101,7 +101,6 @@ describe('Dockstore Workflow Details', () => {
   });
 
   it('Change tab to tools', () => {
-    cy.get('.mat-tab-header-pagination-after').click();
     goToTab('Tools');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=tools');
   });

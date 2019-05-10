@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -52,7 +52,7 @@ import { EmailService } from './email.service';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Entry {
+export class ContainerComponent extends Entry implements AfterViewInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -98,7 +98,20 @@ export class ContainerComponent extends Entry {
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
 
     this._toolType = 'containers';
-    this.redirectAndCallDiscourse('/my-tools');
+    this.redirectToCanonicalURL('/my-tools');
+  }
+
+  ngAfterViewInit() {
+    if (this.publicPage) {
+      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        tool => {
+          if (tool && tool.topicId) {
+            this.discourseHelper(tool.topicId);
+          }
+      });
+    }
+
+    this.updateTabSelection();
   }
 
   clearState() {
