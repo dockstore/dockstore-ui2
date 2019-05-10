@@ -42,6 +42,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
+  public disableRateButton = false;
   private starredUsers: User[];
   constructor(private trackLoginService: TrackLoginService,
               private userQuery: UserQuery,
@@ -79,6 +80,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
    * @memberof StarringComponent
    */
   setStarring() {
+    this.disableRateButton = true;
     if (this.isLoggedIn) {
 
       const message = (this.rate ? 'Unstarring ' : 'Starring ') + this.organization.name;
@@ -93,6 +95,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
         },
         (error) => {
           this.alertService.detailedError(error);
+          this.disableRateButton = false;
         });
     }
   }
@@ -112,8 +115,10 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
           this.total_stars = starring.length;
           this.starredUsers = starring;
           this.rate = isStarredByUser(starring, this.user);
-        });
+          this.disableRateButton = false;
+        }, error => this.disableRateButton = false);
     } else {
+      this.disableRateButton = false;
     }
   }
 

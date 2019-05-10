@@ -41,7 +41,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
-  public disable = false;
+  public disableRateButton = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
   constructor(private trackLoginService: TrackLoginService,
@@ -98,7 +98,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
    * @memberof StarringComponent
    */
   setStarring() {
-    this.disable = true;
+    this.disableRateButton = true;
     if (this.isLoggedIn) {
       const type = this.entryType === 'workflows' ? 'workflow' : 'tool';
 
@@ -119,7 +119,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
         },
         (error) => {
           this.alertService.detailedError(error);
-          this.disable = false;
+          this.disableRateButton = false;
         });
     }
   }
@@ -137,10 +137,10 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
           this.total_stars = starring.length;
           this.starredUsers = starring;
           this.rate = isStarredByUser(starring, this.user);
-          this.disable = false;
-        }, error => this.disable = false);
+          this.disableRateButton = false;
+        }, error => this.disableRateButton = false);
     } else {
-      this.disable = false;
+      this.disableRateButton = false;
     }
   }
   getStargazers() {
