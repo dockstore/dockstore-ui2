@@ -48,7 +48,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --browser chrome --record --config numTestsKeptInMemory=1 --spec cypress/integration/group1/**/*'
   integration_test_2:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -56,7 +56,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --browser chrome --record --config numTestsKeptInMemory=1 --spec cypress/integration/group2/**/*'
   integration_test_3:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -64,7 +64,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group3/**/*'
+          command: bash -i -c 'npx cypress run --browser chrome --record --config numTestsKeptInMemory=1 --spec cypress/integration/group3/**/*'
 workflows:
   version: 2
   everything:
