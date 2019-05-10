@@ -13,11 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {disableServiceWorker, resetDB, setTokenUserViewPort} from '../../support/commands';
+import {resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Dockstore tool list page', () => {
   resetDB();
-  disableServiceWorker();
   setTokenUserViewPort();
   describe('Select a tool', () => {
     it('Should be able to go to the tools search page', () => {
