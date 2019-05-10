@@ -16,7 +16,7 @@
 
 import { User } from './swagger';
 
-export function calculateRate(starredUsers: User[], currentUser: User): boolean {
+export function isStarredByUser(starredUsers: User[], currentUser: User): boolean {
   if (!currentUser || !starredUsers) {
     return false;
   } else {

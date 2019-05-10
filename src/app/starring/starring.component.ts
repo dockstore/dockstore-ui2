@@ -24,7 +24,7 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
 import { StarringService } from './starring.service';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { calculateRate } from '../shared/starring';
+import { isStarredByUser } from '../shared/starring';
 
 @Component({
   selector: 'app-starring',
@@ -56,7 +56,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
     // get tool from the observer
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
-      this.rate = calculateRate(this.starredUsers, this.user);
+      this.rate = isStarredByUser(this.starredUsers, this.user);
     });
   }
 
@@ -136,7 +136,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.starredUsers = starring;
-          this.rate = calculateRate(starring, this.user);
+          this.rate = isStarredByUser(starring, this.user);
           this.disable = false;
         }, error => this.disable = false);
     } else {

@@ -31,7 +31,7 @@
         <mat-list>
           <mat-list-item *ngFor="let tool of starredTools; let last = last;">
             <h3 mat-line>
-              <a class="spacing" href="/containers/{{tool.tool_path}}">
+              <a class="spacing" routerLink="/containers/{{tool.tool_path}}" target="_blank" rel="noopener">
                 {{tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')}}
               </a>
             </h3>
@@ -64,7 +64,7 @@
         <mat-list>
           <mat-list-item *ngFor="let workflow of starredWorkflows; let last = last;">
             <h3 class="spacing" mat-line>
-              <a href="/workflows/{{workflow.full_workflow_path}}">
+              <a routerLink="/workflows/{{workflow.full_workflow_path}}" target="_blank" rel="noopener">
                 {{workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '')}}
               </a>
             </h3>
@@ -96,7 +96,7 @@
         <mat-list>
           <mat-list-item *ngFor="let organization of starredOrganizations; let last = last;">
             <h3 class="spacing" mat-line>
-              <a href="/organizations/{{organization.name}}" [matTooltip]="organization?.name">{{organization.displayName}}</a>
+              <a routerLink="/organizations/{{organization.name}}" [matTooltip]="organization?.name" target="_blank" rel="noopener">{{organization.displayName}}</a>
             </h3>
             <span mat-line>
             <small class="spacing">Email: <a [href]="'mailto:' + organization.email">{{ organization.email }}</a></small>

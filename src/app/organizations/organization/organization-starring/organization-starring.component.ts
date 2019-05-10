@@ -26,14 +26,15 @@ import { AlertService } from '../../../shared/alert/state/alert.service';
 import { first, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { OrganizationStarringService } from './organization-starring.service';
-import { calculateRate } from '../../../shared/starring';
+import { isStarredByUser } from '../../../shared/starring';
+import { Base } from '../../../shared/base';
 
 @Component({
   selector: 'app-organization-starring',
   templateUrl: '../../../starring/starring.component.html',
   styleUrls: ['../../../starring/starring.component.css']
 })
-export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChanges {
+export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
 
   @Input() organization: Organization;
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -41,8 +42,6 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
-  public disable = false;
-  private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
   constructor(private trackLoginService: TrackLoginService,
               private userQuery: UserQuery,
@@ -51,13 +50,15 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
               private starentryService: StarentryService,
               private starOrganizationService: StarOrganizationService,
               private organizationStarringService: OrganizationStarringService,
-              private alertService: AlertService) { }
+              private alertService: AlertService) {
+    super();
+  }
 
   ngOnInit() {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
-      this.rate = calculateRate(this.starredUsers, this.user);
+      this.rate = isStarredByUser(this.starredUsers, this.user);
     });
   }
 
@@ -67,24 +68,10 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
     }
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-
   setUpOrganization(organization: Organization) {
     this.organization = organization;
     this.getStarredUsers();
   }
-
-  // Determine if user has starred organization.
-  // calculateRate(starredUsers: User[], currentUser: User): boolean {
-  //   if (!currentUser || !starredUsers) {
-  //     return false;
-  //   } else {
-  //     return starredUsers.some(user => user.id === this.user.id);
-  //   }
-  // }
 
   /**
    * Handles the star button being clicked
@@ -92,7 +79,6 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
    * @memberof StarringComponent
    */
   setStarring() {
-    this.disable = true;
     if (this.isLoggedIn) {
 
       const message = (this.rate ? 'Unstarring ' : 'Starring ') + this.organization.name;
@@ -107,7 +93,6 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
         },
         (error) => {
           this.alertService.detailedError(error);
-          this.disable = false;
         });
     }
   }
@@ -126,11 +111,9 @@ export class OrganizationStarringComponent implements OnInit, OnDestroy, OnChang
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.starredUsers = starring;
-          this.rate = calculateRate(starring, this.user);
-          this.disable = false;
-        }, error => this.disable = false);
+          this.rate = isStarredByUser(starring, this.user);
+        });
     } else {
-      this.disable = false;
     }
   }
 
