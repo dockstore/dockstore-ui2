@@ -13,11 +13,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import {disableServiceWorker, resetDB, setTokenUserViewPort} from '../../support/commands';
+import {resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Tool and workflow starring error messages', () => {
   resetDB();
-  disableServiceWorker();
   setTokenUserViewPort();
 
   function starringError(url: string, type: string, routePath: string, name: string) {

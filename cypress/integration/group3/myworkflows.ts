@@ -13,11 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {disableServiceWorker, getTab, goToTab, resetDB, setTokenUserViewPort} from '../../support/commands';
+import {getTab, goToTab, resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
-  disableServiceWorker();
   setTokenUserViewPort();
 
   const cwlDescriptorType = 'CWL';

@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {disableServiceWorker, setTokenUserViewPort} from '../../support/commands';
+import {setTokenUserViewPort} from '../../support/commands';
 
 describe('elasticsearch', () => {
-  disableServiceWorker();
   setTokenUserViewPort();
   it('Should be able to search entries for using text', () => {
     cy.visit('/');

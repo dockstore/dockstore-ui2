@@ -13,17 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {
-  disableServiceWorker,
-  goToTab,
-  goToUnexpandedSidebarEntry,
-  resetDB,
-  setTokenUserViewPort
-} from '../../support/commands';
+import {goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort} from '../../support/commands';
 
 describe('Shared with me workflow test from my-workflows', () => {
   resetDB();
-  disableServiceWorker();
   setTokenUserViewPort();
 
   beforeEach(() => {
