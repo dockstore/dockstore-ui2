@@ -141,7 +141,14 @@ span {
 
 .stripe-holder {
   min-height: 175px;
-  margin: 40px 0px;
+  width: 100%;
+  background-color: #eef0f6;
+  border: 1px solid #cfd1d7;
+}
+
+#next-steps {
+  min-height: 175px;
+  margin: 40px 0px 0px 0px;
   width: 100%;
   background-color: #eef0f6;
   border: 1px solid #cfd1d7;
@@ -150,9 +157,6 @@ span {
 @media (max-width: 767px) {
   .hidden-on-mobile {
      display: none !important;
-  }
-  .visible-on-mobile {
-    display: block !important;
   }
 }
 
@@ -163,4 +167,8 @@ span {
 .small-card, .small-card > mat-card {
   min-height: 150px;
   width: 100% !important;
+}
+
+.big-button {
+  font-size: 16px;
 }
