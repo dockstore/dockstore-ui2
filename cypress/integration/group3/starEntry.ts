@@ -13,11 +13,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { resetDB, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
-  // setTokenUserViewPort();
   setTokenUserViewPortCurator();
 
   function typeInInput(fieldName: string, text: string) {
@@ -124,7 +123,7 @@ describe('Tool, Workflow, and Organization starring', () => {
   }
 
   function starringUnapprovedOrg(orgUrl: string) {
-    cy.visit('/organizations/Potato');
+    cy.visit(orgUrl);
     cy
       .get('#starringButton')
       .should('not.exist');
@@ -146,7 +145,7 @@ describe('Tool, Workflow, and Organization starring', () => {
     });
   });
   describe('Organization Starring', () => {
-    it('Organization can be starred/unstarred', () => {
+    it.only('Organization can be starred/unstarred', () => {
       cy.visit('/organizations');
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       typeInInput('Name', 'Potato');
@@ -155,9 +154,9 @@ describe('Tool, Workflow, and Organization starring', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
 
-      starringUnapprovedOrg('organization/Potato');
+      starringUnapprovedOrg('organizations/Potato');
 
-      //Approve org
+      // Approve org
       cy.visit('/accounts');
       cy
         .get('.mat-tab-label-content')
@@ -170,8 +169,10 @@ describe('Tool, Workflow, and Organization starring', () => {
         .click();
       cy
         .get('#approve-pending-org-dialog')
+        .contains('Approve')
         .should('exist')
         .click();
+      // cy.contains('Approve').click()
 
       entryStarring('/organizations/Potato');
       starredPage('organization');
