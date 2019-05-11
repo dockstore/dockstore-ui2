@@ -145,7 +145,7 @@ describe('Tool, Workflow, and Organization starring', () => {
     });
   });
   describe('Organization Starring', () => {
-    it.only('Organization can be starred/unstarred', () => {
+    it('Organization can be starred/unstarred', () => {
       cy.visit('/organizations');
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       typeInInput('Name', 'Potato');
