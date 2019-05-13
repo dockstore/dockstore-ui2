@@ -17,7 +17,7 @@
 </div>
 
 <mat-tab-group class="container" *ngIf="!starGazersClicked && !organizationStarGazersClicked">
-  <mat-tab label="Starred Tools">
+  <mat-tab label="Tools">
     <div *ngIf="starredTools">
       <div class="container">
         <div class="row">
@@ -50,7 +50,7 @@
     </div>
   </mat-tab>
 
-  <mat-tab label="Starred Workflows">
+  <mat-tab label="Workflows">
     <div *ngIf="starredWorkflows">
       <div class="container">
         <div class="row">
@@ -82,7 +82,7 @@
     </div>
   </mat-tab>
 
-  <mat-tab label="Starred Organizations">
+  <mat-tab label="Organizations">
     <div *ngIf="starredOrganizations">
       <div class="container">
         <div class="row">
@@ -99,8 +99,8 @@
               <a routerLink="/organizations/{{organization.name}}" [matTooltip]="organization?.name" target="_blank" rel="noopener">{{organization.displayName}}</a>
             </h3>
             <span mat-line>
-            <small class="spacing">Email: <a [href]="'mailto:' + organization.email">{{ organization.email }}</a></small>
-            <small class="spacing">Website: <a [href]="organization?.link">{{ organization?.link }}</a> </small>
+            <small class="spacing" *ngIf="organization?.email">Email: <a [href]="'mailto:' + organization?.email">{{ organization.email }}</a></small>
+            <small class="spacing" *ngIf="organization?.link">Website: <a [href]="organization?.link">{{ organization?.link }}</a> </small>
           </span>
             <app-organization-starring class="pull-right" style="width: 100px;" [organization]="organization" (change)="organizationStarGazersChange()"></app-organization-starring>
             <mat-divider></mat-divider>
