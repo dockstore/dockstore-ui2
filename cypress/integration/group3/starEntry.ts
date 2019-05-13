@@ -171,8 +171,8 @@ describe('Tool, Workflow, and Organization starring', () => {
         .get('#approve-pending-org-dialog')
         .contains('Approve')
         .should('exist')
-        .click();
-      // cy.contains('Approve').click()
+        .click()
+        .wait(500);
 
       entryStarring('/organizations/Potato');
       starredPage('organization');
