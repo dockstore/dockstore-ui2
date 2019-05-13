@@ -5,7 +5,7 @@ import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 import { StarentryService } from '../shared/starentry.service';
-import { DockstoreTool, Workflow } from '../shared/swagger';
+import {DockstoreTool, Organization, Workflow} from '../shared/swagger';
 import { UserQuery } from '../shared/user/user.query';
 import { StarringService } from '../starring/starring.service';
 import { UsersService } from './../shared/swagger/api/users.service';
@@ -18,8 +18,10 @@ import { UsersService } from './../shared/swagger/api/users.service';
 export class StarredEntriesComponent extends Base implements OnInit {
   starredTools: any;
   starredWorkflows: any;
+  starredOrganizations: Array<Organization>;
   user: any;
   starGazersClicked = false;
+  organizationStarGazersClicked = false;
   selectedEntry: any;
   constructor(private starringService: StarringService,
               private userQuery: UserQuery,
@@ -39,7 +41,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
     this.userQuery.user$.subscribe(user => this.user = user);
     this.usersService.getStarredTools().subscribe(
       starredTool => {
-        this.starredTools = starredTool. filter((entry: DockstoreTool) => entry.is_published);
+        this.starredTools = starredTool.filter((entry: DockstoreTool) => entry.is_published);
         this.starredTools.forEach(
           tool => {
             if (!tool.providerUrl) {
@@ -60,6 +62,11 @@ export class StarredEntriesComponent extends Base implements OnInit {
             }
         });
       });
+
+    this.usersService.getStarredOrganizations().subscribe(
+      starredOrganizations => {
+        this.starredOrganizations = starredOrganizations;
+      });
   }
   isOwner(entryUsers: any): boolean {
     let isOwner = false;
@@ -76,5 +83,9 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
   starGazersChange() {
     this.starGazersClicked = !this.starGazersClicked;
+  }
+
+  organizationStarGazersChange() {
+    this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
 }

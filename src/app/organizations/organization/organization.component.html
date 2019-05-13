@@ -19,7 +19,12 @@
 </app-header>
 <app-loading [loading]="(loading$ | async)">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
-
+  <div class="row ml-4 mx-4" *ngIf="organizationStarGazersClicked">
+    <app-organization-stargazers></app-organization-stargazers>
+    <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked=false">
+      <mat-icon>chevron_left</mat-icon>Back to details
+    </button>
+  </div>
   <!-- Organization header -->
   <div class="container" *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
@@ -60,13 +65,14 @@
           </span>
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
             <mat-icon>link</mat-icon>
-            <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
+            <span><a [href]="org.link" target="_blank" rel="noopener">{{ org?.link }}</a></span>
           </span>
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
             <mat-icon>location_on</mat-icon>
             <span class="ellipsis-lines">{{ org.location }}</span>
           </span>
         </div>
+        <app-organization-starring *ngIf="org?.status === approved" [organization]="org" class="pull-right starring-button" (change)="organizationStarGazersChange()"></app-organization-starring>
       </mat-card-content>
       <mat-card-actions *ngIf="(canEdit$ | async)">
         <div fxFlex></div>
