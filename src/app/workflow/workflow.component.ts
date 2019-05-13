@@ -174,7 +174,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       '@type': 'Product',
       'name': this.workflow.workflowName,
       'description': this.workflow.description,
-      'identifier': this.workflow.author,
+      'identifier': this.workflow.id,
       'url': this.shareURL
     };
   }
