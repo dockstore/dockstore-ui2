@@ -15,6 +15,7 @@
  */
 
 export function goToTab(tabName: string): any {
+  unregisterServiceWorkers();
   return cy
     .get('.mat-tab-labels')
     .should('be.visible')
@@ -23,6 +24,7 @@ export function goToTab(tabName: string): any {
 }
 
 export function getTab(tabName: string): any {
+  unregisterServiceWorkers();
   return cy
     .get('.mat-tab-labels')
     .should('be.visible')
@@ -31,6 +33,7 @@ export function getTab(tabName: string): any {
 }
 
 export function resetDB() {
+  unregisterServiceWorkers();
   before(() => {
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f scripts/resetDb.sql -U dockstore -d webservice_test')
       .its('stdout').should('contain', 'COMMIT');
@@ -41,6 +44,7 @@ export function resetDB() {
   });
 }
 export function setTokenUserViewPort() {
+  unregisterServiceWorkers();
   beforeEach(() => {
     // Login by adding user obj and token to local storage
     localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\"}');
@@ -49,6 +53,7 @@ export function setTokenUserViewPort() {
 }
 
 export function setTokenUserViewPortCurator() {
+  unregisterServiceWorkers();
   beforeEach(() => {
     // Login by adding user obj and token to local storage
     localStorage.setItem('dockstore.ui.userObj',
@@ -58,6 +63,7 @@ export function setTokenUserViewPortCurator() {
 }
 
 export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp | string)) {
+  unregisterServiceWorkers();
   // This is needed because of a possible defect in the implementation.
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
   // If the user expands a panel before the above happens, their choice gets overwritten
@@ -74,5 +80,19 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
 }
 
 export function approvePotatoMembership() {
+  unregisterServiceWorkers();
   cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore');
+}
+
+export function unregisterServiceWorkers() {
+  beforeEach(() => {
+    if (window.navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations()
+        .then((registrations) => {
+          registrations.forEach((registration) => {
+            registration.unregister()
+          })
+        })
+    }
+  })
 }
