@@ -76,7 +76,7 @@ export class AlertService {
       // Error code of 0 means the webservice is not responding, likely down
       message = 'The webservice is currently down, possibly due to load. Please wait and try again later.';
     } else {
-      message = 'The webservice encountered an error trying to create/modify.';
+      message = 'The webservice encountered an error.';
       details = '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
         (error.error && error.error.message ? error.error.message : error.error);
     }
