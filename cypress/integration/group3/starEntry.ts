@@ -101,17 +101,17 @@ describe('Tool, Workflow, and Organization starring', () => {
     if (entity === 'tool') {
       cy
         .get('.mat-tab-label-content')
-        .contains('Starred Tools')
+        .contains('Tools')
         .click();
     } else if (entity === 'workflow') {
       cy
         .get('.mat-tab-label-content')
-        .contains('Starred Workflows')
+        .contains('Workflows')
         .click();
      } else {
         cy
           .get('.mat-tab-label-content')
-          .contains('Starred Organizations')
+          .contains('Organizations')
           .click();
     }
     cy
