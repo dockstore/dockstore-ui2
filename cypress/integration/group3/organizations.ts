@@ -159,7 +159,7 @@ describe('Dockstore Organizations', () => {
         .server()
         .route({
           method: 'GET',
-          url: '/api/users/user/memberships',
+          url: '*/users/user/memberships',
           response: memberships
       });
     });
@@ -292,7 +292,7 @@ describe('Dockstore Organizations', () => {
     it('organization alias', () => {
       cy.server();
       cy.route({
-        url: '/api/organizations/fakeAlias/aliases',
+        url: '*/organizations/fakeAlias/aliases',
         method: 'GET',
         status: 200,
         response: { 'name': 'Potatoe' }
@@ -304,7 +304,7 @@ describe('Dockstore Organizations', () => {
     it('collection alias', () => {
       cy.server();
       cy.route({
-        url: '/api/organizations/collections/fakeAlias/aliases',
+        url: '*/organizations/collections/fakeAlias/aliases',
         method: 'GET',
         status: 200,
         response: { 'organizationName': 'Potatoe', 'name': 'veryFakeCollectionName' }
@@ -323,7 +323,7 @@ describe('Dockstore Organizations', () => {
     it('organization alias incorrect', () => {
       cy.server();
       cy.route({
-        url: '/api/organizations/incorrectAlias/aliases',
+        url: '*/organizations/incorrectAlias/aliases',
         method: 'GET',
         status: 404,
         response: {}
@@ -336,7 +336,7 @@ describe('Dockstore Organizations', () => {
     it('collection alias incorrect', () => {
       cy.server();
       cy.route({
-        url: '/api/organizations/collections/incorrectAlias/aliases',
+        url: '*/organizations/collections/incorrectAlias/aliases',
         method: 'GET',
         status: 404,
         response: {}
