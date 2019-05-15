@@ -101,7 +101,7 @@
   </p>
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder container">
     <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
+      <mat-card fxLayout="column" fxLayoutAlign="start center">
         <h3 class="text-center">Shareable</h3>
         <p>Our implementation of community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows can be found with ease.</p>
       </mat-card>
@@ -114,8 +114,8 @@
     </div>
     <div fxFlex class="small-card">
       <mat-card fxLayout="column">
-        <h3 class="text-center">DOI Generation</h3>
-        <p>Connect your Google account to share workflows using FireCloud users and user groups.</p>
+        <h3 class="text-center">Organizations</h3>
+        <p>Create organizations for your lab, company, or university where you can have collections of workflows.</p>
       </mat-card>
     </div>
   </div>
@@ -126,19 +126,20 @@
   <p class="lead text-center">
     Discover and launch scientific workflows in the cloud.
   </p>
-  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" class="m-3 hidden-on-mobile" style="min-height: 400px">
-    <div fxFlex class="text-center">
-      <img src="../assets/images/dockstore/scientist-flow.png">
-    </div>
-  </div>
 
-  <div class="text-center">
-    <p>
-      Or, use the Dockstore CLI to run workflows locally on Linux/Ubuntu and Mac OSX.
-    </p>
-    <button mat-stroked-button color="accent" routerLink="/quick-start" (click)="scrollToTop()">
-      Setup CLI
-    </button>
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder container">
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Online launch</h3>
+        <p>Select from a variety of launch partners including <a href="https://www.dnastack.com/#/" target="_blank" rel="noopener noreferrer">DNAstack</a>, <a href="https://terra.bio/" target="_blank" rel="noopener noreferrer">Terra</a>, and <a href="https://www.dnanexus.com/" target="_blank" rel="noopener noreferrer">DNAnexus</a>.</p>
+      </mat-card>
+    </div>
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Local launch</h3>
+        <p>Use the <a routerLink="/quick-start" (click)="scrollToTop()">Dockstore CLI</a> to run workflows locally on Linux/Ubuntu and Mac OSX.</p>
+      </mat-card>
+    </div>
   </div>
 </div>
 
@@ -161,59 +162,6 @@
 </div>
 
 <div class="container">
-  <h2 class="text-center">Highlighted Features</h2>
-  <div fxLayout="row" fxLayoutGap="20px">
-    <div fxFlex fxLayout="column" fxLayoutGap="30px" class="m-3">
-      <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
-        <div fxFlex>
-          <h3>Remote Workflows</h3>
-          <p>
-            Don't worry about migrating your documents. Dockstore references Docker images hosted on Quay.io and Docker Hub,
-            allowing for quick setup of existing Docker images. Descriptor files can be retrieved from GitHub, Bitbucket and GitLab.
-          </p>
-        </div>
-      </div>
-
-      <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
-        <div fxFlex>
-          <h3>Hosted Workflows</h3>
-          <p>
-            Have your Docker image registered but don't want to use source control? Store your files directly on Dockstore.
-            An in-browser file editor with syntax highlighting and basic validation is available.
-          </p>
-        </div>
-      </div>
-
-      <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
-        <div fxFlex>
-          <h3>Organizations and Collections</h3>
-          <p>
-            Create organization landing pages for your company, start-up, working group, lab, or university where you can create collections of related tools and workflows to share.
-          </p>
-        </div>
-      </div>
-
-      <div fxLayout="row wrap" fxLayoutGap="20px" class="m-3">
-        <div fxFlex>
-          <h3>Launch in the Cloud	</h3>
-          <p>
-            Take advantage of the cloud to launch your workflows. A growing list of cloud platforms are available*.
-          </p>
-          <p>
-            *Requires account on platform
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div fxFlex fxLayout="column" fxLayoutGap="30px" class="m-3 hidden-on-mobile" fxLayoutAlign="center center">
-      <img src="../assets/images/dockstore/graph-shadow.png">
-    </div>
-  </div>
-
-</div>
-
-<div class="container stripe-holder">
   <div fxFlex fxLayout="column" fxLayoutGap="20px">
     <h3 class="text-center">Join the discussion</h3>
 
@@ -224,11 +172,11 @@
     </div>
 
     <p class="text-center">
-      Or
+      And
     </p>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center" class="mb-3">
-      <div class="twitter twitter-container" style="width: 500px;">
+      <div class="twitter twitter-container">
         <a class="twitter-timeline"
           data-theme="light"
           data-height="400"
