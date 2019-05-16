@@ -104,7 +104,7 @@
             </div>
             <button mat-button *ngIf="(canEdit$ | async)" (click)="updateDescription()" id="editOrgDescription" matTooltip="Edit the description"><mat-icon>edit</mat-icon></button>
           </div>
-          <ngx-md *ngIf="org.description" fxFlex [data]="org.description"></ngx-md>
+          <markdown *ngIf="org.description" fxFlex [data]="org.description" ></markdown>
         </mat-card>
       </div>
     </div>

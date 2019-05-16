@@ -208,7 +208,7 @@
             Description
           </label>:
           <div *ngIf="tool?.description" class="well well-sm">
-            <ngx-md [data]="tool?.description"></ngx-md>
+            <markdown [data]="tool?.description"></markdown>
           </div>
           <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>

@@ -25,7 +25,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
@@ -61,6 +61,7 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,6 @@ import { SelectModule } from './select.module';
     CommonModule,
     ClipboardModule,
     CurrentCollectionsModule,
-    NgxMdModule.forRoot(),
     HeaderModule,
     SelectModule,
     ListContainersModule,
@@ -100,7 +100,8 @@ import { SelectModule } from './select.module';
     EntryModule,
     RouterModule,
     AddEntryModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MarkdownModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig},

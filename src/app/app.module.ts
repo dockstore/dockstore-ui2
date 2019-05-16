@@ -33,7 +33,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+
+import { MarkdownModule } from 'ngx-markdown';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -164,7 +165,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     routing,
     ModalModule.forRoot(),
     StargazersModule,
-    NgxMdModule.forRoot(),
+    MarkdownModule.forRoot(),
     ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),

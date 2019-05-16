@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgxMdModule } from 'ngx-md';
+
 
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
@@ -11,15 +11,16 @@ import {
 } from './update-organization-description/update-organization-description.component';
 import {OrganizationStarringService} from './organization-starring/organization-starring.service';
 import { StarOrganizationService } from '../../shared/star-organization.service';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   imports: [
     CommonModule,
     FlexLayoutModule,
     CustomMaterialModule,
-    NgxMdModule,
     RefreshAlertModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MarkdownModule
   ],
   providers: [ OrganizationStarringService, StarOrganizationService],
   declarations: [UpdateOrganizationOrCollectionDescriptionComponent],

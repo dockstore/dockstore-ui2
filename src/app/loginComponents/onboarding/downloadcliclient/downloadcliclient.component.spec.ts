@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+
 
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
@@ -18,7 +18,7 @@ describe('DownloadCLIClientComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DownloadCLIClientComponent,
         RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [ClipboardModule, NgxMdModule.forRoot(), MatIconModule, MatButtonModule],
+      imports: [ClipboardModule, MatIconModule, MatButtonModule],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
