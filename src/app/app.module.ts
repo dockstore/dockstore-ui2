@@ -41,7 +41,6 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
-import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -124,7 +123,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     NavbarComponent,
     HomeComponent,
     FooterComponent,
-    HomeFootNoteComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,

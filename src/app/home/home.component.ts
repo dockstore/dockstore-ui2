@@ -17,11 +17,11 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 import { TabDirective } from 'ngx-bootstrap/tabs';
-import { Observable } from 'rxjs';
 
 import { User } from '../shared/swagger/model/user';
 import { TwitterService } from '../shared/twitter.service';
 import { UserQuery } from '../shared/user/user.query';
+import { Subject, Observable } from 'rxjs';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
+  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   @ViewChild('youtube') youtube: ElementRef;
 
@@ -71,5 +72,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   openYoutube() {
     this.dialog.open(YoutubeComponent);
+  }
+
+  // Router link will not scroll to top of page on change, this fixes that
+  scrollToTop() {
+    window.scrollTo(0, 0);
   }
 }
