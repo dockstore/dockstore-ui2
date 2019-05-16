@@ -27,7 +27,6 @@ import {
   UpdateOrganizationOrCollectionDescriptionComponent
 } from './update-organization-description/update-organization-description.component';
 import { UserQuery } from '../../shared/user/user.query';
-import { DateService } from '../../shared/date.service';
 
 @Component({
   selector: 'organization',
@@ -46,7 +45,7 @@ export class OrganizationComponent implements OnInit {
   approved = Organization.StatusEnum.APPROVED;
 
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
-    private activatedRoute: ActivatedRoute, private userQuery: UserQuery, private dateService: DateService
+    private activatedRoute: ActivatedRoute, private userQuery: UserQuery
   ) { }
 
   ngOnInit() {
@@ -84,9 +83,5 @@ export class OrganizationComponent implements OnInit {
 
   organizationStarGazersChange(): void {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
-  }
-
-  getTimeAgoMessage(date: Date) {
-    return this.dateService.getAgoMessage(new Date(date).getTime());
   }
 }

@@ -29,7 +29,7 @@
       </div>
     </div>
     <p class="update">
-      <span [matTooltip]="(org)?.dbUpdateDate | date:'medium'">Last updated: {{ getTimeAgoMessage(org?.dbUpdateDate) }}</span>
+      <span [matTooltip]="(org)?.dbUpdateDate | date:'medium'">Last updated: {{ org?.dbUpdateDate | timeAgoMessage }}</span>
     </p>
       <app-organization-stargazers></app-organization-stargazers>
     <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked=false">
