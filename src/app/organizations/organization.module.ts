@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CollectionsModule } from './collections.module';

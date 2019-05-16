@@ -25,7 +25,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
