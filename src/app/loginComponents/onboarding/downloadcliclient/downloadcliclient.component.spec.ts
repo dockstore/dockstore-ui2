@@ -9,6 +9,7 @@ import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
 import { MatIconModule, MatButtonModule } from '@angular/material';
 import { MarkdownModule } from 'ngx-markdown';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
@@ -18,7 +19,7 @@ describe('DownloadCLIClientComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DownloadCLIClientComponent,
         RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [ClipboardModule, MarkdownModule.forRoot(), MatIconModule, MatButtonModule],
+      imports: [ClipboardModule, MarkdownModule.forRoot(), MatIconModule, MatButtonModule, HttpClientTestingModule],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
