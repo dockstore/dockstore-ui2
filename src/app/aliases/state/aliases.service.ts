@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AliasesStore } from './aliases.store';
-import { OrganizationsService, Organization, Collection } from '../../shared/swagger';
+import { OrganizationsService, Organization, Collection, DockstoreTool, ContainersService, WorkflowsService, Workflow } from '../../shared/swagger';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
@@ -8,7 +8,9 @@ import { finalize } from 'rxjs/operators';
 export class AliasesService {
 
   constructor(private aliasesStore: AliasesStore,
-              private organizationsService: OrganizationsService) {
+              private organizationsService: OrganizationsService,
+              private toolsService: ContainersService,
+              private workflowsService: WorkflowsService) {
   }
 
   clearState(): void {
@@ -16,7 +18,9 @@ export class AliasesService {
       return {
         ...state,
         organization: null,
-        collection: null
+        collection: null,
+        tool: null,
+        workflow: null
       };
     });
   }
@@ -61,6 +65,50 @@ export class AliasesService {
       return {
         ...state,
         collection: collection,
+      };
+    });
+  }
+
+  @transaction()
+  updateToolFromAlias(alias: string): void {
+    this.clearState();
+    this.aliasesStore.setLoading(true);
+    this.toolsService.getToolByAlias(alias).pipe(finalize(() => this.aliasesStore.setLoading(false)))
+      .subscribe((tool: DockstoreTool) => {
+        this.aliasesStore.setError(false);
+        this.updateTool(tool);
+      }, () => {
+        this.aliasesStore.setError(true);
+      });
+  }
+
+  updateTool(tool: DockstoreTool) {
+    this.aliasesStore.setState(state => {
+      return {
+        ...state,
+        tool: tool,
+      };
+    });
+  }
+
+  @transaction()
+  updateWorkflowFromAlias(alias: string): void {
+    this.clearState();
+    this.aliasesStore.setLoading(true);
+    this.workflowsService.getWorkflowByAlias(alias).pipe(finalize(() => this.aliasesStore.setLoading(false)))
+      .subscribe((workflow: Workflow) => {
+        this.aliasesStore.setError(false);
+        this.updateWorkflow(workflow);
+      }, () => {
+        this.aliasesStore.setError(true);
+      });
+  }
+
+  updateWorkflow(workflow: Workflow) {
+    this.aliasesStore.setState(state => {
+      return {
+        ...state,
+        workflow: workflow,
       };
     });
   }

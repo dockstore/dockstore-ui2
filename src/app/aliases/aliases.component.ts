@@ -3,7 +3,7 @@ import { AliasesService } from './state/aliases.service';
 import { AliasesQuery } from './state/aliases.query';
 import { ActivatedRoute, Router } from '../test';
 import { Observable } from 'rxjs';
-import { Organization, Collection } from '../shared/swagger';
+import { Organization, Collection, Workflow, DockstoreTool } from '../shared/swagger';
 import { Base } from '../shared/base';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,12 +17,14 @@ export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;
   organization$: Observable<Organization>;
   collection$: Observable<Collection>;
+  workflow$: Observable<Workflow>;
+  tool$: Observable<DockstoreTool>;
 
   public type: string;
   public alias: string;
   public validType: boolean;
   // Types contains resource types that support aliases
-  public types = [ 'organizations', 'collections' ];
+  public types = [ 'organizations', 'collections', 'workflows', 'tools', 'containers' ];
   constructor(private aliasesQuery: AliasesQuery,
               private aliasesService: AliasesService,
               private route: ActivatedRoute,
@@ -51,6 +53,22 @@ export class AliasesComponent extends Base implements OnInit {
       this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
         if (collection) {
           this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
+        }
+      });
+    } else if (this.type === 'workflows') {
+      this.aliasesService.updateWorkflowFromAlias(this.alias);
+      this.workflow$ = this.aliasesQuery.workflow$;
+      this.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
+        if (workflow) {
+          this.router.navigate(['/workflows', workflow.full_workflow_path]);
+        }
+      });
+    } else if (this.type === 'tools' || this.type === 'containers') {
+      this.aliasesService.updateToolFromAlias(this.alias);
+      this.tool$ = this.aliasesQuery.tool$;
+      this.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: DockstoreTool) => {
+        if (tool) {
+          this.router.navigate(['/tools', tool.tool_path]);
         }
       });
     }
