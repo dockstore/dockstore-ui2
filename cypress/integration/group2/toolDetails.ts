@@ -184,3 +184,17 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
   });
 
 });
+
+describe('Find tool by alias', () => {
+  it('tool alias', () => {
+    cy.server();
+    cy.route({
+      url: '/tools/fakeAlias/aliases',
+      method: 'GET',
+      status: 200,
+      response: { 'tool_path': 'a/b/c' }
+    });
+    cy.visit('/aliases/tools/fakeAlias');
+    cy.url().should('eq', Cypress.config().baseUrl + '/tools/a/b/c');
+  });
+});
