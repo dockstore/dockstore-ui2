@@ -19,7 +19,10 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/manifest.json"
+              "src/manifest.json",
+              { "glob": "worker-javascript.js", "input": "./node_modules/ace-builds/src-min/", "output": "/" },
+              { "glob": "worker-css.js", "input": "./node_modules/ace-builds/src-min/", "output": "/" },
+              { "glob": "worker-json.js", "input": "./node_modules/ace-builds/src-min/", "output": "/" }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
