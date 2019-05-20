@@ -13,7 +13,8 @@ import { RouterModule } from '@angular/router';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-members/organization-members.component';
 import { OrganizationStarringModule} from './organization/organization-starring/organization-starring.module';
-import {OrganizationStargazersModule} from './organization/organization-stargazers/organization-stargazers.module';
+import { OrganizationStargazersModule } from './organization/organization-stargazers/organization-stargazers.module';
+import { PipeModule } from '../shared/pipe/pipe.module';
 import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -30,7 +31,8 @@ import { MarkdownModule } from 'ngx-markdown';
     RefreshAlertModule,
     OrganizationStarringModule,
     OrganizationStargazersModule,
-    MarkdownModule
+    MarkdownModule,
+    PipeModule
   ],
   declarations: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
   exports: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
