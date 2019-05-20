@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -46,9 +46,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
-import {
-  DeleteAccountDialogComponent,
-} from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { DeleteAccountDialogComponent, } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
@@ -68,7 +66,6 @@ import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
-import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
@@ -101,6 +98,8 @@ import { SitemapComponent } from './sitemap/sitemap.component';
 import { RequestsModule } from './loginComponents/requests.module';
 import {OrganizationStarringModule} from './organizations/organization/organization-starring/organization-starring.module';
 import {OrganizationStargazersModule} from './organizations/organization/organization-stargazers/organization-stargazers.module';
+import { ConfigurationService } from './configuration.service';
+import { HttpClient } from '@angular/common/http';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -113,6 +112,10 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   horizontalPosition: 'center',
   verticalPosition: 'bottom'
 };
+
+export function configurationServiceFactory(configurationService: ConfigurationService): Function {
+  return () => configurationService.load();
+}
 
 @NgModule({
   declarations: [
@@ -186,6 +189,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ProviderService,
     ContainerService,
     ImageProviderService,
+    HttpClient,
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,
     RefreshService,
@@ -199,6 +203,13 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ExtendedToolsService,
     VerifiedByService,
     Title,
+    ConfigurationService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configurationServiceFactory,
+      deps: [ ConfigurationService ],
+      multi: true
+    },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
   ],
@@ -210,7 +221,7 @@ export class AppModule {
 
 export const apiConfig = new Configuration({
   apiKeys: {},
-  basePath: Dockstore.API_URI
+  basePath: window.location.protocol + '//' + window.location.host + '/api'
 });
 
 export function getApiConfig() {

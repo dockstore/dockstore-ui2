@@ -55,14 +55,13 @@ describe('Checker workflow test from my-workflows', () => {
       cy.fixture('refreshedChecker').then((json) => {
         cy.route({
           method: 'GET',
-          url: '/workflows/*/refresh',
+          url: '/api/workflows/*/refresh',
           response: json
         });
         cy.get('#submitButton').click();
       });
 
       // Actions should be possible right after registering checker workflow
-      cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
       cy.get('#viewCheckerWorkflowButton').should('be.visible');
       cy.get('#viewParentEntryButton').should('not.be.visible');
       cy.get('#viewCheckerWorkflowButton').should('not.be.disabled').click();
