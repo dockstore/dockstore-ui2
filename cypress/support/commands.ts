@@ -14,6 +14,19 @@
  *    limitations under the License.
  */
 
+export function unregisterServiceWorkers() {
+  beforeEach(() => {
+    if (window.navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations()
+        .then((registrations) => {
+          registrations.forEach((registration) => {
+            registration.unregister();
+          })
+        })
+    }
+  });
+}
+
 export function goToTab(tabName: string): any {
   unregisterServiceWorkers();
   return cy
@@ -82,17 +95,4 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
 export function approvePotatoMembership() {
   unregisterServiceWorkers();
   cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore');
-}
-
-export function unregisterServiceWorkers() {
-  beforeEach(() => {
-    if (window.navigator && navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations()
-        .then((registrations) => {
-          registrations.forEach((registration) => {
-            registration.unregister();
-          })
-        })
-    }
-  })
 }
